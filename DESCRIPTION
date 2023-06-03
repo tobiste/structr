@@ -1,0 +1,25 @@
+Type: Package
+Package: structR
+Title: Compilation of functions forstructural geology
+Version: 0.1.0
+Author: Tobias Stephan
+Maintainer: The package maintainer <tobias.stephan1@yahoo.com>
+Description: My personal collection of inmature functions.
+License: What license is it under?
+Depends: 
+    R (>= 3.5.0)
+Imports: 
+    RFOC
+    ggplot2
+    ggforce
+Suggests: 
+    knitr,
+    rmarkdown
+Remotes: 
+    tobiste/tectonicr
+VignetteBuilder: 
+    knitr
+Encoding: UTF-8
+Language: en-US
+LazyData: true
+RoxygenNote: 7.2.3
