@@ -5,8 +5,7 @@
 \title{Plot lines and planes}
 \usage{
 stereo_point(
-  azi,
-  inc,
+  x,
   plane = FALSE,
   upper.hem = FALSE,
   col = 1,
@@ -18,8 +17,6 @@ stereo_point(
 )
 }
 \arguments{
-\item{azi, inc}{numeric. Angles of azimuth (or dip direction) and inclination (dip) in degrees.}
-
 \item{plane}{logical. Whether the object is a linear (`FALSE`) of planar feature (`TRUE`).}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).}
@@ -35,12 +32,14 @@ stereo_point(
 \item{cex}{character expansion of labels}
 
 \item{...}{optional graphical parameters}
+
+\item{azi, inc}{numeric. Angles of azimuth (or dip direction) and inclination (dip) in degrees.}
 }
 \description{
 Visualization of lines, planes in a stereographic projection.
 }
 \examples{
 stereoplot()
-stereo_point(90, 80, lab = "L")
-stereo_point(120, 30, plane = TRUE, lab = "P", col = "red")
+stereo_point(cbind(c(90, 80), c(80, 75)), lab = c("L", "L"))
+stereo_point(c(120, 30), plane = TRUE, lab = "P", col = "red")
 }

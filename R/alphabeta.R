@@ -3,47 +3,51 @@
 #' Calculates the orientation of a plane or line from alpha, beta and gamma
 #' angles in oriented drill cores
 #'
-#' @param alpha numeric. Alpha angle in degrees
-#' @param beta numeric. Beta angle in degrees
+#' @param alpha numeric vector. Alpha angle in degrees
+#' @param beta numeric vector. Beta angle in degrees
 #' @param gamma numeric. Gamma angle in degrees
 #' @param azi numeric. Azimuth of drill core axis orientation in degrees (measured from North).
 #' @param inc numeric. Inclination of drill core axis in degrees (negative values for downward!).
-#' @return numeric two-column vector. Dip direction and dip angle of plane or
+#' @return numeric two-column matrix with Dip direction and dip angle of plane or
 #' azimuth and plunge of line (in degrees).
 #' @name drillcore
 #' @examples
-#' drill_plane(45, 220, 225, 45)
-#' drill_plane(60, 320, 225, 45)
+#' drill_plane(45, 220, 225, -45)
+#' drill_plane(60, 320, 225, -45)
 #'
 #' # multiple alpha-beta measurements
-#' mapply(drill_plane, alpha = c(45, 60), beta = c(220, 320), azi = 225, inc = -45)
+#' drill_plane(alpha = c(45, 60), beta = c(220, 320), azi = 225, inc = -45)
 NULL
 
 #' @rdname drillcore
 #' @export
 drill_plane <- function(alpha, beta, azi, inc) {
-  inc <- -inc
-  C <- lin2vec(azi, inc)
-  B <- lin2vec(azi + 180, 90 - inc)
+  stopifnot(length(alpha) == length(beta), length(azi) == 1, length(inc) == 1)
+  n <- length(alpha)
+  azi <- rep(azi, n)
+  inc <- rep(-inc, n)
+
+  C <- line2vec(cbind(azi, inc))
+  B <- line2vec(cbind(azi + 180, 90 - inc))
 
   E <- vrotate(B, C, beta * DEG2RAD())
   I <- vcross(C, E)
   P <- vrotate(C, I, pi - alpha * DEG2RAD())
-  vec2fol(P)
+  vec2plane(P)
 }
 
 #' @rdname drillcore
 #' @export
 drill_line <- function(alpha, beta, gamma, azi, inc) {
   inc <- -inc
-  C <- lin2vec(azi, inc)
-  B <- lin2vec(azi + 180, 90 - inc)
+  C <- line2vec(cbind(azi, inc))
+  B <- line2vec(cbind(azi + 180, 90 - inc))
 
   E <- vrotate(B, C, beta * DEG2RAD())
   I <- vcross(C, E)
   P <- vrotate(C, I, pi - alpha * DEG2RAD())
   L <- vrotate(I, P, pi + gamma * DEG2RAD())
-  vec2lin(L)
+  vec2line(L)
 }
 
 # alpha = 45; beta = 220; gamma = 20

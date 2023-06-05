@@ -22,45 +22,43 @@ rotz3 <- function(deg) {
   return(r)
 }
 
-FixDip <- function(A) {
+fix_inc <- function(A) {
   az <- A$az
-  dip <- A$dip
-  tdip <- DEG2RAD() * (dip %% 360)
-  co <- cos(tdip)
-  si <- sin(tdip)
+  inc <- A$inc
+  tinc <- DEG2RAD() * (inc %% 360)
+  co <- cos(tinc)
+  si <- sin(tinc)
   ang <- atan2(si, co) / DEG2RAD()
-  quad <- rep(1, length(dip))
+  quad <- rep(1, length(inc))
   quad[co >= 0 & si >= 0] <- 1
   quad[co < 0 & si >= 0] <- 2
   quad[co < 0 & si < 0] <- 3
   quad[co >= 0 & si < 0] <- 4
-  dip[quad == 1] <- ang[quad == 1]
-  dip[quad == 2] <- 180 - ang[quad == 2]
-  dip[quad == 3] <- 180 + ang[quad == 3]
-  dip[quad == 4] <- -ang[quad == 4]
+  tinc[quad == 1] <- ang[quad == 1]
+  tinc[quad == 2] <- 180 - ang[quad == 2]
+  tinc[quad == 3] <- 180 + ang[quad == 3]
+  tinc[quad == 4] <- -ang[quad == 4]
   az[quad == 1] <- az[quad == 1]
   az[quad == 2] <- 180 + az[quad == 2]
   az[quad == 3] <- az[quad == 3]
   az[quad == 4] <- 180 + az[quad == 4]
   A$az <- az %% 360
-  A$dip <- dip
+  A$inc <- tinc
   return(A)
 }
 
-stereo_coords <- function(az, iang) {
-  sph <- cos(DEG2RAD() * iang)
+stereo_coords <- function(az, inc) {
+  sph <- cos(DEG2RAD() * inc)
   sph[sph >= 0] <- 0
   sph[sph < 0] <- 1
 
-
-
-  A <- list(az = az, dip = iang)
-  A$dip <- iang
+  A <- list(az = az, inc = inc)
+  A$inc <- inc
   A$az <- az
-  B <- FixDip(A)
+  B <- fix_inc(A)
   trot <- DEG2RAD() * B$az
-  tdip <- B$dip
-  xi <- DEG2RAD() * tdip
+  tinc <- B$inc
+  xi <- DEG2RAD() * tinc
   tq <- sqrt(2) * sin(xi / 2)
   pltx <- tq * sin(trot)
   plty <- tq * cos(trot)
@@ -84,14 +82,25 @@ stereo_coords <- function(az, iang) {
 #' @export
 #' @examples
 #' stereoplot()
-#' stereo_point(90, 80, lab = "L")
-#' stereo_point(120, 30, plane = TRUE, lab = "P", col = "red")
-stereo_point <- function(azi, inc, plane = FALSE, upper.hem = FALSE, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = .75, ...) {
-  crds <- stereo_coords(
-    ifelse(upper.hem, azi + 180, azi),
-    ifelse(plane, -inc, 90 - inc)
-  )
+#' stereo_point(cbind(c(90, 80), c(80, 75)), lab = c("L", "L"))
+#' stereo_point(c(120, 30), plane = TRUE, lab = "P", col = "red")
+stereo_point <- function(x, plane = FALSE, upper.hem = FALSE, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = .75, ...) {
+  x <- vec2mat(x)
 
+
+  if (plane) {
+    x[, 1] <- 180 + x[, 1]
+    x[, 2] <- 90 - x[, 2]
+  }
+
+  if (upper.hem) {
+    x[, 1] <- x[, 1] + 180
+  }
+
+  crds <- stereo_coords(
+    x[, 1],
+    90 - x[, 2]
+  )
 
   points(crds[, "x"], crds[, "y"], pch = pch, col = col, cex = cex, ...)
   if (!is.null(lab)) {
@@ -115,20 +124,22 @@ stereo_point <- function(azi, inc, plane = FALSE, upper.hem = FALSE, col = 1, pc
 #' @export
 #' @examples
 #' stereoplot()
-#' stereo_point(90, 80, lab = "L")
-#' stereo_smallcircle(90, 80, d = 10)
-#' stereo_point(120, 30, plane = TRUE, lab = "P", col = "red")
-#' stereo_greatcircle(120, 30, col = "red", N = 1000)
-stereo_smallcircle <- function(azi, inc, d = 90, col = 1, N = 100, BALL.radius = .25, ...) {
-  az <- azi
-  iang <- 90 - inc
+#' stereo_point(c(90, 5), lab = "L")
+#' stereo_smallcircle(c(90, 5), d = 10)
+#' stereo_point(c(120, 30), plane = TRUE, lab = "P", col = "red")
+#' stereo_greatcircle(c(120, 30), col = "red", N = 1000)
+stereo_smallcircle <- function(x, d = 90, col = 1, N = 100, BALL.radius = .25, ...) {
+  x <- vec2mat(x)
+
+  az <- x[, 1]
+  inc <- 90 - x[, 2]
   phi <- seq(from = 0, to = 2 * pi, length = N)
   theta <- d * DEG2RAD()
   x <- BALL.radius * sin(theta) * cos(phi)
   y <- BALL.radius * sin(theta) * sin(phi)
   z <- rep(BALL.radius * cos(theta), length(phi))
   D <- cbind(x, y, z)
-  ry <- roty3(iang)
+  ry <- roty3(inc)
   rz <- rotz3(az)
   Rmat <- ry %*% rz
   g <- D %*% Rmat
@@ -147,8 +158,10 @@ stereo_smallcircle <- function(azi, inc, d = 90, col = 1, N = 100, BALL.radius =
   lines(Sc[, "x"], Sc[, "y"], col = col, ...)
 }
 
-stereo_greatcircle <- function(azi, inc, col = 1, lwd = 1, N = 100, ...) {
-  stereo_smallcircle(azi, 90 + inc, d = 90, col = col, lwd = lwd, N = N, ...) # add circle
+stereo_greatcircle <- function(x, col = 1, lwd = 1, N = 100, ...) {
+  x <- vec2mat(x)
+  x[, 2] <- 90 + x[, 2]
+  stereo_smallcircle(x, d = 90, col = col, lwd = lwd, N = N, ...) # add circle
 }
 
 

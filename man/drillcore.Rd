@@ -11,9 +11,9 @@ drill_plane(alpha, beta, azi, inc)
 drill_line(alpha, beta, gamma, azi, inc)
 }
 \arguments{
-\item{alpha}{numeric. Alpha angle in degrees}
+\item{alpha}{numeric vector. Alpha angle in degrees}
 
-\item{beta}{numeric. Beta angle in degrees}
+\item{beta}{numeric vector. Beta angle in degrees}
 
 \item{azi}{numeric. Azimuth of drill core axis orientation in degrees (measured from North).}
 
@@ -22,7 +22,7 @@ drill_line(alpha, beta, gamma, azi, inc)
 \item{gamma}{numeric. Gamma angle in degrees}
 }
 \value{
-numeric two-column vector. Dip direction and dip angle of plane or
+numeric two-column matrix with Dip direction and dip angle of plane or
 azimuth and plunge of line (in degrees).
 }
 \description{
@@ -30,9 +30,9 @@ Calculates the orientation of a plane or line from alpha, beta and gamma
 angles in oriented drill cores
 }
 \examples{
-drill_plane(45, 220, 225, 45)
-drill_plane(60, 320, 225, 45)
+drill_plane(45, 220, 225, -45)
+drill_plane(60, 320, 225, -45)
 
 # multiple alpha-beta measurements
-mapply(drill_plane, alpha = c(45, 60), beta = c(220, 320), azi = 225, inc = -45)
+drill_plane(alpha = c(45, 60), beta = c(220, 320), azi = 225, inc = -45)
 }

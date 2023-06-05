@@ -5,11 +5,10 @@ Version: 0.1.0
 Author: Tobias Stephan
 Maintainer: The package maintainer <tobias.stephan1@yahoo.com>
 Description: My personal collection of inmature functions.
-License: What license is it under?
+License: MIT + file LICENSE
 Depends: 
     R (>= 3.5.0)
 Imports: 
-    RFOC
     ggplot2
     ggforce
 Suggests: 
