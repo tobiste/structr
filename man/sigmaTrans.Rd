@@ -28,20 +28,20 @@ sigmaTrans(
 }
 \value{
 A two-element list containing:
-             \code{sigma} = normal stress on an inclined plane
-             \code{tau} = shear stress on an inclined plane
+\code{sigma} = normal stress on an inclined plane
+\code{tau} = shear stress on an inclined plane
 }
 \description{
 STRESS TRANSFORMATION
 }
 \note{
 o  In addition to theta, One of the following two sets of data must be entered:
-               1.  sigmaX, sigmaZ, tauXZ
-               2.  sigma1, sigma3
-      o  If theta is entered in conjunction with sigmaX, sigmaZ, and tauXZ,
-      it is interpreted as the angle of inclination above the horizontal.  If
-      theta is entered in conjunction with the principal stresses, then it is
-      interpreted as the angle of inclination above the major principal plane.
+1.  sigmaX, sigmaZ, tauXZ
+2.  sigma1, sigma3
+o  If theta is entered in conjunction with sigmaX, sigmaZ, and tauXZ,
+it is interpreted as the angle of inclination above the horizontal.  If
+theta is entered in conjunction with the principal stresses, then it is
+interpreted as the angle of inclination above the major principal plane.
 }
 \examples{
 sigmaTrans(sigmaX = 80, sigmaZ = 120, tauXZ = 20, theta = 78)

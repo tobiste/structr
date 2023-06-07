@@ -22,8 +22,8 @@ vec2lin0 <- function(x, y, z) {
   n <- vnorm(cbind(x, y, z)) # normalized vector
   nz <- sapply(n[, 3], function(x) ifelse(x < 0, -x, x))
   cbind(
-    azi = (atan2(n[, 2], n[, 1]) / DEG2RAD()) %% 360,
-    inc = asin(nz) / DEG2RAD()
+    azimuth = (atan2(n[, 2], n[, 1]) / DEG2RAD()) %% 360,
+    plunge = asin(nz) / DEG2RAD()
   )
 }
 
@@ -31,8 +31,8 @@ vec2fol0 <- function(x, y, z) {
   n <- vnorm(cbind(x, y, z)) # normalized vector
   nz <- sapply(n[, 3], function(x) ifelse(x < 0, -x, x))
   cbind(
-    azi = ((atan2(n[, 2], n[, 1]) / DEG2RAD()) + 180) %% 360,
-    inc = 90 - (asin(nz) / DEG2RAD())
+    dip_direction = ((atan2(n[, 2], n[, 1]) / DEG2RAD()) + 180) %% 360,
+    dip = 90 - (asin(nz) / DEG2RAD())
   )
 }
 
@@ -40,14 +40,34 @@ vec2fol0 <- function(x, y, z) {
 #' Coordinate conversion
 #'
 #' @param l,p two column matrix, or two element vector. Spherical coordinates
-#' (in degrees) of lines (azimuth, plunge) or plane (dir direction, dip).
-#' @param v three column matrix, or three-element vector. Cartesian coordinates
+#' (in degrees) of lines (`"azimuth"`, `"plunge"`) or plane (`"dip_direction"`,
+#' `"dip"`).
+#' @param x three column matrix, or three-element vector. Cartesian coordinates
+#' @param class character. Either `"line"` or `"plane"`
 #' @name coordinates
 #' @examples
 #' cbind(c(90, 89), c(45, 46)) |>
-#'   lin2vec() |>
-#'   vec2lin()
+#'   line2vec() |>
+#'   vec2line()
 NULL
+
+#' @rdname coordinates
+#' @export
+to_vec <- function(x) {
+  x <- vec2mat(x)
+  lin2vec0(x[, 1], x[, 2])
+}
+
+#' @rdname coordinates
+#' @export
+to_struct <- function(x, class = c("line", "plane")) {
+  class <- match.arg(class)
+  if (class == "line") {
+    vec2line(x)
+  } else {
+    vec2plane(x)
+  }
+}
 
 #' @rdname coordinates
 #' @export
@@ -65,14 +85,147 @@ plane2vec <- function(p) {
 
 #' @rdname coordinates
 #' @export
-vec2line <- function(v) {
-  x <- vec2mat(v)
-  vec2lin0(x[, 1], x[, 2], x[, 3])
+vec2line <- function(x) {
+  x <- vec2mat(x)
+  l <- vec2lin0(x[, 1], x[, 2], x[, 3])
+  class(l) <- "line"
+  l
 }
 
 #' @rdname coordinates
 #' @export
-vec2plane <- function(v) {
-  x <- vec2mat(v)
-  vec2fol0(x[, 1], x[, 2], x[, 3])
+vec2plane <- function(x) {
+  x <- vec2mat(x)
+  p <- vec2fol0(x[, 1], x[, 2], x[, 3])
+  class(p) <- "plane"
+  p
+}
+
+#' Structure classes
+#'
+#' @description
+#' `Line`, `Plane`, and `Fault` create a `"line"`, `"plane"`, and `"fault"`
+#' class object, respectively, from the given set of values.
+#'
+#' `as.line`, `as.plane`, and `as.fault` attempt to turn its argument into a
+#' `"line"`, `"plane"`, and `"fault"` class object, respectively.
+#'
+#' `is.line`, `is.plane`, and `is.fault` test if its argument is a `"line"`,
+#' `"plane"`, and `"fault"` class object, respectively.
+#'
+#' @param l,p,f numeric vector, matrix, or object of class `"line"`, `"plane"`,
+#' or `"fault"`
+#' @param azimuth,plunge numeric vectors. Azimuth and plunge of a line (in
+#' degrees)
+#' @param dip_direction,dip numeric vectors. Dip direction and dip of a plane
+#' (in degrees)
+#' @details
+#' `as.line`, `as.plane`, and `as.fault` return `TRUE` if `l`, `p`, and `f`
+#' are an object of class `"line"`, `"plane"`, or `"fault"`, respectively, and
+#' `FALSE` otherwise.
+#'
+#' `is.structure` returns `TRUE` if the argument' class is one of `"line"`,
+#' `"plane"`, or `"fault"` and `FALSE` otherwise
+#'
+#' `as.line`, `as.plane`, and `as.fault` are is generic functions. If the
+#' argument is a `"line"` or `"plane"` class, it will be converted.
+#'
+#' @name classes
+#' @examples
+#' x <- Line(120, 50) # create line
+#' is.line(x) # test if line
+#' as.plane(x) # convert to plane
+NULL
+
+
+#' @rdname classes
+#' @export
+Line <- function(azimuth, plunge) {
+  stopifnot(length(azimuth) == length(plunge))
+  cbind(azimuth, plunge) |> as.line()
+}
+
+#' @rdname classes
+#' @export
+Plane <- function(dip_direction, dip) {
+  stopifnot(length(dip_direction) == length(dip))
+  cbind(dip_direction, dip) |> as.plane()
+}
+
+#' @rdname classes
+#' @export
+Fault <- function(dip_direction, dip, azimuth, plunge) {
+  stopifnot(
+    length(dip_direction) == length(dip),
+    length(dip_direction) == length(azimuth),
+    length(dip_direction) == length(plunge)
+  )
+  cbind(dip_direction, dip, azimuth, plunge) |> as.fault()
+}
+
+
+#' @rdname classes
+#' @export
+as.line <- function(l) {
+  if (is.plane(l)) {
+    x <- l |>
+      plane2vec() |>
+      vec2line()
+  } else {
+    x <- vec2mat(l)
+    colnames(x) <- c("azimuth", "plunge")
+  }
+  class(x) <- "line"
+  rownames(x) <- rownames(l)
+  x
+}
+
+#' @rdname classes
+#' @export
+as.plane <- function(p) {
+  if (is.line(p)) {
+    x <- p |>
+      line2vec() |>
+      vec2plane()
+  } else {
+    x <- vec2mat(p)
+    colnames(x) <- c("dip_direction", "dip")
+  }
+  class(x) <- "plane"
+  rownames(x) <- rownames(p)
+  x
+}
+
+#' @rdname classes
+#' @export
+as.fault <- function(f) {
+  x <- vec2mat(f)
+  class(x) <- "fault"
+  colnames(x) <- c("dip_direction", "dip", "azimuth", "plunge")
+  rownames(x) <- rownames(f)
+  x
+}
+
+#' @rdname classes
+#' @export
+is.line <- function(l) {
+  inherits(l, "line")
+}
+
+#' @rdname classes
+#' @export
+is.plane <- function(p) {
+  inherits(p, "plane")
+}
+
+#' @rdname classes
+#' @export
+is.fault <- function(f) {
+  inherits(f, "fault")
+}
+
+#' @rdname classes
+#' @export
+is.structure <- function(l) {
+  inherits(l, "plane") | inherits(l, "line") | inherits(l, "fault")
 }

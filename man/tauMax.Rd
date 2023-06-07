@@ -15,8 +15,8 @@ tauMax(sigmaX, sigmaZ, tauXZ)
 }
 \value{
 A two-element list containing:
-        tauMax = maximum in-plane shear stress
-        theta = angle of maximum in-plane shear stress
+tauMax = maximum in-plane shear stress
+theta = angle of maximum in-plane shear stress
 }
 \description{
 MAXIMUM IN-PLANE SHEAR STRESS

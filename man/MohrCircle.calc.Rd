@@ -28,23 +28,23 @@ MohrCircle.calc(
 }
 \value{
 A five-element list containing:
-           C = center of Mohr circle
-           R = radius of Mohr circle
-           sigma = vector of normal stresses for Mohr circle t
-           au = vector of shear stresses for Mohr circle
-           theta = vector of angles (deg)
+C = center of Mohr circle
+R = radius of Mohr circle
+sigma = vector of normal stresses for Mohr circle t
+au = vector of shear stresses for Mohr circle
+theta = vector of angles (deg)
 }
 \description{
 MOHR CIRCLE:  CALCULATE
 }
 \note{
 o  One of the following two sets of data must be entered:
-               1.  sigmaX, sigmaZ, tauXZ
-               2.  sigma1, sigma3
-      o  If theta is entered in conjunction with sigmaX, sigmaZ, and tauXZ, it is interpreted
-         as the angle of inclination above the horizontal.  If theta is entered in conjunction
-         with the principal stresses, then it is interpreted as the angle of inclination above the
-         major principal plane.
+1.  sigmaX, sigmaZ, tauXZ
+2.  sigma1, sigma3
+o  If theta is entered in conjunction with sigmaX, sigmaZ, and tauXZ, it is interpreted
+as the angle of inclination above the horizontal.  If theta is entered in conjunction
+with the principal stresses, then it is interpreted as the angle of inclination above the
+major principal plane.
 }
 \examples{
 MohrCircle.calc(sigmaX = 80, sigmaZ = 120, tauXZ = 20)

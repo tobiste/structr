@@ -2,22 +2,22 @@
 % Please edit documentation in R/alphabeta.R
 \name{drillcore}
 \alias{drillcore}
-\alias{drill_plane}
-\alias{drill_line}
+\alias{plane_from_drillcore}
+\alias{line_from_drillcore}
 \title{Orientation of structures from drill core orientation angles}
 \usage{
-drill_plane(alpha, beta, azi, inc)
+plane_from_drillcore(alpha, beta, azi, inc)
 
-drill_line(alpha, beta, gamma, azi, inc)
+line_from_drillcore(alpha, beta, gamma, azi, inc)
 }
 \arguments{
 \item{alpha}{numeric vector. Alpha angle in degrees}
 
 \item{beta}{numeric vector. Beta angle in degrees}
 
-\item{azi}{numeric. Azimuth of drill core axis orientation in degrees (measured from North).}
+\item{azi}{numeric. Azimuth of drill core axis orientation in degrees (measured clockwise from North).}
 
-\item{inc}{numeric. Inclination of drill core axis in degrees (negative values for downward!).}
+\item{inc}{numeric. Inclination of drill core axis in degrees (Note: \strong{negative values for downward}).}
 
 \item{gamma}{numeric. Gamma angle in degrees}
 }
@@ -26,13 +26,17 @@ numeric two-column matrix with Dip direction and dip angle of plane or
 azimuth and plunge of line (in degrees).
 }
 \description{
-Calculates the orientation of a plane or line from alpha, beta and gamma
-angles in oriented drill cores
+Calculates the orientation of a plane or line from internal core angles (
+alpha, beta and gamma) of oriented drill cores
 }
 \examples{
-drill_plane(45, 220, 225, -45)
-drill_plane(60, 320, 225, -45)
+azi <- 225
+inc <- -45
+plane_from_drillcore(60, 320, azi, inc)
+plane_from_drillcore(45, 220, azi, inc)
 
 # multiple alpha-beta measurements
-drill_plane(alpha = c(45, 60), beta = c(220, 320), azi = 225, inc = -45)
+stereoplot()
+stereo_point(Line(azi, -inc), lab = "CA")
+plane_from_drillcore(alpha = c(60, 45), beta = c(320, 220), azi, inc) |> stereo_point(lab = c("A", "B"))
 }

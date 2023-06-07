@@ -2,10 +2,23 @@
 % Please edit documentation in R/math.R
 \name{vresultant}
 \alias{vresultant}
-\title{mean resultant of a set of vectors}
+\title{Mean resultant of a set of vectors}
 \usage{
 vresultant(x, mean = FALSE)
 }
+\arguments{
+\item{x}{numeric. Can be three element vector, three column matrix, or an object of class \code{"line"} or \code{"plane"}}
+
+\item{mean}{logical. Whether the mean resultant (\code{TRUE}) or resultant (\code{FALSE}, the default) is returned.}
+}
+\value{
+if mean==TRUE, mean resultant is returned (object of class of \code{x}), else numeric.
+}
 \description{
-mean resultant of a set of vectors
+Mean resultant of a set of vectors
+}
+\examples{
+x <- rvmf(100, mu = Line(120, 50), k = 5)
+vresultant(x, mean = FALSE)
+vresultant(x, mean = TRUE)
 }

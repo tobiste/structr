@@ -6,7 +6,6 @@
 \usage{
 stereo_point(
   x,
-  plane = FALSE,
   upper.hem = FALSE,
   col = 1,
   pch = 20,
@@ -17,9 +16,9 @@ stereo_point(
 )
 }
 \arguments{
-\item{plane}{logical. Whether the object is a linear (`FALSE`) of planar feature (`TRUE`).}
+\item{x}{Object of class \code{"line"} or \code{"plane"}}
 
-\item{upper.hem}{logical. Whether the projection is shown for upper hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).}
+\item{upper.hem}{logical. Whether the projection is shown for upper hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
 
 \item{col}{color}
 
@@ -32,14 +31,15 @@ stereo_point(
 \item{cex}{character expansion of labels}
 
 \item{...}{optional graphical parameters}
-
-\item{azi, inc}{numeric. Angles of azimuth (or dip direction) and inclination (dip) in degrees.}
 }
 \description{
 Visualization of lines, planes in a stereographic projection.
 }
+\note{
+\code{"plane"} objects will be displayed as pole to the plane.
+}
 \examples{
 stereoplot()
-stereo_point(cbind(c(90, 80), c(80, 75)), lab = c("L", "L"))
-stereo_point(c(120, 30), plane = TRUE, lab = "P", col = "red")
+stereo_point(Line(azi = c(90, 80), inc = c(10, 75)), lab = c("L", "L"))
+stereo_point(Plane(120, 30), lab = "P", col = "red")
 }

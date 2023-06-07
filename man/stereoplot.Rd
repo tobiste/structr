@@ -4,13 +4,13 @@
 \alias{stereoplot}
 \title{Initialize the Stereo plot}
 \source{
-[RFOC::net()]
+\code{\link[RFOC:net]{RFOC::net()}}
 }
 \usage{
 stereoplot(add = FALSE, col = gray(0.9), border = "black", lwd = 1, main = "N")
 }
 \arguments{
-\item{add}{logical, `TRUE` adds to existing plot}
+\item{add}{logical, \code{TRUE} adds to existing plot}
 
 \item{col}{color of lines}
 

@@ -31,8 +31,8 @@ Plotting the Mohr Circle
 }
 \note{
 o  One of the following two sets of data must be entered:
-          1.  sigmaX, sigmaZ, tauXZ
-          2.  sigma1, sigma3
+1.  sigmaX, sigmaZ, tauXZ
+2.  sigma1, sigma3
 }
 \examples{
 MohrCircle.plot(sigmaX = 80, sigmaZ = 120, tauXZ = 20, metric = FALSE)

@@ -2,31 +2,40 @@
 % Please edit documentation in R/coordinates.R
 \name{coordinates}
 \alias{coordinates}
+\alias{to_vec}
+\alias{to_struct}
 \alias{line2vec}
 \alias{plane2vec}
 \alias{vec2line}
 \alias{vec2plane}
 \title{Coordinate conversion}
 \usage{
+to_vec(x)
+
+to_struct(x, class = c("line", "plane"))
+
 line2vec(l)
 
 plane2vec(p)
 
-vec2line(v)
+vec2line(x)
 
-vec2plane(v)
+vec2plane(x)
 }
 \arguments{
-\item{l, p}{two column matrix, or two element vector. Spherical coordinates
-(in degrees) of lines (azimuth, plunge) or plane (dir direction, dip).}
+\item{x}{three column matrix, or three-element vector. Cartesian coordinates}
 
-\item{v}{three column matrix, or three-element vector. Cartesian coordinates}
+\item{class}{character. Either \code{"line"} or \code{"plane"}}
+
+\item{l, p}{two column matrix, or two element vector. Spherical coordinates
+(in degrees) of lines (\code{"azimuth"}, \code{"plunge"}) or plane (\code{"dip_direction"},
+\code{"dip"}).}
 }
 \description{
 Coordinate conversion
 }
 \examples{
 cbind(c(90, 89), c(45, 46)) |>
-  lin2vec() |>
-  vec2lin()
+  line2vec() |>
+  vec2line()
 }

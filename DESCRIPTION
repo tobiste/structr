@@ -9,8 +9,9 @@ License: MIT + file LICENSE
 Depends: 
     R (>= 3.5.0)
 Imports: 
-    ggplot2
-    ggforce
+    ggplot2,
+    ggforce,
+    rotasym
 Suggests: 
     knitr,
     rmarkdown
@@ -22,3 +23,4 @@ Encoding: UTF-8
 Language: en-US
 LazyData: true
 RoxygenNote: 7.2.3
+Roxygen: list(markdown = TRUE)

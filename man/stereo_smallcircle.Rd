@@ -7,6 +7,8 @@
 stereo_smallcircle(x, d = 90, col = 1, N = 100, BALL.radius = 0.25, ...)
 }
 \arguments{
+\item{x}{Object of class \code{"line"} or \code{"plane"}}
+
 \item{d}{numeric. conical angle in degrees.}
 
 \item{col}{color}
@@ -16,16 +18,14 @@ stereo_smallcircle(x, d = 90, col = 1, N = 100, BALL.radius = 0.25, ...)
 \item{BALL.radius}{numeric size of sphere}
 
 \item{...}{optional graphical parameters}
-
-\item{azi, inc}{numeric. Angles of azimuth (or dip direction) and inclination (dip) in degrees.}
 }
 \description{
 Visualization of smallcircles and greatcircles in a stereographic projection.
 }
 \examples{
 stereoplot()
-stereo_point(c(90, 5), lab = "L")
-stereo_smallcircle(c(90, 5), d = 10)
-stereo_point(c(120, 30), plane = TRUE, lab = "P", col = "red")
-stereo_greatcircle(c(120, 30), col = "red", N = 1000)
+stereo_point(Line(90, 5), lab = "L")
+stereo_smallcircle(Line(90, 5), d = 10)
+stereo_point(Plane(120, 30), lab = "P", col = "red")
+stereo_greatcircle(Plane(120, 30), col = "red", N = 1000)
 }

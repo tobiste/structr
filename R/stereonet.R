@@ -70,28 +70,29 @@ stereo_coords <- function(az, inc) {
 #' Plot lines and planes
 #'
 #' Visualization of lines, planes in a stereographic projection.
-#' @param azi,inc numeric. Angles of azimuth (or dip direction) and inclination (dip) in degrees.
-#' @param plane logical. Whether the object is a linear (`FALSE`) of planar feature (`TRUE`).
-#' @param upper.hem logical. Whether the projection is shown for upper hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
+#' @param x Object of class `"line"` or `"plane"`
+#' @param upper.hem logical. Whether the projection is shown for upper 
+#' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
 #' @param col color
 #' @param pch plotting character
 #' @param lab character. text labels
 #' @param text.pos position for labels
 #' @param cex character expansion of labels
 #' @param ... optional graphical parameters
+#' @note `"plane"` objects will be displayed as pole to the plane.
 #' @export
 #' @examples
 #' stereoplot()
-#' stereo_point(cbind(c(90, 80), c(80, 75)), lab = c("L", "L"))
-#' stereo_point(c(120, 30), plane = TRUE, lab = "P", col = "red")
-stereo_point <- function(x, plane = FALSE, upper.hem = FALSE, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = .75, ...) {
+#' stereo_point(Line(azi = c(90, 80), inc = c(10, 75)), lab = c("L", "L"))
+#' stereo_point(Plane(120, 30), lab = "P", col = "red")
+stereo_point <- function(x, upper.hem = FALSE, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = .75, ...) {
   x <- vec2mat(x)
 
-
-  if (plane) {
+  if (is.plane(x)) {
     x[, 1] <- 180 + x[, 1]
     x[, 2] <- 90 - x[, 2]
   }
+  # class(x) <- c("matrix", "array")
 
   if (upper.hem) {
     x[, 1] <- x[, 1] + 180
@@ -115,7 +116,7 @@ stereo_point <- function(x, plane = FALSE, upper.hem = FALSE, col = 1, pch = 20,
 #'
 #' Visualization of smallcircles and greatcircles in a stereographic projection.
 #'
-#' @param azi,inc numeric. Angles of azimuth (or dip direction) and inclination (dip) in degrees.
+#' @param x Object of class `"line"` or `"plane"`
 #' @param d numeric. conical angle in degrees.
 #' @param col color
 #' @param N integer. number of points to calculate
@@ -124,10 +125,10 @@ stereo_point <- function(x, plane = FALSE, upper.hem = FALSE, col = 1, pch = 20,
 #' @export
 #' @examples
 #' stereoplot()
-#' stereo_point(c(90, 5), lab = "L")
-#' stereo_smallcircle(c(90, 5), d = 10)
-#' stereo_point(c(120, 30), plane = TRUE, lab = "P", col = "red")
-#' stereo_greatcircle(c(120, 30), col = "red", N = 1000)
+#' stereo_point(Line(90, 5), lab = "L")
+#' stereo_smallcircle(Line(90, 5), d = 10)
+#' stereo_point(Plane(120, 30), lab = "P", col = "red")
+#' stereo_greatcircle(Plane(120, 30), col = "red", N = 1000)
 stereo_smallcircle <- function(x, d = 90, col = 1, N = 100, BALL.radius = .25, ...) {
   x <- vec2mat(x)
 
@@ -137,7 +138,7 @@ stereo_smallcircle <- function(x, d = 90, col = 1, N = 100, BALL.radius = .25, .
   theta <- d * DEG2RAD()
   x <- BALL.radius * sin(theta) * cos(phi)
   y <- BALL.radius * sin(theta) * sin(phi)
-  z <- rep(BALL.radius * cos(theta), length(phi))
+  z <- rep(BALL.radius * cos(theta), N)
   D <- cbind(x, y, z)
   ry <- roty3(inc)
   rz <- rotz3(az)
@@ -178,7 +179,8 @@ pcirc <- function(col = "black", border = "black", ndiv = 36) {
 
 #' Initialize the Stereo plot
 #'
-#' Plot equal-area stereographic projection, i.e. Lambert azimuthal Equal-Area projection (Schmidt).
+#' Plot equal-area stereographic projection, i.e. Lambert azimuthal Equal-Area 
+#' projection (Schmidt).
 #' @param add logical, `TRUE` adds to existing plot
 #' @param col	color of lines
 #' @param border color of outer rim of stereo plot

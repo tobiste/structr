@@ -6,6 +6,21 @@
 \usage{
 v_fisher_statistics(x)
 }
+\arguments{
+\item{x}{numeric. Can be three element vector, three column matrix, or an object of class \code{"line"} or \code{"plane"}}
+}
+\value{
+list, with
+\describe{
+\item{\code{k}}{estimated concentration parameter kappa for the von Mises-Fisher distribution}
+\item{\code{csd}}{estimated angular standard deviation}
+\item{\code{a95}}{confidence limit}
+}
+}
 \description{
-Fisher's statistics
+Estimates concentration parameter, angular standard deviation, and confidence limit.
+}
+\examples{
+x <- rvmf(100, mu = Line(120, 50), k = 5)
+v_fisher_statistics(x)
 }

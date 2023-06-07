@@ -15,10 +15,10 @@ sigma13(sigmaX, sigmaZ, tauXZ)
 }
 \value{
 A four-element list containing:
-            sigma1 = magnitude of major principal stress
-            sigma3 = magnitude of minor principal stress
-            theta1 = direction of major principal stress (deg)
-            theta3 = direction of minor principal stress (deg)
+sigma1 = magnitude of major principal stress
+sigma3 = magnitude of minor principal stress
+theta1 = direction of major principal stress (deg)
+theta3 = direction of minor principal stress (deg)
 }
 \description{
 PRINCIPAL STRESSES
