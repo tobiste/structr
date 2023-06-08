@@ -3,6 +3,7 @@
 \name{operations}
 \alias{operations}
 \alias{vlength}
+\alias{vsum}
 \alias{vnorm}
 \alias{vcross}
 \alias{vdot}
@@ -13,6 +14,8 @@
 \title{Vector operations}
 \usage{
 vlength(x)
+
+vsum(x)
 
 vnorm(x)
 
@@ -41,6 +44,8 @@ vec1 <- cbind(1, 0, 0)
 vec2 <- cbind(0, 0, 1)
 
 vlength(vec1)
+vsum(vec1)
+vnorm(vec1)
 vcross(vec1, vec2)
 vdot(vec1, vec2)
 vrotate(vec1, vec2, pi / 2)

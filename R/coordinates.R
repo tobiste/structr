@@ -1,6 +1,6 @@
 fol2vec0 <- function(azi, inc) {
-  azi <- azi * DEG2RAD()
-  inc <- inc * DEG2RAD()
+  azi <- deg2rad(azi)
+  inc <- deg2rad(inc)
   cbind(
     x = -cos(azi) * sin(inc),
     y = -sin(azi) * sin(inc),
@@ -9,8 +9,8 @@ fol2vec0 <- function(azi, inc) {
 }
 
 lin2vec0 <- function(azi, inc) {
-  azi <- azi * DEG2RAD()
-  inc <- inc * DEG2RAD()
+  azi <- deg2rad(azi)
+  inc <- deg2rad(inc)
   cbind(
     x = cos(azi) * cos(inc),
     y = sin(azi) * cos(inc),
@@ -22,8 +22,8 @@ vec2lin0 <- function(x, y, z) {
   n <- vnorm(cbind(x, y, z)) # normalized vector
   nz <- sapply(n[, 3], function(x) ifelse(x < 0, -x, x))
   cbind(
-    azimuth = (atan2(n[, 2], n[, 1]) / DEG2RAD()) %% 360,
-    plunge = asin(nz) / DEG2RAD()
+    azimuth = atan2d(n[, 2], n[, 1]) %% 360,
+    plunge = asind(nz)
   )
 }
 
@@ -31,8 +31,8 @@ vec2fol0 <- function(x, y, z) {
   n <- vnorm(cbind(x, y, z)) # normalized vector
   nz <- sapply(n[, 3], function(x) ifelse(x < 0, -x, x))
   cbind(
-    dip_direction = ((atan2(n[, 2], n[, 1]) / DEG2RAD()) + 180) %% 360,
-    dip = 90 - (asin(nz) / DEG2RAD())
+    dip_direction = (atan2d(n[, 2], n[, 1]) + 180) %% 360,
+    dip = 90 - asind(nz)
   )
 }
 

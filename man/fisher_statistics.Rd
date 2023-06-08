@@ -13,7 +13,7 @@ object of class \code{"line"} or \code{"plane"}}
 \value{
 list, with
 \describe{
-\item{\code{"k"}}{estimated concentration parameter kappa for the von Mises-Fisher
+\item{\code{"k"}}{estimated concentration parameter \eqn{\kappa} for the von Mises-Fisher
 distribution}
 \item{\code{"csd"}}{estimated angular standard deviation}
 \item{\code{"a95"}}{confidence limit}
@@ -24,6 +24,8 @@ Estimates concentration parameter, angular standard deviation, and
 confidence limit.
 }
 \examples{
+\dontrun{
 x <- rvmf(100, mu = Line(120, 50), k = 5)
 fisher_statistics(x)
+}
 }

@@ -13,7 +13,7 @@ dvmf(x, mu, k = 5)
 \arguments{
 \item{n}{integer. number of random samples to be generated}
 
-\item{k}{numeric. The concentration parameter (kappa) of the the von
+\item{k}{numeric. The concentration parameter (\eqn{\kappa}) of the the von
 Mises-Fisher distributiuon}
 
 \item{x, mu}{numeric. Can be three element vector, three column array, or an

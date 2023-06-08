@@ -10,16 +10,16 @@ mean_stress <- function(s1, s3) {
 
 shear_stress <- function(s1, s3, theta) {
   stopifnot(s1 >= s3)
-  diff_stress(s1, s3) / 2 * sin(2 * theta * DEG2RAD())
+  diff_stress(s1, s3) / 2 * sind(2 * theta)
 }
 
 normal_stress <- function(s1, s3, theta) {
   stopifnot(s1 >= s3)
-  mean_stress(s1, s3) - diff_stress(s1, s3) / 2 * cos(2 * theta * DEG2RAD())
+  mean_stress(s1, s3) - diff_stress(s1, s3) / 2 * cosd(2 * theta )
 }
 
 theta <- function(phi) {
-  (90 + atan(phi) / DEG2RAD()) / 2
+  (90 + atand(phi)) / 2
 }
 
 
@@ -55,7 +55,7 @@ theta <- function(phi) {
 #' sigmaTrans(sigmaX = 80, sigmaZ = 120, tauXZ = 20, theta = 78)
 sigmaTrans <- function(theta, sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, sigma3 = NA) {
   ##  Convert angle to radians
-  theta <- theta * pi / 180
+  theta <- deg2rad(theta)
 
   ##  Calculate normal and shear stresses from sigmaX, sigmaZ, tauXZ
   if (is.na(sigmaX) == FALSE && is.na(sigmaZ) == FALSE && is.na(tauXZ) == FALSE) {
@@ -208,7 +208,7 @@ sigma13 <- function(sigmaX, sigmaZ, tauXZ) {
   sigma1 <- ((sigmaX + sigmaZ) / 2) + (sqrt((((sigmaZ - sigmaX) / 2)^2) + ((tauXZ)^2)))
   ##  Angle of major principal plane
   x <- (1 / (1 + ((2 * tauXZ) / (sigmaZ - sigmaX))^2))
-  theta1 <- 1 / 2 * (acos(sqrt(x))) * (180 / pi)
+  theta1 <- acosd(sqrt(x)) / 2
 
   ##  Minor principal stress
   sigma3 <- ((sigmaX + sigmaZ) / 2) - (sqrt((((sigmaZ - sigmaX) / 2)^2) + ((tauXZ)^2)))
@@ -242,7 +242,7 @@ tauMax <- function(sigmaX, sigmaZ, tauXZ) {
   tauMax <- sqrt((((sigmaZ - sigmaX) / 2)^2) + ((tauXZ)^2))
   ##  Angle of maximum in-plane shear stress
   x <- (1 / (1 + ((2 * tauXZ) / (sigmaZ - sigmaX))^2))
-  theta1 <- 1 / 2 * (acos(sqrt(x))) * (180 / pi)
+  theta1 <- acosd(sqrt(x)) / 2
   theta <- theta1 + 45
 
   ##  Return values

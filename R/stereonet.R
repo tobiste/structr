@@ -1,9 +1,5 @@
-DEG2RAD <- function() {
-  pi / 180
-}
-
 roty3 <- function(deg) {
-  rad1 <- deg * pi / 180
+  rad1 <- deg2rad(deg)
   r <- diag(3)
   r[1, 1] <- cos(rad1)
   r[3, 1] <- sin(rad1)
@@ -13,7 +9,7 @@ roty3 <- function(deg) {
 }
 
 rotz3 <- function(deg) {
-  rad1 <- deg * pi / 180
+  rad1 <- deg2rad(deg)
   r <- diag(3)
   r[1, 1] <- cos(rad1)
   r[1, 2] <- sin(rad1)
@@ -25,10 +21,10 @@ rotz3 <- function(deg) {
 fix_inc <- function(A) {
   az <- A$az
   inc <- A$inc
-  tinc <- DEG2RAD() * (inc %% 360)
+  tinc <- deg2rad(inc %% 360)
   co <- cos(tinc)
   si <- sin(tinc)
-  ang <- atan2(si, co) / DEG2RAD()
+  ang <- atan2d(si, co)
   quad <- rep(1, length(inc))
   quad[co >= 0 & si >= 0] <- 1
   quad[co < 0 & si >= 0] <- 2
@@ -48,7 +44,7 @@ fix_inc <- function(A) {
 }
 
 stereo_coords <- function(az, inc) {
-  sph <- cos(DEG2RAD() * inc)
+  sph <- cosd(inc)
   sph[sph >= 0] <- 0
   sph[sph < 0] <- 1
 
@@ -56,9 +52,9 @@ stereo_coords <- function(az, inc) {
   A$inc <- inc
   A$az <- az
   B <- fix_inc(A)
-  trot <- DEG2RAD() * B$az
+  trot <- deg2rad(B$az)
   tinc <- B$inc
-  xi <- DEG2RAD() * tinc
+  xi <- deg2rad(tinc)
   tq <- sqrt(2) * sin(xi / 2)
   pltx <- tq * sin(trot)
   plty <- tq * cos(trot)
@@ -97,7 +93,7 @@ stereo_coords <- function(az, inc) {
 #' @export
 #' @examples
 #' stereoplot()
-#' stereo_point(Line(azi = c(90, 80), inc = c(10, 75)), lab = c("L", "L"))
+#' stereo_point(Line(azimuth = c(90, 80), plunge = c(10, 75)), lab = c("L", "L"))
 #' stereo_point(Plane(120, 30), lab = "P", col = "red")
 stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = .75, upper.hem = FALSE, ...) {
   stopifnot(is.structure(x))
@@ -237,7 +233,7 @@ stereo_smallcircle <- function(x, d = 90, col = 1, N = 100, BALL.radius = .25, u
   inc <- 90 - x[, 2]
   
   phi <- seq(from = 0, to = 2 * pi, length = N)
-  theta <- d * DEG2RAD()
+  theta <- deg2rad(d)
   x <- BALL.radius * sin(theta) * cos(phi)
   y <- BALL.radius * sin(theta) * sin(phi)
   z <- rep(BALL.radius * cos(theta), N)
@@ -249,9 +245,9 @@ stereo_smallcircle <- function(x, d = 90, col = 1, N = 100, BALL.radius = .25, u
   Rmat <- ry %*% rz
   g <- D %*% Rmat
   r2 <- sqrt(g[, 1]^2 + g[, 2]^2 + g[, 3]^2)
-  phi2 <- atan2(g[, 2], g[, 1])
-  theta2 <- acos(g[, 3] / r2)
-  Sc <- stereo_coords(phi2 / DEG2RAD(), theta2 / DEG2RAD())
+  phi2 <- atan2d(g[, 2], g[, 1])
+  theta2 <- acosd(g[, 3] / r2)
+  Sc <- stereo_coords(phi2, theta2)
   
   diss <- sqrt((Sc[1:(N - 1), "x"] - Sc[2:(N), "x"])^2 + (Sc[1:(N - 1), "y"] - Sc[2:(N), "y"])^2)
   ww <- which(diss > 0.9 * BALL.radius)
@@ -304,7 +300,7 @@ stereoplot <- function(col = grDevices::gray(0.9), border = "black", lwd = 1, ma
   lam <- seq(from = 0, to = 180, by = 5) * DEG2RAD()
   lam0 <- pi / 2
   for (j in seq(from = -80, to = 80, by = 10)) {
-    phi <- j * DEG2RAD()
+    phi <- deg2rad(j)
     R <- sqrt(2) / 2
     kp <- sqrt(2 / (1 + cos(phi) * cos(lam - lam0)))
     x <- R * kp * cos(phi) * sin(lam - lam0)
@@ -313,7 +309,7 @@ stereoplot <- function(col = grDevices::gray(0.9), border = "black", lwd = 1, ma
   }
   phi <- seq(from = -90, to = 90, by = 5) * DEG2RAD()
   for (j in seq(from = 10, to = 170, by = 10)) {
-    lam <- j * DEG2RAD()
+    lam <- deg2rad(j)
     R <- sqrt(2) / 2
     kp <- sqrt(2 / (1 + cos(phi) * cos(lam - lam0)))
     x <- R * kp * cos(phi) * sin(lam - lam0)

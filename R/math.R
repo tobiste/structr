@@ -1,16 +1,12 @@
-DEG2RAD <- function() {
-  pi / 180
-}
-
 #' The von Mises-Fisher Distribution
 #'
 #' Density and random generation for the spherical normal distribution with mean
 #' and kappa.
 #'
 #' @param n integer. number of random samples to be generated
-#' @param x,mu numeric. Can be three element vector, three column array, or an 
+#' @param x,mu numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
-#' @param k numeric. The concentration parameter (kappa) of the the von 
+#' @param k numeric. The concentration parameter (\eqn{\kappa}) of the the von
 #' Mises-Fisher distributiuon
 #' @name vonmises-fisher
 #' @examples
@@ -69,6 +65,8 @@ vec2mat <- function(x) {
 #' vec2 <- cbind(0, 0, 1)
 #'
 #' vlength(vec1)
+#' vsum(vec1)
+#' vnorm(vec1)
 #' vcross(vec1, vec2)
 #' vdot(vec1, vec2)
 #' vrotate(vec1, vec2, pi / 2)
@@ -88,15 +86,24 @@ vlength <- function(x) {
 
 #' @rdname operations
 #' @export
+vsum <- function(x) {
+  if (is.structure(x)) {
+    x <- to_vec(x)
+  }
+  cbind(sum(v[, 1]), sum(v[, 2]), sum(v[, 3])) # vector sum
+}
+
+#' @rdname operations
+#' @export
 vnorm <- function(x) {
   transform <- FALSE
   if (is.structure(x)) {
-    class = class(x)
+    class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
   }
-  xn = x / vlength(x)
-  if(transform){
+  xn <- x / vlength(x)
+  if (transform) {
     to_struct(xn)
   } else {
     xn
@@ -108,7 +115,7 @@ vnorm <- function(x) {
 vcross <- function(x, y) {
   transform <- FALSE
   if (is.structure(x)) {
-    class = class(x)
+    class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
   } else {
@@ -116,19 +123,19 @@ vcross <- function(x, y) {
   }
   if (is.structure(y)) {
     y <- to_vec(y)
-  } else{
+  } else {
     y <- vec2mat(y)
   }
-  
+
   vx <- x[, 2] * y[, 3] - x[, 3] * y[, 2]
   vy <- x[, 3] * y[, 1] - x[, 1] * y[, 3]
   vz <- x[, 1] * y[, 2] - x[, 2] * y[, 1]
   xy <- cbind(x = vx, y = vy, z = vz)
-  
-  if(transform){
-   to_struct(xy, class)
+
+  if (transform) {
+    to_struct(xy, class)
   } else {
-  xy
+    xy
   }
 }
 
@@ -136,7 +143,7 @@ vcross <- function(x, y) {
 #' @export
 vdot <- function(x, y) {
   if (is.structure(x)) {
-    class = class(x)
+    class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
   } else {
@@ -144,7 +151,7 @@ vdot <- function(x, y) {
   }
   if (is.structure(y)) {
     y <- to_vec(y)
-  } else{
+  } else {
     y <- vec2mat(y)
   }
   x[, 1] * y[, 1] + x[, 2] * y[, 2] + x[, 3] * y[, 3]
@@ -155,7 +162,7 @@ vdot <- function(x, y) {
 vrotate <- function(x, rotaxis, rotangle) {
   transform <- FALSE
   if (is.structure(x)) {
-    class = class(x)
+    class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
   } else {
@@ -163,16 +170,16 @@ vrotate <- function(x, rotaxis, rotangle) {
   }
   if (is.structure(rotaxis)) {
     rotaxis <- to_vec(rotaxis)
-    rotangle <- rotangle * DEG2RAD()
-  } else{
+    rotangle <- deg2rad(rotangle)
+  } else {
     rotaxis <- vec2mat(rotaxis)
   }
-  
+
   rotaxis <- vec2mat(rotaxis) |> vnorm()
   vax <- vcross(rotaxis, x)
   xrot <- x + vax * sin(rotangle) + vcross(rotaxis, vax) * 2 * (sin(rotangle / 2))^2 # Helmut
 
-  if(transform){
+  if (transform) {
     to_struct(xrot, class)
   } else {
     colnames(xrot) <- c("x", "y", "z")
@@ -183,7 +190,7 @@ vrotate <- function(x, rotaxis, rotangle) {
 vrotaxis <- function(x, y) {
   transform <- FALSE
   if (is.structure(x)) {
-    class = class(x)
+    class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
   } else {
@@ -191,16 +198,16 @@ vrotaxis <- function(x, y) {
   }
   if (is.structure(y)) {
     y <- to_vec(y)
-  } else{
+  } else {
     y <- vec2mat(y)
   }
-  
+
   xy <- vcross(x, y)
   xy / vnorm(xy)
-  
-  if(transform){
+
+  if (transform) {
     to_struct(xy, class)
-  } else{
+  } else {
     colnames(xy) <- c("x", "y", "z")
     xy
   }
@@ -218,7 +225,7 @@ vrotaxis <- function(x, y) {
 vangle <- function(x, y) {
   transform <- FALSE
   if (is.structure(x)) {
-    class = class(x)
+    class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
   } else {
@@ -226,15 +233,15 @@ vangle <- function(x, y) {
   }
   if (is.structure(y)) {
     y <- to_vec(y)
-  } else{
+  } else {
     y <- vec2mat(y)
   }
-  
+
   d <- acos(vdot(x, y))
-  
-  if(transform){
-    d / DEG2RAD()
-  } else{
+
+  if (transform) {
+    rad2deg(d)
+  } else {
     d
   }
 }
@@ -244,7 +251,7 @@ vangle <- function(x, y) {
 vproject <- function(x, y) {
   transform <- FALSE
   if (is.structure(x)) {
-    class = class(x)
+    class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
   } else {
@@ -252,13 +259,13 @@ vproject <- function(x, y) {
   }
   if (is.structure(y)) {
     y <- to_vec(y)
-  } else{
+  } else {
     y <- vec2mat(y)
   }
-  
+
   xpr <- vproject_length(x, y) * y
-  
-  if(transform){
+
+  if (transform) {
     to_struct(xpr, class)
   } else {
     colnames(xpr) <- c("x", "y", "z")
@@ -276,16 +283,16 @@ vproject_length <- function(x, y) {
 vreject <- function(x, y) {
   transform <- FALSE
   if (is.structure(x)) {
-    class = class(x)
+    class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
   } else {
     x <- vec2mat(x)
   }
-  
+
   x_rej <- x - vproject(x, y)
-  
-  if(transform){
+
+  if (transform) {
     to_struct(x_rej, class)
   } else {
     colnames(x_rej) <- c("x", "y", "z")
@@ -306,18 +313,18 @@ vtransform <- function(x, A, norm = TRUE) {
   stopifnot(is.matrix(A))
   transform <- FALSE
   if (is.structure(x)) {
-    class = class(x)
+    class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
   } else {
     x <- vec2mat(x)
   }
-  
-  
+
+
   xt <- t(A %*% x)
   if (norm) xt <- vnorm(xt)
-  
-  if(transform){
+
+  if (transform) {
     to_struct(xt, class)
   } else {
     colnames(xt) <- c("x", "y", "z")
@@ -328,18 +335,67 @@ vtransform <- function(x, A, norm = TRUE) {
 
 #' Mean resultant of a set of vectors
 #'
-#' @param x numeric. Can be three element vector, three column array, or an 
-#' object of class `"line"` or `"plane"`
-#' @param mean logical. Whether the mean resultant (`TRUE`) or resultant 
+#' @param x numeric. Can be three element vector or a three column array
+#' @param mean logical. Whether the mean resultant (`TRUE`) or resultant
 #' (`FALSE`, the default) is returned.
-#' @returns if `mean==TRUE`, mean resultant is returned (object of class of `x`), 
+#' @returns if `mean==TRUE`, mean resultant is returned
 #' and numeric otherwise.
 #' @export
 #' @examples
-#' x <- rvmf(100, mu = Line(120, 50), k = 5)
+#' x <- rvmf(100, mu = Line(120, 50), k = 5) |> to_vec()
 #' vresultant(x, mean = FALSE)
 #' vresultant(x, mean = TRUE)
 vresultant <- function(x, mean = FALSE) {
+  R <- vsum(x)
+  if (mean) {
+    R <- R / nrow(x)
+  }
+  R
+}
+
+#' Statistical estimators of the distribution of a set of vectors
+#'
+#' @param x numeric. Can be three element vector, three column array, or an
+#' object of class `"line"` or `"plane"`
+#' @param alpha significance level (0.05 by default)
+#' @details
+#' `v_mean` returns the spherical mean of a set of vectors
+#' (object of class of `x`). The function is shortcut for
+#' `vresultant(x, mean = TRUE)` when the argument is a `"plane"` or `"line"` object. 
+#'
+#' `v_var` returns the spherical variance (numeric), based on resultant length
+#' (Mardia 1972).
+#'
+#' `v_delta` returns the cone angle containing ~63% of the data (in degree if `x` is a `"plane"` or `"line"`, or in radians
+#' if otherwise). For enough large sample it approaches the angular standard
+#' deviation (`"csd"`) of the Fisher statistics.
+#'
+#' `v_rdegree` returns the degree of preferred orientation of vectors (in %).
+#'
+#' `v_sde` returns the spherical standard error (numeric). If the number of
+#' data is less than 25, if will print a additional message, that the output
+#' value might not be a good estimator.
+#'
+#' `v_confidence_angle` returns the semi-vertical angle \eqn{q} about the
+#' mean \eqn{\mu} (in degree if `x` is a `"plane"` or `"line"`, or in radians
+#' if otherwise). The \eqn{100(1-\alpha)\%} confidence interval is than given by \eqn{\mu \pm q}.
+#' `v_kappa` returns the estimation for the concentration of the von Mises-Fisher distribution \eqn{\kappa} (after Sra, 2011).
+#' @seealso [vresultant()], [fisher_statistics()]
+#' @name stats
+#' @examples
+#' x <- rvmf(100, mu = Line(120, 50), k = 5)
+#' v_mean(x)
+#' v_var(x)
+#' v_delta(x)
+#' v_rdegree(x)
+#' v_sde(x)
+#' v_confidence_angle(x)
+#' v_kappa(x)
+NULL
+
+#' @rdname stats
+#' @export
+v_mean <- function(x) {
   transform <- FALSE
   if (is.structure(x)) {
     v <- to_vec(x)
@@ -347,35 +403,160 @@ vresultant <- function(x, mean = FALSE) {
   } else {
     v <- vec2mat(x)
   }
-  R <- cbind(sum(v[, 1]), sum(v[, 2]), sum(v[, 3]))
-  if (mean) {
-    R <- R / nrow(v)
-  }
+
+  N <- nrow(v)
+  xbar <- vsum(v) / N
+  Rbar <- vlength(xbar)
+  mu <- xbar / Rbar
+
   if (transform) {
-    to_struct(R, class(x))
+    to_struct(mu, class(x))
   } else {
-    R
+    mu
   }
+}
+
+#' @rdname stats
+#' @export
+v_var <- function(x) {
+  if (is.structure(x)) {
+    v <- to_vec(x)
+  } else {
+    v <- vec2mat(x)
+  }
+  Rbar <- vresultant(vnorm(v), mean = TRUE) |>
+    vlength()
+  1 - Rbar
+}
+
+v_sd <- function(x) {
+  if (is.structure(x)) {
+    v <- to_vec(x)
+  } else {
+    v <- vec2mat(x)
+  }
+  Rbar <- vresultant(v, mean = TRUE) |>
+    vlength()
+  
+  sqrt(log(1/Rbar^2))
+}
+
+
+
+#' @rdname stats
+#' @export
+v_delta <- function(x) {
+  transform <- FALSE
+  if (is.structure(x)) {
+    v <- to_vec(x)
+    transform <- TRUE
+  } else {
+    v <- vec2mat(x)
+  }
+  Rbar <- vresultant(v, mean = TRUE) |>
+    vlength()
+  d <- acos(Rbar)
+  
+  if (transform) {
+    rad2deg(d)
+  } else {
+    d
+  }
+}
+
+#' @rdname stats
+#' @export
+v_rdegree <- function(x) {
+  if (is.structure(x)) {
+    v <- to_vec(x)
+  } else {
+    v <- vec2mat(x)
+  }
+  N <- nrow(v)
+  Rbar <- vresultant(vnorm(v), mean = FALSE) |>
+    vlength()
+  
+  100 * (2 * Rbar - N) / N
+}
+
+#' @rdname stats
+#' @export
+v_sde <- function(x) {
+  if (is.structure(x)) {
+    v <- to_vec(x)
+  } else {
+    v <- vec2mat(x)
+  }
+  N <- nrow(v)
+  if (N < 25) warning("The standard error might not be a good estimator for N < 25")
+  xbar <- vsum(v) / N
+  Rbar <- vlength(xbar)
+  mu <- xbar / Rbar
+
+  muv <- mu %*% t(v)
+
+  d <- 1 - sum(muv^2) / N
+
+  sqrt(d / (N * Rbar^2))
+}
+
+#' @rdname stats
+#' @export
+v_confidence_angle <- function(x, alpha = 0.05) {
+  if (is.structure(x)) {
+    v <- to_vec(x)
+  } else {
+    v <- vec2mat(x)
+  }
+
+  e_alpha <- -log(alpha)
+  q <- asin(sqrt(e_alpha) * v_sde(v))
+
+  if (is.structure(x)) {
+    rad2deg(q)
+  } else {
+    q
+  }
+}
+
+#' @rdname stats
+#' @export
+v_kappa <- function(x) {
+  if (is.structure(x)) {
+    v <- to_vec(x)
+  } else {
+    v <- vec2mat(x)
+  }
+  # N <- nrow(v)
+  # xbar <- vsum(v) / N
+  # Rbar <- vlength(xbar)
+  Rbar <- vresultant(v, mean = TRUE) |>
+    vlength()
+
+  p <- 3
+
+  (Rbar * (p - Rbar^2)) / (1 - Rbar^2)
 }
 
 #' Fisher's statistics
 #'
-#' Estimates concentration parameter, angular standard deviation, and 
+#' Estimates concentration parameter, angular standard deviation, and
 #' confidence limit.
 #'
-#' @param x numeric. Can be three element vector, three column array, or an 
+#' @param x numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
 #' @returns list, with
 #' \describe{
-#' \item{`"k"`}{estimated concentration parameter kappa for the von Mises-Fisher 
+#' \item{`"k"`}{estimated concentration parameter \eqn{\kappa} for the von Mises-Fisher
 #' distribution}
 #' \item{`"csd"`}{estimated angular standard deviation}
 #' \item{`"a95"`}{confidence limit}
 #' }
-#' @export
 #' @examples
+#' \dontrun{
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)
 #' fisher_statistics(x)
+#' }
 fisher_statistics <- function(x) {
   transform <- FALSE
   if (is.structure(x)) {
@@ -397,79 +578,20 @@ fisher_statistics <- function(x) {
   }
 }
 
-#' Spherical variance based on resultant length (Mardia 1972).
-#'
-#' @param x numeric. Can be three element vector, three column array, or an 
-#' object of class `"line"` or `"plane"`
-#' @export
-#' @examples
-#' x <- rvmf(100, mu = Line(120, 50), k = 5)
-#' v_var(x)
-v_var <- function(x) {
-  if (is.structure(x)) {
-    x <- to_vec(x)
-  } else {
-    x <- vec2mat(x)
-  }
-  R <- x |>
-    vresultant(mean = TRUE) |>
-    vlength()
-  1 - R
-}
 
-#' Cone angle containing ~63% of the data in degrees.
-#'
-#' @param x numeric. Can be three element vector, three column array, or an 
-#' object of class `"line"` or `"plane"`
-#' @note For enough large sample it approachs the angular standard deviation 
-#' (`"csd"`) of the Fisher statistics
-#' @seealso [fisher_statistics()]
-#' @export
-#' @examples
-#' x <- rvmf(100, mu = Line(120, 50), k = 5)
-#' v_delta(x)
-v_delta <- function(x) {
-  transform <- FALSE
-  if (is.structure(x)) {
-    x <- to_vec(x)
-    transform <- TRUE
-  } else {
-    x <- vec2mat(x)
-  }
-  R <- vresultant(x, mean = TRUE)
-  d <- vlength(R) |> acos()
-  if (transform) {
-    d / DEG2RAD()
-  } else {
-    d
-  }
-}
 
-#' Degree of preferred orientation of vectors.
-#'
-#' @param x numeric. Can be three element vector, three column array, or an 
-#' object of class `"line"` or `"plane"`
-#' @export
-#' @examples
-#' x <- rvmf(100, mu = Line(120, 50), k = 5)
-#' v_rdegree(x)
-v_rdegree <- function(x) {
-  if (is.structure(x)) {
-    x <- to_vec(x)
-  } else {
-    x <- vec2mat(x)
-  }
-  N <- nrow(x)
-  R <- vresultant(x)
-  100 * (2 * vlength(R) - N) / N
-}
 
-#' Return a spherical linear interpolation between self and other vector
+#' Spherical Linear Interpolation (Slerp)
 #'
-#' @param x,y numeric. Can be three element vector, three column array, or an 
+#' Returns the spherical linear interpolation of points between two vectors
+#'
+#' @param x,y numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
-#' @param t description
+#' @param t numeric. interpolation factor (`t = [0, 1]`).
 #' @note For non-unit vectors the interpolation is not uniform
+#' @details
+#' A Slerp path is the spherical geometry equivalent of a path along a line
+#' segment in the plane; a great circle is a spherical geodesic. #'
 #' @export
 vslerp <- function(x, y, t) {
   transform <- FALSE
@@ -485,11 +607,12 @@ vslerp <- function(x, y, t) {
     y <- vec2mat(y)
   }
   theta <- vangle(x, y)
-  x2 <- x * sin((1 - t) * theta) + y * sin(t * theta) / sin(theta)
+  slerp <- (x * sin((1 - t) * theta) + y * sin(t * theta)) / sin(theta)
+
   if (transform) {
-    to_struct(x2, class(x))
+    to_struct(slerp, class(x))
   } else {
-    x
+    slerp
   }
 }
 
@@ -501,7 +624,7 @@ vslerp <- function(x, y, t) {
 #' 3D orientation tensor, which characterize data distribution using
 #' eigenvalue method. See (Watson 1966, Scheidegger 1965).
 #'
-#' @param x numeric. Can be three element vector, three column array, or an 
+#' @param x numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
 #' @param norm logical. Whether the tensor should be normalized or not.
 #' @returns matrix
@@ -536,9 +659,9 @@ ortensor <- function(x, norm = TRUE) {
 #'
 #' Decomposition of Orientation tensor
 #'
-#' @param x numeric. Can be three element vector, three column array, or an 
+#' @param x numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
-#' @param scaled logical. Whether the eigenvectors should be scaled by the 
+#' @param scaled logical. Whether the eigenvectors should be scaled by the
 #' eigenvalues (only effective if `x` is in Cartesian coordinates)
 #' @returns list containing
 #' \describe{
@@ -582,9 +705,9 @@ or_eigen <- function(x, scaled = FALSE) {
 #' axes of coordinate system: E1||X (north-south), E2||X(east-west),
 #' E3||X(vertical)
 #'
-#' @param x numeric. Can be three element vector, three column array, or an 
+#' @param x numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
-#' @param max_vertical Whether the maximum of the von Mises-Fisher distribution 
+#' @param max_vertical Whether the maximum of the von Mises-Fisher distribution
 #' is already vertical or not.
 #' @returns Object of class of `x`
 #' @export

@@ -2,7 +2,7 @@
 % Please edit documentation in R/math.R
 \name{vslerp}
 \alias{vslerp}
-\title{Return a spherical linear interpolation between self and other vector}
+\title{Spherical Linear Interpolation (Slerp)}
 \usage{
 vslerp(x, y, t)
 }
@@ -10,10 +10,14 @@ vslerp(x, y, t)
 \item{x, y}{numeric. Can be three element vector, three column array, or an
 object of class \code{"line"} or \code{"plane"}}
 
-\item{t}{description}
+\item{t}{numeric. interpolation factor (\verb{t = [0, 1]}).}
 }
 \description{
-Return a spherical linear interpolation between self and other vector
+Returns the spherical linear interpolation of points between two vectors
+}
+\details{
+A Slerp path is the spherical geometry equivalent of a path along a line
+segment in the plane; a great circle is a spherical geodesic. #'
 }
 \note{
 For non-unit vectors the interpolation is not uniform
