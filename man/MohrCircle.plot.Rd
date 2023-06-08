@@ -2,7 +2,7 @@
 % Please edit documentation in R/mohR.R
 \name{MohrCircle.plot}
 \alias{MohrCircle.plot}
-\title{MOHR CIRCLE:  PLOT}
+\title{Mohr Circle plot}
 \usage{
 MohrCircle.plot(
   sigmaX = NA,
@@ -18,24 +18,29 @@ MohrCircle.plot(
 
 \item{sigmaZ}{normal stress acting in the vertical direction}
 
-\item{tauXZ}{shear stress acting on the same plane as sigmaX}
+\item{tauXZ}{shear stress acting on the same plane as \code{"sigmaX"}}
 
 \item{sigma1}{major principal stress}
 
 \item{sigma3}{minor principal stress}
 
-\item{metric}{logical variable: TRUE for metric units (kPa), and FALSE for English units}
+\item{metric}{logical variable: \code{TRUE} for metric units (kPa), and \code{FALSE} for English units}
 }
 \description{
-Plotting the Mohr Circle
+plots the Mohr Circle
 }
 \note{
-o  One of the following two sets of data must be entered:
-1.  sigmaX, sigmaZ, tauXZ
-2.  sigma1, sigma3
+One of the following two sets of data must be entered
+\enumerate{
+\item{\code{"sigmaX"}, \code{"sigmaZ"}, \code{"tauXZ"}}
+\item{\code{"sigma1"}, \code{"sigma3"}}
+}
 }
 \examples{
 MohrCircle.plot(sigmaX = 80, sigmaZ = 120, tauXZ = 20, metric = FALSE)
+}
+\seealso{
+\code{\link[=MohrCircle.calc]{MohrCircle.calc()}}, \code{\link[=ggMohr]{ggMohr()}}
 }
 \author{
 Kyle Elmy and Jim Kaklamanos

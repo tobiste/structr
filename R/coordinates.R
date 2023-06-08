@@ -39,10 +39,10 @@ vec2fol0 <- function(x, y, z) {
 
 #' Coordinate conversion
 #'
-#' @param l,p two column matrix, or two element vector. Spherical coordinates
+#' @param l,p two column array, or two element vector. Spherical coordinates
 #' (in degrees) of lines (`"azimuth"`, `"plunge"`) or plane (`"dip_direction"`,
 #' `"dip"`).
-#' @param x three column matrix, or three-element vector. Cartesian coordinates
+#' @param x 3three-column array, or three-element vector. Cartesian coordinates
 #' @param class character. Either `"line"` or `"plane"`
 #' @name coordinates
 #' @examples
@@ -113,12 +113,14 @@ vec2plane <- function(x) {
 #' `is.line`, `is.plane`, and `is.fault` test if its argument is a `"line"`,
 #' `"plane"`, and `"fault"` class object, respectively.
 #'
-#' @param l,p,f numeric vector, matrix, or object of class `"line"`, `"plane"`,
+#' @param l,p,f numeric vector, array, or object of class `"line"`, `"plane"`,
 #' or `"fault"`
 #' @param azimuth,plunge numeric vectors. Azimuth and plunge of a line (in
 #' degrees)
 #' @param dip_direction,dip numeric vectors. Dip direction and dip of a plane
 #' (in degrees)
+#' @param sense (optional) integer. Sense of the line on a fault plane. Either 
+#' `1`or `-1` for normal/dextral or thrust/sinistral offset, respectively.
 #' @details
 #' `as.line`, `as.plane`, and `as.fault` return `TRUE` if `l`, `p`, and `f`
 #' are an object of class `"line"`, `"plane"`, or `"fault"`, respectively, and
@@ -154,13 +156,19 @@ Plane <- function(dip_direction, dip) {
 
 #' @rdname classes
 #' @export
-Fault <- function(dip_direction, dip, azimuth, plunge) {
+Fault <- function(dip_direction, dip, azimuth, plunge, sense = NULL) {
   stopifnot(
     length(dip_direction) == length(dip),
     length(dip_direction) == length(azimuth),
     length(dip_direction) == length(plunge)
   )
-  cbind(dip_direction, dip, azimuth, plunge) |> as.fault()
+  if(is.null(sense)) {
+    sense = rep(0, length(dip_direction))
+  } else {
+    stopifnot(
+      length(dip_direction) == length(sense))
+  }
+  cbind(dip_direction, dip, azimuth, plunge, sense) |> as.fault()
 }
 
 
@@ -201,7 +209,7 @@ as.plane <- function(p) {
 as.fault <- function(f) {
   x <- vec2mat(f)
   class(x) <- "fault"
-  colnames(x) <- c("dip_direction", "dip", "azimuth", "plunge")
+  colnames(x) <- c("dip_direction", "dip", "azimuth", "plunge", "sense")
   rownames(x) <- rownames(f)
   x
 }

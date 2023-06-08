@@ -6,6 +6,13 @@
 \usage{
 vtransform(x, A, norm = TRUE)
 }
+\arguments{
+\item{x}{numeric vector or array}
+
+\item{A}{matrix}
+
+\item{norm}{logical.}
+}
 \description{
 Affine transformation of vector by matrix
 }

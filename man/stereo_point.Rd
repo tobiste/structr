@@ -2,23 +2,21 @@
 % Please edit documentation in R/stereonet.R
 \name{stereo_point}
 \alias{stereo_point}
-\title{Plot lines and planes}
+\title{Stereographic projection of lines and planes}
 \usage{
 stereo_point(
   x,
-  upper.hem = FALSE,
   col = 1,
   pch = 20,
   lab = NULL,
   text.pos = 4,
   cex = 0.75,
+  upper.hem = FALSE,
   ...
 )
 }
 \arguments{
 \item{x}{Object of class \code{"line"} or \code{"plane"}}
-
-\item{upper.hem}{logical. Whether the projection is shown for upper hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
 
 \item{col}{color}
 
@@ -30,13 +28,16 @@ stereo_point(
 
 \item{cex}{character expansion of labels}
 
+\item{upper.hem}{logical. Whether the projection is shown for upper
+hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
+
 \item{...}{optional graphical parameters}
 }
 \description{
 Visualization of lines, planes in a stereographic projection.
 }
 \note{
-\code{"plane"} objects will be displayed as pole to the plane.
+\code{"plane"} and \code{"fault"} objects will be displayed as pole to the plane (only).
 }
 \examples{
 stereoplot()

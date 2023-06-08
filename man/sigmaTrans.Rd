@@ -2,7 +2,7 @@
 % Please edit documentation in R/mohR.R
 \name{sigmaTrans}
 \alias{sigmaTrans}
-\title{STRESS TRANSFORMATION}
+\title{Stress transformation}
 \usage{
 sigmaTrans(
   theta,
@@ -20,25 +20,30 @@ sigmaTrans(
 
 \item{sigmaZ}{normal stress acting in the vertical direction}
 
-\item{tauXZ}{shear stress acting on the same plane as sigmaX}
+\item{tauXZ}{shear stress acting on the same plane as \code{"sigmaX"}}
 
 \item{sigma1}{major principal stress}
 
-\item{sigma3}{= minor principal stress}
+\item{sigma3}{minor principal stress}
 }
 \value{
-A two-element list containing:
-\code{sigma} = normal stress on an inclined plane
-\code{tau} = shear stress on an inclined plane
+A two-element list containing
+\describe{
+\item{\code{"sigma"}}{normal stress on an inclined plane}
+\item{\code{"tau"}}{shear stress on an inclined plane}
+}
 }
 \description{
-STRESS TRANSFORMATION
+calculates the magnitudes of the normal stress and the shear stress
 }
 \note{
-o  In addition to theta, One of the following two sets of data must be entered:
-1.  sigmaX, sigmaZ, tauXZ
-2.  sigma1, sigma3
-o  If theta is entered in conjunction with sigmaX, sigmaZ, and tauXZ,
+In addition to theta, One of the following two sets of data must be entered:
+\enumerate{
+\item{\code{"sigmaX"}, \code{"sigmaZ"}, \code{"tauXZ"}}
+\item{\code{"sigma1"}, \code{"sigma3"}}
+}
+
+If theta is entered in conjunction with \code{"sigmaX"}, \code{"sigmaZ"}, and \code{"tauXZ"},
 it is interpreted as the angle of inclination above the horizontal.  If
 theta is entered in conjunction with the principal stresses, then it is
 interpreted as the angle of inclination above the major principal plane.

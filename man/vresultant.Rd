@@ -7,12 +7,15 @@
 vresultant(x, mean = FALSE)
 }
 \arguments{
-\item{x}{numeric. Can be three element vector, three column matrix, or an object of class \code{"line"} or \code{"plane"}}
+\item{x}{numeric. Can be three element vector, three column array, or an
+object of class \code{"line"} or \code{"plane"}}
 
-\item{mean}{logical. Whether the mean resultant (\code{TRUE}) or resultant (\code{FALSE}, the default) is returned.}
+\item{mean}{logical. Whether the mean resultant (\code{TRUE}) or resultant
+(\code{FALSE}, the default) is returned.}
 }
 \value{
-if mean==TRUE, mean resultant is returned (object of class of \code{x}), else numeric.
+if \code{mean==TRUE}, mean resultant is returned (object of class of \code{x}),
+and numeric otherwise.
 }
 \description{
 Mean resultant of a set of vectors

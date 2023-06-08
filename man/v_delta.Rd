@@ -7,15 +7,20 @@
 v_delta(x)
 }
 \arguments{
-\item{x}{numeric. Can be three element vector, three column matrix, or an object of class \code{"line"} or \code{"plane"}}
+\item{x}{numeric. Can be three element vector, three column array, or an
+object of class \code{"line"} or \code{"plane"}}
 }
 \description{
 Cone angle containing ~63\% of the data in degrees.
 }
 \note{
-For enough large sample it approachs the angular standard deviation (csd) of the Fisher statistics
+For enough large sample it approachs the angular standard deviation
+(\code{"csd"}) of the Fisher statistics
 }
 \examples{
 x <- rvmf(100, mu = Line(120, 50), k = 5)
 v_delta(x)
+}
+\seealso{
+\code{\link[=fisher_statistics]{fisher_statistics()}}
 }

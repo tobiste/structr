@@ -7,7 +7,8 @@
 ortensor(x, norm = TRUE)
 }
 \arguments{
-\item{x}{numeric. Can be three element vector, three column matrix, or an object of class \code{"line"} or \code{"plane"}}
+\item{x}{numeric. Can be three element vector, three column array, or an
+object of class \code{"line"} or \code{"plane"}}
 
 \item{norm}{logical. Whether the tensor should be normalized or not.}
 }

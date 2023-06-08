@@ -7,7 +7,8 @@
 v_var(x)
 }
 \arguments{
-\item{x}{numeric. Can be three element vector, three column matrix, or an object of class \code{"line"} or \code{"plane"}}
+\item{x}{numeric. Can be three element vector, three column array, or an
+object of class \code{"line"} or \code{"plane"}}
 }
 \description{
 Spherical variance based on resultant length (Mardia 1972).

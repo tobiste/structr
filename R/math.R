@@ -8,7 +8,7 @@ DEG2RAD <- function() {
 #' and kappa.
 #'
 #' @param n integer. number of random samples to be generated
-#' @param x,mu numeric. Can be three element vector, three column matrix, or an 
+#' @param x,mu numeric. Can be three element vector, three column array, or an 
 #' object of class `"line"` or `"plane"`
 #' @param k numeric. The concentration parameter (kappa) of the the von 
 #' Mises-Fisher distributiuon
@@ -42,7 +42,7 @@ rvmf <- function(n = 100, mu = c(1, 0, 0), k = 5) {
 #' @export
 dvmf <- function(x, mu, k = 5) {
   if (is.structure(x)) x <- line2vec(x)
-  if (is.structure(mu)) mu <- line2vec(m) |> c()
+  if (is.structure(mu)) mu <- line2vec(mu) |> c()
 
   res <- rotasym::d_vMF(x, mu, k)
 }
@@ -61,8 +61,8 @@ vec2mat <- function(x) {
 
 #' Vector operations
 #'
-#' @param x,y,rotaxis numeric vector or matrix
-#' @param rotangle numeirc. Angle in radians
+#' @param x,y,rotaxis numeric vector, array, or object of class `"line"` or `"plane"`
+#' @param rotangle numeric. Angle in radians or degrees if `"rotaxis"` is an object of `"line"` or `"plane"`
 #' @name operations
 #' @examples
 #' vec1 <- cbind(1, 0, 0)
@@ -80,57 +80,130 @@ NULL
 #' @rdname operations
 #' @export
 vlength <- function(x) {
+  if (is.structure(x)) {
+    x <- to_vec(x)
+  }
   sqrt(x[, 1]^2 + x[, 2]^2 + x[, 3]^2) # length of a vector
 }
 
 #' @rdname operations
 #' @export
 vnorm <- function(x) {
-  x / vlength(x)
+  transform <- FALSE
+  if (is.structure(x)) {
+    class = class(x)
+    x <- to_vec(x)
+    transform <- TRUE
+  }
+  xn = x / vlength(x)
+  if(transform){
+    to_struct(xn)
+  } else {
+    xn
+  }
 }
 
 #' @rdname operations
 #' @export
 vcross <- function(x, y) {
-  class <- class(x)
-  x <- vec2mat(x)
-  y <- vec2mat(y)
+  transform <- FALSE
+  if (is.structure(x)) {
+    class = class(x)
+    x <- to_vec(x)
+    transform <- TRUE
+  } else {
+    x <- vec2mat(x)
+  }
+  if (is.structure(y)) {
+    y <- to_vec(y)
+  } else{
+    y <- vec2mat(y)
+  }
+  
   vx <- x[, 2] * y[, 3] - x[, 3] * y[, 2]
   vy <- x[, 3] * y[, 1] - x[, 1] * y[, 3]
   vz <- x[, 1] * y[, 2] - x[, 2] * y[, 1]
   xy <- cbind(x = vx, y = vy, z = vz)
-  class(xy) <- class
+  
+  if(transform){
+   to_struct(xy, class)
+  } else {
   xy
+  }
 }
 
 #' @rdname operations
 #' @export
 vdot <- function(x, y) {
-  x <- vec2mat(x)
-  y <- vec2mat(y)
+  if (is.structure(x)) {
+    class = class(x)
+    x <- to_vec(x)
+    transform <- TRUE
+  } else {
+    x <- vec2mat(x)
+  }
+  if (is.structure(y)) {
+    y <- to_vec(y)
+  } else{
+    y <- vec2mat(y)
+  }
   x[, 1] * y[, 1] + x[, 2] * y[, 2] + x[, 3] * y[, 3]
 }
 
 #' @rdname operations
 #' @export
 vrotate <- function(x, rotaxis, rotangle) {
-  class <- class(x)
-  x <- vec2mat(x)
+  transform <- FALSE
+  if (is.structure(x)) {
+    class = class(x)
+    x <- to_vec(x)
+    transform <- TRUE
+  } else {
+    x <- vec2mat(x)
+  }
+  if (is.structure(rotaxis)) {
+    rotaxis <- to_vec(rotaxis)
+    rotangle <- rotangle * DEG2RAD()
+  } else{
+    rotaxis <- vec2mat(rotaxis)
+  }
+  
   rotaxis <- vec2mat(rotaxis) |> vnorm()
   vax <- vcross(rotaxis, x)
   xrot <- x + vax * sin(rotangle) + vcross(rotaxis, vax) * 2 * (sin(rotangle / 2))^2 # Helmut
-  colnames(xrot) <- c("x", "y", "z")
-  class(xrot) <- class
-  xrot
+
+  if(transform){
+    to_struct(xrot, class)
+  } else {
+    colnames(xrot) <- c("x", "y", "z")
+    xrot
+  }
 }
 
 vrotaxis <- function(x, y) {
-  x <- vec2mat(x)
-  y <- vec2mat(y)
+  transform <- FALSE
+  if (is.structure(x)) {
+    class = class(x)
+    x <- to_vec(x)
+    transform <- TRUE
+  } else {
+    x <- vec2mat(x)
+  }
+  if (is.structure(y)) {
+    y <- to_vec(y)
+  } else{
+    y <- vec2mat(y)
+  }
+  
   xy <- vcross(x, y)
   xy / vnorm(xy)
-  colnames(xy) <- c("x", "y", "z")
-  xy
+  
+  if(transform){
+    to_struct(xy, class)
+  } else{
+    colnames(xy) <- c("x", "y", "z")
+    xy
+  }
 }
 
 # vrotate2 <- function(x, rotaxis, rotangle) {
@@ -143,16 +216,54 @@ vrotaxis <- function(x, y) {
 #' @rdname operations
 #' @export
 vangle <- function(x, y) {
-  d <- vdot(x, y)
-  acos(d)
+  transform <- FALSE
+  if (is.structure(x)) {
+    class = class(x)
+    x <- to_vec(x)
+    transform <- TRUE
+  } else {
+    x <- vec2mat(x)
+  }
+  if (is.structure(y)) {
+    y <- to_vec(y)
+  } else{
+    y <- vec2mat(y)
+  }
+  
+  d <- acos(vdot(x, y))
+  
+  if(transform){
+    d / DEG2RAD()
+  } else{
+    d
+  }
 }
 
 #' @rdname operations
 #' @export
 vproject <- function(x, y) {
+  transform <- FALSE
+  if (is.structure(x)) {
+    class = class(x)
+    x <- to_vec(x)
+    transform <- TRUE
+  } else {
+    x <- vec2mat(x)
+  }
+  if (is.structure(y)) {
+    y <- to_vec(y)
+  } else{
+    y <- vec2mat(y)
+  }
+  
   xpr <- vproject_length(x, y) * y
-  class(xpr) <- class(x)
-  xpr
+  
+  if(transform){
+    to_struct(xpr, class)
+  } else {
+    colnames(xpr) <- c("x", "y", "z")
+    xpr
+  }
 }
 vproject_length <- function(x, y) {
   xn <- vnorm(x)
@@ -163,26 +274,61 @@ vproject_length <- function(x, y) {
 #' @rdname operations
 #' @export
 vreject <- function(x, y) {
-  x - vproject(x, y)
+  transform <- FALSE
+  if (is.structure(x)) {
+    class = class(x)
+    x <- to_vec(x)
+    transform <- TRUE
+  } else {
+    x <- vec2mat(x)
+  }
+  
+  x_rej <- x - vproject(x, y)
+  
+  if(transform){
+    to_struct(x_rej, class)
+  } else {
+    colnames(x_rej) <- c("x", "y", "z")
+    x_rej
+  }
 }
 
 #' Affine transformation of vector by matrix
 #'
+#' @param x numeric vector or array
+#' @param A matrix
+#' @param norm logical.
 #' @examples
 #' mat <- cbind(V1 = c(1, 0, 0), V2 = c(0, 1, 0), V3 = c(0, 0, -1))
 #' vec <- c(1, 1, 1)
 #' vtransform(vec, mat)
 vtransform <- function(x, A, norm = TRUE) {
+  stopifnot(is.matrix(A))
+  transform <- FALSE
+  if (is.structure(x)) {
+    class = class(x)
+    x <- to_vec(x)
+    transform <- TRUE
+  } else {
+    x <- vec2mat(x)
+  }
+  
+  
   xt <- t(A %*% x)
   if (norm) xt <- vnorm(xt)
-  colnames(xt) <- c("x", "y", "z")
-  xt
+  
+  if(transform){
+    to_struct(xt, class)
+  } else {
+    colnames(xt) <- c("x", "y", "z")
+    xt
+  }
 }
 
 
 #' Mean resultant of a set of vectors
 #'
-#' @param x numeric. Can be three element vector, three column matrix, or an 
+#' @param x numeric. Can be three element vector, three column array, or an 
 #' object of class `"line"` or `"plane"`
 #' @param mean logical. Whether the mean resultant (`TRUE`) or resultant 
 #' (`FALSE`, the default) is returned.
@@ -217,7 +363,7 @@ vresultant <- function(x, mean = FALSE) {
 #' Estimates concentration parameter, angular standard deviation, and 
 #' confidence limit.
 #'
-#' @param x numeric. Can be three element vector, three column matrix, or an 
+#' @param x numeric. Can be three element vector, three column array, or an 
 #' object of class `"line"` or `"plane"`
 #' @returns list, with
 #' \describe{
@@ -253,7 +399,7 @@ fisher_statistics <- function(x) {
 
 #' Spherical variance based on resultant length (Mardia 1972).
 #'
-#' @param x numeric. Can be three element vector, three column matrix, or an 
+#' @param x numeric. Can be three element vector, three column array, or an 
 #' object of class `"line"` or `"plane"`
 #' @export
 #' @examples
@@ -273,7 +419,7 @@ v_var <- function(x) {
 
 #' Cone angle containing ~63% of the data in degrees.
 #'
-#' @param x numeric. Can be three element vector, three column matrix, or an 
+#' @param x numeric. Can be three element vector, three column array, or an 
 #' object of class `"line"` or `"plane"`
 #' @note For enough large sample it approachs the angular standard deviation 
 #' (`"csd"`) of the Fisher statistics
@@ -301,7 +447,7 @@ v_delta <- function(x) {
 
 #' Degree of preferred orientation of vectors.
 #'
-#' @param x numeric. Can be three element vector, three column matrix, or an 
+#' @param x numeric. Can be three element vector, three column array, or an 
 #' object of class `"line"` or `"plane"`
 #' @export
 #' @examples
@@ -320,10 +466,11 @@ v_rdegree <- function(x) {
 
 #' Return a spherical linear interpolation between self and other vector
 #'
-#' @param x,y numeric. Can be three element vector, three column matrix, or an 
+#' @param x,y numeric. Can be three element vector, three column array, or an 
 #' object of class `"line"` or `"plane"`
 #' @param t description
 #' @note For non-unit vectors the interpolation is not uniform
+#' @export
 vslerp <- function(x, y, t) {
   transform <- FALSE
   if (is.structure(x)) {
@@ -354,7 +501,7 @@ vslerp <- function(x, y, t) {
 #' 3D orientation tensor, which characterize data distribution using
 #' eigenvalue method. See (Watson 1966, Scheidegger 1965).
 #'
-#' @param x numeric. Can be three element vector, three column matrix, or an 
+#' @param x numeric. Can be three element vector, three column array, or an 
 #' object of class `"line"` or `"plane"`
 #' @param norm logical. Whether the tensor should be normalized or not.
 #' @returns matrix
@@ -389,7 +536,7 @@ ortensor <- function(x, norm = TRUE) {
 #'
 #' Decomposition of Orientation tensor
 #'
-#' @param x numeric. Can be three element vector, three column matrix, or an 
+#' @param x numeric. Can be three element vector, three column array, or an 
 #' object of class `"line"` or `"plane"`
 #' @param scaled logical. Whether the eigenvectors should be scaled by the 
 #' eigenvalues (only effective if `x` is in Cartesian coordinates)
@@ -435,7 +582,7 @@ or_eigen <- function(x, scaled = FALSE) {
 #' axes of coordinate system: E1||X (north-south), E2||X(east-west),
 #' E3||X(vertical)
 #'
-#' @param x numeric. Can be three element vector, three column matrix, or an 
+#' @param x numeric. Can be three element vector, three column array, or an 
 #' object of class `"line"` or `"plane"`
 #' @param max_vertical Whether the maximum of the von Mises-Fisher distribution 
 #' is already vertical or not.

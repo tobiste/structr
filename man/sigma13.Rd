@@ -2,7 +2,7 @@
 % Please edit documentation in R/mohR.R
 \name{sigma13}
 \alias{sigma13}
-\title{PRINCIPAL STRESSES}
+\title{Principle stresses}
 \usage{
 sigma13(sigmaX, sigmaZ, tauXZ)
 }
@@ -11,17 +11,19 @@ sigma13(sigmaX, sigmaZ, tauXZ)
 
 \item{sigmaZ}{normal stress acting in the vertical direction}
 
-\item{tauXZ}{shear stress acting on the same plane as sigmaX}
+\item{tauXZ}{shear stress acting on the same plane as \code{"sigmaX"}}
 }
 \value{
-A four-element list containing:
-sigma1 = magnitude of major principal stress
-sigma3 = magnitude of minor principal stress
-theta1 = direction of major principal stress (deg)
-theta3 = direction of minor principal stress (deg)
+A four-element list containing
+\describe{
+\item{\code{"sigma1"}}{magnitude of major principal stress}
+\item{\code{"sigma3"}}{magnitude of minor principal stress}
+\item{\code{"theta1"}}{direction of major principal stress (degrees)}
+\item{\code{"theta3"}}{direction of minor principal stress (degrees)}
+}
 }
 \description{
-PRINCIPAL STRESSES
+calculates the magnitudes and directions of the principal stresses S1 and S2
 }
 \examples{
 sigma13(sigmaX = 80, sigmaZ = 120, tauXZ = 20)

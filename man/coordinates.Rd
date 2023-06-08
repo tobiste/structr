@@ -23,11 +23,11 @@ vec2line(x)
 vec2plane(x)
 }
 \arguments{
-\item{x}{three column matrix, or three-element vector. Cartesian coordinates}
+\item{x}{3three-column array, or three-element vector. Cartesian coordinates}
 
 \item{class}{character. Either \code{"line"} or \code{"plane"}}
 
-\item{l, p}{two column matrix, or two element vector. Spherical coordinates
+\item{l, p}{two column array, or two element vector. Spherical coordinates
 (in degrees) of lines (\code{"azimuth"}, \code{"plunge"}) or plane (\code{"dip_direction"},
 \code{"dip"}).}
 }

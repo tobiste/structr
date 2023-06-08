@@ -24,24 +24,31 @@ theta <- function(phi) {
 
 
 
-#' @title  STRESS TRANSFORMATION
+#' Stress transformation
 #'
-#' @return A two-element list containing:
-#'              \code{sigma} = normal stress on an inclined plane
-#'              \code{tau} = shear stress on an inclined plane
+#' calculates the magnitudes of the normal stress and the shear stress
+#'
 #' @param theta angle of inclination (degrees)
 #' @param sigmaX normal stress acting in the horizontal direction
 #' @param sigmaZ normal stress acting in the vertical direction
-#' @param tauXZ shear stress acting on the same plane as sigmaX
+#' @param tauXZ shear stress acting on the same plane as `"sigmaX"`
 #' @param sigma1 major principal stress
-#' @param sigma3 = minor principal stress
-#' @note o  In addition to theta, One of the following two sets of data must be entered:
-#'                1.  sigmaX, sigmaZ, tauXZ
-#'                2.  sigma1, sigma3
-#'       o  If theta is entered in conjunction with sigmaX, sigmaZ, and tauXZ,
-#'       it is interpreted as the angle of inclination above the horizontal.  If
-#'       theta is entered in conjunction with the principal stresses, then it is
-#'       interpreted as the angle of inclination above the major principal plane.
+#' @param sigma3 minor principal stress
+#' @returns A two-element list containing
+#' \describe{
+#' \item{\code{"sigma"}}{normal stress on an inclined plane}
+#' \item{\code{"tau"}}{shear stress on an inclined plane}
+#' }
+#' @note In addition to theta, One of the following two sets of data must be entered:
+#' \enumerate{
+#'                \item{`"sigmaX"`, `"sigmaZ"`, `"tauXZ"`}
+#'                \item{`"sigma1"`, `"sigma3"`}
+#'                }
+#'                
+#' If theta is entered in conjunction with `"sigmaX"`, `"sigmaZ"`, and `"tauXZ"`,
+#' it is interpreted as the angle of inclination above the horizontal.  If
+#' theta is entered in conjunction with the principal stresses, then it is
+#'  interpreted as the angle of inclination above the major principal plane.
 #' @author Kyle Elmy and Jim Kaklamanos
 #' @export
 #' @examples
@@ -67,27 +74,35 @@ sigmaTrans <- function(theta, sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA,
 }
 
 
-#' @title MOHR CIRCLE:  CALCULATE
+#' Mohr circle parameters
 #'
-#' @return A five-element list containing:
-#'            C = center of Mohr circle
-#'            R = radius of Mohr circle
-#'            sigma = vector of normal stresses for Mohr circle t
-#'            au = vector of shear stresses for Mohr circle
-#'            theta = vector of angles (deg)
+#' calculates parameters of the Mohr circle
+#
 #' @param sigmaX normal stress acting in the horizontal direction
 #' @param sigmaZ normal stress acting in the vertical direction
-#' @param tauXZ shear stress acting on the same plane as sigmaX
+#' @param tauXZ shear stress acting on the same plane as `"sigmaX"`
 #' @param sigma1 major principal stress
 #' @param sigma3 minor principal stress
 #' @param theta vector of angles (degrees); defaults to 0-180 in increments of 1
-#' @note o  One of the following two sets of data must be entered:
-#'                1.  sigmaX, sigmaZ, tauXZ
-#'                2.  sigma1, sigma3
-#'       o  If theta is entered in conjunction with sigmaX, sigmaZ, and tauXZ, it is interpreted
-#'          as the angle of inclination above the horizontal.  If theta is entered in conjunction
+#' @note One of the following two sets of data must be entered
+#' \enumerate{
+#' \item{`"sigmaX"`, `"sigmaZ"`, `"tauXZ"`}
+#' \item{`"sigma1"`, `"sigma3"`}
+#' }
+#' @returns A five-element list containing
+#' \describe{
+#' \item{`"C"`}{center of Mohr circle}
+#' \item{`"R"`}{radius of Mohr circle}
+#' \item{`"sigma"`}{vector of normal stresses for Mohr circle}
+#' \item{`"tau"`}{vector of shear stresses for Mohr circle}
+#' \item{`"theta"`}{vector of angles (degrees)}
+#' }
+#' @details
+#' If theta is entered in conjunction with `"sigmaX"`, `"sigmaZ"`, and `"tauXZ"`, it is interpreted
+#'          as the angle of inclination above the horizontal.  If `"theta"` is entered in conjunction
 #'          with the principal stresses, then it is interpreted as the angle of inclination above the
 #'          major principal plane.
+#' @seealso [MohrCircle.plot()]
 #' @author Kyle Elmy and Jim Kaklamanos
 #' @export
 #' @examples
@@ -120,19 +135,22 @@ MohrCircle.calc <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, s
 }
 
 
-#' MOHR CIRCLE:  PLOT
+#' Mohr Circle plot
 #'
-#' Plotting the Mohr Circle
+#' plots the Mohr Circle
 #'
 #' @param sigmaX normal stress acting in the horizontal direction
 #' @param sigmaZ normal stress acting in the vertical direction
-#' @param tauXZ shear stress acting on the same plane as sigmaX
+#' @param tauXZ shear stress acting on the same plane as `"sigmaX"`
 #' @param sigma1 major principal stress
 #' @param sigma3 minor principal stress
-#' @param metric logical variable: TRUE for metric units (kPa), and FALSE for English units
-#' @note o  One of the following two sets of data must be entered:
-#'           1.  sigmaX, sigmaZ, tauXZ
-#'           2.  sigma1, sigma3
+#' @param metric logical variable: `TRUE` for metric units (kPa), and `FALSE` for English units
+#' @note One of the following two sets of data must be entered
+#' \enumerate{
+#' \item{`"sigmaX"`, `"sigmaZ"`, `"tauXZ"`}
+#' \item{`"sigma1"`, `"sigma3"`}
+#' }
+#' @seealso [MohrCircle.calc()], [ggMohr()]
 #' @author Kyle Elmy and Jim Kaklamanos
 #' @export
 #' @examples
@@ -159,24 +177,28 @@ MohrCircle.plot <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, s
     }
   }
 
-  par(mgp = c(2.8, 1, 0), las = 1)
+  graphics::par(mgp = c(2.8, 1, 0), las = 1)
   plot(sigma, tau,
     col = "black", type = "l", xlab = xLab, ylab = yLab, xaxs = "i",
     xlim = c(min(0, min(sigma)), max(sigma) * 1.1), main = "Mohr Circle Plot", asp = 1
   )
-  abline(h = 0)
+  graphics::abline(h = 0)
 }
 
-#' @title PRINCIPAL STRESSES
+#' Principle stresses
 #'
-#' @return A four-element list containing:
-#'             sigma1 = magnitude of major principal stress
-#'             sigma3 = magnitude of minor principal stress
-#'             theta1 = direction of major principal stress (deg)
-#'             theta3 = direction of minor principal stress (deg)
+#' calculates the magnitudes and directions of the principal stresses S1 and S2
+#
 #' @param sigmaX normal stress acting in the horizontal direction
 #' @param sigmaZ normal stress acting in the vertical direction
-#' @param tauXZ shear stress acting on the same plane as sigmaX
+#' @param tauXZ shear stress acting on the same plane as `"sigmaX"`
+#' @returns A four-element list containing
+#' \describe{
+#' \item{`"sigma1"`}{magnitude of major principal stress}
+#' \item{`"sigma3"`}{magnitude of minor principal stress}
+#' \item{`"theta1"`}{direction of major principal stress (degrees)}
+#' \item{`"theta3"`}{direction of minor principal stress (degrees)}
+#'  }
 #' @author Kyle Elmy and Jim Kaklamanos
 #' @export
 #' @examples
@@ -199,15 +221,18 @@ sigma13 <- function(sigmaX, sigmaZ, tauXZ) {
 
 
 
-#' @title MAXIMUM IN-PLANE SHEAR STRESS
-#'
-#' @return A two-element list containing:
-#'         tauMax = maximum in-plane shear stress
-#'         theta = angle of maximum in-plane shear stress
+#' Maximum in-plane shear stress 
+#' 
+#' calculates the magnitude and direction of the maximum in-plane shear stress
 #'
 #' @param sigmaX normal stress acting in the horizontal direction
 #' @param sigmaZ normal stress acting in the vertical direction
-#' @param tauXZ shear stress acting on the same plane as sigmaX
+#' @param tauXZ shear stress acting on the same plane as `"sigmaX"`
+#' @returns A two-element list containing
+#' \describe{
+#' \item{`"tauMax"`}{maximum in-plane shear stress}
+#' \item{`"theta"`}{angle of maximum in-plane shear stress (in degrees)}
+#' }
 #' @author Kyle Elmy and Jim Kaklamanos
 #' @export
 #' @examples
@@ -223,6 +248,7 @@ tauMax <- function(sigmaX, sigmaZ, tauXZ) {
   ##  Return values
   return(list(tauMax = tauMax, theta = theta))
 }
+
 #' Plot Mohr Circle in ggplots
 #' @export
 #' @import ggplot2

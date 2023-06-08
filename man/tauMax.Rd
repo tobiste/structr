@@ -2,7 +2,7 @@
 % Please edit documentation in R/mohR.R
 \name{tauMax}
 \alias{tauMax}
-\title{MAXIMUM IN-PLANE SHEAR STRESS}
+\title{Maximum in-plane shear stress}
 \usage{
 tauMax(sigmaX, sigmaZ, tauXZ)
 }
@@ -11,15 +11,17 @@ tauMax(sigmaX, sigmaZ, tauXZ)
 
 \item{sigmaZ}{normal stress acting in the vertical direction}
 
-\item{tauXZ}{shear stress acting on the same plane as sigmaX}
+\item{tauXZ}{shear stress acting on the same plane as \code{"sigmaX"}}
 }
 \value{
-A two-element list containing:
-tauMax = maximum in-plane shear stress
-theta = angle of maximum in-plane shear stress
+A two-element list containing
+\describe{
+\item{\code{"tauMax"}}{maximum in-plane shear stress}
+\item{\code{"theta"}}{angle of maximum in-plane shear stress (in degrees)}
+}
 }
 \description{
-MAXIMUM IN-PLANE SHEAR STRESS
+calculates the magnitude and direction of the maximum in-plane shear stress
 }
 \examples{
 tauMax(sigmaX = 80, sigmaZ = 120, tauXZ = 20)

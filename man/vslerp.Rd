@@ -7,7 +7,8 @@
 vslerp(x, y, t)
 }
 \arguments{
-\item{x, y}{numeric. Can be three element vector, three column matrix, or an object of class \code{"line"} or \code{"plane"}}
+\item{x, y}{numeric. Can be three element vector, three column array, or an
+object of class \code{"line"} or \code{"plane"}}
 
 \item{t}{description}
 }

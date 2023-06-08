@@ -38,5 +38,6 @@ plane_from_drillcore(45, 220, azi, inc)
 # multiple alpha-beta measurements
 stereoplot()
 stereo_point(Line(azi, -inc), lab = "CA")
-plane_from_drillcore(alpha = c(60, 45), beta = c(320, 220), azi, inc) |> stereo_point(lab = c("A", "B"))
+plane_from_drillcore(alpha = c(60, 45), beta = c(320, 220), azi, inc) |> 
+stereo_point(lab = c("A", "B"))
 }

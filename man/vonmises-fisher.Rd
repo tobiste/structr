@@ -13,12 +13,15 @@ dvmf(x, mu, k = 5)
 \arguments{
 \item{n}{integer. number of random samples to be generated}
 
-\item{k}{numeric.  the concentration parameter (kappa) of the the von Mises-Fisher distributiuon}
+\item{k}{numeric. The concentration parameter (kappa) of the the von
+Mises-Fisher distributiuon}
 
-\item{x, mu}{numeric. Can be three element vector, three column matrix, or an object of class \code{"line"} or \code{"plane"}}
+\item{x, mu}{numeric. Can be three element vector, three column array, or an
+object of class \code{"line"} or \code{"plane"}}
 }
 \description{
-Density and random generation for the spherical normal distribution with mean and kappa.
+Density and random generation for the spherical normal distribution with mean
+and kappa.
 }
 \examples{
 # example code

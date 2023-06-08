@@ -29,9 +29,9 @@ vproject(x, y)
 vreject(x, y)
 }
 \arguments{
-\item{x, y, rotaxis}{numeric vector or matrix}
+\item{x, y, rotaxis}{numeric vector, array, or object of class \code{"line"} or \code{"plane"}}
 
-\item{rotangle}{numeirc. Angle in radians}
+\item{rotangle}{numeric. Angle in radians or degrees if \code{"rotaxis"} is an object of \code{"line"} or \code{"plane"}}
 }
 \description{
 Vector operations

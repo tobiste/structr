@@ -2,24 +2,25 @@
 % Please edit documentation in R/stereonet.R
 \name{stereoplot}
 \alias{stereoplot}
-\title{Initialize the Stereo plot}
+\title{Stereographic projection}
 \source{
 \code{\link[RFOC:net]{RFOC::net()}}
 }
 \usage{
-stereoplot(add = FALSE, col = gray(0.9), border = "black", lwd = 1, main = "N")
+stereoplot(col = grDevices::gray(0.9), border = "black", lwd = 1, main = "N")
 }
 \arguments{
-\item{add}{logical, \code{TRUE} adds to existing plot}
-
 \item{col}{color of lines}
 
 \item{border}{color of outer rim of stereo plot}
 
 \item{lwd}{linewidth of lines description}
+
+\item{main}{title of the plot (\code{"N"} by default)}
 }
 \description{
-Plot equal-area stereographic projection, i.e. Lambert azimuthal Equal-Area projection (Schmidt).
+Initialize the plot for equal-area stereographic projections, i.e. Lambert
+azimuthal Equal-Area projections (Schmidt).
 }
 \examples{
 stereoplot()

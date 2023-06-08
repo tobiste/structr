@@ -41,7 +41,7 @@ plane_from_drillcore <- function(alpha, beta, azi, inc) {
 
   P <- E <- int <- matrix(nrow = n, ncol = 3)
   for (i in 1:n) {
-    if (beta[i] %% 180 < 90) {
+    if (beta[i] %% 180 <= 90) {
       E[i, ] <- vrotate(B[i, ], C[i, ], -tectonicr::deg2rad(beta[i])) |> vcross(C[i, ])
       int[i, ] <- vcross(E[i, ], C[i, ])
     } else {

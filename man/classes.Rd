@@ -18,7 +18,7 @@ Line(azimuth, plunge)
 
 Plane(dip_direction, dip)
 
-Fault(dip_direction, dip, azimuth, plunge)
+Fault(dip_direction, dip, azimuth, plunge, sense = NULL)
 
 as.line(l)
 
@@ -41,7 +41,10 @@ degrees)}
 \item{dip_direction, dip}{numeric vectors. Dip direction and dip of a plane
 (in degrees)}
 
-\item{l, p, f}{numeric vector, matrix, or object of class \code{"line"}, \code{"plane"},
+\item{sense}{(optional) integer. Sense of the line on a fault plane. Either
+\code{1}or \code{-1} for normal/dextral or thrust/sinistral offset, respectively.}
+
+\item{l, p, f}{numeric vector, array, or object of class \code{"line"}, \code{"plane"},
 or \code{"fault"}}
 }
 \description{

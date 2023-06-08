@@ -7,9 +7,11 @@
 or_eigen(x, scaled = FALSE)
 }
 \arguments{
-\item{x}{numeric. Can be three element vector, three column matrix, or an object of class \code{"line"} or \code{"plane"}}
+\item{x}{numeric. Can be three element vector, three column array, or an
+object of class \code{"line"} or \code{"plane"}}
 
-\item{scaled}{logical. Whether the eigenvectors should be scaled by the eigenvalues (only effective if \code{x} is in Cartesian coordinates)}
+\item{scaled}{logical. Whether the eigenvectors should be scaled by the
+eigenvalues (only effective if \code{x} is in Cartesian coordinates)}
 }
 \value{
 list containing

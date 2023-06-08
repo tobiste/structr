@@ -2,20 +2,33 @@
 % Please edit documentation in R/stereonet.R
 \name{stereo_smallcircle}
 \alias{stereo_smallcircle}
-\title{Plot cones}
+\title{Stereographic projection of cones}
 \usage{
-stereo_smallcircle(x, d = 90, col = 1, N = 100, BALL.radius = 0.25, ...)
+stereo_smallcircle(
+  x,
+  d = 90,
+  col = 1,
+  N = 100,
+  BALL.radius = 0.25,
+  upper.hem = FALSE,
+  lty = 1,
+  lwd = 1,
+  ...
+)
 }
 \arguments{
 \item{x}{Object of class \code{"line"} or \code{"plane"}}
 
 \item{d}{numeric. conical angle in degrees.}
 
-\item{col}{color}
+\item{col, lty, lwd}{color, line type, and line width parameters}
 
 \item{N}{integer. number of points to calculate}
 
 \item{BALL.radius}{numeric size of sphere}
+
+\item{upper.hem}{logical. Whether the projection is shown for upper
+hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
 
 \item{...}{optional graphical parameters}
 }

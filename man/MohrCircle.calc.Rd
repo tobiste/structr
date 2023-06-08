@@ -2,7 +2,7 @@
 % Please edit documentation in R/mohR.R
 \name{MohrCircle.calc}
 \alias{MohrCircle.calc}
-\title{MOHR CIRCLE:  CALCULATE}
+\title{Mohr circle parameters}
 \usage{
 MohrCircle.calc(
   sigmaX = NA,
@@ -18,7 +18,7 @@ MohrCircle.calc(
 
 \item{sigmaZ}{normal stress acting in the vertical direction}
 
-\item{tauXZ}{shear stress acting on the same plane as sigmaX}
+\item{tauXZ}{shear stress acting on the same plane as \code{"sigmaX"}}
 
 \item{sigma1}{major principal stress}
 
@@ -27,27 +27,36 @@ MohrCircle.calc(
 \item{theta}{vector of angles (degrees); defaults to 0-180 in increments of 1}
 }
 \value{
-A five-element list containing:
-C = center of Mohr circle
-R = radius of Mohr circle
-sigma = vector of normal stresses for Mohr circle t
-au = vector of shear stresses for Mohr circle
-theta = vector of angles (deg)
+A five-element list containing
+\describe{
+\item{\code{"C"}}{center of Mohr circle}
+\item{\code{"R"}}{radius of Mohr circle}
+\item{\code{"sigma"}}{vector of normal stresses for Mohr circle}
+\item{\code{"tau"}}{vector of shear stresses for Mohr circle}
+\item{\code{"theta"}}{vector of angles (degrees)}
+}
 }
 \description{
-MOHR CIRCLE:  CALCULATE
+calculates parameters of the Mohr circle
 }
-\note{
-o  One of the following two sets of data must be entered:
-1.  sigmaX, sigmaZ, tauXZ
-2.  sigma1, sigma3
-o  If theta is entered in conjunction with sigmaX, sigmaZ, and tauXZ, it is interpreted
-as the angle of inclination above the horizontal.  If theta is entered in conjunction
+\details{
+If theta is entered in conjunction with \code{"sigmaX"}, \code{"sigmaZ"}, and \code{"tauXZ"}, it is interpreted
+as the angle of inclination above the horizontal.  If \code{"theta"} is entered in conjunction
 with the principal stresses, then it is interpreted as the angle of inclination above the
 major principal plane.
 }
+\note{
+One of the following two sets of data must be entered
+\enumerate{
+\item{\code{"sigmaX"}, \code{"sigmaZ"}, \code{"tauXZ"}}
+\item{\code{"sigma1"}, \code{"sigma3"}}
+}
+}
 \examples{
 MohrCircle.calc(sigmaX = 80, sigmaZ = 120, tauXZ = 20)
+}
+\seealso{
+\code{\link[=MohrCircle.plot]{MohrCircle.plot()}}
 }
 \author{
 Kyle Elmy and Jim Kaklamanos

@@ -7,9 +7,11 @@
 center(x, max_vertical = FALSE)
 }
 \arguments{
-\item{x}{numeric. Can be three element vector, three column matrix, or an object of class \code{"line"} or \code{"plane"}}
+\item{x}{numeric. Can be three element vector, three column array, or an
+object of class \code{"line"} or \code{"plane"}}
 
-\item{max_vertical}{Whether the maximum of the von Mises-Fisher distribution is already vertical or not.}
+\item{max_vertical}{Whether the maximum of the von Mises-Fisher distribution
+is already vertical or not.}
 }
 \value{
 Object of class of \code{x}
