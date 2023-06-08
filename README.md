@@ -2,7 +2,7 @@
 [![R-CMD-check](https://github.com/tobiste/structR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tobiste/structR/actions/workflows/R-CMD-check.yaml)
 <!-- badges: end -->
 
-# structR
+# structr
 
 Structural geology package for R, free and open-source. It provides functions to 
 - analyze and visualize orientation data of structural geology.
@@ -23,8 +23,8 @@ install.packages("remotes")
 The most recent development version of **tectonicr** is available from Github and can be installed on your system as follows:
 
 ```
-remotes::install_github('tobiste/structR')
-library('structR')
+remotes::install_github('tobiste/structr')
+library('structr')
 ```
 
 ## Documentation
