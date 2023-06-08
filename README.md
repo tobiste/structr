@@ -1,3 +1,7 @@
+<!-- badges: start -->
+[![R-CMD-check](https://github.com/tobiste/structR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tobiste/structR/actions/workflows/R-CMD-check.yaml)
+<!-- badges: end -->
+
 # structR
 
 Structural geology package for R, free and open-source. 
