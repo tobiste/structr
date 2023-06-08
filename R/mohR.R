@@ -250,6 +250,12 @@ tauMax <- function(sigmaX, sigmaZ, tauXZ) {
 }
 
 #' Plot Mohr Circle in ggplots
+#' 
+#' @param s1,s2,s3 numeric. magnitudes of sigma 1, 2, and 3, respectively.
+#' @param coulomb numeric 2 element vector. Coulomb criteria (`c(70, 0.6)`)
+#' @param sliding Sliding criteria (0.81 by default)
+#' @param units units of the `s1`, `s2`, and `s3` (`"MPa"` by default). 
+#' 
 #' @export
 #' @import ggplot2
 #' @importFrom ggforce geom_circle

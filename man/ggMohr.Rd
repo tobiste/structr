@@ -6,6 +6,15 @@
 \usage{
 ggMohr(s1, s2, s3, coulomb = c(70, 0.6), sliding = 0.81, units = "MPa")
 }
+\arguments{
+\item{s1, s2, s3}{numeric. magnitudes of sigma 1, 2, and 3, respectively.}
+
+\item{coulomb}{numeric 2 element vector. Coulomb criteria (\code{c(70, 0.6)})}
+
+\item{sliding}{Sliding criteria (0.81 by default)}
+
+\item{units}{units of the \code{s1}, \code{s2}, and \code{s3} (\code{"MPa"} by default).}
+}
 \description{
 Plot Mohr Circle in ggplots
 }

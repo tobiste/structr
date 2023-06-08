@@ -4,8 +4,10 @@
 
 # structR
 
-Structural geology package for R, free and open-source. 
-The package allows to analyze and visualize orientational structural geology data.
+Structural geology package for R, free and open-source. It provides functions to 
+- analyze and visualize orientation data of structural geology.
+- analyze stress (including visualization of the magnitudes of stress in the Mohr Circle).
+- reconstruct the orientation of structures in oriented drill cores using the alpha, beta, and gamma angles. 
 
 
 ## Prerequisites
@@ -24,6 +26,11 @@ The most recent development version of **tectonicr** is available from Github an
 remotes::install_github('tobiste/structR')
 library('structR')
 ```
+
+## Documentation
+in prep.
+
+
 ## Author
 Tobias Stephan
 
