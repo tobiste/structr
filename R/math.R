@@ -60,6 +60,8 @@ vec2mat <- function(x) {
 #' @param x,y,rotaxis numeric vector, array, or object of class `"line"` or `"plane"`
 #' @param rotangle numeric. Angle in radians or degrees if `"rotaxis"` is an object of `"line"` or `"plane"`
 #' @name operations
+#' @details
+#' `vdot(x, y)` is equivalent to `x %*% t(y)`
 #' @examples
 #' vec1 <- cbind(1, 0, 0)
 #' vec2 <- cbind(0, 0, 1)
@@ -90,7 +92,7 @@ vsum <- function(x) {
   if (is.structure(x)) {
     x <- to_vec(x)
   }
-  cbind(sum(v[, 1]), sum(v[, 2]), sum(v[, 3])) # vector sum
+  cbind(sum(x[, 1]), sum(x[, 2]), sum(x[, 3])) # vector sum
 }
 
 #' @rdname operations
@@ -142,6 +144,7 @@ vcross <- function(x, y) {
 #' @rdname operations
 #' @export
 vdot <- function(x, y) {
+  # equivalent to: x %*% t(y)
   if (is.structure(x)) {
     class <- class(x)
     x <- to_vec(x)
@@ -274,8 +277,10 @@ vproject <- function(x, y) {
 }
 vproject_length <- function(x, y) {
   xn <- vnorm(x)
+  yn <- vnorm(y)
   # xn * cos(vangle(x, y))
-  xn %*% vnorm(y)
+  # as.numeric(xn %*% t(yn))
+  vdot(xn, yn)
 }
 
 #' @rdname operations
@@ -302,14 +307,16 @@ vreject <- function(x, y) {
 
 #' Affine transformation of vector by matrix
 #'
-#' @param x numeric vector or array
-#' @param A matrix
-#' @param norm logical.
+#' @param x numeric vector, array, or object of class `"line"` or `"plane"`
+#' @param A 3x3 matrix
+#' @param norm logical. Whether the transformed vector should be normalized 
+#' (`TRUE`) or not (`FALSE`, the default).
+#' @export
 #' @examples
 #' mat <- cbind(V1 = c(1, 0, 0), V2 = c(0, 1, 0), V3 = c(0, 0, -1))
 #' vec <- c(1, 1, 1)
 #' vtransform(vec, mat)
-vtransform <- function(x, A, norm = TRUE) {
+vtransform <- function(x, A, norm = FALSE) {
   stopifnot(is.matrix(A))
   transform <- FALSE
   if (is.structure(x)) {
@@ -320,8 +327,8 @@ vtransform <- function(x, A, norm = TRUE) {
     x <- vec2mat(x)
   }
 
-
-  xt <- t(A %*% x)
+  xt <- t(A %*% t(x))
+  # xt <- t(vdot(A, x))
   if (norm) xt <- vnorm(xt)
 
   if (transform) {
@@ -361,7 +368,7 @@ vresultant <- function(x, mean = FALSE) {
 #' @details
 #' `v_mean` returns the spherical mean of a set of vectors
 #' (object of class of `x`). The function is shortcut for
-#' `vresultant(x, mean = TRUE)` when the argument is a `"plane"` or `"line"` object. 
+#' `vresultant(x, mean = TRUE)` when the argument is a `"plane"` or `"line"` object.
 #'
 #' `v_var` returns the spherical variance (numeric), based on resultant length
 #' (Mardia 1972).
@@ -437,8 +444,8 @@ v_sd <- function(x) {
   }
   Rbar <- vresultant(v, mean = TRUE) |>
     vlength()
-  
-  sqrt(log(1/Rbar^2))
+
+  sqrt(log(1 / Rbar^2))
 }
 
 
@@ -456,7 +463,7 @@ v_delta <- function(x) {
   Rbar <- vresultant(v, mean = TRUE) |>
     vlength()
   d <- acos(Rbar)
-  
+
   if (transform) {
     rad2deg(d)
   } else {
@@ -475,7 +482,7 @@ v_rdegree <- function(x) {
   N <- nrow(v)
   Rbar <- vresultant(vnorm(v), mean = FALSE) |>
     vlength()
-  
+
   100 * (2 * Rbar - N) / N
 }
 
@@ -727,7 +734,7 @@ center <- function(x, max_vertical = FALSE) {
 
   x_trans <- matrix(nrow = nrow(x), ncol = 3)
   for (i in 1:nrow(x)) {
-    x_trans[i, ] <- vtransform(x_cart[i, ], x_eigen$vectors)
+    x_trans[i, ] <- vtransform(x_cart[i, ], x_eigen$vectors, norm = TRUE)
   }
 
   if (!max_vertical) {

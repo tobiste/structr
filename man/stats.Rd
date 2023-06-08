@@ -46,7 +46,7 @@ Statistical estimators of the distribution of a set of vectors
 if otherwise). For enough large sample it approaches the angular standard
 deviation (\code{"csd"}) of the Fisher statistics.
 
-\code{v_rdegree} returns the degree of preferred orientation of vectors.
+\code{v_rdegree} returns the degree of preferred orientation of vectors (in \%).
 
 \code{v_sde} returns the spherical standard error (numeric). If the number of
 data is less than 25, if will print a additional message, that the output

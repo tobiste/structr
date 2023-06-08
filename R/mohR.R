@@ -15,7 +15,7 @@ shear_stress <- function(s1, s3, theta) {
 
 normal_stress <- function(s1, s3, theta) {
   stopifnot(s1 >= s3)
-  mean_stress(s1, s3) - diff_stress(s1, s3) / 2 * cosd(2 * theta )
+  mean_stress(s1, s3) - diff_stress(s1, s3) / 2 * cosd(2 * theta)
 }
 
 theta <- function(phi) {
@@ -44,7 +44,7 @@ theta <- function(phi) {
 #'                \item{`"sigmaX"`, `"sigmaZ"`, `"tauXZ"`}
 #'                \item{`"sigma1"`, `"sigma3"`}
 #'                }
-#'                
+#'
 #' If theta is entered in conjunction with `"sigmaX"`, `"sigmaZ"`, and `"tauXZ"`,
 #' it is interpreted as the angle of inclination above the horizontal.  If
 #' theta is entered in conjunction with the principal stresses, then it is
@@ -221,8 +221,8 @@ sigma13 <- function(sigmaX, sigmaZ, tauXZ) {
 
 
 
-#' Maximum in-plane shear stress 
-#' 
+#' Maximum in-plane shear stress
+#'
 #' calculates the magnitude and direction of the maximum in-plane shear stress
 #'
 #' @param sigmaX normal stress acting in the horizontal direction

@@ -4,14 +4,15 @@
 \alias{vtransform}
 \title{Affine transformation of vector by matrix}
 \usage{
-vtransform(x, A, norm = TRUE)
+vtransform(x, A, norm = FALSE)
 }
 \arguments{
-\item{x}{numeric vector or array}
+\item{x}{numeric vector, array, or object of class \code{"line"} or \code{"plane"}}
 
-\item{A}{matrix}
+\item{A}{3x3 matrix}
 
-\item{norm}{logical.}
+\item{norm}{logical. Whether the transformed vector should be normalized
+(\code{TRUE}) or not (\code{FALSE}, the default).}
 }
 \description{
 Affine transformation of vector by matrix

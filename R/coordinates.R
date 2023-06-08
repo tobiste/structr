@@ -119,7 +119,7 @@ vec2plane <- function(x) {
 #' degrees)
 #' @param dip_direction,dip numeric vectors. Dip direction and dip of a plane
 #' (in degrees)
-#' @param sense (optional) integer. Sense of the line on a fault plane. Either 
+#' @param sense (optional) integer. Sense of the line on a fault plane. Either
 #' `1`or `-1` for normal/dextral or thrust/sinistral offset, respectively.
 #' @details
 #' `as.line`, `as.plane`, and `as.fault` return `TRUE` if `l`, `p`, and `f`
@@ -162,11 +162,12 @@ Fault <- function(dip_direction, dip, azimuth, plunge, sense = NULL) {
     length(dip_direction) == length(azimuth),
     length(dip_direction) == length(plunge)
   )
-  if(is.null(sense)) {
-    sense = rep(0, length(dip_direction))
+  if (is.null(sense)) {
+    sense <- rep(0, length(dip_direction))
   } else {
     stopifnot(
-      length(dip_direction) == length(sense))
+      length(dip_direction) == length(sense)
+    )
   }
   cbind(dip_direction, dip, azimuth, plunge, sense) |> as.fault()
 }

@@ -39,6 +39,9 @@ vreject(x, y)
 \description{
 Vector operations
 }
+\details{
+\code{vdot(x, y)} is equivalent to \code{x \%*\% t(y)}
+}
 \examples{
 vec1 <- cbind(1, 0, 0)
 vec2 <- cbind(0, 0, 1)

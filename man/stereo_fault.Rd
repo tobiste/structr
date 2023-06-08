@@ -12,7 +12,9 @@ stereo_fault(
   col = 1,
   lwd = 1,
   lty = 1,
+  lab = NULL,
   cex = 0.75,
+  text.pos = 4,
   upper.hem = FALSE,
   ...
 )
@@ -20,18 +22,22 @@ stereo_fault(
 \arguments{
 \item{x}{Object of class \code{"fault"}}
 
-\item{hoeppner}{logical. Whether greatcircles are displayed (\code{TRUE}, the default) or poles to planes (\code{FALSE})}
+\item{hoeppner}{logical. \code{TRUE} for Hoeppner plot}
+
+\item{greatcirles}{logical. Whether greatcircles are displayed (\code{TRUE}, the default) or poles to planes (\code{FALSE})}
 
 \item{pch, col, lwd, lty}{lotting parameters for planes and lines}
 
+\item{lab}{character. text labels}
+
 \item{cex}{character expansion of labels}
+
+\item{text.pos}{position for labels}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
 hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
 
 \item{...}{optional graphical parameters}
-
-\item{lab}{character. text labels}
 }
 \description{
 Visualization of faults (planes and lines) in a stereographic projection.
@@ -40,13 +46,15 @@ Visualization of faults (planes and lines) in a stereographic projection.
 \code{"plane"} objects will be displayed as pole to the plane.
 }
 \examples{
+\dontrun{
 faults <- Fault(
-c(0, 90, 180, 270), 
-c(80, 45, 80, 45), 
-c(0, 180, 180, 315), 
-c(80, 5, 80, 36), 
-c(1, -1, 1, 0)
+  c(0, 90, 180, 270),
+  c(80, 45, 80, 45),
+  c(0, 180, 180, 315),
+  c(80, 5, 80, 36),
+  c(1, -1, 1, 0)
 )
 stereoplot()
 stereo_fault(faults, col = 1:4)
+}
 }
