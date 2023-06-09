@@ -1,60 +1,3 @@
-#' The von Mises-Fisher Distribution
-#'
-#' Density and random generation for the spherical normal distribution with mean
-#' and kappa.
-#'
-#' @param n integer. number of random samples to be generated
-#' @param x,mu numeric. Can be three element vector, three column array, or an
-#' object of class `"line"` or `"plane"`
-#' @param k numeric. The concentration parameter (\eqn{\kappa}) of the the von
-#' Mises-Fisher distributiuon
-#' @name vonmises-fisher
-#' @examples
-#' # example code
-#' x <- rvmf(100, mu = Line(120, 50), k = 5)
-#' stereoplot()
-#' stereo_point(x)
-NULL
-
-#' @rdname vonmises-fisher
-#' @export
-rvmf <- function(n = 100, mu = c(1, 0, 0), k = 5) {
-  transform <- FALSE
-  if (is.structure(mu)) {
-    mu <- line2vec(mu) |> c()
-    transform <- TRUE
-  }
-
-  res <- rotasym::r_vMF(n, mu, k)
-  colnames(res) <- c("x", "y", "z")
-  if (transform) {
-    res |> vec2line()
-  } else {
-    res
-  }
-}
-
-#' @rdname vonmises-fisher
-#' @export
-dvmf <- function(x, mu, k = 5) {
-  if (is.structure(x)) x <- line2vec(x)
-  if (is.structure(mu)) mu <- line2vec(mu) |> c()
-
-  res <- rotasym::d_vMF(x, mu, k)
-}
-
-
-vec2mat <- function(x) {
-  class <- class(x)
-  if (is.null(dim(x))) {
-    m <- as.matrix(t(x))
-  } else {
-    m <- as.matrix(x)
-  }
-  class(m) <- class
-  m
-}
-
 #' Vector operations
 #'
 #' @param x,y,rotaxis numeric vector, array, or object of class `"line"` or `"plane"`
@@ -80,7 +23,7 @@ NULL
 #' @rdname operations
 #' @export
 vlength <- function(x) {
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     x <- to_vec(x)
   }
   sqrt(x[, 1]^2 + x[, 2]^2 + x[, 3]^2) # length of a vector
@@ -89,7 +32,7 @@ vlength <- function(x) {
 #' @rdname operations
 #' @export
 vsum <- function(x) {
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     x <- to_vec(x)
   }
   cbind(sum(x[, 1]), sum(x[, 2]), sum(x[, 3])) # vector sum
@@ -99,7 +42,7 @@ vsum <- function(x) {
 #' @export
 vnorm <- function(x) {
   transform <- FALSE
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
@@ -116,14 +59,14 @@ vnorm <- function(x) {
 #' @export
 vcross <- function(x, y) {
   transform <- FALSE
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
   } else {
     x <- vec2mat(x)
   }
-  if (is.structure(y)) {
+  if (is.spherical(y)) {
     y <- to_vec(y)
   } else {
     y <- vec2mat(y)
@@ -145,14 +88,14 @@ vcross <- function(x, y) {
 #' @export
 vdot <- function(x, y) {
   # equivalent to: x %*% t(y)
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
   } else {
     x <- vec2mat(x)
   }
-  if (is.structure(y)) {
+  if (is.spherical(y)) {
     y <- to_vec(y)
   } else {
     y <- vec2mat(y)
@@ -164,14 +107,14 @@ vdot <- function(x, y) {
 #' @export
 vrotate <- function(x, rotaxis, rotangle) {
   transform <- FALSE
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
   } else {
     x <- vec2mat(x)
   }
-  if (is.structure(rotaxis)) {
+  if (is.spherical(rotaxis)) {
     rotaxis <- to_vec(rotaxis)
     rotangle <- deg2rad(rotangle)
   } else {
@@ -192,14 +135,14 @@ vrotate <- function(x, rotaxis, rotangle) {
 
 vrotaxis <- function(x, y) {
   transform <- FALSE
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
   } else {
     x <- vec2mat(x)
   }
-  if (is.structure(y)) {
+  if (is.spherical(y)) {
     y <- to_vec(y)
   } else {
     y <- vec2mat(y)
@@ -227,14 +170,14 @@ vrotaxis <- function(x, y) {
 #' @export
 vangle <- function(x, y) {
   transform <- FALSE
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
   } else {
     x <- vec2mat(x)
   }
-  if (is.structure(y)) {
+  if (is.spherical(y)) {
     y <- to_vec(y)
   } else {
     y <- vec2mat(y)
@@ -253,14 +196,14 @@ vangle <- function(x, y) {
 #' @export
 vproject <- function(x, y) {
   transform <- FALSE
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
   } else {
     x <- vec2mat(x)
   }
-  if (is.structure(y)) {
+  if (is.spherical(y)) {
     y <- to_vec(y)
   } else {
     y <- vec2mat(y)
@@ -287,7 +230,7 @@ vproject_length <- function(x, y) {
 #' @export
 vreject <- function(x, y) {
   transform <- FALSE
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
@@ -309,7 +252,7 @@ vreject <- function(x, y) {
 #'
 #' @param x numeric vector, array, or object of class `"line"` or `"plane"`
 #' @param A 3x3 matrix
-#' @param norm logical. Whether the transformed vector should be normalized 
+#' @param norm logical. Whether the transformed vector should be normalized
 #' (`TRUE`) or not (`FALSE`, the default).
 #' @export
 #' @examples
@@ -319,7 +262,7 @@ vreject <- function(x, y) {
 vtransform <- function(x, A, norm = FALSE) {
   stopifnot(is.matrix(A))
   transform <- FALSE
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
@@ -386,7 +329,7 @@ vresultant <- function(x, mean = FALSE) {
 #' `v_confidence_angle` returns the semi-vertical angle \eqn{q} about the
 #' mean \eqn{\mu} (in degree if `x` is a `"plane"` or `"line"`, or in radians
 #' if otherwise). The \eqn{100(1-\alpha)\%} confidence interval is than given by \eqn{\mu \pm q}.
-#' `v_kappa` returns the estimation for the concentration of the von Mises-Fisher distribution \eqn{\kappa} (after Sra, 2011).
+#' `estimate_k` returns the estimated concentration of the von Mises-Fisher distribution \eqn{\kappa} (after Sra, 2011).
 #' @seealso [vresultant()], [fisher_statistics()]
 #' @name stats
 #' @examples
@@ -397,14 +340,14 @@ vresultant <- function(x, mean = FALSE) {
 #' v_rdegree(x)
 #' v_sde(x)
 #' v_confidence_angle(x)
-#' v_kappa(x)
+#' estimate_k(x)
 NULL
 
 #' @rdname stats
 #' @export
 v_mean <- function(x) {
   transform <- FALSE
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     v <- to_vec(x)
     transform <- TRUE
   } else {
@@ -417,7 +360,7 @@ v_mean <- function(x) {
   mu <- xbar / Rbar
 
   if (transform) {
-    to_struct(mu, class(x))
+    to_spherical(mu, class(x))
   } else {
     mu
   }
@@ -426,7 +369,7 @@ v_mean <- function(x) {
 #' @rdname stats
 #' @export
 v_var <- function(x) {
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     v <- to_vec(x)
   } else {
     v <- vec2mat(x)
@@ -437,7 +380,7 @@ v_var <- function(x) {
 }
 
 v_sd <- function(x) {
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     v <- to_vec(x)
   } else {
     v <- vec2mat(x)
@@ -454,7 +397,7 @@ v_sd <- function(x) {
 #' @export
 v_delta <- function(x) {
   transform <- FALSE
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     v <- to_vec(x)
     transform <- TRUE
   } else {
@@ -474,7 +417,7 @@ v_delta <- function(x) {
 #' @rdname stats
 #' @export
 v_rdegree <- function(x) {
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     v <- to_vec(x)
   } else {
     v <- vec2mat(x)
@@ -489,7 +432,7 @@ v_rdegree <- function(x) {
 #' @rdname stats
 #' @export
 v_sde <- function(x) {
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     v <- to_vec(x)
   } else {
     v <- vec2mat(x)
@@ -510,7 +453,7 @@ v_sde <- function(x) {
 #' @rdname stats
 #' @export
 v_confidence_angle <- function(x, alpha = 0.05) {
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     v <- to_vec(x)
   } else {
     v <- vec2mat(x)
@@ -519,7 +462,7 @@ v_confidence_angle <- function(x, alpha = 0.05) {
   e_alpha <- -log(alpha)
   q <- asin(sqrt(e_alpha) * v_sde(v))
 
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     rad2deg(q)
   } else {
     q
@@ -528,8 +471,8 @@ v_confidence_angle <- function(x, alpha = 0.05) {
 
 #' @rdname stats
 #' @export
-v_kappa <- function(x) {
-  if (is.structure(x)) {
+estimate_k <- function(x) {
+  if (is.spherical(x)) {
     v <- to_vec(x)
   } else {
     v <- vec2mat(x)
@@ -566,7 +509,7 @@ v_kappa <- function(x) {
 #' }
 fisher_statistics <- function(x) {
   transform <- FALSE
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     x <- to_vec(x)
     transform <- TRUE
   } else {
@@ -602,13 +545,13 @@ fisher_statistics <- function(x) {
 #' @export
 vslerp <- function(x, y, t) {
   transform <- FALSE
-  if (is.structure(x)) {
+  if (is.spherical(x)) {
     x <- to_vec(x)
   } else {
     x <- vec2mat(x)
     transform <- TRUE
   }
-  if (is.structure(y)) {
+  if (is.spherical(y)) {
     y <- to_vec(y)
   } else {
     y <- vec2mat(y)
@@ -617,7 +560,7 @@ vslerp <- function(x, y, t) {
   slerp <- (x * sin((1 - t) * theta) + y * sin(t * theta)) / sin(theta)
 
   if (transform) {
-    to_struct(slerp, class(x))
+    to_spherical(slerp, class(x))
   } else {
     slerp
   }
@@ -742,8 +685,8 @@ center <- function(x, max_vertical = FALSE) {
   } else {
     x_cent <- x_trans
   }
-  if (is.structure(x)) {
-    x_cent <- to_struct(x_cent, class(x))
+  if (is.spherical(x)) {
+    x_cent <- to_spherical(x_cent, class(x))
   }
   x_cent
 }

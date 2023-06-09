@@ -1,3 +1,14 @@
+vec2mat <- function(x) {
+  class <- class(x)
+  if (is.null(dim(x))) {
+    m <- as.matrix(t(x))
+  } else {
+    m <- as.matrix(x)
+  }
+  class(m) <- class
+  m
+}
+
 rad2deg <- function(rad) {
   rad * 180 / pi
 }
@@ -47,3 +58,6 @@ cot <- function(x) {
 cotd <- function(x) {
   1 / tand(x)
 }
+
+
+?near

@@ -11,7 +11,7 @@
 \alias{is.line}
 \alias{is.plane}
 \alias{is.fault}
-\alias{is.structure}
+\alias{is.spherical}
 \title{Structure classes}
 \usage{
 Line(azimuth, plunge)
@@ -32,7 +32,7 @@ is.plane(p)
 
 is.fault(f)
 
-is.structure(l)
+is.spherical(l)
 }
 \arguments{
 \item{azimuth, plunge}{numeric vectors. Azimuth and plunge of a line (in
@@ -44,8 +44,9 @@ degrees)}
 \item{sense}{(optional) integer. Sense of the line on a fault plane. Either
 \code{1}or \code{-1} for normal/dextral or thrust/sinistral offset, respectively.}
 
-\item{l, p, f}{numeric vector, array, or object of class \code{"line"}, \code{"plane"},
-or \code{"fault"}}
+\item{l, p, f}{numeric vector or array containing the spherical coordinates
+(1st element/column is azimuth, 2nd element/column is inclination, both in
+degrees), or object of class \code{"line"}, \code{"plane"}, or \code{"fault"}}
 }
 \description{
 \code{Line}, \code{Plane}, and \code{Fault} create a \code{"line"}, \code{"plane"}, and \code{"fault"}
@@ -62,7 +63,7 @@ class object, respectively, from the given set of values.
 are an object of class \code{"line"}, \code{"plane"}, or \code{"fault"}, respectively, and
 \code{FALSE} otherwise.
 
-\code{is.structure} returns \code{TRUE} if the argument' class is one of \code{"line"},
+\code{is.spherical} returns \code{TRUE} if the argument's class is one of \code{"line"},
 \code{"plane"}, or \code{"fault"} and \code{FALSE} otherwise
 
 \code{as.line}, \code{as.plane}, and \code{as.fault} are is generic functions. If the

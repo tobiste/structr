@@ -37,7 +37,9 @@ vec2fol0 <- function(x, y, z) {
 }
 
 
-#' Coordinate conversion
+#' Cartesian and spherical coordinates
+#'
+#' Converts between Cartesian and spherical coordinates
 #'
 #' @param l,p two column array, or two element vector. Spherical coordinates
 #' (in degrees) of lines (`"azimuth"`, `"plunge"`) or plane (`"dip_direction"`,
@@ -60,7 +62,7 @@ to_vec <- function(x) {
 
 #' @rdname coordinates
 #' @export
-to_struct <- function(x, class = c("line", "plane")) {
+to_spherical <- function(x, class = c("line", "plane")) {
   class <- match.arg(class)
   if (class == "line") {
     vec2line(x)
@@ -101,6 +103,21 @@ vec2plane <- function(x) {
   p
 }
 
+
+geo2vec0 <- function(lat, lon) {
+  cbind(
+    x = cosd(lat) * cosd(lon),
+    y = cosd(lat) * sind(lon),
+    z = sind(lat)
+  )
+}
+
+geo2vec <- function(g) {
+  x <- vec2mat(g)
+  geo2vec0(x[, 1], x[, 2])
+}
+
+
 #' Structure classes
 #'
 #' @description
@@ -113,8 +130,9 @@ vec2plane <- function(x) {
 #' `is.line`, `is.plane`, and `is.fault` test if its argument is a `"line"`,
 #' `"plane"`, and `"fault"` class object, respectively.
 #'
-#' @param l,p,f numeric vector, array, or object of class `"line"`, `"plane"`,
-#' or `"fault"`
+#' @param l,p,f numeric vector or array containing the spherical coordinates
+#' (1st element/column is azimuth, 2nd element/column is inclination, both in
+#' degrees), or object of class `"line"`, `"plane"`, or `"fault"`
 #' @param azimuth,plunge numeric vectors. Azimuth and plunge of a line (in
 #' degrees)
 #' @param dip_direction,dip numeric vectors. Dip direction and dip of a plane
@@ -126,7 +144,7 @@ vec2plane <- function(x) {
 #' are an object of class `"line"`, `"plane"`, or `"fault"`, respectively, and
 #' `FALSE` otherwise.
 #'
-#' `is.structure` returns `TRUE` if the argument' class is one of `"line"`,
+#' `is.spherical` returns `TRUE` if the argument's class is one of `"line"`,
 #' `"plane"`, or `"fault"` and `FALSE` otherwise
 #'
 #' `as.line`, `as.plane`, and `as.fault` are is generic functions. If the
@@ -235,6 +253,6 @@ is.fault <- function(f) {
 
 #' @rdname classes
 #' @export
-is.structure <- function(l) {
+is.spherical <- function(l) {
   inherits(l, "plane") | inherits(l, "line") | inherits(l, "fault")
 }

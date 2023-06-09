@@ -3,16 +3,16 @@
 \name{coordinates}
 \alias{coordinates}
 \alias{to_vec}
-\alias{to_struct}
+\alias{to_spherical}
 \alias{line2vec}
 \alias{plane2vec}
 \alias{vec2line}
 \alias{vec2plane}
-\title{Coordinate conversion}
+\title{Cartesian and spherical coordinates}
 \usage{
 to_vec(x)
 
-to_struct(x, class = c("line", "plane"))
+to_spherical(x, class = c("line", "plane"))
 
 line2vec(l)
 
@@ -32,7 +32,7 @@ vec2plane(x)
 \code{"dip"}).}
 }
 \description{
-Coordinate conversion
+Converts between Cartesian and spherical coordinates
 }
 \examples{
 cbind(c(90, 89), c(45, 46)) |>

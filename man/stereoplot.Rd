@@ -7,21 +7,43 @@
 \code{\link[RFOC:net]{RFOC::net()}}
 }
 \usage{
-stereoplot(col = grDevices::gray(0.9), border = "black", lwd = 1, main = "N")
+stereoplot(
+  guides = TRUE,
+  d = 10,
+  col = grDevices::gray(0.9),
+  lwd = 1,
+  lty = 1,
+  border = "black",
+  title = NULL,
+  sub = NULL,
+  centercross = TRUE,
+  ticks = NULL,
+  ...
+)
 }
 \arguments{
-\item{col}{color of lines}
+\item{guides}{logical. Whether guides should be added to the plot (\code{TRUE} by default)}
+
+\item{d}{integer. Angle distance between guides. Default: 10}
+
+\item{col}{color of guide lines}
+
+\item{lwd}{linewidth of guide lines}
+
+\item{lty}{linetype of guide lines}
 
 \item{border}{color of outer rim of stereo plot}
 
-\item{lwd}{linewidth of lines description}
+\item{title, sub}{character. Title and subtitle of the plot}
 
-\item{main}{title of the plot (\code{"N"} by default)}
+\item{centercross}{logical. Whether a center cross should be added (\code{TRUE} by default)}
+
+\item{ticks}{integer. Angle between ticks. if \code{NULL} (the default), no ticks are drawn.}
 }
 \description{
 Initialize the plot for equal-area stereographic projections, i.e. Lambert
 azimuthal Equal-Area projections (Schmidt).
 }
 \examples{
-stereoplot()
+stereoplot(ticks = 45, title = "title", sub = "subtitle")
 }

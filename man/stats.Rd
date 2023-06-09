@@ -8,7 +8,7 @@
 \alias{v_rdegree}
 \alias{v_sde}
 \alias{v_confidence_angle}
-\alias{v_kappa}
+\alias{estimate_k}
 \title{Statistical estimators of the distribution of a set of vectors}
 \usage{
 v_mean(x)
@@ -23,7 +23,7 @@ v_sde(x)
 
 v_confidence_angle(x, alpha = 0.05)
 
-v_kappa(x)
+estimate_k(x)
 }
 \arguments{
 \item{x}{numeric. Can be three element vector, three column array, or an
@@ -55,7 +55,7 @@ value might not be a good estimator.
 \code{v_confidence_angle} returns the semi-vertical angle \eqn{q} about the
 mean \eqn{\mu} (in degree if \code{x} is a \code{"plane"} or \code{"line"}, or in radians
 if otherwise). The \eqn{100(1-\alpha)\%} confidence interval is than given by \eqn{\mu \pm q}.
-\code{v_kappa} returns the estimation for the concentration of the von Mises-Fisher distribution \eqn{\kappa} (after Sra, 2011).
+\code{estimate_k} returns the estimated concentration of the von Mises-Fisher distribution \eqn{\kappa} (after Sra, 2011).
 }
 \examples{
 x <- rvmf(100, mu = Line(120, 50), k = 5)
@@ -65,7 +65,7 @@ v_delta(x)
 v_rdegree(x)
 v_sde(x)
 v_confidence_angle(x)
-v_kappa(x)
+estimate_k(x)
 }
 \seealso{
 \code{\link[=vresultant]{vresultant()}}, \code{\link[=fisher_statistics]{fisher_statistics()}}

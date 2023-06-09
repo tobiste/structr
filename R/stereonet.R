@@ -43,12 +43,15 @@ fix_inc <- function(A) {
   return(A)
 }
 
-stereo_coords <- function(az, inc) {
-  sph <- cosd(inc)
-  sph[sph >= 0] <- 0
-  sph[sph < 0] <- 1
+#' Stereographic projection
+#'
+#' Transformation of spherical coordinates into the stereographic projection
+stereo_coords <- function(az, inc, upper.hem = FALSE) {
+  if (upper.hem) {
+    az <- az + 180
+  }
 
-  A <- list(az = az, inc = inc)
+  A <- list(az = az, inc = 90 - inc)
   A$inc <- inc
   A$az <- az
   B <- fix_inc(A)
@@ -96,7 +99,7 @@ stereo_coords <- function(az, inc) {
 #' stereo_point(Line(azimuth = c(90, 80), plunge = c(10, 75)), lab = c("L", "L"))
 #' stereo_point(Plane(120, 30), lab = "P", col = "red")
 stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = .75, upper.hem = FALSE, ...) {
-  stopifnot(is.structure(x))
+  stopifnot(is.spherical(x))
 
   if (is.plane(x) | is.fault(x)) {
     x[, 1] <- 180 + x[, 1]
@@ -104,13 +107,10 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = .
   }
   # class(x) <- c("matrix", "array")
 
-  if (upper.hem) {
-    x[, 1] <- x[, 1] + 180
-  }
-
   crds <- stereo_coords(
     x[, 1],
-    90 - x[, 2]
+    x[, 2],
+    upper.hem
   )
 
 
@@ -158,24 +158,18 @@ stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 21, col 
   if (length(lwd) == 1) lwd <- rep(lwd, nrow(x))
   if (length(lty) == 1) lty <- rep(lty, nrow(x))
 
-
-
   x[, 1] <- 180 + x[, 1]
   x[, 2] <- 90 - x[, 2]
 
-
-  if (upper.hem) {
-    x[, 1] <- x[, 1] + 180
-    x[, 3] <- x[, 3] + 180
-  }
-
   crds.p <- stereo_coords(
     x[, 1],
-    90 - x[, 2]
+    x[, 2],
+    upper.hem
   )
   crds.l <- stereo_coords(
     x[, 3],
-    90 - x[, 4]
+    x[, 4],
+    upper.hem
   )
 
   for (i in 1:nrow(crds.p)) {
@@ -230,13 +224,13 @@ NULL
 #' @rdname stereo_cones
 #' @export
 stereo_smallcircle <- function(x, d = 90, col = 1, N = 100, BALL.radius = .25, upper.hem = FALSE, lty = 1, lwd = 1, ...) {
-  stopifnot(is.structure(x))
+  stopifnot(is.spherical(x))
   if (length(col) == 1) col <- rep(col, nrow(x))
   if (length(lty) == 1) lty <- rep(lty, nrow(x))
   if (length(lwd) == 1) lwd <- rep(lwd, nrow(x))
 
   az <- x[, 1]
-  inc <- 90 - x[, 2]
+  inc <- x[, 2]
 
   phi <- seq(from = 0, to = 2 * pi, length = N)
   theta <- deg2rad(d)
@@ -253,7 +247,7 @@ stereo_smallcircle <- function(x, d = 90, col = 1, N = 100, BALL.radius = .25, u
     r2 <- sqrt(g[, 1]^2 + g[, 2]^2 + g[, 3]^2)
     phi2 <- atan2d(g[, 2], g[, 1])
     theta2 <- acosd(g[, 3] / r2)
-    Sc <- stereo_coords(phi2, theta2)
+    Sc <- stereo_coords(phi2, theta2, upper.hem)
 
     diss <- sqrt((Sc[1:(N - 1), "x"] - Sc[2:(N), "x"])^2 + (Sc[1:(N - 1), "y"] - Sc[2:(N), "y"])^2)
     ww <- which(diss > 0.9 * BALL.radius)
@@ -268,7 +262,7 @@ stereo_smallcircle <- function(x, d = 90, col = 1, N = 100, BALL.radius = .25, u
 #' @rdname stereo_cones
 #' @export
 stereo_greatcircle <- function(x, ...) {
-  stopifnot(is.structure(x))
+  stopifnot(is.spherical(x))
   x[, 2] <- 90 + x[, 2]
   stereo_smallcircle(x, d = 90, ...) # add circle
 }
@@ -276,7 +270,7 @@ stereo_greatcircle <- function(x, ...) {
 
 #' Circle plot
 #' @noRd
-pcirc <- function(col = "black", border = "black", ndiv = 36) {
+stereoplot_frame <- function(col = "black", border = "black", ndiv = 36) {
   phi <- seq(0, 2 * pi, by = 2 * pi / ndiv)
   x <- cos(phi)
   y <- sin(phi)
@@ -291,41 +285,70 @@ pcirc <- function(col = "black", border = "black", ndiv = 36) {
 #' Initialize the plot for equal-area stereographic projections, i.e. Lambert
 #' azimuthal Equal-Area projections (Schmidt).
 #'
-#' @param col color of lines
+#' @param guides logical. Whether guides should be added to the plot (`TRUE` by default)
+#' @param d integer. Angle distance between guides. Default: 10
+#' @param col color of guide lines
+#' @param lwd linewidth of guide lines
+#' @param lty linetype of guide lines
 #' @param border color of outer rim of stereo plot
-#' @param lwd linewidth of lines description
-#' @param main title of the plot (`"N"` by default)
+#' @param title,sub character. Title and subtitle of the plot
+#' @param centercross logical. Whether a center cross should be added (`TRUE` by default)
+#' @param ticks integer. Angle between ticks. if `NULL` (the default), no ticks are drawn.
 #' @source [RFOC::net()]
 #' @importFrom grDevices gray
 #' @importFrom graphics title lines segments
 #' @export
 #' @examples
-#' stereoplot()
-stereoplot <- function(col = grDevices::gray(0.9), border = "black", lwd = 1, main = "N") {
-  plot(c(-1, 1), c(-1, 1), type = "n", xlab = "", ylab = "", asp = 1, axes = FALSE, ann = FALSE)
-  graphics::title(main)
+#' stereoplot(ticks = 45, title = "title", sub = "subtitle")
+stereoplot <- function(guides = TRUE, d = 10, col = grDevices::gray(0.9),
+                       lwd = 1, lty = 1, border = "black", title = NULL,
+                       sub = NULL, centercross = TRUE, ticks = NULL, ...) {
+  plot(c(-1, 1), c(-1, 1),
+    type = "n", xlab = NULL, ylab = NULL, asp = 1,
+    axes = FALSE, ann = FALSE
+  )
 
+  graphics::title(main = title, sub = sub)
+  graphics::mtext("N")
+
+  if (guides) stereo_guides(d, col = col, lwd = lwd, lty = lty)
+
+  if (!is.null(ticks)) stereoplot_ticks(angle = ticks, col = border)
+
+  if (centercross) points(0, 0, pch = 3, col = border)
+  # graphics::segments(c(-0.02, 0), c(0, -0.02), c(0.02, 0), c(0, 0.02),
+  #                    col = "black"
+  # )
+  stereoplot_frame(col = col, border = border, ndiv = 100)
+}
+
+stereoplot_ticks <- function(radius = 1, lenght = 0.02, angle = 10, ...) {
+  DR <- radius + lenght
+  ang <- pi * seq(0, 360, by = angle) / 180
+  segments(
+    radius * cos(ang), radius * sin(ang), DR * cos(ang), DR * sin(ang),
+    ...
+  )
+}
+
+stereo_guides <- function(d = 10, col = "black", lwd = 1, lty = 1) {
   lam <- seq(from = 0, to = 180, by = 5) * DEG2RAD()
   lam0 <- pi / 2
-  for (j in seq(from = -80, to = 80, by = 10)) {
+  for (j in seq(from = -90 + d, to = 90 - d, by = 10)) {
     phi <- deg2rad(j)
     R <- sqrt(2) / 2
     kp <- sqrt(2 / (1 + cos(phi) * cos(lam - lam0)))
     x <- R * kp * cos(phi) * sin(lam - lam0)
     y <- R * kp * sin(phi)
-    lines(x, y, col = col, lwd = lwd)
+    lines(x, y, col = col, lwd = lwd, lty = lty)
   }
   phi <- seq(from = -90, to = 90, by = 5) * DEG2RAD()
-  for (j in seq(from = 10, to = 170, by = 10)) {
+  for (j in seq(from = d, to = 180 - d, by = d)) {
     lam <- deg2rad(j)
     R <- sqrt(2) / 2
     kp <- sqrt(2 / (1 + cos(phi) * cos(lam - lam0)))
     x <- R * kp * cos(phi) * sin(lam - lam0)
     y <- R * kp * sin(phi)
-    lines(x, y, col = col, lwd = lwd)
+    lines(x, y, col = col, lwd = lwd, lty = lty)
   }
-  graphics::segments(c(-0.02, 0), c(0, -0.02), c(0.02, 0), c(0, 0.02),
-    col = "black"
-  )
-  pcirc(col = col, border = border, ndiv = 72)
 }
