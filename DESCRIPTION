@@ -1,5 +1,5 @@
 Type: Package
-Package: structR
+Package: structr
 Title: Structural geology in R
 Version: 0.1.0
 Author: Tobias Stephan
