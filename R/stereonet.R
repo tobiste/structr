@@ -46,7 +46,7 @@ fix_inc <- function(A) {
 #' Stereographic projection
 #'
 #' Transformation of spherical coordinates into the stereographic projection
-#' 
+#'
 #' @param az,inc numeric vectors. Azimuth and Inclination in degrees.
 #' @param upper.hem logical. Whether the projection is shown for upper
 #' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
@@ -58,8 +58,8 @@ stereo_coords <- function(az, inc, upper.hem = FALSE) {
   }
 
   A <- list(az = az, inc = 90 - inc)
-  A$inc <- inc
-  A$az <- az
+  # A$inc <- inc
+  # A$az <- az
   B <- fix_inc(A)
   trot <- deg2rad(B$az)
   tinc <- B$inc
@@ -102,7 +102,7 @@ stereo_coords <- function(az, inc, upper.hem = FALSE) {
 #' @export
 #' @examples
 #' stereoplot()
-#' stereo_point(Line(azimuth = c(90, 80), plunge = c(10, 75)), lab = c("L", "L"))
+#' stereo_point(Line(azimuth = c(90, 80), plunge = c(10, 75)), lab = c("L1", "L2"))
 #' stereo_point(Plane(120, 30), lab = "P", col = "red")
 stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = .75, upper.hem = FALSE, ...) {
   stopifnot(is.spherical(x))
@@ -133,7 +133,7 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = .
 #' @param x Object of class `"fault"`
 #' @param hoeppner logical. `TRUE` for Hoeppner plot
 #' @param greatcirles logical. Whether greatcircles are displayed (`TRUE`, the default) or poles to planes (`FALSE`)
-#' @param pch,col,lwd,lty lotting parameters for planes and lines
+#' @param pch,col,lwd,lty plotting parameters for planes and lines
 #' @param lab character. text labels
 #' @param cex character expansion of labels
 #' @param text.pos position for labels
@@ -236,7 +236,7 @@ stereo_smallcircle <- function(x, d = 90, col = 1, N = 100, BALL.radius = .25, u
   if (length(lwd) == 1) lwd <- rep(lwd, nrow(x))
 
   az <- x[, 1]
-  inc <- x[, 2]
+  inc <- 90 - x[, 2]
 
   phi <- seq(from = 0, to = 2 * pi, length = N)
   theta <- deg2rad(d)
@@ -253,7 +253,7 @@ stereo_smallcircle <- function(x, d = 90, col = 1, N = 100, BALL.radius = .25, u
     r2 <- sqrt(g[, 1]^2 + g[, 2]^2 + g[, 3]^2)
     phi2 <- atan2d(g[, 2], g[, 1])
     theta2 <- acosd(g[, 3] / r2)
-    Sc <- stereo_coords(phi2, theta2, upper.hem)
+    Sc <- stereo_coords(phi2, 90 - theta2, upper.hem)
 
     diss <- sqrt((Sc[1:(N - 1), "x"] - Sc[2:(N), "x"])^2 + (Sc[1:(N - 1), "y"] - Sc[2:(N), "y"])^2)
     ww <- which(diss > 0.9 * BALL.radius)

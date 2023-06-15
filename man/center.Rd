@@ -18,15 +18,19 @@ Object of class of \code{x}
 }
 \description{
 Rotate vector object to position that eigenvectors are parallel to
-axes of coordinate system: E1||X (north-south), E2||X(east-west),
-E3||X(vertical)
+axes of coordinate system: E3||X (north-south), E2||X(east-west),
+E1||X(vertical)
 }
 \examples{
-x <- rvmf(100, mu = Line(120, 50), k = 5)
+set.seed(1)
+mu <- Line(120, 50)
+x <- rvmf(100, mu = mu, k = 20)
 x_centered <- center(x)
 stereoplot()
 stereo_point(x, col = "grey")
+# stereo_point(mu, col = "red")
 stereo_point(x_centered, col = "black")
+stereo_point(Line(c(0, 90, 180), c(0, 0, 90)), col = 2:4, lab = c("E3", "E2", "E1"))
 }
 \seealso{
 \code{\link[=or_eigen]{or_eigen()}}

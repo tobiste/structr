@@ -1,4 +1,4 @@
-#' The von Mises-Fisher Distribution
+#' von Mises-Fisher Distribution
 #'
 #' Density and random generation for the spherical normal distribution with mean
 #' and kappa.
@@ -9,7 +9,9 @@
 #' @param k numeric. The concentration parameter (\eqn{\kappa}) of the the von
 #' Mises-Fisher distributiuon
 #' @seealso [v_unif()] for alternative algorithms to generate uniform
-#' distributed samples on a sphere
+#' distributed samples on a sphere, [rkent()] for Kent distribution.
+#' @source Adapted fom [rotasym::r_vMF()] and [rotasym::d_vMF()]
+#' @importFrom rotasym r_vMF d_vMF
 #' @name vonmises-fisher
 #' @examples
 #' # example code
@@ -23,6 +25,7 @@ NULL
 rvmf <- function(n = 100, mu = c(1, 0, 0), k = 5) {
   transform <- FALSE
   if (is.spherical(mu)) {
+    class = class(mu)
     mu <- line2vec(mu) |> c()
     transform <- TRUE
   }
@@ -30,7 +33,7 @@ rvmf <- function(n = 100, mu = c(1, 0, 0), k = 5) {
   res <- rotasym::r_vMF(n, mu, k)
   colnames(res) <- c("x", "y", "z")
   if (transform) {
-    res |> vec2line()
+    res |> to_spherical(class)
   } else {
     res
   }
@@ -46,14 +49,11 @@ dvmf <- function(x, mu, k = 5) {
 }
 
 
-#' Kent distribution
-
-
 
 #' Uniformly distributed vectors
 #'
 #' Create uniformly distributed vectors using the algorithm *Spherical Fibonacci Spiral points on a sphere* algorithm (John Burkardt) or
-#'  *Golden Section Spiral points on a sphere*.
+#' *Golden Section Spiral points on a sphere*.
 #'
 #' @param class character. Coordinate class of the output vectors.
 #' @param n number of observations
@@ -99,4 +99,124 @@ v_unif <- function(class = NULL, n = 100, method = c("gss", "sfs")) {
     dc <- to_spherical(dc, class)
   }
   dc
+}
+
+#' Spherical Fisher-Bingham distribution
+#' 
+#' Simulation of random values from a spherical Fisher-Bingham distribution.
+#'
+#' @param n integer. number of random samples to be generated
+#' @param mu numeric. Can be three element vector, three column array, or an
+#' object of class `"line"` or `"plane"`
+#' @param k numeric. The concentration parameter (\eqn{\kappa})
+#' @param A symmetric matrix
+#' @source Adapted from [Directional::rfb()]
+#' @importFrom Directional rfb
+#' @examples
+#' \dontrun{
+#' x <- rfb(100, mu = Line(120, 50), k = 5, A = diag(c(-1, 0, 1)))
+#' stereoplot()
+#' stereo_point(x)
+#' }
+rfb <- function(n = 100, mu = c(1, 0, 0), k = 5, A){
+  transform <- FALSE
+  if (is.spherical(mu)) {
+    class <- class(mu)
+    mu <- line2vec(mu) |> c()
+    transform <- TRUE
+  }
+  res <- Directional::rfb(n = n, k = k, m = mu, A=A)
+  colnames(res) <- c("x", "y", "z")
+  if (transform) {
+    res |> to_spherical(class)
+  } else {
+    res
+  }
+}
+
+
+#' Kent distribution
+#' 
+#' Simulation of random values from a spherical Kent distribution.
+#'
+#' @param n integer. number of random samples to be generated
+#' @param mu numeric. Can be three element vector, three column array, or an
+#' object of class `"line"` or `"plane"`
+#' @param k numeric. The concentration parameter (\eqn{\kappa})
+#' @param b numeric. \eqn{\beta} (ellipticity): \eqn{0 \leq \beta < \kappa}
+#' @source Adapted from [Directional::rkent()]
+#' @seealso [rvmf()] for von Mises-Fisher distribution
+#' @importFrom Directional rkent
+#' @export
+#' @examples
+#' x <- rkent(100, mu = Line(120, 50), k = 5, b = 1)
+#' stereoplot()
+#' stereo_point(x)
+rkent <- function(n = 100, mu = c(1, 0, 0), k = 5, b){
+  transform <- FALSE
+  if (is.spherical(mu)) {
+    class <- class(mu)
+    mu <- line2vec(mu) |> c()
+    transform <- TRUE
+  }
+  
+  res <- Directional::rkent(n = n, k = k, m = mu, b=b)
+  colnames(res) <- c("x", "y", "z")
+  if (transform) {
+    res |> to_spherical(class)
+  } else {
+    res
+  }
+}
+
+
+#' MLE of spherical rotational symmetric distributions
+#' 
+#' Estimates the parameters of a von Mises-Fisher or Kent distribution. 
+#'
+#' @param x numeric. Can be three element vector, three column array, or an 
+#' object of class `"line"` or `"plane"`
+#' @source Adapted from [Directional::kent.mle()] and [Directional::vmf.mle()]
+#' @name dist.mle
+#' @importFrom Directional kent.mle vmf.mle
+#' @examples
+#' x <- rkent(100, mu = Line(120, 50), k = 5, b = 1)
+#' kent.mle(x)
+#' vmf.mle(x)
+NULL
+
+#' @rdname dist.mle
+#' @export
+kent.mle <- function(x){
+  transform <- FALSE
+  if (is.spherical(x)) {
+    class <- class(x)
+    x <- to_vec(x)
+    transform <- TRUE
+  }
+  res = Directional::kent.mle(x)
+  
+  res$G <- t(res$G)
+  if(transform){
+    res$G <- to_spherical(res$G, class)
+  } 
+  res$runtime <- NULL
+  return(res)
+}
+
+#' @rdname dist.mle
+#' @export
+vmf.mle <- function(x){
+  transform <- FALSE
+  if (is.spherical(x)) {
+    class <- class(x)
+    x <- to_vec(x)
+    transform <- TRUE
+  }
+  res = Directional::vmf.mle(x, fast = TRUE)
+  
+  if(transform){
+    res$mu <- to_spherical(res$mu, class)
+  } 
+  return(res)
 }

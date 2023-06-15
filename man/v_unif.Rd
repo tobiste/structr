@@ -2,8 +2,7 @@
 % Please edit documentation in R/sph_distribution.R
 \name{v_unif}
 \alias{v_unif}
-\title{Kent distribution
-Uniformly distributed vectors}
+\title{Uniformly distributed vectors}
 \usage{
 v_unif(class = NULL, n = 100, method = c("gss", "sfs"))
 }

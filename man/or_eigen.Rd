@@ -24,13 +24,14 @@ list containing
 Decomposition of Orientation tensor
 }
 \examples{
+set.seed(1)
 mu <- Line(120, 50)
-x <- rvmf(100, mu = mu, k = 5)
+x <- rvmf(100, mu = mu, k = 20)
 x_eigen <- or_eigen(x)
 x_eigen
 stereoplot()
 stereo_point(x, col = "grey")
-stereo_point(mu, lab = "mu")
+stereo_point(mu, lab = "mu", col = 4)
 stereo_point(x_eigen$vectors, col = c(1, 2, 3), lab = c("E1", "E2", "E3"))
 }
 \seealso{

@@ -4,7 +4,10 @@
 \alias{vonmises-fisher}
 \alias{rvmf}
 \alias{dvmf}
-\title{The von Mises-Fisher Distribution}
+\title{von Mises-Fisher Distribution}
+\source{
+Adapted fom \code{\link[rotasym:vMF]{rotasym::r_vMF()}} and \code{\link[rotasym:vMF]{rotasym::d_vMF()}}
+}
 \usage{
 rvmf(n = 100, mu = c(1, 0, 0), k = 5)
 
@@ -31,5 +34,5 @@ stereo_point(x)
 }
 \seealso{
 \code{\link[=v_unif]{v_unif()}} for alternative algorithms to generate uniform
-distributed samples on a sphere
+distributed samples on a sphere, \code{\link[=rkent]{rkent()}} for Kent distribution.
 }

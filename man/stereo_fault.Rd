@@ -26,7 +26,7 @@ stereo_fault(
 
 \item{greatcirles}{logical. Whether greatcircles are displayed (\code{TRUE}, the default) or poles to planes (\code{FALSE})}
 
-\item{pch, col, lwd, lty}{lotting parameters for planes and lines}
+\item{pch, col, lwd, lty}{plotting parameters for planes and lines}
 
 \item{lab}{character. text labels}
 

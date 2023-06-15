@@ -20,7 +20,8 @@ matrix
 eigenvalue method. See (Watson 1966, Scheidegger 1965).
 }
 \examples{
-x <- rvmf(100, mu = Line(120, 50), k = 5)
+set.seed(1)
+x <- rvmf(100, mu = Line(120, 50), k = 20)
 ortensor(x)
 }
 \seealso{

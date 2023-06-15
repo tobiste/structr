@@ -11,11 +11,12 @@ Depends:
 Imports: 
     ggplot2,
     ggforce,
-    rotasym
+    rotasym,
+    dplyr,
+    Directional
 Suggests: 
     knitr,
-    rmarkdown,
-    testthat (>= 3.0.0)
+    rmarkdown
 Remotes: 
     tobiste/tectonicr
 VignetteBuilder: 
@@ -25,4 +26,3 @@ Language: en-US
 LazyData: true
 RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
-Config/testthat/edition: 3

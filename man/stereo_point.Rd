@@ -41,6 +41,6 @@ Visualization of lines, planes in a stereographic projection.
 }
 \examples{
 stereoplot()
-stereo_point(Line(azimuth = c(90, 80), plunge = c(10, 75)), lab = c("L", "L"))
+stereo_point(Line(azimuth = c(90, 80), plunge = c(10, 75)), lab = c("L1", "L2"))
 stereo_point(Plane(120, 30), lab = "P", col = "red")
 }
