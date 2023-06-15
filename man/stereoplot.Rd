@@ -17,8 +17,7 @@ stereoplot(
   title = NULL,
   sub = NULL,
   centercross = TRUE,
-  ticks = NULL,
-  ...
+  ticks = NULL
 )
 }
 \arguments{

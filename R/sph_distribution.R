@@ -66,6 +66,7 @@ dvmf <- function(x, mu, k = 5) {
 #'  `"gss` is from  http://www.softimageblog.com/archives/115
 #' @seealso [rvmf()] to draw samples from the von Mises Fisher distribution
 #' around a specified mean vector.
+#' @export
 #' @examples
 #' v_unif("line", n = 100, method = "sfs") |>
 #'   ortensor() |>

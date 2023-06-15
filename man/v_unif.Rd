@@ -28,8 +28,12 @@ Create uniformly distributed vectors using the algorithm \emph{Spherical Fibonac
 \verb{"gss} is from  http://www.softimageblog.com/archives/115
 }
 \examples{
-v_unif("line", n = 100, method = "sfs") |> ortensor() |> or_eigen() 
-v_unif("line", n = 100, method = "gss") |> ortensor() |> or_eigen()
+v_unif("line", n = 100, method = "sfs") |>
+  ortensor() |>
+  or_eigen()
+v_unif("line", n = 100, method = "gss") |>
+  ortensor() |>
+  or_eigen()
 }
 \seealso{
 \code{\link[=rvmf]{rvmf()}} to draw samples from the von Mises Fisher distribution

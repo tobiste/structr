@@ -46,6 +46,12 @@ fix_inc <- function(A) {
 #' Stereographic projection
 #'
 #' Transformation of spherical coordinates into the stereographic projection
+#' 
+#' @param az,inc numeric vectors. Azimuth and Inclination in degrees.
+#' @param upper.hem logical. Whether the projection is shown for upper
+#' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
+#' @returns two-column vector with the transformed coordinates
+#' @export
 stereo_coords <- function(az, inc, upper.hem = FALSE) {
   if (upper.hem) {
     az <- az + 180
@@ -302,7 +308,7 @@ stereoplot_frame <- function(col = "black", border = "black", ndiv = 36) {
 #' stereoplot(ticks = 45, title = "title", sub = "subtitle")
 stereoplot <- function(guides = TRUE, d = 10, col = grDevices::gray(0.9),
                        lwd = 1, lty = 1, border = "black", title = NULL,
-                       sub = NULL, centercross = TRUE, ticks = NULL, ...) {
+                       sub = NULL, centercross = TRUE, ticks = NULL) {
   plot(c(-1, 1), c(-1, 1),
     type = "n", xlab = NULL, ylab = NULL, asp = 1,
     axes = FALSE, ann = FALSE

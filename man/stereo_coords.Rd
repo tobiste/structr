@@ -6,6 +6,15 @@
 \usage{
 stereo_coords(az, inc, upper.hem = FALSE)
 }
+\arguments{
+\item{az, inc}{numeric vectors. Azimuth and Inclination in degrees.}
+
+\item{upper.hem}{logical. Whether the projection is shown for upper
+hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
+}
+\value{
+two-column vector with the transformed coordinates
+}
 \description{
 Transformation of spherical coordinates into the stereographic projection
 }

@@ -49,7 +49,7 @@ vnorm <- function(x) {
   }
   xn <- x / vlength(x)
   if (transform) {
-    to_struct(xn)
+    to_spherical(xn)
   } else {
     xn
   }
@@ -78,7 +78,7 @@ vcross <- function(x, y) {
   xy <- cbind(x = vx, y = vy, z = vz)
 
   if (transform) {
-    to_struct(xy, class)
+    to_spherical(xy, class)
   } else {
     xy
   }
@@ -126,7 +126,7 @@ vrotate <- function(x, rotaxis, rotangle) {
   xrot <- x + vax * sin(rotangle) + vcross(rotaxis, vax) * 2 * (sin(rotangle / 2))^2 # Helmut
 
   if (transform) {
-    to_struct(xrot, class)
+    to_spherical(xrot, class)
   } else {
     colnames(xrot) <- c("x", "y", "z")
     xrot
@@ -152,7 +152,7 @@ vrotaxis <- function(x, y) {
   xy / vnorm(xy)
 
   if (transform) {
-    to_struct(xy, class)
+    to_spherical(xy, class)
   } else {
     colnames(xy) <- c("x", "y", "z")
     xy
@@ -212,7 +212,7 @@ vproject <- function(x, y) {
   xpr <- vproject_length(x, y) * y
 
   if (transform) {
-    to_struct(xpr, class)
+    to_spherical(xpr, class)
   } else {
     colnames(xpr) <- c("x", "y", "z")
     xpr
@@ -241,7 +241,7 @@ vreject <- function(x, y) {
   x_rej <- x - vproject(x, y)
 
   if (transform) {
-    to_struct(x_rej, class)
+    to_spherical(x_rej, class)
   } else {
     colnames(x_rej) <- c("x", "y", "z")
     x_rej
@@ -275,7 +275,7 @@ vtransform <- function(x, A, norm = FALSE) {
   if (norm) xt <- vnorm(xt)
 
   if (transform) {
-    to_struct(xt, class)
+    to_spherical(xt, class)
   } else {
     colnames(xt) <- c("x", "y", "z")
     xt
