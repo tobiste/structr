@@ -4,7 +4,7 @@
 \alias{stereoplot}
 \title{Stereographic projection}
 \source{
-\code{\link[RFOC:net]{RFOC::net()}}
+Adapted from the \code{RFOC} package
 }
 \usage{
 stereoplot(
