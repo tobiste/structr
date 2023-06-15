@@ -300,7 +300,7 @@ stereoplot_frame <- function(col = "black", border = "black", ndiv = 36) {
 #' @param title,sub character. Title and subtitle of the plot
 #' @param centercross logical. Whether a center cross should be added (`TRUE` by default)
 #' @param ticks integer. Angle between ticks. if `NULL` (the default), no ticks are drawn.
-#' @source [RFOC::net()]
+#' @source Adapted from the `RFOC` package
 #' @importFrom grDevices gray
 #' @importFrom graphics title lines segments
 #' @export
