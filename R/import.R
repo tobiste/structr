@@ -1,4 +1,7 @@
-#' Import data from StraboSpot export
+#' Import orientation data from *StraboSpot* field book
+#' 
+#' Import the XLS export of field book data or StraboMobile data from 
+#' \url{strabospot.org/my_data} into R's work space
 #' 
 #' @param file the name of the file which the data are to be read from. 
 #' @param tag_cols logical. Whether the Tag columns should be summarized in a 
@@ -15,9 +18,10 @@
 #' @returns `list` containing the following objects:
 #' \describe{
 #' \item{`data`}{`"tbl_df"` object. `"sf"` if `sf == TRUE`.}
-#' \item{`planar`}{Plane elements. Same row ids as in `data`.}
-#' \item{`linear`}{Line elements. Same row ids as in `data`.}
+#' \item{`planar`}{Plane elements. Same row IDs as in `data`.}
+#' \item{`linear`}{Line elements. Same row IDs as in `data`.}
 #' }
+#' @name strabo
 #' @examples
 #' \dontrun{
 #' file = "E:/Lakehead/Field Work/StraboSpot_Output_11_01_2022_TS.xlsx"
@@ -25,8 +29,19 @@
 #' stereoplot(); 
 #' stereo_greatcircle(dt$planar, col = "lightgrey") 
 #' stereo_point(dt$linear)
+#' 
+#' read_strabo_mobile("C:/Users/tobis/Downloads/StraboSpot_Search_06_16_2023.txt")
 #' }
+NULL
+
+#' @rdname strabo
+#' @export
 read_strabo <- function(file, tag_cols = FALSE, sf = TRUE){
+  Date <- Planar.Orientation.Dipdirection <- Planar.Orientation.Strike <- 
+    Linear.Sense <- Planar.Orientation.Movement <- temp <- Tag <- Linear.Orientation.Trend <- 
+    Planar.Orientation.Fault.Or.Sz.Type <- Planar.Orientation.Unix.Timestamp <- Linear.Orientation.Unix.Timestamp <- 
+    Planar.Orientation.Dip <- Linear.Orientation.Plunge <- Longitude <- Latitude <- NULL
+  
   data = readxl::read_xlsx(file, sheet = 1, skip = 2)
   colnames(data) <- make.names(colnames(data))
   
@@ -41,9 +56,9 @@ read_strabo <- function(file, tag_cols = FALSE, sf = TRUE){
     )
   if(tag_cols){
     data <- data %>% 
-    tidyr::pivot_longer(cols = tidyselect::starts_with("Tag"), names_to = "Tag", values_to = "u") %>%
-    dplyr::filter(u == "X") %>%
-    dplyr::select(-u) %>%
+    tidyr::pivot_longer(cols = tidyselect::starts_with("Tag"), names_to = "Tag", values_to = "temp") %>%
+    dplyr::filter(temp == "X") %>%
+    dplyr::select(-temp) %>%
     dplyr::mutate(Tag = gsub("Tag:", "", Tag))
   }
   
@@ -83,5 +98,35 @@ read_strabo <- function(file, tag_cols = FALSE, sf = TRUE){
     data = res,
     planar = planes,
     linear = lines
+  )
+}
+
+#' @rdname strabo
+#' @export
+read_strabo_mobile <- function(file, sf = TRUE){
+  data0 <- read.table(x, header = TRUE, sep = "\t", colClasses = c("integer", rep("character", 3), rep("numeric", 11), "character")) 
+  
+  lines0 <- dplyr::filter(data0, Type == "L")
+  lines <- as.line(cbind(lines0$Trd.Strk, lines0$Plg.Dip))
+  lines.meta <- lines0 %>% dplyr::select(-c(No., Trd.Strk, Plg.Dip))
+  rownames(lines) <- rownames(lines.meta) <- lines0$No.
+  
+  planes0 <-  dplyr::filter(data0, Type == "P") %>%
+    mutate(Dipdir = (Trd.Strk + 90) %% 360)
+  planes <- as.plane(cbind(planes0$Dipdir, planes0$Plg.Dip))
+  planes.meta <- planes0 %>% dplyr::select(-c(No., Dipdir, Trd.Strk, Plg.Dip))
+  rownames(planes) <- rownames(planes.meta) <- planes0$No.
+  
+  
+  if(sf){
+    lines.meta = sf::st_as_sf(lines.meta, coords = c("Longitude", "Latitude"), crs = "WGS84", remove = FALSE, na.fail = FALSE)
+    planes.meta = sf::st_as_sf(planes.meta, coords = c("Longitude", "Latitude"), crs = "WGS84", remove = FALSE, na.fail = FALSE)
+  } 
+  
+  list(
+    linear = lines,
+    linear_data = lines.meta,
+    planar = planes,
+    planar_data = planes.meta
   )
 }
