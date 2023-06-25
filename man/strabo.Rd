@@ -2,13 +2,16 @@
 % Please edit documentation in R/import.R
 \name{strabo}
 \alias{strabo}
-\alias{read_strabo}
+\alias{read_strabo_xls}
 \alias{read_strabo_mobile}
-\title{Import orientation data from \emph{StraboSpot} field book}
+\alias{read_strabo_JSON}
+\title{Import orientation data from \emph{StraboSpot}}
 \usage{
-read_strabo(file, tag_cols = FALSE, sf = TRUE)
+read_strabo_xls(file, tag_cols = FALSE, sf = TRUE)
 
 read_strabo_mobile(file, sf = TRUE)
+
+read_strabo_JSON(file, dataset = NULL, sf = TRUE)
 }
 \arguments{
 \item{file}{the name of the file which the data are to be read from.}
@@ -18,6 +21,9 @@ single column (may lead to duplicate rows).}
 
 \item{sf}{logical. Whether the output should be a spatial \code{"sf"} object
 using the Longitude and Latitude columns.}
+
+\item{dataset}{character. name of the dataset extracted from \code{JSON} project
+file.}
 }
 \value{
 \code{list} containing the following objects:
@@ -28,17 +34,20 @@ using the Longitude and Latitude columns.}
 }
 }
 \description{
-Import the XLS export of field book data or StraboMobile data from
-\url{strabospot.org/my_data} into R's work space
+Reads the \code{XLS} format export of field book data, the \code{JSON} project file, or the
+\code{txt} export of StraboMobile data from \url{strabospot.org/my_data} and
+creates a list with the metadata, and the line or plane orientations.
 }
 \examples{
 \dontrun{
-file = "E:/Lakehead/Field Work/StraboSpot_Output_11_01_2022_TS.xlsx"
-dt <- read_strabo(file)
+file <- "E:/Lakehead/Field Work/StraboSpot_Output_11_01_2022_TS.xlsx"
+dt <- read_strabo_xls(file)
 stereoplot(); 
 stereo_greatcircle(dt$planar, col = "lightgrey") 
 stereo_point(dt$linear)
 
 read_strabo_mobile("C:/Users/tobis/Downloads/StraboSpot_Search_06_16_2023.txt")
+
+read_strabo_JSON("E:/Lakehead/Field work/StraboSpot_06_25_2023.json", dataset = "TS")
 }
 }

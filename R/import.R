@@ -1,19 +1,25 @@
-#' Import orientation data from *StraboSpot* field book
+#' Import orientation data from *StraboSpot*
 #' 
-#' Import the XLS export of field book data or StraboMobile data from 
-#' \url{strabospot.org/my_data} into R's work space
+#' Reads the `XLS` format export of field book data, the `JSON` project file, or the 
+#' `txt` export of StraboMobile data from \url{strabospot.org/my_data} and 
+#' creates a list with the metadata, and the line or plane orientations.
 #' 
 #' @param file the name of the file which the data are to be read from. 
+#' @param dataset character. name of the dataset extracted from `JSON` project 
+#' file.
 #' @param tag_cols logical. Whether the Tag columns should be summarized in a 
 #' single column (may lead to duplicate rows).
 #' @param sf logical. Whether the output should be a spatial `"sf"` object 
 #' using the Longitude and Latitude columns.
 #' @importFrom readxl read_xlsx
-#' @importFrom lubridate as_datetime
-#' @importFrom dplyr rename mutate filter select full_join
+#' @importFrom rjson fromJSON
+#' @importFrom lubridate as_datetime 
+#' @importFrom dplyr rename mutate filter select full_join arrange pull
 #' @importFrom tidyr pivot_longer
 #' @importFrom tidyselect starts_with
+#' @importFrom tibble tibble as_tibble
 #' @importFrom sf st_as_sf
+#' @importFrom plyr rbind.fill
 #' @importFrom magrittr "%>%"
 #' @returns `list` containing the following objects:
 #' \describe{
@@ -24,19 +30,21 @@
 #' @name strabo
 #' @examples
 #' \dontrun{
-#' file = "E:/Lakehead/Field Work/StraboSpot_Output_11_01_2022_TS.xlsx"
-#' dt <- read_strabo(file)
+#' file <- "E:/Lakehead/Field Work/StraboSpot_Output_11_01_2022_TS.xlsx"
+#' dt <- read_strabo_xls(file)
 #' stereoplot(); 
 #' stereo_greatcircle(dt$planar, col = "lightgrey") 
 #' stereo_point(dt$linear)
 #' 
 #' read_strabo_mobile("C:/Users/tobis/Downloads/StraboSpot_Search_06_16_2023.txt")
+#' 
+#' read_strabo_JSON("E:/Lakehead/Field work/StraboSpot_06_25_2023.json", dataset = "TS")
 #' }
 NULL
 
 #' @rdname strabo
 #' @export
-read_strabo <- function(file, tag_cols = FALSE, sf = TRUE){
+read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE){
   Date <- Planar.Orientation.Dipdirection <- Planar.Orientation.Strike <- 
     Linear.Sense <- Planar.Orientation.Movement <- temp <- Tag <- Linear.Orientation.Trend <- 
     Planar.Orientation.Fault.Or.Sz.Type <- Planar.Orientation.Unix.Timestamp <- Linear.Orientation.Unix.Timestamp <- 
@@ -104,7 +112,8 @@ read_strabo <- function(file, tag_cols = FALSE, sf = TRUE){
 #' @rdname strabo
 #' @export
 read_strabo_mobile <- function(file, sf = TRUE){
-  data0 <- read.table(x, header = TRUE, sep = "\t", colClasses = c("integer", rep("character", 3), rep("numeric", 11), "character")) 
+  x <- Type <- No. <- Trd.Strk <- Plg.Dip <- Dipdir <- NULL 
+  data0 <- utils::read.table(x, header = TRUE, sep = "\t", colClasses = c("integer", rep("character", 3), rep("numeric", 11), "character")) 
   
   lines0 <- dplyr::filter(data0, Type == "L")
   lines <- as.line(cbind(lines0$Trd.Strk, lines0$Plg.Dip))
@@ -130,3 +139,156 @@ read_strabo_mobile <- function(file, sf = TRUE){
     planar_data = planes.meta
   )
 }
+
+#' @rdname strabo
+#' @export
+read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
+  stopifnot(!is.null(dataset))
+  time <- NULL
+  
+  dat <- rjson::fromJSON(file = file)
+  
+  # read tags
+  tags_list <- dat$project$tags
+  tags_df <- tibble::tibble()
+  for (t in seq_along(tags_list)) {
+    tags_list[[t]]$spots <- NULL
+    tags_list[[t]]$eon <- NULL
+    
+    df_t <- tibble::as_tibble(tags_list[[t]])
+    tags_df <- plyr::rbind.fill(tags_df, df_t)
+  }
+  colnames(tags_df) <- paste("tag", colnames(tags_df), sep = "_")
+  
+  # read field book data of dataset
+  ds <- seq_along(dat$project$datasets)
+  ds_name <- character()
+  
+  for (a in ds) {
+    ds_name[a] <- dat$project$datasets[[a]]$name
+  }
+  dsn <- data.frame(ds, ds_name) %>%
+    dplyr::filter(ds_name == dataset) %>%
+    dplyr::pull(ds)
+  
+  
+  DSN <- dat$project$datasets[[dsn]]$spots$features
+  
+  spot <- notes <- date <- character()
+  altitude <- longitude <- latitude <- gps_accuracy <- numeric()
+  tag_id <- numeric()
+  for (i in seq_along(DSN)) {
+    if (DSN[[i]]$geometry$type == "Point" & DSN[[i]]$type == "Feature") {
+      spot[i] <- DSN[[i]]$properties$name
+      date[i] <- DSN[[i]]$properties$date
+      tag_id[i] <- DSN[[i]]$properties$id
+      
+      notes_i <- DSN[[i]]$properties$notes
+      notes[i] <- ifelse(is.null(notes_i), NA, notes_i)
+      
+      altitude_i <- DSN[[i]]$properties$altitude
+      altitude[i] <- ifelse(is.null(altitude_i), NA, altitude_i)
+      
+      longitude[i] <- DSN[[i]]$geometry$coordinates[1]
+      latitude[i] <- DSN[[i]]$geometry$coordinates[2]
+      
+      gps_accuracy_i <- DSN[[i]]$properties$gps_accuracy
+      gps_accuracy[i] <- ifelse(is.null(gps_accuracy_i), NA, gps_accuracy_i)
+    }
+  }
+  fieldbook <- tibble::tibble(spot = spot, longitude, latitude, altitude, note = notes, time = date, gps_accuracy, tag_id) %>%
+    dplyr::mutate(time = lubridate::as_datetime(time)) %>%
+    dplyr::arrange(time) %>%
+    dplyr::left_join(tags_df)
+  if (sf) fieldbook <- sf::st_as_sf(fieldbook, coords = c("longitude", "latitude"), remove = FALSE, crs = "WGS84", na.fail = FALSE)
+  
+  # read structural data
+  orient_df <- data.frame()
+  for (i in seq_along(DSN)) { # loop through each spot
+    if (DSN[[i]]$geometry$type == "Point" & DSN[[i]]$type == "Feature") {
+      spot <- DSN[[i]]$properties$name
+      
+      
+      orient_ls_i <- DSN[[i]]$properties$orientation_data
+      if (!is.null(orient_ls_i)) {
+        orient_df_i <- tibble::tibble()
+        for (j in seq_along(orient_ls_i)) { # loop through each measurement
+          orient_ls_ij <- orient_ls_i[[j]]
+          # concatenate directional_indicators into one column
+          if (length(orient_ls_ij$directional_indicators) > 1) {
+            orient_ls_ij$directional_indicators <- toString(orient_ls_ij$directional_indicators)
+          }
+          
+          # single P or L measurements
+          if (is.null(orient_ls_ij$associated_orientation)) {
+            # append all measurements of spot
+            orient_df_i <- plyr::rbind.fill(orient_df_i, as.data.frame(orient_ls_ij)) |>
+              unique()
+            orient_df_i$spot <- spot
+            orient_df_i$associated <- FALSE
+          } else {
+            # P + L measurements
+            
+            L_ls <- orient_ls_ij$associated_orientation
+            orient_ls_ij$associated_orientation <- NULL
+            
+            ## P measurement
+            P <- orient_ls_ij |>
+              as.data.frame() |>
+              unique()
+            
+            ## L measurement
+            PL <- data.frame()
+            for (k in seq_along(L_ls)) {
+              L <- L_ls[[k]] |>
+                as.data.frame() |>
+                unique()
+              plunge <- L$plunge
+              trend <- L$trend
+              if (!is.na(plunge) & !is.na(trend)) {
+                L$unix_timestamp <- L$plunge <- L$trend <- NULL # don't need this column twice
+                colnames(L) <- paste("associated", colnames(L), sep = "_")
+                L$plunge <- plunge
+                L$trend <- trend
+                
+                ## combine P + L measurements
+                PL_k <- cbind(P, L)
+                PL <- plyr::rbind.fill(PL, PL_k) |>
+                  unique()
+              }
+              PL$associated <- TRUE
+            }
+            
+            # append all P+L measurements of spot
+            orient_df_i <- plyr::rbind.fill(orient_df_i, PL) |>
+              unique()
+            orient_df_i$spot <- spot
+            # orient_ls_ij <- NULL
+          }
+          # combine all spots
+          orient_df <- plyr::rbind.fill(orient_df, orient_df_i) |>
+            unique()
+        }
+      }
+    }
+  }
+  
+  meta <- orient_df %>%
+    tibble::as_tibble() %>%
+    dplyr::left_join(fieldbook) %>%
+    dplyr::arrange(time)
+  # select_if(function(x) !(all(is.na(x)) | all(x==""))) %>%
+  #
+  if (sf) {
+    meta <- sf::st_as_sf(meta)
+  } 
+  
+  planes <- as.plane(cbind(orient_df$strike+90, orient_df$dip))
+  lines <- as.line(cbind(orient_df$trend, orient_df$plunge))
+  
+  list(
+    data = meta,
+    planar = planes,
+    linear = lines
+    )
+}  

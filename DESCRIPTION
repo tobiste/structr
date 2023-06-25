@@ -19,7 +19,10 @@ Imports:
     sf,
     magrittr,
     tidyr,
-    lubridate
+    lubridate,
+    plyr,
+    rjson,
+    tibble
 Suggests: 
     knitr,
     rmarkdown
