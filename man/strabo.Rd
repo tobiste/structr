@@ -34,8 +34,8 @@ file.}
 }
 }
 \description{
-Reads the \code{XLS} format export of field book data, the \code{JSON} project file, or the
-\code{txt} export of StraboMobile data from \url{strabospot.org/my_data} and
+Reads the \code{XLS} format export of field book data, the \code{JSON} project file, or
+the \code{txt} export of StraboMobile data from \url{strabospot.org/my_data} and
 creates a list with the metadata, and the line or plane orientations.
 }
 \examples{

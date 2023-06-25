@@ -1,7 +1,7 @@
 #' Import orientation data from *StraboSpot*
 #' 
-#' Reads the `XLS` format export of field book data, the `JSON` project file, or the 
-#' `txt` export of StraboMobile data from \url{strabospot.org/my_data} and 
+#' Reads the `XLS` format export of field book data, the `JSON` project file, or 
+#' the `txt` export of StraboMobile data from \url{strabospot.org/my_data} and 
 #' creates a list with the metadata, and the line or plane orientations.
 #' 
 #' @param file the name of the file which the data are to be read from. 
@@ -150,15 +150,22 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
   
   # read tags
   tags_list <- dat$project$tags
-  tags_df <- tibble::tibble()
+  tags_df <- spot_tags <- tibble::tibble()
   for (t in seq_along(tags_list)) {
+    spots_t <- data.frame(spot = tags_list[[t]]$spots)
     tags_list[[t]]$spots <- NULL
     tags_list[[t]]$eon <- NULL
     
     df_t <- tibble::as_tibble(tags_list[[t]])
     tags_df <- plyr::rbind.fill(tags_df, df_t)
+    if(nrow(spots_t)>0) {
+      spots_t$tag <- df_t$id
+      spot_tags <- rbind(spot_tags, spots_t)
+    }
   }
   colnames(tags_df) <- paste("tag", colnames(tags_df), sep = "_")
+  tags_df <- dplyr::left_join(unique(spot_tags), tags_df, by = c("tag" = "tag_id")) %>%
+    dplyr::select(-tag)
   
   # read field book data of dataset
   ds <- seq_along(dat$project$datasets)
@@ -176,12 +183,12 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
   
   spot <- notes <- date <- character()
   altitude <- longitude <- latitude <- gps_accuracy <- numeric()
-  tag_id <- numeric()
+  id <- numeric()
   for (i in seq_along(DSN)) {
     if (DSN[[i]]$geometry$type == "Point" & DSN[[i]]$type == "Feature") {
       spot[i] <- DSN[[i]]$properties$name
       date[i] <- DSN[[i]]$properties$date
-      tag_id[i] <- DSN[[i]]$properties$id
+      id[i] <- DSN[[i]]$properties$id
       
       notes_i <- DSN[[i]]$properties$notes
       notes[i] <- ifelse(is.null(notes_i), NA, notes_i)
@@ -196,10 +203,11 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
       gps_accuracy[i] <- ifelse(is.null(gps_accuracy_i), NA, gps_accuracy_i)
     }
   }
-  fieldbook <- tibble::tibble(spot = spot, longitude, latitude, altitude, note = notes, time = date, gps_accuracy, tag_id) %>%
+  fieldbook <- tibble::tibble(spot = spot, longitude, latitude, altitude, note = notes, time = date, gps_accuracy, id) %>%
     dplyr::mutate(time = lubridate::as_datetime(time)) %>%
     dplyr::arrange(time) %>%
-    dplyr::left_join(tags_df)
+    dplyr::left_join(tags_df, by = c("id" = "spot")) %>% 
+    dplyr::select(-id)
   if (sf) fieldbook <- sf::st_as_sf(fieldbook, coords = c("longitude", "latitude"), remove = FALSE, crs = "WGS84", na.fail = FALSE)
   
   # read structural data
