@@ -15,7 +15,7 @@
 #' @importFrom rjson fromJSON
 #' @importFrom lubridate as_datetime 
 #' @importFrom dplyr rename mutate filter select full_join arrange pull
-#' @importFrom tidyr pivot_longer
+#' @importFrom tidyr pivot_longer pivot_wider
 #' @importFrom tidyselect starts_with
 #' @importFrom tibble tibble as_tibble
 #' @importFrom sf st_as_sf
@@ -23,7 +23,8 @@
 #' @importFrom magrittr "%>%"
 #' @returns `list` containing the following objects:
 #' \describe{
-#' \item{`data`}{`"tbl_df"` object. `"sf"` if `sf == TRUE`.}
+#' \item{`data`}{`"tbl_df"` object or `"sf"` if `sf == TRUE`. Metadata.}
+#' \item{`tags`}{`"tbl_df"` object. Tags and their descriptsions.}
 #' \item{`planar`}{Plane elements. Same row IDs as in `data`.}
 #' \item{`linear`}{Line elements. Same row IDs as in `data`.}
 #' }
@@ -38,7 +39,7 @@
 #' 
 #' read_strabo_mobile("C:/Users/tobis/Downloads/StraboSpot_Search_06_16_2023.txt")
 #' 
-#' read_strabo_JSON("E:/Lakehead/Field work/StraboSpot_06_25_2023.json", dataset = "TS")
+#' read_strabo_JSON("E:/Lakehead/Field work/StraboSpot_06_30_2023.json", dataset = "TS")
 #' }
 NULL
 
@@ -164,8 +165,16 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
     }
   }
   colnames(tags_df) <- paste("tag", colnames(tags_df), sep = "_")
-  tags_df <- dplyr::left_join(unique(spot_tags), tags_df, by = c("tag" = "tag_id")) %>%
-    dplyr::select(-tag)
+  
+  spot_tags_df <- dplyr::left_join(
+    unique(spot_tags), 
+    tags_df %>% dplyr::select(tag_id, tag_name), 
+    by = c("tag" = "tag_id")) %>%
+    dplyr::mutate(tag_name = paste0("tag:", tag_name)) %>%
+    #dplyr::select(-tag) %>%
+    tidyr::pivot_wider(names_from = "tag_name", values_from = "tag") %>%
+    dplyr::mutate(dplyr::cross(!spot, function(x) ifelse(is.na(x), FALSE, TRUE))) %>%
+    unique()
   
   # read field book data of dataset
   ds <- seq_along(dat$project$datasets)
@@ -206,7 +215,7 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
   fieldbook <- tibble::tibble(spot = spot, longitude, latitude, altitude, note = notes, time = date, gps_accuracy, id) %>%
     dplyr::mutate(time = lubridate::as_datetime(time)) %>%
     dplyr::arrange(time) %>%
-    dplyr::left_join(tags_df, by = c("id" = "spot")) %>% 
+    dplyr::left_join(spot_tags_df, by = c("id" = "spot")) %>% 
     dplyr::select(-id)
   if (sf) fieldbook <- sf::st_as_sf(fieldbook, coords = c("longitude", "latitude"), remove = FALSE, crs = "WGS84", na.fail = FALSE)
   
@@ -215,7 +224,6 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
   for (i in seq_along(DSN)) { # loop through each spot
     if (DSN[[i]]$geometry$type == "Point" & DSN[[i]]$type == "Feature") {
       spot <- DSN[[i]]$properties$name
-      
       
       orient_ls_i <- DSN[[i]]$properties$orientation_data
       if (!is.null(orient_ls_i)) {
@@ -296,6 +304,7 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
   
   list(
     data = meta,
+    tags = tags_df,
     planar = planes,
     linear = lines
     )

@@ -28,7 +28,8 @@ file.}
 \value{
 \code{list} containing the following objects:
 \describe{
-\item{\code{data}}{\code{"tbl_df"} object. \code{"sf"} if \code{sf == TRUE}.}
+\item{\code{data}}{\code{"tbl_df"} object or \code{"sf"} if \code{sf == TRUE}. Metadata.}
+\item{\code{tags}}{\code{"tbl_df"} object. Tags and their descriptsions.}
 \item{\code{planar}}{Plane elements. Same row IDs as in \code{data}.}
 \item{\code{linear}}{Line elements. Same row IDs as in \code{data}.}
 }
@@ -48,6 +49,6 @@ stereo_point(dt$linear)
 
 read_strabo_mobile("C:/Users/tobis/Downloads/StraboSpot_Search_06_16_2023.txt")
 
-read_strabo_JSON("E:/Lakehead/Field work/StraboSpot_06_25_2023.json", dataset = "TS")
+read_strabo_JSON("E:/Lakehead/Field work/StraboSpot_06_30_2023.json", dataset = "TS")
 }
 }
