@@ -147,7 +147,7 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #' @export
 read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
   stopifnot(!is.null(dataset))
-  time <- NULL
+  time <- tag_id <- tag_name <- NULL
 
   dat <- rjson::fromJSON(file = file)
 
