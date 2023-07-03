@@ -43,12 +43,12 @@ creates a list with the metadata, and the line or plane orientations.
 \dontrun{
 file <- "E:/Lakehead/Field Work/StraboSpot_Output_11_01_2022_TS.xlsx"
 dt <- read_strabo_xls(file)
-stereoplot(); 
-stereo_greatcircle(dt$planar, col = "lightgrey") 
+stereoplot()
+stereo_greatcircle(dt$planar, col = "lightgrey")
 stereo_point(dt$linear)
 
 read_strabo_mobile("C:/Users/tobis/Downloads/StraboSpot_Search_06_16_2023.txt")
 
-read_strabo_JSON("E:/Lakehead/Field work/StraboSpot_06_30_2023.json", dataset = "TS")
+read_strabo_JSON("E:/Lakehead/Field work/StraboSpot_07_02_2023.json", dataset = "TS")
 }
 }
