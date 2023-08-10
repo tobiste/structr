@@ -8,6 +8,12 @@
 #' @importFrom dplyr mutate summarise
 #' @name best_pole
 #' @source Ramsay, 1967, p. 18-21
+#' @returns numeric vector with 
+#' \describe{
+#' \item{`x`,`y`,`z`}{Cartesian coordinates of best fit pole of plane or cone axis,}
+#' \item{`K`}{(only for cones) half apical angle of best fit cone, and}
+#' \item{`e`}{misfit value of the least square of the deviations of the observed poles to the planes from the best fit pole.}
+#' }
 #' @examples
 #' # example from Ramsay, 1967, p. 20
 #' x <- rbind(
@@ -19,16 +25,15 @@
 #'   c(90, 14, -75),
 #'   c(80, 10, 90)
 #' ) |> acoscartesian_to_cartesian()
-#' best_cone(x)
-#' best_plane(x)
+#' best_cone(x) # expect: c(acoscartesian_to_cartesian(cbind(31.1, -81, -60.5)), 89.5, NA)
+#' best_plane(x) # expect: c(acoscartesian_to_cartesian(cbind(31.6, -81.1, -60)), 1-1.002)
 NULL
 
 #' @rdname best_pole
 #' @export
 best_cone <- function(x) {
-  xsum <- as.data.frame(x) |>
-    rename(l = cx, m = cy, n = cz) |>
-    mutate(
+  xsum <- data.frame(l = x[, 1], m = x[, 2], n = x[, 3]) |>
+    dplyr::mutate(
       l2 = l^2,
       m2 = m^2,
       lm = l * m,
@@ -89,21 +94,37 @@ best_cone <- function(x) {
   B <- det(Db) / det(D)
   C <- det(Dc) / det(D)
 
-  gamma <- -tectonicr:::acosd((1 + A^2 + B^2)^(-1 / 2))
-  alpha <- -tectonicr:::acosd(A * (1 + A^2 + B^2)^(-1 / 2))
-  beta <- -tectonicr:::acosd(B * (1 + A^2 + B^2)^(-1 / 2))
-  K <- tectonicr:::acosd(C * (1 + A^2 + B^2)^(-1 / 2)) |>
-    tectonicr::deviation_norm()
+  # gamma <- -acos((1 + A^2 + B^2)^(-1 / 2))
+  # alpha <- pi - acos(A * (1 + A^2 + B^2)^(-1 / 2))
+  # beta <- -acos(B * (1 + A^2 + B^2)^(-1 / 2))
+  cos_gamma <- 1/sqrt(1 + A^2 + B^2)
+  cos_alpha <- A * cos_gamma
+  cos_beta <- B * cos_gamma
+  cos_K <- -C * cos_gamma
+  
+  alpha <- acos(cos_alpha)
+  beta <- acos(cos_beta)
+  gamma <- acos(cos_gamma)
+  
+  # half apical angle
+  K <- tectonicr:::acosd(cos_K) #|> tectonicr::deviation_norm()
+  
+  e <- cos(alpha)^2 + cos(beta)^2 + cos(gamma)^2
 
-  return(c("alpha" = alpha + 180, beta = beta, gamma = gamma, K = K))
+  # correct for lower hemisphere and convert to Cartesian coordinates
+  cart <- cbind(pi-alpha, -beta, -gamma) |>
+    tectonicr::rad2deg() |>
+    acoscartesian_to_cartesian()
+  #names(cart) <- NULL
+
+  return(c(cart[, 1], cart[, 2], cart[, 3], "K" = K, "e" = 1-e))
 }
 
 #' @rdname best_pole
 #' @export
 best_plane <- function(x) {
-  xsum <- as.data.frame(x) |>
-    rename(l = cx, m = cy, n = cz) |>
-    mutate(
+  xsum <- data.frame(l = x[, 1], m = x[, 2], n = x[, 3]) |>
+    dplyr::mutate(
       l2 = l^2,
       m2 = m^2,
       lm = l * m,
@@ -121,24 +142,27 @@ best_plane <- function(x) {
       mn = sum(mn)
     )
 
-  t <- xsum$l2 * xsum$m2 - (xsum$lm)^2
-  A <- (xsum$lm * xsum$mn - xsum$ln * xsum$m2) / t
-  B <- (xsum$lm * xsum$ln - xsum$mn * xsum$l2) / t
+  t <- 1/(xsum$l2 * xsum$m2 - (xsum$lm)^2)
+  A <- (xsum$lm * xsum$mn - xsum$ln * xsum$m2) * t
+  B <- (xsum$lm * xsum$ln - xsum$mn * xsum$l2) * t
 
-  z <- 1 / sqrt((1 + A^2 + B^2))
-  gamma <- -acos(z)
-  alpha <- -acos(A * z)
-  beta <- -acos(B * z)
+  cos_gamma <- 1 / sqrt(1 + A^2 + B^2)
+  cos_alpha <- A * cos_gamma
+  cos_beta <- B * cos_gamma
 
-  check <- cos(alpha)^2 + cos(beta)^2 + cos(gamma)^2
+  alpha = acos(cos_alpha) 
+  beta = acos(cos_beta)
+  gamma = acos(cos_gamma)
+  
+  cart <- cbind(-alpha, -beta, -gamma) |>
+    tectonicr::rad2deg() |>
+    acoscartesian_to_cartesian()
+  #names(cart) <- NULL
+  
+  e <- cos(alpha)^2 + cos(beta)^2 + cos(gamma)^2
 
   return(
-    c(
-      tectonicr::rad2deg(
-        c(alpha = alpha + pi, beta = beta, gamma = gamma)
-      ),
-      R = check
-    )
+    c(cart[, 1], cart[, 2], cart[, 3], e = 1-e)
   )
 }
 
@@ -196,5 +220,5 @@ acoscartesian_to_cartesian <- function(x) {
   cx <- ifelse(x[, 1] < 0, -cx, cx)
   cy <- ifelse(x[, 2] < 0, -cy, cy)
   cz <- ifelse(x[, 3] < 0, -cz, cz)
-  cbind(cx, cy, cz)
+  cbind(x= cx, y=cy, z=cz)
 }

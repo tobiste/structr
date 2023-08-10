@@ -16,6 +16,14 @@ best_plane(x)
 \arguments{
 \item{x}{matrix. Cartesian coordinates of points}
 }
+\value{
+numeric vector with
+\describe{
+\item{\code{x},\code{y},\code{z}}{Cartesian coordinates of best fit pole of plane or cone axis,}
+\item{\code{K}}{(only for cones) half apical angle of best fit cone, and}
+\item{\code{e}}{misfit value of the least square of the deviations of the observed poles to the planes from the best fit pole.}
+}
+}
 \description{
 Finding the best fit pole of rotation for a given set of points that are
 assumed to lie on a mutual small or great circle circle
@@ -31,6 +39,6 @@ x <- rbind(
   c(90, 14, -75),
   c(80, 10, 90)
 ) |> acoscartesian_to_cartesian()
-best_cone(x)
-best_plane(x)
+best_cone(x) # expect: c(acoscartesian_to_cartesian(cbind(31.1, -81, -60.5)), 89.5, NA)
+best_plane(x) # expect: c(acoscartesian_to_cartesian(cbind(31.6, -81.1, -60)), 1-1.002)
 }
