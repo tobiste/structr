@@ -183,6 +183,7 @@ best_plane <- function(x) {
 #' }
 #' @source Ramsay, 1967, p. 15-16
 #' @name ramsay_coords
+#' @importFrom tectonicr deg2rad rad2deg
 #' @examples
 #' # Stereographic coordinates (angle notation):
 #' x <- rbind(

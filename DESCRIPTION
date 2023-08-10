@@ -4,34 +4,36 @@ Title: Structural geology in R
 Version: 0.1.0
 Author: Tobias Stephan
 Maintainer: The package maintainer <tobias.stephan1@yahoo.com>
-Description: Free and open-source R package for analyzing and visualizing orientation and stress data for structural geology.
+Description: Free and open-source R package for analyzing and visualizing
+    orientation and stress data for structural geology.
 License: MIT + file LICENSE
 Depends: 
     R (>= 3.5.0)
 Imports: 
-    ggplot2,
-    ggforce,
-    rotasym,
-    dplyr,
     Directional,
-    readxl,
-    tidyselect,
-    sf,
-    magrittr,
-    tidyr,
+    dplyr,
+    ggforce,
+    ggplot2,
     lubridate,
+    magrittr,
     plyr,
+    readxl,
     rjson,
-    tibble
+    rotasym,
+    sf,
+    tibble,
+    tidyr,
+    tidyselect,
+    tectonicr
 Suggests: 
     knitr,
     rmarkdown
-Remotes: 
-    tobiste/tectonicr
 VignetteBuilder: 
     knitr
+Remotes: 
+    tobiste/tectonicr
 Encoding: UTF-8
 Language: en-US
 LazyData: true
-RoxygenNote: 7.2.3
 Roxygen: list(markdown = TRUE)
+RoxygenNote: 7.2.3
