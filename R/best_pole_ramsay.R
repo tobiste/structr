@@ -5,15 +5,16 @@
 #'
 #' @param x matrix. Cartesian coordinates of points
 #' @importFrom dplyr mutate summarise
-#' @name best_pole
-#' @source Ramsay, 1967, p. 18-21
+#' @references Ramsay, 1967, p. 18-21
 #' @returns numeric vector with
 #' \describe{
 #' \item{`x`,`y`,`z`}{Cartesian coordinates of best fit pole of plane or cone axis,}
-#' \item{`e`}{misfit value of the least square of the deviations of the observed poles to the planes from the best fit pole, and}
+#' \item{`e`}{residual of the sum of square of the deviations of the observed poles to the planes from the best fit pole, and}
 #' \item{`K`}{(only for cones) half apical angle of best fit cone (in radians).}
 #' }
+#' @name best_pole
 #' @examples
+#' \dontrun{
 #' # example from Ramsay, 1967, p. 20
 #' x <- rbind(
 #'   c(-67, -31, -71),
@@ -24,13 +25,13 @@
 #'   c(90, 14, -75),
 #'   c(80, 10, 90)
 #' ) |> acoscartesian_to_cartesian()
-#' best_cone(x) # expect: c(0.856, -0.157, -0.492, NA, 1.56207)
-#' best_plane(x) # expect: c(0.852, -0.154, -0.502, 1-1.002)
+#' best_cone_ramsay(x) # expect: c(0.856, -0.157, -0.492, NA, 1.56207)
+#' best_plane_ramsay(x) # expect: c(0.852, -0.154, -0.502, 1-1.002)
+#' }
 NULL
 
 #' @rdname best_pole
-#' @export
-best_cone <- function(x) {
+best_cone_ramsay <- function(x) {
   l <- m <- n <- l2 <- m2 <- lm <- ln <- mn <- numeric()
   xsum <- data.frame(l = x[, 1], m = x[, 2], n = x[, 3]) |>
     dplyr::mutate(
@@ -52,7 +53,6 @@ best_cone <- function(x) {
     )
   N <- nrow(xsum)
 
-  # Rule of Sarrus:
   D <- Da <- Db <- Dc <- matrix(nrow = 3, ncol = 3)
   D[1, 1] <- xsum$l2
   D[1, 2] <- D[2, 1] <- xsum$lm
@@ -124,8 +124,7 @@ best_cone <- function(x) {
 }
 
 #' @rdname best_pole
-#' @export
-best_plane <- function(x) {
+best_cone_ramsay <- function(x) {
   l <- m <- n <- l2 <- m2 <- lm <- ln <- mn <- numeric()
   xsum <- data.frame(l = x[, 1], m = x[, 2], n = x[, 3]) |>
     dplyr::mutate(
@@ -174,7 +173,7 @@ best_plane <- function(x) {
 
 #' Spherical coordinate conversion
 #'
-#' @inheritParams best_cone
+#' @inheritParams best_cone_ramsay
 #' @details acoscartesian coordinates are given as
 #' \describe{
 #' \item{\code{a}}{deviation from x-axis E-W horizontal (angle in degrees)}
@@ -185,6 +184,7 @@ best_plane <- function(x) {
 #' @name ramsay_coords
 #' @importFrom tectonicr deg2rad rad2deg
 #' @examples
+#' \dontrun{
 #' # Stereographic coordinates (angle notation):
 #' x <- rbind(
 #'   c(58, 78, 35),
@@ -201,16 +201,16 @@ best_plane <- function(x) {
 #' acoscartesian_to_cartesian(x)
 #' acoscartesian_to_cartesian(x) |> to_spherical()
 #' acoscartesian_to_cartesian(x) |> cartesian_to_acoscartesian()
+#' }
 NULL
 
 #' @rdname ramsay_coords
-#' @export
 cartesian_to_acoscartesian <- function(x) {
-  #acos(x) |> tectonicr::rad2deg()
+  # acos(x) |> tectonicr::rad2deg()
   a <- acos(x[, 1])
   b <- acos(x[, 2])
   c <- acos(x[, 3])
-   
+
   a <- ifelse(x[, 1] < 0, -a, a)
   b <- ifelse(x[, 2] < 0, -b, b)
   c <- ifelse(x[, 3] < 0, -c, c)
@@ -218,16 +218,15 @@ cartesian_to_acoscartesian <- function(x) {
 }
 
 #' @rdname ramsay_coords
-#' @export
 acoscartesian_to_cartesian <- function(x) {
-  #tectonicr::deg2rad(x) |> cos()
+  # tectonicr::deg2rad(x) |> cos()
   x <- tectonicr::deg2rad(x)
   cx <- cos(x[, 1])
   cy <- cos(x[, 2])
   cz <- cos(x[, 3])
-  
+
   cx <- ifelse(x[, 1] < 0, -cx, cx)
   cy <- ifelse(x[, 2] < 0, -cy, cy)
   cz <- ifelse(x[, 3] < 0, -cz, cz)
-  cbind(x= cx, y=cy, z=cz)
+  cbind(x = cx, y = cy, z = cz)
 }

@@ -56,7 +56,7 @@ NULL
 #' @rdname coordinates
 #' @export
 to_vec <- function(x) {
-  #x <- vec2mat(x)
+  # x <- vec2mat(x)
   lin2vec0(x[, 1], x[, 2])
 }
 

@@ -25,7 +25,7 @@ NULL
 rvmf <- function(n = 100, mu = c(1, 0, 0), k = 5) {
   transform <- FALSE
   if (is.spherical(mu)) {
-    class = class(mu)
+    class <- class(mu)
     mu <- line2vec(mu) |> c()
     transform <- TRUE
   }
@@ -102,7 +102,7 @@ v_unif <- function(class = NULL, n = 100, method = c("gss", "sfs")) {
 }
 
 #' Spherical Fisher-Bingham distribution
-#' 
+#'
 #' Simulation of random values from a spherical Fisher-Bingham distribution.
 #'
 #' @param n integer. number of random samples to be generated
@@ -118,14 +118,14 @@ v_unif <- function(class = NULL, n = 100, method = c("gss", "sfs")) {
 #' stereoplot()
 #' stereo_point(x)
 #' }
-rfb <- function(n = 100, mu = c(1, 0, 0), k = 5, A){
+rfb <- function(n = 100, mu = c(1, 0, 0), k = 5, A) {
   transform <- FALSE
   if (is.spherical(mu)) {
     class <- class(mu)
     mu <- line2vec(mu) |> c()
     transform <- TRUE
   }
-  res <- Directional::rfb(n = n, k = k, m = mu, A=A)
+  res <- Directional::rfb(n = n, k = k, m = mu, A = A)
   colnames(res) <- c("x", "y", "z")
   if (transform) {
     res |> to_spherical(class)
@@ -136,7 +136,7 @@ rfb <- function(n = 100, mu = c(1, 0, 0), k = 5, A){
 
 
 #' Kent distribution
-#' 
+#'
 #' Simulation of random values from a spherical Kent distribution.
 #'
 #' @param n integer. number of random samples to be generated
@@ -152,15 +152,15 @@ rfb <- function(n = 100, mu = c(1, 0, 0), k = 5, A){
 #' x <- rkent(100, mu = Line(120, 50), k = 5, b = 1)
 #' stereoplot()
 #' stereo_point(x)
-rkent <- function(n = 100, mu = c(1, 0, 0), k = 5, b){
+rkent <- function(n = 100, mu = c(1, 0, 0), k = 5, b) {
   transform <- FALSE
   if (is.spherical(mu)) {
     class <- class(mu)
     mu <- line2vec(mu) |> c()
     transform <- TRUE
   }
-  
-  res <- Directional::rkent(n = n, k = k, m = mu, b=b)
+
+  res <- Directional::rkent(n = n, k = k, m = mu, b = b)
   colnames(res) <- c("x", "y", "z")
   if (transform) {
     res |> to_spherical(class)
@@ -171,10 +171,10 @@ rkent <- function(n = 100, mu = c(1, 0, 0), k = 5, b){
 
 
 #' MLE of spherical rotational symmetric distributions
-#' 
-#' Estimates the parameters of a von Mises-Fisher or Kent distribution. 
 #'
-#' @param x numeric. Can be three element vector, three column array, or an 
+#' Estimates the parameters of a von Mises-Fisher or Kent distribution.
+#'
+#' @param x numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
 #' @source Adapted from [Directional::kent.mle()] and [Directional::vmf.mle()]
 #' @name dist.mle
@@ -187,36 +187,36 @@ NULL
 
 #' @rdname dist.mle
 #' @export
-kent.mle <- function(x){
+kent.mle <- function(x) {
   transform <- FALSE
   if (is.spherical(x)) {
     class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
   }
-  res = Directional::kent.mle(x)
-  
+  res <- Directional::kent.mle(x)
+
   res$G <- t(res$G)
-  if(transform){
+  if (transform) {
     res$G <- to_spherical(res$G, class)
-  } 
+  }
   res$runtime <- NULL
   return(res)
 }
 
 #' @rdname dist.mle
 #' @export
-vmf.mle <- function(x){
+vmf.mle <- function(x) {
   transform <- FALSE
   if (is.spherical(x)) {
     class <- class(x)
     x <- to_vec(x)
     transform <- TRUE
   }
-  res = Directional::vmf.mle(x, fast = TRUE)
-  
-  if(transform){
+  res <- Directional::vmf.mle(x, fast = TRUE)
+
+  if (transform) {
     res$mu <- to_spherical(res$mu, class)
-  } 
+  }
   return(res)
 }
