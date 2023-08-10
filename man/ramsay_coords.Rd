@@ -28,7 +28,7 @@ acoscartesian coordinates are given as
 }
 }
 \examples{
-Stereographic coordinates (angle notation):
+# Stereographic coordinates (angle notation):
 x <- rbind(
   c(58, 78, 35),
   c(47, 72, 47),

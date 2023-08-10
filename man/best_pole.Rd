@@ -20,8 +20,8 @@ best_plane(x)
 numeric vector with
 \describe{
 \item{\code{x},\code{y},\code{z}}{Cartesian coordinates of best fit pole of plane or cone axis,}
-\item{\code{K}}{(only for cones) half apical angle of best fit cone, and}
-\item{\code{e}}{misfit value of the least square of the deviations of the observed poles to the planes from the best fit pole.}
+\item{\code{e}}{misfit value of the least square of the deviations of the observed poles to the planes from the best fit pole, and}
+\item{\code{K}}{(only for cones) half apical angle of best fit cone (in radians).}
 }
 }
 \description{
@@ -39,6 +39,6 @@ x <- rbind(
   c(90, 14, -75),
   c(80, 10, 90)
 ) |> acoscartesian_to_cartesian()
-best_cone(x) # expect: c(acoscartesian_to_cartesian(cbind(31.1, -81, -60.5)), 89.5, NA)
-best_plane(x) # expect: c(acoscartesian_to_cartesian(cbind(31.6, -81.1, -60)), 1-1.002)
+best_cone(x) # expect: c(0.856, -0.157, -0.492, NA, 1.56207)
+best_plane(x) # expect: c(0.852, -0.154, -0.502, 1-1.002)
 }
