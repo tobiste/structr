@@ -201,6 +201,7 @@ best_plane <- function(x) {
 NULL
 
 #' @rdname ramsay_coords
+#' @export
 cartesian_to_acoscartesian <- function(x) {
   #acos(x) |> tectonicr::rad2deg()
   a <- acos(x[, 1])
@@ -214,6 +215,7 @@ cartesian_to_acoscartesian <- function(x) {
 }
 
 #' @rdname ramsay_coords
+#' @export
 acoscartesian_to_cartesian <- function(x) {
   #tectonicr::deg2rad(x) |> cos()
   x <- tectonicr::deg2rad(x)
