@@ -31,6 +31,7 @@ NULL
 #' @rdname best_pole
 #' @export
 best_cone <- function(x) {
+  l <- m <- n <- l2 <- m2 <- lm <- ln <- mn <- numeric()
   xsum <- data.frame(l = x[, 1], m = x[, 2], n = x[, 3]) |>
     dplyr::mutate(
       l2 = l^2,
@@ -125,6 +126,7 @@ best_cone <- function(x) {
 #' @rdname best_pole
 #' @export
 best_plane <- function(x) {
+  l <- m <- n <- l2 <- m2 <- lm <- ln <- mn <- numeric()
   xsum <- data.frame(l = x[, 1], m = x[, 2], n = x[, 3]) |>
     dplyr::mutate(
       l2 = l^2,
