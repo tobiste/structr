@@ -256,3 +256,65 @@ is.fault <- function(f) {
 is.spherical <- function(l) {
   inherits(l, "plane") | inherits(l, "line") | inherits(l, "fault")
 }
+
+#' Spherical coordinate conversion
+#'
+#' @inheritParams best_cone_ramsay
+#' @details acoscartesian coordinates are given as
+#' \describe{
+#' \item{\code{a}}{deviation from x-axis E-W horizontal (angle in degrees)}
+#' \item{\code{b}}{deviation from y-axis N-S horizontal (angle in degrees)}
+#' \item{\code{c}}{deviation from z-axis vertical (angle in degrees)}
+#' }
+#' @source Ramsay, 1967, p. 15-16
+#' @name ramsay_coords
+#' @importFrom tectonicr deg2rad rad2deg
+#' @examples
+#' \dontrun{
+#' # Stereographic coordinates (angle notation):
+#' x <- rbind(
+#'   c(58, 78, 35),
+#'   c(47, 72, 47),
+#'   c(57, 68, 41),
+#'   c(56, 64, 45),
+#'   c(52, 65, 47),
+#'   c(61, 62, 51),
+#'   c(55, 60, 49),
+#'   c(61, 62, 42),
+#'   c(68, 52, 46),
+#'   c(42, 58, 65)
+#' )
+#' acoscartesian_to_cartesian(x)
+#' acoscartesian_to_cartesian(x) |> to_spherical()
+#' acoscartesian_to_cartesian(x) |> cartesian_to_acoscartesian()
+#' }
+NULL
+
+#' @rdname ramsay_coords
+#' @export
+cartesian_to_acoscartesian <- function(x) {
+  # acos(x) |> tectonicr::rad2deg()
+  a <- acos(x[, 1])
+  b <- acos(x[, 2])
+  c <- acos(x[, 3])
+  
+  a <- ifelse(x[, 1] < 0, -a, a)
+  b <- ifelse(x[, 2] < 0, -b, b)
+  c <- ifelse(x[, 3] < 0, -c, c)
+  tectonicr::rad2deg(cbind(a, b, c))
+}
+
+#' @rdname ramsay_coords
+#' @export
+acoscartesian_to_cartesian <- function(x) {
+  # tectonicr::deg2rad(x) |> cos()
+  x <- tectonicr::deg2rad(x)
+  cx <- cos(x[, 1])
+  cy <- cos(x[, 2])
+  cz <- cos(x[, 3])
+  
+  cx <- ifelse(x[, 1] < 0, -cx, cx)
+  cy <- ifelse(x[, 2] < 0, -cy, cy)
+  cz <- ifelse(x[, 3] < 0, -cz, cz)
+  cbind(x = cx, y = cy, z = cz)
+}
