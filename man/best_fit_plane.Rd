@@ -24,8 +24,8 @@ gray_example1 <- gray_example |>
     dip = Dip,
     id = seq_along(dip)
   )
-gray_cleavage <- filter(gray_example1, Type == "Cleavage")
-gray_bedding <- filter(gray_example1, Type == "Bedding")
+gray_cleavage <- dplyr::filter(gray_example1, Type == "Cleavage")
+gray_bedding <- dplyr::filter(gray_example1, Type == "Bedding")
 test_clea <- cbind(gray_cleavage$dipdir, gray_cleavage$dip) |> as.plane()
 test_bedd <- cbind(gray_bedding$dipdir, gray_bedding$dip) |> as.plane()
 best_clea <- best_fit_plane((test_clea))
