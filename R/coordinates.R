@@ -292,12 +292,12 @@ NULL
 
 #' @rdname ramsay_coords
 #' @export
-cartesian_to_acoscartesian <- function(x) {
+cartesian_to_acosvec <- function(x) {
   # acos(x) |> tectonicr::rad2deg()
   a <- acos(x[, 1])
   b <- acos(x[, 2])
   c <- acos(x[, 3])
-  
+
   a <- ifelse(x[, 1] < 0, -a, a)
   b <- ifelse(x[, 2] < 0, -b, b)
   c <- ifelse(x[, 3] < 0, -c, c)
@@ -312,7 +312,7 @@ acoscartesian_to_cartesian <- function(x) {
   cx <- cos(x[, 1])
   cy <- cos(x[, 2])
   cz <- cos(x[, 3])
-  
+
   cx <- ifelse(x[, 1] < 0, -cx, cx)
   cy <- ifelse(x[, 2] < 0, -cy, cy)
   cz <- ifelse(x[, 3] < 0, -cz, cz)

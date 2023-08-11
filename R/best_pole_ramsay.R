@@ -170,4 +170,3 @@ best_cone_ramsay <- function(x) {
     c(cart[, 1], cart[, 2], cart[, 3], e = 1 - e)
   )
 }
-

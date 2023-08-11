@@ -6,8 +6,8 @@
 #' object of class `"line"` or `"plane"`
 #'
 #' @returns list
-#' @references Gray, N.H., Geiser, P.A., Geiser, J.R. (1980). On the 
-#' least-square fit of small and great circles to spherically projected data. 
+#' @references Gray, N.H., Geiser, P.A., Geiser, J.R. (1980). On the
+#' least-square fit of small and great circles to spherically projected data.
 #' Mathematical Geology, Vol. 12, No. 3, 1980.
 #' @export
 #'

@@ -2,14 +2,14 @@
 % Please edit documentation in R/coordinates.R
 \name{ramsay_coords}
 \alias{ramsay_coords}
-\alias{cartesian_to_acoscartesian}
+\alias{cartesian_to_acosvec}
 \alias{acoscartesian_to_cartesian}
 \title{Spherical coordinate conversion}
 \source{
 Ramsay, 1967, p. 15-16
 }
 \usage{
-cartesian_to_acoscartesian(x)
+cartesian_to_acosvec(x)
 
 acoscartesian_to_cartesian(x)
 }
