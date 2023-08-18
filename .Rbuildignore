@@ -6,3 +6,4 @@
 ^docs$
 ^pkgdown$
 ^R/density\.R$
+^vignettes/Fault_displacements.Rmd

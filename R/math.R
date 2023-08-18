@@ -91,7 +91,7 @@ vdot <- function(x, y) {
   if (is.spherical(x)) {
     class <- class(x)
     x <- to_vec(x)
-    transform <- TRUE
+    #transform <- TRUE
   } else {
     x <- vec2mat(x)
   }
@@ -100,6 +100,7 @@ vdot <- function(x, y) {
   } else {
     y <- vec2mat(y)
   }
+  # rowSums(x*y)
   x[, 1] * y[, 1] + x[, 2] * y[, 2] + x[, 3] * y[, 3]
 }
 
