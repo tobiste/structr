@@ -44,5 +44,7 @@ fault displacement system
 see vignette for description of fault displacement components
 }
 \examples{
+\dontrun{
 fault_displacements(strikeslip = 2, verticalthrow = -5, heave = 3)
+}
 }

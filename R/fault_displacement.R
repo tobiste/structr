@@ -18,7 +18,9 @@
 #' @return data.frame
 #' 
 #' @examples
+#' \dontrun{
 #' fault_displacements(strikeslip = 2, verticalthrow = -5, heave = 3)
+#' }
 fault_displacements <- function(dip = NULL, delta = NULL, rake = NULL, verticalthrow = NULL, dipslip = NULL, heave = NULL, netslip = NULL, horizontalthrow = NULL, strikeslip = NULL) {
   if (!is.null(dip) & !is.null(verticalthrow) & !is.null(delta)) {
     # Slip components in the vertical plane perpendicular to the strike of the fault
@@ -97,7 +99,9 @@ fault_displacements <- function(dip = NULL, delta = NULL, rake = NULL, verticalt
 #'
 #' @examples
 #' 
+#' \dontrun{
 #' fault_tensor(displacements = data.frame(strikeslip = 2, verticalthrow = -5, heave = 3), dip_direction = 0)
+#' }
 fault_tensor <- function(displacements, dip_direction = NULL){
   A <- diag(c(displacements$heave, displacements$strikeslip, displacements$verticalthrow), 3, 3)
   
