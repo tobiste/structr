@@ -2,28 +2,27 @@
 % Please edit documentation in R/fault_displacement.R
 \name{fault_tensor}
 \alias{fault_tensor}
-\title{Fault tensor}
+\title{Fault deformation gradient tensor}
 \usage{
-fault_tensor(displacements, strike_direction = NULL)
+fault_tensor(displacements, dip_direction = NULL)
 }
 \arguments{
-\item{displacements}{data.frame containing (at least) the strike slip,
+\item{displacements}{data.frame containing the strike slip, the
 heave, and the vertical throw of the fault's displacement components.}
 
-\item{strike_direction}{(optional) strike direction in degrees.
+\item{dip_direction}{(optional) dip direction in degrees.
 If \code{NULL}, the fault tensor will be given in the fault displacement
 coordinates. Otherwise, the tensor will be in the geographic reference frame.}
 }
 \description{
-Creates the fault displacement tensor from components. If the strike
-direction is know, the tensor will be rotated into the geographic reference
-frame.
+Creates the fault deformation gradient tensor from displacement components.
+If the dip direction is know, the tensor will be rotated into the
+geographic reference frame.
 }
-\note{
-The strike direction should follow the right-hand-rule, i.e. the
-direction of the dip direction is perpendicular to the strike.
+\details{
+x axis of tensor = heave, y = strike slip, z = vertical throw (positive for thrusting, negative for normal faulting)
 }
 \examples{
 
-fault_tensor(displacements = data.frame(strikeslip = 2, verticalthrow = 5, heave = 3), strike_direction = 135)
+fault_tensor(displacements = data.frame(strikeslip = 2, verticalthrow = -5, heave = 3), dip_direction = 0)
 }

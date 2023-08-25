@@ -43,3 +43,6 @@ fault displacement system
 \details{
 see vignette for description of fault displacement components
 }
+\examples{
+fault_displacements(strikeslip = 2, verticalthrow = -5, heave = 3)
+}

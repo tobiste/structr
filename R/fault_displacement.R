@@ -94,8 +94,6 @@ fault_displacements <- function(dip = NULL, delta = NULL, rake = NULL, verticalt
 #' @details
 #' x axis of tensor = heave, y = strike slip, z = vertical throw (positive for thrusting, negative for normal faulting)
 #'
-#' @return
-#' @export
 #'
 #' @examples
 #' 
@@ -115,51 +113,51 @@ fault_tensor <- function(displacements, dip_direction = NULL){
  A
 }
 
-t <- fault_tensor(displacements = data.frame(strikeslip = 2, verticalthrow = -5, heave = 3))
-test <- fault_tensor(displacements = data.frame(strikeslip = 2, verticalthrow = -5, heave = 3)) |> svd()
-test$values
-
-test2 <- fault_tensor(displacements = data.frame(strikeslip = 2, verticalthrow = -5, heave = 3), dip_direction = 45) 
-test2 |> t() |> vlength()
-
-vec2line(test2[, 2])
-
-test3 <- svd(test2)
-test3$u[, 2] |> vec2line()
-test3$u[, 3] |> vec2line()
-
-vrotate(x, z, (-dipdir_rad)) |> as.vector() |> vec2line()
-vrotate(y, z, (pi-dipdir_rad)) |> as.vector() |> vec2line()
-
-
-eigen(test2)
-
-diag(t)^2 |> sum() |> sqrt()
-
-vec2line(test2[, 1])
-vec2line(test2[, 2])
-
-# netslip vector
-diag(test2) |> vec2line()
-
-# project netslip vector onto horizontal plan = horizontal throw
-vtransform(
-  diag(test2), 
-  cbind(c(1, 0, 0), c(0, 1, 0), c(0, 0, 0))
-  ) |> 
-  vec2line()
-
-326%%180
-
-
-
-146-45
-c(test2[3, 1], test2[2, 2], test2[1, 3]) |> vec2line()
-c(test2[3, 1], test2[2, 2], test2[1, 3]) |> vec2line()
-c(test2[1, 1], test2[1, 2], test2[1, 3]) |> vec2line()
-c(test2[2, 1], test2[2, 2], test2[2, 3]) |> vec2line()
-c(test2[3, 1], test2[3, 2], test2[3, 3]) |> vec2line()
-
-vtransform((diag(test2)), (cbind(c(1, 0, 0), c(0, 1, 0), c(0, 0, 0))))
+# t <- fault_tensor(displacements = data.frame(strikeslip = 2, verticalthrow = -5, heave = 3))
+# test <- fault_tensor(displacements = data.frame(strikeslip = 2, verticalthrow = -5, heave = 3)) |> svd()
+# test$values
+# 
+# test2 <- fault_tensor(displacements = data.frame(strikeslip = 2, verticalthrow = -5, heave = 3), dip_direction = 45) 
+# test2 |> t() |> vlength()
+# 
+# vec2line(test2[, 2])
+# 
+# test3 <- svd(test2)
+# test3$u[, 2] |> vec2line()
+# test3$u[, 3] |> vec2line()
+# 
+# vrotate(x, z, (-dipdir_rad)) |> as.vector() |> vec2line()
+# vrotate(y, z, (pi-dipdir_rad)) |> as.vector() |> vec2line()
+# 
+# 
+# eigen(test2)
+# 
+# diag(t)^2 |> sum() |> sqrt()
+# 
+# vec2line(test2[, 1])
+# vec2line(test2[, 2])
+# 
+# # netslip vector
+# diag(test2) |> vec2line()
+# 
+# # project netslip vector onto horizontal plan = horizontal throw
+# vtransform(
+#   diag(test2), 
+#   cbind(c(1, 0, 0), c(0, 1, 0), c(0, 0, 0))
+#   ) |> 
+#   vec2line()
+# 
+# 326%%180
+# 
+# 
+# 
+# 146-45
+# c(test2[3, 1], test2[2, 2], test2[1, 3]) |> vec2line()
+# c(test2[3, 1], test2[2, 2], test2[1, 3]) |> vec2line()
+# c(test2[1, 1], test2[1, 2], test2[1, 3]) |> vec2line()
+# c(test2[2, 1], test2[2, 2], test2[2, 3]) |> vec2line()
+# c(test2[3, 1], test2[3, 2], test2[3, 3]) |> vec2line()
+# 
+# vtransform((diag(test2)), (cbind(c(1, 0, 0), c(0, 1, 0), c(0, 0, 0))))
 
            
