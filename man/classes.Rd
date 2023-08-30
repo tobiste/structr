@@ -8,9 +8,11 @@
 \alias{as.line}
 \alias{as.plane}
 \alias{as.fault}
+\alias{as.pair}
 \alias{is.line}
 \alias{is.plane}
 \alias{is.fault}
+\alias{is.pair}
 \alias{is.spherical}
 \title{Structure classes}
 \usage{
@@ -26,11 +28,15 @@ as.plane(p)
 
 as.fault(f)
 
+as.pair(f)
+
 is.line(l)
 
 is.plane(p)
 
 is.fault(f)
+
+is.pair(f)
 
 is.spherical(l)
 }

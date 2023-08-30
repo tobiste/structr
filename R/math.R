@@ -91,7 +91,7 @@ vdot <- function(x, y) {
   if (is.spherical(x)) {
     class <- class(x)
     x <- to_vec(x)
-    #transform <- TRUE
+    # transform <- TRUE
   } else {
     x <- vec2mat(x)
   }

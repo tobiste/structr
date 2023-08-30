@@ -57,14 +57,18 @@ NULL
 #' @export
 to_vec <- function(x) {
   # x <- vec2mat(x)
-  lin2vec0(x[, 1], x[, 2])
+  if(is.plane(x)){
+    fol2vec0(x[, 1], x[, 2])
+  } else {
+    lin2vec0(x[, 1], x[, 2])
+  }
 }
 
 #' @rdname coordinates
 #' @export
 to_spherical <- function(x, class = c("line", "plane")) {
   class <- match.arg(class)
-  if (class == "line") {
+  if (is.line(x)) {
     vec2line(x)
   } else {
     vec2plane(x)
@@ -190,6 +194,10 @@ Fault <- function(dip_direction, dip, azimuth, plunge, sense = NULL) {
   cbind(dip_direction, dip, azimuth, plunge, sense) |> as.fault()
 }
 
+Pair <- function(dip_direction, dip, azimuth, plunge){
+  p = Fault(dip_direction, dip, azimuth, plunge) 
+  as.pair(p[, -5])
+}
 
 #' @rdname classes
 #' @export
@@ -227,8 +235,18 @@ as.plane <- function(p) {
 #' @export
 as.fault <- function(f) {
   x <- vec2mat(f)
-  class(x) <- "fault"
+  class(x) <- c("fault", "pair")
   colnames(x) <- c("dip_direction", "dip", "azimuth", "plunge", "sense")
+  rownames(x) <- rownames(f)
+  x
+}
+
+#' @rdname classes
+#' @export
+as.pair <- function(f) {
+  x <- vec2mat(f)
+  class(x) <- "pair"
+  colnames(x) <- c("dip_direction", "dip", "azimuth", "plunge")
   rownames(x) <- rownames(f)
   x
 }
@@ -253,8 +271,14 @@ is.fault <- function(f) {
 
 #' @rdname classes
 #' @export
+is.pair <- function(f) {
+  inherits(f, "pair")
+}
+
+#' @rdname classes
+#' @export
 is.spherical <- function(l) {
-  inherits(l, "plane") | inherits(l, "line") | inherits(l, "fault")
+  inherits(l, "plane") | inherits(l, "line") | inherits(l, "pair")
 }
 
 #' Spherical coordinate conversion
