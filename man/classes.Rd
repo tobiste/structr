@@ -5,6 +5,7 @@
 \alias{Line}
 \alias{Plane}
 \alias{Fault}
+\alias{Pair}
 \alias{as.line}
 \alias{as.plane}
 \alias{as.fault}
@@ -21,6 +22,8 @@ Line(azimuth, plunge)
 Plane(dip_direction, dip)
 
 Fault(dip_direction, dip, azimuth, plunge, sense = NULL)
+
+Pair(dip_direction, dip, azimuth, plunge)
 
 as.line(l)
 
@@ -52,27 +55,27 @@ degrees)}
 
 \item{l, p, f}{numeric vector or array containing the spherical coordinates
 (1st element/column is azimuth, 2nd element/column is inclination, both in
-degrees), or object of class \code{"line"}, \code{"plane"}, or \code{"fault"}}
+degrees), or object of class \code{"line"}, \code{"plane"}, \code{"pair"}, or \code{"fault"}}
 }
 \description{
-\code{Line}, \code{Plane}, and \code{Fault} create a \code{"line"}, \code{"plane"}, and \code{"fault"}
+\code{Line}, \code{Plane}, and \code{Fault} create a \code{"line"}, \code{"plane"}, \code{"pair"}, and \code{"fault"}
 class object, respectively, from the given set of values.
 
-\code{as.line}, \code{as.plane}, and \code{as.fault} attempt to turn its argument into a
+\code{as.line}, \code{as.plane}, \code{as.pair}, and \code{as.fault} attempt to turn its argument into a
 \code{"line"}, \code{"plane"}, and \code{"fault"} class object, respectively.
 
-\code{is.line}, \code{is.plane}, and \code{is.fault} test if its argument is a \code{"line"},
+\code{is.line}, \code{is.plane}, \code{is.pair}, and \code{is.fault} test if its argument is a \code{"line"},
 \code{"plane"}, and \code{"fault"} class object, respectively.
 }
 \details{
-\code{as.line}, \code{as.plane}, and \code{as.fault} return \code{TRUE} if \code{l}, \code{p}, and \code{f}
-are an object of class \code{"line"}, \code{"plane"}, or \code{"fault"}, respectively, and
+\code{is.line}, \code{is.plane}, \code{is.pair}, and \code{is.fault} return \code{TRUE} if \code{l}, \code{p}, and \code{f}
+are an object of class \code{"line"}, \code{"plane"}, \code{"pair"} or \code{"fault"}, respectively, and
 \code{FALSE} otherwise.
 
 \code{is.spherical} returns \code{TRUE} if the argument's class is one of \code{"line"},
-\code{"plane"}, or \code{"fault"} and \code{FALSE} otherwise
+\code{"plane"}, \code{"pair"}, or \code{"fault"} and \code{FALSE} otherwise
 
-\code{as.line}, \code{as.plane}, and \code{as.fault} are is generic functions. If the
+\code{as.line}, \code{as.plane}, \code{as.pair}, and \code{as.fault} are is generic functions. If the
 argument is a \code{"line"} or \code{"plane"} class, it will be converted.
 }
 \examples{

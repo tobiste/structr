@@ -125,18 +125,18 @@ geo2vec <- function(g) {
 #' Structure classes
 #'
 #' @description
-#' `Line`, `Plane`, and `Fault` create a `"line"`, `"plane"`, and `"fault"`
+#' `Line`, `Plane`, and `Fault` create a `"line"`, `"plane"`, `"pair"`, and `"fault"`
 #' class object, respectively, from the given set of values.
 #'
-#' `as.line`, `as.plane`, and `as.fault` attempt to turn its argument into a
+#' `as.line`, `as.plane`, `as.pair`, and `as.fault` attempt to turn its argument into a
 #' `"line"`, `"plane"`, and `"fault"` class object, respectively.
 #'
-#' `is.line`, `is.plane`, and `is.fault` test if its argument is a `"line"`,
+#' `is.line`, `is.plane`, `is.pair`, and `is.fault` test if its argument is a `"line"`,
 #' `"plane"`, and `"fault"` class object, respectively.
 #'
 #' @param l,p,f numeric vector or array containing the spherical coordinates
 #' (1st element/column is azimuth, 2nd element/column is inclination, both in
-#' degrees), or object of class `"line"`, `"plane"`, or `"fault"`
+#' degrees), or object of class `"line"`, `"plane"`, `"pair"`, or `"fault"`
 #' @param azimuth,plunge numeric vectors. Azimuth and plunge of a line (in
 #' degrees)
 #' @param dip_direction,dip numeric vectors. Dip direction and dip of a plane
@@ -144,14 +144,14 @@ geo2vec <- function(g) {
 #' @param sense (optional) integer. Sense of the line on a fault plane. Either
 #' `1`or `-1` for normal/dextral or thrust/sinistral offset, respectively.
 #' @details
-#' `as.line`, `as.plane`, and `as.fault` return `TRUE` if `l`, `p`, and `f`
-#' are an object of class `"line"`, `"plane"`, or `"fault"`, respectively, and
+#' `is.line`, `is.plane`, `is.pair`, and `is.fault` return `TRUE` if `l`, `p`, and `f`
+#' are an object of class `"line"`, `"plane"`, `"pair"` or `"fault"`, respectively, and
 #' `FALSE` otherwise.
 #'
 #' `is.spherical` returns `TRUE` if the argument's class is one of `"line"`,
-#' `"plane"`, or `"fault"` and `FALSE` otherwise
+#' `"plane"`, `"pair"`, or `"fault"` and `FALSE` otherwise
 #'
-#' `as.line`, `as.plane`, and `as.fault` are is generic functions. If the
+#' `as.line`, `as.plane`, `as.pair`, and `as.fault` are is generic functions. If the
 #' argument is a `"line"` or `"plane"` class, it will be converted.
 #'
 #' @name classes
@@ -194,6 +194,8 @@ Fault <- function(dip_direction, dip, azimuth, plunge, sense = NULL) {
   cbind(dip_direction, dip, azimuth, plunge, sense) |> as.fault()
 }
 
+#' @rdname classes
+#' @export
 Pair <- function(dip_direction, dip, azimuth, plunge){
   p = Fault(dip_direction, dip, azimuth, plunge) 
   as.pair(p[, -5])

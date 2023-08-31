@@ -12,6 +12,7 @@ Depends:
 Imports: 
     Directional,
     dplyr,
+    expm,
     ggforce,
     ggplot2,
     lubridate,

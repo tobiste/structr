@@ -6,7 +6,7 @@
 #' @param dip fault's dip angle (in degrees)
 #' @param delta angle between horizontal displacement vector and fault's strike
 #' @param rake (in degrees)
-#' @param horizontalthrow,verticalthrow amount of horizontal and vertical offset
+#' @param verticalthrow amount of vertical offset
 #' @param dipslip,strikeslip amount of offset along strike or dip
 #' @param heave apparent horizontal offset perpendicular to strike
 #' @param horizontalthrow apparent horizontal offset parallel to fault's motion direction
@@ -21,7 +21,10 @@
 #' \dontrun{
 #' fault_displacements(strikeslip = 2, verticalthrow = -5, heave = 3)
 #' }
-fault_displacements <- function(dip = NULL, delta = NULL, rake = NULL, verticalthrow = NULL, dipslip = NULL, heave = NULL, netslip = NULL, horizontalthrow = NULL, strikeslip = NULL) {
+fault_displacements <- function(dip = NULL, delta = NULL, rake = NULL, 
+                                verticalthrow = NULL, dipslip = NULL, 
+                                heave = NULL, netslip = NULL, 
+                                horizontalthrow = NULL, strikeslip = NULL) {
   if (!is.null(dip) & !is.null(verticalthrow) & !is.null(delta)) {
     # Slip components in the vertical plane perpendicular to the strike of the fault
 
@@ -30,7 +33,7 @@ fault_displacements <- function(dip = NULL, delta = NULL, rake = NULL, verticalt
 
     # Slip components in the horizontal plane
     horizontalthrow <- heave / tectonicr:::sind(delta)
-    strikeslip <- sqrt(horizontal^2 - heave^2)
+    strikeslip <- sqrt(horizontalthrow^2 - heave^2)
 
     # Slip components in the fault plane plane
     netslip <- sqrt(strikeslip^2 + dipslip^2)
@@ -94,14 +97,18 @@ fault_displacements <- function(dip = NULL, delta = NULL, rake = NULL, verticalt
 #' coordinates. Otherwise, the tensor will be in the geographic reference frame.
 #'
 #' @details
-#' x axis of tensor = heave, y = strike slip, z = vertical throw (positive for thrusting, negative for normal faulting)
+#' x axis of tensor = heave, y = strike slip, z = vertical throw (positive for 
+#' thrusting, negative for normal faulting)
 #'
 #' @examples
 #' \dontrun{
-#' fault_tensor(displacements = data.frame(strikeslip = 2, verticalthrow = -5, heave = 3), dip_direction = 0)
+#' fault_tensor(displacements = data.frame(strikeslip = 2, verticalthrow = -5, 
+#' heave = 3), dip_direction = 0)
 #' }
 fault_tensor <- function(displacements, dip_direction = NULL) {
-  A <- diag(c(displacements$heave, displacements$strikeslip, displacements$verticalthrow), 3, 3)
+  A <- diag(
+    c(displacements$heave, displacements$strikeslip, displacements$verticalthrow), 
+    3, 3)
 
   if (!is.null(dip_direction)) {
     dipdir_rad <- tectonicr::deg2rad(dip_direction)

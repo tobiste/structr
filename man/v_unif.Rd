@@ -19,7 +19,8 @@ or \code{"gss"} for "Golden Section Spiral points on a sphere".}
 object of class specified by \code{"class"} argument
 }
 \description{
-Create uniformly distributed vectors using the algorithm \emph{Spherical Fibonacci Spiral points on a sphere} algorithm (John Burkardt) or
+Create uniformly distributed vectors using the algorithm
+\emph{Spherical Fibonacci Spiral points on a sphere} algorithm (John Burkardt) or
 \emph{Golden Section Spiral points on a sphere}.
 }
 \details{

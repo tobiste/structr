@@ -17,7 +17,7 @@ dvmf(x, mu, k = 5)
 \item{n}{integer. number of random samples to be generated}
 
 \item{k}{numeric. The concentration parameter (\eqn{\kappa}) of the the von
-Mises-Fisher distributiuon}
+Mises-Fisher distribution}
 
 \item{x, mu}{numeric. Can be three element vector, three column array, or an
 object of class \code{"line"} or \code{"plane"}}

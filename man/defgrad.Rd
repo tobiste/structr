@@ -30,18 +30,24 @@ defgrad_from_comp(
 )
 }
 \arguments{
-\item{Rxy, Ryz}{numeric. the XY and YZ strain ratio to create a strain tensor with axial stretches (must be greater than or equal to 1)}
+\item{Rxy, Ryz}{numeric. the XY and YZ strain ratio to create a strain tensor
+with axial stretches.Values must be greater than or equal to 1.}
 
-\item{p, p1, p2}{object of class \code{pair}}
+\item{p}{object of class \code{pair}}
 
-\item{v1, v2}{objects of class \code{spherical} or three-element vector. Deformation gradient results from the rotation around axis perpendicular to both vectors to rotate \code{v1} to \code{v2}.}
+\item{v1, v2}{objects of class \code{"spherical"} or three-element vector.
+Deformation gradient results from the rotation around axis perpendicular to
+both vectors to rotate \code{v1} to \code{v2}.}
 
-\item{axis, angle}{rotation axis and angle, axis can be an object of class \code{spherical} (inlc. \code{line} and \code{plane}) or a three-element vector. Angle in degrees when axis is a object of class \code{spherical.}}
+\item{axis, angle}{rotation axis and angle, axis can be an object of class
+\code{"spherical"} (incl. \code{"line"} and \code{"plane"}) or a three-element vector. Angle in
+degrees when axis is a object of class \code{"spherical"}, and radians otherwise.}
 
-\item{xx, xy, xz, yx, yy, yz, zx, zy, zz}{numeric. Directly specify components of the tensor.}
+\item{xx, xy, xz, yx, yy, yz, zx, zy, zz}{numeric. Directly specify components of
+the tensor. Identity matrix by default.}
 }
 \value{
-object of class \code{"defgrad"}
+3x3 matrix.
 }
 \description{
 Deformation Gradient Tensor

@@ -7,7 +7,7 @@
 #' @param x,mu numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
 #' @param k numeric. The concentration parameter (\eqn{\kappa}) of the the von
-#' Mises-Fisher distributiuon
+#' Mises-Fisher distribution
 #' @seealso [v_unif()] for alternative algorithms to generate uniform
 #' distributed samples on a sphere, [rkent()] for Kent distribution.
 #' @source Adapted fom [rotasym::r_vMF()] and [rotasym::d_vMF()]
@@ -52,7 +52,8 @@ dvmf <- function(x, mu, k = 5) {
 
 #' Uniformly distributed vectors
 #'
-#' Create uniformly distributed vectors using the algorithm *Spherical Fibonacci Spiral points on a sphere* algorithm (John Burkardt) or
+#' Create uniformly distributed vectors using the algorithm 
+#' *Spherical Fibonacci Spiral points on a sphere* algorithm (John Burkardt) or
 #' *Golden Section Spiral points on a sphere*.
 #'
 #' @param class character. Coordinate class of the output vectors.

@@ -2,33 +2,35 @@
 % Please edit documentation in R/defgrad.R
 \name{gradient}
 \alias{gradient}
-\alias{velgrad}
-\alias{defgrad}
+\alias{velgrad_from_defgrad}
+\alias{defgrad_from_velgrad}
 \title{Velocity gradient and Deformation gradient tensors}
 \usage{
-velgrad(R, time = 1)
+velgrad_from_defgrad(R, time = 1)
 
-defgrad(V, time = 1, steps = 1)
+defgrad_from_velgrad(V, time = 1, steps = 1)
 }
 \arguments{
-\item{R}{deformation gradient tensor. object of class \code{matrix} or \code{defgrad}}
+\item{R}{3x3 matrix. Deformation gradient tensor.}
 
-\item{time}{numeric. total time (default is 1)}
+\item{time}{numeric. Total time (default is 1)}
 
-\item{V}{velocity gradient tensor. object of class \code{matrix} or \code{velgrad}}
+\item{V}{3x3 matrix. Velocity gradient tensor.}
 
-\item{steps}{numeric. time increments (default is 1)}
+\item{steps}{numeric. Time increments (default is 1)}
 }
 \value{
-object of class \code{velgrad} or \code{defgrad}. If steps is > 1, then a list of \code{defgrad} objects is returned.
+3x3 matrix. If steps is > 1, then a list
+of matrices is returned.
 }
 \description{
-Calculates the velocity gradient tensor as the matrix logarithm  of the deformation gradient tensor divided by given time, and
+Calculates the velocity gradient tensor as the matrix logarithm  of the
+deformation gradient tensor divided by given time, and
 the deformation gradient tensor accumulated after some time.
 }
 \examples{
 D <- defgrad_from_comp(xx = 2, xy = 1, zz = 0.5)
-L <- velgrad(D, time = 10)
+L <- velgrad_from_defgrad(D, time = 10)
 L
-defgrad(L, time = 10, steps = 2)
+defgrad_from_velgrad(L, time = 10, steps = 2)
 }

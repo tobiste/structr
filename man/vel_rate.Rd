@@ -11,17 +11,17 @@ velgrad_rate(x)
 velgrad_spin(x)
 }
 \arguments{
-\item{x}{velocity gradient tensor. object of class \code{matrix} or \code{velgrad}}
+\item{x}{3x3 matrix. Velocity gradient tensor.}
 }
 \value{
-object of class \code{velgrad}
+3x3 matrix
 }
 \description{
 Rate and spin of velocity gradient tensor
 }
 \examples{
 R <- defgrad_from_comp(xx = 2, xy = 1, zz = 0.5)
-L <- velgrad(R, time = 10)
+L <- velgrad_from_defgrad(R, time = 10)
 velgrad_rate(L)
 velgrad_spin(L)
 }
