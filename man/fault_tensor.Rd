@@ -20,12 +20,10 @@ If the dip direction is know, the tensor will be rotated into the
 geographic reference frame.
 }
 \details{
-x axis of tensor = heave, y = strike slip, z = vertical throw (positive for
-thrusting, negative for normal faulting)
+x axis of tensor = heave, y = strike slip, z = vertical throw (positive for thrusting, negative for normal faulting)
 }
 \examples{
 \dontrun{
-fault_tensor(displacements = data.frame(strikeslip = 2, verticalthrow = -5, 
-heave = 3), dip_direction = 0)
+fault_tensor(displacements = data.frame(strikeslip = 2, verticalthrow = -5, heave = 3), dip_direction = 0)
 }
 }

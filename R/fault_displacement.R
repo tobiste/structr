@@ -6,7 +6,7 @@
 #' @param dip fault's dip angle (in degrees)
 #' @param delta angle between horizontal displacement vector and fault's strike
 #' @param rake (in degrees)
-#' @param verticalthrow amount of vertical offset
+#' @param horizontalthrow,verticalthrow amount of horizontal and vertical offset
 #' @param dipslip,strikeslip amount of offset along strike or dip
 #' @param heave apparent horizontal offset perpendicular to strike
 #' @param horizontalthrow apparent horizontal offset parallel to fault's motion direction
@@ -21,10 +21,7 @@
 #' \dontrun{
 #' fault_displacements(strikeslip = 2, verticalthrow = -5, heave = 3)
 #' }
-fault_displacements <- function(dip = NULL, delta = NULL, rake = NULL, 
-                                verticalthrow = NULL, dipslip = NULL, 
-                                heave = NULL, netslip = NULL, 
-                                horizontalthrow = NULL, strikeslip = NULL) {
+fault_displacements <- function(dip = NULL, delta = NULL, rake = NULL, verticalthrow = NULL, dipslip = NULL, heave = NULL, netslip = NULL, horizontalthrow = NULL, strikeslip = NULL) {
   if (!is.null(dip) & !is.null(verticalthrow) & !is.null(delta)) {
     # Slip components in the vertical plane perpendicular to the strike of the fault
 
@@ -33,7 +30,7 @@ fault_displacements <- function(dip = NULL, delta = NULL, rake = NULL,
 
     # Slip components in the horizontal plane
     horizontalthrow <- heave / tectonicr:::sind(delta)
-    strikeslip <- sqrt(horizontalthrow^2 - heave^2)
+    strikeslip <- sqrt(horizontal^2 - heave^2)
 
     # Slip components in the fault plane plane
     netslip <- sqrt(strikeslip^2 + dipslip^2)
@@ -97,18 +94,14 @@ fault_displacements <- function(dip = NULL, delta = NULL, rake = NULL,
 #' coordinates. Otherwise, the tensor will be in the geographic reference frame.
 #'
 #' @details
-#' x axis of tensor = heave, y = strike slip, z = vertical throw (positive for 
-#' thrusting, negative for normal faulting)
+#' x axis of tensor = heave, y = strike slip, z = vertical throw (positive for thrusting, negative for normal faulting)
 #'
 #' @examples
 #' \dontrun{
-#' fault_tensor(displacements = data.frame(strikeslip = 2, verticalthrow = -5, 
-#' heave = 3), dip_direction = 0)
+#' fault_tensor(displacements = data.frame(strikeslip = 2, verticalthrow = -5, heave = 3), dip_direction = 0)
 #' }
 fault_tensor <- function(displacements, dip_direction = NULL) {
-  A <- diag(
-    c(displacements$heave, displacements$strikeslip, displacements$verticalthrow), 
-    3, 3)
+  A <- diag(c(displacements$heave, displacements$strikeslip, displacements$verticalthrow), 3, 3)
 
   if (!is.null(dip_direction)) {
     dipdir_rad <- tectonicr::deg2rad(dip_direction)
@@ -168,3 +161,83 @@ fault_tensor <- function(displacements, dip_direction = NULL) {
 # c(test2[3, 1], test2[3, 2], test2[3, 3]) |> vec2line()
 #
 # vtransform((diag(test2)), (cbind(c(1, 0, 0), c(0, 1, 0), c(0, 0, 0))))
+
+
+
+#' #' Title
+#' #'
+#' #' @param n,l,m direction cosines of the plane referred to the stress axes (σx, σy, σz) system and θ is the striation (resolved shear stress) rake on the fault plane
+#' #' @param R stress ratio R=(σz−σx)/(σy–σx)
+#' #'
+#' #' @returns  striation (resolved shear stress) rake on the fault plane
+#' #' @export
+#' #'
+#' #' @examples
+#' bott <- function(n, l, m, R) {
+#'   tan_theta <- (n / (l * m)) * (m^2 - (1 - n^2) * R)
+#'   theta <- atan(tan_theta) * 180 / pi
+#'   return(theta)
+#' }
+#' 
+#' #' Bott's stress ratio
+#' #'
+#' #' @param lambda angle between y (azimuth of σy) and the azimuth (α) of the
+#' #' fault, therefore λ=α±y (it is added or subtracted according to the sense of movement: dextral or sinistral, respectively) (in degree)
+#' #' @param theta  striation (resolved shear stress) rake on the fault plane (in degree)
+#' #' @param phi fault dip (in degree)
+#' #'
+#' #' @references Calvin et al. (2014)
+#' #'
+#' #' @return numeric
+#' #' @export
+#' #'
+#' #' @examples
+#' stress_ratio_simongomez <- function(lambda, theta, phi) {
+#'   if (theta == 90 | theta == 180) {
+#'     theta - 10^-6
+#'   }
+#'   if (theta == 0) {
+#'     theta + 10^-6
+#'   }
+#'   
+#'    sind(lambda)^2 - ((tand(theta) * sind(2 * lambda)) / 2 * cosd(phi))
+#' }
+#' 
+#' rake <- function(fault) {
+#'   ve <- fault[, 5]
+#'   p <- Plane(fault[, 1], fault[, 2])
+#'   a <- cbind(p[, 1] - 90, rep(0, nrow(p))) |>
+#'     as.line() |>
+#'     line2vec()
+#'   b <- Line(fault[, 3], fault[, 4]) |> line2vec()
+#' 
+#'   cos_theta <- vdot(a, b) / (sqrt(a^2) * sqrt(b^2))
+#'   theta <- ve * acos(theta) |> rad2deg()
+#'   # theta = vangle(a, b)
+#'   theta
+#' }
+#' 
+#' Ry_analysis <- function(fault, ny = 1){
+#'   theta = rake(fault)
+#'   strike = fault[, 1]
+#'   dip = fault[, 2]
+#'   ve <- fault[, 5]
+#'   
+#'   res <- cbind(fault = integer(), y = numeric(), R = numeric())
+#'   for(f in 1:strike){
+#'     for(y in seq(0, 360, ny)){
+#'     R <- stress_ratio_simongomez(lambda = strike[f] + ve[f] * y, theta = theta[f], phi = dip[f])
+#'     Rp = R 
+#'     if(!is.na(R)){
+#'     if(R > 1){
+#'       Rp = 1 + ((R-1)/R)
+#'     } else if(R < 0){
+#'       Rp = -R/(R-1)
+#'     } 
+#'     }
+#'     
+#'     res <- rbind(res, cbind(fault = f, y, R = Rp))
+#'     }
+#'   }
+#'   res
+#' }
