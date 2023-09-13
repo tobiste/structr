@@ -104,7 +104,7 @@ stereo_coords <- function(az, inc, upper.hem = FALSE) {
 #' stereoplot()
 #' stereo_point(Line(azimuth = c(90, 80), plunge = c(10, 75)), lab = c("L1", "L2"))
 #' stereo_point(Plane(120, 30), lab = "P", col = "red")
-stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = .75, upper.hem = FALSE, ...) {
+stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1, upper.hem = FALSE, ...) {
   stopifnot(is.spherical(x))
 
   if (is.plane(x) | is.fault(x)) {
@@ -143,18 +143,17 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = .
 #' @note `"plane"` objects will be displayed as pole to the plane.
 #' @importFrom graphics points text
 #' @examples
-#' \dontrun{
 #' faults <- Fault(
 #'   c(0, 90, 180, 270),
 #'   c(80, 45, 80, 45),
 #'   c(0, 180, 180, 315),
 #'   c(80, 5, 80, 36),
-#'   c(1, -1, 1, 0)
+#'   c(1, -1, 0, 1)
 #' )
 #' stereoplot()
 #' stereo_fault(faults, col = 1:4)
-#' }
-stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 21, col = 1, lwd = 1, lty = 1, lab = NULL, cex = .75, text.pos = 4, upper.hem = FALSE, ...) {
+#' stereo_fault(faults, col = 1:4, hoeppner = TRUE)
+stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex = 1, text.pos = 4, upper.hem = FALSE, ...) {
   stopifnot(is.fault(x))
   x0 <- x
 
@@ -172,11 +171,18 @@ stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 21, col 
     x[, 2],
     upper.hem
   )
+  if(hoeppner){crds.l <- stereo_coords(
+    x[, 3] + 180,
+    90 - x[, 4],
+    upper.hem
+  )
+  } else {
   crds.l <- stereo_coords(
     x[, 3],
     x[, 4],
     upper.hem
   )
+  }
 
   for (i in 1:nrow(crds.p)) {
     if (greatcirles) {
@@ -188,17 +194,20 @@ stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 21, col 
       }
     }
     if (hoeppner) {
-      points(NULL)
+      ang = -(x0[i, 3] * sign(x0[i, "sense"]))
+      graphics::points(crds.l[i, "x"], crds.l[i, "y"], pch = pch[i], col = col[i], cex = cex[i]/1.25)
+      if (x0[i, "sense"] != 0) {
+        graphics::text(crds.l[i, "x"], crds.l[i, "y"], labels = "\u2191", col = col[i], srt = ang, cex = cex[i]*1.5)
+      } 
     } else {
-      # angle = vangle(Line(x0[i, 3], x0[i, 4]), Line(0, 90)) + 90
-      angle <- NULL
+      # ang = vangle(Line(x0[i, 3], x0[i, 4]), Line(0, 90)) + 90
+      ang = -(x0[i, 3] * sign(x0[i, "sense"]))
+      #ang <- NULL
 
-      if (x0[i, "sense"] > 0) {
-        graphics::text(crds.l[i, "x"], crds.l[i, "y"], labels = "\u2191", col = col[i], srt = angle)
-      } else if (x0[i, "sense"] < 0) {
-        graphics::text(crds.l[i, "x"], crds.l[i, "y"], labels = "\u2191", col = col[i], srt = angle + 180)
+      if (x0[i, "sense"] != 0) {
+        graphics::text(crds.l[i, "x"], crds.l[i, "y"], labels = "\u2191", col = col[i], srt = ang, cex = cex[i]*1.5)
       } else {
-        graphics::points(crds.l[i, "x"], crds.l[i, "y"], pch = pch[i], col = col[i])
+        graphics::points(crds.l[i, "x"], crds.l[i, "y"], pch = pch[i], col = col[i], cex = cex[i])
       }
     }
   }
@@ -224,12 +233,12 @@ stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 21, col 
 #' stereo_point(Line(90, 5), lab = "L")
 #' stereo_smallcircle(Line(90, 5), d = 10)
 #' stereo_point(Plane(120, 30), lab = "P", col = "red")
-#' stereo_greatcircle(Plane(120, 30), col = "red", N = 1000)
+#' stereo_greatcircle(Plane(120, 30), col = "red")
 NULL
 
 #' @rdname stereo_cones
 #' @export
-stereo_smallcircle <- function(x, d = 90, col = 1, N = 100, BALL.radius = .25, upper.hem = FALSE, lty = 1, lwd = 1, ...) {
+stereo_smallcircle <- function(x, d = 90, col = 1, N = 1000, upper.hem = FALSE, lty = 1, lwd = 1, BALL.radius = 1, ...) {
   stopifnot(is.spherical(x))
   if (length(col) == 1) col <- rep(col, nrow(x))
   if (length(lty) == 1) lty <- rep(lty, nrow(x))

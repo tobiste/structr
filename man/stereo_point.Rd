@@ -10,7 +10,7 @@ stereo_point(
   pch = 20,
   lab = NULL,
   text.pos = 4,
-  cex = 0.75,
+  cex = 1,
   upper.hem = FALSE,
   ...
 )

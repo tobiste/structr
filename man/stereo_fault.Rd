@@ -8,12 +8,12 @@ stereo_fault(
   x,
   hoeppner = FALSE,
   greatcirles = TRUE,
-  pch = 21,
+  pch = 16,
   col = 1,
   lwd = 1,
   lty = 1,
   lab = NULL,
-  cex = 0.75,
+  cex = 1,
   text.pos = 4,
   upper.hem = FALSE,
   ...
@@ -46,15 +46,14 @@ Visualization of faults (planes and lines) in a stereographic projection.
 \code{"plane"} objects will be displayed as pole to the plane.
 }
 \examples{
-\dontrun{
 faults <- Fault(
   c(0, 90, 180, 270),
   c(80, 45, 80, 45),
   c(0, 180, 180, 315),
   c(80, 5, 80, 36),
-  c(1, -1, 1, 0)
+  c(1, -1, 0, 1)
 )
 stereoplot()
 stereo_fault(faults, col = 1:4)
-}
+stereo_fault(faults, col = 1:4, hoeppner = TRUE)
 }
