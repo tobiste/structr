@@ -23,6 +23,35 @@ theta <- function(phi) {
 }
 
 
+#' Principal stresses from 2D stress components
+#' 
+#' Determines the principal stresses and their orientations from the stress 
+#' components \deqn{sigma_x}, \deqn{\sigma_y}, \deqn{\tau_{xy}}.
+#'
+#' @param sx numeric. Normal stress acting on plane facing in X direction 
+#' (\deqn{sigma_x}).
+#' @param sy numeric. Normal stress acting on plane facing in Y direction 
+#' (\deqn{\sigma_y}).
+#' @param txy numeric. Shear stress acting on planes facing X and Y 
+#' (\deqn{\tau_{xy}}).
+#'
+#' @returns angle in degrees
+#'
+#' @references Richard J. Lisle (1999)
+#' @export
+PR_stress <- function(sx, sy, txy) {
+  mean <- (sx + sy) / 2
+  diam <- sqrt(4 * txy^2 + (sx - sy)^2)
+  radius <- diam / 2
+  s1 <- mean + radius
+  s2 <- mean - radius
+
+  theta1 <- atan(txy / (s1 - sy)) * 180 / pi
+  return(
+    data.frame(s1 = s1, s2 = s2, theta1 = theta1)
+    )
+}
+
 
 #' Stress transformation
 #'
