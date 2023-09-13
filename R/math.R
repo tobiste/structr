@@ -72,15 +72,16 @@ vcross <- function(x, y) {
     y <- vec2mat(y)
   }
 
-  vx <- x[, 2] * y[, 3] - x[, 3] * y[, 2]
-  vy <- x[, 3] * y[, 1] - x[, 1] * y[, 3]
-  vz <- x[, 1] * y[, 2] - x[, 2] * y[, 1]
-  xy <- cbind(x = vx, y = vy, z = vz)
+  xxy <- cbind(
+    x = x[, 2] * y[, 3] - x[, 3] * y[, 2], 
+    y = x[, 3] * y[, 1] - x[, 1] * y[, 3], 
+    z = x[, 1] * y[, 2] - x[, 2] * y[, 1]
+    )
 
   if (transform) {
-    to_spherical(xy, class)
+    to_spherical(xxy, class)
   } else {
-    xy
+    xxy
   }
 }
 
@@ -172,13 +173,14 @@ vrotaxis <- function(x, y) {
 vangle <- function(x, y) {
   transform <- FALSE
   if (is.spherical(x)) {
-    class <- class(x)
+    classx <- class(x)
     x <- to_vec(x)
     transform <- TRUE
   } else {
     x <- vec2mat(x)
   }
   if (is.spherical(y)) {
+    classy <- class(y)
     y <- to_vec(y)
   } else {
     y <- vec2mat(y)
@@ -248,6 +250,88 @@ vreject <- function(x, y) {
     x_rej
   }
 }
+
+#' Orthogonalize two vectors
+#'
+#' Make two vectors orthogonal by moving them in opposite directions in
+#' the plane they span. `vdot(x,y) < 1.0e-4` are considered orthogonal.
+#'
+#' @param x,y  Coordinates of the two vectors. Any coordinates system
+#'
+#' @returns  Orthogonalized vectors. In the same coordinate system
+#' @export
+#'
+#' @source https://www.snsn.se/SH/SHcode/Python/BL.py
+#'
+#' @examples
+#' v_orthogonalize(c(1, 0, 0), c(.1, 1, 0))
+v_orthogonalize <- function(x, y) {
+  if (abs(vdot(x, y)) < 1.0e-4) {
+    return(list(x, y))
+  } else {
+    transform <- FALSE
+    if (is.spherical(x)) {
+      class <- class(x)
+      x <- to_vec(x)
+      transform <- TRUE
+    } else {
+      x <- vec2mat(x)
+    }
+    if (is.spherical(y)) {
+      y <- to_vec(y)
+    } else {
+      y <- vec2mat(y)
+    }
+
+    # Define the rotation axis (the normal to the v1, v2 plane), use as first
+    # basis vector in the rotation coordinate system.
+    # Remember, the cross product of two non-orthogonal vectors is not a unit
+    # vector
+
+    r <- vcross(x, y) |> vnorm()
+
+    a <- vnorm(x)
+    b <- vcross(r, a)
+
+    # Transform v1 and v2 to the rotation coordinate system.
+    # Transformation matrix is T = (r a b)
+    rv1 <- c(0, 0, 0)
+    rv1[1] <- vdot(r, x)
+    rv1[2] <- vdot(a, x)
+    rv1[3] <- vdot(b, x)
+
+    rv2 <- c(0, 0, 0)
+    rv2[1] <- vdot(r, y)
+    rv2[2] <- vdot(a, y)
+    rv2[3] <- vdot(b, y)
+
+    # Rotate rv1 and rv2 half the discrepancy angle in opposite directions
+    # around r
+    ang <- acos(vdot(rv1, rv2))
+    ang <- (pi / 2 - ang) / 2.0
+
+    rw1 <- vrotate(rv1, r, -ang)
+    rw2 <- vrotate(rv2, r, ang)
+
+    # Transform the vectors back to NED
+    w1 <- c(0, 0, 0)
+    w1[1] <- r[1] * rw1[1] + a[1] * rw1[2] + b[1] * rw1[3]
+    w1[2] <- r[2] * rw1[1] + a[2] * rw1[2] + b[2] * rw1[3]
+    w1[3] <- r[3] * rw1[1] + a[3] * rw1[2] + b[3] * rw1[3]
+
+    w2 <- c(0, 0, 0)
+    w2[1] <- r[1] * rw2[1] + a[1] * rw2[2] + b[1] * rw2[3]
+    w2[2] <- r[2] * rw2[1] + a[2] * rw2[2] + b[2] * rw2[3]
+    w2[3] <- r[3] * rw2[1] + a[3] * rw2[2] + b[3] * rw2[3]
+
+    if (transform) {
+      w1 <- to_spherical(w1, classx)
+      w2 <- to_spherical(w2, classy)
+    }
+    return(list(w1, w2))
+  }
+}
+
 
 #' Affine transformation of vector by matrix
 #'
@@ -469,6 +553,8 @@ v_confidence_angle <- function(x, alpha = 0.05) {
     q
   }
 }
+
+
 
 #' @rdname stats
 #' @export

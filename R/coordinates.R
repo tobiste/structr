@@ -68,7 +68,7 @@ to_vec <- function(x) {
 #' @export
 to_spherical <- function(x, class = c("line", "plane")) {
   class <- match.arg(class)
-  if (is.line(x)) {
+  if (class == "line") {
     vec2line(x)
   } else {
     vec2plane(x)
