@@ -10,11 +10,11 @@ stereo_smallcircle(
   x,
   d = 90,
   col = 1,
-  N = 100,
-  BALL.radius = 0.25,
+  N = 1000,
   upper.hem = FALSE,
   lty = 1,
   lwd = 1,
+  BALL.radius = 1,
   ...
 )
 
@@ -29,10 +29,10 @@ stereo_greatcircle(x, ...)
 
 \item{N}{integer. number of points to calculate}
 
-\item{BALL.radius}{numeric size of sphere}
-
 \item{upper.hem}{logical. Whether the projection is shown for upper
 hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
+
+\item{BALL.radius}{numeric size of sphere}
 
 \item{...}{optional graphical parameters}
 }
@@ -44,5 +44,5 @@ stereoplot()
 stereo_point(Line(90, 5), lab = "L")
 stereo_smallcircle(Line(90, 5), d = 10)
 stereo_point(Plane(120, 30), lab = "P", col = "red")
-stereo_greatcircle(Plane(120, 30), col = "red", N = 1000)
+stereo_greatcircle(Plane(120, 30), col = "red")
 }

@@ -143,7 +143,7 @@ geo2vec <- function(g) {
 #' @param dip_direction,dip numeric vectors. Dip direction and dip of a plane
 #' (in degrees)
 #' @param sense (optional) integer. Sense of the line on a fault plane. Either
-#' `1`or `-1` for normal/dextral or thrust/sinistral offset, respectively.
+#' `1`or `-1` for normal or thrust offset, respectively.
 #' @details
 #' `is.line`, `is.plane`, `is.pair`, and `is.fault` return `TRUE` if `l`, `p`, and `f`
 #' are an object of class `"line"`, `"plane"`, `"pair"` or `"fault"`, respectively, and

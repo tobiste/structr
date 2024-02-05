@@ -51,7 +51,7 @@ degrees)}
 (in degrees)}
 
 \item{sense}{(optional) integer. Sense of the line on a fault plane. Either
-\code{1}or \code{-1} for normal/dextral or thrust/sinistral offset, respectively.}
+\code{1}or \code{-1} for normal or thrust offset, respectively.}
 
 \item{l, p, f}{numeric vector or array containing the spherical coordinates
 (1st element/column is azimuth, 2nd element/column is inclination, both in
