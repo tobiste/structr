@@ -36,28 +36,36 @@ ui <- fluidPage(
         value = 250
       ),
       
-      fluidRow(h4("Coulomb criteria"),
+      fluidRow(
+        h4("Coulomb criteria"),
         sliderInput(
         inputId = "coulomb1",
         label = "Cohesion",
         min = -500,
         max = 500,
-        value = 70
+        value = 70,
+        round = FALSE, 
+        step = 1
       ),
       sliderInput(
         inputId = "coulomb2",
         label = "Slope",
         min = 0,
         max = 2,
-        value = .6
-      )),
+        value = .6,
+        round = FALSE,
+        step = 0.01
+      )
+      ),
       
       sliderInput(
         inputId = "sliding",
         label = "Sliding criteria",
         min = 0,
         max = 2,
-        value = .81
+        value = .81,
+        round = FALSE,
+        step = 0.01
       )
     ),
     

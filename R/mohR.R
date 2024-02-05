@@ -306,7 +306,7 @@ ggMohr <- function(s1, s2, s3, coulomb = c(70, 0.6), sliding = 0.81, units = "MP
   sigma_n <- normal_stress(s1, s3, theta.f / 2)
   # theta.slope <- -atan(2*theta.f)
 
-  mohr <- ggplot2::ggplot() +
+  ggplot2::ggplot() +
     ggforce::geom_circle(aes(x0 = circle13.m, y0 = 0, r = circle13.r), fill = "gray", alpha = .5) +
     ggforce::geom_circle(aes(x0 = circle23.m, y0 = 0, r = circle23.r), fill = "white") +
     ggforce::geom_circle(aes(x0 = circle12.m, y0 = 0, r = circle12.r), fill = "white") +
@@ -322,6 +322,4 @@ ggMohr <- function(s1, s2, s3, coulomb = c(70, 0.6), sliding = 0.81, units = "MP
     ggplot2::coord_fixed() +
     ggplot2::labs(x = bquote(sigma[n] ~ (.(units))), y = bquote(sigma[s] ~ (.(units))), caption = bquote(theta[f] == .(round(theta.f, 2)) ~ alpha[f] == .(round(90 - theta.f, 2)))) +
     ggplot2::theme_classic()
-  suppressWarnings(mohr)
-  
 }
