@@ -155,15 +155,13 @@ defgrad_from_velgrad <- function(V, time = 1, steps = 1) {
     R <- list()
     t <- seq(0, time, steps)
     for (i in t) {
-      Ri <- expm::expm(V * i)
-      class(Ri) <- "defgrad"
+      Ri <- structure(expm::expm(V * i), class = "defgrad")
       Ri = list(Ri)
       names(Ri) = i
       R <- append(R, Ri)
     }
   } else {
-    R <- expm::expm(V * time)
-    class(R) <- "defgrad"
+    R <- structure(expm::expm(V * time), class = "defgrad")
   }
   R
 }

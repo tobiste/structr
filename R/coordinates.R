@@ -93,18 +93,19 @@ plane2vec <- function(p) {
 #' @export
 vec2line <- function(x) {
   x <- vec2mat(x)
-  l <- vec2lin0(x[, 1], x[, 2], x[, 3])
-  class(l) <- "line"
-  l
+  structure(
+    vec2lin0(x[, 1], x[, 2], x[, 3]),
+  class = "line"
+  )
 }
 
 #' @rdname coordinates
 #' @export
 vec2plane <- function(x) {
   x <- vec2mat(x)
-  p <- vec2fol0(x[, 1], x[, 2], x[, 3])
-  class(p) <- "plane"
-  p
+  structure(vec2fol0(x[, 1], x[, 2], x[, 3]),
+  class = "plane")
+  
 }
 
 
