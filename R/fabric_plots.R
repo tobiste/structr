@@ -228,13 +228,22 @@ WoodcockPlot <- function(x, lab = NULL, add = FALSE, ...) {
       x = 1, type = "n",
       xlab = expression(log(lambda[2] / lambda[3])),
       ylab = expression(log(lambda[1] / lambda[2])),
+      xaxs = 'i', yaxs = 'i',
       xlim = c(0, 7), ylim = c(0, 7), ...
     )
-    graphics::abline(a = 0, b = .2, col = "grey", lty = 3)
-    graphics::abline(a = 0, b = .5, col = "grey", lty = 3)
-    graphics::abline(a = 0, b = 1, col = "grey", lty = 3, lwd = 1.5)
-    graphics::abline(a = 0, b = 2, col = "grey", lty = 3)
-    graphics::abline(a = 0, b = 5, col = "grey", lty = 3)
+    
+    for(j in seq(2, 8, 2)){
+      graphics::abline(a = j, b = -1, col = "grey", lty = 3)
+      
+    }
+    
+    for(i in c(.2, .5, 2, 5)){
+      graphics::abline(a = 0, b = i, col = "grey", lty = 2)
+      
+    }
+    graphics::abline(a = 0, b = 1, col = "grey", lty = 1, lwd = 1.5)
+    
+
   }
   x_eigen <- or_eigen(x, scaled = TRUE)
   if (!is.null(lab)) {
