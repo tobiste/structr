@@ -3,7 +3,6 @@
 \docType{package}
 \name{structr}
 \alias{structr}
-\alias{_PACKAGE}
 \alias{structr-package}
 \title{library(structr)}
 \description{
