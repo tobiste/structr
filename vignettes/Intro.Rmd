@@ -1,0 +1,35 @@
+---
+title: "Stereographic projections"
+author: "Tobias Stephan"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{euler.reco}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, warning=FALSE, message=FALSE}
+library(structr)
+```
+
+
+
+
+```{r stereo}
+stereoplot()
+stereo_point(Line(90, 5), lab = "L")
+stereo_smallcircle(Line(90, 5), d = 10)
+stereo_point(Plane(120, 30), lab = "P", col = "red")
+stereo_greatcircle(Plane(120, 30), col = "red")
+```
