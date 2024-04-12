@@ -1,14 +1,14 @@
 Type: Package
 Package: structr
 Title: Structural geology in R
-Version: 0.1.0
+Version: 0.2.0
 Author: Tobias Stephan
 Maintainer: The package maintainer <tobias.stephan1@yahoo.com>
 Description: Free and open-source R package for analyzing and visualizing
     orientation and stress data for structural geology.
 License: MIT + file LICENSE
 Depends: 
-    R (>= 3.5.0)
+    R (>= 4.1.0)
 Imports: 
     Directional,
     dplyr,
