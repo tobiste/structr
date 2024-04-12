@@ -19,6 +19,19 @@ A list of documented functions may be viewed by typing
 A list of documented functions may be viewed by typing
 \code{help(package="structr")}.
 }
+\seealso{
+Useful links:
+\itemize{
+  \item \url{https://tobiste.github.io/structr/}
+}
+
+
+Useful links:
+\itemize{
+  \item \url{https://tobiste.github.io/structr/}
+}
+
+}
 \author{
 Tobias Stephan
 }

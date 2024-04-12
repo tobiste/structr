@@ -14,13 +14,11 @@
 #' @importFrom readxl read_xlsx
 #' @importFrom rjson fromJSON
 #' @importFrom lubridate as_datetime
-#' @importFrom dplyr rename mutate filter select full_join arrange pull
+#' @importFrom dplyr rename mutate filter select full_join arrange pull bind_rows
 #' @importFrom tidyr pivot_longer pivot_wider
 #' @importFrom tidyselect starts_with
 #' @importFrom tibble tibble as_tibble
 #' @importFrom sf st_as_sf
-#' @importFrom plyr rbind.fill
-#' @importFrom magrittr "%>%"
 #' @returns `list` containing the following objects:
 #' \describe{
 #' \item{`data`}{`"tbl_df"` object or `"sf"` if `sf == TRUE`. Metadata.}
@@ -54,7 +52,7 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
   data <- readxl::read_xlsx(file, sheet = 1, skip = 2)
   colnames(data) <- make.names(colnames(data))
 
-  data <- data %>%
+  data <- data |>
     dplyr::mutate(
       Date = lubridate::as_datetime(Date),
       Planar.Orientation.Dipdirection = (Planar.Orientation.Strike + 90) %% 360,
@@ -64,23 +62,23 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
       Linear.Sense = ifelse(Planar.Orientation.Fault.Or.Sz.Type %in% c("dextral", "normal", "dextral_normal"), 1, Linear.Sense)
     )
   if (tag_cols) {
-    data <- data %>%
-      tidyr::pivot_longer(cols = tidyselect::starts_with("Tag"), names_to = "Tag", values_to = "temp") %>%
-      dplyr::filter(temp == "X") %>%
-      dplyr::select(-temp) %>%
+    data <- data |>
+      tidyr::pivot_longer(cols = tidyselect::starts_with("Tag"), names_to = "Tag", values_to = "temp") |>
+      dplyr::filter(temp == "X") |>
+      dplyr::select(-temp) |>
       dplyr::mutate(Tag = gsub("Tag:", "", Tag))
   }
 
-  data.lines0 <- data %>%
-    dplyr::select(tidyselect::starts_with("Linear")) %>%
+  data.lines0 <- data |>
+    dplyr::select(tidyselect::starts_with("Linear")) |>
     dplyr::filter(!is.na(Linear.Orientation.Trend))
 
-  data.planes0 <- data %>%
-    dplyr::select(tidyselect::starts_with("Planar"), ) %>%
+  data.planes0 <- data |>
+    dplyr::select(tidyselect::starts_with("Planar"), ) |>
     dplyr::filter(!is.na(Planar.Orientation.Dipdirection))
 
 
-  data0 <- data %>% dplyr::select(
+  data0 <- data |> dplyr::select(
     !tidyselect::starts_with(c("Planar", "Linear"))
   )
   data0$Planar.Orientation.Unix.Timestamp <- data$Planar.Orientation.Unix.Timestamp
@@ -88,13 +86,13 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
   res <- dplyr::full_join(data.planes0, data.lines0,
     by = c("Planar.Orientation.Unix.Timestamp" = "Linear.Orientation.Unix.Timestamp"),
     multiple = "all"
-  ) %>%
+  ) |>
     dplyr::left_join(data0,
       by = "Planar.Orientation.Unix.Timestamp",
       multiple = "all"
-    ) %>%
-    dplyr::mutate(Linear.Orientation.Unix.Timestamp = NA) %>%
-    dplyr::select(colnames(data)) %>%
+    ) |>
+    dplyr::mutate(Linear.Orientation.Unix.Timestamp = NA) |>
+    dplyr::select(colnames(data)) |>
     dplyr::select(-Linear.Orientation.Unix.Timestamp)
 
   planes <- as.plane(cbind(res$Planar.Orientation.Dipdirection, res$Planar.Orientation.Dip))
@@ -120,13 +118,13 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 
   lines0 <- dplyr::filter(data0, Type == "L")
   lines <- as.line(cbind(lines0$Trd.Strk, lines0$Plg.Dip))
-  lines.meta <- lines0 %>% dplyr::select(-c(No., Trd.Strk, Plg.Dip))
+  lines.meta <- lines0 |> dplyr::select(-c(No., Trd.Strk, Plg.Dip))
   rownames(lines) <- rownames(lines.meta) <- lines0$No.
 
-  planes0 <- dplyr::filter(data0, Type == "P") %>%
+  planes0 <- dplyr::filter(data0, Type == "P") |>
     mutate(Dipdir = (Trd.Strk + 90) %% 360)
   planes <- as.plane(cbind(planes0$Dipdir, planes0$Plg.Dip))
-  planes.meta <- planes0 %>% dplyr::select(-c(No., Dipdir, Trd.Strk, Plg.Dip))
+  planes.meta <- planes0 |> dplyr::select(-c(No., Dipdir, Trd.Strk, Plg.Dip))
   rownames(planes) <- rownames(planes.meta) <- planes0$No.
 
 
@@ -160,7 +158,7 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
     tags_list[[t]]$eon <- NULL
 
     df_t <- tibble::as_tibble(tags_list[[t]])
-    tags_df <- plyr::rbind.fill(tags_df, df_t)
+    tags_df <- dplyr::bind_rows(tags_df, df_t)
     if (nrow(spots_t) > 0) {
       spots_t$tag <- df_t$id
       spot_tags <- rbind(spot_tags, spots_t)
@@ -170,13 +168,13 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
 
   spot_tags_df <- dplyr::left_join(
     unique(spot_tags),
-    tags_df %>% dplyr::select(tag_id, tag_name),
+    tags_df |> dplyr::select(tag_id, tag_name),
     by = c("tag" = "tag_id")
-  ) %>%
-    dplyr::mutate(tag_name = paste0("tag:", tag_name)) %>%
-    # dplyr::select(-tag) %>%
-    tidyr::pivot_wider(names_from = "tag_name", values_from = "tag") %>%
-    dplyr::mutate(dplyr::across(!spot, function(x) ifelse(is.na(x), FALSE, TRUE))) %>%
+  ) |>
+    dplyr::mutate(tag_name = paste0("tag:", tag_name)) |>
+    # dplyr::select(-tag) |>
+    tidyr::pivot_wider(names_from = "tag_name", values_from = "tag") |>
+    dplyr::mutate(dplyr::across(!spot, function(x) ifelse(is.na(x), FALSE, TRUE))) |>
     unique()
 
   # read field book data of dataset
@@ -186,8 +184,8 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
   for (a in ds) {
     ds_name[a] <- dat$project$datasets[[a]]$name
   }
-  dsn <- data.frame(ds, ds_name) %>%
-    dplyr::filter(ds_name == dataset) %>%
+  dsn <- data.frame(ds, ds_name) |>
+    dplyr::filter(ds_name == dataset) |>
     dplyr::pull(ds)
 
 
@@ -217,10 +215,10 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
       }
     }
   }
-  fieldbook <- tibble::tibble(spot = spot, longitude, latitude, altitude, note = notes, time = date, gps_accuracy, id) %>%
-    dplyr::mutate(time = lubridate::as_datetime(time)) %>%
-    dplyr::arrange(time) %>%
-    dplyr::left_join(spot_tags_df, by = c("id" = "spot")) %>%
+  fieldbook <- tibble::tibble(spot = spot, longitude, latitude, altitude, note = notes, time = date, gps_accuracy, id) |>
+    dplyr::mutate(time = lubridate::as_datetime(time)) |>
+    dplyr::arrange(time) |>
+    dplyr::left_join(spot_tags_df, by = c("id" = "spot")) |>
     dplyr::select(-id)
   if (sf) fieldbook <- sf::st_as_sf(fieldbook, coords = c("longitude", "latitude"), remove = FALSE, crs = "WGS84", na.fail = FALSE)
 
@@ -244,7 +242,7 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
             # single P or L measurements
             if (is.null(orient_ls_ij$associated_orientation)) {
               # append all measurements of spot
-              orient_df_i <- plyr::rbind.fill(orient_df_i, as.data.frame(orient_ls_ij)) |>
+              orient_df_i <-dplyr::bind_rows(orient_df_i, as.data.frame(orient_ls_ij)) |>
                 unique()
               orient_df_i$spot <- spot
               orient_df_i$associated <- FALSE
@@ -275,20 +273,20 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
 
                   ## combine P + L measurements
                   PL_k <- cbind(P, L)
-                  PL <- plyr::rbind.fill(PL, PL_k) |>
+                  PL <- dplyr::bind_rows(PL, PL_k) |>
                     unique()
                 }
                 PL$associated <- TRUE
               }
 
               # append all P+L measurements of spot
-              orient_df_i <- plyr::rbind.fill(orient_df_i, PL) |>
+              orient_df_i <- dplyr::bind_rows(orient_df_i, PL) |>
                 unique()
               orient_df_i$spot <- spot
               # orient_ls_ij <- NULL
             }
             # combine all spots
-            orient_df <- plyr::rbind.fill(orient_df, orient_df_i) |>
+            orient_df <- dplyr::bind_rows(orient_df, orient_df_i) |>
               unique()
           }
         }
@@ -296,11 +294,11 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
     }
   }
 
-  meta <- orient_df %>%
-    tibble::as_tibble() %>%
-    dplyr::left_join(fieldbook) %>%
+  meta <- orient_df |>
+    tibble::as_tibble() |>
+    dplyr::left_join(fieldbook) |>
     dplyr::arrange(time)
-  # select_if(function(x) !(all(is.na(x)) | all(x==""))) %>%
+  # select_if(function(x) !(all(is.na(x)) | all(x==""))) |>
   #
   if (sf) {
     meta <- sf::st_as_sf(meta)
