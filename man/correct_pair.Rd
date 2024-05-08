@@ -2,7 +2,7 @@
 % Please edit documentation in R/faults.R
 \name{correct_pair}
 \alias{correct_pair}
-\title{Orthogonalization of plane and line measuremnt}
+\title{Orthogonalization of plane and line measurement}
 \usage{
 correct_pair(x)
 }
@@ -10,11 +10,11 @@ correct_pair(x)
 \item{x}{Pair or Fault}
 }
 \value{
-list with the orthogonalized plane and line measurments
+list with the orthogonalized plane and line measurements
 (as 3d vectors) and the misfit angles (in radians)
 }
 \description{
-Orthogonalization of plane and line measuremnt
+Orthogonalization of plane and line measurement
 }
 \examples{
 p <- Pair(120, 60, 110, 58)
