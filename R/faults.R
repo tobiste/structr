@@ -34,11 +34,11 @@ fault_analysis <- function(x, ptangle = 90){
   list(p = p, t = t, m = m, d = d)
 }
 
-#' Orthogonalization of plane and line measuremnt 
+#' Orthogonalization of plane and line measurement 
 #'
 #' @param x Pair or Fault
 #'
-#' @returns list with the orthogonalized plane and line measurments 
+#' @returns list with the orthogonalized plane and line measurements 
 #' (as 3d vectors) and the misfit angles (in radians)
 #' @export
 #'
