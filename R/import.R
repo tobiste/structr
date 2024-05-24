@@ -15,6 +15,7 @@
 #' @importFrom rjson fromJSON
 #' @importFrom lubridate as_datetime
 #' @importFrom dplyr rename mutate filter select full_join arrange pull bind_rows
+#' @importFrom plyr rbind.fill
 #' @importFrom tidyr pivot_longer pivot_wider
 #' @importFrom tidyselect starts_with
 #' @importFrom tibble tibble as_tibble
@@ -223,7 +224,7 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
   if (sf) fieldbook <- sf::st_as_sf(fieldbook, coords = c("longitude", "latitude"), remove = FALSE, crs = "WGS84", na.fail = FALSE)
 
   # read structural data
-  orient_df <- data.frame()
+  orient_df <- data.frame(check.names = FALSE)
   for (i in seq_along(DSN)) { # loop through each spot
     if (!is.null(DSN[[i]]$geometry)) {
       if (DSN[[i]]$geometry$type == "Point" & DSN[[i]]$type == "Feature") {
@@ -242,7 +243,7 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
             # single P or L measurements
             if (is.null(orient_ls_ij$associated_orientation)) {
               # append all measurements of spot
-              orient_df_i <-dplyr::bind_rows(orient_df_i, as.data.frame(orient_ls_ij)) |>
+              orient_df_i <- plyr::rbind.fill(orient_df_i, as.data.frame(orient_ls_ij, check.names = FALSE)) |>
                 unique()
               orient_df_i$spot <- spot
               orient_df_i$associated <- FALSE
@@ -254,14 +255,14 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
 
               ## P measurement
               P <- orient_ls_ij |>
-                as.data.frame() |>
+                as.data.frame(check.names = FALSE) |>
                 unique()
 
               ## L measurement
-              PL <- data.frame()
+              PL <- data.frame(check.names = FALSE)
               for (k in seq_along(L_ls)) {
                 L <- L_ls[[k]] |>
-                  as.data.frame() |>
+                  as.data.frame(check.names = FALSE) |>
                   unique()
                 plunge <- L$plunge
                 trend <- L$trend
@@ -273,20 +274,20 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
 
                   ## combine P + L measurements
                   PL_k <- cbind(P, L)
-                  PL <- dplyr::bind_rows(PL, PL_k) |>
+                  PL <- plyr::rbind.fill(PL, PL_k) |>
                     unique()
                 }
                 PL$associated <- TRUE
               }
 
               # append all P+L measurements of spot
-              orient_df_i <- dplyr::bind_rows(orient_df_i, PL) |>
+              orient_df_i <- plyr::rbind.fill(orient_df_i, PL) |>
                 unique()
               orient_df_i$spot <- spot
               # orient_ls_ij <- NULL
             }
             # combine all spots
-            orient_df <- dplyr::bind_rows(orient_df, orient_df_i) |>
+            orient_df <- plyr::rbind.fill(orient_df, orient_df_i) |>
               unique()
           }
         }

@@ -15,7 +15,7 @@
 \usage{
 vlength(x)
 
-vsum(x)
+vsum(x, w = NULL)
 
 vnorm(x)
 

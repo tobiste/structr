@@ -4,10 +4,12 @@
 \alias{vresultant}
 \title{Mean resultant of a set of vectors}
 \usage{
-vresultant(x, mean = FALSE)
+vresultant(x, w = NULL, mean = FALSE)
 }
 \arguments{
 \item{x}{numeric. Can be three element vector or a three column array}
+
+\item{w}{weightings}
 
 \item{mean}{logical. Whether the mean resultant (\code{TRUE}) or resultant
 (\code{FALSE}, the default) is returned.}

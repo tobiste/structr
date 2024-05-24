@@ -11,11 +11,11 @@
 \alias{estimate_k}
 \title{Statistical estimators of the distribution of a set of vectors}
 \usage{
-v_mean(x)
+v_mean(x, w = NULL)
 
-v_var(x)
+v_var(x, w = NULL)
 
-v_delta(x)
+v_delta(x, w = NULL)
 
 v_rdegree(x)
 
@@ -28,6 +28,8 @@ estimate_k(x)
 \arguments{
 \item{x}{numeric. Can be three element vector, three column array, or an
 object of class \code{"line"} or \code{"plane"}}
+
+\item{w}{weightings}
 
 \item{alpha}{significance level (0.05 by default)}
 }

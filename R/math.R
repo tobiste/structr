@@ -31,11 +31,16 @@ vlength <- function(x) {
 
 #' @rdname operations
 #' @export
-vsum <- function(x) {
+vsum <- function(x, w = NULL) {
   if (is.spherical(x)) {
     x <- to_vec(x)
   }
-  cbind(sum(x[, 1]), sum(x[, 2]), sum(x[, 3])) # vector sum
+  w <- if (is.null(w)) {
+    rep(1, times = nrow(x))
+  } else {
+    as.numeric(w)
+  }
+  cbind(sum(w * x[, 1]), sum(w * x[, 2]), sum(w * x[, 3])) # vector sum
 }
 
 #' @rdname operations
@@ -371,6 +376,7 @@ vtransform <- function(x, A, norm = FALSE) {
 #' Mean resultant of a set of vectors
 #'
 #' @param x numeric. Can be three element vector or a three column array
+#' @param w weightings 
 #' @param mean logical. Whether the mean resultant (`TRUE`) or resultant
 #' (`FALSE`, the default) is returned.
 #' @returns if `mean==TRUE`, mean resultant is returned
@@ -380,10 +386,17 @@ vtransform <- function(x, A, norm = FALSE) {
 #' x <- rvmf(100, mu = Line(120, 50), k = 5) |> to_vec()
 #' vresultant(x, mean = FALSE)
 #' vresultant(x, mean = TRUE)
-vresultant <- function(x, mean = FALSE) {
-  R <- vsum(x)
+vresultant <- function(x, w = NULL, mean = FALSE) {
+  w <- if (is.null(w)) {
+    rep(1, times = nrow(x))
+  } else {
+    as.numeric(w)
+  }
+  
+  R <- vsum(x, w)
   if (mean) {
-    R <- R / nrow(x)
+    N <- sum(w)
+    R <- R / N
   }
   R
 }
@@ -392,6 +405,7 @@ vresultant <- function(x, mean = FALSE) {
 #'
 #' @param x numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
+#' @param w weightings
 #' @param alpha significance level (0.05 by default)
 #' @details
 #' `v_mean` returns the spherical mean of a set of vectors
@@ -430,7 +444,7 @@ NULL
 
 #' @rdname stats
 #' @export
-v_mean <- function(x) {
+v_mean <- function(x, w = NULL) {
   transform <- FALSE
   if (is.spherical(x)) {
     v <- to_vec(x)
@@ -439,8 +453,14 @@ v_mean <- function(x) {
     v <- vec2mat(x)
   }
 
-  N <- nrow(v)
-  xbar <- vsum(v) / N
+  w <- if (is.null(w)) {
+    rep(1, times = nrow(v))
+  } else {
+    as.numeric(w)
+  }
+  
+  N <- sum(w)
+  xbar <- vsum(v, w) / N
   Rbar <- vlength(xbar)
   mu <- xbar / Rbar
 
@@ -453,24 +473,24 @@ v_mean <- function(x) {
 
 #' @rdname stats
 #' @export
-v_var <- function(x) {
+v_var <- function(x, w = NULL) {
   if (is.spherical(x)) {
     v <- to_vec(x)
   } else {
     v <- vec2mat(x)
   }
-  Rbar <- vresultant(vnorm(v), mean = TRUE) |>
+  Rbar <- vresultant(vnorm(v), w, mean = TRUE) |>
     vlength()
   1 - Rbar
 }
 
-v_sd <- function(x) {
+v_sd <- function(x, w = NULL) {
   if (is.spherical(x)) {
     v <- to_vec(x)
   } else {
     v <- vec2mat(x)
   }
-  Rbar <- vresultant(v, mean = TRUE) |>
+ Rbar <- vresultant(v, w, mean = TRUE) |>
     vlength()
 
   sqrt(log(1 / Rbar^2))
@@ -480,7 +500,7 @@ v_sd <- function(x) {
 
 #' @rdname stats
 #' @export
-v_delta <- function(x) {
+v_delta <- function(x, w = NULL) {
   transform <- FALSE
   if (is.spherical(x)) {
     v <- to_vec(x)
