@@ -17,7 +17,8 @@ spatial_interpolation(
   dist_weight = c("inverse", "linear"),
   idp = 1,
   dist_threshold = 0.01,
-  R = 10,
+  R_range = seq(1, 10, 1),
+  compact = TRUE,
   ...
 )
 }
@@ -44,7 +45,9 @@ spatial_interpolation(
 
 \item{dist_threshold}{Numeric. Distance weight to prevent overweight of data nearby (0 to 1). Default is \code{0.1}}
 
-\item{R}{Numeric value or vector specifying the kernel half-width, i.e. the search radius (in km). Default is \code{1}}
+\item{R_range}{Numeric value or vector specifying the kernel half-width, i.e. the search radius (in km). Default is \code{1}}
+
+\item{compact}{logical.}
 }
 \value{
 list
@@ -58,11 +61,13 @@ Based on \code{\link[tectonicr:stress2grid]{tectonicr::stress2grid()}}
 \examples{
 \dontrun{
 data <- read_strabo_JSON("E:/Lakehead/Field work/StraboSpot_07_02_2023.json", dataset = "TS")
-ps <- data$data |> dplyr::mutate(dipdir = (strike + 90) \%\% 360) |> dplyr::filter(type == "planar_orientation" & !(feature_type \%in\% c("other", "vector", "option_13")))
+ps <- data$data |>
+  dplyr::mutate(dipdir = (strike + 90) \%\% 360) |>
+  dplyr::filter(type == "planar_orientation" & !(feature_type \%in\% c("other", "vector", "option_13")))
 ps_vec <- structr::as.plane(cbind(ps$dipdir, ps$dip))
-structr::spatial_interpolation(x=ps_vec, coords = ps, gridsize = .05, R = 15, dist_threshold = 0.01, threshold = Inf)
+structr::spatial_interpolation(x = ps_vec, coords = ps, gridsize = .05, R_range = seq(1, 10, 1), dist_threshold = 0.01, threshold = Inf)
 }
 }
 \seealso{
-\code{\link[tectonicr:stress2grid]{tectonicr::stress2grid()}}, \code{\link[=v_mean]{v_mean()}}, \code{\link[=v_sd]{v_sd()}}
+\code{\link[tectonicr:stress2grid]{tectonicr::stress2grid()}}, \code{\link[=v_mean]{v_mean()}}, \code{\link[=v_delta]{v_delta()}}
 }
