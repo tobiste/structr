@@ -29,7 +29,8 @@ estimate_k(x)
 \item{x}{numeric. Can be three element vector, three column array, or an
 object of class \code{"line"} or \code{"plane"}}
 
-\item{w}{weightings}
+\item{w}{numerical vector of weights the same length as \code{x} giving the
+weights to use for elements of \code{x}.}
 
 \item{alpha}{significance level (0.05 by default)}
 }
@@ -61,13 +62,19 @@ if otherwise). The \eqn{100(1-\alpha)\%} confidence interval is than given by \e
 }
 \examples{
 x <- rvmf(100, mu = Line(120, 50), k = 5)
-v_mean(x)
 v_var(x)
 v_delta(x)
 v_rdegree(x)
 v_sde(x)
 v_confidence_angle(x)
 estimate_k(x)
+
+#' weights:
+x2 <-  Line(c(0, 0), c(0, 90))
+v_mean(x2)
+v_mean(x2, w = c(1, 2))
+v_var(x2)
+v_var(x2, w = c(1, 2))
 }
 \seealso{
 \code{\link[=vresultant]{vresultant()}}, \code{\link[=fisher_statistics]{fisher_statistics()}}

@@ -376,7 +376,8 @@ vtransform <- function(x, A, norm = FALSE) {
 #' Mean resultant of a set of vectors
 #'
 #' @param x numeric. Can be three element vector or a three column array
-#' @param w weightings 
+#' @param w numerical vector of weights the same length as `x` giving the 
+#' weights to use for elements of `x`.
 #' @param mean logical. Whether the mean resultant (`TRUE`) or resultant
 #' (`FALSE`, the default) is returned.
 #' @returns if `mean==TRUE`, mean resultant is returned
@@ -405,7 +406,8 @@ vresultant <- function(x, w = NULL, mean = FALSE) {
 #'
 #' @param x numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
-#' @param w weightings
+#' @param w numerical vector of weights the same length as `x` giving the 
+#' weights to use for elements of `x`.
 #' @param alpha significance level (0.05 by default)
 #' @details
 #' `v_mean` returns the spherical mean of a set of vectors
@@ -433,13 +435,20 @@ vresultant <- function(x, w = NULL, mean = FALSE) {
 #' @name stats
 #' @examples
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)
-#' v_mean(x)
+
 #' v_var(x)
 #' v_delta(x)
 #' v_rdegree(x)
 #' v_sde(x)
 #' v_confidence_angle(x)
 #' estimate_k(x)
+#' 
+#' #' weights:
+#' x2 <-  Line(c(0, 0), c(0, 90))
+#' v_mean(x2)
+#' v_mean(x2, w = c(1, 2))
+#' v_var(x2)
+#' v_var(x2, w = c(1, 2))
 NULL
 
 #' @rdname stats

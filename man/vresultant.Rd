@@ -9,7 +9,8 @@ vresultant(x, w = NULL, mean = FALSE)
 \arguments{
 \item{x}{numeric. Can be three element vector or a three column array}
 
-\item{w}{weightings}
+\item{w}{numerical vector of weights the same length as \code{x} giving the
+weights to use for elements of \code{x}.}
 
 \item{mean}{logical. Whether the mean resultant (\code{TRUE}) or resultant
 (\code{FALSE}, the default) is returned.}

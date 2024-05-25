@@ -143,7 +143,7 @@ spatial_interpolation <- function(x,
         x = mean_vec[1],
         y = mean_vec[2],
         z = mean_vec[3],
-        sd = tectonicr::rad2deg(sd_vec),
+        sd = sd_vec / DEG2RAD(),
         mdr = mdr,
         N = N_in_R
       )
