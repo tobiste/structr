@@ -9,7 +9,7 @@ fault_analysis(x, ptangle = 90)
 \arguments{
 \item{x}{fault object}
 
-\item{ptangle}{angle between P and T axes in degrees (by default 90) .}
+\item{ptangle}{angle between P and T axes in degrees (90 by default) .}
 }
 \value{
 list

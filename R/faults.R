@@ -3,7 +3,7 @@
 #' Calculates PT-axes, kinematic plane (M), and dihedra separation plane (d)
 #'
 #' @param x fault object
-#' @param ptangle angle between P and T axes in degrees (by default 90) .
+#' @param ptangle angle between P and T axes in degrees (90 by default) .
 #'
 #' @returns list
 #' @export
@@ -62,3 +62,23 @@ correct_pair <- function(x){
   )
 }
 
+#' Rake of a fault
+#' 
+#' Angle between fault slip vector and fault strike.
+#' 
+#' @param x fault object
+#'
+#' @returns numeric. Angle in degrees
+#' @export
+#'
+#' @examples
+#' f <- Fault(120, 60, 110, 58, 1)
+#' fault_rake(f)
+fault_rake <- function(x){
+  #x <- correct_pair(x)
+  strike <- Line(x[, 1]-90, 0) |> line2vec()
+  slip <- Line(x[, 3], x[, 4]) |> line2vec()
+  
+  rake <- x[5] * vangle(strike, slip) / DEG2RAD()
+  setNames(rake, 'rake')
+}
