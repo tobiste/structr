@@ -505,8 +505,6 @@ v_sd <- function(x, w = NULL) {
   sqrt(log(1 / Rbar^2))
 }
 
-
-
 #' @rdname stats
 #' @export
 v_delta <- function(x, w = NULL) {
