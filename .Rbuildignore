@@ -10,3 +10,4 @@
 ^data-raw$
 ^R/mohr_shiny.R
 ^R/preliminary_S4_classes.R
+^R/allmendinger.R
