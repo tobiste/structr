@@ -38,7 +38,7 @@
 #'
 #' read_strabo_mobile("C:/Users/tobis/Downloads/StraboSpot_Search_06_16_2023.txt")
 #'
-#' read_strabo_JSON("E:/Lakehead/Field work/StraboSpot_07_02_2023.json", dataset = "TS")
+#' read_strabo_JSON("G:/My Drive/Moss_Lake/data.json")
 #' }
 NULL
 
@@ -144,14 +144,13 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 
 #' @rdname strabo
 #' @export
-read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
-  stopifnot(!is.null(dataset))
+read_strabo_JSON <- function(file, sf = TRUE) {
   time <- tag_id <- tag_name <- NULL
 
   dat <- rjson::fromJSON(file = file)
 
   # read tags
-  tags_list <- dat$project$tags
+  tags_list <- dat$project$project$tags
   tags_df <- spot_tags <- tibble::tibble()
   for (t in seq_along(tags_list)) {
     spots_t <- data.frame(spot = tags_list[[t]]$spots)
@@ -176,65 +175,75 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
     # dplyr::select(-tag) |>
     tidyr::pivot_wider(names_from = "tag_name", values_from = "tag") |>
     dplyr::mutate(dplyr::across(!spot, function(x) ifelse(is.na(x), FALSE, TRUE))) |>
-    unique()
+    unique() |>
+    mutate(spot = as.character(spot)) |>
+    rename(spot_id = spot)
 
-  # read field book data of dataset
+  # datasets
   ds <- seq_along(dat$project$datasets)
-  ds_name <- character()
+  ds_name <- ds_name_id <- character()
 
   for (a in ds) {
     ds_name[a] <- dat$project$datasets[[a]]$name
+    ds_name_id[a] <- names(dat$project$datasets)[[a]]
   }
+  ds_df <- data.frame(ds_name = ds_name, ds_id = ds_name_id)
+
+  # spot lists
+  spots <- character()
+  for (i in ds_name_id) {
+    ds_spot_ids_i <- dat$project$datasets[[i]]$spotIds
+    spots <- rbind(spots, cbind(ds_id = rep(i, length(ds_spot_ids_i)), spot_id = ds_spot_ids_i))
+  }
+  spots_df <- as.data.frame(spots) |> unique()
+
+  # extract the specified dataset
   dsn <- data.frame(ds, ds_name) |>
-    dplyr::filter(ds_name == dataset) |>
+    # dplyr::filter(ds_name == dataset) |>
     dplyr::pull(ds)
+  ds_name_id <- names(dat$project$datasets)[dsn]
 
 
-  DSN <- dat$project$datasets[[dsn]]$spots$features
+  # ds_spot_ids <- dat$project$datasets[[dsn]]$spotIds # spots in dataset
+  # DSN <- dat$spotsDb[ds_spot_ids]
+  # for (i in seq_along(dat$spotsDb)) {
+  #   dat$spotsDb[[i]]
+  # }
 
-  spot <- notes <- date <- character()
+
+  spot_id <- spot <- notes <- date <- character()
   altitude <- longitude <- latitude <- gps_accuracy <- numeric()
-  id <- numeric()
-  for (i in seq_along(DSN)) {
-    if (!is.null(DSN[[i]]$geometry)) {
-      if (DSN[[i]]$geometry$type == "Point" & DSN[[i]]$type == "Feature") {
-        spot[i] <- DSN[[i]]$properties$name
-        date[i] <- DSN[[i]]$properties$date
-        id[i] <- DSN[[i]]$properties$id
+  orient_df <- data.frame(check.names = FALSE)
 
-        notes_i <- DSN[[i]]$properties$notes
+  id <- numeric()
+  for (i in seq_along(dat$spotsDb)) {
+    spot_i <- dat$spotsDb[[i]]
+    if (!is.null(spot_i$geometry)) {
+      if (spot_i$geometry$type == "Point" & spot_i$type == "Feature") {
+        spot_id[i] <- spot_i$properties$id
+        spot[i] <- spot_i$properties$name
+        date[i] <- spot_i$properties$date
+        id[i] <- spot_i$properties$id
+
+        notes_i <- spot_i$properties$notes
         notes[i] <- ifelse(is.null(notes_i), NA, notes_i)
 
-        altitude_i <- DSN[[i]]$properties$altitude
+        altitude_i <- spot_i$properties$altitude
         altitude[i] <- ifelse(is.null(altitude_i), NA, altitude_i)
 
-        longitude[i] <- DSN[[i]]$geometry$coordinates[1]
-        latitude[i] <- DSN[[i]]$geometry$coordinates[2]
+        longitude[i] <- spot_i$geometry$coordinates[1]
+        latitude[i] <- spot_i$geometry$coordinates[2]
 
-        gps_accuracy_i <- DSN[[i]]$properties$gps_accuracy
+        gps_accuracy_i <- spot_i$properties$gps_accuracy
         gps_accuracy[i] <- ifelse(is.null(gps_accuracy_i), NA, gps_accuracy_i)
-      }
-    }
-  }
-  fieldbook <- tibble::tibble(spot = spot, longitude, latitude, altitude, note = notes, time = date, gps_accuracy, id) |>
-    dplyr::mutate(time = lubridate::as_datetime(time)) |>
-    dplyr::arrange(time) |>
-    dplyr::left_join(spot_tags_df, by = c("id" = "spot")) |>
-    dplyr::select(-id)
-  if (sf) fieldbook <- sf::st_as_sf(fieldbook, coords = c("longitude", "latitude"), remove = FALSE, crs = "WGS84", na.fail = FALSE)
 
-  # read structural data
-  orient_df <- data.frame(check.names = FALSE)
-  for (i in seq_along(DSN)) { # loop through each spot
-    if (!is.null(DSN[[i]]$geometry)) {
-      if (DSN[[i]]$geometry$type == "Point" & DSN[[i]]$type == "Feature") {
-        spot <- DSN[[i]]$properties$name
-
-        orient_ls_i <- DSN[[i]]$properties$orientation_data
+        # orientation data
+        orient_ls_i <- spot_i$properties$orientation_data
         if (!is.null(orient_ls_i)) {
           orient_df_i <- tibble::tibble()
           for (j in seq_along(orient_ls_i)) { # loop through each measurement
             orient_ls_ij <- orient_ls_i[[j]]
+
             # concatenate directional_indicators into one column
             if (length(orient_ls_ij$directional_indicators) > 1) {
               orient_ls_ij$directional_indicators <- toString(orient_ls_ij$directional_indicators)
@@ -243,9 +252,10 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
             # single P or L measurements
             if (is.null(orient_ls_ij$associated_orientation)) {
               # append all measurements of spot
-              orient_df_i <- plyr::rbind.fill(orient_df_i, as.data.frame(orient_ls_ij, check.names = FALSE)) |>
-                unique()
-              orient_df_i$spot <- spot
+              # orient_df_i <- plyr::rbind.fill(orient_df_i, as.data.frame(orient_ls_ij, check.names = FALSE)) |>
+              orient_df_i <- plyr::rbind.fill(orient_df_i, as.data.frame(orient_ls_ij, check.names = FALSE))
+              orient_df_i$spot <- spot[i]
+              orient_df_i$spot_id <- spot_id[i]
               orient_df_i$associated <- FALSE
             } else {
               # P + L measurements
@@ -261,45 +271,61 @@ read_strabo_JSON <- function(file, dataset = NULL, sf = TRUE) {
               ## L measurement
               PL <- data.frame(check.names = FALSE)
               for (k in seq_along(L_ls)) {
-                L <- L_ls[[k]] |>
-                  as.data.frame(check.names = FALSE) |>
-                  unique()
-                plunge <- L$plunge
-                trend <- L$trend
-                if (!is.na(plunge) & !is.na(trend)) {
-                  L$unix_timestamp <- L$plunge <- L$trend <- NULL # don't need this column twice
-                  colnames(L) <- paste("associated", colnames(L), sep = "_")
-                  L$plunge <- plunge
-                  L$trend <- trend
-
-                  ## combine P + L measurements
-                  PL_k <- cbind(P, L)
-                  PL <- plyr::rbind.fill(PL, PL_k) |>
+                if (L_ls[[k]]$type != "planar_orientation") {
+                  L <- L_ls[[k]] |>
+                    as.data.frame(check.names = FALSE) |>
                     unique()
+                  plunge <- L$plunge
+                  trend <- L$trend
+                  if (!is.na(plunge) & !is.na(trend)) {
+                    L$unix_timestamp <- L$plunge <- L$trend <- NULL # don't need this column twice
+                    colnames(L) <- paste("associated", colnames(L), sep = "_")
+                    L$plunge <- plunge
+                    L$trend <- trend
+
+                    ## combine P + L measurements
+                    PL_k <- cbind(P, L)
+                    PL <- plyr::rbind.fill(PL, PL_k) |>
+                      unique()
+                  }
+                  PL$associated <- TRUE
                 }
-                PL$associated <- TRUE
               }
 
               # append all P+L measurements of spot
-              orient_df_i <- plyr::rbind.fill(orient_df_i, PL) |>
-                unique()
-              orient_df_i$spot <- spot
+              if (nrow(orient_df_i) > 0) {
+                orient_df_i <- plyr::rbind.fill(orient_df_i, PL) |>
+                  unique()
+                orient_df_i$spot <- spot[i]
+                orient_df_i$spot_id <- spot_id[i]
+              }
+
               # orient_ls_ij <- NULL
             }
             # combine all spots
-            orient_df <- plyr::rbind.fill(orient_df, orient_df_i) |>
-              unique()
+            orient_df <- plyr::rbind.fill(orient_df, orient_df_i)
           }
         }
       }
     }
   }
+  fieldbook <- tibble::tibble(spot_id = spot_id, spot = spot, longitude, latitude, altitude, note = notes, time = date, gps_accuracy, id) |>
+    dplyr::mutate(time = lubridate::as_datetime(time)) |>
+    dplyr::arrange(time) |>
+    dplyr::distinct() |>
+    dplyr::left_join(spots_df) |>
+    dplyr::left_join(ds_df) |>
+    dplyr::left_join(spot_tags_df) |>
+    dplyr::select(-c(id))
+  if (sf) fieldbook <- sf::st_as_sf(fieldbook, coords = c("longitude", "latitude"), remove = FALSE, crs = "WGS84", na.fail = FALSE)
 
   meta <- orient_df |>
     tibble::as_tibble() |>
-    dplyr::left_join(fieldbook) |>
-    dplyr::arrange(time)
-  # select_if(function(x) !(all(is.na(x)) | all(x==""))) |>
+    dplyr::distinct() |>
+    dplyr::left_join(fieldbook, dplyr::join_by("spot_id")) |>
+    dplyr::arrange(time) |>
+    dplyr::select(-c(spot.y, ds_id, spot_id, unix_timestamp, modified_timestamp)) |>
+    dplyr::rename(spot = spot.x)
   #
   if (sf) {
     meta <- sf::st_as_sf(meta)

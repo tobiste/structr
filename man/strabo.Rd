@@ -11,7 +11,7 @@ read_strabo_xls(file, tag_cols = FALSE, sf = TRUE)
 
 read_strabo_mobile(file, sf = TRUE)
 
-read_strabo_JSON(file, dataset = NULL, sf = TRUE)
+read_strabo_JSON(file, sf = TRUE)
 }
 \arguments{
 \item{file}{the name of the file which the data are to be read from.}
@@ -49,6 +49,6 @@ stereo_point(dt$linear)
 
 read_strabo_mobile("C:/Users/tobis/Downloads/StraboSpot_Search_06_16_2023.txt")
 
-read_strabo_JSON("E:/Lakehead/Field work/StraboSpot_07_02_2023.json", dataset = "TS")
+read_strabo_JSON("G:/My Drive/Moss_Lake/data.json")
 }
 }
