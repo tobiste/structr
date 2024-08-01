@@ -1,189 +1,65 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url>
-    <loc>https://tobiste.github.io/structr/404.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/LICENSE-text.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/LICENSE.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/articles/Fault_displacements.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/articles/Intro.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/articles/index.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/articles/stereoplot.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/authors.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/index.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/MohrCircle.calc.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/MohrCircle.plot.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/PR_stress.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/Rphi.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/SH.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/VollmerPlot.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/WoodcockPlot.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/best_fit_plane.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/best_pole.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/center.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/classes.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/compact_grid.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/coordinates.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/correct_pair.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/defgrad.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/dist.mle.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/drillcore_orientation.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/fabric_indexes.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/fault_analysis.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/fault_displacements.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/fault_rake.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/fault_tensor.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/fisher_statistics.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/ggMohr.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/gradient.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/gray_example.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/index.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/operations.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/or_eigen.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/ortensor.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/ramsay_coords.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/rfb.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/rkent.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/sigma13.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/sigmaTrans.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/spatial_interpolation.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/stats.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/stereo_cones.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/stereo_coords.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/stereo_fault.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/stereo_point.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/stereoplot.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/strabo.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/strain_shape.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/structr.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/tauMax.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/v_orthogonalize.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/v_unif.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/vel_rate.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/vonmises-fisher.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/vresultant.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/vslerp.html</loc>
-  </url>
-  <url>
-    <loc>https://tobiste.github.io/structr/reference/vtransform.html</loc>
-  </url>
+<urlset xmlns = 'http://www.sitemaps.org/schemas/sitemap/0.9'>
+<url><loc>https://tobiste.github.io/structr/404.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/LICENSE-text.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/LICENSE.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/articles/Fault_displacements.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/articles/Intro.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/articles/index.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/articles/stereoplot.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/authors.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/index.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/MohrCircle.calc.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/MohrCircle.plot.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/PR_stress.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/Rphi.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/SH.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/VollmerPlot.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/WoodcockPlot.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/best_fit_plane.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/best_pole.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/center.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/classes.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/compact_grid.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/coordinates.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/correct_pair.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/defgrad.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/dist.mle.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/drillcore_orientation.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/fabric_indexes.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/fault_analysis.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/fault_displacements.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/fault_rake.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/fault_tensor.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/fisher_statistics.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/ggMohr.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/gradient.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/gray_example.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/index.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/operations.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/or_eigen.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/ortensor.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/ramsay_coords.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/rfb.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/rkent.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/sigma13.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/sigmaTrans.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/spatial_interpolation.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/stats.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/stereo_cones.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/stereo_coords.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/stereo_fault.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/stereo_point.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/stereoplot.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/strabo.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/strain_shape.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/structr.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/tauMax.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/v_orthogonalize.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/v_unif.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/vel_rate.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/vonmises-fisher.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/vresultant.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/vslerp.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/vtransform.html</loc></url>
 </urlset>
+
