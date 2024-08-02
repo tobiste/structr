@@ -3,7 +3,7 @@
 setClass("Spherical")
 
 setClass("Line",
-         slots = c(
+         slots = list(
            azimuth = "numeric",
            plunge = "numeric"
          ),
@@ -15,7 +15,7 @@ setClass("Line",
 )
 
 setClass("Plane",
-         slots = c(
+         slots = list(
            dip_direction = "numeric",
            dip = "numeric"
          ),
@@ -32,7 +32,7 @@ setClass("Pair",
 
 setClass("Fault",
          contains = "Pair",
-         slots = c(
+         slots = list(
            sense = "numeric"
          ),
          prototype = list(
@@ -41,7 +41,7 @@ setClass("Fault",
 )
 
 setClass("Vector",
-         slots = c(
+         slots = list(
            X = "numeric",
            Y = "numeric",
            Z = "numeric"
@@ -58,6 +58,9 @@ setClass("Vector",
 l1 <- new("Line", azimuth = 120, plunge = 5)
 is(l1)
 
+p1 <- new("Plane", dip_direction = 120, dip = 5)
+
+v1 <- new("Vector", X=1, Y=2,Z= 3)
 
 # Validity tests ---------------------------------------------------------------
 
@@ -90,52 +93,52 @@ setValidity("Vector", function(object) {
 
 # Conversion functions ---------------------------------------------------------
 
-# fol2vec0 <- function(azi, inc) {
-#   azi <- tectonicr::deg2rad(azi)
-#   inc <- tectonicr::deg2rad(inc)
-#   cbind(
-#     x = -cos(azi) * sin(inc),
-#     y = -sin(azi) * sin(inc),
-#     z = cos(inc)
-#   )
-# }
-# 
-# lin2vec0 <- function(azi, inc) {
-#   azi <- tectonicr::deg2rad(azi)
-#   inc <- tectonicr::deg2rad(inc)
-#   cbind(
-#     x = cos(azi) * cos(inc),
-#     y = sin(azi) * cos(inc),
-#     z = sin(inc)
-#   )
-# }
-# 
-# vec2lin0 <- function(x, y, z) {
-#   n <- structr::vnorm(cbind(x, y, z)) # normalized vector
-#   nz <- sapply(n[, 3], function(x) ifelse(x < 0, -x, x))
-#   cbind(
-#     azimuth = tectonicr:::atan2d(n[, 2], n[, 1]) %% 360,
-#     plunge = tectonicr:::asind(nz)
-#   )
-# }
-# 
-# vec2fol0 <- function(x, y, z) {
-#   n <- structr::vnorm(cbind(x, y, z)) # normalized vector
-#   nz <- sapply(n[, 3], function(x) ifelse(x < 0, -x, x))
-#   cbind(
-#     dip_direction = (tectonicr:::atan2d(n[, 2], n[, 1]) + 180) %% 360,
-#     dip = 90 - tectonicr:::asind(nz)
-#   )
-# }
+fol2vec0 <- function(azi, inc) {
+  azi <- tectonicr::deg2rad(azi)
+  inc <- tectonicr::deg2rad(inc)
+  cbind(
+    x = -cos(azi) * sin(inc),
+    y = -sin(azi) * sin(inc),
+    z = cos(inc)
+  )
+}
+
+lin2vec0 <- function(azi, inc) {
+  azi <- tectonicr::deg2rad(azi)
+  inc <- tectonicr::deg2rad(inc)
+  cbind(
+    x = cos(azi) * cos(inc),
+    y = sin(azi) * cos(inc),
+    z = sin(inc)
+  )
+}
+
+vec2lin0 <- function(x, y, z) {
+  n <- structr::vnorm(cbind(x, y, z)) # normalized vector
+  nz <- sapply(n[, 3], function(x) ifelse(x < 0, -x, x))
+  cbind(
+    azimuth = tectonicr:::atan2d(n[, 2], n[, 1]) %% 360,
+    plunge = tectonicr:::asind(nz)
+  )
+}
+
+vec2fol0 <- function(x, y, z) {
+  n <- structr::vnorm(cbind(x, y, z)) # normalized vector
+  nz <- sapply(n[, 3], function(x) ifelse(x < 0, -x, x))
+  cbind(
+    dip_direction = (tectonicr:::atan2d(n[, 2], n[, 1]) + 180) %% 360,
+    dip = 90 - tectonicr:::asind(nz)
+  )
+}
 
 Line <- function(x, plunge = NA) {
   if (is(x, "Plane")) {
     v <- fol2vec0(x@dip_direction, x@dip)
     l <- vec2lin0(v[, "x"], v[, "y"], v[, "z"])
-    x <- l[, "azimuth"]
+      x <- l[, "azimuth"]
     plunge <- l[, "plunge"]
   } else if (is(x, "Vector")) {
-    p <- vec2lin0(x[, "x"], x[, "y"], x[, "z"])
+    p <- vec2lin0(x@X, x@Y, x@Z)
     x <- l[, "azimuth"]
     plunge <- l[, "plunge"]
   }
@@ -157,7 +160,7 @@ Plane <- function(x, dip = NA) {
     x <- p[, "dip_direction"]
     dip <- p[, "dip"]
   } else if (is(x, "Vector")) {
-    p <- vec2lin0(x[, "x"], x[, "y"], x[, "z"])
+    p <- vec2fol0(x@X, x@Y, x@z)
     x <- l[, "dip_direction"]
     dip <- l[, "dip"]
   }
@@ -253,7 +256,7 @@ Pair(p1, l1)
 Fault(p1, l1, -1)
 
 # Generic Functions ------------------------------------------------------------
- l2 <- Line(c(120, 130), c(5, NA))
+l2 <- Line(c(120, 130), c(5, NA))
 
 ## extract columns -------------------------------------------------------------
 
@@ -302,12 +305,20 @@ setMethod("sense<-", "Fault", function(x, value) {
 azimuth(l1)
 azimuth(l2)
 
+dip(Fault(p1, l1, -1))
+
 
 
 
 
 ## Length ----------------------------------------------------------------------
-setGeneric("myGeneric", function(x) standardGeneric("myGeneric"))
+setGeneric("length", function(x) standardGeneric("length"))
+setMethod("length", "Spherical",
+          function(x){
+            if(is(x, "Line")) length(x$azimuth)
+            else length(x$dip)
+          }
+          )
 
 length(l2)
 
