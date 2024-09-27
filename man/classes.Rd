@@ -17,13 +17,13 @@
 \alias{is.spherical}
 \title{Structure classes}
 \usage{
-Line(x, plunge = NA)
+Line(azimuth, plunge)
 
-Plane(x, dip = NA)
+Plane(dip_direction, dip)
 
-Fault(x, y = NA, azimuth = NA, plunge = NA, sense = NA)
+Fault(dip_direction, dip, azimuth, plunge, sense = NULL)
 
-Pair(x, y = NA, azimuth = NA, plunge = NA)
+Pair(dip_direction, dip, azimuth, plunge)
 
 as.line(l)
 
@@ -47,15 +47,15 @@ is.spherical(l)
 \item{azimuth, plunge}{numeric vectors. Azimuth and plunge of a line (in
 degrees)}
 
+\item{dip_direction, dip}{numeric vectors. Dip direction and dip of a plane
+(in degrees)}
+
 \item{sense}{(optional) integer. Sense of the line on a fault plane. Either
 \code{1}or \code{-1} for normal or thrust offset, respectively.}
 
 \item{l, p, f}{numeric vector or array containing the spherical coordinates
 (1st element/column is azimuth, 2nd element/column is inclination, both in
 degrees), or object of class \code{"line"}, \code{"plane"}, \code{"pair"}, or \code{"fault"}}
-
-\item{dip_direction, dip}{numeric vectors. Dip direction and dip of a plane
-(in degrees)}
 }
 \description{
 \code{Line}, \code{Plane}, and \code{Fault} create a \code{"line"}, \code{"plane"}, \code{"pair"}, and \code{"fault"}

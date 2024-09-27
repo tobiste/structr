@@ -11,3 +11,6 @@
 ^R/mohr_shiny.R
 ^R/preliminary_S4_classes.R
 ^R/allmendinger.R
+^R/preliminary_S4_classes\.R$
+^R/preliminary_S4_classes$
+R/preliminary_S4_classes.R

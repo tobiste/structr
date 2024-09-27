@@ -290,7 +290,7 @@ tauMax <- function(sigmaX, sigmaZ, tauXZ) {
 #' @importFrom ggforce geom_circle
 #' @examples
 #' ggMohr(1025, 400, 250)
-ggMohr <- function(s1, s2, s3, coulomb = c(70, 0.6), sliding = 0.81, units = "MPa") {
+ggMohr <- function(s1, s2, s3, coulomb = c(70, 0.6), sliding = 0.81, units = "MPa", fill = "gray", alpha = .5) {
   circle13.r <- diff_stress(s1, s3) / 2
   circle13.m <- mean_stress(s1, s3)
 
@@ -300,22 +300,27 @@ ggMohr <- function(s1, s2, s3, coulomb = c(70, 0.6), sliding = 0.81, units = "MP
   circle23.r <- diff_stress(s2, s3) / 2
   circle23.m <- mean_stress(s2, s3)
 
-  theta.f <- theta(coulomb[2]) # (90 + tectonicr:::atand(coulomb[2]))/2
+  if(!is.null(coulomb)){
+    theta.f <- theta(coulomb[2]) # (90 + tectonicr:::atand(coulomb[2]))/2
+  } else {
+    theta.f <- 0
+  }
 
   sigma_s <- shear_stress(s1, s3, theta.f / 2)
   sigma_n <- normal_stress(s1, s3, theta.f / 2)
   # theta.slope <- -atan(2*theta.f)
 
   ggplot2::ggplot() +
-    ggforce::geom_circle(aes(x0 = circle13.m, y0 = 0, r = circle13.r), fill = "gray", alpha = .5) +
+    ggforce::geom_circle(aes(x0 = circle13.m, y0 = 0, r = circle13.r), fill = fill, alpha = alpha) +
     ggforce::geom_circle(aes(x0 = circle23.m, y0 = 0, r = circle23.r), fill = "white") +
     ggforce::geom_circle(aes(x0 = circle12.m, y0 = 0, r = circle12.r), fill = "white") +
-    ggplot2::geom_abline(intercept = 0, slope = sliding, lty = 2) +
-    ggplot2::geom_abline(intercept = coulomb[1], slope = coulomb[2], lty = 1) +
+    {if(!is.null(sliding)) ggplot2::geom_abline(intercept = 0, slope = sliding, lty = 2)} +
+    {if(!is.null(coulomb)) ggplot2::geom_abline(intercept = coulomb[1], slope = coulomb[2], lty = 1)} +
     ggplot2::geom_point(aes(x = circle13.m, 0)) +
     ggplot2::geom_line(aes(x = c(circle13.m, sigma_n), y = c(0, sigma_s)), lty = 3) +
     ggplot2::geom_hline(yintercept = 0, alpha = .2) +
     ggplot2::geom_vline(xintercept = 0, alpha = .2) +
+    ggplot2::geom_text(aes(x = (s1+s3)/2, y = 0), label = expression(sigma["m"]), vjust = -.5, hjust = -1) +
     ggplot2::geom_text(aes(x = s3, y = 0), label = expression(sigma[3]), vjust = -.5, hjust = -1) +
     ggplot2::geom_text(aes(x = s2, y = 0), label = expression(sigma[2]), vjust = -.5, hjust = -1) +
     ggplot2::geom_text(aes(x = s1, y = 0), label = expression(sigma[1]), vjust = -.5, hjust = -1) +

@@ -4,7 +4,16 @@
 \alias{ggMohr}
 \title{Plot Mohr Circle in ggplots}
 \usage{
-ggMohr(s1, s2, s3, coulomb = c(70, 0.6), sliding = 0.81, units = "MPa")
+ggMohr(
+  s1,
+  s2,
+  s3,
+  coulomb = c(70, 0.6),
+  sliding = 0.81,
+  units = "MPa",
+  fill = "gray",
+  alpha = 0.5
+)
 }
 \arguments{
 \item{s1, s2, s3}{numeric. magnitudes of sigma 1, 2, and 3, respectively.}
