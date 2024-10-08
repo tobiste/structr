@@ -142,6 +142,9 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1
 #' @param ... optional graphical parameters
 #' @note `"plane"` objects will be displayed as pole to the plane.
 #' @importFrom graphics points text
+#' 
+#' @export
+#' 
 #' @examples
 #' faults <- Fault(
 #'   c(0, 90, 180, 270),
@@ -194,14 +197,14 @@ stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 16, col 
       }
     }
     if (hoeppner) {
-      ang = -(x0[i, 3] * sign(x0[i, "sense"]))
+      ang = (x0[i, 3] * sign(x0[i, "sense"]))
       graphics::points(crds.l[i, "x"], crds.l[i, "y"], pch = pch[i], col = col[i], cex = cex[i]/1.25)
       if (x0[i, "sense"] != 0) {
         graphics::text(crds.l[i, "x"], crds.l[i, "y"], labels = "\u2191", col = col[i], srt = ang, cex = cex[i]*1.5)
       } 
     } else {
       # ang = vangle(Line(x0[i, 3], x0[i, 4]), Line(0, 90)) + 90
-      ang = -(x0[i, 3] * sign(x0[i, "sense"]))
+      ang = (x0[i, 3] * sign(x0[i, "sense"]))
       #ang <- NULL
 
       if (x0[i, "sense"] != 0) {
