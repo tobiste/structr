@@ -58,13 +58,13 @@ class object, respectively, from the given set of values.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">Line</span><span class="op">(</span><span class="va">x</span>, plunge <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">Line</span><span class="op">(</span><span class="va">azimuth</span>, <span class="va">plunge</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">Plane</span><span class="op">(</span><span class="va">x</span>, dip <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="fu">Plane</span><span class="op">(</span><span class="va">dip_direction</span>, <span class="va">dip</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">Fault</span><span class="op">(</span><span class="va">x</span>, y <span class="op">=</span> <span class="cn">NA</span>, azimuth <span class="op">=</span> <span class="cn">NA</span>, plunge <span class="op">=</span> <span class="cn">NA</span>, sense <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="fu">Fault</span><span class="op">(</span><span class="va">dip_direction</span>, <span class="va">dip</span>, <span class="va">azimuth</span>, <span class="va">plunge</span>, sense <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">Pair</span><span class="op">(</span><span class="va">x</span>, y <span class="op">=</span> <span class="cn">NA</span>, azimuth <span class="op">=</span> <span class="cn">NA</span>, plunge <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="fu">Pair</span><span class="op">(</span><span class="va">dip_direction</span>, <span class="va">dip</span>, <span class="va">azimuth</span>, <span class="va">plunge</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">as.line</span><span class="op">(</span><span class="va">l</span><span class="op">)</span></span>
 <span></span>
@@ -94,6 +94,11 @@ class object, respectively, from the given set of values.</p>
 degrees)</p></dd>
 
 
+<dt id="arg-dip-direction-dip">dip_direction, dip<a class="anchor" aria-label="anchor" href="#arg-dip-direction-dip"></a></dt>
+<dd><p>numeric vectors. Dip direction and dip of a plane
+(in degrees)</p></dd>
+
+
 <dt id="arg-sense">sense<a class="anchor" aria-label="anchor" href="#arg-sense"></a></dt>
 <dd><p>(optional) integer. Sense of the line on a fault plane. Either
 <code>1</code>or <code>-1</code> for normal or thrust offset, respectively.</p></dd>
@@ -103,11 +108,6 @@ degrees)</p></dd>
 <dd><p>numeric vector or array containing the spherical coordinates
 (1st element/column is azimuth, 2nd element/column is inclination, both in
 degrees), or object of class <code>"line"</code>, <code>"plane"</code>, <code>"pair"</code>, or <code>"fault"</code></p></dd>
-
-
-<dt id="arg-dip-direction-dip">dip_direction, dip<a class="anchor" aria-label="anchor" href="#arg-dip-direction-dip"></a></dt>
-<dd><p>numeric vectors. Dip direction and dip of a plane
-(in degrees)</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -142,7 +142,7 @@ argument is a <code>"line"</code> or <code>"plane"</code> class, it will be conv
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.0.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.1.</p>
 </div>
 
     </footer></div>
