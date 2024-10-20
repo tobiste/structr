@@ -56,7 +56,7 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
   data <- data |>
     dplyr::mutate(
       Date = lubridate::as_datetime(Date),
-      Planar.Orientation.Dipdirection = (Planar.Orientation.Strike + 90) %% 360,
+      Planar.Orientation.Dipdirection = rhr2dd(Planar.Orientation.Strike),
       Linear.Sense = ifelse(Planar.Orientation.Movement %in% c("left_lateral"), -1, NA),
       Linear.Sense = ifelse(Planar.Orientation.Movement %in% c("right_lateral"), 1, Linear.Sense),
       Linear.Sense = ifelse(Planar.Orientation.Fault.Or.Sz.Type %in% c("sinistral", "reverse"), -1, Linear.Sense),

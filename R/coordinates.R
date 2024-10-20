@@ -345,3 +345,23 @@ acoscartesian_to_cartesian <- function(x) {
   cz <- ifelse(x[, 3] < 0, -cz, cz)
   cbind(x = cx, y = cy, z = cz)
 }
+
+
+#' Converts strike into dip direction using right-hand rule
+#' @param strike strike direction in degrees
+#' @param dipdirection strike direction in degrees
+#' 
+#' @name rhr
+NULL
+
+#' @rdname rhr
+#' @export 
+rhr2dd <- function(strike){
+  (strike + 90) %% 360
+}
+
+#' @rdname rhr
+#' @export 
+dd2rhr <- function(dipdirection){
+  (dipdirection - 90) %% 360
+}

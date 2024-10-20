@@ -149,13 +149,14 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1
 #' faults <- Fault(
 #'   c(0, 90, 180, 270),
 #'   c(80, 45, 80, 45),
-#'   c(0, 180, 180, 315),
-#'   c(80, 5, 80, 36),
+#'   c(0, 170, 180, 315),
+#'   c(80, 10, 80, 36),
 #'   c(1, -1, 0, 1)
 #' )
 #' stereoplot()
-#' stereo_fault(faults, col = 1:4)
-#' stereo_fault(faults, col = 1:4, hoeppner = TRUE)
+#' stereo_fault(faults, col =1:4)
+#' # stereo_fault(faults, col =1:4, hoeppner = TRUE)
+#' legend("bottomright", c("normal", "thrust", "unknown", "normal"), fill = 1:4)
 stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex = 1, text.pos = 4, upper.hem = FALSE, ...) {
   stopifnot(is.fault(x))
   x0 <- x
@@ -203,12 +204,14 @@ stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 16, col 
         graphics::text(crds.l[i, "x"], crds.l[i, "y"], labels = "\u2191", col = col[i], srt = ang, cex = cex[i]*1.5)
       } 
     } else {
-      # ang = vangle(Line(x0[i, 3], x0[i, 4]), Line(0, 90)) + 90
-      ang = (x0[i, 3] * sign(x0[i, "sense"]))
-      #ang <- NULL
+      ang = x0[i, 3] %% 360
+      # ang = ifelse(ang > 180, 360 - ang, ang)
+      symb = if(x0[i, 5] < 0){
+        "\u2193"
+        } else {"\u2191"}
 
       if (x0[i, "sense"] != 0) {
-        graphics::text(crds.l[i, "x"], crds.l[i, "y"], labels = "\u2191", col = col[i], srt = ang, cex = cex[i]*1.5)
+        graphics::text(crds.l[i, "x"], crds.l[i, "y"], labels = symb, col = col[i], srt = -ang, cex = cex[i]*1.5)
       } else {
         graphics::points(crds.l[i, "x"], crds.l[i, "y"], pch = pch[i], col = col[i], cex = cex[i])
       }

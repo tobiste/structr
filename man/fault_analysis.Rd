@@ -18,6 +18,6 @@ list
 Calculates PT-axes, kinematic plane (M), and dihedra separation plane (d)
 }
 \examples{
-f <- Fault(120, 60, 110, 58, 1)
+f <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
 fault_analysis(f)
 }

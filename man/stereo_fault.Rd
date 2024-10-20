@@ -49,11 +49,12 @@ Visualization of faults (planes and lines) in a stereographic projection.
 faults <- Fault(
   c(0, 90, 180, 270),
   c(80, 45, 80, 45),
-  c(0, 180, 180, 315),
-  c(80, 5, 80, 36),
+  c(0, 170, 180, 315),
+  c(80, 10, 80, 36),
   c(1, -1, 0, 1)
 )
 stereoplot()
-stereo_fault(faults, col = 1:4)
-stereo_fault(faults, col = 1:4, hoeppner = TRUE)
+stereo_fault(faults, col =1:4)
+# stereo_fault(faults, col =1:4, hoeppner = TRUE)
+legend("bottomright", c("normal", "thrust", "unknown", "normal"), fill = 1:4)
 }
