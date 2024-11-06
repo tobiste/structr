@@ -22,7 +22,10 @@
 <url><loc>https://tobiste.github.io/structr/reference/compact_grid.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/coordinates.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/correct_pair.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/count_points.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/defgrad.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/density-funs.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/density_grid.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/dist.mle.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/drillcore_orientation.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/fabric_indexes.html</loc></url>
@@ -39,6 +42,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/operations.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/or_eigen.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ortensor.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/parse_quadrant_measurement.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ramsay_coords.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/rfb.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/rhr.html</loc></url>
@@ -46,6 +50,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/sigma13.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/sigmaTrans.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/spatial_interpolation.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/split_trailing_letters.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/stats.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/stereo_cones.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/stereo_coords.html</loc></url>

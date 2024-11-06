@@ -43,7 +43,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">VollmerPlot</span><span class="op">(</span><span class="va">x</span>, lab <span class="op">=</span> <span class="cn">NULL</span>, add <span class="op">=</span> <span class="cn">FALSE</span>, grid <span class="op">=</span> <span class="cn">TRUE</span>, increment <span class="op">=</span> <span class="fl">20</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">VollmerPlot</span><span class="op">(</span><span class="va">x</span>, labels <span class="op">=</span> <span class="cn">NULL</span>, add <span class="op">=</span> <span class="cn">FALSE</span>, ngrid <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">5</span>, <span class="fl">5</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -54,7 +54,7 @@
 <dd><p>numeric. Can be three element vector, three column array, or an object of class <code>"line"</code> or <code>"plane"</code></p></dd>
 
 
-<dt id="arg-lab">lab<a class="anchor" aria-label="anchor" href="#arg-lab"></a></dt>
+<dt id="arg-labels">labels<a class="anchor" aria-label="anchor" href="#arg-labels"></a></dt>
 <dd><p>character. text labels</p></dd>
 
 
@@ -62,12 +62,10 @@
 <dd><p>logical. Should data be plotted to an existing plot?</p></dd>
 
 
-<dt id="arg-grid">grid<a class="anchor" aria-label="anchor" href="#arg-grid"></a></dt>
-<dd><p>logical. Should the ternary diagram have grid lines?</p></dd>
-
-
-<dt id="arg-increment">increment<a class="anchor" aria-label="anchor" href="#arg-increment"></a></dt>
-<dd><p>Spacing of grid lines, if <code>grid=TRUE</code>. Ignored otherwise</p></dd>
+<dt id="arg-ngrid">ngrid<a class="anchor" aria-label="anchor" href="#arg-ngrid"></a></dt>
+<dd><p>integer or 3-element vector specifying the amount of gridlines
+for the P, G, and G axes. Constant grid spacing when only one integer is given.
+<code>NULL</code> when no grid.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -89,6 +87,7 @@
 <span class="r-in"><span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">50</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">100</span>, mu <span class="op">=</span> <span class="va">mu</span>, k <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">VollmerPlot</span><span class="op">(</span><span class="va">x</span>, lab <span class="op">=</span> <span class="st">"x"</span><span class="op">)</span></span></span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>NAs introduced by coercion</span>
 <span class="r-in"><span><span class="va">y</span> <span class="op">&lt;-</span> <span class="fu"><a href="vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">100</span>, mu <span class="op">=</span> <span class="va">mu</span>, k <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">VollmerPlot</span><span class="op">(</span><span class="va">y</span>, lab <span class="op">=</span> <span class="st">"y"</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Fabric plot of Vollmer (1990)"</span><span class="op">)</span></span></span>
