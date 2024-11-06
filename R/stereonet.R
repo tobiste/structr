@@ -71,9 +71,11 @@ stereo_coords <- function(az, inc, upper.hem = FALSE) {
   cbind(x = pltx, y = plty)
 }
 
-# stereo2cart <- function(azi, inc, line = TRUE) {
+
+
+# stereo2sph <- function(azi, inc, line = TRUE) {
 #   deg2rad <- pi / 180
-#
+# 
 #   azir <- azi * deg2rad
 #   incr <- inc * deg2rad
 #   z <- sin(incr)

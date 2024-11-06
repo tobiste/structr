@@ -57,7 +57,7 @@ NULL
 #' @export
 to_vec <- function(x) {
   # x <- vec2mat(x)
-  if(is.plane(x)){
+  if (is.plane(x)) {
     fol2vec0(x[, 1], x[, 2])
   } else {
     lin2vec0(x[, 1], x[, 2])
@@ -95,7 +95,7 @@ vec2line <- function(x) {
   x <- vec2mat(x)
   structure(
     vec2lin0(x[, 1], x[, 2], x[, 3]),
-  class = "line"
+    class = "line"
   )
 }
 
@@ -104,8 +104,8 @@ vec2line <- function(x) {
 vec2plane <- function(x) {
   x <- vec2mat(x)
   structure(vec2fol0(x[, 1], x[, 2], x[, 3]),
-  class = "plane")
-  
+    class = "plane"
+  )
 }
 
 
@@ -197,8 +197,8 @@ Fault <- function(dip_direction, dip, azimuth, plunge, sense = NULL) {
 
 #' @rdname classes
 #' @export
-Pair <- function(dip_direction, dip, azimuth, plunge){
-  p = Fault(dip_direction, dip, azimuth, plunge) 
+Pair <- function(dip_direction, dip, azimuth, plunge) {
+  p <- Fault(dip_direction, dip, azimuth, plunge)
   as.pair(p[, -5])
 }
 
@@ -346,22 +346,129 @@ acoscartesian_to_cartesian <- function(x) {
   cbind(x = cx, y = cy, z = cz)
 }
 
+# sph2stereo <- function(...){
+#   stereo_coords(...)
+#   }
+
 
 #' Converts strike into dip direction using right-hand rule
 #' @param strike strike direction in degrees
 #' @param dipdirection strike direction in degrees
-#' 
+#'
 #' @name rhr
 NULL
 
 #' @rdname rhr
-#' @export 
-rhr2dd <- function(strike){
+#' @export
+rhr2dd <- function(strike) {
   (strike + 90) %% 360
 }
 
 #' @rdname rhr
-#' @export 
-dd2rhr <- function(dipdirection){
+#' @export
+dd2rhr <- function(dipdirection) {
   (dipdirection - 90) %% 360
+}
+
+parse_strike_dip <- function(strike, dip) {
+  strike <- parse_azimuth(strike)
+  dd <- split_trailing_letters(dip)$measurement
+}
+
+
+
+#' Parse measurement and direction strings
+#'
+#' @param x character or number
+#'
+#' @return list
+#' @export
+#'
+#' @examples
+#' test <- c("45NW", "4SE")
+#' split_trailing_letters(test)
+split_trailing_letters <- function(x) {
+  result <- sapply(x, function(x) {
+    if (grepl("[NESWnesw]", x)) {
+      # Separate numeric and alphabetic parts
+      num_part <- as.numeric(gsub("[^0-9.-]", "", x))
+      alpha_part <- gsub("[0-9.-]", "", x)
+    } else {
+      num_part <- as.numeric(x)
+      alpha_part <- NA
+    }
+    list(num = num_part, alpha = alpha_part)
+  }, simplify = FALSE)
+
+  # Extract numeric and alpha parts from the list
+  number_vector <- sapply(result, function(x) x$num)
+  alpha_vector <- sapply(result, function(x) x$alpha)
+
+  # Return as a list
+  list(measurement = number_vector, direction = alpha_vector)
+}
+
+parse_azimuth <- function(azimuth) {
+  sapply(azimuth, function(x) {
+    if (is.numeric(x)) {
+      parse_quadrant_measurement(x)
+    } else {
+      stop(
+        paste(
+          "Ambiguos azimuth:",
+          x
+        )
+      )
+    }
+  }, simplify = TRUE)
+}
+
+rotation_direction <- function(first, second) {
+  first_rad <- first *  pi / 180
+  second_rad <- second *  pi / 180
+    t(c(cos(first_rad), sin(first_rad))) %*%
+    c(cos(second_rad), sin(second_rad))
+  
+}
+
+quadrantletter_to_azimuth <- function(x) {
+  letters <- trimws(x) |>
+    strsplit("") |>
+    unlist()
+  azimuth <- c("N" = 0, "S" = 180, "E" = 90, "W" = 270)
+  tectonicr::circular_mean(azimuth[letters], axial = FALSE)
+}
+
+
+#' Title
+#'
+#' @param x 
+#'
+#' @return numeric
+#' @export
+#'
+#' @examples
+#' parse_quadrant_measurement(c("E30N", "W10S"))
+parse_quadrant_measurement <- function(x) {
+  sapply(x, function(x){
+  x <- trimws(x)
+
+    first_dir = quadrantletter_to_azimuth(toupper(x[1]))
+    sec_dir = quadrantletter_to_azimuth(toupper(x[length(x)]))
+    
+  x2 = trimws(x) |>
+      strsplit("") |>
+      unlist()
+
+  angle <- x2[3:length(x2) - 1] |> 
+    paste(collapse = "") |> 
+    as.numeric()
+
+  direc <- rotation_direction(first_dir, sec_dir)
+  azi <- first_dir + direc * angle
+
+  # Catch ambiguous measurements such as N10S and raise an error
+  stopifnot(abs(direc) >= 0.9)
+  azi %% 360
+  }, simplify = TRUE)
 }

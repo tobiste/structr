@@ -4,12 +4,12 @@
 \alias{WoodcockPlot}
 \title{Fabric plot of Woodcock (1977)}
 \usage{
-WoodcockPlot(x, lab = NULL, add = FALSE, ...)
+WoodcockPlot(x, labels = NULL, add = FALSE, ...)
 }
 \arguments{
 \item{x}{numeric. Can be three element vector, three column array, or an object of class \code{"line"} or \code{"plane"}}
 
-\item{lab}{character. text labels}
+\item{labels}{character. text labels}
 
 \item{add}{logical. Should data be plotted to an existing plot?}
 

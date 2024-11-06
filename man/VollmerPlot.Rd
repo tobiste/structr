@@ -4,18 +4,18 @@
 \alias{VollmerPlot}
 \title{Fabric plot of Vollmer (1990)}
 \usage{
-VollmerPlot(x, lab = NULL, add = FALSE, grid = TRUE, increment = 20, ...)
+VollmerPlot(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...)
 }
 \arguments{
 \item{x}{numeric. Can be three element vector, three column array, or an object of class \code{"line"} or \code{"plane"}}
 
-\item{lab}{character. text labels}
+\item{labels}{character. text labels}
 
 \item{add}{logical. Should data be plotted to an existing plot?}
 
-\item{grid}{logical. Should the ternary diagram have grid lines?}
-
-\item{increment}{Spacing of grid lines, if \code{grid=TRUE}. Ignored otherwise}
+\item{ngrid}{integer or 3-element vector specifying the amount of gridlines
+for the P, G, and G axes. Constant grid spacing when only one integer is given.
+\code{NULL} when no grid.}
 
 \item{...}{optional graphical parameters}
 }
