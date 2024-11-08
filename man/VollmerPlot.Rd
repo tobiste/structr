@@ -25,10 +25,20 @@ Creates a fabric plot using the eigenvalue method
 \examples{
 set.seed(1)
 mu <- Line(120, 50)
-x <- rvmf(100, mu = mu, k = 1)
-VollmerPlot(x, lab = "x")
-y <- rvmf(100, mu = mu, k = 20)
-VollmerPlot(y, lab = "y", add = TRUE, col = "red")
+a <- rvmf(100, mu = mu, k = 10)
+VollmerPlot(a, lab = "VMF")
+
+set.seed(1)
+b <- rfb(100, mu = mu, k = 1, A = diag(c(10, 0, 0)))
+VollmerPlot(b, lab = "FB", add = TRUE, col = "red")
+
+set.seed(1)
+c <- v_unif("line", n = 100, method = "rotasym")
+VollmerPlot(c, lab = "UNIF", add = TRUE, col = "green")
+
+set.seed(1)
+d <- rkent(100, mu = mu, k = 10, b = 4)
+VollmerPlot(d, lab = "KENT", add = TRUE, col = "blue")
 title("Fabric plot of Vollmer (1990)")
 }
 \references{

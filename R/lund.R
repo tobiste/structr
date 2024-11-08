@@ -4,10 +4,10 @@
 #' directions of the principal stress and \eqn{R = \frac{S1 - S2}{S1 - S3}}.
 #' This function Equations 11 and 10 from Lund and Townend (2007).
 #'
-#' @param S1,S2,S3 numeric three column vectors. The principal stress orientations. 
-#' The variables hold the coordinates in the North, East and Down geographical 
+#' @param S1,S2,S3 numeric three column vectors. The principal stress orientations.
+#' The variables hold the coordinates in the North, East and Down geographical
 #' coordinate system, e.g. `S1 = c(s1N,s1E,s1D)`
-#' @param R numeric. Relative magnitude of `S2` with respect to `S1` and `S3`: 
+#' @param R numeric. Relative magnitude of `S2` with respect to `S1` and `S3`:
 #' \eqn{R = \frac{S1 - S2}{S1 - S3}}
 #'
 #' @return The direction of SH from North, angle in degrees
@@ -16,11 +16,11 @@
 #' @references Lund and Townend, (2007). Calculating horizontal stress
 #' orientations with full or partial knowledge of the tectonic stress tensor,
 #' Geophys. J. Int., doi:\doi{10.1111/j.1365-246X.2007.03468.x}.
-#' 
+#'
 #' @examples
-#' S1 <- Line(250.89,70.07) 
-#' S3 <- Line(103.01,17.07)
-#' S2 <- vcross(S3, S1) 
+#' S1 <- Line(250.89, 70.07)
+#' S3 <- Line(103.01, 17.07)
+#' S2 <- vcross(S3, S1)
 #' SH(S1, S2, S3, R = 1)
 SH <- function(S1, S2, S3, R) {
   EPS <- .Machine$double.eps
@@ -40,7 +40,7 @@ SH <- function(S1, S2, S3, R) {
   } else {
     S3 <- vec2mat(S3)
   }
-  
+
   # Check the input, should be unit vectors
   S1 <- vnorm(S1)
   S2 <- vnorm(S2)
@@ -51,7 +51,7 @@ SH <- function(S1, S2, S3, R) {
   if (vdot(S1, S3) > 1.0e-4) stop("SH(): S1 and S3 are not orthogonal!")
   if (vdot(S2, S3) > 1.0e-4) stop("SH(): S2 and S3 are not orthogonal!")
   # Check R
-  if(R < 0.0 | R > 1.0) {
+  if (R < 0.0 | R > 1.0) {
     stop("SH(): R is out of range!")
   }
   # Calculate the denominator and numerator in Eq. 11

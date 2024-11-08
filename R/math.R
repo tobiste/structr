@@ -78,10 +78,10 @@ vcross <- function(x, y) {
   }
 
   xxy <- cbind(
-    x = x[, 2] * y[, 3] - x[, 3] * y[, 2], 
-    y = x[, 3] * y[, 1] - x[, 1] * y[, 3], 
+    x = x[, 2] * y[, 3] - x[, 3] * y[, 2],
+    y = x[, 3] * y[, 1] - x[, 1] * y[, 3],
     z = x[, 1] * y[, 2] - x[, 2] * y[, 1]
-    )
+  )
 
   if (transform) {
     to_spherical(xxy, class)
@@ -376,7 +376,7 @@ vtransform <- function(x, A, norm = FALSE) {
 #' Mean resultant of a set of vectors
 #'
 #' @param x numeric. Can be three element vector or a three column array
-#' @param w numerical vector of weights the same length as `x` giving the 
+#' @param w numerical vector of weights the same length as `x` giving the
 #' weights to use for elements of `x`.
 #' @param mean logical. Whether the mean resultant (`TRUE`) or resultant
 #' (`FALSE`, the default) is returned.
@@ -393,7 +393,7 @@ vresultant <- function(x, w = NULL, mean = FALSE) {
   } else {
     as.numeric(w)
   }
-  
+
   R <- vsum(x, w)
   if (mean) {
     N <- sum(w)
@@ -406,7 +406,7 @@ vresultant <- function(x, w = NULL, mean = FALSE) {
 #'
 #' @param x numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
-#' @param w numerical vector of weights the same length as `x` giving the 
+#' @param w numerical vector of weights the same length as `x` giving the
 #' weights to use for elements of `x`.
 #' @param alpha significance level (0.05 by default)
 #' @details
@@ -442,7 +442,7 @@ vresultant <- function(x, w = NULL, mean = FALSE) {
 #' v_sde(x)
 #' v_confidence_angle(x)
 #' estimate_k(x)
-#' 
+#'
 #' #' weights:
 #' x2 <-  Line(c(0, 0), c(0, 90))
 #' v_mean(x2)
@@ -467,7 +467,7 @@ v_mean <- function(x, w = NULL) {
   } else {
     as.numeric(w)
   }
-  
+
   N <- sum(w)
   xbar <- vsum(v, w) / N
   Rbar <- vlength(xbar)
@@ -499,7 +499,7 @@ v_sd <- function(x, w = NULL) {
   } else {
     v <- vec2mat(x)
   }
- Rbar <- vresultant(v, w, mean = TRUE) |>
+  Rbar <- vresultant(v, w, mean = TRUE) |>
     vlength()
 
   sqrt(log(1 / Rbar^2))
@@ -581,6 +581,25 @@ v_confidence_angle <- function(x, alpha = 0.05) {
   }
 }
 
+v_antipode <- function(x) {
+  transform <- FALSE
+  if (is.spherical(x)) {
+    class <- class(x)
+    v <- to_vec(x)
+    transform <- TRUE
+  } else {
+    v <- vec2mat(x)
+  }
+
+  xa <- vrotate(v, c(1, 0, 0), pi)
+
+  if (transform) {
+    to_spherical(xa, class)
+  } else {
+    colnames(xa) <- c("x", "y", "z")
+    xa
+  }
+}
 
 
 #' @rdname stats

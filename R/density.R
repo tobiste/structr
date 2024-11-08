@@ -103,10 +103,10 @@
 #' @examples
 #' x <- rvmf(n = 200, mu = Line(120, 30), k = 10)
 #' calculate_density(x)
-calculate_density <- function(x, sigma = NULL, sigma.norm = TRUE, trimzero = TRUE, ngrid = 3000, grid.type = c("sfs", "gss")) {
+calculate_density <- function(x, sigma = NULL, sigma.norm = TRUE, trimzero = TRUE, ngrid = 3000, grid.type = c("sfs", "gss", "rot")) {
   x <- to_vec(x)
   # parse options
-  # grid.type = match.arg(grid.type)
+  grid.type <- match.arg(grid.type)
   n <- nrow(x)
 
   if (is.null(sigma)) {
@@ -177,18 +177,16 @@ stereo_density_contour <- function(x, sigma = NULL, sigma.norm = TRUE, trimzero 
   ) / (3 / 2)
 
   d_stereo <- cbind(XY, densgrd$density)
-  colnames(d_stereo) <- c('x', 'y', 'd')
+  colnames(d_stereo) <- c("x", "y", "d")
 
   m <- xtabs(d ~ x + y, data = d_stereo)
 
   filled.contour(as.numeric(rownames(m)), as.numeric(colnames(m)), m, nlevels = 20, color.palette = viridis::magma)
-
-
 }
 #'
 #'
-blank_grid <- function(n = 3000, method = c("gss", "sfs")) {
-  grid <- v_unif(NULL, n, method)
+blank_grid <- function(n = 3000, ...) {
+  grid <- v_unif(NULL, n = n, ...)
   values <- rep(0, times = n)
   list(grid = grid, density = values)
 }

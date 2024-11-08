@@ -16,8 +16,8 @@ fault_analysis <- function(x, ptangle = 90) {
   x_corr <- correct_pair(x)
   xp <- x_corr$fvec
   xl <- x_corr$lvec
-  
-  for(i in 1:nrow(x)){
+
+  for (i in 1:nrow(x)) {
     if (x[i, 5] < 0) xl[i, ] <- -xl[i, ]
   }
 
@@ -53,7 +53,7 @@ correct_pair <- function(x) {
   lvec <- Line(x[, 3], x[, 4]) |> line2vec()
 
   misfit <- abs(pi / 2 - vangle(fvec, lvec))
-  for(i in 1:length(misfit)){
+  for (i in 1:length(misfit)) {
     if (misfit[i] > deg2rad(20)) {
       warning(paste("Mifit angle is", misfit[i], "degrees."))
     }

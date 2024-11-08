@@ -9,7 +9,7 @@
 #   z <- sin(lat)
 #   cbind(x, y, z)
 # }
-# 
+#
 # cart2sph <- function(vec) {
 #   x <- vec[, 1]
 #   y <- vec[, 2]
@@ -46,7 +46,7 @@
 #'
 #' @returns list
 #' @export
-count_points <- function(azi, inc, FUN = exponential_kamb, sigma = 3, n = 100, weights) {
+count_points <- function(azi, inc, FUN = exponential_kamb, sigma = 3, n = 100, weights, ...) {
   # Ensure lons and lats are numeric vectors
   # lons <- as.numeric(lons)
   # lats <- as.numeric(lats)
@@ -60,8 +60,8 @@ count_points <- function(azi, inc, FUN = exponential_kamb, sigma = 3, n = 100, w
   # grid_azi <- seq(0, 2*pi, length.out = ncols)
   # grid_inc <- seq(0, pi, length.out = nrows)
   # grid <- expand.grid(azi = grid_azi, inc = grid_inc) |> rad2deg()
-  
-  grid = blank_grid(n = n)
+
+  grid <- blank_grid(n = n, ...)
 
   # Stereonet math transformations to cartesian coordinates
   # xyz_counters <- lin2vec0(grid[, 1], grid[, 2])
@@ -78,9 +78,9 @@ count_points <- function(azi, inc, FUN = exponential_kamb, sigma = 3, n = 100, w
     grid$density[i] <- (sum(density) - 0.5) / scale
   }
 
-  totals[totals < 0] <- 0
-  # grid$density[grid$density[i] < 0] <- 0
-  
+  # totals[totals < 0] <- 0
+  grid$density[grid$density < 0] <- 0
+
   # xyz_counters_sph <- cart2sph(xyz_counters)
   # counter_lon <- xyz_counters_sph[, 1]
   # counter_lat <- xyz_counters_sph[, 2]
@@ -94,7 +94,7 @@ count_points <- function(azi, inc, FUN = exponential_kamb, sigma = 3, n = 100, w
   #   #zi = totals
   # )
   # cbind(xyz_counters, density=totals) # return as Cartesian
-  #cbind(grid, density = totals) # return in lon-lat space (degrees)
+  # cbind(grid, density = totals) # return in lon-lat space (degrees)
   grid
 }
 
@@ -115,15 +115,15 @@ count_points <- function(azi, inc, FUN = exponential_kamb, sigma = 3, n = 100, w
 #' @examples
 #' x <- Line(c(120, 315, 86), c(22, 85, 31))
 #' density_grid(x, n = 100)
-density_grid <- function(x, FUN = exponential_kamb, sigma = 3, n = 100, weights = NULL) {
-  if (length(gridsize) == 1) gridsize <- c(gridsize, gridsize)
+density_grid <- function(x, FUN = exponential_kamb, sigma = 3, n = 100, weights = NULL, ...) {
+  # if (length(gridsize) == 1) gridsize <- c(gridsize, gridsize)
 
   if (!is.spherical(x)) x <- to_spherical(x)
 
   if (!is.line(x)) x <- as.line(x)
 
   azi <- x[, 1]
-  inc <- x[, 2] 
+  inc <- x[, 2]
 
   if (is.null(weights)) weights <- rep(1, nrow(x))
 
@@ -131,7 +131,7 @@ density_grid <- function(x, FUN = exponential_kamb, sigma = 3, n = 100, weights 
   # weights <- as.numeric(weights) / mean(weights)
   weights <- as.numeric(weights) / max(weights)
 
-  count_points(azi, inc, FUN = FUN, sigma = sigma, n = n, weights = weights)
+  count_points(azi, inc, FUN = FUN, sigma = sigma, n = n, weights = weights, ...)
 }
 
 
@@ -244,55 +244,60 @@ reshape_grid <- function(m, n) {
 
 stereo_density <- function(x, nlevels = 20, ..., filled = FALSE, upper.hem = FALSE) {
   d <- density_grid(x, ...)
-  
+  d$grid <- fix_symm(d$grid)
+
   d_sph <- vec2line(d$grid) |> cbind(density = d$density)
 
   m <- xtabs(density ~ azimuth + plunge, data = d_sph)
 
   if (filled) {
-    filled.contour(as.numeric(rownames(m)), as.numeric(colnames(m)), m, nlevels = nlevels, color.palette = viridis::magma,
-                   # plot.axes = {
-                   #   axis(1); axis(2)
-                   #   
-                   #   coords = expand.grid(x, y)
-                   #   projected = stereo_coords(coords[, 1], coords[, 2], upper.hem = upper.hem)
-                   #   points(projected[, 1], projected[, 2], col = viridis::magma(10)[cut(z, 10)])
-                   # }
-                   )
+    filled.contour(as.numeric(rownames(m)), as.numeric(colnames(m)), m,
+      nlevels = nlevels, color.palette = viridis::magma,
+      # plot.axes = {
+      #   axis(1); axis(2)
+      #
+      #   coords = expand.grid(x, y)
+      #   projected = stereo_coords(coords[, 1], coords[, 2], upper.hem = upper.hem)
+      #   points(projected[, 1], projected[, 2], col = viridis::magma(10)[cut(z, 10)])
+      # }
+    )
   } else {
     contour(m, nlevels = nlevels)
   }
 }
 
+fix_symm <- function(x) {
+  x[x[, 3] < 0, ] <- v_antipode(x[x[, 3] < 0, ])
+  x
+}
+
+
+
+#' Plot density grid in a stereonet
+#'
+#' @param x spherical data
+#' @param ... arguments passed top [blank_grid()]
+#' @param pal color function
+#' @param binned logical. Whether the density colors should be binned
+#' @param breaks for binning
+#'
+#' @return plot
+#' @export
+#'
+#' @examples
+#' test <- Line(c(90, 85, 105), c(45, 50, 40))
+#' stereoplot(guides = F, centercross = FALSE)
+#' stereo_density_grid(test, binned = FALSE, n = 10000)
+#' stereo_point(test, cex = 2, col = "red")
 stereo_density_grid <- function(x, ..., binned = FALSE, pal = viridis::viridis, breaks = 5) {
   d <- density_grid(x, ...)
-  
-  if(binned){
-    cols = bin_color(d[, 3], breaks = breaks, pal = pal)
+  d$grid <- fix_symm(d$grid)
+
+  if (binned) {
+    cols <- bin_color(d$density, breaks = breaks, pal = pal)
   } else {
-    cols = assign_col(d[, 3], pal = pal)
+    cols <- assign_col(d$density, pal = pal)
   }
-  
-  stereo_point(Line(d[, 1], d[, 2]), col = cols)
+
+  stereo_point(to_spherical(d$grid), col = cols)
 }
-
-
-
-assign_col <- function(x, n = length(x), pal = viridis::viridis, ...) {
-  normalized_data <- (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
-  colors <- do.call(pal, args = list(n = n, ...))
-  colors[as.numeric(cut(normalized_data, breaks = n))]
-}
-
-bin_color <- function(x, breaks, pal = viridis::viridis, ...){
-  breaks <- pretty(x, n = breaks)
-  n2 <- length(breaks) - 1
-  cols <- do.call(pal, args=list(n2, ...)) # [order]
-  named_cols <- cut(x, breaks = breaks, labels = cols, include.lowest = TRUE) |>
-    as.character()
-  names(named_cols) <- cut(x, breaks = breaks, include.lowest = TRUE)
-  named_cols
-}
-
-
-

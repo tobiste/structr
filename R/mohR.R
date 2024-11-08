@@ -24,15 +24,15 @@ theta <- function(phi) {
 
 
 #' Principal stresses from 2D stress components
-#' 
-#' Determines the principal stresses and their orientations from the stress 
+#'
+#' Determines the principal stresses and their orientations from the stress
 #' components \deqn{sigma_x}, \deqn{\sigma_y}, \deqn{\tau_{xy}}.
 #'
-#' @param sx numeric. Normal stress acting on plane facing in X direction 
+#' @param sx numeric. Normal stress acting on plane facing in X direction
 #' (\deqn{sigma_x}).
-#' @param sy numeric. Normal stress acting on plane facing in Y direction 
+#' @param sy numeric. Normal stress acting on plane facing in Y direction
 #' (\deqn{\sigma_y}).
-#' @param txy numeric. Shear stress acting on planes facing X and Y 
+#' @param txy numeric. Shear stress acting on planes facing X and Y
 #' (\deqn{\tau_{xy}}).
 #'
 #' @returns angle in degrees
@@ -49,7 +49,7 @@ PR_stress <- function(sx, sy, txy) {
   theta1 <- atan(txy / (s1 - sy)) * 180 / pi
   return(
     data.frame(s1 = s1, s2 = s2, theta1 = theta1)
-    )
+  )
 }
 
 
@@ -300,7 +300,7 @@ ggMohr <- function(s1, s2, s3, coulomb = c(70, 0.6), sliding = 0.81, units = "MP
   circle23.r <- diff_stress(s2, s3) / 2
   circle23.m <- mean_stress(s2, s3)
 
-  if(!is.null(coulomb)){
+  if (!is.null(coulomb)) {
     theta.f <- theta(coulomb[2]) # (90 + tectonicr:::atand(coulomb[2]))/2
   } else {
     theta.f <- 0
@@ -314,13 +314,17 @@ ggMohr <- function(s1, s2, s3, coulomb = c(70, 0.6), sliding = 0.81, units = "MP
     ggforce::geom_circle(aes(x0 = circle13.m, y0 = 0, r = circle13.r), fill = fill, alpha = alpha) +
     ggforce::geom_circle(aes(x0 = circle23.m, y0 = 0, r = circle23.r), fill = "white") +
     ggforce::geom_circle(aes(x0 = circle12.m, y0 = 0, r = circle12.r), fill = "white") +
-    {if(!is.null(sliding)) ggplot2::geom_abline(intercept = 0, slope = sliding, lty = 2)} +
-    {if(!is.null(coulomb)) ggplot2::geom_abline(intercept = coulomb[1], slope = coulomb[2], lty = 1)} +
+    {
+      if (!is.null(sliding)) ggplot2::geom_abline(intercept = 0, slope = sliding, lty = 2)
+    } +
+    {
+      if (!is.null(coulomb)) ggplot2::geom_abline(intercept = coulomb[1], slope = coulomb[2], lty = 1)
+    } +
     ggplot2::geom_point(aes(x = circle13.m, 0)) +
     ggplot2::geom_line(aes(x = c(circle13.m, sigma_n), y = c(0, sigma_s)), lty = 3) +
     ggplot2::geom_hline(yintercept = 0, alpha = .2) +
     ggplot2::geom_vline(xintercept = 0, alpha = .2) +
-    ggplot2::geom_text(aes(x = (s1+s3)/2, y = 0), label = expression(sigma["m"]), vjust = -.5, hjust = -1) +
+    ggplot2::geom_text(aes(x = (s1 + s3) / 2, y = 0), label = expression(sigma["m"]), vjust = -.5, hjust = -1) +
     ggplot2::geom_text(aes(x = s3, y = 0), label = expression(sigma[3]), vjust = -.5, hjust = -1) +
     ggplot2::geom_text(aes(x = s2, y = 0), label = expression(sigma[2]), vjust = -.5, hjust = -1) +
     ggplot2::geom_text(aes(x = s1, y = 0), label = expression(sigma[1]), vjust = -.5, hjust = -1) +

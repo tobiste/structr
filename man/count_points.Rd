@@ -4,7 +4,15 @@
 \alias{count_points}
 \title{Point density}
 \usage{
-count_points(azi, inc, FUN = exponential_kamb, sigma = 3, n = 100, weights)
+count_points(
+  azi,
+  inc,
+  FUN = exponential_kamb,
+  sigma = 3,
+  n = 100,
+  weights,
+  ...
+)
 }
 \arguments{
 \item{azi, inc}{degree}

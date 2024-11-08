@@ -195,7 +195,7 @@ server <- function(input, output) {
         ggplot2::geom_line(aes(x = c(pf_circle13.m, sigma_n), y = c(0, sigma_s)), lty = 3) +
         ggplot2::geom_hline(yintercept = 0, alpha = .2) +
         ggplot2::geom_vline(xintercept = 0, alpha = .2) +
-        ggplot2::geom_text(aes(x = (s1_pf+s3_pf)/2, y = 0), label = expression(sigma["m"]), vjust = -.5, hjust = -1) +
+        ggplot2::geom_text(aes(x = (s1_pf + s3_pf) / 2, y = 0), label = expression(sigma["m"]), vjust = -.5, hjust = -1) +
         ggplot2::geom_text(aes(x = s3_pf, y = 0), label = expression(sigma[3]), vjust = -.5, hjust = -1) +
         ggplot2::geom_text(aes(x = s2_pf, y = 0), label = expression(sigma[2]), vjust = -.5, hjust = -1) +
         ggplot2::geom_text(aes(x = s1_pf, y = 0), label = expression(sigma[1]), vjust = -.5, hjust = -1) +

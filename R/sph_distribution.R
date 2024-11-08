@@ -52,21 +52,23 @@ dvmf <- function(x, mu, k = 5) {
 
 #' Uniformly distributed vectors
 #'
-#' Create uniformly distributed vectors using the algorithm 
+#' Create uniformly distributed vectors using the algorithm
 #' *Spherical Fibonacci Spiral points on a sphere* algorithm (John Burkardt) or
 #' *Golden Section Spiral points on a sphere*.
 #'
 #' @param class character. Coordinate class of the output vectors.
 #' @param n number of observations
-#' @param method chaarcter. The algorithm for generating uniformly distributed
-#' vectors. Either `"sfs"` for the "Spherical Fibonacci Spiral points on a sphere"
-#' or `"gss"` for "Golden Section Spiral points on a sphere".
+#' @param method character. The algorithm for generating uniformly distributed
+#' vectors. Either `"sfs"` for the "Spherical Fibonacci Spiral points on a sphere",
+#' `"gss"` for "Golden Section Spiral points on a sphere", or the algorithm
+#' [rotasym::r_unif_sphere()] from the rotasym package.
 #' @returns object of class specified by `"class"` argument
 #' @details
 #'  `"sfs"` algorithm is from on John Burkardt (http://people.sc.fsu.edu/~jburkardt/),
 #'  `"gss` is from  http://www.softimageblog.com/archives/115
 #' @seealso [rvmf()] to draw samples from the von Mises Fisher distribution
 #' around a specified mean vector.
+#' @importFrom rotasym r_unif_sphere
 #' @export
 #' @examples
 #' v_unif("line", n = 100, method = "sfs") |>
@@ -75,7 +77,10 @@ dvmf <- function(x, mu, k = 5) {
 #' v_unif("line", n = 100, method = "gss") |>
 #'   ortensor() |>
 #'   or_eigen()
-v_unif <- function(class = NULL, n = 100, method = c("gss", "sfs")) {
+#' v_unif("line", n = 100, method = "rotasym") |>
+#'   ortensor() |>
+#'   or_eigen()
+v_unif <- function(class = NULL, n = 100, method = c("gss", "sfs", "rotasym")) {
   method <- match.arg(method)
 
   if (method == "sfs") {
@@ -86,7 +91,7 @@ v_unif <- function(class = NULL, n = 100, method = c("gss", "sfs")) {
     sp <- i2 / n
     cp <- sqrt((n + i2) * (n - i2)) / n
     dc <- cbind(x = cp * sin(theta), y = cp * cos(theta), z = sp)
-  } else {
+  } else if (method == "sfs") {
     # Golden Section Spiral points on a sphere
     inc <- pi * (3 - sqrt(5))
     off <- 2 / n
@@ -95,6 +100,8 @@ v_unif <- function(class = NULL, n = 100, method = c("gss", "sfs")) {
     r <- sqrt(1 - y * y)
     phi <- k * inc
     dc <- cbind(x = cos(phi) * r, y = y, z = sin(phi) * r)
+  } else {
+    dc <- rotasym::r_unif_sphere(n, p = 3)
   }
   if (!is.null(class)) {
     dc <- to_spherical(dc, class)
@@ -169,6 +176,7 @@ rkent <- function(n = 100, mu = c(1, 0, 0), k = 5, b) {
     res
   }
 }
+
 
 
 #' MLE of spherical rotational symmetric distributions

@@ -630,7 +630,7 @@ CalcCofac <- function(a) {
 
 
 #' Cauchy
-#' 
+#'
 #' Given the stress tensor in a X1,X2,X3 coordinate system of any orientation,
 #' Cauchy computes the X1,X2,X3 tractions on an arbitrarily oriented plane
 #'

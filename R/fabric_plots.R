@@ -100,7 +100,7 @@ ternaryGrid <- function(increment) {
 ## Convert from ternary coordinates to cartesian (x, y) coordinates ----------------------
 cartesianFromTernary <- function(top, left, right) {
   y <- (top - 50) / 50 # vertically spans from -1 to 1
-  baseHalfWidth <- 2 /tan(60*pi/180) # : equilateral triangle
+  baseHalfWidth <- 2 / tan(60 * pi / 180) # : equilateral triangle
   horizontalHalfWidth <- ((100 - top) * baseHalfWidth) / 100
   horizontalProportion <- (right / (right + left + 0.0000001) - 0.5) * 2
   x <- horizontalProportion * horizontalHalfWidth
@@ -162,7 +162,7 @@ fabric_indexes <- function(x) {
 #' Creates a fabric plot using the eigenvalue method
 #'
 #' @inheritParams WoodcockPlot
-#' @param ngrid integer or 3-element vector specifying the amount of gridlines 
+#' @param ngrid integer or 3-element vector specifying the amount of gridlines
 #' for the P, G, and G axes. Constant grid spacing when only one integer is given.
 #' `NULL` when no grid.
 #'
@@ -175,48 +175,58 @@ fabric_indexes <- function(x) {
 #' @examples
 #' set.seed(1)
 #' mu <- Line(120, 50)
-#' x <- rvmf(100, mu = mu, k = 1)
-#' VollmerPlot(x, lab = "x")
-#' y <- rvmf(100, mu = mu, k = 20)
-#' VollmerPlot(y, lab = "y", add = TRUE, col = "red")
+#' a <- rvmf(100, mu = mu, k = 10)
+#' VollmerPlot(a, lab = "VMF")
+#'
+#' set.seed(1)
+#' b <- rfb(100, mu = mu, k = 1, A = diag(c(10, 0, 0)))
+#' VollmerPlot(b, lab = "FB", add = TRUE, col = "red")
+#'
+#' set.seed(1)
+#' c <- v_unif("line", n = 100, method = "rotasym")
+#' VollmerPlot(c, lab = "UNIF", add = TRUE, col = "green")
+#'
+#' set.seed(1)
+#' d <- rkent(100, mu = mu, k = 10, b = 4)
+#' VollmerPlot(d, lab = "KENT", add = TRUE, col = "blue")
 #' title("Fabric plot of Vollmer (1990)")
 VollmerPlot <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...) {
   x_vollmer <- fabric_indexes(x)
   R <- x_vollmer["R"]
   P <- x_vollmer["P"]
   G <- x_vollmer["G"]
-  
+
   vec <- c(P, G, R)
-  
+
   A <- c(0, 0) # left
   B <- c(1, 0) # right
   C <- c(1 / 2, sqrt(3) / 2) # top
   abc <- rbind(A, B, C)
-  
+
   PGR <- P + G + R
   PGR <- sum(vec)
-  
+
   coords <- colSums(vec * abc) / PGR
-  
+
   if (!add) {
-    plot(1, "n", ylim = c(0, sqrt(3) / 2), xlim = c(0, 1), asp = 1, axes = FALSE, xlab = "", ylab = "")
-    
+    graphics::plot(1, "n", ylim = c(0, sqrt(3) / 2), xlim = c(0, 1), asp = 1, axes = FALSE, xlab = "", ylab = "")
+
     if (!is.null(ngrid)) {
       ngrid <- round(ngrid) + 1
       if (length(ngrid) == 1) ngrid <- rep(ngrid, 3)
       # horizontal lines
       bottom <- seq(0, 1, length.out = ngrid[1])
       bottom <- bottom[2:(length(bottom) - 1)]
-      
+
       l1 <- rbind(bottom, rep(0, length(bottom))) |> t()
       rot <- cbind(c(1 / 2, sind(60)), c(-sind(60), 1 / 2))
       l2 <- t(rot %*% t(l1))
       l3 <- l2
       l3[, 1] <- 1 - l2[, 1]
-      
+
       graphics::segments(l2[, 1], l2[, 2], l3[, 1], l3[, 2], col = "lightgray", lty = 3)
-      
-      
+
+
       # diagonal lines of left
       bottom2 <- seq(0, 1, length.out = ngrid[2])
       bottom2 <- bottom2[2:(length(bottom2) - 1)]
@@ -224,30 +234,30 @@ VollmerPlot <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...) 
       rot <- cbind(c(1 / 2, sind(60)), c(-sind(60), 1 / 2))
       l2_2 <- t(rot %*% t(l1_2))
       graphics::segments(l1_2[, 1], l1_2[, 2], l2_2[, 1], l2_2[, 2], col = "lightgray", lty = 3)
-      
+
       # diagonal lines of right
       l2_3 <- l3
       l2_3[, 1] <- rev(l3[, 1])
       l2_3[, 2] <- rev(l3[, 2])
-      
+
       graphics::segments(l1_2[, 1], l1_2[, 2], l2_3[, 1], l2_3[, 2], col = "lightgray", lty = 3)
     }
-    
-    polygon(abc)
-    
+
+    graphics::polygon(abc)
+
     l1 <- colSums(c(0, 1, 1) * abc) / 2
     l2 <- colSums(c(0, 0, 1) * abc) / 2
     l3 <- c(.5, 0)
-    
+
     # add axes labels
     graphics::text(l3[1], l3[2], labels = expression(lambda[3] == 0), pos = 3, offset = -1, col = "grey")
     graphics::text(l2[1], l2[2], labels = expression(lambda[2] == lambda[3]), pos = 3, srt = 60, offset = 1, col = "grey")
-    graphics::text(l1[1], l1[2], labels =expression(lambda[1] == lambda[2]), pos = 3, srt = -60, offset = 1, col = "grey")
-    
+    graphics::text(l1[1], l1[2], labels = expression(lambda[1] == lambda[2]), pos = 3, srt = -60, offset = 1, col = "grey")
+
     abc_text <- abc #+ c(-.02, .02, .02)
-    for(t in 1:3) text(abc_text[t, 1], abc_text[t,2], labels = c("Point", "Girdle", "Random")[t], pos = c(1, 1, 3)[t], srt = c(-60, 60, 0)[t])
+    for (t in 1:3) graphics::text(abc_text[t, 1], abc_text[t, 2], labels = c("Point", "Girdle", "Random")[t], pos = c(1, 1, 3)[t], srt = c(-60, 60, 0)[t])
   }
-  
+
   if (!is.null(labels)) {
     graphics::text(coords[1], coords[2], labels = labels, ...)
   } else {
@@ -265,12 +275,12 @@ VollmerPlot <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...) 
 #     graphics::text(leftCoord$x, leftCoord$y, expression(lambda[2] == lambda[3]), pos = 3, srt = 60, offset = 1, col = "grey")
 #     graphics::text(rightCoord$x, rightCoord$y, expression(lambda[1] == lambda[2]), pos = 3, srt = -60, offset = 1, col = "grey")
 #   }
-# 
+#
 #   x_vollmer <- fabric_indexes(x)
 #   dat <- c(
 #     top = x_vollmer["R"], left = x_vollmer["P"], right = x_vollmer["G"]
 #   ) * 100
-# 
+#
 #   if (!is.null(lab)) {
 #     ternaryText(dat, label = lab, cex = .8, ...)
 #   } else {
@@ -307,22 +317,18 @@ WoodcockPlot <- function(x, labels = NULL, add = FALSE, ...) {
       x = 1, type = "n",
       xlab = expression(log(lambda[2] / lambda[3])),
       ylab = expression(log(lambda[1] / lambda[2])),
-      xaxs = 'i', yaxs = 'i',
+      xaxs = "i", yaxs = "i",
       xlim = c(0, 7), ylim = c(0, 7), ...
     )
-    
-    for(j in seq(2, 8, 2)){
+
+    for (j in seq(2, 8, 2)) {
       graphics::abline(a = j, b = -1, col = "grey", lty = 3)
-      
     }
-    
-    for(i in c(.2, .5, 2, 5)){
+
+    for (i in c(.2, .5, 2, 5)) {
       graphics::abline(a = 0, b = i, col = "grey", lty = 2)
-      
     }
     graphics::abline(a = 0, b = 1, col = "grey", lty = 1, lwd = 1.5)
-    
-
   }
   x_eigen <- or_eigen(x, scaled = TRUE)
   if (!is.null(labels)) {

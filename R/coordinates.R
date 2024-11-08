@@ -424,11 +424,10 @@ parse_azimuth <- function(azimuth) {
 }
 
 rotation_direction <- function(first, second) {
-  first_rad <- first *  pi / 180
-  second_rad <- second *  pi / 180
-    t(c(cos(first_rad), sin(first_rad))) %*%
+  first_rad <- first * pi / 180
+  second_rad <- second * pi / 180
+  t(c(cos(first_rad), sin(first_rad))) %*%
     c(cos(second_rad), sin(second_rad))
-  
 }
 
 quadrantletter_to_azimuth <- function(x) {
@@ -442,7 +441,7 @@ quadrantletter_to_azimuth <- function(x) {
 
 #' Title
 #'
-#' @param x 
+#' @param x
 #'
 #' @return numeric
 #' @export
@@ -450,25 +449,25 @@ quadrantletter_to_azimuth <- function(x) {
 #' @examples
 #' parse_quadrant_measurement(c("E30N", "W10S"))
 parse_quadrant_measurement <- function(x) {
-  sapply(x, function(x){
-  x <- trimws(x)
+  sapply(x, function(x) {
+    x <- trimws(x)
 
-    first_dir = quadrantletter_to_azimuth(toupper(x[1]))
-    sec_dir = quadrantletter_to_azimuth(toupper(x[length(x)]))
-    
-  x2 = trimws(x) |>
+    first_dir <- quadrantletter_to_azimuth(toupper(x[1]))
+    sec_dir <- quadrantletter_to_azimuth(toupper(x[length(x)]))
+
+    x2 <- trimws(x) |>
       strsplit("") |>
       unlist()
 
-  angle <- x2[3:length(x2) - 1] |> 
-    paste(collapse = "") |> 
-    as.numeric()
+    angle <- x2[3:length(x2) - 1] |>
+      paste(collapse = "") |>
+      as.numeric()
 
-  direc <- rotation_direction(first_dir, sec_dir)
-  azi <- first_dir + direc * angle
+    direc <- rotation_direction(first_dir, sec_dir)
+    azi <- first_dir + direc * angle
 
-  # Catch ambiguous measurements such as N10S and raise an error
-  stopifnot(abs(direc) >= 0.9)
-  azi %% 360
+    # Catch ambiguous measurements such as N10S and raise an error
+    stopifnot(abs(direc) >= 0.9)
+    azi %% 360
   }, simplify = TRUE)
 }

@@ -161,7 +161,7 @@ spatial_interpolation <- function(x,
   }
 
   vec <- to_spherical(cbind(x = SH[, 3], y = SH[, 4], z = SH[, 5]))
-  
+
   res <- dplyr::as_tibble(SH) |>
     dplyr::rename(lon = lon.X, lat = lat.Y) |>
     dplyr::mutate(N = as.integer(N)) |>
@@ -171,8 +171,8 @@ spatial_interpolation <- function(x,
   res$dipdir <- vec[, 1]
   res$dip <- vec[, 2]
 
-  if(compact) res <- compact_grid(res)
-  
+  if (compact) res <- compact_grid(res)
+
   # res_coords <- data.frame(X = SH[, 1], Y = SH[, 2])
   #
   # if (transform) {

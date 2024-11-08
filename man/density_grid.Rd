@@ -4,7 +4,14 @@
 \alias{density_grid}
 \title{Estimates point density}
 \usage{
-density_grid(x, FUN = exponential_kamb, sigma = 3, n = 100, weights = NULL)
+density_grid(
+  x,
+  FUN = exponential_kamb,
+  sigma = 3,
+  n = 100,
+  weights = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{spherical object}

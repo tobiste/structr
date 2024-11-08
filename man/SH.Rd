@@ -23,9 +23,9 @@ directions of the principal stress and \eqn{R = \frac{S1 - S2}{S1 - S3}}.
 This function Equations 11 and 10 from Lund and Townend (2007).
 }
 \examples{
-S1 <- Line(250.89,70.07) 
-S3 <- Line(103.01,17.07)
-S2 <- vcross(S3, S1) 
+S1 <- Line(250.89, 70.07)
+S3 <- Line(103.01, 17.07)
+S2 <- vcross(S3, S1)
 SH(S1, S2, S3, R = 1)
 }
 \references{

@@ -1,15 +1,15 @@
 #' Deformation Gradient Tensor
 #'
-#' @param Rxy,Ryz numeric. the XY and YZ strain ratio to create a strain tensor 
+#' @param Rxy,Ryz numeric. the XY and YZ strain ratio to create a strain tensor
 #' with axial stretches.Values must be greater than or equal to 1.
 #' @param p object of class `pair`
-#' @param v1,v2 objects of class `"spherical"` or three-element vector. 
-#' Deformation gradient results from the rotation around axis perpendicular to 
+#' @param v1,v2 objects of class `"spherical"` or three-element vector.
+#' Deformation gradient results from the rotation around axis perpendicular to
 #' both vectors to rotate `v1` to `v2`.
-#' @param axis,angle rotation axis and angle, axis can be an object of class 
-#' `"spherical"` (incl. `"line"` and `"plane"`) or a three-element vector. Angle in 
+#' @param axis,angle rotation axis and angle, axis can be an object of class
+#' `"spherical"` (incl. `"line"` and `"plane"`) or a three-element vector. Angle in
 #' degrees when axis is a object of class `"spherical"`, and radians otherwise.
-#' @param xx,xy,xz,yx,yy,yz,zx,zy,zz numeric. Directly specify components of 
+#' @param xx,xy,xz,yx,yy,yz,zx,zy,zz numeric. Directly specify components of
 #' the tensor. Identity matrix by default.
 #'
 #' @return 3x3 matrix.
@@ -29,7 +29,6 @@ defgrad_from_ratio <- function(Rxy = 1, Ryz = 1) {
   A <- diag(3)
   y <- (Ryz / Rxy)**(1 / 3)
   A * c(y * Rxy, y, y / Ryz)
-  
 }
 
 #' @rdname defgrad
@@ -44,7 +43,7 @@ defgrad_from_pair <- function(p) {
     pp
   )
   rownames(D) <- colnames(D) <- NULL
-    t(D)
+  t(D)
 }
 
 # defgrad_from_pairs <- function(p1, p2, symmetry = FALSE) {
@@ -52,7 +51,7 @@ defgrad_from_pair <- function(p) {
 #   p1p <- Plane(p1[1], p1[2]) |> plane2vec()
 #   p2l <- Line(p2[3], p2[4]) |> to_vec()
 #   p2p <- Plane(p2[1], p2[2]) |> plane2vec()
-# 
+#
 #   R4 <- rbind(
 #     Pair(p2p, p2l) %*% (p1),
 #     Pair(-p2p, p2l) %*% (p1),
@@ -98,37 +97,35 @@ defgrad_from_axisangle <- function(axis, angle) {
     c(xyc + zs, y * yc + c, yzc - xs),
     c(zxc - ys, yzc + xs, z * zc + c)
   )
-  
 }
 
 #' @rdname defgrad
 #' @export
-defgrad_from_comp <- function(xx = 1, xy = 0, xz = 0, yx = 0, yy = 1, yz = 0, 
+defgrad_from_comp <- function(xx = 1, xy = 0, xz = 0, yx = 0, yy = 1, yz = 0,
                               zx = 0, zy = 0, zz = 1) {
   rbind(
     c(xx, xy, xz),
     c(yx, yy, yz),
     c(zx, zy, zz)
   )
-  
 }
 
 
 
 #' Velocity gradient and Deformation gradient tensors
-#' 
-#' Calculates the velocity gradient tensor as the matrix logarithm  of the 
+#'
+#' Calculates the velocity gradient tensor as the matrix logarithm  of the
 #' deformation gradient tensor divided by given time, and
 #' the deformation gradient tensor accumulated after some time.
 #'
-#' @param R 3x3 matrix. Deformation gradient tensor. 
-#' @param V 3x3 matrix. Velocity gradient tensor. 
+#' @param R 3x3 matrix. Deformation gradient tensor.
+#' @param V 3x3 matrix. Velocity gradient tensor.
 #' @param time numeric. Total time (default is 1)
 #' @param steps numeric. Time increments (default is 1)
 #'
 #' @name gradient
 #'
-#' @return 3x3 matrix. If steps is > 1, then a list 
+#' @return 3x3 matrix. If steps is > 1, then a list
 #' of matrices is returned.
 #'
 #' @importFrom expm logm expm
@@ -145,7 +142,6 @@ NULL
 velgrad_from_defgrad <- function(R, time = 1) {
   # L = pracma::logm(R) / time
   expm::logm(R) / time
-  
 }
 
 #' @rdname gradient
@@ -156,8 +152,8 @@ defgrad_from_velgrad <- function(V, time = 1, steps = 1) {
     t <- seq(0, time, steps)
     for (i in t) {
       Ri <- structure(expm::expm(V * i), class = "defgrad")
-      Ri = list(Ri)
-      names(Ri) = i
+      Ri <- list(Ri)
+      names(Ri) <- i
       R <- append(R, Ri)
     }
   } else {
@@ -169,10 +165,10 @@ defgrad_from_velgrad <- function(V, time = 1, steps = 1) {
 
 #' Rate and spin of velocity gradient tensor
 #'
-#' @param x 3x3 matrix. Velocity gradient tensor. 
+#' @param x 3x3 matrix. Velocity gradient tensor.
 #'
 #' @return 3x3 matrix
-#' 
+#'
 #' @name vel_rate
 #'
 #' @examples
@@ -184,12 +180,12 @@ NULL
 
 #' @rdname vel_rate
 #' @export
-velgrad_rate <- function(x){
-  (x + t(x))/2
+velgrad_rate <- function(x) {
+  (x + t(x)) / 2
 }
 
 #' @rdname vel_rate
 #' @export
-velgrad_spin <- function(x){
-  (x - t(x))/2
+velgrad_spin <- function(x) {
+  (x - t(x)) / 2
 }

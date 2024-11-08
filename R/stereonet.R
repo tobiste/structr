@@ -75,7 +75,7 @@ stereo_coords <- function(az, inc, upper.hem = FALSE) {
 
 # stereo2sph <- function(azi, inc, line = TRUE) {
 #   deg2rad <- pi / 180
-# 
+#
 #   azir <- azi * deg2rad
 #   incr <- inc * deg2rad
 #   z <- sin(incr)
@@ -144,9 +144,9 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1
 #' @param ... optional graphical parameters
 #' @note `"plane"` objects will be displayed as pole to the plane.
 #' @importFrom graphics points text
-#' 
+#'
 #' @export
-#' 
+#'
 #' @examples
 #' faults <- Fault(
 #'   c(0, 90, 180, 270),
@@ -156,7 +156,7 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1
 #'   c(1, -1, 0, 1)
 #' )
 #' stereoplot()
-#' stereo_fault(faults, col =1:4)
+#' stereo_fault(faults, col = 1:4)
 #' # stereo_fault(faults, col =1:4, hoeppner = TRUE)
 #' legend("bottomright", c("normal", "thrust", "unknown", "normal"), fill = 1:4)
 stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex = 1, text.pos = 4, upper.hem = FALSE, ...) {
@@ -177,17 +177,18 @@ stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 16, col 
     x[, 2],
     upper.hem
   )
-  if(hoeppner){crds.l <- stereo_coords(
-    x[, 3] + 180,
-    90 - x[, 4],
-    upper.hem
-  )
+  if (hoeppner) {
+    crds.l <- stereo_coords(
+      x[, 3] + 180,
+      90 - x[, 4],
+      upper.hem
+    )
   } else {
-  crds.l <- stereo_coords(
-    x[, 3],
-    x[, 4],
-    upper.hem
-  )
+    crds.l <- stereo_coords(
+      x[, 3],
+      x[, 4],
+      upper.hem
+    )
   }
 
   for (i in 1:nrow(crds.p)) {
@@ -200,20 +201,22 @@ stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 16, col 
       }
     }
     if (hoeppner) {
-      ang = (x0[i, 3] * sign(x0[i, "sense"]))
-      graphics::points(crds.l[i, "x"], crds.l[i, "y"], pch = pch[i], col = col[i], cex = cex[i]/1.25)
+      ang <- (x0[i, 3] * sign(x0[i, "sense"]))
+      graphics::points(crds.l[i, "x"], crds.l[i, "y"], pch = pch[i], col = col[i], cex = cex[i] / 1.25)
       if (x0[i, "sense"] != 0) {
-        graphics::text(crds.l[i, "x"], crds.l[i, "y"], labels = "\u2191", col = col[i], srt = ang, cex = cex[i]*1.5)
-      } 
+        graphics::text(crds.l[i, "x"], crds.l[i, "y"], labels = "\u2191", col = col[i], srt = ang, cex = cex[i] * 1.5)
+      }
     } else {
-      ang = x0[i, 3] %% 360
+      ang <- x0[i, 3] %% 360
       # ang = ifelse(ang > 180, 360 - ang, ang)
-      symb = if(x0[i, 5] < 0){
+      symb <- if (x0[i, 5] < 0) {
         "\u2193"
-        } else {"\u2191"}
+      } else {
+        "\u2191"
+      }
 
       if (x0[i, "sense"] != 0) {
-        graphics::text(crds.l[i, "x"], crds.l[i, "y"], labels = symb, col = col[i], srt = -ang, cex = cex[i]*1.5)
+        graphics::text(crds.l[i, "x"], crds.l[i, "y"], labels = symb, col = col[i], srt = -ang, cex = cex[i] * 1.5)
       } else {
         graphics::points(crds.l[i, "x"], crds.l[i, "y"], pch = pch[i], col = col[i], cex = cex[i])
       }

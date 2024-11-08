@@ -178,7 +178,7 @@ fault_tensor <- function(displacements, dip_direction = NULL) {
 #'   theta <- atan(tan_theta) * 180 / pi
 #'   return(theta)
 #' }
-#' 
+#'
 #' #' Bott's stress ratio
 #' #'
 #' #' @param lambda angle between y (azimuth of σy) and the azimuth (α) of the
@@ -199,10 +199,10 @@ fault_tensor <- function(displacements, dip_direction = NULL) {
 #'   if (theta == 0) {
 #'     theta + 10^-6
 #'   }
-#'   
+#'
 #'    sind(lambda)^2 - ((tand(theta) * sind(2 * lambda)) / 2 * cosd(phi))
 #' }
-#' 
+#'
 #' rake <- function(fault) {
 #'   ve <- fault[, 5]
 #'   p <- Plane(fault[, 1], fault[, 2])
@@ -210,32 +210,32 @@ fault_tensor <- function(displacements, dip_direction = NULL) {
 #'     as.line() |>
 #'     line2vec()
 #'   b <- Line(fault[, 3], fault[, 4]) |> line2vec()
-#' 
+#'
 #'   cos_theta <- vdot(a, b) / (sqrt(a^2) * sqrt(b^2))
 #'   theta <- ve * acos(theta) |> rad2deg()
 #'   # theta = vangle(a, b)
 #'   theta
 #' }
-#' 
+#'
 #' Ry_analysis <- function(fault, ny = 1){
 #'   theta = rake(fault)
 #'   strike = fault[, 1]
 #'   dip = fault[, 2]
 #'   ve <- fault[, 5]
-#'   
+#'
 #'   res <- cbind(fault = integer(), y = numeric(), R = numeric())
 #'   for(f in 1:strike){
 #'     for(y in seq(0, 360, ny)){
 #'     R <- stress_ratio_simongomez(lambda = strike[f] + ve[f] * y, theta = theta[f], phi = dip[f])
-#'     Rp = R 
+#'     Rp = R
 #'     if(!is.na(R)){
 #'     if(R > 1){
 #'       Rp = 1 + ((R-1)/R)
 #'     } else if(R < 0){
 #'       Rp = -R/(R-1)
-#'     } 
 #'     }
-#'     
+#'     }
+#'
 #'     res <- rbind(res, cbind(fault = f, y, R = Rp))
 #'     }
 #'   }

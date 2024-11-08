@@ -4,16 +4,17 @@
 \alias{v_unif}
 \title{Uniformly distributed vectors}
 \usage{
-v_unif(class = NULL, n = 100, method = c("gss", "sfs"))
+v_unif(class = NULL, n = 100, method = c("gss", "sfs", "rotasym"))
 }
 \arguments{
 \item{class}{character. Coordinate class of the output vectors.}
 
 \item{n}{number of observations}
 
-\item{method}{chaarcter. The algorithm for generating uniformly distributed
-vectors. Either \code{"sfs"} for the "Spherical Fibonacci Spiral points on a sphere"
-or \code{"gss"} for "Golden Section Spiral points on a sphere".}
+\item{method}{character. The algorithm for generating uniformly distributed
+vectors. Either \code{"sfs"} for the "Spherical Fibonacci Spiral points on a sphere",
+\code{"gss"} for "Golden Section Spiral points on a sphere", or the algorithm
+\code{\link[rotasym:unif]{rotasym::r_unif_sphere()}} from the rotasym package.}
 }
 \value{
 object of class specified by \code{"class"} argument
@@ -32,6 +33,9 @@ v_unif("line", n = 100, method = "sfs") |>
   ortensor() |>
   or_eigen()
 v_unif("line", n = 100, method = "gss") |>
+  ortensor() |>
+  or_eigen()
+v_unif("line", n = 100, method = "rotasym") |>
   ortensor() |>
   or_eigen()
 }

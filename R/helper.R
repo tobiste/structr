@@ -60,4 +60,32 @@ cotd <- function(x) {
 }
 
 
-?near
+# Color assignment helper functions --------------------------------------------
+
+normalize <- function(x) {
+  (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
+}
+
+assign_col <- function(x, n = length(x), pal = viridis::viridis, ...) {
+  normalized_data <- normalize(x)
+  colors <- do.call(pal, args = list(n = n, ...))
+  colors[as.numeric(cut(normalized_data, breaks = n))]
+}
+
+bin_color <- function(x, breaks, pal = viridis::viridis, ...) {
+  breaks <- pretty(x, n = breaks)
+  n2 <- length(breaks) - 1
+  cols <- do.call(pal, args = list(n2, ...)) # [order]
+  named_cols <- cut(x, breaks = breaks, labels = cols, include.lowest = TRUE) |>
+    as.character()
+  names(named_cols) <- cut(x, breaks = breaks, include.lowest = TRUE)
+  named_cols
+}
+
+
+
+# Modes from a kde distribution ------------------------------------------------
+modes <- function(kde){
+  c(kde$x[kde$x < 0][which.max(kde$y[kde$x < 0])],
+    kde$x[kde$x > 0][which.max(kde$y[kde$x > 0])])
+}
