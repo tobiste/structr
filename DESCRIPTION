@@ -25,14 +25,13 @@ Imports:
     tibble,
     tidyr,
     tidyselect,
-    tectonicr
+    tectonicr,
+    viridis
 Suggests: 
     knitr,
     rmarkdown
 VignetteBuilder: 
     knitr
-Remotes: 
-    tobiste/tectonicr
 Encoding: UTF-8
 Language: en-US
 LazyData: true

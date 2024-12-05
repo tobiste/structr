@@ -301,8 +301,6 @@ stereoplot_frame <- function(col = "black", border = "black", ndiv = 36) {
   x <- cos(phi)
   y <- sin(phi)
   graphics::lines(x, y, col = border)
-  graphics::lines(c(-1, 1), c(0, 0), col = col)
-  graphics::lines(c(0, 0), c(-1, 1), col = col)
 }
 
 
@@ -342,6 +340,10 @@ stereoplot <- function(guides = TRUE, d = 10, col = grDevices::gray(0.9),
   if (!is.null(ticks)) stereoplot_ticks(angle = ticks, col = border)
 
   if (centercross) points(0, 0, pch = 3, col = border)
+  
+  # graphics::lines(c(-1, 1), c(0, 0), col = col)
+  # graphics::lines(c(0, 0), c(-1, 1), col = col)
+  
   # graphics::segments(c(-0.02, 0), c(0, -0.02), c(0.02, 0), c(0, 0.02),
   #                    col = "black"
   # )
