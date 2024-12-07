@@ -85,7 +85,8 @@ VollmerPlot(lines, add = TRUE, col = "dodgerblue", pch = 19, cex = 2)
 ## Density plots
 ```{r density, message=FALSE,warning=FALSE}
 ggstereo() +
-  geom_contourf_stereo(gg(planes), show.legend = TRUE) +
+  geom_contourf_stereo(gg(planes), show.legend = TRUE, norm = TRUE) +
+  scale_fill_viridis_d('Density') +
   geom_point(data = gg(planes), aes(x, y)) +
   labs(title = "Example data", color = NULL)
 ```

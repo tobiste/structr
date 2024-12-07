@@ -51,17 +51,17 @@ library(ggplot2)
 data(example_planes)
 planes <- Plane(example_planes$dipdir, example_planes$dip)
 
-fabric_strength <- fabric_indexes(planes)
+fabric <- or_shape_params(planes)$Vollmer['D']
 
 ggstereo() +
-  geom_contourf_stereo(gg(planes), show.legend = TRUE) +
-  geom_point(data = gg(planes), aes(x, y), color = "lightgrey", shape = 21) +
-  scale_fill_viridis_d(option = "A") +
+  geom_contourf_stereo(gg(planes)) +
+  geom_point(data = gg(planes), aes(x, y), color = "grey", shape = 21) +
+  scale_fill_viridis_d(option = "F") +
   labs(
     subtitle = "Example data",
     title = "Density contour plot",
     fill = "Multiples of\nvon Mises-Fisher\ndistribution",
-    caption = paste0("Equal area, lower hemisphere projection | Fabric strength: ", round(fabric_strength["C"], 2))
+    caption = paste0("Equal area, lower hemisphere projection | N: ", nrow(planes), " | Fabric strength: ", round(fabric, 2))
   )
 ```
 

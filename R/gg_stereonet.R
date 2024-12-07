@@ -313,6 +313,7 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #' suggested by Garcia-Portugues (2013). Ignored when `hw` is specified.
 #' @param norm logical. Should the densities be normalized?
 #' @param smooth logical. Whether [ggplot2::geom_tile()] should be used for plotting.
+#' @param threshold numeric. Cut-off for low densities.
 #' @param ... arguments passed to [ggplot2::geom_contour()], [ggplot2::geom_contour_filled()], or [ggplot2::geom_tile()]
 #'
 #' @return ggplot
@@ -330,7 +331,7 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #'   rvmf(100, mu = Line(90, 45), k = 10),
 #'   rvmf(50, mu = Line(0, 0), k = 20)
 #' ) |> as.line()
-
+#' 
 #' ggstereo() +
 #'   geom_contourf_stereo(gg(test_data)) +
 #'   ggplot2::scale_fill_viridis_d(option = "A") +
@@ -340,14 +341,14 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #'   ggframe()
 #'
 #' ggstereo() +
-#'   geom_contourf_stereo(gg(test_data), norm = TRUE, bins = 20) +
+#'   geom_contourf_stereo(gg(test_data), norm = TRUE, bins = 50, threshold = .1) +
 #'   ggplot2::scale_fill_viridis_d(option = "A")
 #'   }
 NULL
 
 #' @rdname ggstereocontour
 #' @export
-geom_contour_stereo <- function(x, ngrid = 100, hw = NULL, optimal_bw = c("cross", "rot"), norm = FALSE, ...) {
+geom_contour_stereo <- function(x, ngrid = 200, hw = NULL, optimal_bw = c("cross", "rot"), norm = FALSE, threshold = 0, ...) {
   Long <- Lat <- Density <- NULL
   xtot <- full_hem(x)
 
@@ -357,14 +358,14 @@ geom_contour_stereo <- function(x, ngrid = 100, hw = NULL, optimal_bw = c("cross
   if (norm) {
     res$Density <- normalize(res$Density)
   }
-
+  res$Density[res$Density <= threshold] <- NA
   geom_contour(data = res, aes(x = -Long, y = Lat, z = Density), ...)
 }
 
 
 #' @rdname ggstereocontour
 #' @export
-geom_contourf_stereo <- function(x, ngrid = 100, hw = NULL, optimal_bw = c("cross", "rot"), norm = FALSE, smooth = FALSE, ...) {
+geom_contourf_stereo <- function(x, ngrid = 200, hw = NULL, optimal_bw = c("cross", "rot"), norm = FALSE, smooth = FALSE, threshold = 0, ...) {
   Long <- Lat <- Density <- NULL
   xtot <- full_hem(x)
 
@@ -374,6 +375,7 @@ geom_contourf_stereo <- function(x, ngrid = 100, hw = NULL, optimal_bw = c("cros
   if (norm) {
     res$Density <- normalize(res$Density)
   }
+  res$Density[res$Density <= threshold] <- NA
 
   if (smooth) {
     geom_tile(data = res, aes(x = -Long, y = Lat, fill = Density), ...)

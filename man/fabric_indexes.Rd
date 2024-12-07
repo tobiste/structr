@@ -18,6 +18,7 @@ numeric vector containing the fabric shape and intensity indices:
 \item{\code{B}}{cylindricity (Vollmer 1990), range: (0, 1)}
 \item{\code{C}}{cylindricity or Fabric strength (Woodcock 1977), range: (0, Inf)}
 \item{\code{I}}{cylindricity or Fabric intensity (Lisle 1985), range: (0, 5)}
+\item{\code{D}}{"distance" from uniformity, linear from R to P, and R to G. End members are: uniform D = 0, girdle D = 0.5, cluster D = 1. The 99\% level for a test against uniformity for a sample size of 300 is D = 0.1 (Vollmer 2020).}
 }
 }
 \description{

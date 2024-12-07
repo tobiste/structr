@@ -17,8 +17,28 @@ or_shape_params(x)
 \item{x}{numeric. Can be three element vector, three column array, or an
 object of class \code{"line"} or \code{"plane"}}
 }
+\value{
+list
+}
 \description{
 Principal stretches, strain and shape parameters based on the orientation tensor.
+}
+\details{
+\describe{
+\item{\code{stretch_ratios}}{Sqrt of eigenvalue ratios}
+\item{\code{strain_ratios}}{Log of stretch ratios}
+\item{\code{Ramsay}}{strain symmetry (Ramsay, 1983)}
+\item{\code{Woodcock}}{Woodcock shape}
+\item{\code{Flinn}}{Flinn strain intensity}
+\item{\code{Vollmer}}{Point, Girdle, Random, Cylindricity (B), and Uniform Distance (D) Indices (Vollmer 1990; 2020). \code{D} is a measure of the "distance" from uniformity, and is linear from R to P, and R to G. End members are: uniform D = 0, girdle D = 0.5, cluster D = 1. The 99\% level for a test against uniformity for a sample size of 300 is D = 0.1.}
+\item{\code{Nadai}}{natural octahedral unit strain and shear (Nadai, 1963)}
+\item{\code{Lisle_intensity}}{Intensity index (Lisle, 1985)}
+\item{\code{Waterson_intensity}}{strain intensity (Watterson, 1968)}
+\item{\code{lode}}{Lode parameter (Lode, 1926)}
+\item{\code{kind}}{Descriptive type of ellipsoid}
+\item{\code{MAD}}{maximum angular deviation (Kirschvink, 1980)}
+\item{\code{US}}{Uniformity statistic of Mardia (1972)}
+}
 }
 \examples{
 set.seed(1)
@@ -27,4 +47,27 @@ x <- rvmf(100, mu = mu, k = 20)
 principal_stretch(x)
 principal_strain(x)
 or_shape_params(x)
+}
+\references{
+Flinn, Derek. "On the statistical analysis of fabric diagrams." Geological Journal 3.2 (1963): 247-253.
+
+Kirschvink, J. (1980). The least-squares line and plane and the analysis of palaeomagnetic data. Geophysical Journal International, 62(3), 699-718.
+
+Lisle, Richard J. "The use of the orientation tensor for the description and statistical testing of fabrics." Journal of Structural Geology 7.1 (1985): 115-117.
+
+Lode (1926)
+
+Mardia, Kantilal Varichand. "Statistics of directional data." Journal of the Royal Statistical Society Series B: Statistical Methodology 37.3 (1975): 349-371.
+
+Nadai, A., and Hodge, P. G., Jr. (December 1, 1963). "Theory of Flow and Fracture of Solids, vol. II." ASME. J. Appl. Mech. December 1963; 30(4): 640. https://doi.org/10.1115/1.3636654
+
+Ramsay, John G. "Folding and fracturing of rocks." Mc Graw Hill Book Company 568 (1967).
+
+Vollmer, Frederick W. "An application of eigenvalue methods to structural domain analysis." Geological Society of America Bulletin 102.6 (1990): 786-791.
+
+Vollmer, Frederick W. "Representing Progressive Fabric Paths on a Triangular Plot Using a Fabric Density Index and Crystal Axes Eigenvector Barycenters." Geological Society of America Abstracts. Vol. 52. 2020.
+
+Watterson, Juan. Homogeneous deformation of the gneisses of Vesterland, south-west Greenland. No. 78. CA Reitzel, 1968.
+
+Woodcock, N. H. "Specification of fabric shapes using an eigenvalue method." Geological Society of America Bulletin 88.9 (1977): 1231-1236.
 }

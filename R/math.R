@@ -811,6 +811,48 @@ or_eigen <- function(x, scaled = FALSE) {
 #'
 #' @importFrom dplyr near
 #' @name strain_shape
+#' 
+#' @details \describe{
+#' \item{`stretch_ratios`}{Sqrt of eigenvalue ratios}
+#' \item{`strain_ratios`}{Log of stretch ratios}
+#' \item{`Ramsay`}{strain symmetry (Ramsay, 1983)}
+#' \item{`Woodcock`}{Woodcock shape}
+#' \item{`Flinn`}{Flinn strain intensity}
+#' \item{`Vollmer`}{Point, Girdle, Random, Cylindricity (B), and Uniform Distance (D) Indices (Vollmer 1990; 2020). `D` is a measure of the "distance" from uniformity, and is linear from R to P, and R to G. End members are: uniform D = 0, girdle D = 0.5, cluster D = 1. The 99% level for a test against uniformity for a sample size of 300 is D = 0.1.}
+#' \item{`Nadai`}{natural octahedral unit strain and shear (Nadai, 1963)}
+#' \item{`Lisle_intensity`}{Intensity index (Lisle, 1985)}
+#' \item{`Waterson_intensity`}{strain intensity (Watterson, 1968)}
+#' \item{`lode`}{Lode parameter (Lode, 1926)}
+#' \item{`kind`}{Descriptive type of ellipsoid}
+#' \item{`MAD`}{maximum angular deviation (Kirschvink, 1980)}
+#' \item{`US`}{Uniformity statistic of Mardia (1972)}
+#' }
+#' 
+#' @returns list
+#' 
+#' @references 
+#' Flinn, Derek. "On the statistical analysis of fabric diagrams." Geological Journal 3.2 (1963): 247-253.
+#' 
+#' Kirschvink, J. (1980). The least-squares line and plane and the analysis of palaeomagnetic data. Geophysical Journal International, 62(3), 699-718.
+#'  
+#' Lisle, Richard J. "The use of the orientation tensor for the description and statistical testing of fabrics." Journal of Structural Geology 7.1 (1985): 115-117.
+#' 
+#' Lode (1926)
+#' 
+#' Mardia, Kantilal Varichand. "Statistics of directional data." Journal of the Royal Statistical Society Series B: Statistical Methodology 37.3 (1975): 349-371.
+#' 
+#' Nadai, A., and Hodge, P. G., Jr. (December 1, 1963). "Theory of Flow and Fracture of Solids, vol. II." ASME. J. Appl. Mech. December 1963; 30(4): 640. https://doi.org/10.1115/1.3636654
+#' 
+#' Ramsay, John G. "Folding and fracturing of rocks." Mc Graw Hill Book Company 568 (1967). 
+#' 
+#' Vollmer, Frederick W. "An application of eigenvalue methods to structural domain analysis." Geological Society of America Bulletin 102.6 (1990): 786-791.
+#' 
+#' Vollmer, Frederick W. "Representing Progressive Fabric Paths on a Triangular Plot Using a Fabric Density Index and Crystal Axes Eigenvector Barycenters." Geological Society of America Abstracts. Vol. 52. 2020.
+#' 
+#' Watterson, Juan. Homogeneous deformation of the gneisses of Vesterland, south-west Greenland. No. 78. CA Reitzel, 1968.
+#' 
+#' Woodcock, N. H. "Specification of fabric shapes using an eigenvalue method." Geological Society of America Bulletin 88.9 (1977): 1231-1236.
+#' 
 #' @examples
 #' set.seed(1)
 #' mu <- Line(120, 50)
@@ -877,14 +919,21 @@ or_shape_params <- function(x) {
   } else {
     kind <- "LS"
   }
-
+  
   # Vollmer
+  N <- nrow(x)
+  
   P <- eig$values[1] - eig$values[2] #  Point index (Vollmer, 1990)
   G <- 2 * (eig$values[2] - eig$values[3]) #  Girdle index (Vollmer, 1990)
   R <- 3 * eig$values[3] # Random index (Vollmer, 1990)
   B <- P + G #  Cylindricity index (Vollmer, 1990)
+  C <- log(eig$values[1] / eig$values[3])
+  I <- 7.5 * ((eig$values[1] / N - (1 / 3))^2 + (eig$values[2] / N - (1 / 3))^2 + (eig$values[3] / N - (1 / 3))^2)
 
-  Vollmer <- c(P = P, G = G, R = R, B = B)
+  us <- (15 * N / 2) * sum((eig$values[1] - 1 / 3)^2, (eig$values[2] - 1 / 3)^2, (eig$values[3] - 1 / 3)^2) # Uniformity statistic of Mardia
+  D <- (us / (5 * N))^0.5 # D of Vollmer 2020
+  
+  Vollmer <- c(P = P, G = G, R = R, B = B, C=C, I=I, D = D)
 
   Lisle_intensity <- 7.5 * sum((eig$values - 1 / 3)^2)
 
@@ -905,6 +954,13 @@ or_shape_params <- function(x) {
   Woodcock <- c(strength = e13, shape = K)
   Watterson_intensity <- Rxy + Ryz - 1
 
+  # JPF 
+  # hom.dens <- projection(hom.cpo, upper.proj(hom.cpo), stereonet)
+  # # hom.kde <- if(bw != "NA"){kde2d(unlist(hom.dens[[3]][1]), unlist(hom.dens[[3]][2]), h = bw/100*2.4, lims = kde.lims)$z} else{kde2d(unlist(hom.dens[[3]][1]), unlist(hom.dens[[3]][2]), lims = kde.lims)$z}
+  # hom.kde <- kde2d(unlist(hom.dens[[1]]), unlist(hom.dens[[2]]), h = bw / 100 * 2, lims = kde.lims)$z
+  # hom.norm <- norm(hom.kde, type = "2")
+  # dens.norm <- norm(kde, type = "2")
+  
   list(
     stretch_ratios = stretch_ratios,
     strain_ratios = strain_ratios,
@@ -918,9 +974,31 @@ or_shape_params <- function(x) {
     Lode = lode, # Lode parameter (Lode, 1926),
     kind = kind, # descriptive type of ellipsoid
     MAD_approx = as.numeric(aMAD), # approximate deviation according to shape
-    MAD = as.numeric(MAD) #  maximum angular deviation (MAD)
+    MAD = as.numeric(MAD), #  maximum angular deviation (MAD)
+    US = us
   )
 }
+
+# projection <- function(cpo, cart.extra, stereonet = "area") {
+#   if (stereonet == "area") {
+#     R <- 1
+#     x <- R * sqrt(2) * sin(radians(45 - (cpo[, 2] / 2))) * sin(radians(cpo[, 1]))
+#     y <- R * sqrt(2) * sin(radians(45 - (cpo[, 2] / 2))) * cos(radians(cpo[, 1]))
+#     x2 <- R * sqrt(2) * sin(radians(45 - (cart.extra[, 2] / 2))) * sin(radians(cart.extra[, 1]))
+#     y2 <- R * sqrt(2) * sin(radians(45 - (cart.extra[, 2] / 2))) * cos(radians(cart.extra[, 1]))
+#   } else {
+#     R <- 1
+#     x <- R * tan(radians(45 - (cpo[, 2] / 2))) * sin(radians(cpo[, 1]))
+#     y <- R * tan(radians(45 - (cpo[, 2] / 2))) * cos(radians(cpo[, 1]))
+#     x2 <- R * tan(radians(45 - (cart.extra[, 2] / 2))) * sin(radians(cart.extra[, 1]))
+#     y2 <- R * tan(radians(45 - (cart.extra[, 2] / 2))) * cos(radians(cart.extra[, 1]))
+#   }
+#   all <- data.frame(x = c(x, x2), y = c(y, y2))
+#   all$circ <- all$x^2 + all$y^2
+#   caxes <- all[-which(all$circ > (1.2)^2), ]
+#   caxes <- list(x, y, caxes)
+# }
+
 
 #' Centering vectors
 #'

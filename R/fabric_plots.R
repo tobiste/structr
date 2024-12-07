@@ -133,6 +133,7 @@ validatedTernaryPoints <- function(x) {
 #' \item{`B`}{cylindricity (Vollmer 1990), range: (0, 1)}
 #' \item{`C`}{cylindricity or Fabric strength (Woodcock 1977), range: (0, Inf)}
 #' \item{`I`}{cylindricity or Fabric intensity (Lisle 1985), range: (0, 5)}
+#' \item{`D`}{"distance" from uniformity, linear from R to P, and R to G. End members are: uniform D = 0, girdle D = 0.5, cluster D = 1. The 99% level for a test against uniformity for a sample size of 300 is D = 0.1 (Vollmer 2020).}
 #' }
 #' @export
 #'
@@ -142,18 +143,7 @@ validatedTernaryPoints <- function(x) {
 #' x <- rvmf(100, mu = mu, k = 1)
 #' fabric_indexes(x)
 fabric_indexes <- function(x) {
-  x_eigen <- or_eigen(x)
-
-  N <- nrow(x)
-  P <- (x_eigen$values[1] - x_eigen$values[2]) / N * 100
-  G <- 2 * (x_eigen$values[2] - x_eigen$values[3]) / N * 100
-  R <- 3 * (x_eigen$values[3]) / N * 100
-
-  B <- (P + G)
-  C <- log(x_eigen$values[1] / x_eigen$values[3])
-  I <- 7.5 * ((x_eigen$values[1] / N - (1 / 3))^2 + (x_eigen$values[2] / N - (1 / 3))^2 + (x_eigen$values[3] / N - (1 / 3))^2)
-
-  c(P = P, G = G, R = R, B = B, C = C, I = I)
+  or_shape_params(x)$Vollmer
 }
 
 
