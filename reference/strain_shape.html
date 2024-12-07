@@ -59,6 +59,68 @@
 object of class <code>"line"</code> or <code>"plane"</code></p></dd>
 
 </dl></div>
+    <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>list</p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+
+<dl><dt><code>stretch_ratios</code></dt>
+<dd><p>Sqrt of eigenvalue ratios</p></dd>
+
+<dt><code>strain_ratios</code></dt>
+<dd><p>Log of stretch ratios</p></dd>
+
+<dt><code>Ramsay</code></dt>
+<dd><p>strain symmetry (Ramsay, 1983)</p></dd>
+
+<dt><code>Woodcock</code></dt>
+<dd><p>Woodcock shape</p></dd>
+
+<dt><code>Flinn</code></dt>
+<dd><p>Flinn strain intensity</p></dd>
+
+<dt><code>Vollmer</code></dt>
+<dd><p>Point, Girdle, Random, Cylindricity (B), and Uniform Distance (D) Indices (Vollmer 1990; 2020). <code>D</code> is a measure of the "distance" from uniformity, and is linear from R to P, and R to G. End members are: uniform D = 0, girdle D = 0.5, cluster D = 1. The 99% level for a test against uniformity for a sample size of 300 is D = 0.1.</p></dd>
+
+<dt><code>Nadai</code></dt>
+<dd><p>natural octahedral unit strain and shear (Nadai, 1963)</p></dd>
+
+<dt><code>Lisle_intensity</code></dt>
+<dd><p>Intensity index (Lisle, 1985)</p></dd>
+
+<dt><code>Waterson_intensity</code></dt>
+<dd><p>strain intensity (Watterson, 1968)</p></dd>
+
+<dt><code>lode</code></dt>
+<dd><p>Lode parameter (Lode, 1926)</p></dd>
+
+<dt><code>kind</code></dt>
+<dd><p>Descriptive type of ellipsoid</p></dd>
+
+<dt><code>MAD</code></dt>
+<dd><p>maximum angular deviation (Kirschvink, 1980)</p></dd>
+
+<dt><code>US</code></dt>
+<dd><p>Uniformity statistic of Mardia (1972)</p></dd>
+
+
+</dl></div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    <p>Flinn, Derek. "On the statistical analysis of fabric diagrams." Geological Journal 3.2 (1963): 247-253.</p>
+<p>Kirschvink, J. (1980). The least-squares line and plane and the analysis of palaeomagnetic data. Geophysical Journal International, 62(3), 699-718.</p>
+<p>Lisle, Richard J. "The use of the orientation tensor for the description and statistical testing of fabrics." Journal of Structural Geology 7.1 (1985): 115-117.</p>
+<p>Lode (1926)</p>
+<p>Mardia, Kantilal Varichand. "Statistics of directional data." Journal of the Royal Statistical Society Series B: Statistical Methodology 37.3 (1975): 349-371.</p>
+<p>Nadai, A., and Hodge, P. G., Jr. (December 1, 1963). "Theory of Flow and Fracture of Solids, vol. II." ASME. J. Appl. Mech. December 1963; 30(4): 640. https://doi.org/10.1115/1.3636654</p>
+<p>Ramsay, John G. "Folding and fracturing of rocks." Mc Graw Hill Book Company 568 (1967).</p>
+<p>Vollmer, Frederick W. "An application of eigenvalue methods to structural domain analysis." Geological Society of America Bulletin 102.6 (1990): 786-791.</p>
+<p>Vollmer, Frederick W. "Representing Progressive Fabric Paths on a Triangular Plot Using a Fabric Density Index and Crystal Axes Eigenvector Barycenters." Geological Society of America Abstracts. Vol. 52. 2020.</p>
+<p>Watterson, Juan. Homogeneous deformation of the gneisses of Vesterland, south-west Greenland. No. 78. CA Reitzel, 1968.</p>
+<p>Woodcock, N. H. "Specification of fabric shapes using an eigenvalue method." Geological Society of America Bulletin 88.9 (1977): 1231-1236.</p>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -81,8 +143,8 @@ object of class <code>"line"</code> or <code>"plane"</code></p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1.45466083 1.49007857 0.03541774 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $Vollmer</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          P          G          R          B </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.85541428 0.00674541 0.13784031 0.86215969 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          P          G          R          B          C          I          D </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.85541428 0.00674541 0.13784031 0.86215969 2.98015714 2.45061732 0.85710561 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $Flinn</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> intensity  symmetry </span>
@@ -117,6 +179,9 @@ object of class <code>"line"</code> or <code>"plane"</code></p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $MAD</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 17.97803</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $US</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 367.315</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
