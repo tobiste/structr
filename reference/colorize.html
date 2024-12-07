@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -51,7 +51,7 @@
 <span></span>
 <span><span class="fu">legend_c</span><span class="op">(</span><span class="va">breaks</span>, title <span class="op">=</span> <span class="cn">NULL</span>, pal <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="va"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">viridis</a></span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">legend_d</span><span class="op">(</span><span class="va">fill</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">cols</span><span class="op">)</span>, position <span class="op">=</span> <span class="st">"topright"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">legend_d</span><span class="op">(</span><span class="va">fill</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fill</span><span class="op">)</span>, position <span class="op">=</span> <span class="st">"topright"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -82,6 +82,10 @@
 <dd><p>character. Legend title</p></dd>
 
 
+<dt id="arg-fill">fill<a class="anchor" aria-label="anchor" href="#arg-fill"></a></dt>
+<dd><p>color vector</p></dd>
+
+
 <dt id="arg-labels">labels<a class="anchor" aria-label="anchor" href="#arg-labels"></a></dt>
 <dd><p>character.vector. Names of discrete colors.
 Can be ignored when <code>cols</code> is a named vector.</p></dd>
@@ -89,10 +93,6 @@ Can be ignored when <code>cols</code> is a named vector.</p></dd>
 
 <dt id="arg-position">position<a class="anchor" aria-label="anchor" href="#arg-position"></a></dt>
 <dd><p>Legend position</p></dd>
-
-
-<dt id="arg-cols-fill">cols, fill<a class="anchor" aria-label="anchor" href="#arg-cols-fill"></a></dt>
-<dd><p>color vector</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -109,9 +109,8 @@ Can be ignored when <code>cols</code> is a named vector.</p></dd>
 <span class="r-in"><span><span class="va">key</span> <span class="op">&lt;-</span> <span class="va">letters</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">1</span>, <span class="fl">26</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="stereo_point.html">stereo_point</a></span><span class="op">(</span><span class="va">x</span>, col <span class="op">=</span> <span class="fu">assign_col_d</span><span class="op">(</span><span class="va">key</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="colorize-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span><span class="fu">legend_d</span><span class="op">(</span><span class="fu">assign_col_d</span><span class="op">(</span><span class="va">key</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in legend_d(assign_col_d(key)):</span> object 'cols' not found</span>
+<span class="r-plt img"><img src="colorize-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span> </span></span>
 <span class="r-in"><span><span class="co"># example for continuous colors:</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">100</span>, mu <span class="op">=</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">50</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>

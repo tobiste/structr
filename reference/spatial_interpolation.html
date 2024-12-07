@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.0</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -57,8 +57,7 @@
 <span>  idp <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  dist_threshold <span class="op">=</span> <span class="fl">0.01</span>,</span>
 <span>  R_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">1</span><span class="op">)</span>,</span>
-<span>  compact <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  <span class="va">...</span></span>
+<span>  compact <span class="op">=</span> <span class="cn">TRUE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -71,7 +70,8 @@
 
 
 <dt id="arg-coords">coords<a class="anchor" aria-label="anchor" href="#arg-coords"></a></dt>
-<dd><p>a <code>"sf"</code> object containing the geographic coordinates of <code>x</code> measurements</p></dd>
+<dd><p>a <code>"sf"</code> object containing the geographic coordinates of <code>x</code>
+measurements</p></dd>
 
 
 <dt id="arg-grid">grid<a class="anchor" aria-label="anchor" href="#arg-grid"></a></dt>
@@ -79,11 +79,13 @@
 
 
 <dt id="arg-lon-range-lat-range">lon_range, lat_range<a class="anchor" aria-label="anchor" href="#arg-lon-range-lat-range"></a></dt>
-<dd><p>(optional) Numeric vector specifying the minimum and maximum longitudes and latitudes (ignored if <code>grid</code> is specified).</p></dd>
+<dd><p>two column vector. coordinate range. ignored when
+grid is specified.</p></dd>
 
 
 <dt id="arg-gridsize">gridsize<a class="anchor" aria-label="anchor" href="#arg-gridsize"></a></dt>
-<dd><p>Numeric. Target spacing of the regular grid in decimal degree. Default is <code>2.5</code>. (is ignored if grid is specified)</p></dd>
+<dd><p>Numeric. Target spacing of the regular grid in decimal
+degree. Default is <code>2.5</code>. (is ignored if grid is specified)</p></dd>
 
 
 <dt id="arg-min-data">min_data<a class="anchor" aria-label="anchor" href="#arg-min-data"></a></dt>
@@ -95,23 +97,28 @@
 
 
 <dt id="arg-arte-thres">arte_thres<a class="anchor" aria-label="anchor" href="#arg-arte-thres"></a></dt>
-<dd><p>Numeric. Maximum distance (in km) of the grid point to the next data point. Default is <code>200</code></p></dd>
+<dd><p>Numeric. Maximum distance (in km) of the grid point to the
+next data point. Default is <code>200</code></p></dd>
 
 
 <dt id="arg-dist-weight">dist_weight<a class="anchor" aria-label="anchor" href="#arg-dist-weight"></a></dt>
-<dd><p>Distance weighting method which should be used: <code>"linear"</code>, or <code>"inverse"</code> (the default).</p></dd>
+<dd><p>Distance weighting method which should be used:
+<code>"linear"</code>, or <code>"inverse"</code> (the default).</p></dd>
 
 
 <dt id="arg-idp">idp<a class="anchor" aria-label="anchor" href="#arg-idp"></a></dt>
-<dd><p>Numeric. The weighting power of inverse distance. When set to <code>0</code>, no weighting is applied.</p></dd>
+<dd><p>Numeric. The weighting power of inverse distance. When set to <code>0</code>,
+no weighting is applied.</p></dd>
 
 
 <dt id="arg-dist-threshold">dist_threshold<a class="anchor" aria-label="anchor" href="#arg-dist-threshold"></a></dt>
-<dd><p>Numeric. Distance weight to prevent overweight of data nearby (0 to 1). Default is <code>0.1</code></p></dd>
+<dd><p>Numeric. Distance weight to prevent overweight of data
+nearby (0 to 1). Default is <code>0.1</code></p></dd>
 
 
 <dt id="arg-r-range">R_range<a class="anchor" aria-label="anchor" href="#arg-r-range"></a></dt>
-<dd><p>Numeric value or vector specifying the kernel half-width, i.e. the search radius (in km). Default is <code>1</code></p></dd>
+<dd><p>Numeric value or vector specifying the kernel half-width, i.e.
+the search radius (in km). Default is <code>1</code></p></dd>
 
 
 <dt id="arg-compact">compact<a class="anchor" aria-label="anchor" href="#arg-compact"></a></dt>
@@ -137,9 +144,13 @@
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="strabo.html">read_strabo_JSON</a></span><span class="op">(</span><span class="st">"E:/Lakehead/Field work/StraboSpot_07_02_2023.json"</span>, dataset <span class="op">=</span> <span class="st">"TS"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>dipdir <span class="op">=</span> <span class="op">(</span><span class="va">strike</span> <span class="op">+</span> <span class="fl">90</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">360</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">type</span> <span class="op">==</span> <span class="st">"planar_orientation"</span> <span class="op">&amp;</span> <span class="op">!</span><span class="op">(</span><span class="va">feature_type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"other"</span>, <span class="st">"vector"</span>, <span class="st">"option_13"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">type</span> <span class="op">==</span> <span class="st">"planar_orientation"</span> <span class="op">&amp;</span> </span></span>
+<span class="r-in"><span>      <span class="op">!</span><span class="op">(</span><span class="va">feature_type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"other"</span>, <span class="st">"vector"</span>, <span class="st">"option_13"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">ps_vec</span> <span class="op">&lt;-</span> <span class="fu">structr</span><span class="fu">::</span><span class="fu"><a href="classes.html">as.plane</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">ps</span><span class="op">$</span><span class="va">dipdir</span>, <span class="va">ps</span><span class="op">$</span><span class="va">dip</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">structr</span><span class="fu">::</span><span class="fu">spatial_interpolation</span><span class="op">(</span>x <span class="op">=</span> <span class="va">ps_vec</span>, coords <span class="op">=</span> <span class="va">ps</span>, gridsize <span class="op">=</span> <span class="fl">.05</span>, R_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">1</span><span class="op">)</span>, dist_threshold <span class="op">=</span> <span class="fl">0.01</span>, threshold <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">spatial_interpolation</span><span class="op">(</span>x <span class="op">=</span> <span class="va">ps_vec</span>, coords <span class="op">=</span> <span class="va">ps</span>, gridsize <span class="op">=</span> <span class="fl">.05</span>, R_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">1</span><span class="op">)</span>, </span></span>
+<span class="r-in"><span>   dist_threshold <span class="op">=</span> <span class="fl">0.01</span>, threshold <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
