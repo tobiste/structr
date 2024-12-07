@@ -441,7 +441,7 @@ quadrantletter_to_azimuth <- function(x) {
 
 #' Title
 #'
-#' @param x character. 
+#' @param x character.
 #'
 #' @return numeric
 #' @export

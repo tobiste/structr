@@ -33,6 +33,7 @@ data.frame
 Prepare points and lines for ggplot
 }
 \examples{
+if (require("mapproj")) {
 x <- Plane(120, 85)
 ggstereo() +
   ggplot2::geom_point(data = gg(x), ggplot2::aes(x, y), color = "red") +
@@ -42,4 +43,5 @@ x <- Line(120, 5)
 ggstereo() +
   ggplot2::geom_point(data = gg(x), ggplot2::aes(x, y), color = "darkgreen") +
   ggplot2::geom_path(data = ggl(x, d = 8), ggplot2::aes(x, y, group = group), color = "darkgreen")
+  }
 }

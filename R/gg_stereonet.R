@@ -11,7 +11,7 @@
 #' }
 #' @param d numeric. Cone angle (small circle radius) in degrees. `90` (the default) produces great circles.
 #' @param n integer. Resolution of line.
-#' 
+#'
 #' @import dplyr
 #'
 #' @return data.frame
@@ -19,6 +19,7 @@
 #' @name prepare-ggplot
 #'
 #' @examples
+#' if (require("mapproj")) {
 #' x <- Plane(120, 85)
 #' ggstereo() +
 #'   ggplot2::geom_point(data = gg(x), ggplot2::aes(x, y), color = "red") +
@@ -28,6 +29,7 @@
 #' ggstereo() +
 #'   ggplot2::geom_point(data = gg(x), ggplot2::aes(x, y), color = "darkgreen") +
 #'   ggplot2::geom_path(data = ggl(x, d = 8), ggplot2::aes(x, y, group = group), color = "darkgreen")
+#'   }
 NULL
 
 #' @rdname prepare-ggplot
@@ -141,6 +143,15 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
     )
 }
 
+#' Stereoplot Perimeter
+#' 
+#' Adds a frame to the stereographic projection
+#' 
+#' @param n resolution of frame
+#'
+#' @param color,fill,lwd Graphical parameters
+#' @param ... optional graphical parameters passed to [ggplot2::geom_polygon()]
+#'
 #' @export
 ggframe <- function(n = 1e4, color = "black", fill = NA, lwd = 1, ...) {
   prim.lat <- rep(c(0), times = n)
@@ -192,27 +203,31 @@ ggstereo_grid <- function(d = 10, rot = 0, ...) {
 #' @param ... argument passed to [ggplot2::geom_polygon()]
 #'
 #' @import ggplot2
+#' @importFrom rlang check_installed
 #'
 #' @return ggplot
 #' @export
 #'
 #' @examples
+#' if (require("mapproj")) {
 #' test_data <- rbind(
-#'   rvmf(100, mu = Line(90, 45), k = 10), 
-#'   rvmf(50, mu = Line(0, 0), k = 20)) |> as.line()
+#'   rvmf(100, mu = Line(90, 45), k = 10),
+#'   rvmf(50, mu = Line(0, 0), k = 20)
+#' ) |> as.line()
 #'
 #' ggstereo(grid = TRUE) +
-#'  ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y))
+#'   ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y))
 #'
 #' ggstereo(earea = FALSE, centercross = TRUE) +
 #'   ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y))
+#'   }
 ggstereo <- function(earea = TRUE, centercross = TRUE, grid = FALSE, grid.spacing = 10, grid.rot = 0, ...) {
-  
   # if(earea){
   #   crs = "+proj=aeqd +lat_0=90 +lon_0=0 +x_0=0 +y_0=0"
   # } else {
   #   crs = "+proj=stere +lat_0=90 +lon_0=0 +x_0=0 +y_0=0"
   # }
+  rlang::check_installed("mapproj", reason = "to use `coord_map()`")
   
   ggplot() +
     theme_void() +
@@ -226,8 +241,12 @@ ggstereo <- function(earea = TRUE, centercross = TRUE, grid = FALSE, grid.spacin
     scale_y_continuous(limits = c(0, 90)) +
     scale_x_continuous(limits = c(-180, 180)) +
     coord_map(ifelse(earea, "azequalarea", "stereographic"), orientation = c(90, 0, 0)) +
-    #coord_sf(crs = crs, default_crs = crs) +
+    # coord_sf(crs = crs, default_crs = crs) +
     labs(x = NULL, y = NULL)
+}
+
+ignore_unused_imports <- function() {
+  mapproj::mapproject
 }
 
 
@@ -246,7 +265,6 @@ full_hem <- function(x) {
     dplyr::select(inc, azi) |>
     as.matrix()
 }
-
 
 
 
@@ -301,15 +319,17 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #'
 #' @references Garcia Portugues, E. (2013). Exact risk improvement of
 #' bandwidth selectors for kernel density estimation with directional data.
-#' Electronic Journal of Statistics, 7, 1655–1685.
+#' Electronic Journal of Statistics, 7, 1655<U+2013>1685.
 #'
 #' @import ggplot2
 #' @importFrom Directional vmf.kerncontour euclid vmfkde.tune
 #' @name ggstereocontour
 #' @examples
+#' if (require("mapproj")) {
 #' test_data <- rbind(
-#'   rvmf(100, mu = Line(90, 45), k = 10), 
-#'   rvmf(50, mu = Line(0, 0), k = 20)) |> as.line()
+#'   rvmf(100, mu = Line(90, 45), k = 10),
+#'   rvmf(50, mu = Line(0, 0), k = 20)
+#' ) |> as.line()
 
 #' ggstereo() +
 #'   geom_contourf_stereo(gg(test_data)) +
@@ -322,6 +342,7 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #' ggstereo() +
 #'   geom_contourf_stereo(gg(test_data), norm = TRUE, bins = 20) +
 #'   ggplot2::scale_fill_viridis_d(option = "A")
+#'   }
 NULL
 
 #' @rdname ggstereocontour

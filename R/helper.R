@@ -75,7 +75,7 @@ normalize <- function(x) {
 #' @param title character. Legend title
 #' @param pal color function; Default is [viridis::viridis()]
 #' @param fill color vector
-#' @param labels character.vector. Names of discrete colors. 
+#' @param labels character.vector. Names of discrete colors.
 #' Can be ignored when `cols` is a named vector.
 #' @param position Legend position
 #' @param ... arguments passed to color function
@@ -87,27 +87,27 @@ normalize <- function(x) {
 #'
 #' @examples
 #' set.seed(1234)
-#' 
+#'
 #' # example for discrete colors
 #' x <- rvmf(5, mu = Line(120, 50), k = 5)
 #' key <- letters[round(runif(5, 1, 26))]
 #' stereoplot(guides = FALSE)
 #' stereo_point(x, col = assign_col_d(key))
 #' legend_d(assign_col_d(key))
-#'  
+#'
 #' # example for continuous colors:
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)
 #' stereoplot(guides = FALSE)
 #' stereo_point(x, col = assign_col(runif(100)))
-#' legend_c(seq(0, 1, .1), title = 'test')
+#' legend_c(seq(0, 1, .1), title = "test")
 NULL
 
 #' @rdname colorize
 #' @export
-assign_col_d <- function(x, pal = viridis::viridis, ...){
+assign_col_d <- function(x, pal = viridis::viridis, ...) {
   groups <- unique(x)
   n <- length(groups)
-  cols <- do.call(pal, args = list(n = n, ...))  
+  cols <- do.call(pal, args = list(n = n, ...))
   named_cols <- stats::setNames(cols, groups)
   named_cols[x]
 }
@@ -154,11 +154,11 @@ legend_c <- function(breaks, title = NULL, pal = viridis::viridis) {
 
 #' @rdname colorize
 #' @export
-legend_d <- function(fill, labels = names(fill), position = 'topright', ...){
+legend_d <- function(fill, labels = names(fill), position = "topright", ...) {
   graphics::legend(position,
-         legend = labels,
-         fill = fill,
-         ...
+    legend = labels,
+    fill = fill,
+    ...
   )
 }
 

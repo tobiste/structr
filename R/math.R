@@ -495,6 +495,7 @@ v_var <- function(x, w = NULL) {
   1 - Rbar
 }
 
+
 v_sd <- function(x, w = NULL) {
   if (is.spherical(x)) {
     v <- to_vec(x)
@@ -504,7 +505,12 @@ v_sd <- function(x, w = NULL) {
   Rbar <- vresultant(v, w, mean = TRUE) |>
     vlength()
 
-  sqrt(log(1 / Rbar^2))
+  d <- sqrt(log(1 / Rbar^2))
+  if (is.spherical(x)) {
+    rad2deg(d)
+  } else {
+    d
+  }
 }
 
 #' @rdname stats
@@ -513,15 +519,14 @@ v_delta <- function(x, w = NULL) {
   transform <- FALSE
   if (is.spherical(x)) {
     v <- to_vec(x)
-    transform <- TRUE
   } else {
     v <- vec2mat(x)
   }
-  Rbar <- vresultant(v, mean = TRUE) |>
+  Rbar <- vresultant(v, w, mean = TRUE) |>
     vlength()
   d <- acos(Rbar)
 
-  if (transform) {
+  if (is.spherical(x)) {
     rad2deg(d)
   } else {
     d
@@ -561,7 +566,12 @@ v_sde <- function(x) {
 
   d <- 1 - sum(muv^2) / N
 
-  sqrt(d / (N * Rbar^2))
+  angle <- sqrt(d / (N * Rbar^2))
+  if (is.spherical(x)) {
+    rad2deg(angle)
+  } else {
+    angle
+  }
 }
 
 #' @rdname stats

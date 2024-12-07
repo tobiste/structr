@@ -24,33 +24,33 @@
 #' }
 fault_displacements <- function(dip = NULL, delta = NULL, rake = NULL, verticalthrow = NULL, dipslip = NULL, heave = NULL, netslip = NULL, horizontalthrow = NULL, strikeslip = NULL) {
   horizontal <- NULL
-   if (!is.null(dip) & !is.null(verticalthrow) & !is.null(delta)) {
+  if (!is.null(dip) & !is.null(verticalthrow) & !is.null(delta)) {
     # Slip components in the vertical plane perpendicular to the strike of the fault
 
-    dipslip <- verticalthrow /sind(dip)
+    dipslip <- verticalthrow / sind(dip)
     heave <- sqrt(dipslip^2 - verticalthrow^2)
 
     # Slip components in the horizontal plane
-    horizontalthrow <- heave /sind(delta)
+    horizontalthrow <- heave / sind(delta)
     strikeslip <- sqrt(horizontal^2 - heave^2)
 
     # Slip components in the fault plane plane
     netslip <- sqrt(strikeslip^2 + dipslip^2)
-    rake <-asind(dipslip / netslip)
+    rake <- asind(dipslip / netslip)
   } else if (!is.null(delta) & !is.null(horizontalthrow) & !is.null(dip)) {
     # Slip components in the horizontal plane
     strikeslip <- abs(cosd(delta) * horizontalthrow)
     heave <- sqrt(horizontalthrow^2 - strikeslip^2)
 
     # Slip components in the vertical plane perpendicular to the strike of the fault
-    dipslip <- heave /cosd(dip)
+    dipslip <- heave / cosd(dip)
     verticalthrow <- sqrt(dipslip^2 - heave^2)
 
     # Slip components in the fault plane plane
     netslip <- sqrt(strikeslip^2 + dipslip^2)
-    rake <-atand(dipslip / strikeslip)
+    rake <- atand(dipslip / strikeslip)
   } else if (!is.null(rake) & !is.null(verticalthrow) & !is.null(dip)) {
-    dipslip <- verticalthrow /sind(dip)
+    dipslip <- verticalthrow / sind(dip)
     heave <- sqrt(dipslip^2 - verticalthrow^2)
     strikeslip <- dipslip / tand(rake)
     horizontalthrow <- sqrt(strikeslip^2 + heave^2)
@@ -60,11 +60,11 @@ fault_displacements <- function(dip = NULL, delta = NULL, rake = NULL, verticalt
     dip <- atand(verticalthrow / heave)
 
     horizontalthrow <- sqrt(heave^2 + strikeslip^2)
-    delta <-atand(heave / strikeslip)
+    delta <- atand(heave / strikeslip)
 
     # netslip = sqrt(dipslip^2 + strikeslip^2)
     netslip <- sqrt(strikeslip^2 + verticalthrow^2 + heave^2)
-    rake <-atand(dipslip / strikeslip)
+    rake <- atand(dipslip / strikeslip)
   }
 
 
@@ -96,14 +96,16 @@ fault_displacements <- function(dip = NULL, delta = NULL, rake = NULL, verticalt
 #' coordinates. Otherwise, the tensor will be in the geographic reference frame.
 #'
 #' @details
-#' x axis of tensor = heave, y = strike slip, z = vertical throw (positive for 
+#' x axis of tensor = heave, y = strike slip, z = vertical throw (positive for
 #' thrusting, negative for normal faulting)
 #'
 #' @examples
 #' \dontrun{
-#' fault_tensor(displacements = 
-#'   data.frame(strikeslip = 2, verticalthrow = -5, heave = 3), 
-#'   dip_direction = 0)
+#' fault_tensor(
+#'   displacements =
+#'     data.frame(strikeslip = 2, verticalthrow = -5, heave = 3),
+#'   dip_direction = 0
+#' )
 #' }
 fault_tensor <- function(displacements, dip_direction = NULL) {
   A <- diag(c(displacements$heave, displacements$strikeslip, displacements$verticalthrow), 3, 3)
@@ -171,8 +173,8 @@ fault_tensor <- function(displacements, dip_direction = NULL) {
 
 #' #' Title
 #' #'
-#' #' @param n,l,m direction cosines of the plane referred to the stress axes (σx, σy, σz) system and θ is the striation (resolved shear stress) rake on the fault plane
-#' #' @param R stress ratio R=(σz−σx)/(σy–σx)
+#' #' @param n,l,m direction cosines of the plane referred to the stress axes (<U+03C3>x, <U+03C3>y, <U+03C3>z) system and <U+03B8> is the striation (resolved shear stress) rake on the fault plane
+#' #' @param R stress ratio R=(<U+03C3>z<U+2212><U+03C3>x)/(<U+03C3>y<U+2013><U+03C3>x)
 #' #'
 #' #' @returns  striation (resolved shear stress) rake on the fault plane
 #' #' @export
@@ -186,8 +188,8 @@ fault_tensor <- function(displacements, dip_direction = NULL) {
 #'
 #' #' Bott's stress ratio
 #' #'
-#' #' @param lambda angle between y (azimuth of σy) and the azimuth (α) of the
-#' #' fault, therefore λ=α±y (it is added or subtracted according to the sense of movement: dextral or sinistral, respectively) (in degree)
+#' #' @param lambda angle between y (azimuth of <U+03C3>y) and the azimuth (<U+03B1>) of the
+#' #' fault, therefore <U+03BB>=<U+03B1><U+00B1>y (it is added or subtracted according to the sense of movement: dextral or sinistral, respectively) (in degree)
 #' #' @param theta  striation (resolved shear stress) rake on the fault plane (in degree)
 #' #' @param phi fault dip (in degree)
 #' #'

@@ -25,8 +25,10 @@ thrusting, negative for normal faulting)
 }
 \examples{
 \dontrun{
-fault_tensor(displacements = 
-  data.frame(strikeslip = 2, verticalthrow = -5, heave = 3), 
-  dip_direction = 0)
+fault_tensor(
+  displacements =
+    data.frame(strikeslip = 2, verticalthrow = -5, heave = 3),
+  dip_direction = 0
+)
 }
 }

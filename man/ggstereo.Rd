@@ -34,13 +34,16 @@ ggplot
 Stereonet using ggplot
 }
 \examples{
+if (require("mapproj")) {
 test_data <- rbind(
-  rvmf(100, mu = Line(90, 45), k = 10), 
-  rvmf(50, mu = Line(0, 0), k = 20)) |> as.line()
+  rvmf(100, mu = Line(90, 45), k = 10),
+  rvmf(50, mu = Line(0, 0), k = 20)
+) |> as.line()
 
 ggstereo(grid = TRUE) +
- ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y))
+  ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y))
 
 ggstereo(earea = FALSE, centercross = TRUE) +
   ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y))
+  }
 }

@@ -3,25 +3,25 @@
 #' Inverse distance weighted spatial interpolation of plane or line objects.
 #'
 #' @param x numeric vector, array, or object of class `"line"` or `"plane"`
-#' @param coords a `"sf"` object containing the geographic coordinates of `x` 
+#' @param coords a `"sf"` object containing the geographic coordinates of `x`
 #' measurements
 #' @param grid (optional) Point object of class `"sf"`.`
-#' @param gridsize 	Numeric. Target spacing of the regular grid in decimal 
+#' @param gridsize 	Numeric. Target spacing of the regular grid in decimal
 #'  degree. Default is `2.5`. (is ignored if grid is specified)
 #' @param min_data Integer. Minimum number of data per kernel. Default is `3`
 #' @param threshold Numeric. Threshold for deviation of direction. Default is `25`
-#' @param arte_thres Numeric. Maximum distance (in km) of the grid point to the 
+#' @param arte_thres Numeric. Maximum distance (in km) of the grid point to the
 #'  next data point. Default is `200`
-#' @param dist_weight Distance weighting method which should be used: 
+#' @param dist_weight Distance weighting method which should be used:
 #'  `"linear"`, or `"inverse"` (the default).
 #' @param idp Numeric. The weighting power of inverse distance. When set to `0`,
 #'  no weighting is applied.
-#' @param dist_threshold Numeric. Distance weight to prevent overweight of data 
+#' @param dist_threshold Numeric. Distance weight to prevent overweight of data
 #'  nearby (0 to 1). Default is `0.1`
 #' @param R_range Numeric value or vector specifying the kernel half-width, i.e.
 #'  the search radius (in km). Default is `1`
 #' @param compact logical.
-#' @param lon_range,lat_range two column vector. coordinate range. ignored when 
+#' @param lon_range,lat_range two column vector. coordinate range. ignored when
 #'  grid is specified.
 #'
 #' @returns list
@@ -36,13 +36,15 @@
 #' data <- read_strabo_JSON("E:/Lakehead/Field work/StraboSpot_07_02_2023.json", dataset = "TS")
 #' ps <- data$data |>
 #'   dplyr::mutate(dipdir = (strike + 90) %% 360) |>
-#'   dplyr::filter(type == "planar_orientation" & 
-#'       !(feature_type %in% c("other", "vector", "option_13")))
+#'   dplyr::filter(type == "planar_orientation" &
+#'     !(feature_type %in% c("other", "vector", "option_13")))
 #'
 #' ps_vec <- structr::as.plane(cbind(ps$dipdir, ps$dip))
 #'
-#' spatial_interpolation(x = ps_vec, coords = ps, gridsize = .05, R_range = seq(1, 10, 1), 
-#'    dist_threshold = 0.01, threshold = Inf)
+#' spatial_interpolation(
+#'   x = ps_vec, coords = ps, gridsize = .05, R_range = seq(1, 10, 1),
+#'   dist_threshold = 0.01, threshold = Inf
+#' )
 #' }
 spatial_interpolation <- function(x,
                                   coords,
@@ -61,8 +63,8 @@ spatial_interpolation <- function(x,
   # stopifnot(inherits(coords, "sf"), is.numeric(threshold), is.numeric(arte_thres),
   #   arte_thres > 0, is.numeric(dist_threshold), is.numeric(R), is.numeric(idp),
   # )
-lon.X <- lat.Y <- NULL
-  
+  lon.X <- lat.Y <- NULL
+
   transform <- FALSE
   if (is.spherical(x)) {
     v <- to_vec(x)

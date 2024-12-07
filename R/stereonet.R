@@ -323,7 +323,7 @@ stereoplot <- function(guides = TRUE, d = 10, col = grDevices::gray(0.9),
   if (!is.null(ticks)) stereoplot_ticks(angle = ticks, col = border)
 
   if (centercross) points(0, 0, pch = 3, col = border)
-  
+
   stereoplot_frame(col = col, border = border, ndiv = 100)
 }
 

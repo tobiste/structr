@@ -350,7 +350,7 @@ DownPlunge <- function(bedseg, trd, plg) {
 
   # Calculate the transformation matrix a(i,j). The convention is that
   # the first index refers to the new axis and the second to the old axis.
-  # The new coordinate system is with X3’ parallel to the fold axis, X1'
+  # The new coordinate system is with X3<U+2019> parallel to the fold axis, X1'
   # perpendicular to the fold axis and in the same vertical plane, and
   # X2' perpendicular to the fold axis and parallel to the horizontal. See
   # equation 3.10

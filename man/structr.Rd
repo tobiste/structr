@@ -23,15 +23,20 @@ A list of documented functions may be viewed by typing
 Useful links:
 \itemize{
   \item \url{https://tobiste.github.io/structr/}
+  \item Report bugs at \url{https://github.com/tobiste/structr/issues}
 }
 
 
 Useful links:
 \itemize{
   \item \url{https://tobiste.github.io/structr/}
+  \item Report bugs at \url{https://github.com/tobiste/structr/issues}
 }
 
 }
 \author{
+\strong{Maintainer}: Tobias Stephan \email{tobias.stephan1@yahoo.com} (\href{https://orcid.org/0000-0002-9290-014X}{ORCID})
+
+
 Tobias Stephan
 }

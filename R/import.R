@@ -144,7 +144,7 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #' @export
 read_strabo_JSON <- function(file, sf = TRUE) {
   spot.y <- ds_id <- unix_timestamp <- modified_timestamp <- spot.x <- NULL
-  
+
   time <- tag_id <- tag_name <- NULL
 
   dat <- rjson::fromJSON(file = file)

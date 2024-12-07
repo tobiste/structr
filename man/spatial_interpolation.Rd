@@ -70,13 +70,15 @@ Based on \code{\link[tectonicr:stress2grid]{tectonicr::stress2grid()}}
 data <- read_strabo_JSON("E:/Lakehead/Field work/StraboSpot_07_02_2023.json", dataset = "TS")
 ps <- data$data |>
   dplyr::mutate(dipdir = (strike + 90) \%\% 360) |>
-  dplyr::filter(type == "planar_orientation" & 
-      !(feature_type \%in\% c("other", "vector", "option_13")))
+  dplyr::filter(type == "planar_orientation" &
+    !(feature_type \%in\% c("other", "vector", "option_13")))
 
 ps_vec <- structr::as.plane(cbind(ps$dipdir, ps$dip))
 
-spatial_interpolation(x = ps_vec, coords = ps, gridsize = .05, R_range = seq(1, 10, 1), 
-   dist_threshold = 0.01, threshold = Inf)
+spatial_interpolation(
+  x = ps_vec, coords = ps, gridsize = .05, R_range = seq(1, 10, 1),
+  dist_threshold = 0.01, threshold = Inf
+)
 }
 }
 \seealso{

@@ -49,9 +49,11 @@ ggplot
 Stereonet contouring using ggplot
 }
 \examples{
+if (require("mapproj")) {
 test_data <- rbind(
-  rvmf(100, mu = Line(90, 45), k = 10), 
-  rvmf(50, mu = Line(0, 0), k = 20)) |> as.line()
+  rvmf(100, mu = Line(90, 45), k = 10),
+  rvmf(50, mu = Line(0, 0), k = 20)
+) |> as.line()
 ggstereo() +
   geom_contourf_stereo(gg(test_data)) +
   ggplot2::scale_fill_viridis_d(option = "A") +
@@ -63,9 +65,10 @@ ggstereo() +
 ggstereo() +
   geom_contourf_stereo(gg(test_data), norm = TRUE, bins = 20) +
   ggplot2::scale_fill_viridis_d(option = "A")
+  }
 }
 \references{
 Garcia Portugues, E. (2013). Exact risk improvement of
 bandwidth selectors for kernel density estimation with directional data.
-Electronic Journal of Statistics, 7, 1655–1685.
+Electronic Journal of Statistics, 7, 1655<U+2013>1685.
 }

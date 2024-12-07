@@ -1,13 +1,15 @@
 Type: Package
 Package: structr
-Title: Structural geology in R
+Title: Structural Geology in R
 Version: 0.2.1
-Author: Tobias Stephan
-Maintainer: The package maintainer <tobias.stephan1@yahoo.com>
+Authors@R: 
+    person("Tobias", "Stephan", , "tobias.stephan1@yahoo.com", role = c("aut", "cre"),
+           comment = c(ORCID = "0000-0002-9290-014X"))
 Description: Free and open-source R package for analyzing and visualizing
     orientation and stress data for structural geology.
 License: MIT + file LICENSE
 URL: https://tobiste.github.io/structr/
+BugReports: https://github.com/tobiste/structr/issues
 Depends: 
     R (>= 4.1.0)
 Imports: 
@@ -17,10 +19,10 @@ Imports:
     ggforce,
     ggplot2,
     lubridate,
-    mapproj,
     plyr,
     readxl,
     rjson,
+    rlang,
     rotasym,
     sf,
     tectonicr,
@@ -30,6 +32,7 @@ Imports:
     viridis
 Suggests: 
     knitr,
+    mapproj,
     rmarkdown
 VignetteBuilder: 
     knitr

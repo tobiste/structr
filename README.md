@@ -9,16 +9,21 @@
 
 <!-- badges: end -->
 
-Structural geology package for R, free and open-source. It provides
-functions to
+`{structur}` is a free and open-source package for R that provides tools
+for structural geology. You can
 
-- analyze and visualize orientation data of structural geology.
+- analyze and visualize orientation data of structural geology
+  (including, stereographic projecitons, contouring, fabric plots, and
+  statistics.)
 
 - analyze stress (including visualization of the magnitudes of stress in
-  the Mohr Circle).
+  the Mohr circle and extracting the maximum horizontal stress of a 3D
+  stress tensor)
 
 - reconstruct the orientation of structures in oriented drill cores
-  using the alpha, beta, and gamma angles.
+  using the alpha, beta, and gamma angles
+
+- calculate fault displacement components
 
 ## Installation
 
@@ -32,44 +37,47 @@ devtools::install_github("tobiste/structr")
 
 ## Example
 
+This is a basic example which shows you how to import data and plot them
+on a sterographic projection.
+
 ``` r
 library(structr)
-#> 
-#> Attaching package: 'structr'
-#> The following object is masked from 'package:stats':
-#> 
-#>     Pair
 library(ggplot2)
-#> Warning: package 'ggplot2' was built under R version 4.3.3
 
 data(example_planes)
 planes <- Plane(example_planes$dipdir, example_planes$dip)
 
-fabric_strength <-  fabric_indexes(planes)
+fabric_strength <- fabric_indexes(planes)
 
 ggstereo() +
- geom_contourf_stereo(gg(planes), show.legend = TRUE) +
-  geom_point(data = gg(planes), aes(x, y), color = 'lightgrey', shape = 21) +
-  scale_fill_viridis_d(option = 'A' ) +
-  labs(subtitle= "Example data", 
-       title= 'Density contour plot',
-       fill = 'Multiples of\nvon Mises-Fisher\ndistribution',
-       caption = paste0('Equal area, lower hemisphere projection | Fabric strength: ', round(fabric_strength['C'], 2)))
-#> Warning: Contour data has duplicated x, y coordinates.
-#> ℹ 4900 duplicated rows have been dropped.
-#> Warning: Removed 100 rows containing non-finite outside the scale range
-#> (`stat_contour_filled()`).
+  geom_contourf_stereo(gg(planes), show.legend = TRUE) +
+  geom_point(data = gg(planes), aes(x, y), color = "lightgrey", shape = 21) +
+  scale_fill_viridis_d(option = "A") +
+  labs(
+    subtitle = "Example data",
+    title = "Density contour plot",
+    fill = "Multiples of\nvon Mises-Fisher\ndistribution",
+    caption = paste0("Equal area, lower hemisphere projection | Fabric strength: ", round(fabric_strength["C"], 2))
+  )
 ```
 
 <img src="man/figures/README-stereo-1.png" width="100%" />
 
 ## Documentation
 
-in prep.
+The detailed documentation can be found at
+<https://tobiste.github.io/structr/>
 
 ## Author
 
-Tobias Stephan
+Tobias Stephan (<tstephan@lakeheadu.ca>)
+
+## Feedback, issues, and contributions
+
+I welcome feedback, suggestions, issues, and contributions! If you have
+found a bug, please file it
+[here](https://github.com/tobiste/geoprofiler/issues) with minimal code
+to reproduce the issue.
 
 ## License
 

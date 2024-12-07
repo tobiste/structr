@@ -54,10 +54,10 @@ key <- letters[round(runif(5, 1, 26))]
 stereoplot(guides = FALSE)
 stereo_point(x, col = assign_col_d(key))
 legend_d(assign_col_d(key))
- 
+
 # example for continuous colors:
 x <- rvmf(100, mu = Line(120, 50), k = 5)
 stereoplot(guides = FALSE)
 stereo_point(x, col = assign_col(runif(100)))
-legend_c(seq(0, 1, .1), title = 'test')
+legend_c(seq(0, 1, .1), title = "test")
 }

@@ -131,12 +131,12 @@ sigmaTrans <- function(theta, sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA,
 #'          as the angle of inclination above the horizontal.  If `"theta"` is entered in conjunction
 #'          with the principal stresses, then it is interpreted as the angle of inclination above the
 #'          major principal plane.
-#' @seealso [MohrCircle.plot()]
+#' @seealso [MohrCircle_plot()]
 #' @author Kyle Elmy and Jim Kaklamanos
 #' @export
 #' @examples
-#' MohrCircle.calc(sigmaX = 80, sigmaZ = 120, tauXZ = 20)
-MohrCircle.calc <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, sigma3 = NA,
+#' MohrCircle_calc(sigmaX = 80, sigmaZ = 120, tauXZ = 20)
+MohrCircle_calc <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, sigma3 = NA,
                             theta = seq(from = 0, to = 180, by = 1)) {
   ##  Calculate normal and shear stresses
   stress.vec <- sapply(
@@ -179,12 +179,12 @@ MohrCircle.calc <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, s
 #' \item{`"sigmaX"`, `"sigmaZ"`, `"tauXZ"`}
 #' \item{`"sigma1"`, `"sigma3"`}
 #' }
-#' @seealso [MohrCircle.calc()], [ggMohr()]
+#' @seealso [MohrCircle_calc()], [ggMohr()]
 #' @author Kyle Elmy and Jim Kaklamanos
 #' @export
 #' @examples
-#' MohrCircle.plot(sigmaX = 80, sigmaZ = 120, tauXZ = 20, metric = FALSE)
-MohrCircle.plot <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, sigma3 = NA,
+#' MohrCircle_plot(sigmaX = 80, sigmaZ = 120, tauXZ = 20, metric = FALSE)
+MohrCircle_plot <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, sigma3 = NA,
                             metric = TRUE) {
   ##  Calculate normal and shear stresses
   theta <- seq(from = 0, to = 180, by = 1)
@@ -312,25 +312,25 @@ ggMohr <- function(s1, s2, s3, coulomb = c(70, 0.6), sliding = 0.81, units = "MP
   sigma_n <- normal_stress(s1, s3, theta.f / 2)
   # theta.slope <- -atan(2*theta.f)
 
-  ggplot2::ggplot() +
-    ggforce::geom_circle(aes(x0 = circle13.m, y0 = 0, r = circle13.r), fill = fill, alpha = alpha) +
-    ggforce::geom_circle(aes(x0 = circle23.m, y0 = 0, r = circle23.r), fill = "white") +
-    ggforce::geom_circle(aes(x0 = circle12.m, y0 = 0, r = circle12.r), fill = "white") +
+  ggplot() +
+   geom_circle(aes(x0 = circle13.m, y0 = 0, r = circle13.r), fill = fill, alpha = alpha) +
+    geom_circle(aes(x0 = circle23.m, y0 = 0, r = circle23.r), fill = "white") +
+    geom_circle(aes(x0 = circle12.m, y0 = 0, r = circle12.r), fill = "white") +
     {
-      if (!is.null(sliding)) ggplot2::geom_abline(intercept = 0, slope = sliding, lty = 2)
+      if (!is.null(sliding)) geom_abline(intercept = 0, slope = sliding, lty = 2)
     } +
     {
-      if (!is.null(coulomb)) ggplot2::geom_abline(intercept = coulomb[1], slope = coulomb[2], lty = 1)
+      if (!is.null(coulomb)) geom_abline(intercept = coulomb[1], slope = coulomb[2], lty = 1)
     } +
-    ggplot2::geom_point(aes(x = circle13.m, 0)) +
-    ggplot2::geom_line(aes(x = c(circle13.m, sigma_n), y = c(0, sigma_s)), lty = 3) +
-    ggplot2::geom_hline(yintercept = 0, alpha = .2) +
-    ggplot2::geom_vline(xintercept = 0, alpha = .2) +
-    ggplot2::geom_text(aes(x = (s1 + s3) / 2, y = 0), label = expression(sigma["m"]), vjust = -.5, hjust = -1) +
-    ggplot2::geom_text(aes(x = s3, y = 0), label = expression(sigma[3]), vjust = -.5, hjust = -1) +
-    ggplot2::geom_text(aes(x = s2, y = 0), label = expression(sigma[2]), vjust = -.5, hjust = -1) +
-    ggplot2::geom_text(aes(x = s1, y = 0), label = expression(sigma[1]), vjust = -.5, hjust = -1) +
-    ggplot2::coord_fixed() +
-    ggplot2::labs(x = bquote(sigma[n] ~ (.(units))), y = bquote(sigma[s] ~ (.(units))), caption = bquote(theta[f] == .(round(theta.f, 2)) ~ alpha[f] == .(round(90 - theta.f, 2)))) +
-    ggplot2::theme_classic()
+    geom_point(aes(x = circle13.m, 0)) +
+    geom_line(aes(x = c(circle13.m, sigma_n), y = c(0, sigma_s)), lty = 3) +
+    geom_hline(yintercept = 0, alpha = .2) +
+    geom_vline(xintercept = 0, alpha = .2) +
+    geom_text(aes(x = (s1 + s3) / 2, y = 0), label = expression(sigma["m"]), vjust = -.5, hjust = -1) +
+    geom_text(aes(x = s3, y = 0), label = expression(sigma[3]), vjust = -.5, hjust = -1) +
+    geom_text(aes(x = s2, y = 0), label = expression(sigma[2]), vjust = -.5, hjust = -1) +
+    geom_text(aes(x = s1, y = 0), label = expression(sigma[1]), vjust = -.5, hjust = -1) +
+    coord_fixed() +
+    labs(x = bquote(sigma[n] ~ (.(units))), y = bquote(sigma[s] ~ (.(units))), caption = bquote(theta[f] == .(round(theta.f, 2)) ~ alpha[f] == .(round(90 - theta.f, 2)))) +
+    theme_classic()
 }

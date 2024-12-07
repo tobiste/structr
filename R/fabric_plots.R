@@ -166,7 +166,7 @@ fabric_indexes <- function(x) {
 #' for the P, G, and G axes. Constant grid spacing when only one integer is given.
 #' `NULL` when no grid.
 #'
-#' @references Vollmer, F. W. (1990). An application of eigenvalue methods to structural domain analysis. Geological Society of America Bulletin, 102, 786–791.
+#' @references Vollmer, F. W. (1990). An application of eigenvalue methods to structural domain analysis. Geological Society of America Bulletin, 102, 786<U+2013>791.
 #'
 #' @seealso [WoodcockPlot()], [fabric_indexes()]
 #'
@@ -298,7 +298,7 @@ VollmerPlot <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...) 
 #' @param labels character. text labels
 #' @param add logical. Should data be plotted to an existing plot?
 #' @param ... optional graphical parameters
-#' @references Woodcock, N. H. (1977). Specification of fabric shapes using an eigenvalue method. Geological Society of America Bulletin88, 1231–1236. http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf
+#' @references Woodcock, N. H. (1977). Specification of fabric shapes using an eigenvalue method. Geological Society of America Bulletin88, 1231<U+2013>1236. http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf
 #'
 #' @seealso [VollmerPlot()], [fabric_indexes()]
 #'

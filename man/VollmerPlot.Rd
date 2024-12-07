@@ -42,7 +42,7 @@ VollmerPlot(d, lab = "KENT", add = TRUE, col = "blue")
 title("Fabric plot of Vollmer (1990)")
 }
 \references{
-Vollmer, F. W. (1990). An application of eigenvalue methods to structural domain analysis. Geological Society of America Bulletin, 102, 786–791.
+Vollmer, F. W. (1990). An application of eigenvalue methods to structural domain analysis. Geological Society of America Bulletin, 102, 786<U+2013>791.
 }
 \seealso{
 \code{\link[=WoodcockPlot]{WoodcockPlot()}}, \code{\link[=fabric_indexes]{fabric_indexes()}}
