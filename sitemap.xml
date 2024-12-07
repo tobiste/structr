@@ -37,6 +37,8 @@
 <url><loc>https://tobiste.github.io/structr/reference/fault_tensor.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/fisher_statistics.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ggMohr.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/ggstereo.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/ggstereocontour.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/gradient.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/gray_example.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/index.html</loc></url>
@@ -44,6 +46,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/or_eigen.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ortensor.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/parse_quadrant_measurement.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/prepare-ggplot.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ramsay_coords.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/rfb.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/rhr.html</loc></url>
