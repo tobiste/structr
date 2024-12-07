@@ -15,6 +15,6 @@ example data set
 }
 \examples{
 data("gray_example")
-head("gray_example")
+head(gray_example)
 }
 \keyword{datasets}

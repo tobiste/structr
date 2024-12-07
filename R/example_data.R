@@ -10,7 +10,7 @@
 #' @keywords datasets
 #' @examples
 #' data("gray_example")
-#' head("gray_example")
+#' head(gray_example)
 "gray_example"
 
 #' Example lines
@@ -25,7 +25,7 @@
 #' @keywords datasets
 #' @examples
 #' data("example_lines")
-#' head("example_lines")
+#' head(example_lines)
 "example_lines"
 
 #' Example planes
@@ -40,7 +40,7 @@
 #' @keywords datasets
 #' @examples
 #' data("example_planes")
-#' head("example_planes")
+#' head(example_planes)
 "example_planes"
 
 #' Example data set
@@ -55,5 +55,5 @@
 #' @keywords datasets
 #' @examples
 #' data("simongomez")
-#' head("simongomez")
+#' head(simongomez)
 "simongomez"

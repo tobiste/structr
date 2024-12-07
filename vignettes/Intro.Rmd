@@ -4,7 +4,7 @@ author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{euler.reco}
+  %\VignetteIndexEntry{Stereographic projections}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 editor_options: 
@@ -21,15 +21,77 @@ knitr::opts_chunk$set(
 
 ```{r setup, warning=FALSE, message=FALSE}
 library(structr)
+library(ggplot2)
 ```
 
 
 
+Import and convert to spherical objects:
+```{r example}
 
-```{r stereo}
-stereoplot()
-stereo_point(Line(90, 5), lab = "L")
-stereo_smallcircle(Line(90, 5), d = 10)
-stereo_point(Plane(120, 30), lab = "P", col = "red")
-stereo_greatcircle(Plane(120, 30), col = "red")
+data(example_planes)
+
+planes <- Plane(example_planes$dipdir, example_planes$dip)
+quality_p = example_planes$quality
+
+lines <- Line(example_lines$trend, example_lines$plunge)
+quality = example_lines$quality
 ```
+
+## Stereographic projection
+```{r stereo1}
+ggstereo() +
+  geom_point(data = gg(planes), aes(x, y, color = 'planes')) +
+    geom_point(data = gg(lines), aes(x, y, color = 'lines')) +
+  labs(title= "Example data", color = NULL)
+```
+
+
+Adding great circles:
+```{r stereo2}
+ggstereo() +
+  geom_path(data = ggl(planes), aes(x, y, color = 'planes'), lwd = .1) +
+  geom_point(data = gg(lines), aes(x, y, color = 'lines')) +
+  labs(title= "Example data", color = NULL)
+```
+## Statistics
+```{r stat}
+
+lines_mean <- v_mean(lines)
+lines_sd <- v_sd(lines) |> rad2deg()
+
+
+ggstereo() +
+  geom_point(data = gg(lines), aes(x, y)) +
+    geom_path(data = ggl(lines_mean, d = lines_sd), aes(x, y, color = 'sd'), lwd = .1) +
+  geom_point(data = gg(lines_mean), aes(x, y, color = 'mean'), size = 5, shape = 17) +
+
+  labs(title= "Example data", color = NULL)
+```
+```{r eigen, include=FALSE}
+planes_eigen <- or_eigen(planes)
+
+ggstereo() +
+  geom_point(data = gg(planes), aes(x, y)) +
+    geom_path(data = ggl((planes_eigen$vectors), ev = as.character(c(1, 2, 3))), aes(x, y, color = ev), lwd = .1) +
+  geom_point(data = gg((planes_eigen$vectors), ev = as.character(c(1, 2, 3))), aes(x, y, color = ev), size = 5, shape = 17) +
+
+  labs(title= "Example data", color = NULL)
+```
+
+## Fabric plots
+```{r vollmer, message=FALSE,warning=FALSE}
+VollmerPlot(planes, pch = 19, cex = 2)
+VollmerPlot(lines, add = TRUE, col = 'dodgerblue', pch = 19, cex = 2)
+```
+
+## Density plots
+```{r density, message=FALSE,warning=FALSE}
+
+ggstereo() +
+ geom_contourf_stereo(gg(planes), show.legend = TRUE) +
+  geom_point(data = gg(planes), aes(x, y)) +
+  labs(title= "Example data", color = NULL)
+```
+
+

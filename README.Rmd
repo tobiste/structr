@@ -38,6 +38,28 @@ You can install the development version of `{structr}` from [GitHub](https://git
 devtools::install_github("tobiste/structr")
 ```
 
+## Example
+
+```{r stereo}
+library(structr)
+library(ggplot2)
+
+data(example_planes)
+planes <- Plane(example_planes$dipdir, example_planes$dip)
+
+fabric_strength <-  fabric_indexes(planes)
+
+ggstereo() +
+ geom_contourf_stereo(gg(planes), show.legend = TRUE) +
+  geom_point(data = gg(planes), aes(x, y), color = 'lightgrey', shape = 21) +
+  scale_fill_viridis_d(option = 'A' ) +
+  labs(subtitle= "Example data", 
+       title= 'Density contour plot',
+       fill = 'Multiples of\nvon Mises-Fisher\ndistribution',
+       caption = paste0('Equal area, lower hemisphere projection | Fabric strength: ', round(fabric_strength['C'], 2)))
+
+```
+
 ## Documentation
 
 in prep.
