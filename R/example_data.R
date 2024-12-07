@@ -12,3 +12,48 @@
 #' data("gray_example")
 #' head("gray_example")
 "gray_example"
+
+#' Example lines
+#'
+#' example data set
+#'
+#' @docType data
+#'
+#' @usage data('example_lines')
+#'
+#' @format An object of class `data.frame`
+#' @keywords datasets
+#' @examples
+#' data("example_lines")
+#' head("example_lines")
+"example_lines"
+
+#' Example planes
+#'
+#' example data set
+#'
+#' @docType data
+#'
+#' @usage data('example_planes')
+#'
+#' @format An object of class `data.frame`
+#' @keywords datasets
+#' @examples
+#' data("example_planes")
+#' head("example_planes")
+"example_planes"
+
+#' Example data set
+#'
+#' example data set
+#'
+#' @docType data
+#'
+#' @usage data('simongomez')
+#'
+#' @format An object of class `data.frame`
+#' @keywords datasets
+#' @examples
+#' data("simongomez")
+#' head("simongomez")
+"simongomez"

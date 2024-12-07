@@ -6,11 +6,12 @@
 #' @param dip fault's dip angle (in degrees)
 #' @param delta angle between horizontal displacement vector and fault's strike
 #' @param rake (in degrees)
-#' @param horizontalthrow,verticalthrow amount of horizontal and vertical offset
-#' @param dipslip,strikeslip amount of offset along strike or dip
 #' @param heave apparent horizontal offset perpendicular to strike
 #' @param horizontalthrow apparent horizontal offset parallel to fault's motion direction
 #' @param netslip offset on fault plane parallel to the fault's motion direction
+#' @param verticalthrow vertical throw
+#' @param dipslip dip slip component
+#' @param strikeslip  strike-slip component
 #'
 #' @details
 #' see vignette for description of fault displacement components
@@ -22,47 +23,48 @@
 #' fault_displacements(strikeslip = 2, verticalthrow = -5, heave = 3)
 #' }
 fault_displacements <- function(dip = NULL, delta = NULL, rake = NULL, verticalthrow = NULL, dipslip = NULL, heave = NULL, netslip = NULL, horizontalthrow = NULL, strikeslip = NULL) {
-  if (!is.null(dip) & !is.null(verticalthrow) & !is.null(delta)) {
+  horizontal <- NULL
+   if (!is.null(dip) & !is.null(verticalthrow) & !is.null(delta)) {
     # Slip components in the vertical plane perpendicular to the strike of the fault
 
-    dipslip <- verticalthrow / tectonicr:::sind(dip)
+    dipslip <- verticalthrow /sind(dip)
     heave <- sqrt(dipslip^2 - verticalthrow^2)
 
     # Slip components in the horizontal plane
-    horizontalthrow <- heave / tectonicr:::sind(delta)
+    horizontalthrow <- heave /sind(delta)
     strikeslip <- sqrt(horizontal^2 - heave^2)
 
     # Slip components in the fault plane plane
     netslip <- sqrt(strikeslip^2 + dipslip^2)
-    rake <- tectonicr:::asind(dipslip / netslip)
+    rake <-asind(dipslip / netslip)
   } else if (!is.null(delta) & !is.null(horizontalthrow) & !is.null(dip)) {
     # Slip components in the horizontal plane
-    strikeslip <- abs(tectonicr:::cosd(delta) * horizontalthrow)
+    strikeslip <- abs(cosd(delta) * horizontalthrow)
     heave <- sqrt(horizontalthrow^2 - strikeslip^2)
 
     # Slip components in the vertical plane perpendicular to the strike of the fault
-    dipslip <- heave / tectonicr:::cosd(dip)
+    dipslip <- heave /cosd(dip)
     verticalthrow <- sqrt(dipslip^2 - heave^2)
 
     # Slip components in the fault plane plane
     netslip <- sqrt(strikeslip^2 + dipslip^2)
-    rake <- tectonicr:::atand(dipslip / strikeslip)
+    rake <-atand(dipslip / strikeslip)
   } else if (!is.null(rake) & !is.null(verticalthrow) & !is.null(dip)) {
-    dipslip <- verticalthrow / tectonicr:::sind(dip)
+    dipslip <- verticalthrow /sind(dip)
     heave <- sqrt(dipslip^2 - verticalthrow^2)
-    strikeslip <- dipslip / tectonicr:::tand(rake)
+    strikeslip <- dipslip / tand(rake)
     horizontalthrow <- sqrt(strikeslip^2 + heave^2)
     netslip <- sqrt(strikeslip^2 + dipslip^2)
   } else if (!is.null(strikeslip) & !is.null(verticalthrow) & !is.null(heave)) {
     dipslip <- sqrt(heave^2 + verticalthrow^2)
-    dip <- tectonicr:::atand(verticalthrow / heave)
+    dip <- atand(verticalthrow / heave)
 
     horizontalthrow <- sqrt(heave^2 + strikeslip^2)
-    delta <- tectonicr:::atand(heave / strikeslip)
+    delta <-atand(heave / strikeslip)
 
     # netslip = sqrt(dipslip^2 + strikeslip^2)
     netslip <- sqrt(strikeslip^2 + verticalthrow^2 + heave^2)
-    rake <- tectonicr:::atand(dipslip / strikeslip)
+    rake <-atand(dipslip / strikeslip)
   }
 
 
@@ -94,17 +96,20 @@ fault_displacements <- function(dip = NULL, delta = NULL, rake = NULL, verticalt
 #' coordinates. Otherwise, the tensor will be in the geographic reference frame.
 #'
 #' @details
-#' x axis of tensor = heave, y = strike slip, z = vertical throw (positive for thrusting, negative for normal faulting)
+#' x axis of tensor = heave, y = strike slip, z = vertical throw (positive for 
+#' thrusting, negative for normal faulting)
 #'
 #' @examples
 #' \dontrun{
-#' fault_tensor(displacements = data.frame(strikeslip = 2, verticalthrow = -5, heave = 3), dip_direction = 0)
+#' fault_tensor(displacements = 
+#'   data.frame(strikeslip = 2, verticalthrow = -5, heave = 3), 
+#'   dip_direction = 0)
 #' }
 fault_tensor <- function(displacements, dip_direction = NULL) {
   A <- diag(c(displacements$heave, displacements$strikeslip, displacements$verticalthrow), 3, 3)
 
   if (!is.null(dip_direction)) {
-    dipdir_rad <- tectonicr::deg2rad(dip_direction)
+    dipdir_rad <- deg2rad(dip_direction)
     # coordinates are measured from E!!!
     # c(1, 0, 0) = E
     # c(0, 1, 0) = N

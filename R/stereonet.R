@@ -58,8 +58,6 @@ stereo_coords <- function(az, inc, upper.hem = FALSE) {
   }
 
   A <- list(az = az, inc = 90 - inc)
-  # A$inc <- inc
-  # A$az <- az
   B <- fix_inc(A)
   trot <- deg2rad(B$az)
   tinc <- B$inc
@@ -70,20 +68,6 @@ stereo_coords <- function(az, inc, upper.hem = FALSE) {
 
   cbind(x = pltx, y = plty)
 }
-
-
-
-# stereo2sph <- function(azi, inc, line = TRUE) {
-#   deg2rad <- pi / 180
-#
-#   azir <- azi * deg2rad
-#   incr <- inc * deg2rad
-#   z <- sin(incr)
-#   temp <- cos(incr)
-#   x <- cos(azir) * temp
-#   y <- sin(azir) * temp
-#   return(cbind(x = x, y = y, z = z))
-# }
 
 
 #' Stereographic projection of lines and planes
@@ -113,7 +97,6 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1
     x[, 1] <- 180 + x[, 1]
     x[, 2] <- 90 - x[, 2]
   }
-  # class(x) <- c("matrix", "array")
 
   crds <- stereo_coords(
     x[, 1],
@@ -341,12 +324,6 @@ stereoplot <- function(guides = TRUE, d = 10, col = grDevices::gray(0.9),
 
   if (centercross) points(0, 0, pch = 3, col = border)
   
-  # graphics::lines(c(-1, 1), c(0, 0), col = col)
-  # graphics::lines(c(0, 0), c(-1, 1), col = col)
-  
-  # graphics::segments(c(-0.02, 0), c(0, -0.02), c(0.02, 0), c(0, 0.02),
-  #                    col = "black"
-  # )
   stereoplot_frame(col = col, border = border, ndiv = 100)
 }
 

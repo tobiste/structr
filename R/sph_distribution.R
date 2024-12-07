@@ -120,6 +120,7 @@ v_unif <- function(class = NULL, n = 100, method = c("gss", "sfs", "rotasym")) {
 #' @param A symmetric matrix
 #' @source Adapted from [Directional::rfb()]
 #' @importFrom Directional rfb
+#' @export
 #' @examples
 #' \dontrun{
 #' x <- rfb(100, mu = Line(120, 50), k = 5, A = diag(c(-1, 0, 1)))

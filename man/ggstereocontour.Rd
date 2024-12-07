@@ -32,15 +32,15 @@ geom_contourf_stereo(
 
 \item{hw}{numeric. Kernel bandwidth in degree.}
 
+\item{optimal_bw}{character. Calculates an optimal kernel bandwidth
+using the cross-validation algorithm (\code{'cross'}) or the rule-of-thumb (\code{'rot'})
+suggested by Garcia-Portugues (2013). Ignored when \code{hw} is specified.}
+
 \item{norm}{logical. Should the densities be normalized?}
 
 \item{...}{arguments passed to \code{\link[ggplot2:geom_contour]{ggplot2::geom_contour()}}, \code{\link[ggplot2:geom_contour]{ggplot2::geom_contour_filled()}}, or \code{\link[ggplot2:geom_tile]{ggplot2::geom_tile()}}}
 
 \item{smooth}{logical. Whether \code{\link[ggplot2:geom_tile]{ggplot2::geom_tile()}} should be used for plotting.}
-
-\item{kernel_method}{character. Calculates an optimal kernel bandwidth
-using the cross-validation algorithm (\code{'cross'}) or the rule-of-thumb (\code{'rot'})
-suggested by Garcia-Portugues (2013). Ignored when \code{hw} is specified.}
 }
 \value{
 ggplot
@@ -49,18 +49,20 @@ ggplot
 Stereonet contouring using ggplot
 }
 \examples{
-test_data <- rbind(rvmf(100, mu = Line(90, 45), k = 10), rvmf(50, mu = Line(0, 0), k = 20)) |> as.line()
+test_data <- rbind(
+  rvmf(100, mu = Line(90, 45), k = 10), 
+  rvmf(50, mu = Line(0, 0), k = 20)) |> as.line()
 ggstereo() +
   geom_contourf_stereo(gg(test_data)) +
-  scale_fill_viridis_d(option = "A") +
+  ggplot2::scale_fill_viridis_d(option = "A") +
   # guides(fill = guide_colorsteps(barheight = unit(8, "cm"), show.limits = TRUE)) +
   geom_contour_stereo(gg(test_data), color = "grey") +
-  geom_point(data = gg(test_data), aes(x = x, y = y), color = "lightgrey") +
+  ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y), color = "lightgrey") +
   ggframe()
 
 ggstereo() +
   geom_contourf_stereo(gg(test_data), norm = TRUE, bins = 20) +
-  scale_fill_viridis_d(option = "A")
+  ggplot2::scale_fill_viridis_d(option = "A")
 }
 \references{
 Garcia Portugues, E. (2013). Exact risk improvement of

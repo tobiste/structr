@@ -17,7 +17,7 @@ assign_col_binned(x, breaks, pal = viridis::viridis, ...)
 
 legend_c(breaks, title = NULL, pal = viridis::viridis)
 
-legend_d(fill, labels = names(cols), position = "topright", ...)
+legend_d(fill, labels = names(fill), position = "topright", ...)
 }
 \arguments{
 \item{x}{vector to colorize}
@@ -32,12 +32,12 @@ legend_d(fill, labels = names(cols), position = "topright", ...)
 
 \item{title}{character. Legend title}
 
+\item{fill}{color vector}
+
 \item{labels}{character.vector. Names of discrete colors.
 Can be ignored when \code{cols} is a named vector.}
 
 \item{position}{Legend position}
-
-\item{cols, fill}{color vector}
 }
 \value{
 .

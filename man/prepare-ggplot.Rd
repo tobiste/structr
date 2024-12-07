@@ -35,11 +35,11 @@ Prepare points and lines for ggplot
 \examples{
 x <- Plane(120, 85)
 ggstereo() +
-  geom_point(data = gg(x), aes(x, y), color = "red") +
-  geom_path(data = ggl(x), aes(x, y), color = "red")
+  ggplot2::geom_point(data = gg(x), ggplot2::aes(x, y), color = "red") +
+  ggplot2::geom_path(data = ggl(x), ggplot2::aes(x, y), color = "red")
 
 x <- Line(120, 5)
 ggstereo() +
-  geom_point(data = gg(x), aes(x, y), color = "darkgreen") +
-  geom_path(data = ggl(x, d = 8), aes(x, y, group = group), color = "darkgreen")
+  ggplot2::geom_point(data = gg(x), ggplot2::aes(x, y), color = "darkgreen") +
+  ggplot2::geom_path(data = ggl(x, d = 8), ggplot2::aes(x, y, group = group), color = "darkgreen")
 }

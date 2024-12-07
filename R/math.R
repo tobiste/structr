@@ -2,6 +2,7 @@
 #'
 #' @param x,y,rotaxis numeric vector, array, or object of class `"line"` or `"plane"`
 #' @param rotangle numeric. Angle in radians or degrees if `"rotaxis"` is an object of `"line"` or `"plane"`
+#' @param w weights.
 #' @name operations
 #' @details
 #' `vdot(x, y)` is equivalent to `x %*% t(y)`
@@ -276,13 +277,14 @@ v_orthogonalize <- function(x, y) {
   } else {
     transform <- FALSE
     if (is.spherical(x)) {
-      class <- class(x)
+      classx <- class(x)
       x <- to_vec(x)
       transform <- TRUE
     } else {
       x <- vec2mat(x)
     }
     if (is.spherical(y)) {
+      classy <- class(y)
       y <- to_vec(y)
     } else {
       y <- vec2mat(y)

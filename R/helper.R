@@ -9,17 +9,18 @@ vec2mat <- function(x) {
   m
 }
 
-rad2deg <- function(rad) {
-  rad * 180 / pi
-}
-
-deg2rad <- function(deg) {
-  deg * pi / 180
-}
-
 DEG2RAD <- function() {
   pi / 180
 }
+
+rad2deg <- function(rad) {
+  rad / DEG2RAD()
+}
+
+deg2rad <- function(deg) {
+  deg * DEG2RAD()
+}
+
 
 
 sind <- function(x) {
@@ -73,7 +74,7 @@ normalize <- function(x) {
 #' @param n integer.
 #' @param title character. Legend title
 #' @param pal color function; Default is [viridis::viridis()]
-#' @param cols,fill color vector
+#' @param fill color vector
 #' @param labels character.vector. Names of discrete colors. 
 #' Can be ignored when `cols` is a named vector.
 #' @param position Legend position
@@ -107,7 +108,7 @@ assign_col_d <- function(x, pal = viridis::viridis, ...){
   groups <- unique(x)
   n <- length(groups)
   cols <- do.call(pal, args = list(n = n, ...))  
-  named_cols <- setNames(cols, groups)
+  named_cols <- stats::setNames(cols, groups)
   named_cols[x]
 }
 
@@ -133,16 +134,16 @@ assign_col_binned <- function(x, breaks, pal = viridis::viridis, ...) {
 
 color_func <- function(x, pal = viridis::viridis) {
   color_func0 <- colorRamp(do.call(pal, args = list(n = 10000)))
-  rgb(color_func0(x) / 255)
+  grDevices::rgb(color_func0(x) / 255)
 }
 
 #' @rdname colorize
 #' @export
 legend_c <- function(breaks, title = NULL, pal = viridis::viridis) {
   label_pos <- normalize(breaks)
-  legend_image <- as.raster(matrix(color_func(seq(0, 1, .001)), ncol = 1))
+  legend_image <- grDevices::as.raster(matrix(color_func(seq(0, 1, .001)), ncol = 1))
 
-  par(new = TRUE)
+  graphics::par(new = TRUE)
   graphics::layout(matrix(1, 1))
 
   plot(c(0, 1), c(0, 1), type = "n", axes = FALSE, xlab = NA, ylab = NA, main = NA)
@@ -153,8 +154,8 @@ legend_c <- function(breaks, title = NULL, pal = viridis::viridis) {
 
 #' @rdname colorize
 #' @export
-legend_d <- function(fill, labels = names(cols), position = 'topright', ...){
-  legend(position,
+legend_d <- function(fill, labels = names(fill), position = 'topright', ...){
+  graphics::legend(position,
          legend = labels,
          fill = fill,
          ...

@@ -23,15 +23,17 @@ fault_displacements(
 
 \item{rake}{(in degrees)}
 
-\item{dipslip, strikeslip}{amount of offset along strike or dip}
+\item{verticalthrow}{vertical throw}
+
+\item{dipslip}{dip slip component}
 
 \item{heave}{apparent horizontal offset perpendicular to strike}
 
 \item{netslip}{offset on fault plane parallel to the fault's motion direction}
 
-\item{horizontalthrow, verticalthrow}{amount of horizontal and vertical offset}
-
 \item{horizontalthrow}{apparent horizontal offset parallel to fault's motion direction}
+
+\item{strikeslip}{strike-slip component}
 }
 \value{
 data.frame

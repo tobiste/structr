@@ -34,6 +34,8 @@ vreject(x, y)
 \arguments{
 \item{x, y, rotaxis}{numeric vector, array, or object of class \code{"line"} or \code{"plane"}}
 
+\item{w}{weights.}
+
 \item{rotangle}{numeric. Angle in radians or degrees if \code{"rotaxis"} is an object of \code{"line"} or \code{"plane"}}
 }
 \description{

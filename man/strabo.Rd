@@ -21,9 +21,6 @@ single column (may lead to duplicate rows).}
 
 \item{sf}{logical. Whether the output should be a spatial \code{"sf"} object
 using the Longitude and Latitude columns.}
-
-\item{dataset}{character. name of the dataset extracted from \code{JSON} project
-file.}
 }
 \value{
 \code{list} containing the following objects:

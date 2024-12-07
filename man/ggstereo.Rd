@@ -17,15 +17,15 @@ ggstereo(
 \item{earea}{logical. Whether the projection is equal-area ("Schmidt net")
 (\code{TRUE}, the default), or equal-angle ("Wulff net") (\code{FALSE}).}
 
+\item{centercross}{logical. Whether a center cross should be added.}
+
+\item{grid}{logical. Whether a gid should be added.}
+
 \item{grid.spacing}{numeric. Grid spacing in degree}
 
 \item{grid.rot}{numeric. Angle (in degrees) to rotate the grid.}
 
 \item{...}{argument passed to \code{\link[ggplot2:geom_polygon]{ggplot2::geom_polygon()}}}
-
-\item{logical.}{Whether a centercross should be added to the plot.}
-
-\item{grid.}{Whether a gird should be drawn.}
 }
 \value{
 ggplot
@@ -34,10 +34,13 @@ ggplot
 Stereonet using ggplot
 }
 \examples{
-test_data <- rbind(rvmf(100, mu = Line(90, 45), k = 10), rvmf(50, mu = Line(0, 0), k = 20)) |> as.line()
+test_data <- rbind(
+  rvmf(100, mu = Line(90, 45), k = 10), 
+  rvmf(50, mu = Line(0, 0), k = 20)) |> as.line()
+
 ggstereo(grid = TRUE) +
-  geom_point(data = gg(test_data), aes(x = x, y = y))
+ ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y))
 
 ggstereo(earea = FALSE, centercross = TRUE) +
-  geom_point(data = gg(test_data), aes(x = x, y = y))
+  ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y))
 }

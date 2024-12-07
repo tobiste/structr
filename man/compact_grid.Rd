@@ -7,7 +7,7 @@
 compact_grid(grid)
 }
 \arguments{
-\item{x}{output of \code{\link[=stress2grid]{stress2grid()}}, \code{\link[=PoR_stress2grid]{PoR_stress2grid()}}, or \code{\link[=kernel_dispersion]{kernel_dispersion()}}}
+\item{grid}{output of \code{\link[=stress2grid]{stress2grid()}}, \code{\link[=PoR_stress2grid]{PoR_stress2grid()}}, or \code{\link[=kernel_dispersion]{kernel_dispersion()}}}
 }
 \value{
 \code{sf} object

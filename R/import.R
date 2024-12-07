@@ -5,8 +5,6 @@
 #' creates a list with the metadata, and the line or plane orientations.
 #'
 #' @param file the name of the file which the data are to be read from.
-#' @param dataset character. name of the dataset extracted from `JSON` project
-#' file.
 #' @param tag_cols logical. Whether the Tag columns should be summarized in a
 #' single column (may lead to duplicate rows).
 #' @param sf logical. Whether the output should be a spatial `"sf"` object
@@ -145,6 +143,8 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #' @rdname strabo
 #' @export
 read_strabo_JSON <- function(file, sf = TRUE) {
+  spot.y <- ds_id <- unix_timestamp <- modified_timestamp <- spot.x <- NULL
+  
   time <- tag_id <- tag_name <- NULL
 
   dat <- rjson::fromJSON(file = file)

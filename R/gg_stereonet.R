@@ -19,18 +19,19 @@
 #' @examples
 #' x <- Plane(120, 85)
 #' ggstereo() +
-#'   geom_point(data = gg(x), aes(x, y), color = "red") +
-#'   geom_path(data = ggl(x), aes(x, y), color = "red")
+#'   ggplot2::geom_point(data = gg(x), ggplot2::aes(x, y), color = "red") +
+#'   ggplot2::geom_path(data = ggl(x), ggplot2::aes(x, y), color = "red")
 #'
 #' x <- Line(120, 5)
 #' ggstereo() +
-#'   geom_point(data = gg(x), aes(x, y), color = "darkgreen") +
-#'   geom_path(data = ggl(x, d = 8), aes(x, y, group = group), color = "darkgreen")
+#'   ggplot2::geom_point(data = gg(x), ggplot2::aes(x, y), color = "darkgreen") +
+#'   ggplot2::geom_path(data = ggl(x, d = 8), ggplot2::aes(x, y, group = group), color = "darkgreen")
 NULL
 
 #' @rdname prepare-ggplot
 #' @export
 gg <- function(x, ...) {
+  azi <- inc <- NULL
   if (!is.spherical(x)) {
     x <- to_spherical(x)
   }
@@ -43,14 +44,15 @@ gg <- function(x, ...) {
   colnames(xdf) <- c("azi", "inc")
 
   xdf |>
-    mutate(x = -(azi - 180), y = inc) |>
-    bind_cols(...)
+    dplyr::mutate(x = -(azi - 180), y = inc) |>
+    dplyr::bind_cols(...)
 }
 
 
 #' @rdname prepare-ggplot
 #' @export
 ggl <- function(x, ..., d = 90, n = 1e3) {
+  id <- NULL
   stopifnot(is.spherical(x))
   if (n %% 2 > 0) n <- n + 1
   if (is.plane(x) | is.fault(x)) {
@@ -62,8 +64,8 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
   if (length(d) == 1) d <- rep(d, nx)
 
   xdf <- data.frame(cbind(x)) |>
-    bind_cols(...) |>
-    mutate(id = row_number(), d = d)
+    dplyr::bind_cols(...) |>
+    dplyr::mutate(id = dplyr::row_number(), d = d)
 
   zaxis <- c(0, 0, 1)
 
@@ -119,7 +121,7 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
       D_fixed3 <- D_fixed2
       D_fixed3$cond <- cond
     } else {
-      D_fixed3 <- tail(D_fixed2, n = n / 2)
+      D_fixed3 <- utils::tail(D_fixed2, n = n / 2)
       D_fixed3$cond <- FALSE
     }
 
@@ -130,13 +132,14 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
     res[start:end, ] <- D_fixed3
   }
   res |>
-    as_tibble() |>
-    mutate(group = paste0(as.character(id), as.character(cond))) |>
-    left_join(
-      xdf, join_by(id)
+    dplyr::as_tibble() |>
+    dplyr::mutate(group = paste0(as.character(id), as.character(cond))) |>
+    dplyr::left_join(
+      xdf, dplyr::join_by(id)
     )
 }
 
+#' @export
 ggframe <- function(n = 1e4, color = "black", fill = NA, lwd = 1, ...) {
   prim.lat <- rep(c(0), times = n)
   prim.l1 <- seq(0, 180, length = n / 2)
@@ -147,31 +150,32 @@ ggframe <- function(n = 1e4, color = "black", fill = NA, lwd = 1, ...) {
 }
 
 ggstereo_grid <- function(d = 10, rot = 0, ...) {
+  x <- y <- group <- NULL
   # small circles
   sm1 <- seq(d, 90, d)
   sm2 <- seq(0, 90 - d, d)
   sm <- c(sm1, sm2)
   np <- Line(c(rep(0, length(sm1)), rep(180, length(sm2))), rep(0, length(sm)))
-  
+
   # great circles
   dips <- seq(-90 + d, 90 - d, d)
   ep <- Plane((rep(90, length(dips)) * sign(dips)) %% 360, abs(dips))
-  
+
   zp <- Plane(c(90, 0), c(90, 90))
-  
+
   if (rot != 0) {
     zaxis <- Line(0, 90)
     np <- vrotate(np, zaxis, rot)
     ep <- vrotate(ep, zaxis, rot)
     zp <- vrotate(zp, zaxis, rot)
   }
-  
+
   sm_ggl <- ggl(np, d = sm)
   gc_ggl <- ggl(ep)
   zp_ggl <- ggl(zp)
-  
-  
-  geom_path(data = bind_rows(sm_ggl, gc_ggl, zp_ggl), mapping = aes(x, y, group = group), ...) 
+
+
+  geom_path(data = dplyr::bind_rows(sm_ggl, gc_ggl, zp_ggl), mapping = aes(x, y, group = group), ...)
 }
 
 
@@ -179,24 +183,35 @@ ggstereo_grid <- function(d = 10, rot = 0, ...) {
 #'
 #' @param earea logical. Whether the projection is equal-area ("Schmidt net")
 #' (`TRUE`, the default), or equal-angle ("Wulff net") (`FALSE`).
-#' @param logical. Whether a centercross should be added to the plot.
-#' @param grid. Whether a gird should be drawn.
 #' @param grid.spacing numeric. Grid spacing in degree
 #' @param grid.rot numeric. Angle (in degrees) to rotate the grid.
+#' @param centercross logical. Whether a center cross should be added.
+#' @param grid logical. Whether a gid should be added.
 #' @param ... argument passed to [ggplot2::geom_polygon()]
+#'
 #' @import ggplot2
 #'
 #' @return ggplot
 #' @export
 #'
 #' @examples
-#' test_data <- rbind(rvmf(100, mu = Line(90, 45), k = 10), rvmf(50, mu = Line(0, 0), k = 20)) |> as.line()
+#' test_data <- rbind(
+#'   rvmf(100, mu = Line(90, 45), k = 10), 
+#'   rvmf(50, mu = Line(0, 0), k = 20)) |> as.line()
+#'
 #' ggstereo(grid = TRUE) +
-#'   geom_point(data = gg(test_data), aes(x = x, y = y))
+#'  ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y))
 #'
 #' ggstereo(earea = FALSE, centercross = TRUE) +
-#'   geom_point(data = gg(test_data), aes(x = x, y = y))
+#'   ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y))
 ggstereo <- function(earea = TRUE, centercross = TRUE, grid = FALSE, grid.spacing = 10, grid.rot = 0, ...) {
+  
+  # if(earea){
+  #   crs = "+proj=aeqd +lat_0=90 +lon_0=0 +x_0=0 +y_0=0"
+  # } else {
+  #   crs = "+proj=stere +lat_0=90 +lon_0=0 +x_0=0 +y_0=0"
+  # }
+  
   ggplot() +
     theme_void() +
     {
@@ -209,6 +224,7 @@ ggstereo <- function(earea = TRUE, centercross = TRUE, grid = FALSE, grid.spacin
     scale_y_continuous(limits = c(0, 90)) +
     scale_x_continuous(limits = c(-180, 180)) +
     coord_map(ifelse(earea, "azequalarea", "stereographic"), orientation = c(90, 0, 0)) +
+    #coord_sf(crs = crs, default_crs = crs) +
     labs(x = NULL, y = NULL)
 }
 
@@ -216,15 +232,16 @@ ggstereo <- function(earea = TRUE, centercross = TRUE, grid = FALSE, grid.spacin
 
 
 full_hem <- function(x) {
-  x <- mutate(x, inc = inc + 90)
+  inc <- azi <- NULL
+  x <- dplyr::mutate(x, inc = inc + 90)
   xupper <- x |>
-    mutate(
+    dplyr::mutate(
       azi = ifelse(azi <= 180, azi + 180, azi - 180),
       inc = 90 - (inc - 90)
     )
 
-  bind_rows(x, xupper) |>
-    select(inc, azi) |>
+  dplyr::bind_rows(x, xupper) |>
+    dplyr::select(inc, azi) |>
     as.matrix()
 }
 
@@ -271,7 +288,7 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #' @param x data.frame containing
 #' @param ngrid integer. Resolution of density calculation.
 #' @param hw numeric. Kernel bandwidth in degree.
-#' @param kernel_method character. Calculates an optimal kernel bandwidth
+#' @param optimal_bw character. Calculates an optimal kernel bandwidth
 #' using the cross-validation algorithm (`'cross'`) or the rule-of-thumb (`'rot'`)
 #' suggested by Garcia-Portugues (2013). Ignored when `hw` is specified.
 #' @param norm logical. Should the densities be normalized?
@@ -288,23 +305,27 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #' @importFrom Directional vmf.kerncontour euclid vmfkde.tune
 #' @name ggstereocontour
 #' @examples
-#' test_data <- rbind(rvmf(100, mu = Line(90, 45), k = 10), rvmf(50, mu = Line(0, 0), k = 20)) |> as.line()
+#' test_data <- rbind(
+#'   rvmf(100, mu = Line(90, 45), k = 10), 
+#'   rvmf(50, mu = Line(0, 0), k = 20)) |> as.line()
+
 #' ggstereo() +
 #'   geom_contourf_stereo(gg(test_data)) +
-#'   scale_fill_viridis_d(option = "A") +
+#'   ggplot2::scale_fill_viridis_d(option = "A") +
 #'   # guides(fill = guide_colorsteps(barheight = unit(8, "cm"), show.limits = TRUE)) +
 #'   geom_contour_stereo(gg(test_data), color = "grey") +
-#'   geom_point(data = gg(test_data), aes(x = x, y = y), color = "lightgrey") +
+#'   ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y), color = "lightgrey") +
 #'   ggframe()
 #'
 #' ggstereo() +
 #'   geom_contourf_stereo(gg(test_data), norm = TRUE, bins = 20) +
-#'   scale_fill_viridis_d(option = "A")
+#'   ggplot2::scale_fill_viridis_d(option = "A")
 NULL
 
 #' @rdname ggstereocontour
 #' @export
 geom_contour_stereo <- function(x, ngrid = 100, hw = NULL, optimal_bw = c("cross", "rot"), norm = FALSE, ...) {
+  Long <- Lat <- Density <- NULL
   xtot <- full_hem(x)
 
   dens <- vmf_kerncontour(xtot, hw = hw, kernel_method = optimal_bw, ngrid = ngrid)
@@ -321,6 +342,7 @@ geom_contour_stereo <- function(x, ngrid = 100, hw = NULL, optimal_bw = c("cross
 #' @rdname ggstereocontour
 #' @export
 geom_contourf_stereo <- function(x, ngrid = 100, hw = NULL, optimal_bw = c("cross", "rot"), norm = FALSE, smooth = FALSE, ...) {
+  Long <- Lat <- Density <- NULL
   xtot <- full_hem(x)
 
   dens <- vmf_kerncontour(xtot, hw = hw, kernel_method = optimal_bw, ngrid = ifelse(smooth, 3 * ngrid, ngrid))

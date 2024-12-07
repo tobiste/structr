@@ -7,7 +7,7 @@
 parse_quadrant_measurement(x)
 }
 \arguments{
-\item{x}{}
+\item{x}{character.}
 }
 \value{
 numeric
