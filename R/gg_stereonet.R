@@ -218,7 +218,7 @@ ggstereo <- function(earea = TRUE, centercross = TRUE, grid = FALSE, grid.spacin
     theme_void() +
     {
       if (grid) {
-        ggstereo_grid(d = grid.spacing, rot = grid.rot, color = "grey")
+        ggstereo_grid(d = grid.spacing, rot = grid.rot, color = "lightgrey", lwd = .25)
       }
     } +
     ggframe(...) +
