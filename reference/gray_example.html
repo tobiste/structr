@@ -20,10 +20,10 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Fault_displacements.html">Fault displacements</a></li>
     <li><a class="dropdown-item" href="../articles/Intro.html">Stereographic projections</a></li>
-    <li><a class="dropdown-item" href="../articles/stereoplot.html">Stereoplot</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/tobiste/structr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -33,7 +33,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Example data from Gray et al. 1980 to find best small and great circle</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/example_data.R" class="external-link"><code>R/example_data.R</code></a></small>
       <div class="d-none name"><code>gray_example.Rd</code></div>
     </div>
 
@@ -54,8 +54,14 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"gray_example"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="st">"gray_example"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "gray_example"</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">gray_example</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   Strike Dip DipDir Facing     Type</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1    142  58      W      L Cleavage</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2    155  63      W      L Cleavage</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3    166  82      W      L Cleavage</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4    177  83      E      U Cleavage</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5      9  68      E      U Cleavage</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6     11  60      E      U Cleavage</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -63,7 +69,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by The package maintainer.</p>
+  <p>Developed by Tobias Stephan.</p>
 </div>
 
 <div class="pkgdown-footer-right">

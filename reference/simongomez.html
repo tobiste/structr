@@ -20,10 +20,10 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Fault_displacements.html">Fault displacements</a></li>
     <li><a class="dropdown-item" href="../articles/Intro.html">Stereographic projections</a></li>
-    <li><a class="dropdown-item" href="../articles/stereoplot.html">Stereoplot</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/tobiste/structr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -33,7 +33,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Example data set</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/example_data.R" class="external-link"><code>R/example_data.R</code></a></small>
       <div class="d-none name"><code>simongomez.Rd</code></div>
     </div>
 
@@ -54,8 +54,14 @@
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"simongomez"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="st">"simongomez"</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "simongomez"</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">simongomez</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   id Strike Dip Dip_direction Rake Direction sense dipdir ve</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 1  1     40  63             W   13         N     S    130 -1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 2  2    163  86             W    3         S     D    253  1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 3  3     37  84             W   14         N     S    127 -1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4  4     25  83             E   11         N     S    115 -1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5  5     38  85             E    7         N     S    128 -1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 6  6    148  72             W   16         S     D    238  1</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -63,7 +69,7 @@
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by The package maintainer.</p>
+  <p>Developed by Tobias Stephan.</p>
 </div>
 
 <div class="pkgdown-footer-right">

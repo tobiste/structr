@@ -5,11 +5,10 @@
 <url><loc>https://tobiste.github.io/structr/articles/Fault_displacements.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/articles/Intro.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/articles/index.html</loc></url>
-<url><loc>https://tobiste.github.io/structr/articles/stereoplot.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/authors.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/index.html</loc></url>
-<url><loc>https://tobiste.github.io/structr/reference/MohrCircle.calc.html</loc></url>
-<url><loc>https://tobiste.github.io/structr/reference/MohrCircle.plot.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/MohrCircle_calc.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/MohrCircle_plot.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/PR_stress.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/Rphi.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/SH.html</loc></url>
@@ -36,6 +35,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/fault_tensor.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/fisher_statistics.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ggMohr.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/ggframe.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ggstereo.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ggstereocontour.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/gradient.html</loc></url>

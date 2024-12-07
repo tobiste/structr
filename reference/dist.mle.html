@@ -20,10 +20,10 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Fault_displacements.html">Fault displacements</a></li>
     <li><a class="dropdown-item" href="../articles/Intro.html">Stereographic projections</a></li>
-    <li><a class="dropdown-item" href="../articles/stereoplot.html">Stereoplot</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/tobiste/structr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -33,7 +33,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>MLE of spherical rotational symmetric distributions</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/sph_distribution.R" class="external-link"><code>R/sph_distribution.R</code></a></small>
       <div class="d-none name"><code>dist.mle.Rd</code></div>
     </div>
 
@@ -68,34 +68,34 @@ object of class <code>"line"</code> or <code>"plane"</code></p></dd>
 <span class="r-in"><span><span class="fu">kent.mle</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $G</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        azimuth    plunge</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> mean  116.4695 51.463230</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> major 207.8772  1.120964</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> minor 298.7694 38.514269</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mean  109.0439 49.469194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> major 200.8935  1.580737</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> minor 292.2434 40.486665</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "line"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $param</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     kappa      beta       psi </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 5.4116466 1.5070981 0.4028056 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4.5238161 0.9928288 0.2990394 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $logcon</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.651922</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.9029</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $loglik</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -118.3592</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -134.1984</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">vmf.mle</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $loglik</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -126.8332</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -138.6025</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mu</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>    azimuth   plunge</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> y 116.4695 51.46323</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> y 109.0439 49.46919</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "line"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $kappa</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.801021</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.262958</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
@@ -104,7 +104,7 @@ object of class <code>"line"</code> or <code>"plane"</code></p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by The package maintainer.</p>
+  <p>Developed by Tobias Stephan.</p>
 </div>
 
 <div class="pkgdown-footer-right">

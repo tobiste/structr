@@ -20,10 +20,10 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Fault_displacements.html">Fault displacements</a></li>
     <li><a class="dropdown-item" href="../articles/Intro.html">Stereographic projections</a></li>
-    <li><a class="dropdown-item" href="../articles/stereoplot.html">Stereoplot</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
+<li class="nav-item"><a class="external-link nav-link" href="https://github.com/tobiste/structr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
       </ul></div>
 
 
@@ -33,7 +33,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Spatial interpolation</h1>
-
+      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/spatial_interpolation.R" class="external-link"><code>R/spatial_interpolation.R</code></a></small>
       <div class="d-none name"><code>spatial_interpolation.Rd</code></div>
     </div>
 
@@ -144,13 +144,15 @@ the search radius (in km). Default is <code>1</code></p></dd>
 <span class="r-in"><span><span class="va">data</span> <span class="op">&lt;-</span> <span class="fu"><a href="strabo.html">read_strabo_JSON</a></span><span class="op">(</span><span class="st">"E:/Lakehead/Field work/StraboSpot_07_02_2023.json"</span>, dataset <span class="op">=</span> <span class="st">"TS"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">ps</span> <span class="op">&lt;-</span> <span class="va">data</span><span class="op">$</span><span class="va">data</span> <span class="op">|&gt;</span></span></span>
 <span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/mutate.html" class="external-link">mutate</a></span><span class="op">(</span>dipdir <span class="op">=</span> <span class="op">(</span><span class="va">strike</span> <span class="op">+</span> <span class="fl">90</span><span class="op">)</span> <span class="op"><a href="https://rdrr.io/r/base/Arithmetic.html" class="external-link">%%</a></span> <span class="fl">360</span><span class="op">)</span> <span class="op">|&gt;</span></span></span>
-<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">type</span> <span class="op">==</span> <span class="st">"planar_orientation"</span> <span class="op">&amp;</span> </span></span>
-<span class="r-in"><span>      <span class="op">!</span><span class="op">(</span><span class="va">feature_type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"other"</span>, <span class="st">"vector"</span>, <span class="st">"option_13"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">type</span> <span class="op">==</span> <span class="st">"planar_orientation"</span> <span class="op">&amp;</span></span></span>
+<span class="r-in"><span>    <span class="op">!</span><span class="op">(</span><span class="va">feature_type</span> <span class="op"><a href="https://rdrr.io/r/base/match.html" class="external-link">%in%</a></span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"other"</span>, <span class="st">"vector"</span>, <span class="st">"option_13"</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">ps_vec</span> <span class="op">&lt;-</span> <span class="fu">structr</span><span class="fu">::</span><span class="fu"><a href="classes.html">as.plane</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">ps</span><span class="op">$</span><span class="va">dipdir</span>, <span class="va">ps</span><span class="op">$</span><span class="va">dip</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">spatial_interpolation</span><span class="op">(</span>x <span class="op">=</span> <span class="va">ps_vec</span>, coords <span class="op">=</span> <span class="va">ps</span>, gridsize <span class="op">=</span> <span class="fl">.05</span>, R_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">1</span><span class="op">)</span>, </span></span>
-<span class="r-in"><span>   dist_threshold <span class="op">=</span> <span class="fl">0.01</span>, threshold <span class="op">=</span> <span class="cn">Inf</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">spatial_interpolation</span><span class="op">(</span></span></span>
+<span class="r-in"><span>  x <span class="op">=</span> <span class="va">ps_vec</span>, coords <span class="op">=</span> <span class="va">ps</span>, gridsize <span class="op">=</span> <span class="fl">.05</span>, R_range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">10</span>, <span class="fl">1</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  dist_threshold <span class="op">=</span> <span class="fl">0.01</span>, threshold <span class="op">=</span> <span class="cn">Inf</span></span></span>
+<span class="r-in"><span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>
@@ -159,7 +161,7 @@ the search radius (in km). Default is <code>1</code></p></dd>
 
 
     <footer><div class="pkgdown-footer-left">
-  <p>Developed by The package maintainer.</p>
+  <p>Developed by Tobias Stephan.</p>
 </div>
 
 <div class="pkgdown-footer-right">
