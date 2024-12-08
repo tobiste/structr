@@ -7,7 +7,7 @@
 \title{Stereonet contouring using ggplot}
 \usage{
 geom_contour_stereo(
-  x,
+  data,
   ngrid = 200,
   hw = NULL,
   optimal_bw = c("cross", "rot"),
@@ -17,7 +17,7 @@ geom_contour_stereo(
 )
 
 geom_contourf_stereo(
-  x,
+  data,
   ngrid = 200,
   hw = NULL,
   optimal_bw = c("cross", "rot"),
@@ -28,7 +28,7 @@ geom_contourf_stereo(
 )
 }
 \arguments{
-\item{x}{data.frame containing}
+\item{data}{data.frame containing the orientation}
 
 \item{ngrid}{integer. Resolution of density calculation.}
 

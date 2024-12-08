@@ -92,3 +92,17 @@ ggstereo() +
 ```
 
 
+## Facets
+```{r density, message=FALSE,warning=FALSE}
+area_l <- LETTERS[sample.int(3, nrow(lines), replace = TRUE)]
+area_p <- LETTERS[sample.int(3, nrow(planes), replace = TRUE)]
+
+lines_df <- gg(lines, area=area_l)
+planes_df <- ggl(planes, area = area_p)
+
+ggstereo(data = lines_df, aes(x=x, y=y, color = area)) +
+  geom_path(data = planes_df, aes(x=x, y=y, group = group), alpha = .25, color = 'grey') +
+  geom_point() +
+  facet_wrap(vars(area)) +
+  labs(title = "Example data", color = NULL)
+```

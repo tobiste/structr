@@ -158,8 +158,10 @@ ggframe <- function(n = 1e4, color = "black", fill = NA, lwd = 1, ...) {
   prim.l1 <- seq(0, 180, length = n / 2)
   prim.l2 <- seq(-180, 0, length = n / 2)
   prim.long <- c(prim.l1, prim.l2)
+  
+  prim_df <- data.frame(prim.long, prim.lat)
 
-  geom_polygon(aes(x = prim.long, y = prim.lat), color = color, fill = fill, lwd = lwd, ...)
+  geom_polygon(aes(x = prim.long, y = prim.lat), data = prim_df, color = color, fill = fill, lwd = lwd, ..., inherit.aes = FALSE)
 }
 
 ggstereo_grid <- function(d = 10, rot = 0, ...) {
@@ -188,12 +190,17 @@ ggstereo_grid <- function(d = 10, rot = 0, ...) {
   zp_ggl <- ggl(zp)
 
 
-  geom_path(data = dplyr::bind_rows(sm_ggl, gc_ggl, zp_ggl), mapping = aes(x, y, group = group), ...)
+  geom_path(data = dplyr::bind_rows(sm_ggl, gc_ggl, zp_ggl), mapping = aes(x, y, group = group), ..., inherit.aes = FALSE)
 }
 
 
 #' Stereonet using ggplot
 #'
+#' @param data Default dataset to use for plot. If not already a data.frame, 
+#' will be converted to one by [ggplot2::fortify()]. If not specified, must be 
+#' supplied in each layer added to the plot.
+#' @param mapping Default list of aesthetic mappings to use for plot. If not 
+#' specified, must be supplied in each layer added to the plot.
 #' @param earea logical. Whether the projection is equal-area ("Schmidt net")
 #' (`TRUE`, the default), or equal-angle ("Wulff net") (`FALSE`).
 #' @param grid.spacing numeric. Grid spacing in degree
@@ -221,7 +228,7 @@ ggstereo_grid <- function(d = 10, rot = 0, ...) {
 #' ggstereo(earea = FALSE, centercross = TRUE) +
 #'   ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y))
 #'   }
-ggstereo <- function(earea = TRUE, centercross = TRUE, grid = FALSE, grid.spacing = 10, grid.rot = 0, ...) {
+ggstereo <- function(data = NULL, mapping = aes(), earea = TRUE, centercross = TRUE, grid = FALSE, grid.spacing = 10, grid.rot = 0, ...) {
   # if(earea){
   #   crs = "+proj=aeqd +lat_0=90 +lon_0=0 +x_0=0 +y_0=0"
   # } else {
@@ -229,9 +236,17 @@ ggstereo <- function(earea = TRUE, centercross = TRUE, grid = FALSE, grid.spacin
   # }
   rlang::check_installed("mapproj", reason = "to use `coord_map()`")
   
-  ggplot() +
-    theme_void() +
-    {
+  ggplot(data = data, mapping = mapping) +
+    #theme_void() +
+    theme(
+      title = element_text(element_text(face = "bold")),
+      panel.background = element_blank(), 
+      panel.border = element_blank(),
+      axis.ticks = element_blank(), 
+      axis.title = element_blank(), 
+      axis.text = element_blank(),
+      legend.title = element_blank()
+    ) +    {
       if (grid) {
         ggstereo_grid(d = grid.spacing, rot = grid.rot, color = "lightgrey", lwd = .25)
       }
@@ -240,9 +255,8 @@ ggstereo <- function(earea = TRUE, centercross = TRUE, grid = FALSE, grid.spacin
     annotate("point", x = 0, y = 90, pch = as.numeric(centercross) * 3) +
     scale_y_continuous(limits = c(0, 90)) +
     scale_x_continuous(limits = c(-180, 180)) +
-    coord_map(ifelse(earea, "azequalarea", "stereographic"), orientation = c(90, 0, 0)) +
-    # coord_sf(crs = crs, default_crs = crs) +
-    labs(x = NULL, y = NULL)
+    coord_map(ifelse(earea, "azequalarea", "stereographic"), orientation = c(90, 0, 0)) 
+    # coord_sf(crs = crs, default_crs = crs)
 }
 
 ignore_unused_imports <- function() {
@@ -305,7 +319,7 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 
 #' Stereonet contouring using ggplot
 #'
-#' @param x data.frame containing
+#' @param data data.frame containing the orientation
 #' @param ngrid integer. Resolution of density calculation.
 #' @param hw numeric. Kernel bandwidth in degree.
 #' @param optimal_bw character. Calculates an optimal kernel bandwidth
@@ -348,9 +362,9 @@ NULL
 
 #' @rdname ggstereocontour
 #' @export
-geom_contour_stereo <- function(x, ngrid = 200, hw = NULL, optimal_bw = c("cross", "rot"), norm = FALSE, threshold = 0, ...) {
+geom_contour_stereo <- function(data, ngrid = 200, hw = NULL, optimal_bw = c("cross", "rot"), norm = FALSE, threshold = 0, ...) {
   Long <- Lat <- Density <- NULL
-  xtot <- full_hem(x)
+  xtot <- full_hem(data)
 
   dens <- vmf_kerncontour(xtot, hw = hw, kernel_method = optimal_bw, ngrid = ngrid)
   res <- expand.grid(Lat = dens$lat - 90, Long = dens$long - 180)
@@ -359,15 +373,16 @@ geom_contour_stereo <- function(x, ngrid = 200, hw = NULL, optimal_bw = c("cross
     res$Density <- normalize(res$Density)
   }
   res$Density[res$Density <= threshold] <- NA
+  
   geom_contour(data = res, aes(x = -Long, y = Lat, z = Density), ...)
 }
 
 
 #' @rdname ggstereocontour
 #' @export
-geom_contourf_stereo <- function(x, ngrid = 200, hw = NULL, optimal_bw = c("cross", "rot"), norm = FALSE, smooth = FALSE, threshold = 0, ...) {
+geom_contourf_stereo <- function(data, ngrid = 200, hw = NULL, optimal_bw = c("cross", "rot"), norm = FALSE, smooth = FALSE, threshold = 0, ...) {
   Long <- Lat <- Density <- NULL
-  xtot <- full_hem(x)
+  xtot <- full_hem(data)
 
   dens <- vmf_kerncontour(xtot, hw = hw, kernel_method = optimal_bw, ngrid = ifelse(smooth, 3 * ngrid, ngrid))
   res <- expand.grid(Lat = dens$lat - 90, Long = dens$long - 180)

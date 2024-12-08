@@ -5,6 +5,8 @@
 \title{Stereonet using ggplot}
 \usage{
 ggstereo(
+  data = NULL,
+  mapping = aes(),
   earea = TRUE,
   centercross = TRUE,
   grid = FALSE,
@@ -14,6 +16,13 @@ ggstereo(
 )
 }
 \arguments{
+\item{data}{Default dataset to use for plot. If not already a data.frame,
+will be converted to one by \code{\link[ggplot2:fortify]{ggplot2::fortify()}}. If not specified, must be
+supplied in each layer added to the plot.}
+
+\item{mapping}{Default list of aesthetic mappings to use for plot. If not
+specified, must be supplied in each layer added to the plot.}
+
 \item{earea}{logical. Whether the projection is equal-area ("Schmidt net")
 (\code{TRUE}, the default), or equal-angle ("Wulff net") (\code{FALSE}).}
 
