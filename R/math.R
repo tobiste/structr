@@ -437,13 +437,13 @@ vresultant <- function(x, w = NULL, mean = FALSE) {
 #' @name stats
 #' @examples
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)
-
 #' v_var(x)
 #' v_delta(x)
 #' v_rdegree(x)
 #' v_sde(x)
 #' v_confidence_angle(x)
 #' estimate_k(x)
+#' fisher_statistics(x)
 #'
 #' #' weights:
 #' x2 <-  Line(c(0, 0), c(0, 90))
@@ -535,14 +535,21 @@ v_delta <- function(x, w = NULL) {
 
 #' @rdname stats
 #' @export
-v_rdegree <- function(x) {
+v_rdegree <- function(x, w = NULL) {
   if (is.spherical(x)) {
     v <- to_vec(x)
   } else {
     v <- vec2mat(x)
   }
-  N <- nrow(v)
-  Rbar <- vresultant(vnorm(v), mean = FALSE) |>
+  #N <- nrow(v)
+  w <- if (is.null(w)) {
+    rep(1, times = nrow(v))
+  } else {
+    as.numeric(w)
+  }
+  
+  N <- sum(w)
+  Rbar <- vresultant(vnorm(v), w, mean = FALSE) |>
     vlength()
 
   100 * (2 * Rbar - N) / N
@@ -550,15 +557,22 @@ v_rdegree <- function(x) {
 
 #' @rdname stats
 #' @export
-v_sde <- function(x) {
+v_sde <- function(x, w = NULL) {
   if (is.spherical(x)) {
     v <- to_vec(x)
   } else {
     v <- vec2mat(x)
   }
-  N <- nrow(v)
+  w <- if (is.null(w)) {
+    rep(1, times = nrow(v))
+  } else {
+    as.numeric(w)
+  }
+  
+  N <- sum(w)
+  
   if (N < 25) warning("The standard error might not be a good estimator for N < 25")
-  xbar <- vsum(v) / N
+  xbar <- vsum(v, w) / N
   Rbar <- vlength(xbar)
   mu <- xbar / Rbar
 
@@ -576,7 +590,7 @@ v_sde <- function(x) {
 
 #' @rdname stats
 #' @export
-v_confidence_angle <- function(x, alpha = 0.05) {
+v_confidence_angle <- function(x, w = NULL, alpha = 0.05) {
   if (is.spherical(x)) {
     v <- to_vec(x)
   } else {
@@ -584,7 +598,7 @@ v_confidence_angle <- function(x, alpha = 0.05) {
   }
 
   e_alpha <- -log(alpha)
-  q <- asin(sqrt(e_alpha) * v_sde(v))
+  q <- asin(sqrt(e_alpha) * v_sde(v, w))
 
   if (is.spherical(x)) {
     rad2deg(q)
@@ -616,16 +630,13 @@ v_antipode <- function(x) {
 
 #' @rdname stats
 #' @export
-estimate_k <- function(x) {
+estimate_k <- function(x, w = NULL) {
   if (is.spherical(x)) {
     v <- to_vec(x)
   } else {
     v <- vec2mat(x)
   }
-  # N <- nrow(v)
-  # xbar <- vsum(v) / N
-  # Rbar <- vlength(xbar)
-  Rbar <- vresultant(v, mean = TRUE) |>
+  Rbar <- vresultant(v, w = w, mean = TRUE) |>
     vlength()
 
   p <- 3
@@ -647,12 +658,11 @@ estimate_k <- function(x) {
 #' \item{`"csd"`}{estimated angular standard deviation}
 #' \item{`"a95"`}{confidence limit}
 #' }
+#' @export
 #' @examples
-#' \dontrun{
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)
 #' fisher_statistics(x)
-#' }
-fisher_statistics <- function(x) {
+fisher_statistics <- function(x, w = NULL) {
   transform <- FALSE
   if (is.spherical(x)) {
     x <- to_vec(x)
@@ -660,9 +670,15 @@ fisher_statistics <- function(x) {
   } else {
     x <- vec2mat(x)
   }
-  N <- nrow(x)
-  R <- x |>
-    vresultant() |>
+  w <- if (is.null(w)) {
+    rep(1, times = nrow(x))
+  } else {
+    as.numeric(w)
+  }
+  
+  N <- sum(w)
+  
+  R <- vresultant(x, w) |>
     vlength()
 
   if (N != R) {
@@ -686,7 +702,7 @@ fisher_statistics <- function(x) {
 #' @note For non-unit vectors the interpolation is not uniform
 #' @details
 #' A Slerp path is the spherical geometry equivalent of a path along a line
-#' segment in the plane; a great circle is a spherical geodesic. #'
+#' segment in the plane; a great circle is a spherical geodesic. 
 #' @export
 vslerp <- function(x, y, t) {
   transform <- FALSE

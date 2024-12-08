@@ -17,7 +17,7 @@ Returns the spherical linear interpolation of points between two vectors
 }
 \details{
 A Slerp path is the spherical geometry equivalent of a path along a line
-segment in the plane; a great circle is a spherical geodesic. #'
+segment in the plane; a great circle is a spherical geodesic.
 }
 \note{
 For non-unit vectors the interpolation is not uniform

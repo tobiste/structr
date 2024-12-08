@@ -17,13 +17,13 @@ v_var(x, w = NULL)
 
 v_delta(x, w = NULL)
 
-v_rdegree(x)
+v_rdegree(x, w = NULL)
 
-v_sde(x)
+v_sde(x, w = NULL)
 
-v_confidence_angle(x, alpha = 0.05)
+v_confidence_angle(x, w = NULL, alpha = 0.05)
 
-estimate_k(x)
+estimate_k(x, w = NULL)
 }
 \arguments{
 \item{x}{numeric. Can be three element vector, three column array, or an
@@ -68,6 +68,7 @@ v_rdegree(x)
 v_sde(x)
 v_confidence_angle(x)
 estimate_k(x)
+fisher_statistics(x)
 
 #' weights:
 x2 <-  Line(c(0, 0), c(0, 90))

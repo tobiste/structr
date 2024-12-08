@@ -242,13 +242,14 @@ ggstereo <- function(data = NULL, mapping = aes(), earea = TRUE, centercross = T
       title = element_text(element_text(face = "bold")),
       panel.background = element_blank(), 
       panel.border = element_blank(),
+      panel.grid = element_blank(),
       axis.ticks = element_blank(), 
       axis.title = element_blank(), 
       axis.text = element_blank(),
-      legend.title = element_blank()
+      #legend.title = element_blank()
     ) +    {
       if (grid) {
-        ggstereo_grid(d = grid.spacing, rot = grid.rot, color = "lightgrey", lwd = .25)
+        ggstereo_grid(d = grid.spacing, rot = grid.rot, color = "grey90", lwd = .2)
       }
     } +
     ggframe(...) +

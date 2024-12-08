@@ -4,7 +4,7 @@
 \alias{fisher_statistics}
 \title{Fisher's statistics}
 \usage{
-fisher_statistics(x)
+fisher_statistics(x, w = NULL)
 }
 \arguments{
 \item{x}{numeric. Can be three element vector, three column array, or an
@@ -24,8 +24,6 @@ Estimates concentration parameter, angular standard deviation, and
 confidence limit.
 }
 \examples{
-\dontrun{
 x <- rvmf(100, mu = Line(120, 50), k = 5)
 fisher_statistics(x)
-}
 }
