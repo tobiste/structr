@@ -5,7 +5,7 @@
 \alias{principal_stretch}
 \alias{principal_strain}
 \alias{or_shape_params}
-\title{Principal stretches, strain and shape parameters based on the orientation tensor.}
+\title{Principal Stretches, Strain and Shape Parameters based on the Orientation Tensor.}
 \usage{
 principal_stretch(x)
 
@@ -21,7 +21,7 @@ object of class \code{"line"} or \code{"plane"}}
 list
 }
 \description{
-Principal stretches, strain and shape parameters based on the orientation tensor.
+Principal Stretches, Strain and Shape Parameters based on the Orientation Tensor.
 }
 \details{
 \describe{
@@ -55,7 +55,8 @@ Kirschvink, J. (1980). The least-squares line and plane and the analysis of pala
 
 Lisle, Richard J. "The use of the orientation tensor for the description and statistical testing of fabrics." Journal of Structural Geology 7.1 (1985): 115-117.
 
-Lode (1926)
+Lode, Walter (1926) "Versuche über den Einfluß der mittleren Hauptspannung auf das Fließen der Metalle Eisen, Kupfer und Nickel“
+(\emph{"Experiments on the influence of the mean principal stress on the flow of the metals iron, copper and nickel"}], Zeitschrift für Physik, vol. 36 (November), pp. 913–939, DOI: 10.1007/BF01400222
 
 Mardia, Kantilal Varichand. "Statistics of directional data." Journal of the Royal Statistical Society Series B: Statistical Methodology 37.3 (1975): 349-371.
 
@@ -70,4 +71,7 @@ Vollmer, Frederick W. "Representing Progressive Fabric Paths on a Triangular Plo
 Watterson, Juan. Homogeneous deformation of the gneisses of Vesterland, south-west Greenland. No. 78. CA Reitzel, 1968.
 
 Woodcock, N. H. "Specification of fabric shapes using an eigenvalue method." Geological Society of America Bulletin 88.9 (1977): 1231-1236.
+}
+\seealso{
+\code{\link[=ortensor]{ortensor()}}, \code{\link[=or_eigen]{or_eigen()}}, \code{\link[=fabric_indexes]{fabric_indexes()}}
 }

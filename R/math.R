@@ -617,7 +617,8 @@ v_antipode <- function(x) {
     v <- vec2mat(x)
   }
 
-  xa <- vrotate(v, c(1, 0, 0), pi)
+  #xa <- vrotate(v, c(1, 0, 0), pi)
+  xa <- -v
 
   if (transform) {
     to_spherical(xa, class)
@@ -743,7 +744,7 @@ vslerp <- function(x, y, t) {
 #' @seealso [or_eigen()]
 #' @examples
 #' set.seed(1)
-#' x <- rvmf(100, mu = Line(120, 50), k = 20)
+#' x <- rfb(100, mu = Line(120, 50), k = 1, A = diag(c(10, 0, 0)))
 #' ortensor(x)
 ortensor <- function(x, norm = TRUE) {
   if (is.line(x) | is.plane(x)) x <- to_vec(x)
@@ -767,7 +768,7 @@ ortensor <- function(x, norm = TRUE) {
 }
 
 
-#' Eigenvalues and eigenvectors of a set of vectors
+#' Eigenvalues and Eigenvectors of a Set of Vectors
 #'
 #' Decomposition of Orientation tensor
 #'
@@ -785,7 +786,7 @@ ortensor <- function(x, norm = TRUE) {
 #' @examples
 #' set.seed(1)
 #' mu <- Line(120, 50)
-#' x <- rvmf(100, mu = mu, k = 20)
+#' x <- rfb(100, mu = mu, k = 1, A = diag(c(10, 0, 0)))
 #' x_eigen <- or_eigen(x)
 #' x_eigen
 #' stereoplot()
@@ -794,15 +795,16 @@ ortensor <- function(x, norm = TRUE) {
 #' stereo_point(x_eigen$vectors, col = c(1, 2, 3), lab = c("E1", "E2", "E3"))
 or_eigen <- function(x, scaled = FALSE) {
   x_or <- ortensor(x, norm = TRUE)
-  # x_eigen <- eigen(x_or)
-  # x_eigen$vectors <- t(x_eigen$vectors)
+  x_eigen <- eigen(x_or)
+  x_eigen$vectors <- t(x_eigen$vectors)
 
-  x_svd <- svd(x_or) # Singular Value Decomposition of a Matrix
-  x_eigen <- list(
-    values = x_svd$d,
-    vectors = t(x_svd$u)
-  )
-
+  x_eigen$vectors[1, ] <- -(x_eigen$vectors[1, ])
+  
+  # x_svd <- svd(x_or) # Singular Value Decomposition of a Matrix
+  # x_eigen <- list(
+  #   values = x_svd$d,
+  #   vectors = t(x_svd$u)
+  # )
 
   if (scaled) {
     x_eigen$vectors[, 1] * x_eigen$values[1]
@@ -811,16 +813,16 @@ or_eigen <- function(x, scaled = FALSE) {
   }
 
   if (is.line(x)) {
-    x_eigen$vectors <- x_eigen$vectors |> vec2line()
+    x_eigen$vectors <- vec2line(x_eigen$vectors)
   } else if (is.plane(x)) {
-    x_eigen$vectors <- x_eigen$vectors |> vec2plane()
+    x_eigen$vectors <- vec2plane(x_eigen$vectors)
   } else {
     colnames(x_eigen$vectors) <- c("x", "y", "z")
   }
   x_eigen
 }
 
-#' Principal stretches, strain and shape parameters based on the orientation tensor.
+#' Principal Stretches, Strain and Shape Parameters based on the Orientation Tensor.
 #'
 #' @param x numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
@@ -844,6 +846,8 @@ or_eigen <- function(x, scaled = FALSE) {
 #' \item{`US`}{Uniformity statistic of Mardia (1972)}
 #' }
 #' 
+#' @seealso [ortensor()], [or_eigen()], [fabric_indexes()]
+#' 
 #' @returns list
 #' 
 #' @references 
@@ -853,7 +857,8 @@ or_eigen <- function(x, scaled = FALSE) {
 #'  
 #' Lisle, Richard J. "The use of the orientation tensor for the description and statistical testing of fabrics." Journal of Structural Geology 7.1 (1985): 115-117.
 #' 
-#' Lode (1926)
+#' Lode, Walter (1926) "Versuche über den Einfluß der mittleren Hauptspannung auf das Fließen der Metalle Eisen, Kupfer und Nickel“ 
+#'  (*"Experiments on the influence of the mean principal stress on the flow of the metals iron, copper and nickel"*], Zeitschrift für Physik, vol. 36 (November), pp. 913–939, DOI: 10.1007/BF01400222
 #' 
 #' Mardia, Kantilal Varichand. "Statistics of directional data." Journal of the Royal Statistical Society Series B: Statistical Methodology 37.3 (1975): 349-371.
 #' 

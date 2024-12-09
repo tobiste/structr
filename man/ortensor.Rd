@@ -21,7 +21,7 @@ eigenvalue method. See (Watson 1966, Scheidegger 1965).
 }
 \examples{
 set.seed(1)
-x <- rvmf(100, mu = Line(120, 50), k = 20)
+x <- rfb(100, mu = Line(120, 50), k = 1, A = diag(c(10, 0, 0)))
 ortensor(x)
 }
 \seealso{

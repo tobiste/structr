@@ -2,7 +2,7 @@
 % Please edit documentation in R/math.R
 \name{or_eigen}
 \alias{or_eigen}
-\title{Eigenvalues and eigenvectors of a set of vectors}
+\title{Eigenvalues and Eigenvectors of a Set of Vectors}
 \usage{
 or_eigen(x, scaled = FALSE)
 }
@@ -26,7 +26,7 @@ Decomposition of Orientation tensor
 \examples{
 set.seed(1)
 mu <- Line(120, 50)
-x <- rvmf(100, mu = mu, k = 20)
+x <- rfb(100, mu = mu, k = 1, A = diag(c(10, 0, 0)))
 x_eigen <- or_eigen(x)
 x_eigen
 stereoplot()
