@@ -25,7 +25,7 @@ Decomposition of Orientation Tensor Eigenvectors and Eigenvalues
 }
 \examples{
 set.seed(1)
-mu <- rvmf(n = 1) |>  vec2line()
+mu <- rvmf(n = 1) |> vec2line()
 x <- rfb(100, mu = mu, k = 1, A = diag(c(10, 0, 0)))
 x_eigen <- or_eigen(x)
 x_eigen

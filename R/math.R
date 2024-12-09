@@ -47,15 +47,14 @@ vsum <- function(x, w = NULL) {
 #' @rdname operations
 #' @export
 vnorm <- function(x) {
-  transform <- FALSE
-  if (is.spherical(x)) {
+  transform <- is.spherical(x)
+  if (transform) {
     class <- class(x)
     x <- to_vec(x)
-    transform <- TRUE
   }
   xn <- x / vlength(x)
   if (transform) {
-    to_spherical(xn)
+    to_spherical(xn, class = class)
   } else {
     xn
   }
@@ -64,11 +63,10 @@ vnorm <- function(x) {
 #' @rdname operations
 #' @export
 vcross <- function(x, y) {
-  transform <- FALSE
+  transform <- is.spherical(x)
   if (is.spherical(x)) {
     class <- class(x)
     x <- to_vec(x)
-    transform <- TRUE
   } else {
     x <- vec2mat(x)
   }
@@ -98,7 +96,6 @@ vdot <- function(x, y) {
   if (is.spherical(x)) {
     class <- class(x)
     x <- to_vec(x)
-    # transform <- TRUE
   } else {
     x <- vec2mat(x)
   }
@@ -114,11 +111,10 @@ vdot <- function(x, y) {
 #' @rdname operations
 #' @export
 vrotate <- function(x, rotaxis, rotangle) {
-  transform <- FALSE
-  if (is.spherical(x)) {
+  transform <- is.spherical(x)
+  if (transform) {
     class <- class(x)
     x <- to_vec(x)
-    transform <- TRUE
   } else {
     x <- vec2mat(x)
   }
@@ -142,11 +138,10 @@ vrotate <- function(x, rotaxis, rotangle) {
 }
 
 vrotaxis <- function(x, y) {
-  transform <- FALSE
-  if (is.spherical(x)) {
+  transform <- is.spherical(x)
+  if (transform) {
     class <- class(x)
     x <- to_vec(x)
-    transform <- TRUE
   } else {
     x <- vec2mat(x)
   }
@@ -177,16 +172,15 @@ vrotaxis <- function(x, y) {
 #' @rdname operations
 #' @export
 vangle <- function(x, y) {
-  transform <- FALSE
-  if (is.spherical(x)) {
-    classx <- class(x)
+  transform <- is.spherical(x)
+  if (transform) {
+    # classx <- class(x)
     x <- to_vec(x)
-    transform <- TRUE
   } else {
     x <- vec2mat(x)
   }
   if (is.spherical(y)) {
-    classy <- class(y)
+    # classy <- class(y)
     y <- to_vec(y)
   } else {
     y <- vec2mat(y)
@@ -204,11 +198,10 @@ vangle <- function(x, y) {
 #' @rdname operations
 #' @export
 vproject <- function(x, y) {
-  transform <- FALSE
-  if (is.spherical(x)) {
+  transform <- is.spherical(x)
+  if (transform) {
     class <- class(x)
     x <- to_vec(x)
-    transform <- TRUE
   } else {
     x <- vec2mat(x)
   }
@@ -238,11 +231,10 @@ vproject_length <- function(x, y) {
 #' @rdname operations
 #' @export
 vreject <- function(x, y) {
-  transform <- FALSE
-  if (is.spherical(x)) {
+  transform <- is.spherical(x)
+  if (transform) {
     class <- class(x)
     x <- to_vec(x)
-    transform <- TRUE
   } else {
     x <- vec2mat(x)
   }
@@ -275,11 +267,10 @@ v_orthogonalize <- function(x, y) {
   if (abs(vdot(x, y)) < 1.0e-4) {
     return(list(x, y))
   } else {
-    transform <- FALSE
-    if (is.spherical(x)) {
+    transform <- is.spherical(x)
+    if (transform) {
       classx <- class(x)
       x <- to_vec(x)
-      transform <- TRUE
     } else {
       x <- vec2mat(x)
     }
@@ -353,11 +344,10 @@ v_orthogonalize <- function(x, y) {
 #' vtransform(vec, mat)
 vtransform <- function(x, A, norm = FALSE) {
   stopifnot(is.matrix(A))
-  transform <- FALSE
-  if (is.spherical(x)) {
+  transform <- is.spherical(x)
+  if (transform) {
     class <- class(x)
     x <- to_vec(x)
-    transform <- TRUE
   } else {
     x <- vec2mat(x)
   }
@@ -396,12 +386,24 @@ vresultant <- function(x, w = NULL, mean = FALSE) {
     as.numeric(w)
   }
 
+  transform <- is.spherical(x)
+  if (transform) {
+    v <- to_vec(x)
+  } else {
+    v <- vec2mat(x)
+  }
+
+
   R <- vsum(x, w)
   if (mean) {
     N <- sum(w)
     R <- R / N
   }
-  R
+  if (transform) {
+    to_spherical(R, class(x))
+  } else {
+    R
+  }
 }
 
 #' Statistical estimators of the distribution of a set of vectors
@@ -423,7 +425,7 @@ vresultant <- function(x, w = NULL, mean = FALSE) {
 #' if otherwise). For enough large sample it approaches the angular standard
 #' deviation (`"csd"`) of the Fisher statistics.
 #'
-#' `v_rdegree` returns the degree of preferred orientation of vectors (in %).
+#' `v_rdegree` returns the degree of preferred orientation of vectors, range: (0, 1).
 #'
 #' `v_sde` returns the spherical standard error (numeric). If the number of
 #' data is less than 25, if will print a additional message, that the output
@@ -436,7 +438,9 @@ vresultant <- function(x, w = NULL, mean = FALSE) {
 #' @seealso [vresultant()], [fisher_statistics()]
 #' @name stats
 #' @examples
+#' set.seed(1234)
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)
+#' v_mean(x)
 #' v_var(x)
 #' v_delta(x)
 #' v_rdegree(x)
@@ -446,7 +450,7 @@ vresultant <- function(x, w = NULL, mean = FALSE) {
 #' fisher_statistics(x)
 #'
 #' #' weights:
-#' x2 <-  Line(c(0, 0), c(0, 90))
+#' x2 <- Line(c(0, 0), c(0, 90))
 #' v_mean(x2)
 #' v_mean(x2, w = c(1, 2))
 #' v_var(x2)
@@ -456,10 +460,9 @@ NULL
 #' @rdname stats
 #' @export
 v_mean <- function(x, w = NULL) {
-  transform <- FALSE
-  if (is.spherical(x)) {
+  transform <- is.spherical(x)
+  if (transform) {
     v <- to_vec(x)
-    transform <- TRUE
   } else {
     v <- vec2mat(x)
   }
@@ -516,8 +519,8 @@ v_sd <- function(x, w = NULL) {
 #' @rdname stats
 #' @export
 v_delta <- function(x, w = NULL) {
-  transform <- FALSE
-  if (is.spherical(x)) {
+  transform <- is.spherical(x)
+  if (transform) {
     v <- to_vec(x)
   } else {
     v <- vec2mat(x)
@@ -526,7 +529,7 @@ v_delta <- function(x, w = NULL) {
     vlength()
   d <- acos(Rbar)
 
-  if (is.spherical(x)) {
+  if (transform) {
     rad2deg(d)
   } else {
     d
@@ -541,18 +544,18 @@ v_rdegree <- function(x, w = NULL) {
   } else {
     v <- vec2mat(x)
   }
-  #N <- nrow(v)
+
   w <- if (is.null(w)) {
     rep(1, times = nrow(v))
   } else {
     as.numeric(w)
   }
-  
+
   N <- sum(w)
   Rbar <- vresultant(vnorm(v), w, mean = FALSE) |>
     vlength()
 
-  100 * (2 * Rbar - N) / N
+  (2 * Rbar - N) / N
 }
 
 #' @rdname stats
@@ -568,9 +571,9 @@ v_sde <- function(x, w = NULL) {
   } else {
     as.numeric(w)
   }
-  
+
   N <- sum(w)
-  
+
   if (N < 25) warning("The standard error might not be a good estimator for N < 25")
   xbar <- vsum(v, w) / N
   Rbar <- vlength(xbar)
@@ -608,16 +611,15 @@ v_confidence_angle <- function(x, w = NULL, alpha = 0.05) {
 }
 
 v_antipode <- function(x) {
-  transform <- FALSE
-  if (is.spherical(x)) {
+  transform <- is.spherical(x)
+  if (transform) {
     class <- class(x)
     v <- to_vec(x)
-    transform <- TRUE
   } else {
     v <- vec2mat(x)
   }
 
-  #xa <- vrotate(v, c(1, 0, 0), pi)
+  # xa <- vrotate(v, c(1, 0, 0), pi)
   xa <- -v
 
   if (transform) {
@@ -652,6 +654,7 @@ estimate_k <- function(x, w = NULL) {
 #'
 #' @param x numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
+#' @param w numeric. weights
 #' @returns list, with
 #' \describe{
 #' \item{`"k"`}{estimated concentration parameter \eqn{\kappa} for the von Mises-Fisher
@@ -664,10 +667,9 @@ estimate_k <- function(x, w = NULL) {
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)
 #' fisher_statistics(x)
 fisher_statistics <- function(x, w = NULL) {
-  transform <- FALSE
-  if (is.spherical(x)) {
+  transform <- is.spherical(x)
+  if (transform) {
     x <- to_vec(x)
-    transform <- TRUE
   } else {
     x <- vec2mat(x)
   }
@@ -676,9 +678,9 @@ fisher_statistics <- function(x, w = NULL) {
   } else {
     as.numeric(w)
   }
-  
+
   N <- sum(w)
-  
+
   R <- vresultant(x, w) |>
     vlength()
 
@@ -703,15 +705,15 @@ fisher_statistics <- function(x, w = NULL) {
 #' @note For non-unit vectors the interpolation is not uniform
 #' @details
 #' A Slerp path is the spherical geometry equivalent of a path along a line
-#' segment in the plane; a great circle is a spherical geodesic. 
+#' segment in the plane; a great circle is a spherical geodesic.
 #' @export
 vslerp <- function(x, y, t) {
-  transform <- FALSE
-  if (is.spherical(x)) {
+  transform <- is.spherical(x)
+  if (transform) {
+    class <- class(x)
     x <- to_vec(x)
   } else {
     x <- vec2mat(x)
-    transform <- TRUE
   }
   if (is.spherical(y)) {
     y <- to_vec(y)
@@ -722,7 +724,7 @@ vslerp <- function(x, y, t) {
   slerp <- (x * sin((1 - t) * theta) + y * sin(t * theta)) / sin(theta)
 
   if (transform) {
-    to_spherical(slerp, class(x))
+    to_spherical(slerp, class)
   } else {
     slerp
   }
@@ -785,7 +787,7 @@ ortensor <- function(x, norm = TRUE) {
 #' @export
 #' @examples
 #' set.seed(1)
-#' mu <- rvmf(n = 1) |>  vec2line()
+#' mu <- rvmf(n = 1) |> vec2line()
 #' x <- rfb(100, mu = mu, k = 1, A = diag(c(10, 0, 0)))
 #' x_eigen <- or_eigen(x)
 #' x_eigen
@@ -821,7 +823,7 @@ or_eigen <- function(x, scaled = FALSE) {
 #'
 #' @importFrom dplyr near
 #' @name strain_shape
-#' 
+#'
 #' @details \describe{
 #' \item{`stretch_ratios`}{Sqrt of eigenvalue ratios}
 #' \item{`strain_ratios`}{Log of stretch ratios}
@@ -837,35 +839,35 @@ or_eigen <- function(x, scaled = FALSE) {
 #' \item{`MAD`}{maximum angular deviation (Kirschvink, 1980)}
 #' \item{`US`}{Uniformity statistic of Mardia (1972)}
 #' }
-#' 
+#'
 #' @seealso [ortensor()], [or_eigen()], [fabric_indexes()]
-#' 
+#'
 #' @returns list
-#' 
-#' @references 
+#'
+#' @references
 #' Flinn, Derek.(1963): "On the statistical analysis of fabric diagrams." Geological Journal 3.2: 247-253.
-#' 
+#'
 #' Kirschvink, J. (1980): The least-squares line and plane and the analysis of palaeomagnetic data. Geophysical Journal International, 62(3), 699-718.
-#'  
+#'
 #' Lisle, Richard J.  (1985): "The use of the orientation tensor for the description and statistical testing of fabrics." Journal of Structural Geology 7.1: 115-117.
-#' 
-#' Lode, Walter (1926): "Versuche über den Einfluß der mittleren Hauptspannung auf das Fließen der Metalle Eisen, Kupfer und Nickel“ 
+#'
+#' Lode, Walter (1926): "Versuche über den Einfluß der mittleren Hauptspannung auf das Fließen der Metalle Eisen, Kupfer und Nickel“
 #'  (*"Experiments on the influence of the mean principal stress on the flow of the metals iron, copper and nickel"*], Zeitschrift für Physik, vol. 36 (November), pp. 913–939, DOI: 10.1007/BF01400222
-#' 
+#'
 #' Mardia, Kantilal Varichand. (1975): "Statistics of directional data." Journal of the Royal Statistical Society Series B: Statistical Methodology 37.3: 349-371.
-#' 
+#'
 #' Nadai, A., and Hodge, P. G., Jr. (1963): "Theory of Flow and Fracture of Solids, vol. II." ASME. J. Appl. Mech. December 1963; 30(4): 640. https://doi.org/10.1115/1.3636654
-#' 
-#' Ramsay, John G. (1967): "Folding and fracturing of rocks." Mc Graw Hill Book Company 568. 
-#' 
+#'
+#' Ramsay, John G. (1967): "Folding and fracturing of rocks." Mc Graw Hill Book Company 568.
+#'
 #' Vollmer, Frederick W. (1990): "An application of eigenvalue methods to structural domain analysis." Geological Society of America Bulletin 102.6: 786-791.
-#' 
+#'
 #' Vollmer, Frederick W. (2020): "Representing Progressive Fabric Paths on a Triangular Plot Using a Fabric Density Index and Crystal Axes Eigenvector Barycenters." Geological Society of America Abstracts. Vol. 52.
-#' 
+#'
 #' Watterson, Juan. (1968): "Homogeneous deformation of the gneisses of Vesterland, south-west Greenland". No. 78. CA Reitzel.
-#' 
+#'
 #' Woodcock, N. H.  (1977): "Specification of fabric shapes using an eigenvalue method." Geological Society of America Bulletin 88.9: 1231-1236.
-#' 
+#'
 #' @examples
 #' set.seed(1)
 #' mu <- Line(120, 50)
@@ -932,10 +934,10 @@ or_shape_params <- function(x) {
   } else {
     kind <- "LS"
   }
-  
+
   # Vollmer
   N <- nrow(x)
-  
+
   P <- eig$values[1] - eig$values[2] #  Point index (Vollmer, 1990)
   G <- 2 * (eig$values[2] - eig$values[3]) #  Girdle index (Vollmer, 1990)
   R <- 3 * eig$values[3] # Random index (Vollmer, 1990)
@@ -945,8 +947,8 @@ or_shape_params <- function(x) {
 
   us <- (15 * N / 2) * sum((eig$values[1] - 1 / 3)^2, (eig$values[2] - 1 / 3)^2, (eig$values[3] - 1 / 3)^2) # Uniformity statistic of Mardia
   D <- (us / (5 * N))^0.5 # D of Vollmer 2020
-  
-  Vollmer <- c(P = P, G = G, R = R, B = B, C=C, I=I, D = D)
+
+  Vollmer <- c(P = P, G = G, R = R, B = B, C = C, I = I, D = D)
 
   Lisle_intensity <- 7.5 * sum((eig$values - 1 / 3)^2)
 
@@ -967,13 +969,13 @@ or_shape_params <- function(x) {
   Woodcock <- c(strength = e13, shape = K)
   Watterson_intensity <- Rxy + Ryz - 1
 
-  # JPF 
+  # JPF
   # hom.dens <- projection(hom.cpo, upper.proj(hom.cpo), stereonet)
   # # hom.kde <- if(bw != "NA"){kde2d(unlist(hom.dens[[3]][1]), unlist(hom.dens[[3]][2]), h = bw/100*2.4, lims = kde.lims)$z} else{kde2d(unlist(hom.dens[[3]][1]), unlist(hom.dens[[3]][2]), lims = kde.lims)$z}
   # hom.kde <- kde2d(unlist(hom.dens[[1]]), unlist(hom.dens[[2]]), h = bw / 100 * 2, lims = kde.lims)$z
   # hom.norm <- norm(hom.kde, type = "2")
   # dens.norm <- norm(kde, type = "2")
-  
+
   list(
     stretch_ratios = stretch_ratios,
     strain_ratios = strain_ratios,
@@ -1037,7 +1039,12 @@ or_shape_params <- function(x) {
 #' stereo_point(x_centered, col = "black")
 #' stereo_point(Line(c(0, 90, 180), c(0, 0, 90)), col = 2:4, lab = c("E3", "E2", "E1"))
 center <- function(x, max_vertical = FALSE) {
-  x_cart <- to_vec(x)
+  transform <- is.spherical(x)
+  if (transform) {
+    x_cart <- to_vec(x)
+  } else {
+    x_cart <- x
+  }
   x_or <- ortensor(x_cart)
   x_svd <- svd(x_or) # Singular Value Decomposition of a Matrix
   x_eigen <- list(
@@ -1057,7 +1064,7 @@ center <- function(x, max_vertical = FALSE) {
   } else {
     x_cent <- x_trans
   }
-  if (is.spherical(x)) {
+  if (transform) {
     x_cent <- to_spherical(x_cent, class(x))
   }
   x_cent

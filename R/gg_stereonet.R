@@ -20,23 +20,32 @@
 #'
 #' @examples
 #' if (require("mapproj")) {
-#' x <- Plane(120, 85)
-#' ggstereo() +
-#'   ggplot2::geom_point(data = gg(x), ggplot2::aes(x, y), color = "red") +
-#'   ggplot2::geom_path(data = ggl(x), ggplot2::aes(x, y), color = "red")
+#'   x <- Plane(120, 85)
+#'   ggstereo() +
+#'     ggplot2::geom_point(data = gg(x), ggplot2::aes(x, y), color = "red") +
+#'     ggplot2::geom_path(data = ggl(x), ggplot2::aes(x, y), color = "red")
 #'
-#' x2 <- Line(120, 5)
-#' ggstereo() +
-#'   ggplot2::geom_point(data = gg(x2), ggplot2::aes(x, y), color = "darkgreen") +
-#'   ggplot2::geom_path(data = ggl(x2, d = 8), ggplot2::aes(x, y, group = group), color = "darkgreen")
-#'   
-#' x3 <- Plane(137, 71)
-#' ggstereo() +
-#'   ggplot2::geom_point(data = gg(x3), ggplot2::aes(x, y), color = "darkgreen") +
-#'   ggplot2::geom_path(data = ggl(x3, d = 90), ggplot2::aes(x, y, group = group), color = "darkgreen", lwd = 1) +
-#'   ggplot2::geom_path(data = ggl(x3, d = 90 + 11), ggplot2::aes(x, y, group = group, color = 'sde <90')) +
-#'   ggplot2::geom_path(data = ggl(x3, d = 90 - 11), ggplot2::aes(x, y, group = group, color = 'sde >90'))
-#'   }
+#'   x2 <- Line(120, 5)
+#'   ggstereo() +
+#'     ggplot2::geom_point(data = gg(x2), ggplot2::aes(x, y), color = "darkgreen") +
+#'     ggplot2::geom_path(data = ggl(x2, d = 8), ggplot2::aes(x, y, group = group), color = "darkgreen")
+#'
+#'   x3 <- Plane(137, 71)
+#'   ggstereo() +
+#'     ggplot2::geom_point(data = gg(x3), ggplot2::aes(x, y), color = "darkgreen") +
+#'     ggplot2::geom_path(
+#'       data = ggl(x3, d = 90),
+#'       ggplot2::aes(x, y, group = group), color = "darkgreen", lwd = 1
+#'     ) +
+#'     ggplot2::geom_path(
+#'       data = ggl(x3, d = 90 + 11),
+#'       ggplot2::aes(x, y, group = group, color = "sde <90")
+#'     ) +
+#'     ggplot2::geom_path(
+#'       data = ggl(x3, d = 90 - 11),
+#'       ggplot2::aes(x, y, group = group, color = "sde >90")
+#'     )
+#' }
 NULL
 
 #' @rdname prepare-ggplot
@@ -67,7 +76,7 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
   stopifnot(is.spherical(x))
   if (n %% 2 > 0) n <- n + 1
   if (is.plane(x) | is.fault(x)) {
-    #x[, 1] <- 180 + x[, 1]
+    # x[, 1] <- 180 + x[, 1]
     x[, 2] <- 90 - x[, 2]
   }
 
@@ -82,7 +91,7 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
 
   res <- matrix(ncol = 3, nrow = n * nx) |>
     as.data.frame()
-  colnames(res) <- c("x", "y",  "id")
+  colnames(res) <- c("x", "y", "id")
 
   for (i in seq_along(x[, 1])) {
     D <- cbind(azimuth = seq(0, 360, l = n), plunge = rep(90 - d[i], n)) |>
@@ -95,13 +104,13 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
     D1 <- vrotate(D, zaxis, deg2rad(strike))
     rotangle <- vangle(zaxis, as.line(x[i, ]))
 
-    if(d[i] < 90 & is.plane(x)){
+    if (d[i] < 90 & is.plane(x)) {
       d[i] <- 180 - d[i]
       D1 <- -D1
       x[i, 1] <- x[i, 1] + 180
-      x[i, 2] <- 90- x[i, 2]
+      x[i, 2] <- 90 - x[i, 2]
     }
-    
+
     if (d[i] < 90) {
       k <- -1
     } else {
@@ -116,32 +125,32 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
 
     if (d[i] != 90 & d[i] > as.line(x[i, ])[2]) {
       # upper hemisphere
-      #flag <- TRUE
-      #D_rotrot <- vrotate(D_rot, zaxis, deg2rad(180))
+      # flag <- TRUE
+      # D_rotrot <- vrotate(D_rot, zaxis, deg2rad(180))
 
       # D_rotrot_fixed <- list(az = D_rotrot[, 1], inc = D_rotrot[, 2]) |>
       #   fix_inc()
       D_rotrot_fixed <- D_fixed
 
-      #prec <- sqrt(.Machine$double.eps)
+      # prec <- sqrt(.Machine$double.eps)
       dangle <- vangle(Line(D_fixed$az, D_fixed$inc), as.line(x[i, ]))
-      #cond <- d[i] >= (dangle + prec) | d[i] <= (dangle - prec)
+      # cond <- d[i] >= (dangle + prec) | d[i] <= (dangle - prec)
       cond <- dplyr::near(d[i], dangle)
 
       D_fixed$az[cond] <- D_rotrot_fixed$az[cond]
       D_fixed$inc[cond] <- D_rotrot_fixed$inc[cond]
-    } #else {
-      #cond <- rep(FALSE, n)
-    #}
+    } # else {
+    # cond <- rep(FALSE, n)
+    # }
 
     D_fixed2 <- data.frame(x = (180 - D_fixed$az), y = D_fixed$inc)
 
     if (d[i] < 90) {
       D_fixed3 <- D_fixed2
-      #D_fixed3$cond <- cond
+      # D_fixed3$cond <- cond
     } else {
       D_fixed3 <- utils::tail(D_fixed2, n = n / 2)
-      #D_fixed3$cond <- FALSE
+      # D_fixed3$cond <- FALSE
     }
 
     D_fixed3$id <- i
@@ -159,9 +168,9 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
 }
 
 #' Stereoplot Perimeter
-#' 
+#'
 #' Adds a frame to the stereographic projection
-#' 
+#'
 #' @param n resolution of frame
 #'
 #' @param color,fill,lwd Graphical parameters
@@ -173,7 +182,7 @@ ggframe <- function(n = 1e4, color = "black", fill = NA, lwd = 1, ...) {
   prim.l1 <- seq(0, 180, length = n / 2)
   prim.l2 <- seq(-180, 0, length = n / 2)
   prim.long <- c(prim.l1, prim.l2)
-  
+
   prim_df <- data.frame(prim.long, prim.lat)
 
   geom_polygon(aes(x = prim.long, y = prim.lat), data = prim_df, color = color, fill = fill, lwd = lwd, ..., inherit.aes = FALSE)
@@ -211,10 +220,10 @@ ggstereo_grid <- function(d = 10, rot = 0, ...) {
 
 #' Stereonet using ggplot
 #'
-#' @param data Default dataset to use for plot. If not already a data.frame, 
-#' will be converted to one by [ggplot2::fortify()]. If not specified, must be 
+#' @param data Default dataset to use for plot. If not already a data.frame,
+#' will be converted to one by [ggplot2::fortify()]. If not specified, must be
 #' supplied in each layer added to the plot.
-#' @param mapping Default list of aesthetic mappings to use for plot. If not 
+#' @param mapping Default list of aesthetic mappings to use for plot. If not
 #' specified, must be supplied in each layer added to the plot.
 #' @param earea logical. Whether the projection is equal-area ("Schmidt net")
 #' (`TRUE`, the default), or equal-angle ("Wulff net") (`FALSE`).
@@ -232,17 +241,17 @@ ggstereo_grid <- function(d = 10, rot = 0, ...) {
 #'
 #' @examples
 #' if (require("mapproj")) {
-#' test_data <- rbind(
-#'   rvmf(100, mu = Line(90, 45), k = 10),
-#'   rvmf(50, mu = Line(0, 0), k = 20)
-#' ) |> as.line()
+#'   test_data <- rbind(
+#'     rvmf(100, mu = Line(90, 45), k = 10),
+#'     rvmf(50, mu = Line(0, 0), k = 20)
+#'   ) |> as.line()
 #'
-#' ggstereo(grid = TRUE) +
-#'   ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y))
+#'   ggstereo(grid = TRUE) +
+#'     ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y))
 #'
-#' ggstereo(earea = FALSE, centercross = TRUE) +
-#'   ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y))
-#'   }
+#'   ggstereo(earea = FALSE, centercross = TRUE) +
+#'     ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y))
+#' }
 ggstereo <- function(data = NULL, mapping = aes(), earea = TRUE, centercross = TRUE, grid = FALSE, grid.spacing = 10, grid.rot = 0, ...) {
   # if(earea){
   #   crs = "+proj=aeqd +lat_0=90 +lon_0=0 +x_0=0 +y_0=0"
@@ -250,19 +259,20 @@ ggstereo <- function(data = NULL, mapping = aes(), earea = TRUE, centercross = T
   #   crs = "+proj=stere +lat_0=90 +lon_0=0 +x_0=0 +y_0=0"
   # }
   rlang::check_installed("mapproj", reason = "to use `coord_map()`")
-  
+
   ggplot(data = data, mapping = mapping) +
-    #theme_void() +
+    # theme_void() +
     theme(
-      title = element_text(face = "bold"),
-      panel.background = element_blank(), 
+      plot.title = element_text(face = "bold"),
+      panel.background = element_blank(),
       panel.border = element_blank(),
       panel.grid = element_blank(),
-      axis.ticks = element_blank(), 
-      axis.title = element_blank(), 
+      axis.ticks = element_blank(),
+      axis.title = element_blank(),
       axis.text = element_blank(),
-      #legend.title = element_blank()
-    ) +    {
+      # legend.title = element_blank()
+    ) +
+    {
       if (grid) {
         ggstereo_grid(d = grid.spacing, rot = grid.rot, color = "grey90", lwd = .2)
       }
@@ -271,8 +281,8 @@ ggstereo <- function(data = NULL, mapping = aes(), earea = TRUE, centercross = T
     annotate("point", x = 0, y = 90, pch = as.numeric(centercross) * 3) +
     scale_y_continuous(limits = c(0, 90)) +
     scale_x_continuous(limits = c(-180, 180)) +
-    coord_map(ifelse(earea, "azequalarea", "stereographic"), orientation = c(90, 0, 0)) 
-    # coord_sf(crs = crs, default_crs = crs)
+    coord_map(ifelse(earea, "azequalarea", "stereographic"), orientation = c(90, 0, 0))
+  # coord_sf(crs = crs, default_crs = crs)
 }
 
 ignore_unused_imports <- function() {
@@ -357,23 +367,23 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #' @name ggstereocontour
 #' @examples
 #' if (require("mapproj")) {
-#' test_data <- rbind(
-#'   rvmf(100, mu = Line(90, 45), k = 10),
-#'   rvmf(50, mu = Line(0, 0), k = 20)
-#' ) |> as.line()
-#' 
-#' ggstereo() +
-#'   geom_contourf_stereo(gg(test_data)) +
-#'   ggplot2::scale_fill_viridis_d(option = "A") +
-#'   # guides(fill = guide_colorsteps(barheight = unit(8, "cm"), show.limits = TRUE)) +
-#'   geom_contour_stereo(gg(test_data), color = "grey") +
-#'   ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y), color = "lightgrey") +
-#'   ggframe()
+#'   test_data <- rbind(
+#'     rvmf(100, mu = Line(90, 45), k = 10),
+#'     rvmf(50, mu = Line(0, 0), k = 20)
+#'   ) |> as.line()
 #'
-#' ggstereo() +
-#'   geom_contourf_stereo(gg(test_data), norm = TRUE, bins = 50, threshold = .1) +
-#'   ggplot2::scale_fill_viridis_d(option = "A")
-#'   }
+#'   ggstereo() +
+#'     geom_contourf_stereo(gg(test_data)) +
+#'     ggplot2::scale_fill_viridis_d(option = "A") +
+#'     # guides(fill = guide_colorsteps(barheight = unit(8, "cm"), show.limits = TRUE)) +
+#'     geom_contour_stereo(gg(test_data), color = "grey") +
+#'     ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y), color = "lightgrey") +
+#'     ggframe()
+#'
+#'   ggstereo() +
+#'     geom_contourf_stereo(gg(test_data), norm = TRUE, bins = 50, threshold = .1) +
+#'     ggplot2::scale_fill_viridis_d(option = "A")
+#' }
 NULL
 
 #' @rdname ggstereocontour
@@ -389,7 +399,7 @@ geom_contour_stereo <- function(data, ngrid = 200, hw = NULL, optimal_bw = c("cr
     res$Density <- normalize(res$Density)
   }
   res$Density[res$Density <= threshold] <- NA
-  
+
   geom_contour(data = res, aes(x = -Long, y = Lat, z = Density), ...)
 }
 

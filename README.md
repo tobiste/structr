@@ -13,7 +13,7 @@
 for structural geology. You can
 
 - analyze and visualize orientation data of structural geology
-  (including, stereographic projecitons, contouring, fabric plots, and
+  (including, stereographic projections, contouring, fabric plots, and
   statistics.)
 
 - analyze stress (including visualization of the magnitudes of stress in
@@ -47,7 +47,7 @@ library(ggplot2)
 data(example_planes)
 planes <- Plane(example_planes$dipdir, example_planes$dip)
 
-fabric <- or_shape_params(planes)$Vollmer['D']
+fabric <- or_shape_params(planes)$Vollmer["D"]
 
 ggstereo() +
   geom_contourf_stereo(gg(planes)) +

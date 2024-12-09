@@ -23,13 +23,13 @@ vec2lin0 <- function(x, y, z) {
   # nz <- sapply(n[, 3], function(x) ifelse(x < 0, -x, x))
   nz <- n[, 3]
   # cbind(
-  azimuth = atan2d(n[, 2], n[, 1])
-  plunge = asind(nz)
+  azimuth <- atan2d(n[, 2], n[, 1])
+  plunge <- asind(nz)
   # )
 
   res <- mapply(correct_inc, azi = azimuth, inc = plunge) |> t()
   rownames(res) <- rownames(x)
-  colnames(res) <- c('azimuth', 'plunge')
+  colnames(res) <- c("azimuth", "plunge")
   res
 }
 
@@ -43,7 +43,7 @@ vec2fol0 <- function(x, y, z) {
 
   res <- mapply(correct_inc, azi = dip_direction, inc = dip) |> t()
   rownames(res) <- rownames(x)
-  colnames(res) <- c('dip_direction', 'dip')
+  colnames(res) <- c("dip_direction", "dip")
   res
 }
 

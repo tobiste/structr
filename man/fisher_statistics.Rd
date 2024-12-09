@@ -9,6 +9,8 @@ fisher_statistics(x, w = NULL)
 \arguments{
 \item{x}{numeric. Can be three element vector, three column array, or an
 object of class \code{"line"} or \code{"plane"}}
+
+\item{w}{numeric. weights}
 }
 \value{
 list, with

@@ -49,7 +49,7 @@ Statistical estimators of the distribution of a set of vectors
 if otherwise). For enough large sample it approaches the angular standard
 deviation (\code{"csd"}) of the Fisher statistics.
 
-\code{v_rdegree} returns the degree of preferred orientation of vectors (in \%).
+\code{v_rdegree} returns the degree of preferred orientation of vectors, range: (0, 1).
 
 \code{v_sde} returns the spherical standard error (numeric). If the number of
 data is less than 25, if will print a additional message, that the output
@@ -61,7 +61,9 @@ if otherwise). The \eqn{100(1-\alpha)\%} confidence interval is than given by \e
 \code{estimate_k} returns the estimated concentration of the von Mises-Fisher distribution \eqn{\kappa} (after Sra, 2011).
 }
 \examples{
+set.seed(1234)
 x <- rvmf(100, mu = Line(120, 50), k = 5)
+v_mean(x)
 v_var(x)
 v_delta(x)
 v_rdegree(x)
@@ -71,7 +73,7 @@ estimate_k(x)
 fisher_statistics(x)
 
 #' weights:
-x2 <-  Line(c(0, 0), c(0, 90))
+x2 <- Line(c(0, 0), c(0, 90))
 v_mean(x2)
 v_mean(x2, w = c(1, 2))
 v_var(x2)

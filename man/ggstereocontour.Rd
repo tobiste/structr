@@ -54,23 +54,23 @@ Stereonet contouring using ggplot
 }
 \examples{
 if (require("mapproj")) {
-test_data <- rbind(
-  rvmf(100, mu = Line(90, 45), k = 10),
-  rvmf(50, mu = Line(0, 0), k = 20)
-) |> as.line()
+  test_data <- rbind(
+    rvmf(100, mu = Line(90, 45), k = 10),
+    rvmf(50, mu = Line(0, 0), k = 20)
+  ) |> as.line()
 
-ggstereo() +
-  geom_contourf_stereo(gg(test_data)) +
-  ggplot2::scale_fill_viridis_d(option = "A") +
-  # guides(fill = guide_colorsteps(barheight = unit(8, "cm"), show.limits = TRUE)) +
-  geom_contour_stereo(gg(test_data), color = "grey") +
-  ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y), color = "lightgrey") +
-  ggframe()
+  ggstereo() +
+    geom_contourf_stereo(gg(test_data)) +
+    ggplot2::scale_fill_viridis_d(option = "A") +
+    # guides(fill = guide_colorsteps(barheight = unit(8, "cm"), show.limits = TRUE)) +
+    geom_contour_stereo(gg(test_data), color = "grey") +
+    ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y), color = "lightgrey") +
+    ggframe()
 
-ggstereo() +
-  geom_contourf_stereo(gg(test_data), norm = TRUE, bins = 50, threshold = .1) +
-  ggplot2::scale_fill_viridis_d(option = "A")
-  }
+  ggstereo() +
+    geom_contourf_stereo(gg(test_data), norm = TRUE, bins = 50, threshold = .1) +
+    ggplot2::scale_fill_viridis_d(option = "A")
+}
 }
 \references{
 Garcia Portugues, E. (2013). Exact risk improvement of

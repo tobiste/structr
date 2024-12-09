@@ -34,21 +34,30 @@ Prepare points and lines for ggplot
 }
 \examples{
 if (require("mapproj")) {
-x <- Plane(120, 85)
-ggstereo() +
-  ggplot2::geom_point(data = gg(x), ggplot2::aes(x, y), color = "red") +
-  ggplot2::geom_path(data = ggl(x), ggplot2::aes(x, y), color = "red")
+  x <- Plane(120, 85)
+  ggstereo() +
+    ggplot2::geom_point(data = gg(x), ggplot2::aes(x, y), color = "red") +
+    ggplot2::geom_path(data = ggl(x), ggplot2::aes(x, y), color = "red")
 
-x2 <- Line(120, 5)
-ggstereo() +
-  ggplot2::geom_point(data = gg(x2), ggplot2::aes(x, y), color = "darkgreen") +
-  ggplot2::geom_path(data = ggl(x2, d = 8), ggplot2::aes(x, y, group = group), color = "darkgreen")
-  
-x3 <- Plane(137, 71)
-ggstereo() +
-  ggplot2::geom_point(data = gg(x3), ggplot2::aes(x, y), color = "darkgreen") +
-  ggplot2::geom_path(data = ggl(x3, d = 90), ggplot2::aes(x, y, group = group), color = "darkgreen", lwd = 1) +
-  ggplot2::geom_path(data = ggl(x3, d = 90 + 11), ggplot2::aes(x, y, group = group, color = 'sde <90')) +
-  ggplot2::geom_path(data = ggl(x3, d = 90 - 11), ggplot2::aes(x, y, group = group, color = 'sde >90'))
-  }
+  x2 <- Line(120, 5)
+  ggstereo() +
+    ggplot2::geom_point(data = gg(x2), ggplot2::aes(x, y), color = "darkgreen") +
+    ggplot2::geom_path(data = ggl(x2, d = 8), ggplot2::aes(x, y, group = group), color = "darkgreen")
+
+  x3 <- Plane(137, 71)
+  ggstereo() +
+    ggplot2::geom_point(data = gg(x3), ggplot2::aes(x, y), color = "darkgreen") +
+    ggplot2::geom_path(
+      data = ggl(x3, d = 90),
+      ggplot2::aes(x, y, group = group), color = "darkgreen", lwd = 1
+    ) +
+    ggplot2::geom_path(
+      data = ggl(x3, d = 90 + 11),
+      ggplot2::aes(x, y, group = group, color = "sde <90")
+    ) +
+    ggplot2::geom_path(
+      data = ggl(x3, d = 90 - 11),
+      ggplot2::aes(x, y, group = group, color = "sde >90")
+    )
+}
 }

@@ -313,7 +313,7 @@ ggMohr <- function(s1, s2, s3, coulomb = c(70, 0.6), sliding = 0.81, units = "MP
   # theta.slope <- -atan(2*theta.f)
 
   ggplot() +
-   geom_circle(aes(x0 = circle13.m, y0 = 0, r = circle13.r), fill = fill, alpha = alpha) +
+    geom_circle(aes(x0 = circle13.m, y0 = 0, r = circle13.r), fill = fill, alpha = alpha) +
     geom_circle(aes(x0 = circle23.m, y0 = 0, r = circle23.r), fill = "white") +
     geom_circle(aes(x0 = circle12.m, y0 = 0, r = circle12.r), fill = "white") +
     {
