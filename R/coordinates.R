@@ -20,20 +20,42 @@ lin2vec0 <- function(azi, inc) {
 
 vec2lin0 <- function(x, y, z) {
   n <- vnorm(cbind(x, y, z)) # normalized vector
-  nz <- sapply(n[, 3], function(x) ifelse(x < 0, -x, x))
-  cbind(
-    azimuth = atan2d(n[, 2], n[, 1]) %% 360,
-    plunge = asind(nz)
-  )
+  # nz <- sapply(n[, 3], function(x) ifelse(x < 0, -x, x))
+  nz <- n[, 3]
+  # cbind(
+  azimuth = atan2d(n[, 2], n[, 1])
+  plunge = asind(nz)
+  # )
+
+  res <- mapply(correct_inc, azi = azimuth, inc = plunge) |> t()
+  rownames(res) <- rownames(x)
+  colnames(res) <- c('azimuth', 'plunge')
+  res
 }
 
 vec2fol0 <- function(x, y, z) {
   n <- vnorm(cbind(x, y, z)) # normalized vector
-  nz <- sapply(n[, 3], function(x) ifelse(x < 0, -x, x))
-  cbind(
-    dip_direction = (atan2d(n[, 2], n[, 1]) + 180) %% 360,
-    dip = 90 - asind(nz)
-  )
+  # nz <- sapply(n[, 3], function(x) ifelse(x < 0, -x, x))
+  nz <- n[, 3]
+
+  dip_direction <- (atan2d(n[, 2], n[, 1]) + 180)
+  dip <- 90 - asind(nz)
+
+  res <- mapply(correct_inc, azi = dip_direction, inc = dip) |> t()
+  rownames(res) <- rownames(x)
+  colnames(res) <- c('dip_direction', 'dip')
+  res
+}
+
+correct_inc <- function(azi, inc) {
+  if (inc > 90) {
+    inc <- 180 - 90
+    azi <- (azi + 180) %% 360
+  } else if (inc < 0) {
+    inc <- abs(inc)
+    azi <- (azi + 180) %% 360
+  }
+  c(azi, inc)
 }
 
 

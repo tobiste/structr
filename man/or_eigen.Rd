@@ -10,22 +10,22 @@ or_eigen(x, scaled = FALSE)
 \item{x}{numeric. Can be three element vector, three column array, or an
 object of class \code{"line"} or \code{"plane"}}
 
-\item{scaled}{logical. Whether the eigenvectors should be scaled by the
-eigenvalues (only effective if \code{x} is in Cartesian coordinates)}
+\item{scaled}{logical. Whether the Eigenvectors should be scaled by the
+Eigenvalues (only effective if \code{x} is in Cartesian coordinates).}
 }
 \value{
 list containing
 \describe{
 \item{\code{values}}{Eigenvalues}
-\item{\code{vectors}}{Eigenvectors in coordinates system of \code{x}}
+\item{\code{vectors}}{Eigenvectors in coordinate system of \code{x}}
 }
 }
 \description{
-Decomposition of Orientation tensor
+Decomposition of Orientation Tensor Eigenvectors and Eigenvalues
 }
 \examples{
 set.seed(1)
-mu <- Line(120, 50)
+mu <- rvmf(n = 1) |>  vec2line()
 x <- rfb(100, mu = mu, k = 1, A = diag(c(10, 0, 0)))
 x_eigen <- or_eigen(x)
 x_eigen
@@ -35,5 +35,5 @@ stereo_point(mu, lab = "mu", col = 4)
 stereo_point(x_eigen$vectors, col = c(1, 2, 3), lab = c("E1", "E2", "E3"))
 }
 \seealso{
-\code{\link[=ortensor]{ortensor()}}
+\code{\link[=ortensor]{ortensor()}}, \code{\link[=eigen]{eigen()}}
 }

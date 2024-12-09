@@ -25,10 +25,17 @@
 #'   ggplot2::geom_point(data = gg(x), ggplot2::aes(x, y), color = "red") +
 #'   ggplot2::geom_path(data = ggl(x), ggplot2::aes(x, y), color = "red")
 #'
-#' x <- Line(120, 5)
+#' x2 <- Line(120, 5)
 #' ggstereo() +
-#'   ggplot2::geom_point(data = gg(x), ggplot2::aes(x, y), color = "darkgreen") +
-#'   ggplot2::geom_path(data = ggl(x, d = 8), ggplot2::aes(x, y, group = group), color = "darkgreen")
+#'   ggplot2::geom_point(data = gg(x2), ggplot2::aes(x, y), color = "darkgreen") +
+#'   ggplot2::geom_path(data = ggl(x2, d = 8), ggplot2::aes(x, y, group = group), color = "darkgreen")
+#'   
+#' x3 <- Plane(137, 71)
+#' ggstereo() +
+#'   ggplot2::geom_point(data = gg(x3), ggplot2::aes(x, y), color = "darkgreen") +
+#'   ggplot2::geom_path(data = ggl(x3, d = 90), ggplot2::aes(x, y, group = group), color = "darkgreen", lwd = 1) +
+#'   ggplot2::geom_path(data = ggl(x3, d = 90 + 11), ggplot2::aes(x, y, group = group, color = 'sde <90')) +
+#'   ggplot2::geom_path(data = ggl(x3, d = 90 - 11), ggplot2::aes(x, y, group = group, color = 'sde >90'))
 #'   }
 NULL
 
@@ -60,7 +67,7 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
   stopifnot(is.spherical(x))
   if (n %% 2 > 0) n <- n + 1
   if (is.plane(x) | is.fault(x)) {
-    x[, 1] <- 180 + x[, 1]
+    #x[, 1] <- 180 + x[, 1]
     x[, 2] <- 90 - x[, 2]
   }
 
@@ -73,9 +80,9 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
 
   zaxis <- c(0, 0, 1)
 
-  res <- matrix(ncol = 4, nrow = n * nx) |>
+  res <- matrix(ncol = 3, nrow = n * nx) |>
     as.data.frame()
-  colnames(res) <- c("x", "y", "cond", "id")
+  colnames(res) <- c("x", "y",  "id")
 
   for (i in seq_along(x[, 1])) {
     D <- cbind(azimuth = seq(0, 360, l = n), plunge = rep(90 - d[i], n)) |>
@@ -88,6 +95,13 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
     D1 <- vrotate(D, zaxis, deg2rad(strike))
     rotangle <- vangle(zaxis, as.line(x[i, ]))
 
+    if(d[i] < 90 & is.plane(x)){
+      d[i] <- 180 - d[i]
+      D1 <- -D1
+      x[i, 1] <- x[i, 1] + 180
+      x[i, 2] <- 90- x[i, 2]
+    }
+    
     if (d[i] < 90) {
       k <- -1
     } else {
@@ -98,35 +112,36 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
     D_rot <- vrotate(D1, rotaxis, k * rotangle) |>
       vec2line()
 
-    D_fixed <- list(az = D_rot[, 1], inc = D_rot[, 2]) |>
-      fix_inc()
+    D_fixed <- list(az = D_rot[, 1], inc = D_rot[, 2]) |> fix_inc()
 
-    if (d[i] < 90 & d[i] > as.line(x[i, ])[2]) {
+    if (d[i] != 90 & d[i] > as.line(x[i, ])[2]) {
       # upper hemisphere
-      flag <- TRUE
-      D_rotrot <- vrotate(D_rot, zaxis, deg2rad(180))
+      #flag <- TRUE
+      #D_rotrot <- vrotate(D_rot, zaxis, deg2rad(180))
 
-      D_rotrot_fixed <- list(az = D_rotrot[, 1], inc = D_rotrot[, 2]) |>
-        fix_inc()
+      # D_rotrot_fixed <- list(az = D_rotrot[, 1], inc = D_rotrot[, 2]) |>
+      #   fix_inc()
+      D_rotrot_fixed <- D_fixed
 
-      prec <- sqrt(.Machine$double.eps)
+      #prec <- sqrt(.Machine$double.eps)
       dangle <- vangle(Line(D_fixed$az, D_fixed$inc), as.line(x[i, ]))
-      cond <- d[i] >= (dangle + prec) | d[i] <= (dangle - prec)
+      #cond <- d[i] >= (dangle + prec) | d[i] <= (dangle - prec)
+      cond <- dplyr::near(d[i], dangle)
 
       D_fixed$az[cond] <- D_rotrot_fixed$az[cond]
       D_fixed$inc[cond] <- D_rotrot_fixed$inc[cond]
-    } else {
-      cond <- rep(FALSE, n)
-    }
+    } #else {
+      #cond <- rep(FALSE, n)
+    #}
 
-    D_fixed2 <- data.frame(x = 180 - D_fixed$az, y = D_fixed$inc)
+    D_fixed2 <- data.frame(x = (180 - D_fixed$az), y = D_fixed$inc)
 
     if (d[i] < 90) {
       D_fixed3 <- D_fixed2
-      D_fixed3$cond <- cond
+      #D_fixed3$cond <- cond
     } else {
       D_fixed3 <- utils::tail(D_fixed2, n = n / 2)
-      D_fixed3$cond <- FALSE
+      #D_fixed3$cond <- FALSE
     }
 
     D_fixed3$id <- i
@@ -137,7 +152,7 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
   }
   res |>
     dplyr::as_tibble() |>
-    dplyr::mutate(group = paste0(as.character(id), as.character(cond))) |>
+    dplyr::mutate(group = as.character(id)) |>
     dplyr::left_join(
       xdf, dplyr::join_by(id)
     )
@@ -239,7 +254,7 @@ ggstereo <- function(data = NULL, mapping = aes(), earea = TRUE, centercross = T
   ggplot(data = data, mapping = mapping) +
     #theme_void() +
     theme(
-      title = element_text(element_text(face = "bold")),
+      title = element_text(face = "bold"),
       panel.background = element_blank(), 
       panel.border = element_blank(),
       panel.grid = element_blank(),
@@ -335,7 +350,7 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #'
 #' @references Garcia Portugues, E. (2013). Exact risk improvement of
 #' bandwidth selectors for kernel density estimation with directional data.
-#' Electronic Journal of Statistics, 7, 1655<U+2013>1685.
+#' Electronic Journal of Statistics, 7, 1655-1685.
 #'
 #' @import ggplot2
 #' @importFrom Directional vmf.kerncontour euclid vmfkde.tune

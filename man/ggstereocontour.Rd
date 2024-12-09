@@ -75,5 +75,5 @@ ggstereo() +
 \references{
 Garcia Portugues, E. (2013). Exact risk improvement of
 bandwidth selectors for kernel density estimation with directional data.
-Electronic Journal of Statistics, 7, 1655<U+2013>1685.
+Electronic Journal of Statistics, 7, 1655-1685.
 }

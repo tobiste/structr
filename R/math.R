@@ -770,22 +770,22 @@ ortensor <- function(x, norm = TRUE) {
 
 #' Eigenvalues and Eigenvectors of a Set of Vectors
 #'
-#' Decomposition of Orientation tensor
+#' Decomposition of Orientation Tensor Eigenvectors and Eigenvalues
 #'
 #' @param x numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
-#' @param scaled logical. Whether the eigenvectors should be scaled by the
-#' eigenvalues (only effective if `x` is in Cartesian coordinates)
+#' @param scaled logical. Whether the Eigenvectors should be scaled by the
+#' Eigenvalues (only effective if `x` is in Cartesian coordinates).
 #' @returns list containing
 #' \describe{
 #' \item{`values`}{Eigenvalues}
-#' \item{`vectors`}{Eigenvectors in coordinates system of `x`}
+#' \item{`vectors`}{Eigenvectors in coordinate system of `x`}
 #' }
-#' @seealso [ortensor()]
+#' @seealso [ortensor()], [eigen()]
 #' @export
 #' @examples
 #' set.seed(1)
-#' mu <- Line(120, 50)
+#' mu <- rvmf(n = 1) |>  vec2line()
 #' x <- rfb(100, mu = mu, k = 1, A = diag(c(10, 0, 0)))
 #' x_eigen <- or_eigen(x)
 #' x_eigen
@@ -794,17 +794,9 @@ ortensor <- function(x, norm = TRUE) {
 #' stereo_point(mu, lab = "mu", col = 4)
 #' stereo_point(x_eigen$vectors, col = c(1, 2, 3), lab = c("E1", "E2", "E3"))
 or_eigen <- function(x, scaled = FALSE) {
-  x_or <- ortensor(x, norm = TRUE)
-  x_eigen <- eigen(x_or)
+  x_or <- ortensor(x, norm = FALSE)
+  x_eigen <- eigen(x_or, symmetric = TRUE)
   x_eigen$vectors <- t(x_eigen$vectors)
-
-  x_eigen$vectors[1, ] <- -(x_eigen$vectors[1, ])
-  
-  # x_svd <- svd(x_or) # Singular Value Decomposition of a Matrix
-  # x_eigen <- list(
-  #   values = x_svd$d,
-  #   vectors = t(x_svd$u)
-  # )
 
   if (scaled) {
     x_eigen$vectors[, 1] * x_eigen$values[1]
@@ -851,28 +843,28 @@ or_eigen <- function(x, scaled = FALSE) {
 #' @returns list
 #' 
 #' @references 
-#' Flinn, Derek. "On the statistical analysis of fabric diagrams." Geological Journal 3.2 (1963): 247-253.
+#' Flinn, Derek.(1963): "On the statistical analysis of fabric diagrams." Geological Journal 3.2: 247-253.
 #' 
-#' Kirschvink, J. (1980). The least-squares line and plane and the analysis of palaeomagnetic data. Geophysical Journal International, 62(3), 699-718.
+#' Kirschvink, J. (1980): The least-squares line and plane and the analysis of palaeomagnetic data. Geophysical Journal International, 62(3), 699-718.
 #'  
-#' Lisle, Richard J. "The use of the orientation tensor for the description and statistical testing of fabrics." Journal of Structural Geology 7.1 (1985): 115-117.
+#' Lisle, Richard J.  (1985): "The use of the orientation tensor for the description and statistical testing of fabrics." Journal of Structural Geology 7.1: 115-117.
 #' 
-#' Lode, Walter (1926) "Versuche über den Einfluß der mittleren Hauptspannung auf das Fließen der Metalle Eisen, Kupfer und Nickel“ 
+#' Lode, Walter (1926): "Versuche über den Einfluß der mittleren Hauptspannung auf das Fließen der Metalle Eisen, Kupfer und Nickel“ 
 #'  (*"Experiments on the influence of the mean principal stress on the flow of the metals iron, copper and nickel"*], Zeitschrift für Physik, vol. 36 (November), pp. 913–939, DOI: 10.1007/BF01400222
 #' 
-#' Mardia, Kantilal Varichand. "Statistics of directional data." Journal of the Royal Statistical Society Series B: Statistical Methodology 37.3 (1975): 349-371.
+#' Mardia, Kantilal Varichand. (1975): "Statistics of directional data." Journal of the Royal Statistical Society Series B: Statistical Methodology 37.3: 349-371.
 #' 
-#' Nadai, A., and Hodge, P. G., Jr. (December 1, 1963). "Theory of Flow and Fracture of Solids, vol. II." ASME. J. Appl. Mech. December 1963; 30(4): 640. https://doi.org/10.1115/1.3636654
+#' Nadai, A., and Hodge, P. G., Jr. (1963): "Theory of Flow and Fracture of Solids, vol. II." ASME. J. Appl. Mech. December 1963; 30(4): 640. https://doi.org/10.1115/1.3636654
 #' 
-#' Ramsay, John G. "Folding and fracturing of rocks." Mc Graw Hill Book Company 568 (1967). 
+#' Ramsay, John G. (1967): "Folding and fracturing of rocks." Mc Graw Hill Book Company 568. 
 #' 
-#' Vollmer, Frederick W. "An application of eigenvalue methods to structural domain analysis." Geological Society of America Bulletin 102.6 (1990): 786-791.
+#' Vollmer, Frederick W. (1990): "An application of eigenvalue methods to structural domain analysis." Geological Society of America Bulletin 102.6: 786-791.
 #' 
-#' Vollmer, Frederick W. "Representing Progressive Fabric Paths on a Triangular Plot Using a Fabric Density Index and Crystal Axes Eigenvector Barycenters." Geological Society of America Abstracts. Vol. 52. 2020.
+#' Vollmer, Frederick W. (2020): "Representing Progressive Fabric Paths on a Triangular Plot Using a Fabric Density Index and Crystal Axes Eigenvector Barycenters." Geological Society of America Abstracts. Vol. 52.
 #' 
-#' Watterson, Juan. Homogeneous deformation of the gneisses of Vesterland, south-west Greenland. No. 78. CA Reitzel, 1968.
+#' Watterson, Juan. (1968): "Homogeneous deformation of the gneisses of Vesterland, south-west Greenland". No. 78. CA Reitzel.
 #' 
-#' Woodcock, N. H. "Specification of fabric shapes using an eigenvalue method." Geological Society of America Bulletin 88.9 (1977): 1231-1236.
+#' Woodcock, N. H.  (1977): "Specification of fabric shapes using an eigenvalue method." Geological Society of America Bulletin 88.9: 1231-1236.
 #' 
 #' @examples
 #' set.seed(1)
