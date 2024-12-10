@@ -49,7 +49,7 @@ vec2fol0 <- function(x, y, z) {
 
 correct_inc <- function(azi, inc) {
   if (inc > 90) {
-    inc <- 180 - 90
+    inc <- 180 - inc
     azi <- (azi + 180) %% 360
   } else if (inc < 0) {
     inc <- abs(inc)
