@@ -23,7 +23,7 @@ vec2lin0 <- function(x, y, z) {
   # nz <- sapply(n[, 3], function(x) ifelse(x < 0, -x, x))
   nz <- n[, 3]
   # cbind(
-  azimuth <- atan2d(n[, 2], n[, 1])
+  azimuth <- atan2d(n[, 2], n[, 1]) %% 360
   plunge <- asind(nz)
   # )
 
@@ -38,7 +38,7 @@ vec2fol0 <- function(x, y, z) {
   # nz <- sapply(n[, 3], function(x) ifelse(x < 0, -x, x))
   nz <- n[, 3]
 
-  dip_direction <- (atan2d(n[, 2], n[, 1]) + 180)
+  dip_direction <- (atan2d(n[, 2], n[, 1]) + 180) %% 360
   dip <- 90 - asind(nz)
 
   res <- mapply(correct_inc, azi = dip_direction, inc = dip) |> t()
