@@ -654,25 +654,28 @@ estimate_k <- function(x, w = NULL) {
 #'
 #' @param x numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
-#' @param w numeric. weights
+#' @param w numeric. Weights
+#' @param p numeric. Significance level (`0.05` by default), corresponding to 
+#' \eqn{100 * (1-p) - 95\%} confidence level.
 #' @returns list, with
 #' \describe{
 #' \item{`"k"`}{estimated concentration parameter \eqn{\kappa} for the von Mises-Fisher
 #' distribution}
-#' \item{`"csd"`}{estimated angular standard deviation}
-#' \item{`"a95"`}{confidence limit}
+#' \item{`"csd"`}{estimated angular standard deviation enclosing 63% of the orientation data. Angle is in degrees if `x` is a spherical object, and raidan if otherwise.}
+#' \item{`"a95"`}{Confidence limit for given `p`. Angle is in degrees if `x` is a spherical object, and raidan if otherwise.}
 #' }
 #' @export
 #' @examples
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)
 #' fisher_statistics(x)
-fisher_statistics <- function(x, w = NULL) {
+fisher_statistics <- function(x, w = NULL, p = 0.05) {
   transform <- is.spherical(x)
   if (transform) {
     x <- to_vec(x)
   } else {
     x <- vec2mat(x)
   }
+  
   w <- if (is.null(w)) {
     rep(1, times = nrow(x))
   } else {
@@ -685,15 +688,152 @@ fisher_statistics <- function(x, w = NULL) {
     vlength()
 
   if (N != R) {
-    k <- (N - 1) / (N - R)
-    csd <- 81 / sqrt(k)
-    a95 <- acos(1 - ((N - R) / R) * (20**(1 / (N - 1)) - 1)) * ifelse(transform, 1 / DEG2RAD(), 1)
-    list(k = k, csd = csd, a95 = a95)
+    k <- (N - 1) / (N - R) # fisher's kappa approximation
+    csd <- 81 / sqrt(k) # 63% 
+    csd_95 <- 140 / sqrt(k) # 95%
+    
+    term1 = (N-R)/R
+    term2 <- (1/p) ^ ( 1 /(N-1))
+    cos_a <- 1 - term1 * (term2 - 1)
+    alpha <- acos(cos_a) 
+    
+    #a95 <- acos(1 - ((N - R) / R) * (20**(1 / (N - 1)) - 1)) # apsg version
+    
+    if(transform){
+      alpha <- rad2deg(alpha)
+      #a95 <- rad2deg(a95)
+      #alpha_kn63 <- rad2deg(alpha_kn63)
+      #alpha_kn95 <- rad2deg(alpha_kn95)
+    } else {
+      csd <- deg2rad(csd)
+      csd_95 <- deg2rad(csd_95)
+    }
+    
+    list(k = k, csd = csd, csd_2s = csd_95, alpha=alpha)
   }
 }
 
+#' Elliptical concentration and confidence cone estimation
+#'
+#' @param x numeric. Can be three element vector, three column array, or an
+#' object of class `"line"` or `"plane"`
+#' @param w numeric. Weights
+#' @return list 
+#' \describe{
+#'  \item{`k`}{two-column vector containing the estimates for the minimum and maximum concentration (\eqn{\kappa}).}
+#'  \item{`a95`}{two-column vector containing the estimates for the minimum and maximum 95% confidence cone.}
+#'  }
+#' @export
+#' @source Borradaile, G. (2003). Spherical-Orientation Data. In: Statistics of 
+#' Earth Science Data. Springer, Berlin, Heidelberg. https://doi.org/10.1007/978-3-662-05223-5_10
+#'
+#' @examples
+#' set.seed(1234)
+#' x <- rfb(100, mu = Line(120, 50), k = 15, A = diag(c(-5, 0, 5)))
+#' 
+#' ggstereo() +
+#'   geom_point(data = gg(x), aes(x, y, color = 'x'))
+#' 
+#' bingham_statistics(x)
+bingham_statistics <- function(x, w = NULL){
+  transform <- is.spherical(x)
+  if (transform) {
+    x <- to_vec(x)
+  } else {
+    x <- vec2mat(x)
+  }
+  
+  w <- if (is.null(w)) {
+    rep(1, times = nrow(x))
+  } else {
+    as.numeric(w)
+  }  
+  
+  n <- sum(w)
+  
+  inertia <- -ortensor(x)
+  abc <- n - diag(inertia)
+  
+  k_ellipse <- c(0, 0)
+  k_ellipse[2] = (abc[1] + abc[2]) / (abc[3] + abc[2] - abc[1]) # max
+  k_ellipse[1] = (abc[1] + abc[2]) / (abc[3] - abc[2] + abc[1]) # min
+  
+  # theta = x[, 2]
+  # 
+  # k = n / (n - sum(cosd(theta)))
+  #   
+  # A = B = (k * n) / (1+k)
+  # C = (2*n) / (1+k)
+  # 
+  # k_ellipse <- c(0, 0)
+  # k_ellipse[2] = (A + B) / (C + B - A)
+  # k_ellipse[1] = (A + B) / (C - B + A) # min
+  
+  a95 = deg2rad(140) / sqrt(k_ellipse * n)
+
+  if(transform){
+    a95 = rad2deg(a95)
+  }
+  
+  list(k = k_ellipse, a95 = a95)
+}
 
 
+#' Test of mean orientations
+#' 
+#' Test against the null-hypothesis that the samples are drawn from the same Fisher population.
+#'
+#' @param x,y  Can be three element vectors, three column arrays, or objects of class `"line"` or `"plane"`
+#' @param alpha Significance level
+#'
+#' @returns list indicating the F-statistic and the cp-value.
+#' @export
+#'
+#' @examples
+#' set.seed(1234)
+#' x <- rvmf(100, mu = Line(120, 50), k = 20)
+#' y <- rvmf(100, mu = Line(180, 45), k = 20)
+#' 
+#' ggstereo() +
+#'   geom_point(data = gg(x), aes(x, y, color = 'x')) +
+#'   geom_point(data = gg(y), aes(x, y, color = 'y'))
+#' 
+#' fisher_ftest(x, y)
+fisher_ftest <- function(x, y, alpha = 0.05){
+  if (is.spherical(x)) {
+    x <- to_vec(x)
+  } else {
+    x <- vec2mat(x)
+  }
+  
+  if (is.spherical(y)) {
+    y <- to_vec(y)
+  } else {
+    y <- vec2mat(y)
+  }
+  
+  nx <- nrow(x)
+  ny <- nrow(y)
+  
+  Rx <- vresultant(x) |> vlength()
+  Ry <- vresultant(y) |> vlength()
+  
+  R <- vresultant(rbind(x, y)) |> vlength()
+  
+  
+  stat <- (nx + ny - 2) * ( (Rx + Ry - R) / (nx + ny - Rx - Ry) )
+  
+  df1 <- 2
+  df2 <- 2 * (nx + ny - 2)
+  
+  crit <- qf(p=alpha, df1=df1, df2=df2, lower.tail=FALSE)
+  if(stat > crit) {
+    message('Reject null-hypothesis')
+  } else {
+      message('Do not reject null-hypothesis')
+    }
+  c('F stat' = stat, 'p-value' = crit)
+}
 
 #' Spherical Linear Interpolation (Slerp)
 #'
