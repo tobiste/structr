@@ -23,8 +23,8 @@ x <- rvmf(100, mu = Line(120, 50), k = 20)
 y <- rvmf(100, mu = Line(180, 45), k = 20)
 
 ggstereo() +
-  geom_point(data = gg(x), aes(x, y, color = "x")) +
-  geom_point(data = gg(y), aes(x, y, color = "y"))
+  ggplot2::geom_point(data = gg(x), ggplot2::aes(x, y, color = "x")) +
+  ggplot2::geom_point(data = gg(y), ggplot2::aes(x, y, color = "y"))
 
 fisher_ftest(x, y)
 }

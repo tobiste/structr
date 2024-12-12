@@ -10,20 +10,23 @@
 #' @param alpha numeric vector. Alpha angle in degrees
 #' @param beta numeric vector. Beta angle in degrees
 #' @param gamma numeric. (optional). Gamma angle in degrees
+#' 
+#' @export
+#' 
 #' @return object of calss `"plane"`. If gamma is specified, `"line"` object is
 #' returned.
+#' 
 #' @examples
 #' azi <- 225
 #' inc <- -45
 #' drillcore_orientation(azi, inc, 60, 320)
-#' drillcore_orientation(azi, inc, 45, 220, )
+#' drillcore_orientation(azi, inc, 45, 220)
 #'
 #' # multiple alpha-beta measurements
 #' stereoplot()
 #' stereo_point(Line(azi, -inc), lab = "CA")
 #' drillcore_orientation(azi, inc, alpha = c(60, 45), beta = c(320, 220)) |>
 #'   stereo_point(lab = c("A", "B"))
-#' @export
 drillcore_orientation <- function(azi, inc, alpha, beta, gamma = NULL) {
   stopifnot(length(alpha) == length(beta))
   inc <- -inc

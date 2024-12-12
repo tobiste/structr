@@ -1,122 +1,122 @@
-# Create a ternary plot from a data frame
-ternaryPlot <- function(x, plotPoints = TRUE, labels = c("", "", ""), grid = TRUE, increment = 20, ...) {
-  ternaryTriangle()
-  ternaryLabels(labels[1], labels[2], labels[3])
-  if (grid == TRUE) {
-    ternaryGrid(increment)
-  }
-  if (plotPoints == TRUE) {
-    ternaryPoints(x, ...)
-  }
-}
-
-# Add points from a data frame to an existing ternary plot
-ternaryPoints <- function(x, ...) {
-  x <- validatedTernaryPoints(x)
-  coords <- cartesianFromTernary(x[, 1], x[, 2], x[, 3])
-  graphics::points(coords$x, coords$y, ...)
-}
-
-# Add a line segment to an existing ternary plot
-# Color and line type may be added as additional arguments
-ternarySegment <- function(x0, x1, ...) {
-  # x0 and x1 are vectors of the endpoint ternary coordinates
-  coords0 <- cartesianFromTernary(x0[1], x0[2], x0[3])
-  coords1 <- cartesianFromTernary(x1[1], x1[2], x1[3])
-  graphics::segments(coords0$x, coords0$y, coords1$x, coords1$y, ...)
-}
-
-# Add a polygon to an existing ternary plot
-# Color may be added as an additional argument
-ternaryPolygon <- function(x, ...) {
-  nPoints <- nrow(x)
-  xCoord <- vector(mode = "numeric", length = nPoints)
-  yCoord <- vector(mode = "numeric", length = nPoints)
-  for (i in 1:nPoints) {
-    coords <- cartesianFromTernary(x[i, 1], x[i, 2], x[i, 3])
-    xCoord[i] <- coords$x
-    yCoord[i] <- coords$y
-  }
-  graphics::polygon(xCoord, yCoord, ...)
-}
-
-# Add text to an existing ternary plot
-# Text styling may be added as additional arguments
-ternaryText <- function(x, label = "", ...) {
-  coords <- cartesianFromTernary(x[1], x[2], x[3])
-  graphics::text(coords$x, coords$y, label = label, ...)
-}
-
-# ---------------------------------------------------------------------------------------
-# The following functions are called by ternaryPlot() and generally will not need to be
-# called directly
-
-## Plotting primitives -------------------------------------------------------------------
-ternaryTriangle <- function() {
-  top <- cartesianFromTernary(100, 0, 0)
-  left <- cartesianFromTernary(0, 100, 0)
-  right <- cartesianFromTernary(0, 0, 100)
-  lim <- c(-1.1, 1.1)
-  graphics::plot(top$x, top$y, xlim = lim, ylim = lim, type = "n", asp = 1, axes = FALSE, xlab = "", ylab = "")
-  graphics::segments(top$x, top$y, right$x, right$y)
-  graphics::segments(top$x, top$y, left$x, left$y)
-  graphics::segments(left$x, left$y, right$x, right$y)
-}
-
-ternaryLabels <- function(top = "", left = "", right = "") {
-  topCoord <- cartesianFromTernary(100, 0, 0)
-  leftCoord <- cartesianFromTernary(0, 100, 0)
-  rightCoord <- cartesianFromTernary(0, 0, 100)
-  graphics::text(topCoord$x, topCoord$y, top, pos = 3)
-  graphics::text(leftCoord$x, leftCoord$y, left, pos = 1, srt = -60)
-  graphics::text(rightCoord$x, rightCoord$y, right, pos = 1, srt = 60)
-}
-
-ternaryGrid <- function(increment) {
-  low <- increment
-  high <- 100 - increment
-
-  m <- seq(low, high, increment)
-  nLines <- length(m)
-
-  n1 <- o2 <- seq(high, low, -increment)
-  n2 <- o1 <- rep(0, nLines)
-
-  for (i in 1:nLines) {
-    a <- cartesianFromTernary(m[i], n1[i], o1[i])
-    b <- cartesianFromTernary(m[i], n2[i], o2[i])
-    graphics::segments(a$x, a$y, b$x, b$y, col = "lightgray", lty = 3)
-
-    a <- cartesianFromTernary(n1[i], m[i], o1[i])
-    b <- cartesianFromTernary(n2[i], m[i], o2[i])
-    graphics::segments(a$x, a$y, b$x, b$y, col = "lightgray", lty = 3)
-
-    a <- cartesianFromTernary(n1[i], o1[i], m[i])
-    b <- cartesianFromTernary(n2[i], o2[i], m[i])
-    graphics::segments(a$x, a$y, b$x, b$y, col = "lightgray", lty = 3)
-  }
-}
-
-## Convert from ternary coordinates to cartesian (x, y) coordinates ----------------------
-cartesianFromTernary <- function(top, left, right) {
-  y <- (top - 50) / 50 # vertically spans from -1 to 1
-  baseHalfWidth <- 2 / tan(60 * pi / 180) # : equilateral triangle
-  horizontalHalfWidth <- ((100 - top) * baseHalfWidth) / 100
-  horizontalProportion <- (right / (right + left + 0.0000001) - 0.5) * 2
-  x <- horizontalProportion * horizontalHalfWidth
-  xyCoords <- data.frame(cbind(x = x, y = y))
-  colnames(xyCoords) <- c("x", "y")
-  xyCoords
-}
-
-## Remove rows with NA values and rows that don't sum to 100 -----------------------------
-validatedTernaryPoints <- function(x) {
-  rowsWithNA <- rowSums(is.na(x))
-  xNAremoved <- x[rowsWithNA == 0, ]
-  rowsEqualing100 <- abs(rowSums(xNAremoved) - 100) <= 2
-  xFinal <- xNAremoved[rowsEqualing100, ]
-  xFinal
-}
+# # Create a ternary plot from a data frame
+# ternaryPlot <- function(x, plotPoints = TRUE, labels = c("", "", ""), grid = TRUE, increment = 20, ...) {
+#   ternaryTriangle()
+#   ternaryLabels(labels[1], labels[2], labels[3])
+#   if (grid == TRUE) {
+#     ternaryGrid(increment)
+#   }
+#   if (plotPoints == TRUE) {
+#     ternaryPoints(x, ...)
+#   }
+# }
+# 
+# # Add points from a data frame to an existing ternary plot
+# ternaryPoints <- function(x, ...) {
+#   x <- validatedTernaryPoints(x)
+#   coords <- cartesianFromTernary(x[, 1], x[, 2], x[, 3])
+#   graphics::points(coords$x, coords$y, ...)
+# }
+# 
+# # Add a line segment to an existing ternary plot
+# # Color and line type may be added as additional arguments
+# ternarySegment <- function(x0, x1, ...) {
+#   # x0 and x1 are vectors of the endpoint ternary coordinates
+#   coords0 <- cartesianFromTernary(x0[1], x0[2], x0[3])
+#   coords1 <- cartesianFromTernary(x1[1], x1[2], x1[3])
+#   graphics::segments(coords0$x, coords0$y, coords1$x, coords1$y, ...)
+# }
+# 
+# # Add a polygon to an existing ternary plot
+# # Color may be added as an additional argument
+# ternaryPolygon <- function(x, ...) {
+#   nPoints <- nrow(x)
+#   xCoord <- vector(mode = "numeric", length = nPoints)
+#   yCoord <- vector(mode = "numeric", length = nPoints)
+#   for (i in 1:nPoints) {
+#     coords <- cartesianFromTernary(x[i, 1], x[i, 2], x[i, 3])
+#     xCoord[i] <- coords$x
+#     yCoord[i] <- coords$y
+#   }
+#   graphics::polygon(xCoord, yCoord, ...)
+# }
+# 
+# # Add text to an existing ternary plot
+# # Text styling may be added as additional arguments
+# ternaryText <- function(x, label = "", ...) {
+#   coords <- cartesianFromTernary(x[1], x[2], x[3])
+#   graphics::text(coords$x, coords$y, label = label, ...)
+# }
+# 
+# # ---------------------------------------------------------------------------------------
+# # The following functions are called by ternaryPlot() and generally will not need to be
+# # called directly
+# 
+# ## Plotting primitives -------------------------------------------------------------------
+# ternaryTriangle <- function() {
+#   top <- cartesianFromTernary(100, 0, 0)
+#   left <- cartesianFromTernary(0, 100, 0)
+#   right <- cartesianFromTernary(0, 0, 100)
+#   lim <- c(-1.1, 1.1)
+#   graphics::plot(top$x, top$y, xlim = lim, ylim = lim, type = "n", asp = 1, axes = FALSE, xlab = "", ylab = "")
+#   graphics::segments(top$x, top$y, right$x, right$y)
+#   graphics::segments(top$x, top$y, left$x, left$y)
+#   graphics::segments(left$x, left$y, right$x, right$y)
+# }
+# 
+# ternaryLabels <- function(top = "", left = "", right = "") {
+#   topCoord <- cartesianFromTernary(100, 0, 0)
+#   leftCoord <- cartesianFromTernary(0, 100, 0)
+#   rightCoord <- cartesianFromTernary(0, 0, 100)
+#   graphics::text(topCoord$x, topCoord$y, top, pos = 3)
+#   graphics::text(leftCoord$x, leftCoord$y, left, pos = 1, srt = -60)
+#   graphics::text(rightCoord$x, rightCoord$y, right, pos = 1, srt = 60)
+# }
+# 
+# ternaryGrid <- function(increment) {
+#   low <- increment
+#   high <- 100 - increment
+# 
+#   m <- seq(low, high, increment)
+#   nLines <- length(m)
+# 
+#   n1 <- o2 <- seq(high, low, -increment)
+#   n2 <- o1 <- rep(0, nLines)
+# 
+#   for (i in 1:nLines) {
+#     a <- cartesianFromTernary(m[i], n1[i], o1[i])
+#     b <- cartesianFromTernary(m[i], n2[i], o2[i])
+#     graphics::segments(a$x, a$y, b$x, b$y, col = "lightgray", lty = 3)
+# 
+#     a <- cartesianFromTernary(n1[i], m[i], o1[i])
+#     b <- cartesianFromTernary(n2[i], m[i], o2[i])
+#     graphics::segments(a$x, a$y, b$x, b$y, col = "lightgray", lty = 3)
+# 
+#     a <- cartesianFromTernary(n1[i], o1[i], m[i])
+#     b <- cartesianFromTernary(n2[i], o2[i], m[i])
+#     graphics::segments(a$x, a$y, b$x, b$y, col = "lightgray", lty = 3)
+#   }
+# }
+# 
+# ## Convert from ternary coordinates to cartesian (x, y) coordinates ----------------------
+# cartesianFromTernary <- function(top, left, right) {
+#   y <- (top - 50) / 50 # vertically spans from -1 to 1
+#   baseHalfWidth <- 2 / tan(60 * pi / 180) # : equilateral triangle
+#   horizontalHalfWidth <- ((100 - top) * baseHalfWidth) / 100
+#   horizontalProportion <- (right / (right + left + 0.0000001) - 0.5) * 2
+#   x <- horizontalProportion * horizontalHalfWidth
+#   xyCoords <- data.frame(cbind(x = x, y = y))
+#   colnames(xyCoords) <- c("x", "y")
+#   xyCoords
+# }
+# 
+# ## Remove rows with NA values and rows that don't sum to 100 -----------------------------
+# validatedTernaryPoints <- function(x) {
+#   rowsWithNA <- rowSums(is.na(x))
+#   xNAremoved <- x[rowsWithNA == 0, ]
+#   rowsEqualing100 <- abs(rowSums(xNAremoved) - 100) <= 2
+#   xFinal <- xNAremoved[rowsEqualing100, ]
+#   xFinal
+# }
 
 # Fabric intensities and plots -------------------------------------------------
 
@@ -127,15 +127,17 @@ validatedTernaryPoints <- function(x) {
 #'
 #' @returns numeric vector containing the fabric shape and intensity indices:
 #' \describe{
-#' \item{`P`}{Point (Vollmer 1990), range: (0, 1)}
-#' \item{`G`}{Girdle (Vollmer 1990), range: (0, 1)}
-#' \item{`R`}{Random (Vollmer 1990), range: (0, 1)}
-#' \item{`B`}{cylindricity (Vollmer 1990), range: (0, 1)}
-#' \item{`C`}{cylindricity or Fabric strength (Woodcock 1977), range: (0, Inf)}
-#' \item{`I`}{cylindricity or Fabric intensity (Lisle 1985), range: (0, 5)}
-#' \item{`D`}{"distance" from uniformity, linear from R to P, and R to G. End members are: uniform D = 0, girdle D = 0.5, cluster D = 1. The 99% level for a test against uniformity for a sample size of 300 is D = 0.1 (Vollmer 2020).}
+#' \item{`P`}{Point (Vollmer 1990). Range: (0, 1)}
+#' \item{`G`}{Girdle (Vollmer 1990). Range: (0, 1)}
+#' \item{`R`}{Random (Vollmer 1990). Range: (0, 1)}
+#' \item{`B`}{cylindricity (Vollmer 1990). Range: (0, 1)}
+#' \item{`C`}{cylindricity or Fabric strength (Woodcock 1977). Rrange: (0, Inf)}
+#' \item{`I`}{cylindricity or Fabric intensity (Lisle 1985). Range: (0, 5)}
+#' \item{`D`}{"distance" from uniformity, linear from R to P, and R to G (Vollmer 2020). Range: (0, 1). End members are: uniform D = 0, girdle D = 0.5, cluster D = 1. The 99% level for a test against uniformity for a sample size of 300 is D = 0.1.}
 #' }
 #' @export
+#' 
+#' @seealso [or_shape_params()]
 #'
 #' @examples
 #' set.seed(1)

@@ -31,7 +31,7 @@ alpha, beta, and gamma) of oriented drill cores
 azi <- 225
 inc <- -45
 drillcore_orientation(azi, inc, 60, 320)
-drillcore_orientation(azi, inc, 45, 220, )
+drillcore_orientation(azi, inc, 45, 220)
 
 # multiple alpha-beta measurements
 stereoplot()

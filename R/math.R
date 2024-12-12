@@ -740,8 +740,8 @@ fisher_statistics <- function(x, w = NULL, p = 0.05) {
 #' set.seed(1234)
 #' x <- rfb(100, mu = Line(120, 50), k = 15, A = diag(c(-5, 0, 5)))
 #'
-#' ggstereo() +
-#'   geom_point(data = gg(x), aes(x, y))
+#' stereoplot()
+#' stereo_point(x)
 #'
 #' bingham_statistics(x)
 bingham_statistics <- function(x, w = NULL) {
@@ -790,6 +790,8 @@ bingham_statistics <- function(x, w = NULL) {
 #' @returns list indicating the F-statistic and the p-value.
 #' 
 #' @export
+#' 
+#' @importFrom stats qf
 #'
 #' @examples
 #' set.seed(1234)
@@ -797,8 +799,8 @@ bingham_statistics <- function(x, w = NULL) {
 #' y <- rvmf(100, mu = Line(180, 45), k = 20)
 #'
 #' ggstereo() +
-#'   geom_point(data = gg(x), aes(x, y, color = "x")) +
-#'   geom_point(data = gg(y), aes(x, y, color = "y"))
+#'   ggplot2::geom_point(data = gg(x), ggplot2::aes(x, y, color = "x")) +
+#'   ggplot2::geom_point(data = gg(y), ggplot2::aes(x, y, color = "y"))
 #'
 #' fisher_ftest(x, y)
 fisher_ftest <- function(x, y, alpha = 0.05) {
@@ -828,7 +830,7 @@ fisher_ftest <- function(x, y, alpha = 0.05) {
   df1 <- 2
   df2 <- 2 * (nx + ny - 2)
 
-  crit <- qf(p = alpha, df1 = df1, df2 = df2, lower.tail = FALSE)
+  crit <- stats::qf(p = alpha, df1 = df1, df2 = df2, lower.tail = FALSE)
   if (stat > crit) {
     message("Reject null-hypothesis")
   } else {

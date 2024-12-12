@@ -31,8 +31,8 @@ Elliptical concentration and confidence cone estimation
 set.seed(1234)
 x <- rfb(100, mu = Line(120, 50), k = 15, A = diag(c(-5, 0, 5)))
 
-ggstereo() +
-  geom_point(data = gg(x), aes(x, y))
+stereoplot()
+stereo_point(x)
 
 bingham_statistics(x)
 }

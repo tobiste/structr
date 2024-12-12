@@ -12,13 +12,13 @@ fabric_indexes(x)
 \value{
 numeric vector containing the fabric shape and intensity indices:
 \describe{
-\item{\code{P}}{Point (Vollmer 1990), range: (0, 1)}
-\item{\code{G}}{Girdle (Vollmer 1990), range: (0, 1)}
-\item{\code{R}}{Random (Vollmer 1990), range: (0, 1)}
-\item{\code{B}}{cylindricity (Vollmer 1990), range: (0, 1)}
-\item{\code{C}}{cylindricity or Fabric strength (Woodcock 1977), range: (0, Inf)}
-\item{\code{I}}{cylindricity or Fabric intensity (Lisle 1985), range: (0, 5)}
-\item{\code{D}}{"distance" from uniformity, linear from R to P, and R to G. End members are: uniform D = 0, girdle D = 0.5, cluster D = 1. The 99\% level for a test against uniformity for a sample size of 300 is D = 0.1 (Vollmer 2020).}
+\item{\code{P}}{Point (Vollmer 1990). Range: (0, 1)}
+\item{\code{G}}{Girdle (Vollmer 1990). Range: (0, 1)}
+\item{\code{R}}{Random (Vollmer 1990). Range: (0, 1)}
+\item{\code{B}}{cylindricity (Vollmer 1990). Range: (0, 1)}
+\item{\code{C}}{cylindricity or Fabric strength (Woodcock 1977). Rrange: (0, Inf)}
+\item{\code{I}}{cylindricity or Fabric intensity (Lisle 1985). Range: (0, 5)}
+\item{\code{D}}{"distance" from uniformity, linear from R to P, and R to G (Vollmer 2020). Range: (0, 1). End members are: uniform D = 0, girdle D = 0.5, cluster D = 1. The 99\% level for a test against uniformity for a sample size of 300 is D = 0.1.}
 }
 }
 \description{
@@ -29,4 +29,7 @@ set.seed(1)
 mu <- Line(120, 50)
 x <- rvmf(100, mu = mu, k = 1)
 fabric_indexes(x)
+}
+\seealso{
+\code{\link[=or_shape_params]{or_shape_params()}}
 }

@@ -28,7 +28,8 @@
 #'   x2 <- Line(120, 5)
 #'   ggstereo() +
 #'     ggplot2::geom_point(data = gg(x2), ggplot2::aes(x, y), color = "darkgreen") +
-#'     ggplot2::geom_path(data = ggl(x2, d = 8), ggplot2::aes(x, y, group = group), color = "darkgreen")
+#'     ggplot2::geom_path(data = ggl(x2, d = 8), 
+#'     ggplot2::aes(x, y, group = group), color = "darkgreen")
 #'
 #'   x3 <- Plane(137, 71)
 #'   ggstereo() +
