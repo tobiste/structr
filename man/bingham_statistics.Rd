@@ -19,14 +19,23 @@ object of class \code{"line"} or \code{"plane"}}
 \value{
 list
 \describe{
-\item{\code{k}}{two-column vector containing the estimates for the minimum and maximum concentration (\eqn{\kappa}).}
+\item{\code{k}}{two-column vector containing the estimates for the minimum (\eqn{k_\text{min}}) and maximum concentration (\eqn{k_\text{max}}).}
 \item{\code{a95}}{two-column vector containing the estimates for the minimum and maximum 95\% confidence cone.}
+\item{\code{beta}}{The shape factor of the distribution given by the ratio \eqn{\frac{k_\text{min}}{k_\text{max}}}.}
 }
 }
 \description{
 Elliptical concentration and confidence cone estimation
 }
 \examples{
-x <- rfb(100, mu = Line(120, 50), k = 5, A = diag(c(-1, 0, 1)))
+set.seed(1234)
+x <- rfb(100, mu = Line(120, 50), k = 15, A = diag(c(-5, 0, 5)))
+
+ggstereo() +
+  geom_point(data = gg(x), aes(x, y))
+
 bingham_statistics(x)
+}
+\seealso{
+\code{\link[=inertia_tensor]{inertia_tensor()}}
 }

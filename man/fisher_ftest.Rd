@@ -12,7 +12,7 @@ fisher_ftest(x, y, alpha = 0.05)
 \item{alpha}{Significance level}
 }
 \value{
-list indicating the F-statistic and the cp-value.
+list indicating the F-statistic and the p-value.
 }
 \description{
 Test against the null-hypothesis that the samples are drawn from the same Fisher population.
@@ -23,8 +23,8 @@ x <- rvmf(100, mu = Line(120, 50), k = 20)
 y <- rvmf(100, mu = Line(180, 45), k = 20)
 
 ggstereo() +
-  geom_point(data = gg(x), aes(x, y, color = 'x')) +
-  geom_point(data = gg(y), aes(x, y, color = 'y'))
+  geom_point(data = gg(x), aes(x, y, color = "x")) +
+  geom_point(data = gg(y), aes(x, y, color = "y"))
 
 fisher_ftest(x, y)
 }

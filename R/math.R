@@ -655,8 +655,9 @@ estimate_k <- function(x, w = NULL) {
 #' @param x numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
 #' @param w numeric. Weights
-#' @param p numeric. Significance level (`0.05` by default), corresponding to 
+#' @param p numeric. Significance level (`0.05` by default), corresponding to
 #' \eqn{100 * (1-p) - 95\%} confidence level.
+#' 
 #' @returns list, with
 #' \describe{
 #' \item{`"k"`}{estimated concentration parameter \eqn{\kappa} for the von Mises-Fisher
@@ -664,7 +665,9 @@ estimate_k <- function(x, w = NULL) {
 #' \item{`"csd"`}{estimated angular standard deviation enclosing 63% of the orientation data. Angle is in degrees if `x` is a spherical object, and raidan if otherwise.}
 #' \item{`"a95"`}{Confidence limit for given `p`. Angle is in degrees if `x` is a spherical object, and raidan if otherwise.}
 #' }
+#' 
 #' @export
+#' 
 #' @examples
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)
 #' fisher_statistics(x)
@@ -675,7 +678,7 @@ fisher_statistics <- function(x, w = NULL, p = 0.05) {
   } else {
     x <- vec2mat(x)
   }
-  
+
   w <- if (is.null(w)) {
     rep(1, times = nrow(x))
   } else {
@@ -689,27 +692,27 @@ fisher_statistics <- function(x, w = NULL, p = 0.05) {
 
   if (N != R) {
     k <- (N - 1) / (N - R) # fisher's kappa approximation
-    csd <- 81 / sqrt(k) # 63% 
+    csd <- 81 / sqrt(k) # 63%
     csd_95 <- 140 / sqrt(k) # 95%
-    
-    term1 = (N-R)/R
-    term2 <- (1/p) ^ ( 1 /(N-1))
+
+    term1 <- (N - R) / R
+    term2 <- (1 / p)^(1 / (N - 1))
     cos_a <- 1 - term1 * (term2 - 1)
-    alpha <- acos(cos_a) 
-    
-    #a95 <- acos(1 - ((N - R) / R) * (20**(1 / (N - 1)) - 1)) # apsg version
-    
-    if(transform){
+    alpha <- acos(cos_a)
+
+    # a95 <- acos(1 - ((N - R) / R) * (20**(1 / (N - 1)) - 1)) # apsg version
+
+    if (transform) {
       alpha <- rad2deg(alpha)
-      #a95 <- rad2deg(a95)
-      #alpha_kn63 <- rad2deg(alpha_kn63)
-      #alpha_kn95 <- rad2deg(alpha_kn95)
+      # a95 <- rad2deg(a95)
+      # alpha_kn63 <- rad2deg(alpha_kn63)
+      # alpha_kn95 <- rad2deg(alpha_kn95)
     } else {
       csd <- deg2rad(csd)
       csd_95 <- deg2rad(csd_95)
     }
-    
-    list(k = k, csd = csd, csd_2s = csd_95, alpha=alpha)
+
+    list(k = k, csd = csd, csd_2s = csd_95, alpha = alpha)
   }
 }
 
@@ -718,121 +721,120 @@ fisher_statistics <- function(x, w = NULL, p = 0.05) {
 #' @param x numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
 #' @param w numeric. Weights
-#' @return list 
+#' 
+#' @return list
 #' \describe{
-#'  \item{`k`}{two-column vector containing the estimates for the minimum and maximum concentration (\eqn{\kappa}).}
+#'  \item{`k`}{two-column vector containing the estimates for the minimum (\eqn{k_\text{min}}) and maximum concentration (\eqn{k_\text{max}}).}
 #'  \item{`a95`}{two-column vector containing the estimates for the minimum and maximum 95% confidence cone.}
+#'  \item{`beta`}{The shape factor of the distribution given by the ratio \eqn{\frac{k_\text{min}}{k_\text{max}}}.}
 #'  }
+#' 
 #' @export
-#' @source Borradaile, G. (2003). Spherical-Orientation Data. In: Statistics of 
+#' 
+#' @seealso [inertia_tensor()]
+#' 
+#' @source Borradaile, G. (2003). Spherical-Orientation Data. In: Statistics of
 #' Earth Science Data. Springer, Berlin, Heidelberg. https://doi.org/10.1007/978-3-662-05223-5_10
 #'
 #' @examples
 #' set.seed(1234)
 #' x <- rfb(100, mu = Line(120, 50), k = 15, A = diag(c(-5, 0, 5)))
-#' 
+#'
 #' ggstereo() +
-#'   geom_point(data = gg(x), aes(x, y, color = 'x'))
-#' 
+#'   geom_point(data = gg(x), aes(x, y))
+#'
 #' bingham_statistics(x)
-bingham_statistics <- function(x, w = NULL){
-  transform <- is.spherical(x)
-  if (transform) {
-    x <- to_vec(x)
-  } else {
-    x <- vec2mat(x)
-  }
-  
+bingham_statistics <- function(x, w = NULL) {
   w <- if (is.null(w)) {
     rep(1, times = nrow(x))
   } else {
     as.numeric(w)
-  }  
-  
+  }
+
   n <- sum(w)
-  
-  inertia <- -ortensor(x)
-  abc <- n - diag(inertia)
-  
-  k_ellipse <- c(0, 0)
-  k_ellipse[2] = (abc[1] + abc[2]) / (abc[3] + abc[2] - abc[1]) # max
-  k_ellipse[1] = (abc[1] + abc[2]) / (abc[3] - abc[2] + abc[1]) # min
-  
+
+  inertia <- inertia_tensor(x, w)
+  abc <- diag(inertia)
+
+  k_ellipse <- numeric(2)
+  k_ellipse[2] <- (abc[1] + abc[2]) / (abc[3] + abc[2] - abc[1]) # max
+  k_ellipse[1] <- (abc[1] + abc[2]) / (abc[3] - abc[2] + abc[1]) # min
+
   # theta = x[, 2]
-  # 
+  #
   # k = n / (n - sum(cosd(theta)))
-  #   
+  #
   # A = B = (k * n) / (1+k)
   # C = (2*n) / (1+k)
-  # 
+  #
   # k_ellipse <- c(0, 0)
   # k_ellipse[2] = (A + B) / (C + B - A)
   # k_ellipse[1] = (A + B) / (C - B + A) # min
-  
-  a95 = deg2rad(140) / sqrt(k_ellipse * n)
 
-  if(transform){
-    a95 = rad2deg(a95)
+  a95 <- deg2rad(140) / sqrt(k_ellipse * n)
+
+  if (is.spherical(x)) {
+    a95 <- rad2deg(a95)
   }
-  
-  list(k = k_ellipse, a95 = a95)
+
+  list(k = k_ellipse, a95 = a95, beta = k_ellipse[1] / k_ellipse[2])
 }
 
-
 #' Test of mean orientations
-#' 
+#'
 #' Test against the null-hypothesis that the samples are drawn from the same Fisher population.
 #'
 #' @param x,y  Can be three element vectors, three column arrays, or objects of class `"line"` or `"plane"`
 #' @param alpha Significance level
 #'
-#' @returns list indicating the F-statistic and the cp-value.
+#' @returns list indicating the F-statistic and the p-value.
+#' 
 #' @export
 #'
 #' @examples
 #' set.seed(1234)
 #' x <- rvmf(100, mu = Line(120, 50), k = 20)
 #' y <- rvmf(100, mu = Line(180, 45), k = 20)
-#' 
+#'
 #' ggstereo() +
-#'   geom_point(data = gg(x), aes(x, y, color = 'x')) +
-#'   geom_point(data = gg(y), aes(x, y, color = 'y'))
-#' 
+#'   geom_point(data = gg(x), aes(x, y, color = "x")) +
+#'   geom_point(data = gg(y), aes(x, y, color = "y"))
+#'
 #' fisher_ftest(x, y)
-fisher_ftest <- function(x, y, alpha = 0.05){
+fisher_ftest <- function(x, y, alpha = 0.05) {
   if (is.spherical(x)) {
     x <- to_vec(x)
   } else {
     x <- vec2mat(x)
   }
-  
+
   if (is.spherical(y)) {
     y <- to_vec(y)
   } else {
     y <- vec2mat(y)
   }
-  
+
   nx <- nrow(x)
   ny <- nrow(y)
-  
+
   Rx <- vresultant(x) |> vlength()
   Ry <- vresultant(y) |> vlength()
-  
+
   R <- vresultant(rbind(x, y)) |> vlength()
-  
-  
-  stat <- (nx + ny - 2) * ( (Rx + Ry - R) / (nx + ny - Rx - Ry) )
-  
+
+
+  stat <- (nx + ny - 2) * ((Rx + Ry - R) / (nx + ny - Rx - Ry))
+
   df1 <- 2
   df2 <- 2 * (nx + ny - 2)
-  
-  crit <- qf(p=alpha, df1=df1, df2=df2, lower.tail=FALSE)
-  if(stat > crit) {
-    message('Reject null-hypothesis')
+
+  crit <- qf(p = alpha, df1 = df1, df2 = df2, lower.tail = FALSE)
+  if (stat > crit) {
+    message("Reject null-hypothesis")
   } else {
-      message('Do not reject null-hypothesis')
-    }
-  c('F stat' = stat, 'p-value' = crit)
+    message("Do not reject null-hypothesis")
+  }
+  c("F stat" = stat, "p-value" = crit)
 }
 
 #' Spherical Linear Interpolation (Slerp)
@@ -842,10 +844,13 @@ fisher_ftest <- function(x, y, alpha = 0.05){
 #' @param x,y numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
 #' @param t numeric. interpolation factor (`t = [0, 1]`).
-#' @note For non-unit vectors the interpolation is not uniform
+#' 
+#' @note For non-unit vectors the interpolation is not uniform.
+#' 
 #' @details
 #' A Slerp path is the spherical geometry equivalent of a path along a line
 #' segment in the plane; a great circle is a spherical geodesic.
+#' 
 #' @export
 vslerp <- function(x, y, t) {
   transform <- is.spherical(x)
@@ -881,16 +886,38 @@ vslerp <- function(x, y, t) {
 #' @param x numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
 #' @param norm logical. Whether the tensor should be normalized or not.
+#' @param w numeric. weightings
+#' 
 #' @returns matrix
+#' 
+#' @details The normalized orientation tensor is given as \deqn{D = \frac{1}{n} (x_i, y_i, z_i) (x_i, y_i, z_i)^T}
+#' n = 1
+#' 
 #' @export
-#' @seealso [or_eigen()]
+#' 
+#' @seealso [or_eigen()], [inertia_tensor()]
+#' 
 #' @examples
 #' set.seed(1)
 #' x <- rfb(100, mu = Line(120, 50), k = 1, A = diag(c(10, 0, 0)))
 #' ortensor(x)
-ortensor <- function(x, norm = TRUE) {
-  if (is.line(x) | is.plane(x)) x <- to_vec(x)
-  or <- t(x) %*% x
+ortensor <- function(x, norm = TRUE, w = NULL) {
+  if (is.spherical(x)) x <- to_vec(x)
+
+  w <- if (is.null(w)) {
+    rep(1, times = nrow(x))
+  } else {
+    as.numeric(w)
+  }
+
+  if (norm) {
+    # n <- nrow(x)
+    n <- sum(w)
+  } else {
+    n <- 1
+  }
+
+  or <- (1 / n) * (t(x) %*% x)
   # or <- matrix(nrow = 3, ncol = 3)
   # or[1, 1] <- sum(x[, 1]^2)
   # or[1, 2] <- sum(x[, 1] * x[, 2])
@@ -902,13 +929,39 @@ ortensor <- function(x, norm = TRUE) {
   # or[3, 2] <- sum(x[, 3] * x[, 2])
   # or[3, 3] <- sum(x[, 3]^2)
   rownames(or) <- colnames(or) <- NULL
-  if (norm) {
-    or / nrow(x)
-  } else {
-    or
-  }
+  or
 }
 
+#' Inertia tensor
+#'
+#' @param x numeric. Can be three element vector, three column array, or an
+#' object of class `"line"` or `"plane"`
+#' @param w numeric. weightings
+#'
+#' @return 3 x 3 matrix
+#' @details \deqn{D = n - (x_i, y_i, z_i) (x_i, y_i, z_i)^T}
+#' @export
+#' @seealso [ortensor()]
+#'
+#' @examples
+#' set.seed(1)
+#' x <- rfb(100, mu = Line(120, 50), k = 1, A = diag(c(10, 0, 0)))
+#' inertia_tensor(x)
+inertia_tensor <- function(x, w = NULL) {
+  if (is.spherical(x)) x <- to_vec(x)
+
+  w <- if (is.null(w)) {
+    rep(1, times = nrow(x))
+  } else {
+    as.numeric(w)
+  }
+
+  n <- sum(w)
+  inertia <- n - (t(x) %*% x)
+
+  rownames(inertia) <- colnames(inertia) <- NULL
+  inertia
+}
 
 #' Eigenvalues and Eigenvectors of a Set of Vectors
 #'
@@ -918,13 +971,17 @@ ortensor <- function(x, norm = TRUE) {
 #' object of class `"line"` or `"plane"`
 #' @param scaled logical. Whether the Eigenvectors should be scaled by the
 #' Eigenvalues (only effective if `x` is in Cartesian coordinates).
+#' 
 #' @returns list containing
 #' \describe{
 #' \item{`values`}{Eigenvalues}
 #' \item{`vectors`}{Eigenvectors in coordinate system of `x`}
 #' }
+#' 
 #' @seealso [ortensor()], [eigen()]
+#' 
 #' @export
+#' 
 #' @examples
 #' set.seed(1)
 #' mu <- rvmf(n = 1) |> vec2line()
@@ -1165,9 +1222,13 @@ or_shape_params <- function(x) {
 #' object of class `"line"` or `"plane"`
 #' @param max_vertical Whether the maximum of the von Mises-Fisher distribution
 #' is already vertical or not.
+#' 
 #' @returns Object of class of `x`
+#' 
 #' @export
+#' 
 #' @seealso [or_eigen()]
+#' 
 #' @examples
 #' set.seed(1)
 #' mu <- Line(120, 50)
@@ -1185,14 +1246,13 @@ center <- function(x, max_vertical = FALSE) {
   } else {
     x_cart <- x
   }
-  x_or <- ortensor(x_cart)
-  x_svd <- svd(x_or) # Singular Value Decomposition of a Matrix
-  x_eigen <- list(
-    values = x_svd$d,
-    vectors = t(x_svd$u)
-  )
-  # x_eigen <- eigen(x_or)
-  # x_eigen$vectors <- t(x_eigen$vectors)
+  # x_or <- ortensor(x_cart)
+  # x_svd <- svd(x_or) # Singular Value Decomposition of a Matrix
+  # x_eigen <- list(
+  #   values = x_svd$d,
+  #   vectors = t(x_svd$u)
+  # )
+  x_eigen <- or_eigen(x_cart)
 
   x_trans <- matrix(nrow = nrow(x), ncol = 3)
   for (i in 1:nrow(x)) {

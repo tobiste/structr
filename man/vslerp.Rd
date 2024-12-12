@@ -20,5 +20,5 @@ A Slerp path is the spherical geometry equivalent of a path along a line
 segment in the plane; a great circle is a spherical geodesic.
 }
 \note{
-For non-unit vectors the interpolation is not uniform
+For non-unit vectors the interpolation is not uniform.
 }

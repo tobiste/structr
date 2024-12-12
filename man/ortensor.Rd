@@ -4,13 +4,15 @@
 \alias{ortensor}
 \title{Orientation tensor}
 \usage{
-ortensor(x, norm = TRUE)
+ortensor(x, norm = TRUE, w = NULL)
 }
 \arguments{
 \item{x}{numeric. Can be three element vector, three column array, or an
 object of class \code{"line"} or \code{"plane"}}
 
 \item{norm}{logical. Whether the tensor should be normalized or not.}
+
+\item{w}{numeric. weightings}
 }
 \value{
 matrix
@@ -19,11 +21,15 @@ matrix
 3D orientation tensor, which characterize data distribution using
 eigenvalue method. See (Watson 1966, Scheidegger 1965).
 }
+\details{
+The normalized orientation tensor is given as \deqn{D = \frac{1}{n} (x_i, y_i, z_i) (x_i, y_i, z_i)^T}
+n = 1
+}
 \examples{
 set.seed(1)
 x <- rfb(100, mu = Line(120, 50), k = 1, A = diag(c(10, 0, 0)))
 ortensor(x)
 }
 \seealso{
-\code{\link[=or_eigen]{or_eigen()}}
+\code{\link[=or_eigen]{or_eigen()}}, \code{\link[=inertia_tensor]{inertia_tensor()}}
 }
