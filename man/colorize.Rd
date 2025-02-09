@@ -15,7 +15,7 @@ assign_col(x, n = length(x), pal = viridis::viridis, ...)
 
 assign_col_binned(x, breaks, pal = viridis::viridis, ...)
 
-legend_c(breaks, title = NULL, pal = viridis::viridis)
+legend_c(breaks, title = NULL, pal = viridis::viridis, ...)
 
 legend_d(fill, labels = names(fill), position = "topright", ...)
 }

@@ -20,7 +20,7 @@ drillcore_orientation(azi, inc, alpha, beta, gamma = NULL)
 \item{gamma}{numeric. (optional). Gamma angle in degrees}
 }
 \value{
-object of calss \code{"plane"}. If gamma is specified, \code{"line"} object is
+object of class \code{"plane"}. If gamma is specified, \code{"line"} object is
 returned.
 }
 \description{

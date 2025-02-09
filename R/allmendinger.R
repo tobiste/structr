@@ -120,84 +120,85 @@ CartToSph <- function(cn, ce, cd) {
 }
 
 
-#' calculates the mean vector for a given series of lines
-#'
-#' @param t,p numeric vectors of trends and plunges (in radians)
-#'
-#' @returns calculates the trend (trd) and plunge (plg) of the mean vector (in radians),
-#' its normalized length, and Fisher statistics (concentration factor (conc),
-#' 99 (d99) and 95 (d95) % uncertainty cones, in radians)
-#' @export
-#'
-CalcMV <- function(t, p) {
-  # Number of lines
-  nlines <- length(t)
-
-  # Initialize the 3 direction cosines which contain the sums of the
-  # individual vectors (i.e. the coordinates of the resultant vector)
-  CNsum <- 0
-  CEsum <- 0
-  CDsum <- 0
-
-  # Now add up all the individual vectors
-  for (i in 1:nlines) {
-    cs <- SphToCart(t(i), p(i), 0)
-    cn <- cs[, 1]
-    ce <- cs[, 2]
-    cd <- cs[, 3]
-    CNsum <- CNsum + cn
-    CEsum <- CEsum + ce
-    CDsum <- CDsum + cd
-  }
-
-  # R is the length of the resultant vector and Rave is the length of
-  # the resultant vector normalized by the number of lines
-  R <- sqrt(CNsum * CNsum + CEsum * CEsum + CDsum * CDsum)
-  Rave <- R / nlines
-
-  # If Rave is lower than 0.1, the mean vector is insignificant, return error
-  if (Rave < 0.1) {
-    stop("Mean vector is insignificant")
-  } else {
-    # Divide the resultant vector by its length to get the average
-    # unit vector
-    CNsum <- CNsum / R
-    CEsum <- CEsum / R
-    CDsum <- CDsum / R
-
-    # Use the following 'if' statement if you want to convert the
-    # mean vector to the lower hemisphere
-    if (CDsum < 0) {
-      CNsum <- -CNsum
-      CEsum <- -CEsum
-      CDsum <- -CDsum
-    }
-
-    # Convert the mean vector from direction cosines to trend and plunge
-    vec <- CartToSph(CNsum, CEsum, CDsum)
-    trd <- vec[, 1]
-    plg <- vec[, 2]
-
-    # If there are enough measurements calculate the Fisher Statistics
-    # For more information on these statistics see Fisher et al. (1987)
-    if (R < nlines) {
-      if (nlines < 16) {
-        afact <- 1 - (1 / nlines)
-        conc <- (nlines / (nlines - R)) * afact^2
-      } else {
-        conc <- (nlines - 1) / (nlines - R)
-      }
-    }
-    if (Rave >= 0.65 && Rave < 1) {
-      afact <- 1 / 0.01
-      bfact <- 1 / (nlines - 1)
-      d99 <- acos(1 - ((nlines - R) / R) * (afact^bfact - 1.0))
-      afact <- 1 / 0.05
-      d95 <- acos(1 - ((nlines - R) / R) * (afact^bfact - 1.0))
-    }
-  }
-  cbind(trd, plg, Rave, conc, d99, d95)
-}
+#' #' calculates the mean vector for a given series of lines
+#' #'
+#' #' @param t,p numeric vectors of trends and plunges (in radians)
+#' #'
+#' #' @returns calculates the trend (trd) and plunge (plg) of the mean vector (in radians),
+#' #' its normalized length, and Fisher statistics (concentration factor (conc),
+#' #' 99 (d99) and 95 (d95) % uncertainty cones, in radians)
+#' #' @export
+#' #'
+#' #' @importFrom shiny p
+#' CalcMV <- function(t, p) {
+#'   # Number of lines
+#'   nlines <- length(t)
+#' 
+#'   # Initialize the 3 direction cosines which contain the sums of the
+#'   # individual vectors (i.e. the coordinates of the resultant vector)
+#'   CNsum <- 0
+#'   CEsum <- 0
+#'   CDsum <- 0
+#' 
+#'   # Now add up all the individual vectors
+#'   for (i in 1:nlines) {
+#'     cs <- SphToCart(t(i), p(i), 0)
+#'     cn <- cs[, 1]
+#'     ce <- cs[, 2]
+#'     cd <- cs[, 3]
+#'     CNsum <- CNsum + cn
+#'     CEsum <- CEsum + ce
+#'     CDsum <- CDsum + cd
+#'   }
+#' 
+#'   # R is the length of the resultant vector and Rave is the length of
+#'   # the resultant vector normalized by the number of lines
+#'   R <- sqrt(CNsum * CNsum + CEsum * CEsum + CDsum * CDsum)
+#'   Rave <- R / nlines
+#' 
+#'   # If Rave is lower than 0.1, the mean vector is insignificant, return error
+#'   if (Rave < 0.1) {
+#'     stop("Mean vector is insignificant")
+#'   } else {
+#'     # Divide the resultant vector by its length to get the average
+#'     # unit vector
+#'     CNsum <- CNsum / R
+#'     CEsum <- CEsum / R
+#'     CDsum <- CDsum / R
+#' 
+#'     # Use the following 'if' statement if you want to convert the
+#'     # mean vector to the lower hemisphere
+#'     if (CDsum < 0) {
+#'       CNsum <- -CNsum
+#'       CEsum <- -CEsum
+#'       CDsum <- -CDsum
+#'     }
+#' 
+#'     # Convert the mean vector from direction cosines to trend and plunge
+#'     vec <- CartToSph(CNsum, CEsum, CDsum)
+#'     trd <- vec[, 1]
+#'     plg <- vec[, 2]
+#' 
+#'     # If there are enough measurements calculate the Fisher Statistics
+#'     # For more information on these statistics see Fisher et al. (1987)
+#'     if (R < nlines) {
+#'       if (nlines < 16) {
+#'         afact <- 1 - (1 / nlines)
+#'         conc <- (nlines / (nlines - R)) * afact^2
+#'       } else {
+#'         conc <- (nlines - 1) / (nlines - R)
+#'       }
+#'     }
+#'     if (Rave >= 0.65 && Rave < 1) {
+#'       afact <- 1 / 0.01
+#'       bfact <- 1 / (nlines - 1)
+#'       d99 <- acos(1 - ((nlines - R) / R) * (afact^bfact - 1.0))
+#'       afact <- 1 / 0.05
+#'       d95 <- acos(1 - ((nlines - R) / R) * (afact^bfact - 1.0))
+#'     }
+#'   }
+#'   cbind(trd, plg, Rave, conc, d99, d95)
+#' }
 
 
 

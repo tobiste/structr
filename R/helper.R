@@ -132,16 +132,23 @@ assign_col_binned <- function(x, breaks, pal = viridis::viridis, ...) {
   named_cols
 }
 
-color_func <- function(x, pal = viridis::viridis) {
-  color_func0 <- colorRamp(do.call(pal, args = list(n = 10000)))
-  grDevices::rgb(color_func0(x) / 255)
+#' @importFrom grDevices colorRamp
+color_func <- function(x, pal = viridis::viridis, ...) {
+  color_func0 <- colorRamp(do.call(pal, args = list(n = 10000, ...)))
+  
+  grDevices::rgb(color_func0(x, ...) / 255)
 }
 
 #' @rdname colorize
 #' @export
-legend_c <- function(breaks, title = NULL, pal = viridis::viridis) {
+legend_c <- function(breaks, title = NULL, pal = viridis::viridis, ...) {
   label_pos <- normalize(breaks)
-  legend_image <- grDevices::as.raster(matrix(color_func(seq(0, 1, .001)), ncol = 1))
+  legend_image <- grDevices::as.raster(
+    matrix(
+      color_func(seq(0, 1, .001), pal = pal, ...),
+      ncol = 1
+    )
+  )
 
   graphics::par(new = TRUE)
   graphics::layout(matrix(1, 1))

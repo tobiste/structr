@@ -242,6 +242,8 @@ reshape_grid <- function(m, n) {
 
 }
 
+#' @importFrom graphics contour filled.contour
+#' @importFrom stats xtabs
 stereo_density <- function(x, nlevels = 20, ..., filled = FALSE, upper.hem = FALSE) {
   d <- density_grid(x, ...)
   d$grid <- fix_symm(d$grid)

@@ -317,7 +317,6 @@ is.spherical <- function(l) {
 #' }
 #' @source Ramsay, 1967, p. 15-16
 #' @name ramsay_coords
-#' @importFrom tectonicr deg2rad rad2deg
 #' @examples
 #' \dontrun{
 #' # Stereographic coordinates (angle notation):
@@ -357,7 +356,7 @@ cartesian_to_acosvec <- function(x) {
 #' @export
 acoscartesian_to_cartesian <- function(x) {
   # tectonicr::deg2rad(x) |> cos()
-  x <- tectonicr::deg2rad(x)
+  x <- deg2rad(x)
   cx <- cos(x[, 1])
   cy <- cos(x[, 2])
   cz <- cos(x[, 3])

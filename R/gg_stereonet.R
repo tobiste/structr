@@ -178,6 +178,7 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
 #' @param ... optional graphical parameters passed to [ggplot2::geom_polygon()]
 #'
 #' @export
+#' @importFrom ggplot2 aes geom_polygon
 ggframe <- function(n = 1e4, color = "black", fill = NA, lwd = 1, ...) {
   prim.lat <- rep(c(0), times = n)
   prim.l1 <- seq(0, 180, length = n / 2)
@@ -189,6 +190,7 @@ ggframe <- function(n = 1e4, color = "black", fill = NA, lwd = 1, ...) {
   geom_polygon(aes(x = prim.long, y = prim.lat), data = prim_df, color = color, fill = fill, lwd = lwd, ..., inherit.aes = FALSE)
 }
 
+#' @importFrom ggplot2 aes geom_path
 ggstereo_grid <- function(d = 10, rot = 0, ...) {
   x <- y <- group <- NULL
   # small circles
@@ -235,7 +237,7 @@ ggstereo_grid <- function(d = 10, rot = 0, ...) {
 #' @param ... argument passed to [ggplot2::geom_polygon()]
 #'
 #' @import ggplot2
-#' @importFrom rlang check_installed
+#' @importFrom ggplot2 aes annotate coord_map element_blank element_text ggplot scale_x_continuous scale_y_continuous theme
 #'
 #' @return ggplot
 #' @export
@@ -389,6 +391,7 @@ NULL
 
 #' @rdname ggstereocontour
 #' @export
+#' @importFrom ggplot2 aes geom_contour
 geom_contour_stereo <- function(data, ngrid = 200, hw = NULL, optimal_bw = c("cross", "rot"), norm = FALSE, threshold = 0, ...) {
   Long <- Lat <- Density <- NULL
   xtot <- full_hem(data)
@@ -407,6 +410,7 @@ geom_contour_stereo <- function(data, ngrid = 200, hw = NULL, optimal_bw = c("cr
 
 #' @rdname ggstereocontour
 #' @export
+#' @importFrom ggplot2 aes geom_contour_filled geom_tile
 geom_contourf_stereo <- function(data, ngrid = 200, hw = NULL, optimal_bw = c("cross", "rot"), norm = FALSE, smooth = FALSE, threshold = 0, ...) {
   Long <- Lat <- Density <- NULL
   xtot <- full_hem(data)

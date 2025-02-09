@@ -124,7 +124,7 @@ best_cone_ramsay <- function(x) {
 }
 
 #' @rdname best_pole
-best_cone_ramsay <- function(x) {
+best_cone_ramsay2 <- function(x) {
   l <- m <- n <- l2 <- m2 <- lm <- ln <- mn <- numeric()
   xsum <- data.frame(l = x[, 1], m = x[, 2], n = x[, 3]) |>
     dplyr::mutate(

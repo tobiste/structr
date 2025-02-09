@@ -161,6 +161,8 @@ calculate_density <- function(x, sigma = NULL, sigma.norm = TRUE, trimzero = TRU
 #' stereoplot()
 #' stereo_density_contour(x)
 #' stereo_point(x)
+#' @importFrom graphics filled.contour
+#' @importFrom stats xtabs
 stereo_density_contour <- function(x, sigma = NULL, sigma.norm = TRUE, trimzero = TRUE, ngrid = 100, grid.type = c("gss", "sfs"), ...) {
   # stereoplot()
   densgrd <- calculate_density(
@@ -192,6 +194,7 @@ blank_grid <- function(n = 3000, ...) {
 }
 #'
 #'
+#' @importFrom dplyr near
 project_data0 <- function(self, x, y, z) {
   # Equal-area projection
   d <- sqrt(x * x + y * y + z * z)

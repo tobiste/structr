@@ -3,11 +3,12 @@
 \name{best_pole}
 \alias{best_pole}
 \alias{best_cone_ramsay}
+\alias{best_cone_ramsay2}
 \title{The cone or plane best fit of conically or cylindrical disposed s-plane poles}
 \usage{
 best_cone_ramsay(x)
 
-best_cone_ramsay(x)
+best_cone_ramsay2(x)
 }
 \arguments{
 \item{x}{matrix. Cartesian coordinates of points}

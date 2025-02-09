@@ -218,9 +218,6 @@ spatial_interpolation <- function(x,
 #' @param grid output of [stress2grid()], [PoR_stress2grid()], or [kernel_dispersion()]
 #' @returns \code{sf} object
 #'
-#' @importFrom dplyr ungroup mutate select left_join as_tibble
-#' @importFrom tidyr drop_na
-#' @importFrom sf st_as_sf
 #' @importFrom stats aggregate
 #' @seealso [spatial_interpolation()], [v_mean()], [v_delta()]
 #'

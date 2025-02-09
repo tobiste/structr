@@ -13,7 +13,7 @@
 #' 
 #' @export
 #' 
-#' @return object of calss `"plane"`. If gamma is specified, `"line"` object is
+#' @return object of class `"plane"`. If gamma is specified, `"line"` object is
 #' returned.
 #' 
 #' @examples

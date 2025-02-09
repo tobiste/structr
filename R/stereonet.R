@@ -302,8 +302,7 @@ stereoplot_frame <- function(col = "black", border = "black", ndiv = 36) {
 #' @param centercross logical. Whether a center cross should be added (`TRUE` by default)
 #' @param ticks integer. Angle between ticks. if `NULL` (the default), no ticks are drawn.
 #' @source Adapted from the `RFOC` package
-#' @importFrom grDevices gray
-#' @importFrom graphics title lines segments
+#' @importFrom graphics points
 #' @export
 #' @examples
 #' stereoplot(ticks = 45, title = "title", sub = "subtitle")
@@ -327,6 +326,7 @@ stereoplot <- function(guides = TRUE, d = 10, col = grDevices::gray(0.9),
   stereoplot_frame(col = col, border = border, ndiv = 100)
 }
 
+#' @importFrom graphics segments
 stereoplot_ticks <- function(radius = 1, lenght = 0.02, angle = 10, ...) {
   DR <- radius + lenght
   ang <- pi * seq(0, 360, by = angle) / 180
@@ -336,6 +336,7 @@ stereoplot_ticks <- function(radius = 1, lenght = 0.02, angle = 10, ...) {
   )
 }
 
+#' @importFrom graphics lines
 stereo_guides <- function(d = 10, col = "black", lwd = 1, lty = 1) {
   lam <- seq(from = 0, to = 180, by = 5) * DEG2RAD()
   lam0 <- pi / 2
