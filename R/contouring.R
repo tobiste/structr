@@ -356,7 +356,7 @@ projected_density <- function(x, n = 128L, sigma = 3, weights = NULL, upper.hem 
 
 #' @rdname stereo_density
 #' @export
-stereo_density <- function(x, ..., type = c("contour", "contour_filled", "image"), nlevels = 10L, col.palette = viridis::magma, col = NULL, add = TRUE, col.params = list()) {
+stereo_density <- function(x, ..., type = c("contour", "contour_filled", "image"), nlevels = 10L, col.palette = viridis, col = NULL, add = TRUE, col.params = list()) {
   type <- match.arg(type)
 
   if (inherits(x, "spherical.density")) d <- x else d <- spherical_density(x, ...)
@@ -386,15 +386,17 @@ stereo_density <- function(x, ..., type = c("contour", "contour_filled", "image"
       stereoplot(guides = FALSE)
       add <- TRUE
     }
+    
     if (is.null(col)) {
-      col.params <- append(list(n = nlevels), col.params)
+      levels <- pretty(range(densities, na.rm = TRUE), nlevels)
+      col.params <- append(list(n = length(levels) - 1), col.params)
       col <- do.call(col.palette, col.params)
     }
 
     graphics::contour(
       x = d$x, y = d$y,
       z = densities,
-      nlevels = nlevels,
+      levels = levels,
       col = col,
       asp = 1,
       axes = FALSE,
@@ -405,7 +407,7 @@ stereo_density <- function(x, ..., type = c("contour", "contour_filled", "image"
     if (!add) stereoplot(guides = FALSE)
 
     levels <- pretty(range(densities, na.rm = TRUE), nlevels)
-    col.params <- append(list(n = length(levels)), col.params)
+    col.params <- append(list(n = length(levels) - 1), col.params)
     col <- do.call(col.palette, col.params)
 
     graphics::.filled.contour(

@@ -30,7 +30,7 @@ stereo_density(
   ...,
   type = c("contour", "contour_filled", "image"),
   nlevels = 10L,
-  col.palette = viridis::magma,
+  col.palette = viridis,
   col = NULL,
   add = TRUE,
   col.params = list()
