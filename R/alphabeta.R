@@ -10,12 +10,12 @@
 #' @param alpha numeric vector. Alpha angle in degrees
 #' @param beta numeric vector. Beta angle in degrees
 #' @param gamma numeric. (optional). Gamma angle in degrees
-#' 
+#'
 #' @export
-#' 
+#'
 #' @return object of class `"plane"`. If gamma is specified, `"line"` object is
 #' returned.
-#' 
+#'
 #' @examples
 #' azi <- 225
 #' inc <- -45

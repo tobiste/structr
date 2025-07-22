@@ -51,7 +51,7 @@ rotz3 <- function(deg) {
 #' @param upper.hem logical. Whether the projection is shown for upper
 #' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
 #' @param r numeric. Radius of circle. Default is `1` for unit circle.
-#' @param earea logical `TRUE` for Lambert equal-area projection (also "Schmidt net"; the default), or 
+#' @param earea logical `TRUE` for Lambert equal-area projection (also "Schmidt net"; the default), or
 #' `FALSE` for meridional stereographic projection (also "Wulff net" or "Stereonet").
 #' @returns two-column vector with the transformed coordinates
 #' @export
@@ -63,7 +63,7 @@ stereo_coords <- function(az, inc, upper.hem = FALSE, earea = TRUE, r = 1) {
     az <- az + 180
   }
 
- 
+
   A <- list(az = az, inc = 90 - inc)
   B <- .fix_inc(A)
   azi <- deg2rad(B$az)
@@ -101,7 +101,7 @@ stereo_coords <- function(az, inc, upper.hem = FALSE, earea = TRUE, r = 1) {
 #' @param x Object of class `"line"` or `"plane"`
 #' @param upper.hem logical. Whether the projection is shown for upper
 #' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
-#' @param earea logical `TRUE` for Lambert equal-area projection (also "Schmidt net"; the default), or 
+#' @param earea logical `TRUE` for Lambert equal-area projection (also "Schmidt net"; the default), or
 #' `FALSE` for meridional stereographic projection (also "Wulff net" or "Stereonet").
 #' @param col color
 #' @param pch plotting character
@@ -149,7 +149,7 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1
 #' @param text.pos position for labels
 #' @param upper.hem logical. Whether the projection is shown for upper
 #' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
-#' @param earea logical `TRUE` for Lambert equal-area projection (also "Schmidt net"; the default), or 
+#' @param earea logical `TRUE` for Lambert equal-area projection (also "Schmidt net"; the default), or
 #' `FALSE` for meridional stereographic projection (also "Wulff net" or "Stereonet").
 #' @param ... optional graphical parameters
 #' @note `"plane"` objects will be displayed as pole to the plane.
@@ -246,7 +246,7 @@ stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 16, col 
 #' @param BALL.radius numeric size of sphere
 #' @param upper.hem logical. Whether the projection is shown for upper
 #' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
-#' @param earea logical `TRUE` for Lambert equal-area projection (also "Schmidt net"; the default), or 
+#' @param earea logical `TRUE` for Lambert equal-area projection (also "Schmidt net"; the default), or
 #' `FALSE` for meridional stereographic projection (also "Wulff net" or "Stereonet").
 #' @param ... optional graphical parameters
 #' @importFrom graphics lines
@@ -321,7 +321,7 @@ stereoplot_frame <- function(col = "black", border = "black", ndiv = 36) {
 #' Initialize the plot for equal-area stereographic projections (Wulff) or Lambert
 #' Equal-Area projections (Schmidt).
 #'
-#' @param earea logical. Projection, either `TRUE` for Lambert equal-area 
+#' @param earea logical. Projection, either `TRUE` for Lambert equal-area
 #' projection (the default), or `FALSE` for meridional stereographic projection.
 #' @param guides logical. Whether guides should be added to the plot (`TRUE` by default)
 #' @param d integer. Angle distance between guides. Default: 10
@@ -348,7 +348,7 @@ stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = grDevices::gra
   graphics::title(main = title, sub = sub)
   graphics::mtext("N")
 
-  if (guides) stereo_guides(d=d, earea = earea, col = col, lwd = lwd, lty = lty)
+  if (guides) stereo_guides(d = d, earea = earea, col = col, lwd = lwd, lty = lty)
 
   if (!is.null(ticks)) stereoplot_ticks(angle = ticks, col = border)
 
@@ -371,16 +371,16 @@ stereo_guides_schmidt <- function(d = 10, n = 512, ...) {
   lam_seq <- seq(0, 180, length.out = n) * pi / 180
   lam0 <- pi / 2
   R <- sqrt(2) / 2
-  
+
   # Precompute sin and cos of lam - lam0
   cos_lam <- cos(lam_seq - lam0)
   sin_lam <- sin(lam_seq - lam0)
-  
+
   # Latitude lines (constant phi)
   phi_vals <- seq(-90 + d, 90 - d, 10) * pi / 180
   cos_phi <- cos(phi_vals)
   sin_phi <- sin(phi_vals)
-  
+
   for (i in seq_along(phi_vals)) {
     phi <- phi_vals[i]
     kp <- sqrt(2 / (1 + cos_phi[i] * cos_lam))
@@ -388,16 +388,16 @@ stereo_guides_schmidt <- function(d = 10, n = 512, ...) {
     y <- R * kp * sin_phi[i]
     graphics::lines(x, y, ...)
   }
-  
+
   # Longitude lines (constant lambda)
   phi_seq <- seq(-90, 90, 5) * DEG2RAD()
   cos_phi_seq <- cos(phi_seq)
   sin_phi_seq <- sin(phi_seq)
-  
+
   lam_vals <- seq(d, 180 - d, d) * DEG2RAD()
   cos_lam_vals <- cos(lam_vals - lam0)
   sin_lam_vals <- sin(lam_vals - lam0)
-  
+
   for (j in seq_along(lam_vals)) {
     lam <- lam_vals[j]
     kp <- sqrt(2 / (1 + cos_phi_seq * cos_lam_vals[j]))
@@ -411,24 +411,24 @@ stereo_guides_wulff <- function(d = 9, r = 1, n = 512, ...) {
   if (n %% 2 != 0) n <- n + 1
   beta0 <- seq(0, 360, length.out = n) * DEG2RAD()
   beta <- c(beta0[(n / 2):n], beta0[1:(n / 2 - 1)])
-  
+
   cos_beta <- cos(beta)
   sin_beta <- sin(beta)
-  
+
   # great circles
   phi <- seq(0, 180, by = d) * DEG2RAD()
   rcos_phi <- r / cos(phi)
   rtan_phi <- r * tan(phi)
-  
-  
+
+
   for (i in seq_along(phi)) {
     xg <- -rtan_phi[i] + (rcos_phi[i]) * cos_beta
     yg <- rcos_phi[i] * sin_beta
     condg <- sqrt(xg^2 + yg^2) <= r
     graphics::lines(xg[condg], yg[condg], ...)
   }
-  
-  
+
+
   # small circles
   gamma <- seq(0, 180, by = d) * DEG2RAD()
   rtan_gamma <- r * tan(gamma)
@@ -437,14 +437,14 @@ stereo_guides_wulff <- function(d = 9, r = 1, n = 512, ...) {
     xs <- rtan_gamma[j] * cos_beta
     ys1 <- rcos_gamma[j] + rtan_gamma[j] * sin_beta
     ys2 <- -rcos_gamma[j] + rtan_gamma[j] * sin_beta
-    
+
     conds1 <- sqrt(xs^2 + ys1^2) <= r
     conds2 <- sqrt(xs^2 + ys2^2) <= r
-    
+
     graphics::lines(xs[conds1], ys1[conds1], ...)
     graphics::lines(xs[conds2], ys2[conds2], ...)
   }
-  
+
   graphics::lines(c(0, 0), c(1, -1), ...)
   graphics::lines(c(-1, 1), c(0, 0), ...)
 }
@@ -452,10 +452,9 @@ stereo_guides_wulff <- function(d = 9, r = 1, n = 512, ...) {
 
 #' @importFrom graphics lines
 stereo_guides <- function(d = 10, earea = TRUE, ...) {
-  if(earea){
+  if (earea) {
     stereo_guides_schmidt(d = d, ...)
   } else {
     stereo_guides_wulff(d = d, ...)
   }
 }
-

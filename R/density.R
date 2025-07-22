@@ -166,7 +166,7 @@ calculate_density <- function(x, sigma = NULL, sigma.norm = TRUE, trimzero = TRU
 stereo_density_contour <- function(x, sigma = NULL, sigma.norm = TRUE, trimzero = TRUE, ngrid = 100, grid.type = c("gss", "sfs"), ...) {
   grid.type <- match.arg(grid.type)
 
-    densgrd <- calculate_density(
+  densgrd <- calculate_density(
     x,
     sigma = sigma, sigma.norm = sigma.norm, trimzero = trimzero, ngrid = ngrid, grid.type = grid.type
   )

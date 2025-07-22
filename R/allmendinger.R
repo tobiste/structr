@@ -133,13 +133,13 @@ CartToSph <- function(cn, ce, cd) {
 #' CalcMV <- function(t, p) {
 #'   # Number of lines
 #'   nlines <- length(t)
-#' 
+#'
 #'   # Initialize the 3 direction cosines which contain the sums of the
 #'   # individual vectors (i.e. the coordinates of the resultant vector)
 #'   CNsum <- 0
 #'   CEsum <- 0
 #'   CDsum <- 0
-#' 
+#'
 #'   # Now add up all the individual vectors
 #'   for (i in 1:nlines) {
 #'     cs <- SphToCart(t(i), p(i), 0)
@@ -150,12 +150,12 @@ CartToSph <- function(cn, ce, cd) {
 #'     CEsum <- CEsum + ce
 #'     CDsum <- CDsum + cd
 #'   }
-#' 
+#'
 #'   # R is the length of the resultant vector and Rave is the length of
 #'   # the resultant vector normalized by the number of lines
 #'   R <- sqrt(CNsum * CNsum + CEsum * CEsum + CDsum * CDsum)
 #'   Rave <- R / nlines
-#' 
+#'
 #'   # If Rave is lower than 0.1, the mean vector is insignificant, return error
 #'   if (Rave < 0.1) {
 #'     stop("Mean vector is insignificant")
@@ -165,7 +165,7 @@ CartToSph <- function(cn, ce, cd) {
 #'     CNsum <- CNsum / R
 #'     CEsum <- CEsum / R
 #'     CDsum <- CDsum / R
-#' 
+#'
 #'     # Use the following 'if' statement if you want to convert the
 #'     # mean vector to the lower hemisphere
 #'     if (CDsum < 0) {
@@ -173,12 +173,12 @@ CartToSph <- function(cn, ce, cd) {
 #'       CEsum <- -CEsum
 #'       CDsum <- -CDsum
 #'     }
-#' 
+#'
 #'     # Convert the mean vector from direction cosines to trend and plunge
 #'     vec <- CartToSph(CNsum, CEsum, CDsum)
 #'     trd <- vec[, 1]
 #'     plg <- vec[, 2]
-#' 
+#'
 #'     # If there are enough measurements calculate the Fisher Statistics
 #'     # For more information on these statistics see Fisher et al. (1987)
 #'     if (R < nlines) {

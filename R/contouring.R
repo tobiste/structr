@@ -443,7 +443,7 @@ stereo_density <- function(x, FUN = exponential_kamb, n = 128L, sigma = 3, weigh
 }
 
 
-# 
+#
 # .fix_symm <- function(x) {
 #   x[x[, 3] < 0, ] <- v_antipode(x[x[, 3] < 0, ])
 #   x

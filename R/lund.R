@@ -8,10 +8,10 @@
 #' The variables hold the coordinates in the North, East and Down geographical
 #' coordinate system, e.g. `S1 = c(s1N,s1E,s1D)`
 #' @param R numeric. Relative magnitude of `S2` with respect to `S1` and `S3`:
-#' \eqn{R = \frac{S1 - S2}{S1 - S3}}. Values ranging from 0 to 1, with 0 being 
+#' \eqn{R = \frac{S1 - S2}{S1 - S3}}. Values ranging from 0 to 1, with 0 being
 #' `S1==S2` and 1 being `S2==S3`.
 #' @param tol Tolerance of comparison.
-#' @param ortho.tol tolerance angle (in radians) for orthogonality check of the 
+#' @param ortho.tol tolerance angle (in radians) for orthogonality check of the
 #' three principal stress vectors.
 #'
 #' @return numeric angle in degrees. The direction of SH from North.
@@ -27,11 +27,12 @@
 #' S3 <- Line(103.01, 17.07)
 #' S2 <- vcross(S3, S1)
 #' SH(S1, S2, S3, R = 1)
-#' 
+#'
 #' R <- seq(0, 1, .05)
-#' cbind(R, SH = sapply(R, function(x){SH(S1, S2, S3, R = x)}))
+#' cbind(R, SH = sapply(R, function(x) {
+#'   SH(S1, S2, S3, R = x)
+#' }))
 SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 1.0e-4) {
-
   if (is.spherical(S1)) {
     S1 <- line2vec(S1)
   } else {
@@ -125,7 +126,7 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 1.0e-4)
 #' Direction of maximum horizontal stress from the stress tensor (full knowledge)
 #'
 #' @param S 3x3 matrix
-#' 
+#'
 #' @return numeric angle in degrees. The direction of SH from North.
 #' @export
 #'
@@ -133,24 +134,24 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 1.0e-4)
 #' orientations with full or partial knowledge of the tectonic stress tensor,
 #' Geophys. J. Int., doi:\doi{10.1111/j.1365-246X.2007.03468.x}.
 #'
-#' @examples 
+#' @examples
 #' S1 <- c(-0.11163471165673433, -0.32215903156083286, 0.94008044843891103)
-#' S2 <- c(0.97015303285724142, 0.16959307992318776, 0.17332420511879815) 
+#' S2 <- c(0.97015303285724142, 0.16959307992318776, 0.17332420511879815)
 #' S3 <- c(-0.21526909669344957, 0.93137089584437482, 0.29361108695489119)
-#' 
-#' S <- cbind(S1, S2, S3) * cbind(rep(3, 3), rep(2, 3), rep(1, 3))/3
+#'
+#' S <- cbind(S1, S2, S3) * cbind(rep(3, 3), rep(2, 3), rep(1, 3)) / 3
 #' SH_from_tensor(S)
-SH_from_tensor <- function(S){
+SH_from_tensor <- function(S) {
   SM <- eigen(S %*% t(S), TRUE)
   S1 <- SM$values[1]
   S2 <- SM$values[2]
   S3 <- SM$values[3]
-  
-  SH(S[, 1], S[, 2], S[, 3], R = (S1-S2)/(S1-S3))
+
+  SH(S[, 1], S[, 2], S[, 3], R = (S1 - S2) / (S1 - S3))
 
   # Y <- 2 * (S1 * S[1, 1] * S[2, 1] + S2 * S[1, 2] * S[2, 2] + S3 * S[1, 3] * S[2, 3])
   # X <- S1 * (S[1, 1]^2 - S[2, 1]^2) + S2 * (S[1, 2]^2 - S[2, 2]^2) + S3 * (S[1, 3]^2 - S[2, 3]^2)
-  # 
+  #
   # # alpha0 <- rad2deg(atan(Y / X) / 2)
   # alpha <- rad2deg(atan2(Y, X) / 2) %% 180
   # return(alpha)

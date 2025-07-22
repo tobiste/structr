@@ -1,5 +1,5 @@
 test_that("Line to cartesian works", {
-  expect_equal(c(line2vec(Line(90, 0))), c(0, 1, 0) )
+  expect_equal(c(line2vec(Line(90, 0))), c(0, 1, 0))
 })
 
 test_that("Cartesian to Line works", {

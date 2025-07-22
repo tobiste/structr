@@ -135,7 +135,7 @@ assign_col_binned <- function(x, breaks, pal = viridis::viridis, ...) {
 #' @importFrom grDevices colorRamp
 color_func <- function(x, pal = viridis::viridis, ...) {
   color_func0 <- colorRamp(do.call(pal, args = list(n = 10000, ...)))
-  
+
   grDevices::rgb(color_func0(x, ...) / 255)
 }
 

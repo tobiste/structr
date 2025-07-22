@@ -657,7 +657,7 @@ estimate_k <- function(x, w = NULL) {
 #' @param w numeric. Weights
 #' @param p numeric. Significance level (`0.05` by default), corresponding to
 #' \eqn{100 * (1-p) - 95\%} confidence level.
-#' 
+#'
 #' @returns list, with
 #' \describe{
 #' \item{`"k"`}{estimated concentration parameter \eqn{\kappa} for the von Mises-Fisher
@@ -665,9 +665,9 @@ estimate_k <- function(x, w = NULL) {
 #' \item{`"csd"`}{estimated angular standard deviation enclosing 63% of the orientation data. Angle is in degrees if `x` is a spherical object, and raidan if otherwise.}
 #' \item{`"a95"`}{Confidence limit for given `p`. Angle is in degrees if `x` is a spherical object, and raidan if otherwise.}
 #' }
-#' 
+#'
 #' @export
-#' 
+#'
 #' @examples
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)
 #' fisher_statistics(x)
@@ -721,18 +721,18 @@ fisher_statistics <- function(x, w = NULL, p = 0.05) {
 #' @param x numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
 #' @param w numeric. Weights
-#' 
+#'
 #' @return list
 #' \describe{
 #'  \item{`k`}{two-column vector containing the estimates for the minimum (\eqn{k_\text{min}}) and maximum concentration (\eqn{k_\text{max}}).}
 #'  \item{`a95`}{two-column vector containing the estimates for the minimum and maximum 95% confidence cone.}
 #'  \item{`beta`}{The shape factor of the distribution given by the ratio \eqn{\frac{k_\text{min}}{k_\text{max}}}.}
 #'  }
-#' 
+#'
 #' @export
-#' 
+#'
 #' @seealso [inertia_tensor()]
-#' 
+#'
 #' @source Borradaile, G. (2003). Spherical-Orientation Data. In: Statistics of
 #' Earth Science Data. Springer, Berlin, Heidelberg. https://doi.org/10.1007/978-3-662-05223-5_10
 #'
@@ -788,9 +788,9 @@ bingham_statistics <- function(x, w = NULL) {
 #' @param alpha Significance level
 #'
 #' @returns list indicating the F-statistic and the p-value.
-#' 
+#'
 #' @export
-#' 
+#'
 #' @importFrom stats qf
 #'
 #' @examples
@@ -846,13 +846,13 @@ fisher_ftest <- function(x, y, alpha = 0.05) {
 #' @param x,y numeric. Can be three element vector, three column array, or an
 #' object of class `"line"` or `"plane"`
 #' @param t numeric. interpolation factor (`t = [0, 1]`).
-#' 
+#'
 #' @note For non-unit vectors the interpolation is not uniform.
-#' 
+#'
 #' @details
 #' A Slerp path is the spherical geometry equivalent of a path along a line
 #' segment in the plane; a great circle is a spherical geodesic.
-#' 
+#'
 #' @export
 vslerp <- function(x, y, t) {
   transform <- is.spherical(x)
@@ -889,16 +889,16 @@ vslerp <- function(x, y, t) {
 #' object of class `"line"` or `"plane"`
 #' @param norm logical. Whether the tensor should be normalized or not.
 #' @param w numeric. weightings
-#' 
+#'
 #' @returns matrix
-#' 
+#'
 #' @details The normalized orientation tensor is given as \deqn{D = \frac{1}{n} (x_i, y_i, z_i) (x_i, y_i, z_i)^T}
 #' n = 1
-#' 
+#'
 #' @export
-#' 
+#'
 #' @seealso [or_eigen()], [inertia_tensor()]
-#' 
+#'
 #' @examples
 #' set.seed(1)
 #' x <- rfb(100, mu = Line(120, 50), k = 1, A = diag(c(10, 0, 0)))
@@ -973,17 +973,17 @@ inertia_tensor <- function(x, w = NULL) {
 #' object of class `"line"` or `"plane"`
 #' @param scaled logical. Whether the Eigenvectors should be scaled by the
 #' Eigenvalues (only effective if `x` is in Cartesian coordinates).
-#' 
+#'
 #' @returns list containing
 #' \describe{
 #' \item{`values`}{Eigenvalues}
 #' \item{`vectors`}{Eigenvectors in coordinate system of `x`}
 #' }
-#' 
+#'
 #' @seealso [ortensor()], [eigen()]
-#' 
+#'
 #' @export
-#' 
+#'
 #' @examples
 #' set.seed(1)
 #' mu <- rvmf(n = 1) |> vec2line()
@@ -1224,13 +1224,13 @@ or_shape_params <- function(x) {
 #' object of class `"line"` or `"plane"`
 #' @param max_vertical Whether the maximum of the von Mises-Fisher distribution
 #' is already vertical or not.
-#' 
+#'
 #' @returns Object of class of `x`
-#' 
+#'
 #' @export
-#' 
+#'
 #' @seealso [or_eigen()]
-#' 
+#'
 #' @examples
 #' set.seed(1)
 #' mu <- Line(120, 50)
