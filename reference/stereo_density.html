@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,6 +49,7 @@
 <span>  n <span class="op">=</span> <span class="fl">128L</span>,</span>
 <span>  sigma <span class="op">=</span> <span class="fl">3</span>,</span>
 <span>  weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  upper.hem <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  r <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -63,12 +64,13 @@
 <span></span>
 <span><span class="fu">stereo_density</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
+<span>  <span class="va">...</span>,</span>
 <span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"contour"</span>, <span class="st">"contour_filled"</span>, <span class="st">"image"</span><span class="op">)</span>,</span>
 <span>  nlevels <span class="op">=</span> <span class="fl">10L</span>,</span>
 <span>  col.palette <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="va"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">magma</a></span>,</span>
 <span>  col <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  add <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  <span class="va">...</span></span>
+<span>  col.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -82,7 +84,7 @@
 
 <dt id="arg-fun">FUN<a class="anchor" aria-label="anchor" href="#arg-fun"></a></dt>
 <dd><p>density estimation function; one of <code><a href="density-funs.html">exponential_kamb()</a></code> (the default),
-<a href="density-funs.html">kamb_count</a>, <code><a href="density-funs.html">linear_inverse_kamb()</a></code>, <code><a href="density-funs.html">square_inverse_kamb()</a></code>, <code><a href="density-funs.html">schmidt_count()</a></code>.</p></dd>
+<a href="density-funs.html">kamb_count</a>, and <code><a href="density-funs.html">schmidt_count()</a></code>.</p></dd>
 
 
 <dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
@@ -100,13 +102,17 @@ will be normalized to sum to 1, so absolute value of the <code>weights</code> do
 affect the result. Defaults to <code>NULL</code></p></dd>
 
 
+<dt id="arg-upper-hem">upper.hem<a class="anchor" aria-label="anchor" href="#arg-upper-hem"></a></dt>
+<dd><p>logical. Whether the projection is shown for upper
+hemisphere (<code>TRUE</code>) or lower hemisphere (<code>FALSE</code>, the default).</p></dd>
+
+
 <dt id="arg-r">r<a class="anchor" aria-label="anchor" href="#arg-r"></a></dt>
 <dd><p>numeric. radius of stereonet circle</p></dd>
 
 
-<dt id="arg-upper-hem">upper.hem<a class="anchor" aria-label="anchor" href="#arg-upper-hem"></a></dt>
-<dd><p>logical. Whether the projection is shown for upper
-hemisphere (<code>TRUE</code>) or lower hemisphere (<code>FALSE</code>, the default).</p></dd>
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>optional parameters passed to <code>spherical_density()</code>.</p></dd>
 
 
 <dt id="arg-type">type<a class="anchor" aria-label="anchor" href="#arg-type"></a></dt>
@@ -130,8 +136,8 @@ hemisphere (<code>TRUE</code>) or lower hemisphere (<code>FALSE</code>, the defa
 <dd><p>logical. Whether the contours should be added to an existing plot.</p></dd>
 
 
-<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>optional parameters passed to <code>spherical_density()</code>.</p></dd>
+<dt id="arg-col-params">col.params<a class="anchor" aria-label="anchor" href="#arg-col-params"></a></dt>
+<dd><p>list. Arguments passed to <code>col.palette</code></p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -157,10 +163,11 @@ the counts, and the density.</p>
 <span class="r-in"><span><span class="fu"><a href="stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="stereo_point.html">stereo_point</a></span><span class="op">(</span><span class="va">test</span>, col <span class="op">=</span> <span class="st">"lightgrey"</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">stereo_density</span><span class="op">(</span><span class="va">test_densities</span>, type <span class="op">=</span> <span class="st">"contour"</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="stereo_density-2.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">stereo_density</span><span class="op">(</span><span class="va">test_densities</span>, type <span class="op">=</span> <span class="st">"contour_filled"</span>, add <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="stereo_point.html">stereo_point</a></span><span class="op">(</span><span class="va">test</span>, col <span class="op">=</span> <span class="st">"lightgrey"</span>, pch <span class="op">=</span> <span class="fl">21</span><span class="op">)</span></span></span>
-<span class="r-plt img"><img src="stereo_density-2.png" alt="" width="700" height="433"></span>
+<span class="r-plt img"><img src="stereo_density-3.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
