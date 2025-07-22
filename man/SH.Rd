@@ -36,7 +36,9 @@ S2 <- vcross(S3, S1)
 SH(S1, S2, S3, R = 1)
 
 R <- seq(0, 1, .05)
-cbind(R, SH = sapply(R, function(x){SH(S1, S2, S3, R = x)}))
+cbind(R, SH = sapply(R, function(x) {
+  SH(S1, S2, S3, R = x)
+}))
 }
 \references{
 Lund and Townend, (2007). Calculating horizontal stress
