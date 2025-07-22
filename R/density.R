@@ -114,9 +114,9 @@ calculate_density <- function(x, sigma = NULL, sigma.norm = TRUE, trimzero = TRU
     # sigma = sqrt(2 * n / (k - 2))
     # Totally empirical as estimate_k is problematic
     sigma <- sqrt(2 * n / (log(n) - 2)) / 3
-    k <- 2 * (1.0 + n / sigma^2)
+    k <- 2 * (1 + n / sigma^2)
   } else {
-    k <- 2 * (1.0 + n / sigma^2)
+    k <- 2 * (1 + n / sigma^2)
   }
   # method = kwargs.get("method", "exp_kamb")
 
@@ -156,16 +156,17 @@ calculate_density <- function(x, sigma = NULL, sigma.norm = TRUE, trimzero = TRU
 #'
 #' @inheritParams calculate_density
 #' @param ... arguments passed to [graphics::contour()]
+#' @importFrom graphics filled.contour
+#' @importFrom stats xtabs
 #' @examples
 #' x <- rvmf(n = 200, mu = Line(120, 30), k = 10)
 #' stereoplot()
 #' stereo_density_contour(x)
 #' stereo_point(x)
-#' @importFrom graphics filled.contour
-#' @importFrom stats xtabs
 stereo_density_contour <- function(x, sigma = NULL, sigma.norm = TRUE, trimzero = TRUE, ngrid = 100, grid.type = c("gss", "sfs"), ...) {
-  # stereoplot()
-  densgrd <- calculate_density(
+  grid.type <- match.arg(grid.type)
+
+    densgrd <- calculate_density(
     x,
     sigma = sigma, sigma.norm = sigma.norm, trimzero = trimzero, ngrid = ngrid, grid.type = grid.type
   )

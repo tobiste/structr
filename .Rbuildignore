@@ -12,7 +12,6 @@
 ^R/preliminary_S4_classes\.R$
 ^R/preliminary_S4_classes$
 ^R/preliminary_S4_classes\.R$
-^R/contouring\.R$
 ^R/density\.R$
 ^README\.Rmd$
 ^vignettes/Fault_displacements\.Rmd$

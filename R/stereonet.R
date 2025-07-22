@@ -79,14 +79,14 @@ stereo_coords <- function(az, inc, upper.hem = FALSE, earea = TRUE, r = 1) {
   cbind(x = pltx, y = plty)
 }
 
-schmidt_crds <- function(az_rad, inc_rad, r = 1) {
+.schmidt_crds <- function(az_rad, inc_rad, r = 1) {
   tq <- r * sqrt(2) * sin(pi / 4 - inc / 2)
   x <- tq * sin(azi)
   y <- tq * cos(azi)
   cbind(x = x, y = y)
 }
 
-wulff_crds <- function(az_rad, inc_rad, r = 1) {
+.wulff_crds <- function(az_rad, inc_rad, r = 1) {
   tq <- r * tan(pi / 4 - inc / 2)
   x <- tq * sin(azi)
   y <- tq * cos(azi)
@@ -458,3 +458,4 @@ stereo_guides <- function(d = 10, earea = TRUE, ...) {
     stereo_guides_wulff(d = d, ...)
   }
 }
+
