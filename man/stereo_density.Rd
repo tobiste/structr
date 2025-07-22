@@ -27,13 +27,19 @@ projected_density(
 
 stereo_density(
   x,
-  ...,
+  FUN = exponential_kamb,
+  n = 128L,
+  sigma = 3,
+  weights = NULL,
+  upper.hem = FALSE,
+  r = 1,
   type = c("contour", "contour_filled", "image"),
   nlevels = 10L,
   col.palette = viridis,
   col = NULL,
   add = TRUE,
-  col.params = list()
+  col.params = list(),
+  ...
 )
 }
 \arguments{
@@ -56,8 +62,6 @@ hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
 
 \item{r}{numeric. radius of stereonet circle}
 
-\item{...}{optional parameters passed to \code{\link[=spherical_density]{spherical_density()}}.}
-
 \item{type}{character. Type of plot: \code{'contour'} for contour lines,
 \code{'contour_filled'} for filled contours, or \code{'image'} for a raster image.}
 
@@ -70,6 +74,8 @@ hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
 \item{add}{logical. Whether the contours should be added to an existing plot.}
 
 \item{col.params}{list. Arguments passed to \code{col.palette}}
+
+\item{...}{optional parameters passed to \code{\link[=image]{image()}} or \code{\link[=contour]{contour()}}.}
 }
 \value{
 list containing the stereographic x and coordinates of of the grid,
@@ -90,8 +96,8 @@ stereoplot(guides = FALSE)
 stereo_point(test, col = "lightgrey", pch = 19)
 stereo_density(test_densities, type = "contour", add = TRUE)
 
-stereo_density(test_densities, type = "contour_filled", add = FALSE)
-stereo_point(test, col = "lightgrey", pch = 21)
+stereo_density(test_densities, type = "contour_filled", add = FALSE, col.params = list(direction = -1, begin = .05, end = .95, alpha = .75))
+stereo_point(test, col = "black", pch = 21)
 }
 \seealso{
 \code{\link[=count_points]{count_points()}}

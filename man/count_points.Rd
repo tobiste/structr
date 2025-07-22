@@ -4,7 +4,7 @@
 \alias{count_points}
 \title{Point density}
 \usage{
-count_points(azi, inc, FUN, sigma, n, weights, r = 1)
+count_points(azi, inc, FUN, sigma, n, weights, r)
 }
 \arguments{
 \item{azi, inc}{degree}

@@ -55,9 +55,10 @@ blank_grid_regular <- function(n, r = 1) {
 #' affect the result. Defaults to `NULL`
 #'
 #' @returns list
-count_points <- function(azi, inc, FUN, sigma, n, weights, r = 1) {
+count_points <- function(azi, inc, FUN, sigma, n, weights, r) {
   # Grid setup
   grid <- blank_grid_regular(n = n, r = r)
+
 
   # Stereonet math transformations to cartesian coordinates
   xyz_points <- lin2vec0(azi, inc)
@@ -84,9 +85,13 @@ count_points <- function(azi, inc, FUN, sigma, n, weights, r = 1) {
 #' hemispherical surface.
 #'
 #' @param x spherical object
-#' @param n (optional) numeric. The size of the grid that the density is estimated on. Defaults to `100`.
-#' @param r radius of circle
-#' @param arguments passed to [count_points()]
+#' @param weights (optional) numeric vector of length of `azi`.
+#' The relative weight to be applied to each input measurement. The array
+#' will be normalized to sum to 1, so absolute value of the `weights` do not
+#' affect the result. Defaults to `NULL`
+#' @param upper.hem logical. Whether the projection is shown for upper
+#' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
+#' @param ... arguments passed to [count_points()]
 #'
 #'
 #' @returns list with the cartesian coordinates of the grid and density values of the regularly gridded density estimates.
@@ -94,15 +99,16 @@ count_points <- function(azi, inc, FUN, sigma, n, weights, r = 1) {
 #'
 #' @examples
 #' x <- Line(c(120, 315, 86), c(22, 85, 31))
-#' res <- density_grid(x, n = 100)
-density_grid <- function(x, FUN, sigma, n, weights = NULL, r = 1) {
-  # if (length(gridsize) == 1) gridsize <- c(gridsize, gridsize)
-
+#' res <- density_grid(x, n = 100, FUN = kamb_count, sigma = 4)
+density_grid <- function(x, weights = NULL, upper.hem = FALSE, ...) {
   if (!is.spherical(x)) x <- to_spherical(x)
 
   if (!is.line(x)) x <- as.line(x)
 
   azi <- x[, 1]
+  if (upper.hem) {
+    azi <- azi + 180
+  }
   inc <- x[, 2]
 
   if (is.null(weights)) weights <- rep(1, nrow(x))
@@ -111,7 +117,7 @@ density_grid <- function(x, FUN, sigma, n, weights = NULL, r = 1) {
   # weights <- as.numeric(weights) / mean(weights)
   weights <- as.numeric(weights) / max(weights)
 
-  count_points(azi, inc, FUN = FUN, sigma = sigma, n = n, weights = weights, r = r)
+  count_points(azi, inc, weights = weights, ...)
 }
 
 
@@ -231,7 +237,6 @@ reshape_grid <- function(m, n) {
 #' Linear Kamb counts and densities on the sphere
 #'
 #' @param x Object of class `"line"` or `"plane"` or `'spherical.density'` (for plotting only).
-#' @param ... optional parameters passed to [spherical_density()].
 #' @param upper.hem logical. Whether the projection is shown for upper
 #' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
 #' @param n integer. Gridzise. 128 by default.
@@ -250,6 +255,7 @@ reshape_grid <- function(m, n) {
 #' @param col colour(s) for the contour lines drawn. If `NULL`, lines are color based on `col.palette`.
 #' @param col.palette a color palette function to be used to assign colors in the plot.
 #' @param col.params list. Arguments passed to `col.palette`
+#' @param ... optional parameters passed to [image()] or [contour()].
 #'
 #' @name stereo_density
 #'
@@ -271,17 +277,18 @@ reshape_grid <- function(m, n) {
 #' stereo_point(test, col = "lightgrey", pch = 19)
 #' stereo_density(test_densities, type = "contour", add = TRUE)
 #'
-#' stereo_density(test_densities, type = "contour_filled", add = FALSE)
-#' stereo_point(test, col = "lightgrey", pch = 21)
+#' stereo_density(test_densities, type = "contour_filled", add = FALSE, col.params = list(direction = -1, begin = .05, end = .95, alpha = .75))
+#' stereo_point(test, col = "black", pch = 21)
 NULL
 
 #' @rdname stereo_density
 #' @export
 spherical_density <- function(x, FUN = exponential_kamb, n = 128L, sigma = 3, weights = NULL, upper.hem = FALSE, r = 1) {
   x_grid <- y_grid <- seq(-1, 1, length.out = n)
+
   grid <- expand.grid(x_grid, y_grid) |> as.matrix()
 
-  dg <- density_grid(x, FUN = FUN, sigma = sigma, n = n, weights = weights, r = r)
+  dg <- density_grid(x, FUN = FUN, sigma = sigma, n = n, weights = weights, r = r, upper.hem = upper.hem)
 
   density_matrix <- matrix(dg$density, nrow = n, byrow = FALSE)
 
@@ -356,10 +363,13 @@ projected_density <- function(x, n = 128L, sigma = 3, weights = NULL, upper.hem 
 
 #' @rdname stereo_density
 #' @export
-stereo_density <- function(x, ..., type = c("contour", "contour_filled", "image"), nlevels = 10L, col.palette = viridis, col = NULL, add = TRUE, col.params = list()) {
+stereo_density <- function(x, FUN = exponential_kamb, n = 128L, sigma = 3, weights = NULL, upper.hem = FALSE, r = 1,
+                           type = c("contour", "contour_filled", "image"), nlevels = 10L,
+                           col.palette = viridis, col = NULL, add = TRUE, col.params = list(),
+                           ...) {
   type <- match.arg(type)
 
-  if (inherits(x, "spherical.density")) d <- x else d <- spherical_density(x, ...)
+  if (inherits(x, "spherical.density")) d <- x else d <- spherical_density(x, n = n, sigma = sigma, FUN = FUN, weights = weights, upper.hem = upper.hem, r = r)
 
   densities <- d$density
 
@@ -379,14 +389,15 @@ stereo_density <- function(x, ..., type = c("contour", "contour_filled", "image"
       asp = 1,
       axes = FALSE,
       frame.plot = FALSE,
-      add = add
+      add = add,
+      ...
     )
   } else if (type == "contour") {
     if (!add) {
       stereoplot(guides = FALSE)
       add <- TRUE
     }
-    
+
     if (is.null(col)) {
       levels <- pretty(range(densities, na.rm = TRUE), nlevels)
       col.params <- append(list(n = length(levels) - 1), col.params)
@@ -401,7 +412,8 @@ stereo_density <- function(x, ..., type = c("contour", "contour_filled", "image"
       asp = 1,
       axes = FALSE,
       frame.plot = FALSE,
-      add = add
+      add = add,
+      ...
     )
   } else {
     if (!add) stereoplot(guides = FALSE)
