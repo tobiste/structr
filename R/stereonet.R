@@ -18,7 +18,7 @@ rotz3 <- function(deg) {
   return(r)
 }
 
-fix_inc <- function(A) {
+.fix_inc <- function(A) {
   az <- A$az
   inc <- A$inc
   tinc <- deg2rad(inc %% 360)
@@ -65,7 +65,7 @@ stereo_coords <- function(az, inc, upper.hem = FALSE, earea = TRUE, r = 1) {
 
  
   A <- list(az = az, inc = 90 - inc)
-  B <- fix_inc(A)
+  B <- .fix_inc(A)
   azi <- deg2rad(B$az)
   inc <- deg2rad(B$inc)
 

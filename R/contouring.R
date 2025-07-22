@@ -228,10 +228,6 @@ schmidt_count <- function(cos_dist, sigma = NULL) {
   return(list(count = count, units = length(cos_dist) * radius))
 }
 
-reshape_grid <- function(m, n) {
-
-}
-
 #' Calculate and plot densities in a stereonet
 #'
 #' Linear Kamb counts and densities on the sphere
@@ -447,8 +443,8 @@ stereo_density <- function(x, FUN = exponential_kamb, n = 128L, sigma = 3, weigh
 }
 
 
-
-.fix_symm <- function(x) {
-  x[x[, 3] < 0, ] <- v_antipode(x[x[, 3] < 0, ])
-  x
-}
+# 
+# .fix_symm <- function(x) {
+#   x[x[, 3] < 0, ] <- v_antipode(x[x[, 3] < 0, ])
+#   x
+# }

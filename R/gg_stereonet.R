@@ -122,7 +122,7 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
     D_rot <- vrotate(D1, rotaxis, k * rotangle) |>
       vec2line()
 
-    D_fixed <- list(az = D_rot[, 1], inc = D_rot[, 2]) |> fix_inc()
+    D_fixed <- list(az = D_rot[, 1], inc = D_rot[, 2]) |> .fix_inc()
 
     if (d[i] != 90 & d[i] > as.line(x[i, ])[2]) {
       # upper hemisphere
@@ -295,7 +295,7 @@ ignore_unused_imports <- function() {
 
 
 
-full_hem <- function(x) {
+.full_hem <- function(x) {
   inc <- azi <- NULL
   x <- dplyr::mutate(x, inc = inc + 90)
   xupper <- x |>
@@ -394,7 +394,7 @@ NULL
 #' @importFrom ggplot2 aes geom_contour
 geom_contour_stereo <- function(data, ngrid = 200, hw = NULL, optimal_bw = c("cross", "rot"), norm = FALSE, threshold = 0, ...) {
   Long <- Lat <- Density <- NULL
-  xtot <- full_hem(data)
+  xtot <- .full_hem(data)
 
   dens <- vmf_kerncontour(xtot, hw = hw, kernel_method = optimal_bw, ngrid = ngrid)
   res <- expand.grid(Lat = dens$lat - 90, Long = dens$long - 180)
@@ -413,7 +413,7 @@ geom_contour_stereo <- function(data, ngrid = 200, hw = NULL, optimal_bw = c("cr
 #' @importFrom ggplot2 aes geom_contour_filled geom_tile
 geom_contourf_stereo <- function(data, ngrid = 200, hw = NULL, optimal_bw = c("cross", "rot"), norm = FALSE, smooth = FALSE, threshold = 0, ...) {
   Long <- Lat <- Density <- NULL
-  xtot <- full_hem(data)
+  xtot <- .full_hem(data)
 
   dens <- vmf_kerncontour(xtot, hw = hw, kernel_method = optimal_bw, ngrid = ifelse(smooth, 3 * ngrid, ngrid))
   res <- expand.grid(Lat = dens$lat - 90, Long = dens$long - 180)
