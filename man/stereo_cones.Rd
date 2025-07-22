@@ -12,6 +12,7 @@ stereo_smallcircle(
   col = 1,
   N = 1000,
   upper.hem = FALSE,
+  earea = TRUE,
   lty = 1,
   lwd = 1,
   BALL.radius = 1,
@@ -31,6 +32,9 @@ stereo_greatcircle(x, ...)
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
 hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
+
+\item{earea}{logical \code{TRUE} for Lambert equal-area projection (also "Schmidt net"; the default), or
+\code{FALSE} for meridional stereographic projection (also "Wulff net" or "Stereonet").}
 
 \item{BALL.radius}{numeric size of sphere}
 

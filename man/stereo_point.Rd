@@ -12,6 +12,7 @@ stereo_point(
   text.pos = 4,
   cex = 1,
   upper.hem = FALSE,
+  earea = TRUE,
   ...
 )
 }
@@ -30,6 +31,9 @@ stereo_point(
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
 hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
+
+\item{earea}{logical \code{TRUE} for Lambert equal-area projection (also "Schmidt net"; the default), or
+\code{FALSE} for meridional stereographic projection (also "Wulff net" or "Stereonet").}
 
 \item{...}{optional graphical parameters}
 }

@@ -8,6 +8,7 @@ Adapted from the \code{RFOC} package
 }
 \usage{
 stereoplot(
+  earea = TRUE,
   guides = TRUE,
   d = 10,
   col = grDevices::gray(0.9),
@@ -21,6 +22,9 @@ stereoplot(
 )
 }
 \arguments{
+\item{earea}{logical. Projection, either \code{TRUE} for Lambert equal-area
+projection (the default), or \code{FALSE} for meridional stereographic projection.}
+
 \item{guides}{logical. Whether guides should be added to the plot (\code{TRUE} by default)}
 
 \item{d}{integer. Angle distance between guides. Default: 10}
@@ -40,8 +44,8 @@ stereoplot(
 \item{ticks}{integer. Angle between ticks. if \code{NULL} (the default), no ticks are drawn.}
 }
 \description{
-Initialize the plot for equal-area stereographic projections, i.e. Lambert
-azimuthal Equal-Area projections (Schmidt).
+Initialize the plot for equal-area stereographic projections (Wulff) or Lambert
+Equal-Area projections (Schmidt).
 }
 \examples{
 stereoplot(ticks = 45, title = "title", sub = "subtitle")

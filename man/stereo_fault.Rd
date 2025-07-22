@@ -16,6 +16,7 @@ stereo_fault(
   cex = 1,
   text.pos = 4,
   upper.hem = FALSE,
+  earea = TRUE,
   ...
 )
 }
@@ -36,6 +37,9 @@ stereo_fault(
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
 hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
+
+\item{earea}{logical \code{TRUE} for Lambert equal-area projection (also "Schmidt net"; the default), or
+\code{FALSE} for meridional stereographic projection (also "Wulff net" or "Stereonet").}
 
 \item{...}{optional graphical parameters}
 }
