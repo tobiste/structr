@@ -57,7 +57,7 @@ blank_grid_regular <- function(n, r = 1) {
 #' @returns list
 count_points <- function(azi, inc, FUN, sigma, n, weights, r = 1) {
   # Grid setup
-  grid <- blank_grid_regular(n=n, r=r)
+  grid <- blank_grid_regular(n = n, r = r)
 
   # Stereonet math transformations to cartesian coordinates
   xyz_points <- lin2vec0(azi, inc)
@@ -146,7 +146,7 @@ kamb_units <- function(n, radius) {
 #' [linear_inverse_kamb()]: Kamb with linear smoothing
 #' A modified Kamb method using linear smoothing (ref1).  Units are in
 #' numbers of standard deviations by which the density estimate differs from uniform.
-#' 
+#'
 #' [square_inverse_kamb()]: Kamb with squared smoothing
 #' A modified Kamb method using squared smoothing (ref1).  Units are in
 #' numbers of standard deviations by which the density estimate differs from uniform.
@@ -183,7 +183,7 @@ exponential_kamb <- function(cos_dist, sigma = 3) {
 }
 
 #' @rdname density-funs
-#' @export
+# not working
 linear_inverse_kamb <- function(cos_dist, sigma = 3) {
   n <- length(cos_dist)
   radius <- kamb_radius(n, sigma)
@@ -194,7 +194,7 @@ linear_inverse_kamb <- function(cos_dist, sigma = 3) {
 }
 
 #' @rdname density-funs
-#' @export
+# not working
 square_inverse_kamb <- function(cos_dist, sigma = 3) {
   n <- length(cos_dist)
   radius <- kamb_radius(n, sigma)
@@ -231,6 +231,7 @@ reshape_grid <- function(m, n) {
 #' Linear Kamb counts and densities on the sphere
 #'
 #' @param x Object of class `"line"` or `"plane"` or `'spherical.density'` (for plotting only).
+#' @param ... optional parameters passed to [spherical_density()].
 #' @param upper.hem logical. Whether the projection is shown for upper
 #' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
 #' @param n integer. Gridzise. 128 by default.
@@ -241,17 +242,17 @@ reshape_grid <- function(m, n) {
 #' will be normalized to sum to 1, so absolute value of the `weights` do not
 #' affect the result. Defaults to `NULL`
 #' @param FUN density estimation function; one of [exponential_kamb()] (the default),
-#'  [kamb_count], [linear_inverse_kamb()], [square_inverse_kamb()], [schmidt_count()].
+#'  [kamb_count], and [schmidt_count()].
 #' @param nlevels integer. Number of contour levels for plotting
-#' @param type character. Type of plot: `'contour'` for contour lines, 
+#' @param type character. Type of plot: `'contour'` for contour lines,
 #' `'contour_filled'` for filled contours, or `'image'` for a raster image.
 #' @param add logical. Whether the contours should be added to an existing plot.
 #' @param col colour(s) for the contour lines drawn. If `NULL`, lines are color based on `col.palette`.
 #' @param col.palette a color palette function to be used to assign colors in the plot.
-#' @param ... optional parameters passed to [spherical_density()].
+#' @param col.params list. Arguments passed to `col.palette`
 #'
 #' @name stereo_density
-#' 
+#'
 #' @seealso [count_points()]
 #'
 #' @returns list containing the stereographic x and coordinates of of the grid,
@@ -276,7 +277,7 @@ NULL
 
 #' @rdname stereo_density
 #' @export
-spherical_density <- function(x, FUN = exponential_kamb, n = 128L, sigma = 3, weights = NULL, r = 1) {
+spherical_density <- function(x, FUN = exponential_kamb, n = 128L, sigma = 3, weights = NULL, upper.hem = FALSE, r = 1) {
   x_grid <- y_grid <- seq(-1, 1, length.out = n)
   grid <- expand.grid(x_grid, y_grid) |> as.matrix()
 
@@ -355,7 +356,7 @@ projected_density <- function(x, n = 128L, sigma = 3, weights = NULL, upper.hem 
 
 #' @rdname stereo_density
 #' @export
-stereo_density <- function(x, type = c("contour", "contour_filled", "image"), nlevels = 10L, col.palette = viridis::magma, col = NULL, add = TRUE, ...) {
+stereo_density <- function(x, ..., type = c("contour", "contour_filled", "image"), nlevels = 10L, col.palette = viridis::magma, col = NULL, add = TRUE, col.params = list()) {
   type <- match.arg(type)
 
   if (inherits(x, "spherical.density")) d <- x else d <- spherical_density(x, ...)
@@ -367,11 +368,14 @@ stereo_density <- function(x, type = c("contour", "contour_filled", "image"), nl
       stereoplot(guides = FALSE)
       add <- TRUE
     }
+    
+    col.params = append(list(n = nlevels), col.params)
+    col <- do.call(col.palette, col.params)
 
     graphics::image(
       x = d$x, y = d$y,
       z = densities,
-      col = col.palette(512),
+      col = col,
       asp = 1,
       axes = FALSE,
       frame.plot = FALSE,
@@ -382,7 +386,10 @@ stereo_density <- function(x, type = c("contour", "contour_filled", "image"), nl
       stereoplot(guides = FALSE)
       add <- TRUE
     }
-    if(is.null(col)) {col = col.palette(nlevels)}
+    if (is.null(col)) {
+      col.params = append(list(n = nlevels), col.params)
+      col <- do.call(col.palette, col.params)
+    }
 
     graphics::contour(
       x = d$x, y = d$y,
@@ -395,13 +402,17 @@ stereo_density <- function(x, type = c("contour", "contour_filled", "image"), nl
       add = add
     )
   } else {
+    if (!add) stereoplot(guides = FALSE)
+    
     levels <- pretty(range(densities, na.rm = TRUE), nlevels)
-
+    col.params = append(list(n = length(levels)), col.params)
+    col <- do.call(col.palette, col.params)
+    
     graphics::.filled.contour(
       x = d$x, y = d$y,
       z = densities,
       levels = levels,
-      col = viridis::magma(length(levels))
+      col = col
     )
   }
 }

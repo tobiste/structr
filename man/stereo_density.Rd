@@ -12,6 +12,7 @@ spherical_density(
   n = 128L,
   sigma = 3,
   weights = NULL,
+  upper.hem = FALSE,
   r = 1
 )
 
@@ -26,19 +27,20 @@ projected_density(
 
 stereo_density(
   x,
+  ...,
   type = c("contour", "contour_filled", "image"),
   nlevels = 10L,
   col.palette = viridis::magma,
   col = NULL,
   add = TRUE,
-  ...
+  col.params = list()
 )
 }
 \arguments{
 \item{x}{Object of class \code{"line"} or \code{"plane"} or \code{'spherical.density'} (for plotting only).}
 
 \item{FUN}{density estimation function; one of \code{\link[=exponential_kamb]{exponential_kamb()}} (the default),
-\link{kamb_count}, \code{\link[=linear_inverse_kamb]{linear_inverse_kamb()}}, \code{\link[=square_inverse_kamb]{square_inverse_kamb()}}, \code{\link[=schmidt_count]{schmidt_count()}}.}
+\link{kamb_count}, and \code{\link[=schmidt_count]{schmidt_count()}}.}
 
 \item{n}{integer. Gridzise. 128 by default.}
 
@@ -49,10 +51,12 @@ The relative weight to be applied to each input measurement. The array
 will be normalized to sum to 1, so absolute value of the \code{weights} do not
 affect the result. Defaults to \code{NULL}}
 
-\item{r}{numeric. radius of stereonet circle}
-
 \item{upper.hem}{logical. Whether the projection is shown for upper
 hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
+
+\item{r}{numeric. radius of stereonet circle}
+
+\item{...}{optional parameters passed to \code{\link[=spherical_density]{spherical_density()}}.}
 
 \item{type}{character. Type of plot: \code{'contour'} for contour lines,
 \code{'contour_filled'} for filled contours, or \code{'image'} for a raster image.}
@@ -65,7 +69,7 @@ hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
 
 \item{add}{logical. Whether the contours should be added to an existing plot.}
 
-\item{...}{optional parameters passed to \code{\link[=spherical_density]{spherical_density()}}.}
+\item{col.params}{list. Arguments passed to \code{col.palette}}
 }
 \value{
 list containing the stereographic x and coordinates of of the grid,
