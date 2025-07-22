@@ -368,8 +368,8 @@ stereo_density <- function(x, ..., type = c("contour", "contour_filled", "image"
       stereoplot(guides = FALSE)
       add <- TRUE
     }
-    
-    col.params = append(list(n = nlevels), col.params)
+
+    col.params <- append(list(n = nlevels), col.params)
     col <- do.call(col.palette, col.params)
 
     graphics::image(
@@ -387,7 +387,7 @@ stereo_density <- function(x, ..., type = c("contour", "contour_filled", "image"
       add <- TRUE
     }
     if (is.null(col)) {
-      col.params = append(list(n = nlevels), col.params)
+      col.params <- append(list(n = nlevels), col.params)
       col <- do.call(col.palette, col.params)
     }
 
@@ -403,11 +403,11 @@ stereo_density <- function(x, ..., type = c("contour", "contour_filled", "image"
     )
   } else {
     if (!add) stereoplot(guides = FALSE)
-    
+
     levels <- pretty(range(densities, na.rm = TRUE), nlevels)
-    col.params = append(list(n = length(levels)), col.params)
+    col.params <- append(list(n = length(levels)), col.params)
     col <- do.call(col.palette, col.params)
-    
+
     graphics::.filled.contour(
       x = d$x, y = d$y,
       z = densities,
