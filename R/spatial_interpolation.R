@@ -228,7 +228,7 @@ compact_grid <- function(grid) {
 
   data <- grid |>
     dplyr::ungroup() |>
-    tidyr::drop_na(x) |>
+    dplyr::filter(!is.na(x)) |>
     dplyr::mutate(group = paste(lon, lat))
 
   aggregate(R ~ group, data, min, na.rm = TRUE) |>

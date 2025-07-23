@@ -291,7 +291,6 @@ tauMax <- function(sigmaX, sigmaZ, tauXZ) {
 #' @import ggplot2
 #' @importFrom ggforce geom_circle
 #' @importFrom ggplot2 aes coord_fixed geom_abline geom_hline geom_line geom_point geom_text geom_vline ggplot labs theme_classic
-#' @importFrom plyr .
 #' @examples
 #' ggMohr(1025, 400, 250)
 ggMohr <- function(s1, s2, s3, coulomb = c(70, 0.6), sliding = 0.81, units = "MPa", fill = "gray", alpha = .5) {

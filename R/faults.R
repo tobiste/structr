@@ -59,7 +59,7 @@ correct_pair <- function(x) {
   #   }
   # }
   
-  # Warn if misfit > 20°
+  # Warn if misfit > 20
   exceed_idx <- which(misfit > deg2rad(20))
   if (length(exceed_idx) > 0) {
     warning(sprintf(

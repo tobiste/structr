@@ -13,21 +13,18 @@ BugReports: https://github.com/tobiste/structr/issues
 Depends: 
     R (>= 4.1.0)
 Imports: 
+    data.table,
     Directional,
     dplyr,
     expm,
     ggforce,
     ggplot2,
-    lubridate,
-    plyr,
     readxl,
     rjson,
     rlang,
     rotasym,
     sf,
     tectonicr,
-    tidyr,
-    tidyselect,
     viridis
 Suggests: 
     knitr,
