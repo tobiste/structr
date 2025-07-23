@@ -57,7 +57,7 @@ rotz3 <- function(deg) {
 #' @export
 #' @examples
 #' stereo_coords(90, 10)
-#' stereo_coords(90, 10, proj = "Wulff")
+#' stereo_coords(90, 10, earea = TRUE, upper.hem = TRUE)
 stereo_coords <- function(az, inc, upper.hem = FALSE, earea = TRUE, r = 1) {
   if (upper.hem) {
     az <- az + 180
