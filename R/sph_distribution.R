@@ -128,19 +128,17 @@ v_unif <- function(class = NULL, n = 100, method = c("gss", "sfs", "rotasym")) {
 #' stereo_point(x)
 #' }
 rfb <- function(n = 100, mu = c(1, 0, 0), k = 5, A) {
-  transform <- FALSE
-  if (is.spherical(mu)) {
+  transform <- is.spherical(mu)
+  if (transform) {
     class <- class(mu)
-    mu <- line2vec(mu) |> c()
-    transform <- TRUE
+    mu <- c(line2vec(mu))
   }
+  
   res <- Directional::rfb(n = n, k = k, m = mu, A = A)
   colnames(res) <- c("x", "y", "z")
-  if (transform) {
-    res |> to_spherical(class)
-  } else {
-    res
-  }
+  
+  if (transform) to_spherical(res, class) else res
+  
 }
 
 
@@ -162,20 +160,15 @@ rfb <- function(n = 100, mu = c(1, 0, 0), k = 5, A) {
 #' stereoplot()
 #' stereo_point(x)
 rkent <- function(n = 100, mu = c(1, 0, 0), k = 5, b) {
-  transform <- FALSE
-  if (is.spherical(mu)) {
+  transform <- is.spherical(mu)
+  if (transform) {
     class <- class(mu)
-    mu <- line2vec(mu) |> c()
-    transform <- TRUE
+    mu <- c(line2vec(mu))
   }
-
   res <- Directional::rkent(n = n, k = k, m = mu, b = b)
   colnames(res) <- c("x", "y", "z")
-  if (transform) {
-    res |> to_spherical(class)
-  } else {
-    res
-  }
+  if (transform) to_spherical(res, class) else res
+  
 }
 
 
@@ -198,18 +191,16 @@ NULL
 #' @rdname dist.mle
 #' @export
 kent.mle <- function(x) {
-  transform <- FALSE
-  if (is.spherical(x)) {
+  transform <- is.spherical(x)
+  if (transform) {
     class <- class(x)
     x <- to_vec(x)
-    transform <- TRUE
   }
   res <- Directional::kent.mle(x)
 
   res$G <- t(res$G)
-  if (transform) {
-    res$G <- to_spherical(res$G, class)
-  }
+  if (transform) res$G <- to_spherical(res$G, class)
+  
   res$runtime <- NULL
   return(res)
 }
@@ -217,16 +208,14 @@ kent.mle <- function(x) {
 #' @rdname dist.mle
 #' @export
 vmf.mle <- function(x) {
-  transform <- FALSE
-  if (is.spherical(x)) {
+  transform <- is.spherical(x)
+  if (transform) {
     class <- class(x)
     x <- to_vec(x)
-    transform <- TRUE
   }
   res <- Directional::vmf.mle(x, fast = TRUE)
 
-  if (transform) {
-    res$mu <- to_spherical(res$mu, class)
-  }
+  if (transform) res$mu <- to_spherical(res$mu, class)
+  
   return(res)
 }

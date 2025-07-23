@@ -40,18 +40,40 @@ drillcore_orientation <- function(azi, inc, alpha, beta, gamma = NULL) {
   C <- line2vec(cbind(azi, inc)) # core axis
   B <- line2vec(cbind((azi + 180) %% 360, 90 - inc)) # bottom of hole line
 
-  E <- int <- matrix(nrow = n, ncol = 3)
-  for (i in 1:n) {
-    if (cosd(beta[i]) <= 0) {
-      E[i, ] <- vrotate(B[i, ], C[i, ], -deg2rad(beta[i])) |> vcross(C[i, ])
-      int[i, ] <- vcross(E[i, ], C[i, ])
-    } else {
-      E[i, ] <- vrotate(B[i, ], C[i, ], deg2rad(beta[i]))
-      int[i, ] <- vcross(C[i, ], E[i, ])
-    }
-  }
-  P <- vrotate(C, int, -deg2rad(90 - alpha))
+  # E <- int <- matrix(nrow = n, ncol = 3)
+  # for (i in 1:n) {
+  #   if (cosd(beta[i]) <= 0) {
+  #     E[i, ] <- vrotate(B[i, ], C[i, ], -deg2rad(beta[i])) |> vcross(C[i, ])
+  #     int[i, ] <- vcross(E[i, ], C[i, ])
+  #   } else {
+  #     E[i, ] <- vrotate(B[i, ], C[i, ], deg2rad(beta[i]))
+  #     int[i, ] <- vcross(C[i, ], E[i, ])
+  #   }
+  # }
+  # P <- vrotate(C, int, -deg2rad(90 - alpha))
 
+  # Initialize matrices
+  E <- matrix(NA_real_, n, 3)
+  int <- matrix(NA_real_, n, 3)
+  
+  neg_cos_beta <- cosd(beta) <= 0
+  
+  # Vectorized split computation
+  if (any(neg_cos_beta)) {
+    idx <- which(neg_cos_beta)
+    E[idx, ] <- t(vrotate(B[idx, , drop = FALSE], C[idx, , drop = FALSE], -deg2rad(beta[idx])))
+    E[idx, ] <- vcross(E[idx, , drop = FALSE], C[idx, , drop = FALSE])
+    int[idx, ] <- vcross(E[idx, , drop = FALSE], C[idx, , drop = FALSE])
+  }
+  if (any(!neg_cos_beta)) {
+    idx <- which(!neg_cos_beta)
+    E[idx, ] <- t(vrotate(B[idx, , drop = FALSE], C[idx, , drop = FALSE], deg2rad(beta[idx])))
+    int[idx, ] <- vcross(C[idx, , drop = FALSE], E[idx, , drop = FALSE])
+  }
+  
+  P <- (vrotate(C, int, -deg2rad(90 - alpha)))
+  
+  
   if (is.null(gamma)) {
     vec2plane(P)
   } else {

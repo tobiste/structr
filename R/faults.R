@@ -53,11 +53,22 @@ correct_pair <- function(x) {
   lvec <- Line(x[, 3], x[, 4]) |> line2vec()
 
   misfit <- abs(pi / 2 - vangle(fvec, lvec))
-  for (i in 1:length(misfit)) {
-    if (misfit[i] > deg2rad(20)) {
-      warning(paste("Mifit angle is", misfit[i], "degrees."))
-    }
+  # for (i in 1:length(misfit)) {
+  #   if (misfit[i] > deg2rad(20)) {
+  #     warning(paste("Mifit angle is", misfit[i], "degrees."))
+  #   }
+  # }
+  
+  # Warn if misfit > 20°
+  exceed_idx <- which(misfit > deg2rad(20))
+  if (length(exceed_idx) > 0) {
+    warning(sprintf(
+      "Misfit angle exceeds 20° for %d cases. Max misfit: %.2f°.",
+      length(exceed_idx),
+      rad2deg(max(misfit))
+    ))
   }
+  
   ax <- vcross(fvec, lvec)
   ang <- (vangle(lvec, fvec) - pi / 2) / 2
   list(

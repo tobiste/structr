@@ -1,26 +1,29 @@
 roty3 <- function(deg) {
-  rad1 <- deg2rad(deg)
-  r <- diag(3)
-  r[1, 1] <- cos(rad1)
-  r[3, 1] <- sin(rad1)
-  r[3, 3] <- r[1, 1]
-  r[1, 3] <- -r[3, 1]
-  return(r)
+  theta <- deg2rad(deg)
+  c <- cos(theta)
+  s <- sin(theta)
+  
+  matrix(c(
+    c, 0, -s,
+    0, 1,  0,
+    s, 0,  c
+  ), nrow = 3, byrow = TRUE)
 }
 
 rotz3 <- function(deg) {
-  rad1 <- deg2rad(deg)
-  r <- diag(3)
-  r[1, 1] <- cos(rad1)
-  r[1, 2] <- sin(rad1)
-  r[2, 2] <- r[1, 1]
-  r[2, 1] <- -r[1, 2]
-  return(r)
+  theta <- deg2rad(deg)
+  c <- cos(theta)
+  s <- sin(theta)
+  
+  matrix(c(
+    c,  s, 0,
+    -s,  c, 0,
+    0,  0, 1
+  ), nrow = 3, byrow = TRUE)
 }
 
-.fix_inc <- function(A) {
-  az <- A$az
-  inc <- A$inc
+
+.fix_inc <- function(az, inc) {
   tinc <- deg2rad(inc %% 360)
   co <- cos(tinc)
   si <- sin(tinc)
@@ -38,10 +41,13 @@ rotz3 <- function(deg) {
   az[quad == 2] <- 180 + az[quad == 2]
   az[quad == 3] <- az[quad == 3]
   az[quad == 4] <- 180 + az[quad == 4]
-  A$az <- az %% 360
-  A$inc <- tinc
-  return(A)
+  az <- az %% 360
+  inc <- tinc
+  return(cbind(az, inc))
 }
+
+
+
 
 #' Stereographic projection
 #'
@@ -64,10 +70,9 @@ stereo_coords <- function(az, inc, upper.hem = FALSE, earea = TRUE, r = 1) {
   }
 
 
-  A <- list(az = az, inc = 90 - inc)
-  B <- .fix_inc(A)
-  azi <- deg2rad(B$az)
-  inc <- deg2rad(B$inc)
+  B <- .fix_inc(az = az, inc = 90 - inc)
+  azi <- deg2rad(B[, 1])
+  inc <- deg2rad(B[, 2])
 
   if (earea) {
     tq <- sqrt(2) * sin(inc / 2)
@@ -80,16 +85,16 @@ stereo_coords <- function(az, inc, upper.hem = FALSE, earea = TRUE, r = 1) {
 }
 
 .schmidt_crds <- function(az_rad, inc_rad, r = 1) {
-  tq <- r * sqrt(2) * sin(pi / 4 - inc / 2)
-  x <- tq * sin(azi)
-  y <- tq * cos(azi)
+  tq <- r * sqrt(2) * sin(pi / 4 - inc_rad / 2)
+  x <- tq * sin(az_rad)
+  y <- tq * cos(az_rad)
   cbind(x = x, y = y)
 }
 
 .wulff_crds <- function(az_rad, inc_rad, r = 1) {
-  tq <- r * tan(pi / 4 - inc / 2)
-  x <- tq * sin(azi)
-  y <- tq * cos(azi)
+  tq <- r * tan(pi / 4 - inc_rad / 2)
+  x <- tq * sin(az_rad)
+  y <- tq * cos(az_rad)
   cbind(x = x, y = y)
 }
 

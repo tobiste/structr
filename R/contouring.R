@@ -2,10 +2,10 @@ blank_grid_regular <- function(n, r = 1) {
   x_grid <- seq(-1, 1, length.out = n)
   y_grid <- seq(-1, 1, length.out = n)
   grid_schmidt <- expand.grid(x_grid, y_grid) |> as.matrix()
-
+  
   # inside <- grid_schmidt[, 1]^2 + grid_schmidt[, 2]^2 <= r^
   # grid_schmidt <- grid_schmidt[inside, ]
-
+  
   grid_cart <- .schmidt2cart(grid_schmidt[, 1], grid_schmidt[, 2])
   values <- rep(0, times = nrow(grid_cart))
   list(grid = grid_cart, density = values)
@@ -13,13 +13,13 @@ blank_grid_regular <- function(n, r = 1) {
 
 .schmdit2spherical <- function(x, y, r = 1) {
   tq <- sqrt(x^2 + y^2)
-
+  
   # Recover inclination in radians
   inc_rad <- 2 * (pi / 4 - asin(tq / (r * sqrt(2))))
-
+  
   # Recover azimuth in radians
   az_rad <- atan2(x, y) %% (2 * pi)
-
+  
   # Return as matrix with named columns
   cbind(az_rad = az_rad, inc_rad = inc_rad)
 }
@@ -48,7 +48,7 @@ blank_grid_regular <- function(n, r = 1) {
 #' counting circle, and therefore the degree of smoothing.  Higher `sigma`s
 #' will lead to more smoothing of the resulting density distribution. This
 #' parameter only applies to Kamb-based methods.  Defaults to `3`.
-#' @param n numeric. The size of the grid that the density is estimated on.
+#' @param ngrid numeric. The size of the grid that the density is estimated on.
 #' @param weights (optional) numeric vector of length of `azi`.
 #' The relative weight to be applied to each input measurement. The array
 #' will be normalized to sum to 1, so absolute value of the `weights` do not
@@ -56,20 +56,20 @@ blank_grid_regular <- function(n, r = 1) {
 #' @param r numeric. radius of stereonet circle
 #'
 #' @returns list
-count_points <- function(azi, inc, FUN, sigma, n, weights, r) {
+count_points <- function(azi, inc, FUN, sigma, ngrid, weights, r) {
   # Grid setup
-  grid <- blank_grid_regular(n = n, r = r)
+  grid <- blank_grid_regular(n = ngrid, r = r)
   grid_coords <- grid$grid
-
+  
   # Stereonet math transformations to Cartesian coordinates
   xyz_points <- lin2vec0(azi, inc)
-
+  
   # cos_dist_matrix <- abs(grid_coords %*% t(xyz_points))
-
+  
   # for(i in 1:ncol(cos_dist_matrix)){
   #   density_scale <- FUN(cos_dist_matrix[, i], sigma)
   # }
-
+  
   for (i in seq_along(grid_coords[, 1])) {
     cos_dist <- abs(grid_coords[i, ] %*% t(xyz_points))
     density_scale <- FUN(cos_dist, sigma)
@@ -77,9 +77,9 @@ count_points <- function(azi, inc, FUN, sigma, n, weights, r) {
     scale <- density_scale$units
     grid$density[i] <- (sum(density) - 0.5) / scale
   }
-
+  
   grid$density[grid$density < 0] <- 0
-
+  
   grid
 }
 
@@ -128,6 +128,7 @@ count_points <- function(azi, inc, FUN, sigma, n, weights, r) {
 #' affect the result. Defaults to `NULL`
 #' @param upper.hem logical. Whether the projection is shown for upper
 #' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
+#' @param kamb logical. Whether to use the von Mises-Fisher kernel density estimation (`FALSE`) or Kamb's method (`TRUE`, the default).
 #' @param ... arguments passed to [count_points()]
 #'
 #'
@@ -135,27 +136,41 @@ count_points <- function(azi, inc, FUN, sigma, n, weights, r) {
 #' @noRd
 #'
 #' @examples
-#' x <- Line(c(120, 315, 86), c(22, 85, 31))
-#' res <- density_grid(x, n = 100, FUN = kamb_count, sigma = 4)
+#' x <- rvmf(100, mu = Line(120, 50))
+#' res <- density_grid(x, FUN = kamb_count, ngrid = 100, sigma = 4)
 #' lapply(res, head)
-density_grid <- function(x, weights = NULL, upper.hem = FALSE, ...) {
+#'
+#' res2 <- density_grid(x, kamb = FALSE, kernel_method = "cross")
+#' lapply(res2, head)
+density_grid <- function(x, weights = NULL, upper.hem = FALSE, kamb = TRUE, ...) {
   if (!is.spherical(x)) x <- to_spherical(x)
-
+  
   if (!is.line(x)) x <- as.line(x)
-
+  
   azi <- x[, 1]
   if (upper.hem) {
     azi <- azi + 180
   }
   inc <- x[, 2]
-
+  
   if (is.null(weights)) weights <- rep(1, nrow(x))
-
+  
   # normalize weights to 1
   # weights <- as.numeric(weights) / mean(weights)
   weights <- as.numeric(weights) / max(weights)
-
-  count_points(azi, inc, weights = weights, ...)
+  
+  if (kamb) {
+    count_points(azi, inc, weights = weights, ...)
+  } else {
+    res <- vmf_kerncontour(.full_hem(azi, inc), ...)
+    # grid <- expand.grid(Lat = res$lat - 90, Long = res$long - 180)
+    grid <- expand.grid(inc = res$lat - 90, azi = res$long - 180)
+    
+    list(
+      grid = Line(grid$azi, grid$inc) |> line2vec(),
+      density = c(res$den)
+    )
+  }
 }
 
 
@@ -266,6 +281,53 @@ schmidt_count <- function(cos_dist, sigma = NULL) {
   return(list(count = count, units = length(cos_dist) * radius))
 }
 
+
+
+vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngrid = 100) {
+  n <- nrow(u)
+  x <- Directional::euclid(u)
+  
+  if (is.null(hw)) {
+    kernel_method <- match.arg(kernel_method, c("cross", "rot"))
+    
+    if (kernel_method == "cross") {
+      hw <- as.numeric(Directional::vmfkde.tune(x, low = 0.1, up = 1)[1])
+    } else {
+      k <- Directional::vmf.mle(x, fast = TRUE)$kappa
+      hw <- ((8 * sinh(k)^2) / (k * n * ((1 + 4 * k^2) * sinh(2 * k) - 2 * k * cosh(2 * k))))^(1 / 6)
+    }
+  } else {
+    hw <- hw * DEG2RAD()
+  }
+  
+  kappa_val <- 1 / (hw^2)
+  # cpk <- 1 / (sqrt(hw^2) * (2 * pi)^1.5 * besselI(kappa_val, 0.5))
+  cpk <- 1 / (sqrt(hw^2) * (2 * pi)^1.5 * besselI(kappa_val, 0.5, expon.scaled = TRUE) * exp(kappa_val))
+  
+  lat_grid <- seq(0, 180, length.out = ngrid)
+  long_grid <- seq(0, 360, length.out = ngrid)
+  den_mat <- matrix(nrow = ngrid, ncol = ngrid)
+  for (i in 1:ngrid) {
+    for (j in 1:ngrid) {
+      y <- Directional::euclid(c(lat_grid[i], long_grid[j]))
+      a <- as.vector(tcrossprod(x, y * kappa_val))
+      can <- sum(exp(a + log(cpk))) / ngrid
+      if (abs(can) < Inf) {
+        den_mat[i, j] <- can
+      }
+    }
+  }
+  
+  list(
+    lat = lat_grid,
+    long = long_grid,
+    h = hw,
+    den = den_mat
+  )
+}
+
+
+
 #' Calculate and plot densities in a stereonet
 #'
 #' Linear Kamb counts and densities on the sphere
@@ -273,15 +335,20 @@ schmidt_count <- function(cos_dist, sigma = NULL) {
 #' @param x Object of class `"line"` or `"plane"` or `'spherical.density'` (for plotting only).
 #' @param upper.hem logical. Whether the projection is shown for upper
 #' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
-#' @param n integer. Gridzise. 128 by default.
+#' @param ngrid integer. Gridzise. 128 by default.
+#' @param kamb logical. Whether to use the von Mises-Fisher kernel density estimation (`FALSE`) or Kamb's method (`TRUE`, the default).
+#' @param FUN density estimation function if `kamb=TRUE`; one of [exponential_kamb()] (the default),
+#'  [kamb_count], and [schmidt_count()].
 #' @param sigma numeric. Radius for Kamb circle used for counting. 3 by default.
 #' @param r numeric. radius of stereonet circle
 #' @param weights (optional) numeric vector of length of `azi`.
 #' The relative weight to be applied to each input measurement. The array
 #' will be normalized to sum to 1, so absolute value of the `weights` do not
 #' affect the result. Defaults to `NULL`
-#' @param FUN density estimation function; one of [exponential_kamb()] (the default),
-#'  [kamb_count], and [schmidt_count()].
+#' @param vmf_hw numeric. Kernel bandwidth in degree.
+#' @param vmf_optimal character. Calculates an optimal kernel bandwidth
+#' using the cross-validation algorithm (`'cross'`) or the rule-of-thumb (`'rot'`)
+#' suggested by Garcia-Portugues (2013). Ignored when `vmf_hw` is specified.
 #' @param nlevels integer. Number of contour levels for plotting
 #' @param type character. Type of plot: `'contour'` for contour lines,
 #' `'contour_filled'` for filled contours, or `'image'` for a raster image.
@@ -302,37 +369,62 @@ schmidt_count <- function(cos_dist, sigma = NULL) {
 #' @examples
 #' set.seed(20250411)
 #' test <- rfb(100, mu = Line(120, 10), k = 5, A = diag(c(-1, 0, 1)))
-#' test_densities <- spherical_density(x = test, n = 100, sigma = 3, weights = runif(100))
+#' test_densities <- spherical_density(x = test, ngrid = 100, sigma = 3, weights = runif(100))
 #'
 #' stereo_density(test_densities, type = "image", add = FALSE)
 #' stereo_point(test, col = "lightgrey", pch = 21)
 #'
+#' my_planes <- Plane(example_planes$dipdir, example_planes$dip)
 #' stereoplot(guides = FALSE)
-#' stereo_point(test, col = "lightgrey", pch = 19)
-#' stereo_density(test_densities, type = "contour", add = TRUE)
+#' stereo_point(my_planes, col = "lightgrey", pch = 19)
+#' stereo_density(my_planes, type = "contour", add = TRUE)
 #'
-#' stereo_density(test_densities, type = "contour_filled", add = FALSE, col.params = list(direction = -1, begin = .05, end = .95, alpha = .75))
-#' stereo_point(test, col = "black", pch = 21)
+#' stereo_density(my_planes, type = "contour_filled", add = FALSE, col.params = list(direction = -1, begin = .05, end = .95, alpha = .75))
+#' stereo_point(my_planes, col = "black", pch = 21)
 NULL
 
 #' @rdname stereo_density
 #' @export
-spherical_density <- function(x, FUN = exponential_kamb, n = 128L, sigma = 3, weights = NULL, upper.hem = FALSE, r = 1) {
-  x_grid <- y_grid <- seq(-1, 1, length.out = n)
-
+spherical_density <- function(x,
+                              kamb = TRUE, FUN = exponential_kamb,
+                              ngrid = 128L, sigma = 3,
+                              vmf_hw = NULL, vmf_optimal = c("cross", "rot"),
+                              weights = NULL, upper.hem = FALSE, r = 1) {
+  x_grid <- y_grid <- seq(-1, 1, length.out = ngrid)
+  
   grid <- expand.grid(x_grid, y_grid) |> as.matrix()
-
-  dg <- density_grid(x, FUN = FUN, sigma = sigma, n = n, weights = weights, r = r, upper.hem = upper.hem)
-
-  density_matrix <- matrix(dg$density, nrow = n, byrow = FALSE)
-
+  
+  dg <- if (kamb) {
+    density_grid(x, weights = weights, upper.hem = upper.hem, kamb = TRUE, FUN = FUN, sigma = sigma, ngrid = ngrid, r = r)
+  } else {
+    stop('vmf not supported at the moment')
+    #density_grid(x, weights = NULL, upper.hem = upper.hem, kamb = FALSE, ngrid = ngrid, hw = vmf_hw, kernel_method = vmf_optimal)
+  }
+  
+  
+  # if(!kamb){
+  #   grd_lines <- dg$grid |> vec2line() 
+  #   grid <- .schmidt_crds(deg2rad(grd_lines[, 1]), deg2rad(grd_lines[, 2]), r = r)
+  #   
+  #   grid <- cbind(grid, dg$density)
+  #   grid <- grid[order(grid[, 1], grid[, 2]), ]
+  #   
+  #   x_grid <- unique(grid[, 1])
+  #   y_grid <- unique(grid[, 2])
+  #   density_matrix <- matrix(grid[, 3], nrow = ngrid, byrow = FALSE)
+  #   
+  # } else{
+  density_matrix <- matrix(dg$density, nrow = ngrid, byrow = FALSE)
+  #}
+  
   dist_matrix <- grid[, 1]^2 + grid[, 2]^2
-
+  
+  
   # Create a logical mask where TRUE if outside the unit circle
   outside <- dist_matrix > r^2
-
+  
   density_matrix[outside] <- NA
-
+  
   res <- list(
     x = x_grid, y = y_grid,
     density = density_matrix
@@ -343,48 +435,48 @@ spherical_density <- function(x, FUN = exponential_kamb, n = 128L, sigma = 3, we
 
 #' @rdname stereo_density
 #' @export
-projected_density <- function(x, n = 128L, sigma = 3, weights = NULL, upper.hem = FALSE, r = 1) {
+projected_density <- function(x, ngrid = 128L, sigma = 3, weights = NULL, upper.hem = FALSE, r = 1) {
   if (is.plane(x) | is.fault(x)) {
     x[, 1] <- 180 + x[, 1]
     x[, 2] <- 90 - x[, 2]
   }
-
+  
   crds <- stereo_coords(
     x[, 1],
     x[, 2],
     upper.hem,
     earea = TRUE
   )
-
-
+  
+  
   # prepare the grid
-  x_grid <- y_grid <- seq(-1, 1, length.out = n)
+  x_grid <- y_grid <- seq(-1, 1, length.out = ngrid)
   grid <- expand.grid(x_grid, y_grid) |> as.matrix()
-
+  
   # Compute distance from origin
   dist_matrix <- sqrt(grid[, 1]^2 + grid[, 2]^2)
-
+  
   # Create a logical mask where TRUE if outside the unit circle
   mask_outside <- dist_matrix > r
-
+  
   N <- nrow(crds)
-
+  
   if (is.null(weights)) {
     weights <- rep(1, N)
   }
-
-
+  
+  
   # f <- sigma^2 / (sigma^2 + N)
   counter_radius <- sigma * r / sqrt(N + sigma^2)
-
+  
   counts <- .count_points_within_radius(crds, grid, counter_radius)
-
-
+  
+  
   counts_matrix <- matrix(counts, nrow = n, byrow = FALSE)
   counts_matrix[mask_outside] <- NA # replace cells outside of unit circle with NA
-
+  
   density_matrix <- counts_matrix / max(counts_matrix, na.rm = TRUE)
-
+  
   res <- list(
     x = x_grid, y = y_grid,
     grid = grid,
@@ -397,25 +489,36 @@ projected_density <- function(x, n = 128L, sigma = 3, weights = NULL, upper.hem 
 
 #' @rdname stereo_density
 #' @export
-stereo_density <- function(x, FUN = exponential_kamb, n = 128L, sigma = 3, weights = NULL, upper.hem = FALSE, r = 1,
+stereo_density <- function(x, kamb = TRUE, FUN = exponential_kamb, ngrid = 128L, sigma = 3,
+                           vmf_hw = NULL, vmf_optimal = c("cross", "rot"),
+                           weights = NULL, upper.hem = FALSE, r = 1,
                            type = c("contour", "contour_filled", "image"), nlevels = 10L,
                            col.palette = viridis, col = NULL, add = TRUE, col.params = list(),
                            ...) {
   type <- match.arg(type)
-
-  if (inherits(x, "spherical.density")) d <- x else d <- spherical_density(x, n = n, sigma = sigma, FUN = FUN, weights = weights, upper.hem = upper.hem, r = r)
-
+  
+  if (inherits(x, "spherical.density")){
+    d <- x
+  }  else {
+    d <- spherical_density(x, ngrid = ngrid, 
+                           kamb = kamb, 
+                           upper.hem = upper.hem, r = r, 
+                           sigma = sigma, FUN = FUN, weights = weights,
+                           vmf_hw = vmf_hw, vmf_optimal = vmf_optimal
+    )
+  }
+  
   densities <- d$density
-
+  
   if (type == "image") {
     if (!add) {
       stereoplot(guides = FALSE)
       add <- TRUE
     }
-
+    
     col.params <- append(list(n = nlevels), col.params)
     col <- do.call(col.palette, col.params)
-
+    
     graphics::image(
       x = d$x, y = d$y,
       z = densities,
@@ -431,13 +534,13 @@ stereo_density <- function(x, FUN = exponential_kamb, n = 128L, sigma = 3, weigh
       stereoplot(guides = FALSE)
       add <- TRUE
     }
-
+    
     if (is.null(col)) {
       levels <- pretty(range(densities, na.rm = TRUE), nlevels)
       col.params <- append(list(n = length(levels) - 1), col.params)
       col <- do.call(col.palette, col.params)
     }
-
+    
     graphics::contour(
       x = d$x, y = d$y,
       z = densities,
@@ -451,11 +554,11 @@ stereo_density <- function(x, FUN = exponential_kamb, n = 128L, sigma = 3, weigh
     )
   } else {
     if (!add) stereoplot(guides = FALSE)
-
+    
     levels <- pretty(range(densities, na.rm = TRUE), nlevels)
     col.params <- append(list(n = length(levels) - 1), col.params)
     col <- do.call(col.palette, col.params)
-
+    
     graphics::.filled.contour(
       x = d$x, y = d$y,
       z = densities,
@@ -470,13 +573,13 @@ stereo_density <- function(x, FUN = exponential_kamb, n = 128L, sigma = 3, weigh
   # Compute squared distances efficiently
   d2 <- (outer(A[, 1], B[, 1], "-"))^2 +
     (outer(A[, 2], B[, 2], "-"))^2
-
+  
   # Logical matrix where TRUE if within radius
   within <- d2 <= r^2
-
+  
   # Count per column (i.e., per grid point)
   counts <- colSums(within)
-
+  
   return(counts)
 }
 

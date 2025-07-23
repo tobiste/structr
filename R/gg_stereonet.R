@@ -55,20 +55,19 @@ NULL
 #' @export
 gg <- function(x, ...) {
   azi <- inc <- NULL
-  if (!is.spherical(x)) {
-    x <- to_spherical(x)
-  }
+  if (!is.spherical(x)) x <- to_spherical(x)
   if (is.plane(x) | is.fault(x)) {
     x[, 1] <- (180 + x[, 1]) %% 360
     x[, 2] <- 90 - x[, 2]
   }
-
-  xdf <- cbind(x) |> data.frame()
+  
+  xdf <- data.frame(cbind(x))
   colnames(xdf) <- c("azi", "inc")
-
-  xdf |>
-    dplyr::mutate(x = -(azi - 180), y = inc) |>
-    dplyr::bind_cols(...)
+  
+  xdf$x <- 180 - xdf$azi
+  xdf$y <- xdf$inc
+  
+  dplyr::bind_cols(xdf, ...)
 }
 
 
@@ -78,96 +77,75 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
   id <- NULL
   stopifnot(is.spherical(x))
   if (n %% 2 > 0) n <- n + 1
+  
   if (is.plane(x) | is.fault(x)) {
     # x[, 1] <- 180 + x[, 1]
     x[, 2] <- 90 - x[, 2]
   }
-
+  
   nx <- nrow(x)
   if (length(d) == 1) d <- rep(d, nx)
-
-  xdf <- data.frame(cbind(x)) |>
-    dplyr::bind_cols(...) |>
+  
+  xdf <- data.frame(cbind(x), ...) |>
+    # dplyr::bind_cols(...) |>
     dplyr::mutate(id = dplyr::row_number(), d = d)
-
+  
   zaxis <- c(0, 0, 1)
-
+  
   res <- matrix(ncol = 3, nrow = n * nx) |>
     as.data.frame()
   colnames(res) <- c("x", "y", "id")
-
-  for (i in seq_along(x[, 1])) {
-    D <- cbind(azimuth = seq(0, 360, l = n), plunge = rep(90 - d[i], n)) |>
+  
+  for (i in seq_len(nx)) {
+    D <- cbind(
+      azimuth = seq(0, 360, length.out = n), 
+      plunge = rep(90 - d[i], n)
+    ) |>
       line2vec()
-
+    
     strike <- as.line(x[i, ])[1] - 90
-
-    rotaxis <- Line(strike, 0) |>
-      line2vec()
+    
+    rotaxis <- Line(strike, 0) |> line2vec()
     D1 <- vrotate(D, zaxis, deg2rad(strike))
     rotangle <- vangle(zaxis, as.line(x[i, ]))
-
+    
     if (d[i] < 90 & is.plane(x)) {
       d[i] <- 180 - d[i]
       D1 <- -D1
       x[i, 1] <- x[i, 1] + 180
       x[i, 2] <- 90 - x[i, 2]
     }
-
-    if (d[i] < 90) {
-      k <- -1
-    } else {
-      k <- 1
-    }
-
-    # lower hemisphere
-    D_rot <- vrotate(D1, rotaxis, k * rotangle) |>
-      vec2line()
-
-    D_fixed <- list(az = D_rot[, 1], inc = D_rot[, 2]) |> .fix_inc()
-
-    if (d[i] != 90 & d[i] > as.line(x[i, ])[2]) {
-      # upper hemisphere
-      # flag <- TRUE
-      # D_rotrot <- vrotate(D_rot, zaxis, deg2rad(180))
-
-      # D_rotrot_fixed <- list(az = D_rotrot[, 1], inc = D_rotrot[, 2]) |>
-      #   fix_inc()
-      D_rotrot_fixed <- D_fixed
-
-      # prec <- sqrt(.Machine$double.eps)
-      dangle <- vangle(Line(D_fixed$az, D_fixed$inc), as.line(x[i, ]))
-      # cond <- d[i] >= (dangle + prec) | d[i] <= (dangle - prec)
-      cond <- dplyr::near(d[i], dangle)
-
-      D_fixed$az[cond] <- D_rotrot_fixed$az[cond]
-      D_fixed$inc[cond] <- D_rotrot_fixed$inc[cond]
-    } # else {
-    # cond <- rep(FALSE, n)
+    
+    # if (d[i] < 90) {
+    #   k <- -1
+    # } else {
+    #   k <- 1
     # }
-
-    D_fixed2 <- data.frame(x = (180 - D_fixed$az), y = D_fixed$inc)
-
-    if (d[i] < 90) {
-      D_fixed3 <- D_fixed2
-      # D_fixed3$cond <- cond
-    } else {
-      D_fixed3 <- utils::tail(D_fixed2, n = n / 2)
-      # D_fixed3$cond <- FALSE
+    k <- if (d[i] < 90) -1 else 1
+    
+    # lower hemisphere
+    D_rot <- vrotate(D1, rotaxis, k * rotangle) |> vec2line()
+    D_fixed <- .fix_inc(az = D_rot[, 1], inc = D_rot[, 2])
+    
+    if (d[i] != 90 & d[i] > as.line(x[i, ])[2]) {
+      D_rotrot_fixed <- D_fixed
+      
+      dangle <- vangle(Line(D_fixed[, 1], D_fixed[, 2]), as.line(x[i, ]))
+      cond <- dplyr::near(d[i], dangle)
+      
+      D_fixed[cond, 1] <- D_rotrot_fixed[cond, 1]
+      D_fixed[cond, 2] <- D_rotrot_fixed[cond, 2]
     }
-
-    D_fixed3$id <- i
-
-    start <- (i * n) - n + 1
-    end <- (i * n)
-    res[start:end, ] <- D_fixed3
+    
+    D_fixed2 <- data.frame(x = (180 - D_fixed[, 1]), y = D_fixed[, 2], id = i)
+    D_fixed3 <- if (d[i] < 90) D_fixed2 else utils::tail(D_fixed2, n = n / 2)
+    
+    idx <- ((i - 1) * n + 1):(i * n)
+    res[idx, ] <- D_fixed3
   }
-  res |>
-    as.data.frame() |>
-    dplyr::mutate(group = as.character(id)) |>
-    dplyr::left_join(
-      xdf, dplyr::join_by(id)
-    )
+  
+  res$group <- as.character(res$id)
+  merge(res, xdf, by = "id")
 }
 
 #' Stereoplot Perimeter
@@ -186,9 +164,9 @@ ggframe <- function(n = 1e4, color = "black", fill = NA, lwd = 1, ...) {
   prim.l1 <- seq(0, 180, length = n / 2)
   prim.l2 <- seq(-180, 0, length = n / 2)
   prim.long <- c(prim.l1, prim.l2)
-
+  
   prim_df <- data.frame(prim.long, prim.lat)
-
+  
   geom_polygon(aes(x = prim.long, y = prim.lat), data = prim_df, color = color, fill = fill, lwd = lwd, ..., inherit.aes = FALSE)
 }
 
@@ -200,25 +178,25 @@ ggstereo_grid <- function(d = 10, rot = 0, ...) {
   sm2 <- seq(0, 90 - d, d)
   sm <- c(sm1, sm2)
   np <- Line(c(rep(0, length(sm1)), rep(180, length(sm2))), rep(0, length(sm)))
-
+  
   # great circles
   dips <- seq(-90 + d, 90 - d, d)
   ep <- Plane((rep(90, length(dips)) * sign(dips)) %% 360, abs(dips))
-
+  
   zp <- Plane(c(90, 0), c(90, 90))
-
+  
   if (rot != 0) {
     zaxis <- Line(0, 90)
     np <- vrotate(np, zaxis, rot)
     ep <- vrotate(ep, zaxis, rot)
     zp <- vrotate(zp, zaxis, rot)
   }
-
+  
   sm_ggl <- ggl(np, d = sm)
   gc_ggl <- ggl(ep)
   zp_ggl <- ggl(zp)
-
-
+  
+  
   geom_path(data = dplyr::bind_rows(sm_ggl, gc_ggl, zp_ggl), mapping = aes(x, y, group = group), ..., inherit.aes = FALSE)
 }
 
@@ -264,7 +242,7 @@ ggstereo <- function(data = NULL, mapping = aes(), earea = TRUE, centercross = T
   #   crs = "+proj=stere +lat_0=90 +lon_0=0 +x_0=0 +y_0=0"
   # }
   rlang::check_installed("mapproj", reason = "to use `coord_map()`")
-
+  
   ggplot(data = data, mapping = mapping) +
     # theme_void() +
     theme(
@@ -297,56 +275,20 @@ ignore_unused_imports <- function() {
 
 
 
-.full_hem <- function(x) {
-  inc <- azi <- NULL
-  x <- dplyr::mutate(x, inc = inc + 90)
-  xupper <- x |>
-    dplyr::mutate(
-      azi = ifelse(azi <= 180, azi + 180, azi - 180),
-      inc = 90 - (inc - 90)
-    )
-
-  dplyr::bind_rows(x, xupper) |>
-    dplyr::select(inc, azi) |>
-    as.matrix()
+.full_hem <- function(azi, inc) {
+  inc <- inc + 90
+  
+  # Create upper hemisphere reflection
+  azi2 <- (azi + 180) %% 360
+  inc2 <- 180 - inc
+  
+  # Combine and return as matrix
+  azi3 <- c(azi, azi2)
+  inc3 <- c(inc, inc2)
+  
+  cbind('inc' = inc3, 'azi' = azi3)
 }
 
-
-
-vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngrid = 100) {
-  n <- dim(u)[1]
-  x <- Directional::euclid(u)
-
-  if (is.null(hw)) {
-    kernel_method <- match.arg(kernel_method, c("cross", "rot"))
-
-    if (kernel_method == "cross") {
-      hw <- as.numeric(Directional::vmfkde.tune(x, low = 0.1, up = 1)[1])
-    } else {
-      k <- Directional::vmf.mle(x, fast = TRUE)$kappa
-      hw <- ((8 * sinh(k)^2) / (k * n * ((1 + 4 * k^2) * sinh(2 * k) - 2 * k * cosh(2 * k))))^(1 / 6)
-    }
-  } else {
-    hw <- hw * DEG2RAD()
-  }
-
-  x1 <- seq(0, 180, length = ngrid)
-  x2 <- seq(0, 360, length = ngrid)
-
-  cpk <- 1 / ((hw^2)^0.5 * (2 * pi)^1.5 * besselI(1 / hw^2, 0.5))
-  mat <- matrix(nrow = ngrid, ncol = ngrid)
-  for (i in 1:ngrid) {
-    for (j in 1:ngrid) {
-      y <- Directional::euclid(c(x1[i], x2[j]))
-      a <- as.vector(tcrossprod(x, y / hw^2))
-      can <- sum(exp(a + log(cpk))) / ngrid
-      if (abs(can) < Inf) {
-        mat[i, j] <- can
-      }
-    }
-  }
-  list(lat = x1, long = x2, h = hw, den = mat)
-}
 
 #' Stereonet contouring using ggplot
 #'
@@ -396,8 +338,8 @@ NULL
 #' @importFrom ggplot2 aes geom_contour
 geom_contour_stereo <- function(data, ngrid = 200, hw = NULL, optimal_bw = c("cross", "rot"), norm = FALSE, threshold = 0, ...) {
   Long <- Lat <- Density <- NULL
-  xtot <- .full_hem(data)
-
+  xtot <- .full_hem(azi = data$azi, inc = data$inc)
+  
   dens <- vmf_kerncontour(xtot, hw = hw, kernel_method = optimal_bw, ngrid = ngrid)
   res <- expand.grid(Lat = dens$lat - 90, Long = dens$long - 180)
   res$Density <- c(dens$den)
@@ -405,7 +347,7 @@ geom_contour_stereo <- function(data, ngrid = 200, hw = NULL, optimal_bw = c("cr
     res$Density <- normalize(res$Density)
   }
   res$Density[res$Density <= threshold] <- NA
-
+  
   geom_contour(data = res, aes(x = -Long, y = Lat, z = Density), ...)
 }
 
@@ -415,8 +357,8 @@ geom_contour_stereo <- function(data, ngrid = 200, hw = NULL, optimal_bw = c("cr
 #' @importFrom ggplot2 aes geom_contour_filled geom_tile
 geom_contourf_stereo <- function(data, ngrid = 200, hw = NULL, optimal_bw = c("cross", "rot"), norm = FALSE, smooth = FALSE, threshold = 0, ...) {
   Long <- Lat <- Density <- NULL
-  xtot <- .full_hem(data)
-
+  xtot <- .full_hem(azi = data$azi, inc = data$inc)
+  
   dens <- vmf_kerncontour(xtot, hw = hw, kernel_method = optimal_bw, ngrid = ifelse(smooth, 3 * ngrid, ngrid))
   res <- expand.grid(Lat = dens$lat - 90, Long = dens$long - 180)
   res$Density <- c(dens$den)
@@ -424,7 +366,7 @@ geom_contourf_stereo <- function(data, ngrid = 200, hw = NULL, optimal_bw = c("c
     res$Density <- normalize(res$Density)
   }
   res$Density[res$Density <= threshold] <- NA
-
+  
   if (smooth) {
     geom_tile(data = res, aes(x = -Long, y = Lat, fill = Density), ...)
   } else {

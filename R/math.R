@@ -24,23 +24,18 @@ NULL
 #' @rdname operations
 #' @export
 vlength <- function(x) {
-  if (is.spherical(x)) {
-    x <- to_vec(x)
-  }
+  if (is.spherical(x)) x <- to_vec(x)
+
   sqrt(x[, 1]^2 + x[, 2]^2 + x[, 3]^2) # length of a vector
 }
 
 #' @rdname operations
 #' @export
 vsum <- function(x, w = NULL) {
-  if (is.spherical(x)) {
-    x <- to_vec(x)
-  }
-  w <- if (is.null(w)) {
-    rep(1, times = nrow(x))
-  } else {
-    as.numeric(w)
-  }
+  if (is.spherical(x)) x <- to_vec(x)
+  
+  w <- if (is.null(w)) rep(1, times = nrow(x)) else as.numeric(w)
+  
   cbind(sum(w * x[, 1]), sum(w * x[, 2]), sum(w * x[, 3])) # vector sum
 }
 
@@ -53,11 +48,8 @@ vnorm <- function(x) {
     x <- to_vec(x)
   }
   xn <- x / vlength(x)
-  if (transform) {
-    to_spherical(xn, class = class)
-  } else {
-    xn
-  }
+  
+  if (transform) to_spherical(xn, class = class) else xn 
 }
 
 #' @rdname operations
@@ -82,11 +74,7 @@ vcross <- function(x, y) {
     z = x[, 1] * y[, 2] - x[, 2] * y[, 1]
   )
 
-  if (transform) {
-    to_spherical(xxy, class)
-  } else {
-    xxy
-  }
+  if (transform) to_spherical(xxy, class) else xxy
 }
 
 #' @rdname operations
@@ -99,9 +87,7 @@ vdot <- function(x, y) {
   } else {
     x <- vec2mat(x)
   }
-  if (is.spherical(y)) {
-    y <- to_vec(y)
-  } else {
+  if (is.spherical(y)) y <- to_vec(y) else {
     y <- vec2mat(y)
   }
   # rowSums(x*y)
@@ -264,72 +250,123 @@ vreject <- function(x, y) {
 #' @examples
 #' v_orthogonalize(c(1, 0, 0), c(.1, 1, 0))
 v_orthogonalize <- function(x, y) {
-  if (abs(vdot(x, y)) < 1.0e-4) {
+  # Early exit if already orthogonal
+  if (abs(vdot(x, y)) < 1e-4) {
     return(list(x, y))
-  } else {
-    transform <- is.spherical(x)
-    if (transform) {
-      classx <- class(x)
-      x <- to_vec(x)
-    } else {
-      x <- vec2mat(x)
-    }
-    if (is.spherical(y)) {
-      classy <- class(y)
-      y <- to_vec(y)
-    } else {
-      y <- vec2mat(y)
-    }
-
-    # Define the rotation axis (the normal to the v1, v2 plane), use as first
-    # basis vector in the rotation coordinate system.
-    # Remember, the cross product of two non-orthogonal vectors is not a unit
-    # vector
-
-    r <- vcross(x, y) |> vnorm()
-
-    a <- vnorm(x)
-    b <- vcross(r, a)
-
-    # Transform v1 and v2 to the rotation coordinate system.
-    # Transformation matrix is T = (r a b)
-    rv1 <- c(0, 0, 0)
-    rv1[1] <- vdot(r, x)
-    rv1[2] <- vdot(a, x)
-    rv1[3] <- vdot(b, x)
-
-    rv2 <- c(0, 0, 0)
-    rv2[1] <- vdot(r, y)
-    rv2[2] <- vdot(a, y)
-    rv2[3] <- vdot(b, y)
-
-    # Rotate rv1 and rv2 half the discrepancy angle in opposite directions
-    # around r
-    ang <- acos(vdot(rv1, rv2))
-    ang <- (pi / 2 - ang) / 2.0
-
-    rw1 <- vrotate(rv1, r, -ang)
-    rw2 <- vrotate(rv2, r, ang)
-
-    # Transform the vectors back to NED
-    w1 <- c(0, 0, 0)
-    w1[1] <- r[1] * rw1[1] + a[1] * rw1[2] + b[1] * rw1[3]
-    w1[2] <- r[2] * rw1[1] + a[2] * rw1[2] + b[2] * rw1[3]
-    w1[3] <- r[3] * rw1[1] + a[3] * rw1[2] + b[3] * rw1[3]
-
-    w2 <- c(0, 0, 0)
-    w2[1] <- r[1] * rw2[1] + a[1] * rw2[2] + b[1] * rw2[3]
-    w2[2] <- r[2] * rw2[1] + a[2] * rw2[2] + b[2] * rw2[3]
-    w2[3] <- r[3] * rw2[1] + a[3] * rw2[2] + b[3] * rw2[3]
-
-    if (transform) {
-      w1 <- to_spherical(w1, classx)
-      w2 <- to_spherical(w2, classy)
-    }
-    return(list(w1, w2))
   }
+  
+  # Convert to vector matrix form if in spherical
+  x_was_sph <- is.spherical(x)
+  y_was_sph <- is.spherical(y)
+  
+  if (x_was_sph) {
+    x_class <- class(x)
+    x <- to_vec(x)
+  } else {
+    x <- vec2mat(x)
+  }
+  if (y_was_sph) {
+    y_class <- class(y)
+    y <- to_vec(y)
+  } else {
+    y <- vec2mat(y)
+  }
+  
+  # Compute orthogonalization:
+  r <- vnorm(vcross(x, y))  # rotation axis
+  a <- vnorm(x)             # first basis
+  b <- vcross(r, a)         # second basis
+  
+  # Project x and y into the rotation coordinate system:
+  rv1 <- c(vdot(r, x), vdot(a, x), vdot(b, x))
+  rv2 <- c(vdot(r, y), vdot(a, y), vdot(b, y))
+  
+  # Compute the correction angle:
+  ang <- acos(vdot(rv1, rv2))
+  ang_correction <- (pi / 2 - ang) / 2
+  
+  # Rotate in opposite directions around r:
+  rw1 <- vrotate(rv1, r, -ang_correction)
+  rw2 <- vrotate(rv2, r, ang_correction)
+  
+  # Transform back to NED:
+  w1 <- r * rw1[1] + a * rw1[2] + b * rw1[3]
+  w2 <- r * rw2[1] + a * rw2[2] + b * rw2[3]
+  
+  # Return in the original format
+  if (x_was_sph) w1 <- to_spherical(w1, x_class)
+  if (y_was_sph) w2 <- to_spherical(w2, y_class)
+  
+  list(w1, w2)
 }
 
+
+# v_orthogonalize <- function(x, y) {
+#   if (abs(vdot(x, y)) < 1.0e-4) {
+#     return(list(x, y))
+#   } else {
+#     transform <- is.spherical(x)
+#     if (transform) {
+#       classx <- class(x)
+#       x <- to_vec(x)
+#     } else {
+#       x <- vec2mat(x)
+#     }
+#     if (is.spherical(y)) {
+#       classy <- class(y)
+#       y <- to_vec(y)
+#     } else {
+#       y <- vec2mat(y)
+#     }
+# 
+#     # Define the rotation axis (the normal to the v1, v2 plane), use as first
+#     # basis vector in the rotation coordinate system.
+#     # Remember, the cross product of two non-orthogonal vectors is not a unit
+#     # vector
+# 
+#     r <- vcross(x, y) |> vnorm()
+# 
+#     a <- vnorm(x)
+#     b <- vcross(r, a)
+# 
+#     # Transform v1 and v2 to the rotation coordinate system.
+#     # Transformation matrix is T = (r a b)
+#     rv1 <- c(0, 0, 0)
+#     rv1[1] <- vdot(r, x)
+#     rv1[2] <- vdot(a, x)
+#     rv1[3] <- vdot(b, x)
+# 
+#     rv2 <- c(0, 0, 0)
+#     rv2[1] <- vdot(r, y)
+#     rv2[2] <- vdot(a, y)
+#     rv2[3] <- vdot(b, y)
+# 
+#     # Rotate rv1 and rv2 half the discrepancy angle in opposite directions
+#     # around r
+#     ang <- acos(vdot(rv1, rv2))
+#     ang <- (pi / 2 - ang) / 2.0
+# 
+#     rw1 <- vrotate(rv1, r, -ang)
+#     rw2 <- vrotate(rv2, r, ang)
+# 
+#     # Transform the vectors back to NED
+#     w1 <- c(0, 0, 0)
+#     w1[1] <- r[1] * rw1[1] + a[1] * rw1[2] + b[1] * rw1[3]
+#     w1[2] <- r[2] * rw1[1] + a[2] * rw1[2] + b[2] * rw1[3]
+#     w1[3] <- r[3] * rw1[1] + a[3] * rw1[2] + b[3] * rw1[3]
+# 
+#     w2 <- c(0, 0, 0)
+#     w2[1] <- r[1] * rw2[1] + a[1] * rw2[2] + b[1] * rw2[3]
+#     w2[2] <- r[2] * rw2[1] + a[2] * rw2[2] + b[2] * rw2[3]
+#     w2[3] <- r[3] * rw2[1] + a[3] * rw2[2] + b[3] * rw2[3]
+# 
+#     if (transform) {
+#       w1 <- to_spherical(w1, classx)
+#       w2 <- to_spherical(w2, classy)
+#     }
+#     return(list(w1, w2))
+#   }
+# }
 
 #' Affine transformation of vector by matrix
 #'
@@ -380,30 +417,18 @@ vtransform <- function(x, A, norm = FALSE) {
 #' vresultant(x, mean = FALSE)
 #' vresultant(x, mean = TRUE)
 vresultant <- function(x, w = NULL, mean = FALSE) {
-  w <- if (is.null(w)) {
-    rep(1, times = nrow(x))
-  } else {
-    as.numeric(w)
-  }
+  w <- if (is.null(w)) rep(1, times = nrow(x)) else as.numeric(w)
 
   transform <- is.spherical(x)
-  if (transform) {
-    v <- to_vec(x)
-  } else {
-    v <- vec2mat(x)
-  }
-
+  if (transform) v <- to_vec(x) else v <- vec2mat(x)
 
   R <- vsum(x, w)
   if (mean) {
     N <- sum(w)
     R <- R / N
   }
-  if (transform) {
-    to_spherical(R, class(x))
-  } else {
-    R
-  }
+  if (transform) to_spherical(R, class(x)) else R
+
 }
 
 #' Statistical estimators of the distribution of a set of vectors
@@ -520,40 +545,22 @@ v_sd <- function(x, w = NULL) {
 #' @export
 v_delta <- function(x, w = NULL) {
   transform <- is.spherical(x)
-  if (transform) {
-    v <- to_vec(x)
-  } else {
-    v <- vec2mat(x)
-  }
-  Rbar <- vresultant(v, w, mean = TRUE) |>
-    vlength()
+  if (transform) v <- to_vec(x) else v <- vec2mat(x)
+  
+  Rbar <- vresultant(v, w, mean = TRUE) |> vlength()
   d <- acos(Rbar)
 
-  if (transform) {
-    rad2deg(d)
-  } else {
-    d
-  }
+  if (transform) rad2deg(d) else d
 }
 
 #' @rdname stats
 #' @export
 v_rdegree <- function(x, w = NULL) {
-  if (is.spherical(x)) {
-    v <- to_vec(x)
-  } else {
-    v <- vec2mat(x)
-  }
-
-  w <- if (is.null(w)) {
-    rep(1, times = nrow(v))
-  } else {
-    as.numeric(w)
-  }
+  v <- if (is.spherical(x)) to_vec(x) else vec2mat(x)
+  w <- if (is.null(w)) rep(1, times = nrow(v)) else as.numeric(w)
 
   N <- sum(w)
-  Rbar <- vresultant(vnorm(v), w, mean = FALSE) |>
-    vlength()
+  Rbar <- vresultant(vnorm(v), w, mean = FALSE) |> vlength()
 
   (2 * Rbar - N) / N
 }
@@ -561,14 +568,9 @@ v_rdegree <- function(x, w = NULL) {
 #' @rdname stats
 #' @export
 v_sde <- function(x, w = NULL) {
-  if (is.spherical(x)) {
-    v <- to_vec(x)
-  } else {
-    v <- vec2mat(x)
-  }
-  w <- if (is.null(w)) {
-    rep(1, times = nrow(v))
-  } else {
+  v <- if (is.spherical(x)) to_vec(x) else vec2mat(x)
+  
+  w <- if (is.null(w)) rep(1, times = nrow(v)) else {
     as.numeric(w)
   }
 
@@ -1100,7 +1102,7 @@ or_shape_params <- function(x) {
   eig <- ortensor(x, norm = TRUE) |> eigen()
   s <- principal_stretch(x)
   e <- principal_strain(x)
-  names(s) <- names(e) <- NULL
+  # names(s) <- names(e) <- NULL
 
   Rxy <- s[1] / s[2]
   Ryz <- s[2] / s[3]
@@ -1120,32 +1122,28 @@ or_shape_params <- function(x) {
 
   lode <- ifelse((e[1] - e[3]) > 0, (2 * e[2] - e[1] - e[3]) / (e[1] - e[3]), 0)
 
-  if (dplyr::near(eoct, 0)) {
-    kind <- "O"
-  } else if (lode < -0.75) {
-    kind <- "L"
-  } else if (lode > 0.75) {
-    kind <- "S"
-  } else if (lode < -0.15) {
-    kind <- "LLS"
-  } else if (lode > 0.15) {
-    kind <- "SSL"
-  } else {
-    kind <- "LS"
-  }
+  kind <- dplyr::case_when(
+    dplyr::near(eoct, 0) ~ "O",
+    lode < -0.75 ~ "L",
+    lode > 0.75 ~ "S",
+    lode < -0.15 ~ "LLS",
+    lode > 0.15 ~ "SSL",
+    TRUE ~ "LS"
+  )
 
   # Vollmer
   N <- nrow(x)
-
   P <- eig$values[1] - eig$values[2] #  Point index (Vollmer, 1990)
   G <- 2 * (eig$values[2] - eig$values[3]) #  Girdle index (Vollmer, 1990)
   R <- 3 * eig$values[3] # Random index (Vollmer, 1990)
   B <- P + G #  Cylindricity index (Vollmer, 1990)
   C <- log(eig$values[1] / eig$values[3])
-  I <- 7.5 * ((eig$values[1] / N - (1 / 3))^2 + (eig$values[2] / N - (1 / 3))^2 + (eig$values[3] / N - (1 / 3))^2)
-
-  us <- (15 * N / 2) * sum((eig$values[1] - 1 / 3)^2, (eig$values[2] - 1 / 3)^2, (eig$values[3] - 1 / 3)^2) # Uniformity statistic of Mardia
-  D <- (us / (5 * N))^0.5 # D of Vollmer 2020
+  # I <- 7.5 * ((eig$values[1] / N - (1 / 3))^2 + (eig$values[2] / N - (1 / 3))^2 + (eig$values[3] / N - (1 / 3))^2)
+  I <- 7.5 * sum((eig$values / N - 1/3)^2)
+  
+  # us <- (15 * N / 2) * sum((eig$values[1] - 1 / 3)^2, (eig$values[2] - 1 / 3)^2, (eig$values[3] - 1 / 3)^2) # Uniformity statistic of Mardia
+  us <- (15 * N / 2) * sum((eig$values - 1/3)^2)  # Mardia uniformity statistic
+  D <- sqrt(us / (5 * N)) # D of Vollmer 2020
 
   Vollmer <- c(P = P, G = G, R = R, B = B, C = C, I = I, D = D)
 
@@ -1243,31 +1241,16 @@ or_shape_params <- function(x) {
 #' stereo_point(Line(c(0, 90, 180), c(0, 0, 90)), col = 2:4, lab = c("E3", "E2", "E1"))
 center <- function(x, max_vertical = FALSE) {
   transform <- is.spherical(x)
-  if (transform) {
-    x_cart <- to_vec(x)
-  } else {
-    x_cart <- x
-  }
-  # x_or <- ortensor(x_cart)
-  # x_svd <- svd(x_or) # Singular Value Decomposition of a Matrix
-  # x_eigen <- list(
-  #   values = x_svd$d,
-  #   vectors = t(x_svd$u)
-  # )
+  x_cart <- if (transform) to_vec(x) else vec2mat(x)
   x_eigen <- or_eigen(x_cart)
 
-  x_trans <- matrix(nrow = nrow(x), ncol = 3)
-  for (i in 1:nrow(x)) {
-    x_trans[i, ] <- vtransform(x_cart[i, ], x_eigen$vectors, norm = TRUE)
-  }
-
-  if (!max_vertical) {
-    x_cent <- vrotate(x_trans, cbind(0, -1, 0), pi / 2)
-  } else {
-    x_cent <- x_trans
-  }
-  if (transform) {
-    x_cent <- to_spherical(x_cent, class(x))
-  }
-  x_cent
+  # x_trans <- matrix(nrow = nrow(x), ncol = 3)
+  # for (i in 1:nrow(x)) {
+  #   x_trans[i, ] <- vtransform(x_cart[i, ], x_eigen$vectors, norm = TRUE)
+  # }
+  x_trans <- t(apply(x_cart, 1, vtransform, A = x_eigen$vectors, norm = TRUE))
+  
+  if (!max_vertical) x_trans <- vrotate(x_trans, cbind(0, -1, 0), pi / 2) 
+  if (transform) x_trans <- to_spherical(x_trans, class(x))
+  x_trans
 }

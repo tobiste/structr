@@ -4,7 +4,7 @@
 \alias{count_points}
 \title{Point density}
 \usage{
-count_points(azi, inc, FUN, sigma, n, weights, r)
+count_points(azi, inc, FUN, sigma, ngrid, weights, r)
 }
 \arguments{
 \item{azi, inc}{degree}
@@ -19,7 +19,7 @@ counting circle, and therefore the degree of smoothing.  Higher \code{sigma}s
 will lead to more smoothing of the resulting density distribution. This
 parameter only applies to Kamb-based methods.  Defaults to \code{3}.}
 
-\item{n}{numeric. The size of the grid that the density is estimated on.}
+\item{ngrid}{numeric. The size of the grid that the density is estimated on.}
 
 \item{weights}{(optional) numeric vector of length of \code{azi}.
 The relative weight to be applied to each input measurement. The array

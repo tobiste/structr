@@ -8,9 +8,12 @@
 \usage{
 spherical_density(
   x,
+  kamb = TRUE,
   FUN = exponential_kamb,
-  n = 128L,
+  ngrid = 128L,
   sigma = 3,
+  vmf_hw = NULL,
+  vmf_optimal = c("cross", "rot"),
   weights = NULL,
   upper.hem = FALSE,
   r = 1
@@ -18,7 +21,7 @@ spherical_density(
 
 projected_density(
   x,
-  n = 128L,
+  ngrid = 128L,
   sigma = 3,
   weights = NULL,
   upper.hem = FALSE,
@@ -27,9 +30,12 @@ projected_density(
 
 stereo_density(
   x,
+  kamb = TRUE,
   FUN = exponential_kamb,
-  n = 128L,
+  ngrid = 128L,
   sigma = 3,
+  vmf_hw = NULL,
+  vmf_optimal = c("cross", "rot"),
   weights = NULL,
   upper.hem = FALSE,
   r = 1,
@@ -45,12 +51,20 @@ stereo_density(
 \arguments{
 \item{x}{Object of class \code{"line"} or \code{"plane"} or \code{'spherical.density'} (for plotting only).}
 
-\item{FUN}{density estimation function; one of \code{\link[=exponential_kamb]{exponential_kamb()}} (the default),
+\item{kamb}{logical. Whether to use the von Mises-Fisher kernel density estimation (\code{FALSE}) or Kamb's method (\code{TRUE}, the default).}
+
+\item{FUN}{density estimation function if \code{kamb=TRUE}; one of \code{\link[=exponential_kamb]{exponential_kamb()}} (the default),
 \link{kamb_count}, and \code{\link[=schmidt_count]{schmidt_count()}}.}
 
-\item{n}{integer. Gridzise. 128 by default.}
+\item{ngrid}{integer. Gridzise. 128 by default.}
 
 \item{sigma}{numeric. Radius for Kamb circle used for counting. 3 by default.}
+
+\item{vmf_hw}{numeric. Kernel bandwidth in degree.}
+
+\item{vmf_optimal}{character. Calculates an optimal kernel bandwidth
+using the cross-validation algorithm (\code{'cross'}) or the rule-of-thumb (\code{'rot'})
+suggested by Garcia-Portugues (2013). Ignored when \code{vmf_hw} is specified.}
 
 \item{weights}{(optional) numeric vector of length of \code{azi}.
 The relative weight to be applied to each input measurement. The array
@@ -87,17 +101,18 @@ Linear Kamb counts and densities on the sphere
 \examples{
 set.seed(20250411)
 test <- rfb(100, mu = Line(120, 10), k = 5, A = diag(c(-1, 0, 1)))
-test_densities <- spherical_density(x = test, n = 100, sigma = 3, weights = runif(100))
+test_densities <- spherical_density(x = test, ngrid = 100, sigma = 3, weights = runif(100))
 
 stereo_density(test_densities, type = "image", add = FALSE)
 stereo_point(test, col = "lightgrey", pch = 21)
 
+my_planes <- Plane(example_planes$dipdir, example_planes$dip)
 stereoplot(guides = FALSE)
-stereo_point(test, col = "lightgrey", pch = 19)
-stereo_density(test_densities, type = "contour", add = TRUE)
+stereo_point(my_planes, col = "lightgrey", pch = 19)
+stereo_density(my_planes, type = "contour", add = TRUE)
 
-stereo_density(test_densities, type = "contour_filled", add = FALSE, col.params = list(direction = -1, begin = .05, end = .95, alpha = .75))
-stereo_point(test, col = "black", pch = 21)
+stereo_density(my_planes, type = "contour_filled", add = FALSE, col.params = list(direction = -1, begin = .05, end = .95, alpha = .75))
+stereo_point(my_planes, col = "black", pch = 21)
 }
 \seealso{
 \code{\link[=count_points]{count_points()}}

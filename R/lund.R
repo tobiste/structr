@@ -32,39 +32,23 @@
 #' cbind(R, SH = sapply(R, function(x) {
 #'   SH(S1, S2, S3, R = x)
 #' }))
-SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 1.0e-4) {
-  if (is.spherical(S1)) {
-    S1 <- line2vec(S1)
-  } else {
-    S1 <- vec2mat(S1)
-  }
-  if (is.spherical(S2)) {
-    S2 <- line2vec(S2)
-  } else {
-    S2 <- vec2mat(S2)
-  }
-  if (is.spherical(S3)) {
-    S3 <- line2vec(S3)
-  } else {
-    S3 <- vec2mat(S3)
-  }
-
-  # Check the input, should be unit vectors
-  S1 <- vnorm(S1)
-  S2 <- vnorm(S2)
-  S3 <- vnorm(S3)
-
-  # Check for orthogonality
-  if (vdot(S1, S2) > ortho.tol) stop("SH(): S1 and S2 are not orthogonal!")
-  if (vdot(S1, S3) > ortho.tol) stop("SH(): S1 and S3 are not orthogonal!")
-  if (vdot(S2, S3) > ortho.tol) stop("SH(): S2 and S3 are not orthogonal!")
-  # Check R
-  if (R < 0.0 | R > 1.0) {
-    stop("SH(): R is out of range!")
-  }
+SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 1e-4) {
+  # Convert to unit vectors
+  S1 <- if (is.spherical(S1)) line2vec(S1) else vnorm(vec2mat(S1))
+  S2 <- if (is.spherical(S2)) line2vec(S2) else vnorm(vec2mat(S2))
+  S3 <- if (is.spherical(S3)) line2vec(S3) else vnorm(vec2mat(S3))
+  
+  # Check orthogonality
+  if (vdot(S1, S2) > ortho.tol) stop("S1 and S2 are not orthogonal.")
+  if (vdot(S1, S3) > ortho.tol) stop("S1 and S3 are not orthogonal.")
+  if (vdot(S2, S3) > ortho.tol) stop("S2 and S3 are not orthogonal.")
+  
+  # Check R validity
+  if (!is.numeric(R) || R < 0 || R > 1) stop("SH(): R must be between 0 and 1.")
+  
   # Calculate the denominator and numerator in Eq. 11
-  X <- S1[1] * S1[1] - S1[2] * S1[2] + (1.0 - R) * (S2[1] * S2[1] - S2[2] * S2[2])
-  Y <- 2.0 * (S1[1] * S1[2] + (1.0 - R) * (S2[1] * S2[2]))
+  X <- S1[1] * S1[1] - S1[2] * S1[2] + (1 - R) * (S2[1] * S2[1] - S2[2] * S2[2])
+  Y <- 2 * (S1[1] * S1[2] + (1 - R) * (S2[1] * S2[2]))
   # print 'SH: X %f Y %f' % (X,Y)
 
   # Is the denominator (X here) from Eq. 11 in Lund and Townend (2007) zero?
@@ -84,42 +68,39 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 1.0e-4)
     if (abs(S2[1] * S2[2]) < tol) {
       # s2Ns2E = 0
       # print 'SH: s2Ns2E = 0'
-      if (abs(S1[1] * S1[2]) < tol) {
-        # print 'SH: s1Ns1E = s2Ns2E = 0 => SH undefined'
-        alpha <- NaN
-      } else {
-        alpha <- pi / 4.0
-      }
+      
+      # print 'SH: s1Ns1E = s2Ns2E = 0 => SH undefined'
+      if (abs(S1[1] * S1[2]) < tol) alpha <- NA_real_ else alpha <- pi / 4
     } else {
-      if (abs(R - (1.0 + S1[1] * S1[2] / S2[1] * S2[2])) < tol) {
-        # print 'SH: R fits => SH undefined'
-        alpha <- NaN
-      } else {
-        alpha <- pi / 4.0
-      }
+      # print 'SH: R fits => SH undefined'
+      if (abs(R - (1 + S1[1] * S1[2] / S2[1] * S2[2])) < tol) alpha <- NA_real_ else alpha <- pi / 4
     }
   } else {
     # The denominator is non-zero
     # print 'SH: X != 0 Denominator non-zero'
-    alpha <- atan(Y / X) / 2.0
+    # alpha <- atan(Y / X) / 2
+    alpha <- atan2(Y, X) / 2
   }
 
   # Have we found a minimum or maximum? Use 2nd derivative to find out.
   # A negative 2nd derivative indicates a maximum, which is what we want.
   # print X,Y,alpha
-  dev2 <- -2.0 * X * cos(2.0 * alpha) - 2.0 * Y * sin(2.0 * alpha)
+  dev2 <- -2 * X * cos(2 * alpha) - 2 * Y * sin(2 * alpha)
   # print 'SH: dev2 %f' % (dev2)
-  if (dev2 > 0) {
-    # We found a minimum. Add 90 degrees to get the maximum.
-    alpha <- alpha + pi / 2.0
-  }
+  
+  # We found a minimum. Add 90 degrees to get the maximum.
+  if (dev2 > 0) alpha <- alpha + pi / 2
+  
   # The resulting direction of SH is given as [0,180[ degrees.
-  if (alpha < 0) {
-    alpha <- alpha + pi
-  }
-  if (alpha > pi | abs(alpha - pi) < tol) {
-    alpha <- alpha - pi
-  }
+  
+  # if (alpha < 0) {
+  #   alpha <- alpha + pi
+  # }
+  # if (alpha > pi | abs(alpha - pi) < tol) {
+  #   alpha <- alpha - pi
+  # }
+  alpha <- alpha %% pi
+  
   return(rad2deg(alpha))
 }
 
