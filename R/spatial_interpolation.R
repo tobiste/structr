@@ -176,7 +176,7 @@ spatial_interpolation <- function(x,
 
   vec <- to_spherical(cbind(x = SH[, 3], y = SH[, 4], z = SH[, 5]))
 
-  res <- dplyr::as_tibble(SH) |>
+  res <- as.data.frame(SH) |>
     dplyr::rename(lon = lon.X, lat = lat.Y) |>
     dplyr::mutate(N = as.integer(N)) |>
     sf::st_as_sf(coords = c("lon", "lat"), crs = sf::st_crs(x), remove = FALSE) |>
@@ -228,7 +228,6 @@ compact_grid <- function(grid) {
 
   data <- grid |>
     dplyr::ungroup() |>
-    dplyr::as_tibble() |>
     tidyr::drop_na(x) |>
     dplyr::mutate(group = paste(lon, lat))
 

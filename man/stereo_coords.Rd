@@ -25,5 +25,5 @@ Transformation of spherical coordinates into the stereographic projection
 }
 \examples{
 stereo_coords(90, 10)
-stereo_coords(90, 10, proj = "Wulff")
+stereo_coords(90, 10, earea = TRUE, upper.hem = TRUE)
 }

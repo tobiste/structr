@@ -436,7 +436,7 @@ parse_azimuth <- function(azimuth) {
     } else {
       stop(
         paste(
-          "Ambiguos azimuth:",
+          "Ambiguous azimuth:",
           x
         )
       )

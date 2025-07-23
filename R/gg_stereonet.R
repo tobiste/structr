@@ -163,7 +163,7 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
     res[start:end, ] <- D_fixed3
   }
   res |>
-    dplyr::as_tibble() |>
+    as.data.frame() |>
     dplyr::mutate(group = as.character(id)) |>
     dplyr::left_join(
       xdf, dplyr::join_by(id)

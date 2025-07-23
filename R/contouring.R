@@ -53,20 +53,25 @@ blank_grid_regular <- function(n, r = 1) {
 #' The relative weight to be applied to each input measurement. The array
 #' will be normalized to sum to 1, so absolute value of the `weights` do not
 #' affect the result. Defaults to `NULL`
+#' @param r numeric. radius of stereonet circle
 #'
 #' @returns list
 count_points <- function(azi, inc, FUN, sigma, n, weights, r) {
   # Grid setup
   grid <- blank_grid_regular(n = n, r = r)
+  grid_coords <- grid$grid
 
-
-  # Stereonet math transformations to cartesian coordinates
+  # Stereonet math transformations to Cartesian coordinates
   xyz_points <- lin2vec0(azi, inc)
 
-  # totals <- numeric(nrow(grid$grid))
+  # cos_dist_matrix <- abs(grid_coords %*% t(xyz_points))
 
-  for (i in seq_along(grid$grid[, 1])) {
-    cos_dist <- abs(grid$grid[i, ] %*% t(xyz_points))
+  # for(i in 1:ncol(cos_dist_matrix)){
+  #   density_scale <- FUN(cos_dist_matrix[, i], sigma)
+  # }
+
+  for (i in seq_along(grid_coords[, 1])) {
+    cos_dist <- abs(grid_coords[i, ] %*% t(xyz_points))
     density_scale <- FUN(cos_dist, sigma)
     density <- density_scale$count * weights
     scale <- density_scale$units
@@ -77,6 +82,38 @@ count_points <- function(azi, inc, FUN, sigma, n, weights, r) {
 
   grid
 }
+
+# count_points_fast <- function(azi, inc, FUN, sigma, n, weights, r) {
+#   # Grid setup
+#   grid <- blank_grid_regular(n = n, r = r)
+#   grid_coords <- grid$grid
+#
+#   # Convert spherical to cartesian coordinates
+#   xyz_points <- lin2vec0(azi, inc)
+#
+#   # Matrix multiplication: each row in grid_coords with all xyz_points
+#   # t(grid_coords) %*% xyz_points computes all dot products efficiently
+#   cos_dist_matrix <- abs(grid_coords %*% t(xyz_points)) # n_grid x n_points
+#
+#   # Apply FUN to entire matrix
+#   density_scale <- FUN(cos_dist_matrix, sigma)
+#
+#   # Ensure weights are correctly recycled to n_points length
+#   weights <- rep(weights, length.out = ncol(cos_dist_matrix))
+#
+#   # Compute weighted density sums across columns
+#   weighted_density <- sweep(density_scale$count, 2, weights, "*")
+#   density_sums <- rowSums(weighted_density)
+#
+#   # Compute final densities
+#   densities <- (density_sums - 0.5) / density_scale$units
+#   densities[densities < 0] <- 0
+#
+#   # Insert densities into grid
+#   grid$density <- densities
+#
+#   grid
+# }
 
 #' Estimates point density
 #'
@@ -100,6 +137,7 @@ count_points <- function(azi, inc, FUN, sigma, n, weights, r) {
 #' @examples
 #' x <- Line(c(120, 315, 86), c(22, 85, 31))
 #' res <- density_grid(x, n = 100, FUN = kamb_count, sigma = 4)
+#' lapply(res, head)
 density_grid <- function(x, weights = NULL, upper.hem = FALSE, ...) {
   if (!is.spherical(x)) x <- to_spherical(x)
 

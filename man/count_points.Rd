@@ -25,6 +25,8 @@ parameter only applies to Kamb-based methods.  Defaults to \code{3}.}
 The relative weight to be applied to each input measurement. The array
 will be normalized to sum to 1, so absolute value of the \code{weights} do not
 affect the result. Defaults to \code{NULL}}
+
+\item{r}{numeric. radius of stereonet circle}
 }
 \value{
 list

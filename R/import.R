@@ -142,7 +142,6 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 
 #' @rdname strabo
 #' @export
-#' @importFrom dplyr as_tibble tibble
 read_strabo_JSON <- function(file, sf = TRUE) {
   spot.y <- ds_id <- unix_timestamp <- modified_timestamp <- spot.x <- NULL
 
@@ -158,7 +157,7 @@ read_strabo_JSON <- function(file, sf = TRUE) {
     tags_list[[t]]$spots <- NULL
     tags_list[[t]]$eon <- NULL
 
-    df_t <- as_tibble(tags_list[[t]])
+    df_t <- as.data.frame(tags_list[[t]])
     tags_df <- dplyr::bind_rows(tags_df, df_t)
     if (nrow(spots_t) > 0) {
       spots_t$tag <- df_t$id
@@ -310,7 +309,7 @@ read_strabo_JSON <- function(file, sf = TRUE) {
       }
     }
   }
-  fieldbook <- tibble(spot_id = spot_id, spot = spot, longitude, latitude, altitude, note = notes, time = date, gps_accuracy, id) |>
+  fieldbook <- data.frame(spot_id = spot_id, spot = spot, longitude, latitude, altitude, note = notes, time = date, gps_accuracy, id) |>
     dplyr::mutate(time = lubridate::as_datetime(time)) |>
     dplyr::arrange(time) |>
     dplyr::distinct() |>
@@ -321,7 +320,7 @@ read_strabo_JSON <- function(file, sf = TRUE) {
   if (sf) fieldbook <- sf::st_as_sf(fieldbook, coords = c("longitude", "latitude"), remove = FALSE, crs = "WGS84", na.fail = FALSE)
 
   meta <- orient_df |>
-    as_tibble() |>
+    as.data.frame() |>
     dplyr::distinct() |>
     dplyr::left_join(fieldbook, dplyr::join_by("spot_id")) |>
     dplyr::arrange(time) |>

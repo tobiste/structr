@@ -26,7 +26,6 @@ Imports:
     rotasym,
     sf,
     tectonicr,
-    tibble,
     tidyr,
     tidyselect,
     viridis
