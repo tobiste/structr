@@ -277,7 +277,7 @@ kamb_count <- function(cos_dist, sigma = 3) {
 schmidt_count <- function(cos_dist, sigma = NULL) {
   radius <- 0.01
   count <- ifelse((1 - cos_dist) <= radius, 1, 0)
-  count <- 0.5 / length(count) + count
+  count <- 1 / (2*length(count)) + count
   return(list(count = count, units = length(cos_dist) * radius))
 }
 
@@ -330,7 +330,7 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 
 #' Calculate and plot densities in a stereonet
 #'
-#' Linear Kamb counts and densities on the sphere
+#' Kamb counts and densities on the sphere
 #'
 #' @param x Object of class `"line"` or `"plane"` or `'spherical.density'` (for plotting only).
 #' @param upper.hem logical. Whether the projection is shown for upper
@@ -364,7 +364,6 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #'
 #' @returns list containing the stereographic x and coordinates of of the grid,
 #' the counts, and the density.
-#' @export
 #'
 #' @examples
 #' set.seed(20250411)
@@ -374,14 +373,37 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #' stereo_density(test_densities, type = "image", add = FALSE)
 #' stereo_point(test, col = "lightgrey", pch = 21)
 #'
-#' my_planes <- Plane(example_planes$dipdir, example_planes$dip)
-#' stereoplot(guides = FALSE)
-#' stereo_point(my_planes, col = "lightgrey", pch = 19)
-#' stereo_density(my_planes, type = "contour", add = TRUE)
-#'
 #' stereo_density(my_planes, type = "contour_filled", add = FALSE, 
 #' col.params = list(direction = -1, begin = .05, end = .95, alpha = .75))
 #' stereo_point(my_planes, col = "black", pch = 21)
+#' 
+#' # complete example:
+#' par(mfrow =c(2, 1))
+#' wp <- 6/ifelse(is.na(example_planes$quality), 6, example_planes$quality)
+#' my_planes <- Plane(example_planes$dipdir, example_planes$dip)
+#' fabric_p <- or_shape_params(my_planes)$Vollmer["D"]
+#' my_planes_eig <- or_eigen(my_planes)
+#' 
+#' stereoplot(guides = TRUE, col = "grey96")
+#' stereo_point(my_planes, col = "grey", pch = 16, cex = .5)
+#' stereo_density(my_planes, type = "contour", add = TRUE, weights = wp)
+#' stereo_point(as.plane(my_planes_eig$vectors[3, ]), col = "black", pch = 16)
+#' stereo_greatcircle(as.plane(my_planes_eig$vectors[3, ]), col = "black", pch = 16)
+#' title(main = 'Planes', 
+#' sub = paste0("N: ", nrow(my_planes), " | Fabric strength: ", round(fabric_p, 2), 
+#' "\nLambert equal area, lower hemisphere projection"))
+#' 
+#' my_lines <- Line(example_lines$trend, example_lines$plunge)
+#' wl <- 6/ifelse(is.na(example_lines$quality), 6, example_lines$quality)
+#' fabric_l <- or_shape_params(my_lines)$Vollmer["D"]
+#' 
+#' stereoplot(guides = TRUE, col = "grey96")
+#' stereo_point(my_lines, col = "grey", pch = 16, cex = .5)
+#' stereo_density(my_lines, type = "contour", add = TRUE, weights = wl)
+#' stereo_point(v_mean(my_lines, w = wl), col = "black", pch = 16)
+#' title(main = 'Lines', 
+#' sub = paste0("N: ", nrow(my_lines), " | Fabric strength: ", round(fabric_l, 2), 
+#' "\nLambert equal area, lower hemisphere projection"))
 NULL
 
 #' @rdname stereo_density
@@ -434,59 +456,59 @@ spherical_density <- function(x,
   return(res)
 }
 
-#' @rdname stereo_density
-#' @export
-projected_density <- function(x, ngrid = 128L, sigma = 3, weights = NULL, upper.hem = FALSE, r = 1) {
-  if (is.plane(x) | is.fault(x)) {
-    x[, 1] <- 180 + x[, 1]
-    x[, 2] <- 90 - x[, 2]
-  }
-  
-  crds <- stereo_coords(
-    x[, 1],
-    x[, 2],
-    upper.hem,
-    earea = TRUE
-  )
-  
-  
-  # prepare the grid
-  x_grid <- y_grid <- seq(-1, 1, length.out = ngrid)
-  grid <- expand.grid(x_grid, y_grid) |> as.matrix()
-  
-  # Compute distance from origin
-  dist_matrix <- sqrt(grid[, 1]^2 + grid[, 2]^2)
-  
-  # Create a logical mask where TRUE if outside the unit circle
-  mask_outside <- dist_matrix > r
-  
-  N <- nrow(crds)
-  
-  if (is.null(weights)) {
-    weights <- rep(1, N)
-  }
-  
-  
-  # f <- sigma^2 / (sigma^2 + N)
-  counter_radius <- sigma * r / sqrt(N + sigma^2)
-  
-  counts <- .count_points_within_radius(crds, grid, counter_radius)
-  
-  
-  counts_matrix <- matrix(counts, nrow = n, byrow = FALSE)
-  counts_matrix[mask_outside] <- NA # replace cells outside of unit circle with NA
-  
-  density_matrix <- counts_matrix / max(counts_matrix, na.rm = TRUE)
-  
-  res <- list(
-    x = x_grid, y = y_grid,
-    grid = grid,
-    counts = counts_matrix,
-    density = density_matrix
-  )
-  class(res) <- append(class(res), "spherical.density")
-  return(res)
-}
+# #' @rdname stereo_density
+# #' @export
+# projected_density <- function(x, ngrid = 128L, sigma = 3, weights = NULL, upper.hem = FALSE, r = 1) {
+#   if (is.plane(x) | is.fault(x)) {
+#     x[, 1] <- 180 + x[, 1]
+#     x[, 2] <- 90 - x[, 2]
+#   }
+#   
+#   crds <- stereo_coords(
+#     x[, 1],
+#     x[, 2],
+#     upper.hem,
+#     earea = TRUE
+#   )
+#   
+#   
+#   # prepare the grid
+#   x_grid <- y_grid <- seq(-1, 1, length.out = ngrid)
+#   grid <- expand.grid(x_grid, y_grid) |> as.matrix()
+#   
+#   # Compute distance from origin
+#   dist_matrix <- sqrt(grid[, 1]^2 + grid[, 2]^2)
+#   
+#   # Create a logical mask where TRUE if outside the unit circle
+#   mask_outside <- dist_matrix > r
+#   
+#   N <- nrow(crds)
+#   
+#   if (is.null(weights)) {
+#     weights <- rep(1, N)
+#   }
+#   
+#   
+#   # f <- sigma^2 / (sigma^2 + N)
+#   counter_radius <- sigma * r / sqrt(N + sigma^2)
+#   
+#   counts <- .count_points_within_radius(crds, grid, counter_radius)
+#   
+#   
+#   counts_matrix <- matrix(counts, nrow = n, byrow = FALSE)
+#   counts_matrix[mask_outside] <- NA # replace cells outside of unit circle with NA
+#   
+#   density_matrix <- counts_matrix / max(counts_matrix, na.rm = TRUE)
+#   
+#   res <- list(
+#     x = x_grid, y = y_grid,
+#     grid = grid,
+#     counts = counts_matrix,
+#     density = density_matrix
+#   )
+#   class(res) <- append(class(res), "spherical.density")
+#   return(res)
+# }
 
 #' @rdname stereo_density
 #' @export
@@ -570,20 +592,19 @@ stereo_density <- function(x, kamb = TRUE, FUN = exponential_kamb, ngrid = 128L,
 }
 
 
-.count_points_within_radius <- function(A, B, r) {
-  # Compute squared distances efficiently
-  d2 <- (outer(A[, 1], B[, 1], "-"))^2 +
-    (outer(A[, 2], B[, 2], "-"))^2
-  
-  # Logical matrix where TRUE if within radius
-  within <- d2 <= r^2
-  
-  # Count per column (i.e., per grid point)
-  counts <- colSums(within)
-  
-  return(counts)
-}
-
+# .count_points_within_radius <- function(A, B, r) {
+#   # Compute squared distances efficiently
+#   d2 <- (outer(A[, 1], B[, 1], "-"))^2 +
+#     (outer(A[, 2], B[, 2], "-"))^2
+#   
+#   # Logical matrix where TRUE if within radius
+#   within <- d2 <= r^2
+#   
+#   # Count per column (i.e., per grid point)
+#   counts <- colSums(within)
+#   
+#   return(counts)
+# }
 
 #
 # .fix_symm <- function(x) {

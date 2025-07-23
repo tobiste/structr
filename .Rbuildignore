@@ -15,3 +15,5 @@
 ^R/density\.R$
 ^README\.Rmd$
 ^vignettes/Fault_displacements\.Rmd$
+^doc$
+^Meta$

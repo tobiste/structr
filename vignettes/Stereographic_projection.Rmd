@@ -1,0 +1,139 @@
+---
+title: "Stereographic projections"
+author: "Tobias Stephan"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Stereographic projections}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, warning=FALSE, message=FALSE}
+library(structr)
+```
+
+
+
+Import and convert to spherical objects:
+```{r example}
+data(example_planes)
+
+planes <- Plane(example_planes$dipdir, example_planes$dip)
+lines <- Line(example_lines$trend, example_lines$plunge)
+```
+
+## Stereographic projection
+Lambert equal area, lower hemisphere projection is the default plotting setting.
+
+```{r stereo_earea}
+stereoplot()
+stereo_point(lines, col = "#B63679", pch = 19, cex = .5)
+stereo_point(planes, col = "#000004", pch = 1, cex = .5)
+legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
+title(main = "Example data", sub = 'Lambert equal area, lower hemisphere projection')
+```
+
+To change to equal angle stereographic, upper hemisphere projection
+
+```{r stereo_eangle}
+stereoplot(earea = FALSE)
+stereo_point(lines, col = "#B63679", pch = 19, cex = .5, earea = FALSE, upper.hem = TRUE)
+stereo_point(planes, col = "#000004", pch = 1, cex = .5, earea = FALSE, upper.hem = TRUE)
+legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
+title(main = "Example data", sub = 'Equal angle stereographic, upper hemisphere projection')
+```
+
+
+Adding great circles:
+```{r stereo_greatcircle}
+stereoplot(guides = FALSE)
+stereo_greatcircle(planes, col = "lightgrey", lty = 1)
+stereo_point(planes, col = "#000004", pch = 1, cex = .5)
+```
+
+## Statistics
+```{r stat, message=FALSE,warning=FALSE}
+example_lines$quality <- ifelse(is.na(example_lines$quality), 6, example_lines$quality) # replacing NA values with 6
+line_weightings <- 6/example_lines$quality
+
+lines_mean <- v_mean(lines, w = line_weightings)
+lines_variance <- v_var(lines, w = line_weightings)
+lines_delta <- v_delta(lines, w = line_weightings)
+lines_confangle <- v_confidence_angle(lines, w = line_weightings)
+
+c(
+  "Variance" = lines_variance,
+  "63% cone" = lines_delta,
+  "Confidence angle" = lines_confangle
+)
+```
+
+```{r stat_plot, message=FALSE,warning=FALSE}
+stereoplot(guides = FALSE)
+stereo_point(lines, col = "lightgrey", pch = 1, cex = .5)
+stereo_point(lines_mean, col = "#B63679", pch = 19, cex = 1)
+stereo_smallcircle(lines_mean, d = lines_confangle, col = "#E65164FF")
+stereo_smallcircle(lines_mean, d = lines_delta, col = "#FB8861FF")
+legend("topright", legend = c("Mean line", "95% confidence cone", "63% data cone"), col = c("#B63679", "#E65164FF", "#FB8861FF"), pch = c(19, NA, NA), lty = c(NA, 1, 1), cex = .75)
+```
+
+
+```{r eigen}
+planes_eigen <- or_eigen(planes)
+
+stereoplot(guides = FALSE)
+stereo_point(planes, col = "lightgrey", pch = 1, cex = .5)
+stereo_greatcircle(planes_eigen$vectors, col = viridis::magma(3), lty = 1)
+stereo_point(planes_eigen$vectors, col = viridis::magma(3), pch = 19, cex = 1)
+legend("topright", legend = c("Eigenvectors 1", "Eigenvectors 2", "Eigenvectors 3"), col = viridis::magma(3), pch = 19, cex = .75)
+```
+
+## Fabric plots
+```{r vollmer, message=FALSE,warning=FALSE}
+VollmerPlot(planes, col = "#000004", pch = 1, cex = 2)
+VollmerPlot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
+legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
+
+```
+
+## Density plots
+```{r density, message=FALSE,warning=FALSE}
+example_planes$quality <- ifelse(is.na(example_planes$quality), 6, example_planes$quality) # replacing NA values with 6
+plane_weightings <- 6/example_planes$quality
+
+fabric_p <- or_shape_params(planes)$Vollmer["D"]
+my_planes_eig <- or_eigen(planes)
+
+fabric_l <- or_shape_params(lines)$Vollmer["D"]
+
+par(mfrow = c(1, 2))
+stereoplot(guides = TRUE, col = "grey96")
+stereo_point(planes, col = "grey", pch = 16, cex = .5)
+stereo_density(planes, type = "contour", add = TRUE, weights = plane_weightings)
+stereo_point(as.plane(planes_eigen$vectors[3, ]), col = "black", pch = 16)
+stereo_greatcircle(as.plane(planes_eigen$vectors[3, ]), col = "black", pch = 16)
+title(main = 'Planes',
+ sub = paste0("N: ", nrow(planes), " | Fabric strength: ", round(fabric_p, 2),
+ "\nLambert equal area, lower hemisphere projection"))
+
+
+stereoplot(guides = TRUE, col = "grey96")
+stereo_point(lines, col = "grey", pch = 16, cex = .5)
+stereo_density(lines, type = "contour", add = TRUE, weights = line_weightings)
+stereo_point(lines_mean, col = "black", pch = 16)
+title(main = 'Lines',
+ sub = paste0("N: ", nrow(lines), " | Fabric strength: ", round(fabric_l, 2),
+ "\nLambert equal area, lower hemisphere projection"))
+```
+

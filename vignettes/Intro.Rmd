@@ -1,10 +1,10 @@
 ---
-title: "Stereographic projections"
+title: "Stereographic projections with ggplot"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Stereographic projections}
+  %\VignetteIndexEntry{Stereographic projections with ggplot}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 editor_options: 
@@ -76,11 +76,6 @@ ggstereo() +
   labs(title = "Example data", color = NULL)
 ```
 
-## Fabric plots
-```{r vollmer, message=FALSE,warning=FALSE}
-VollmerPlot(planes, pch = 19, cex = 2)
-VollmerPlot(lines, add = TRUE, col = "dodgerblue", pch = 19, cex = 2)
-```
 
 ## Density plots
 ```{r density, message=FALSE,warning=FALSE}
