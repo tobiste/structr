@@ -67,7 +67,7 @@ Based on \code{\link[tectonicr:stress2grid]{tectonicr::stress2grid()}}
 }
 \examples{
 \dontrun{
-data <- read_strabo_JSON("E:/Lakehead/Field work/StraboSpot_07_02_2023.json", dataset = "TS")
+data <- read_strabo_JSON("E:/Lakehead/Field work/StraboSpot_07_02_2023.json")
 ps <- data$data |>
   dplyr::mutate(dipdir = (strike + 90) \%\% 360) |>
   dplyr::filter(type == "planar_orientation" &

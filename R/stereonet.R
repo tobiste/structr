@@ -223,7 +223,7 @@ stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 16, col 
       }
     } else {
       ang <- x0[i, 3] %% 360
-      # ang = ifelse(ang > 180, 360 - ang, ang)
+
       symb <- if (x0[i, 5] < 0) {
         "\u2193"
       } else {

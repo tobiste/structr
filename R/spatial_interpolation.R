@@ -33,7 +33,7 @@
 #' @export
 #' @examples
 #' \dontrun{
-#' data <- read_strabo_JSON("E:/Lakehead/Field work/StraboSpot_07_02_2023.json", dataset = "TS")
+#' data <- read_strabo_JSON("E:/Lakehead/Field work/StraboSpot_07_02_2023.json")
 #' ps <- data$data |>
 #'   dplyr::mutate(dipdir = (strike + 90) %% 360) |>
 #'   dplyr::filter(type == "planar_orientation" &
@@ -215,7 +215,8 @@ spatial_interpolation <- function(x,
 #' Filter spatial interpolation containing a range of search radii or kernel
 #' half widths to find smallest wavelength (R) with the least spherical sd.
 #'
-#' @param grid output of [stress2grid()], [PoR_stress2grid()], or [kernel_dispersion()]
+#' @param grid output of [tectonicr::stress2grid()], 
+#' [tectonicr::PoR_stress2grid()], or [tectonicr::kernel_dispersion()]
 #' @returns \code{sf} object
 #'
 #' @importFrom stats aggregate
