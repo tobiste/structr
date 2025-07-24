@@ -373,11 +373,11 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #' stereo_density(test_densities, type = "image", add = FALSE)
 #' stereo_point(test, col = "lightgrey", pch = 21)
 #'
-#' stereo_density(my_planes,
+#' stereo_density(test,
 #'   type = "contour_filled", add = FALSE,
 #'   col.params = list(direction = -1, begin = .05, end = .95, alpha = .75)
 #' )
-#' stereo_point(my_planes, col = "black", pch = 21)
+#' stereo_point(test, col = "black", pch = 21)
 #'
 #' # complete example:
 #' par(mfrow = c(2, 1))

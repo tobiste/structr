@@ -3,7 +3,7 @@
 #' Calculates PT-axes, kinematic plane (M), and dihedra separation plane (d)
 #'
 #' @param x fault object
-#' @param ptangle angle between P and T axes in degrees (90 by default) .
+#' @param ptangle angle between P and T axes in degrees (90 by default).
 #'
 #' @returns list
 #' @export
