@@ -6,13 +6,12 @@
 \alias{fault_tensor_decomposition}
 \title{Fault displacement tensor}
 \usage{
-fault_tensor(displacements, dip_direction = NULL)
+fault_tensor(h, s, v, dip_direction = NULL)
 
 fault_tensor_decomposition(ftensor, dip_direction = NULL)
 }
 \arguments{
-\item{displacements}{data.frame containing the strike slip, the
-heave, and the vertical throw of the fault's displacement components.}
+\item{h, s, v}{numeric. the heave, strike-slip, vertical throw displacement}
 
 \item{dip_direction}{(optional) dip direction in degrees.}
 
@@ -46,18 +45,11 @@ and the fault orientation if the dip direction is known.
 The orientation of the net-slip vector is the lineation component of the fault orientation.
 }
 \examples{
-A_princ <- fault_tensor(
-  displacements =
-    data.frame(strikeslip = 2, verticalthrow = -5, heave = 3)
-)
+A_princ <- fault_tensor(s = 2, v = -5, h = 3)
 print(A_princ)
 det(A_princ)
 
-A_geo <- fault_tensor(
-  displacements =
-    data.frame(strikeslip = 2, verticalthrow = -5, heave = 3),
-  dip_direction = 45
-)
+A_geo <- fault_tensor(s = 2, v = -5, h = 3, dip_direction = 45)
 print(A_geo)
 det(A_geo)
 

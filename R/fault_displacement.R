@@ -64,11 +64,18 @@ fault_displacements <- function(
     delta <- atan2d(heave, strikeslip)
     netslip <- sqrt(strikeslip^2 + dipslip^2)
     rake <- atan2d(dipslip, strikeslip)
+  } else if (!is.null(netslip) && !is.null(rake) && !is.null(dip)) {
+    rake_rad <- deg2rad(rake)
+    strikeslip <- netslip * cos(rake_rad)
+    dipslip <- netslip * sin(rake_rad)
+    dip_rad <- deg2rad(dip)
+    heave <- dipslip * cos(dip_rad)
+    verticalthrow <- dipslip * sin(dip_rad)
+    delta <- atan2d(heave, strikeslip)
+    horizontalthrow <- sqrt(heave^2 + strikeslip^2)
   } else {
     stop("Insufficient or incompatible parameter combinations provided for computation.")
   }
-
-
 
   cbind(
     "dip" = abs(dip),
@@ -91,8 +98,7 @@ fault_displacements <- function(
 #' If the dip direction is know, the tensor will be rotated into the
 #' geographic reference frame.
 #'
-#' @param displacements data.frame containing the strike slip, the
-#' heave, and the vertical throw of the fault's displacement components.
+#' @param h,s,v numeric. the heave, strike-slip, vertical throw displacement
 #' @param dip_direction (optional) dip direction in degrees.
 #' @param ftensor Fault displacement tensor. A 3x3 matrix.
 #' If `NULL`, the fault tensor will be given in the fault displacement
@@ -105,13 +111,13 @@ fault_displacements <- function(
 #' x axis of tensor = heave, y = strike slip, z = vertical throw (positive for
 #' thrusting, negative for normal faulting) is the principal fault displacement tensor.
 #' This can be rotated in the fault plane orientation to retrieve slip components and rake.
-#'  
+#'
 #' The fault displacement tensor gives the displacements in all directions and has the following properties:
-#' 
+#'
 #' - The square root of tensor's trace (i.e. the sum of the diagonal elements) equals the **net slip** on the fault plane.
 #'
-#' - The determinant of the tensor relates to the volumetric strain by: det(F) - 1, where 
-#' 
+#' - The determinant of the tensor relates to the volumetric strain by: det(F) - 1, where
+#'
 #' ([fault_tensor_decomposition()]) retrieves the principal fault displacement tensor using Singular Value Decomposition of a Matrix
 #' and the fault orientation if the dip direction is known.
 #'
@@ -120,18 +126,11 @@ fault_displacements <- function(
 #' @name fault-tensor
 #'
 #' @examples
-#' A_princ <- fault_tensor(
-#'   displacements =
-#'     data.frame(strikeslip = 2, verticalthrow = -5, heave = 3)
-#' )
+#' A_princ <- fault_tensor(s = 2, v = -5, h = 3)
 #' print(A_princ)
 #' det(A_princ)
 #'
-#' A_geo <- fault_tensor(
-#'   displacements =
-#'     data.frame(strikeslip = 2, verticalthrow = -5, heave = 3),
-#'   dip_direction = 45
-#' )
+#' A_geo <- fault_tensor(s = 2, v = -5, h = 3, dip_direction = 45)
 #' print(A_geo)
 #' det(A_geo)
 #'
@@ -140,8 +139,9 @@ NULL
 
 #' @rdname fault-tensor
 #' @export
-fault_tensor <- function(displacements, dip_direction = NULL) {
-  A <- diag(c(displacements$heave, displacements$strikeslip, displacements$verticalthrow), 3, 3)
+fault_tensor <- function(h, s, v, dip_direction = NULL) {
+  A <- diag(c(h, s, v), 3, 3)
+  # A_det <- det(A)
 
   if (!is.null(dip_direction)) {
     dipdir_rad <- deg2rad(dip_direction)
@@ -151,6 +151,7 @@ fault_tensor <- function(displacements, dip_direction = NULL) {
     A[, 1] <- vrotate(A[, 1], A[, 3], -dipdir_rad) |> as.vector()
     A[, 2] <- vrotate(A[, 2], A[, 3], pi - dipdir_rad) |> as.vector()
   }
+  # A <- A/det(A) * A_det
 
   class(A) <- append(class(A), "ftensor")
   A
@@ -182,16 +183,16 @@ fault_tensor_decomposition <- function(ftensor, dip_direction = NULL) {
 
   # A_norm = A/det(A)
   # det(A_norm)
-  
+
   E <- 0.5 * (t(A_pr) %*% A_pr - diag(A_pr))
-  E_norm = E/det(E)
+  E_norm <- E / det(E)
   volumetric_strain <- sum(diag(E))
   # volumetric_strain2 <- det(A_pr) - 1
   shear_strain <- sqrt(2 * sum(E[lower.tri(E)]^2))
   # gamma_xy <- 2 * E[1, 2]
   # gamma_xz <- 2 * E[1, 3]
   # gamma_yz <- 2 * E[2, 3]
-  
+
   list(
     displacements = fd,
     fault = fault,
