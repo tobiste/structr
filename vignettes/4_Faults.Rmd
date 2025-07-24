@@ -55,7 +55,7 @@ correct_pair(p)
 
 Calculates PT-axes, kinematic plane (M), and dihedra separation plane (d):
 
-```{r faults_correct}
+```{r faults_stress}
 my_fault2 <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
 fault_analysis(my_fault2)
 ```
