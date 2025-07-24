@@ -19,7 +19,7 @@ fault_displacements(
 \arguments{
 \item{dip}{fault's dip angle (in degrees)}
 
-\item{delta}{angle between horizontal displacement vector and fault's strike}
+\item{delta}{angle between horizontal displacement vector and fault's strike (in degrees)}
 
 \item{rake}{(in degrees)}
 
@@ -36,7 +36,7 @@ fault_displacements(
 \item{strikeslip}{strike-slip component}
 }
 \value{
-data.frame
+array
 }
 \description{
 Calculate fault displacement from (at least three) components of of the

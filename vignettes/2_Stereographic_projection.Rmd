@@ -1,10 +1,10 @@
 ---
-title: "Stereographic projections"
+title: "2. Stereographic projections"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{Stereographic projections}
+  %\VignetteIndexEntry{2. Stereographic projections}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 editor_options: 
@@ -22,7 +22,6 @@ knitr::opts_chunk$set(
 ```{r setup, warning=FALSE, message=FALSE}
 library(structr)
 ```
-
 
 
 Import and convert to spherical objects:
@@ -89,6 +88,8 @@ legend("topright", legend = c("Mean line", "95% confidence cone", "63% data cone
 ```
 
 
+### Orientation tensor and eigenvectors:
+
 ```{r eigen}
 planes_eigen <- or_eigen(planes)
 
@@ -99,7 +100,8 @@ stereo_point(planes_eigen$vectors, col = viridis::magma(3), pch = 19, cex = 1)
 legend("topright", legend = c("Eigenvectors 1", "Eigenvectors 2", "Eigenvectors 3"), col = viridis::magma(3), pch = 19, cex = .75)
 ```
 
-## Fabric plots
+### Fabric plots
+
 ```{r vollmer, message=FALSE,warning=FALSE}
 VollmerPlot(planes, col = "#000004", pch = 1, cex = 2)
 VollmerPlot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
@@ -126,7 +128,6 @@ stereo_greatcircle(as.plane(planes_eigen$vectors[3, ]), col = "black", pch = 16)
 title(main = 'Planes',
  sub = paste0("N: ", nrow(planes), " | Fabric strength: ", round(fabric_p, 2),
  "\nLambert equal area, lower hemisphere projection"))
-
 
 stereoplot(guides = TRUE, col = "grey96")
 stereo_point(lines, col = "grey", pch = 16, cex = .5)

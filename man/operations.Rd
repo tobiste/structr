@@ -5,6 +5,7 @@
 \alias{vlength}
 \alias{vsum}
 \alias{vnorm}
+\alias{vscale}
 \alias{vcross}
 \alias{vdot}
 \alias{vrotate}
@@ -18,6 +19,8 @@ vlength(x)
 vsum(x, w = NULL)
 
 vnorm(x)
+
+vscale(x, l)
 
 vcross(x, y)
 
@@ -36,13 +39,31 @@ vreject(x, y)
 
 \item{w}{weights.}
 
+\item{l}{numeric. length to scale \code{x}}
+
 \item{rotangle}{numeric. Angle in radians or degrees if \code{"rotaxis"} is an object of \code{"line"} or \code{"plane"}}
 }
 \description{
 Vector operations
 }
 \details{
-\code{vdot(x, y)} is equivalent to \code{x \%*\% t(y)}
+\code{vlength(x)} returns the length of a vector \code{x}.
+
+\code{vsum(x)} returns the vector sum of \code{x}. If \code{w} is specified.
+
+\code{vscale(x)} returns a vector x with length \code{l}.
+
+\code{vnorm(x)} returns the normalized vector \code{x} (i.e. \code{vlength(x) = 1})
+
+\code{vcross(x, y)} returns the cross product of vectors \code{x} and \code{y} which is a new vector perpendicular to both.
+
+\code{vdot(x, y)} returns the dot product (or scalar product) of x and y. \code{vdot(x, y)} is equivalent to \code{x \%*\% t(y)}
+
+\code{vrotate(x, rotaxis, rotangle)} rotates x about a vector by a specified angle.
+
+\code{vproject(x,y)} projects x on vector y, i.e. returns a vector that has same orientation as y but length of x.
+
+\code{vreject(x,y)} Is the vector between \code{x} and the projected vector of \code{x} onto \code{y} (also called the vector resolute of x perpendicular to y)
 }
 \examples{
 vec1 <- cbind(1, 0, 0)

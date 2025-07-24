@@ -13,7 +13,7 @@
 #' using the Longitude and Latitude columns.
 #' @importFrom readxl read_xlsx
 #' @importFrom rjson fromJSON
-#' @importFrom data.table rbindlist dcast fread setDT fifelse melt
+#' @importFrom data.table rbindlist dcast fread setDT fifelse melt data.table as.data.table setnames setorder
 #' @importFrom sf st_as_sf
 #' @returns `list` containing the following objects:
 #' \describe{
@@ -622,7 +622,7 @@ read_strabo_JSON <- function(file, sf = TRUE) {
   orient_dt <- rbindlist(orient_list, fill = TRUE)
   orient_dt <- unique(orient_dt)
   
-  if (nrow(orient_df) > 0) {
+  if (nrow(orient_dt) > 0) {
     # if (sf) orient_df <- sf::st_as_sf(orient_df)
     planes <- as.plane(cbind(orient_dt$strike + 90, orient_dt$dip))
     lines <- as.line(cbind(orient_dt$associated_trend, orient_dt$associated_plunge))

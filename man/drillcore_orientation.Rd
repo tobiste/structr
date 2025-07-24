@@ -35,7 +35,7 @@ drillcore_orientation(azi, inc, 45, 220)
 
 # multiple alpha-beta measurements
 stereoplot()
-stereo_point(Line(azi, -inc), lab = "CA")
+stereo_point(Line(azi, -inc), lab = "core-axis")
 drillcore_orientation(azi, inc, alpha = c(60, 45), beta = c(320, 220)) |>
   stereo_point(lab = c("A", "B"))
 }

@@ -1,17 +1,65 @@
 ---
-title: "Fault displacements"
+title: "4. Faults"
 author: "Tobias Stephan"
-date: "`r format(Sys.time(), '%d %B %Y')`"
-output: html_document
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{4. Faults}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+editor_options: 
+  markdown: 
+    wrap: 72
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
+# Introduction 
+
 ```{r load_functions, include=FALSE}
 library("structr")
 ```
+
+A fault is given by the orientation of its plane (dip direction and dip angle), the orientation of the slip (e.g. measured from striae, given in azimuth and plunge angles), and the sense of displacement:
+
+```{r faults_import}
+my_fault <- Fault(dip_direction = 120, dip = 50, azimuth = 60, plunge = 110, sense = -1)
+```
+ > Sense of fault displacement is 1 or -1 for normal or thrust offset, respectively.
+
+
+Rake of the fault, i.e. the angle between fault slip vector and fault strike:
+```{r faults_rake1}
+fault_rake(my_fault)
+```
+Define a fault by just knowing the orientation of the fault plane, the sense,  and the rake
+```{r faults_rake2}
+fault_plane <- Plane(c(120, 120, 100), c(60, 60, 50)) # dip direction, dip angle
+fault_from_rake(fault_plane, rake = c(84.7202, -10, 30), sense = c(1, -1, 1))
+```
+
+Often measured orientation angles can be (slightly) imprecise and subjected to some random noise. Thus the slip vector will not lie (perfectly) on the fault plane, judging by the measurements. To correct the measurements so that this will not be the case:
+
+```{r faults_correct}
+p <- Pair(120, 60, 110, 58)
+correct_pair(p)
+```
+
+> A `pair` object is a container of associated plane and line measurements. Basically like a fault wihtout the sense of displacement.
+
+
+
+# Fault stress analysis
+
+Calculates PT-axes, kinematic plane (M), and dihedra separation plane (d):
+
+```{r faults_correct}
+my_fault2 <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
+fault_analysis(my_fault2)
+```
+
 
 # Fault offsets {#sec.offset}
 
@@ -440,6 +488,29 @@ Using the second derivative of $\sigma_n$ with respect to $\alpha$ we can determ
 \end{cases}.
 \end{equation}
 
+
+### Code
+
+```{r lund1}
+S1 <- Line(250.89, 70.07)
+S3 <- Line(103.01, 17.07)
+
+# get S2 - which is perpendicular to S1 and S3, hence the cross-product of the two vectors:
+S2 <- vcross(S3, S1)
+
+# get the azimuth of SHmax for a stress ration R = 1:
+SH(S1, S2, S3, R = 1) # in degrees:
+```
+For a several stress ratios:
+```{r lund2}
+R <- seq(0, 1, .05)
+cbind(R, SH = sapply(R, function(x) {
+   SH(S1, S2, S3, R = x)
+ }))
+```
+
+
+
 # Mountain building and earthquakes: Some simple geometrical calculations
 
 Suppose we wish to compute how long it will take for 3000 meters (roughly 10,000 feet) of uplift to occur. Clearly, the time it requires is equal to the uplift ($v=f_{\text{vertical throw}}$) divided by the rate at which uplift occurs $\dot{v} = \frac{\delta f_{\text{vertical throw})}}{\delta t}$.
@@ -468,6 +539,10 @@ Suppose that uplift occurs along a shallow fault dipping 10 degrees from horizon
 For a steeper fault ($30^{\circ}$), uplift of $3\,000 \text{m}$ occurs even more rapidly, in only $210\,000\,\text{yr}$.
 
 Thus, for rapid convergence rates and even shallow fault dips, significant topographic relief can appear in only several hundred thousand years - a geological instant! Of course, these calculations ignore the important effects of erosion and downward flexure of the lithosphere under the load of a growing mountain, both of which slow the rate at which a mountain can grow. We shall consider these effects more in future lectures.
+
+
+
+
 
 
 
