@@ -34,12 +34,16 @@ x axis of tensor = heave, y = strike slip, z = vertical throw (positive for
 thrusting, negative for normal faulting) is the principal fault displacement tensor.
 This can be rotated in the fault plane orientation to retrieve slip components and rake.
 
+The fault displacement tensor gives the displacements in all directions and has the following properties:
+\itemize{
+\item The square root of tensor's trace (i.e. the sum of the diagonal elements) equals the \strong{net slip} on the fault plane.
+\item The determinant of the tensor relates to the volumetric strain by: det(F) - 1, where
+}
+
 (\code{\link[=fault_tensor_decomposition]{fault_tensor_decomposition()}}) retrieves the principal fault displacement tensor using Singular Value Decomposition of a Matrix
 and the fault orientation if the dip direction is known.
 
 The orientation of the net-slip vector is the lineation component of the fault orientation.
-
-\code{det()} of the fault displacement tensor is the net slip on the fault plane.
 }
 \examples{
 A_princ <- fault_tensor(
@@ -57,5 +61,5 @@ A_geo <- fault_tensor(
 print(A_geo)
 det(A_geo)
 
-fault_tensor_analysis(A_geo, dip_direction = 45)
+fault_tensor_decomposition(A_geo, dip_direction = 45)
 }

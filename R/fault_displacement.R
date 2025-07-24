@@ -105,13 +105,17 @@ fault_displacements <- function(
 #' x axis of tensor = heave, y = strike slip, z = vertical throw (positive for
 #' thrusting, negative for normal faulting) is the principal fault displacement tensor.
 #' This can be rotated in the fault plane orientation to retrieve slip components and rake.
+#'  
+#' The fault displacement tensor gives the displacements in all directions and has the following properties:
+#' 
+#' - The square root of tensor's trace (i.e. the sum of the diagonal elements) equals the **net slip** on the fault plane.
 #'
+#' - The determinant of the tensor relates to the volumetric strain by: det(F) - 1, where 
+#' 
 #' ([fault_tensor_decomposition()]) retrieves the principal fault displacement tensor using Singular Value Decomposition of a Matrix
 #' and the fault orientation if the dip direction is known.
 #'
 #' The orientation of the net-slip vector is the lineation component of the fault orientation.
-#'
-#' `det()` of the fault displacement tensor is the net slip on the fault plane.
 #'
 #' @name fault-tensor
 #'
@@ -131,7 +135,7 @@ fault_displacements <- function(
 #' print(A_geo)
 #' det(A_geo)
 #'
-#' fault_tensor_analysis(A_geo, dip_direction = 45)
+#' fault_tensor_decomposition(A_geo, dip_direction = 45)
 NULL
 
 #' @rdname fault-tensor
@@ -176,9 +180,25 @@ fault_tensor_decomposition <- function(ftensor, dip_direction = NULL) {
     fault <- NULL
   }
 
+  # A_norm = A/det(A)
+  # det(A_norm)
+  
+  E <- 0.5 * (t(A_pr) %*% A_pr - diag(A_pr))
+  E_norm = E/det(E)
+  volumetric_strain <- sum(diag(E))
+  # volumetric_strain2 <- det(A_pr) - 1
+  shear_strain <- sqrt(2 * sum(E[lower.tri(E)]^2))
+  # gamma_xy <- 2 * E[1, 2]
+  # gamma_xz <- 2 * E[1, 3]
+  # gamma_yz <- 2 * E[2, 3]
+  
   list(
     displacements = fd,
-    fault = fault
+    fault = fault,
+    strain_tensor = E,
+    volumetric_strain = volumetric_strain,
+    # volumetric_strain2 = volumetric_strain2,
+    shear_strain = shear_strain
   )
 }
 
