@@ -18,9 +18,12 @@
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Fault_displacements.html">Fault displacements</a></li>
-    <li><a class="dropdown-item" href="../articles/Intro.html">Stereographic projections with ggplot</a></li>
-    <li><a class="dropdown-item" href="../articles/Stereographic_projection.html">Stereographic projections</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/1_Basics.html">1. Basics</a></li>
+    <li><a class="dropdown-item" href="../articles/2_Stereographic_projection.html">2. Stereographic projections</a></li>
+    <li><a class="dropdown-item" href="../articles/3_Stereographic_projection_ggplot.html">3. Stereographic projections with ggplot</a></li>
+    <li><a class="dropdown-item" href="../articles/4_Faults.html">4. Faults</a></li>
+    <li><a class="dropdown-item" href="../articles/5_Mohr_Circle.html">5. Mohr Circle</a></li>
+    <li><a class="dropdown-item" href="../articles/6_Oriented_Drill_Cores.html">6. Oriented drill cores</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -50,6 +53,8 @@
 <span></span>
 <span><span class="fu">vnorm</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">vscale</span><span class="op">(</span><span class="va">x</span>, <span class="va">l</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">vcross</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">vdot</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
@@ -75,13 +80,25 @@
 <dd><p>weights.</p></dd>
 
 
+<dt id="arg-l">l<a class="anchor" aria-label="anchor" href="#arg-l"></a></dt>
+<dd><p>numeric. length to scale <code>x</code></p></dd>
+
+
 <dt id="arg-rotangle">rotangle<a class="anchor" aria-label="anchor" href="#arg-rotangle"></a></dt>
 <dd><p>numeric. Angle in radians or degrees if <code>"rotaxis"</code> is an object of <code>"line"</code> or <code>"plane"</code></p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><code>vdot(x, y)</code> is equivalent to <code>x %*% t(y)</code></p>
+    <p><code>vlength(x)</code> returns the length of a vector <code>x</code>.</p>
+<p><code>vsum(x)</code> returns the vector sum of <code>x</code>. If <code>w</code> is specified.</p>
+<p><code>vscale(x)</code> returns a vector x with length <code>l</code>.</p>
+<p><code>vnorm(x)</code> returns the normalized vector <code>x</code> (i.e. <code>vlength(x) = 1</code>)</p>
+<p><code>vcross(x, y)</code> returns the cross product of vectors <code>x</code> and <code>y</code> which is a new vector perpendicular to both.</p>
+<p><code>vdot(x, y)</code> returns the dot product (or scalar product) of x and y. <code>vdot(x, y)</code> is equivalent to <code>x %*% t(y)</code></p>
+<p><code>vrotate(x, rotaxis, rotangle)</code> rotates x about a vector by a specified angle.</p>
+<p><code>vproject(x,y)</code> projects x on vector y, i.e. returns a vector that has same orientation as y but length of x.</p>
+<p><code>vreject(x,y)</code> Is the vector between <code>x</code> and the projected vector of <code>x</code> onto <code>y</code> (also called the vector resolute of x perpendicular to y)</p>
     </div>
 
     <div class="section level2">
