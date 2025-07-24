@@ -133,12 +133,11 @@ rfb <- function(n = 100, mu = c(1, 0, 0), k = 5, A) {
     class <- class(mu)
     mu <- c(line2vec(mu))
   }
-  
+
   res <- Directional::rfb(n = n, k = k, m = mu, A = A)
   colnames(res) <- c("x", "y", "z")
-  
+
   if (transform) to_spherical(res, class) else res
-  
 }
 
 
@@ -168,7 +167,6 @@ rkent <- function(n = 100, mu = c(1, 0, 0), k = 5, b) {
   res <- Directional::rkent(n = n, k = k, m = mu, b = b)
   colnames(res) <- c("x", "y", "z")
   if (transform) to_spherical(res, class) else res
-  
 }
 
 
@@ -200,7 +198,7 @@ kent.mle <- function(x) {
 
   res$G <- t(res$G)
   if (transform) res$G <- to_spherical(res$G, class)
-  
+
   res$runtime <- NULL
   return(res)
 }
@@ -216,6 +214,6 @@ vmf.mle <- function(x) {
   res <- Directional::vmf.mle(x, fast = TRUE)
 
   if (transform) res$mu <- to_spherical(res$mu, class)
-  
+
   return(res)
 }

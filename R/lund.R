@@ -26,7 +26,7 @@
 #' S1 <- Line(250.89, 70.07)
 #' S3 <- Line(103.01, 17.07)
 #' S2 <- vcross(S3, S1)
-#' SH(S1, S2, S3, R = 1) #  70.89 
+#' SH(S1, S2, S3, R = 1) #  70.89
 #'
 #' R <- seq(0, 1, .05)
 #' cbind(R, SH = sapply(R, function(x) {
@@ -37,15 +37,15 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 1e-4) {
   S1 <- if (is.spherical(S1)) line2vec(S1) else vnorm(vec2mat(S1))
   S2 <- if (is.spherical(S2)) line2vec(S2) else vnorm(vec2mat(S2))
   S3 <- if (is.spherical(S3)) line2vec(S3) else vnorm(vec2mat(S3))
-  
+
   # Check orthogonality
   if (vdot(S1, S2) > ortho.tol) stop("S1 and S2 are not orthogonal.")
   if (vdot(S1, S3) > ortho.tol) stop("S1 and S3 are not orthogonal.")
   if (vdot(S2, S3) > ortho.tol) stop("S2 and S3 are not orthogonal.")
-  
+
   # Check R validity
   if (!is.numeric(R) || R < 0 || R > 1) stop("SH(): R must be between 0 and 1.")
-  
+
   # Calculate the denominator and numerator in Eq. 11
   X <- S1[1] * S1[1] - S1[2] * S1[2] + (1 - R) * (S2[1] * S2[1] - S2[2] * S2[2])
   Y <- 2 * (S1[1] * S1[2] + (1 - R) * (S2[1] * S2[2]))
@@ -68,7 +68,7 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 1e-4) {
     if (abs(S2[1] * S2[2]) < tol) {
       # s2Ns2E = 0
       # print 'SH: s2Ns2E = 0'
-      
+
       # print 'SH: s1Ns1E = s2Ns2E = 0 => SH undefined'
       if (abs(S1[1] * S1[2]) < tol) alpha <- NA_real_ else alpha <- pi / 4
     } else {
@@ -87,12 +87,12 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 1e-4) {
   # print X,Y,alpha
   dev2 <- -2 * X * cos(2 * alpha) - 2 * Y * sin(2 * alpha)
   # print 'SH: dev2 %f' % (dev2)
-  
+
   # We found a minimum. Add 90 degrees to get the maximum.
   if (dev2 > 0) alpha <- alpha + pi / 2
-  
+
   # The resulting direction of SH is given as [0,180[ degrees.
-  
+
   # if (alpha < 0) {
   #   alpha <- alpha + pi
   # }
@@ -100,7 +100,7 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 1e-4) {
   #   alpha <- alpha - pi
   # }
   alpha <- alpha %% pi
-  
+
   return(rad2deg(alpha))
 }
 

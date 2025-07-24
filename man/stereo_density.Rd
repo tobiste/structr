@@ -96,13 +96,15 @@ test_densities <- spherical_density(x = test, ngrid = 100, sigma = 3, weights = 
 stereo_density(test_densities, type = "image", add = FALSE)
 stereo_point(test, col = "lightgrey", pch = 21)
 
-stereo_density(my_planes, type = "contour_filled", add = FALSE, 
-col.params = list(direction = -1, begin = .05, end = .95, alpha = .75))
+stereo_density(my_planes,
+  type = "contour_filled", add = FALSE,
+  col.params = list(direction = -1, begin = .05, end = .95, alpha = .75)
+)
 stereo_point(my_planes, col = "black", pch = 21)
 
 # complete example:
-par(mfrow =c(2, 1))
-wp <- 6/ifelse(is.na(example_planes$quality), 6, example_planes$quality)
+par(mfrow = c(2, 1))
+wp <- 6 / ifelse(is.na(example_planes$quality), 6, example_planes$quality)
 my_planes <- Plane(example_planes$dipdir, example_planes$dip)
 fabric_p <- or_shape_params(my_planes)$Vollmer["D"]
 my_planes_eig <- or_eigen(my_planes)
@@ -112,21 +114,29 @@ stereo_point(my_planes, col = "grey", pch = 16, cex = .5)
 stereo_density(my_planes, type = "contour", add = TRUE, weights = wp)
 stereo_point(as.plane(my_planes_eig$vectors[3, ]), col = "black", pch = 16)
 stereo_greatcircle(as.plane(my_planes_eig$vectors[3, ]), col = "black", pch = 16)
-title(main = 'Planes', 
-sub = paste0("N: ", nrow(my_planes), " | Fabric strength: ", round(fabric_p, 2), 
-"\nLambert equal area, lower hemisphere projection"))
+title(
+  main = "Planes",
+  sub = paste0(
+    "N: ", nrow(my_planes), " | Fabric strength: ", round(fabric_p, 2),
+    "\nLambert equal area, lower hemisphere projection"
+  )
+)
 
 my_lines <- Line(example_lines$trend, example_lines$plunge)
-wl <- 6/ifelse(is.na(example_lines$quality), 6, example_lines$quality)
+wl <- 6 / ifelse(is.na(example_lines$quality), 6, example_lines$quality)
 fabric_l <- or_shape_params(my_lines)$Vollmer["D"]
 
 stereoplot(guides = TRUE, col = "grey96")
 stereo_point(my_lines, col = "grey", pch = 16, cex = .5)
 stereo_density(my_lines, type = "contour", add = TRUE, weights = wl)
 stereo_point(v_mean(my_lines, w = wl), col = "black", pch = 16)
-title(main = 'Lines', 
-sub = paste0("N: ", nrow(my_lines), " | Fabric strength: ", round(fabric_l, 2), 
-"\nLambert equal area, lower hemisphere projection"))
+title(
+  main = "Lines",
+  sub = paste0(
+    "N: ", nrow(my_lines), " | Fabric strength: ", round(fabric_l, 2),
+    "\nLambert equal area, lower hemisphere projection"
+  )
+)
 }
 \seealso{
 \code{\link[=count_points]{count_points()}}

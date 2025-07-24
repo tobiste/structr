@@ -2,7 +2,7 @@ roty3 <- function(deg) {
   theta <- deg2rad(deg)
   c <- cos(theta)
   s <- sin(theta)
-  
+
   matrix(c(
     c, 0, -s,
     0, 1,  0,
@@ -14,11 +14,11 @@ rotz3 <- function(deg) {
   theta <- deg2rad(deg)
   c <- cos(theta)
   s <- sin(theta)
-  
+
   matrix(c(
-    c,  s, 0,
-    -s,  c, 0,
-    0,  0, 1
+    c, s, 0,
+    -s, c, 0,
+    0, 0, 1
   ), nrow = 3, byrow = TRUE)
 }
 

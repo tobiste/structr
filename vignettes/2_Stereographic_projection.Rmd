@@ -40,7 +40,7 @@ stereoplot()
 stereo_point(lines, col = "#B63679", pch = 19, cex = .5)
 stereo_point(planes, col = "#000004", pch = 1, cex = .5)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
-title(main = "Example data", sub = 'Lambert equal area, lower hemisphere projection')
+title(main = "Example data", sub = "Lambert equal area, lower hemisphere projection")
 ```
 
 To change to equal angle stereographic, upper hemisphere projection
@@ -50,7 +50,7 @@ stereoplot(earea = FALSE)
 stereo_point(lines, col = "#B63679", pch = 19, cex = .5, earea = FALSE, upper.hem = TRUE)
 stereo_point(planes, col = "#000004", pch = 1, cex = .5, earea = FALSE, upper.hem = TRUE)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
-title(main = "Example data", sub = 'Equal angle stereographic, upper hemisphere projection')
+title(main = "Example data", sub = "Equal angle stereographic, upper hemisphere projection")
 ```
 
 
@@ -64,7 +64,7 @@ stereo_point(planes, col = "#000004", pch = 1, cex = .5)
 ## Statistics
 ```{r stat, message=FALSE,warning=FALSE}
 example_lines$quality <- ifelse(is.na(example_lines$quality), 6, example_lines$quality) # replacing NA values with 6
-line_weightings <- 6/example_lines$quality
+line_weightings <- 6 / example_lines$quality
 
 lines_mean <- v_mean(lines, w = line_weightings)
 lines_variance <- v_var(lines, w = line_weightings)
@@ -106,13 +106,12 @@ legend("topright", legend = c("Eigenvectors 1", "Eigenvectors 2", "Eigenvectors 
 VollmerPlot(planes, col = "#000004", pch = 1, cex = 2)
 VollmerPlot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
-
 ```
 
 ## Density plots
 ```{r density, message=FALSE,warning=FALSE}
 example_planes$quality <- ifelse(is.na(example_planes$quality), 6, example_planes$quality) # replacing NA values with 6
-plane_weightings <- 6/example_planes$quality
+plane_weightings <- 6 / example_planes$quality
 
 fabric_p <- or_shape_params(planes)$Vollmer["D"]
 my_planes_eig <- or_eigen(planes)
@@ -125,16 +124,24 @@ stereo_point(planes, col = "grey", pch = 16, cex = .5)
 stereo_density(planes, type = "contour", add = TRUE, weights = plane_weightings)
 stereo_point(as.plane(planes_eigen$vectors[3, ]), col = "black", pch = 16)
 stereo_greatcircle(as.plane(planes_eigen$vectors[3, ]), col = "black", pch = 16)
-title(main = 'Planes',
- sub = paste0("N: ", nrow(planes), " | Fabric strength: ", round(fabric_p, 2),
- "\nLambert equal area, lower hemisphere projection"))
+title(
+  main = "Planes",
+  sub = paste0(
+    "N: ", nrow(planes), " | Fabric strength: ", round(fabric_p, 2),
+    "\nLambert equal area, lower hemisphere projection"
+  )
+)
 
 stereoplot(guides = TRUE, col = "grey96")
 stereo_point(lines, col = "grey", pch = 16, cex = .5)
 stereo_density(lines, type = "contour", add = TRUE, weights = line_weightings)
 stereo_point(lines_mean, col = "black", pch = 16)
-title(main = 'Lines',
- sub = paste0("N: ", nrow(lines), " | Fabric strength: ", round(fabric_l, 2),
- "\nLambert equal area, lower hemisphere projection"))
+title(
+  main = "Lines",
+  sub = paste0(
+    "N: ", nrow(lines), " | Fabric strength: ", round(fabric_l, 2),
+    "\nLambert equal area, lower hemisphere projection"
+  )
+)
 ```
 

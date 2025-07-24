@@ -43,19 +43,19 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
   data <- readxl::read_xlsx(file, sheet = 1, skip = 2)
   setDT(data)
   setnames(data, make.names(names(data)))
-  
+
   # Convert Date to POSIXct (quiet, no lubridate)
   data[, Date := as.POSIXct(Date, tz = "UTC")]
-  
+
   # Calculate Planar.Orientation.Dipdirection (assuming rhr2dd is defined)
   data[, Planar.Orientation.Dipdirection := rhr2dd(Planar.Orientation.Strike)]
-  
+
   # Linear.Sense logic vectorized and concise
   data[, Linear.Sense := fifelse(Planar.Orientation.Movement == "left_lateral", -1, NA_real_)]
   data[Planar.Orientation.Movement == "right_lateral", Linear.Sense := 1]
   data[Planar.Orientation.Fault.Or.Sz.Type %in% c("sinistral", "reverse"), Linear.Sense := -1]
   data[Planar.Orientation.Fault.Or.Sz.Type %in% c("dextral", "normal", "dextral_normal"), Linear.Sense := 1]
-  
+
   # If tags columns requested, pivot longer and filter
   if (tag_cols) {
     tag_cols_names <- grep("^Tag", names(data), value = TRUE)
@@ -63,36 +63,37 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
     data <- data[temp == "X", !"temp", with = FALSE]
     data[, Tag := sub("^Tag:", "", Tag)]
   }
-  
+
   # Separate linear and planar data.tables
   data_lines <- data[!is.na(Linear.Orientation.Trend), .SD, .SDcols = patterns("^Linear")]
   data_planes <- data[!is.na(Planar.Orientation.Dipdirection), .SD, .SDcols = patterns("^Planar")]
-  
+
   # Data without planar or linear cols
   cols_to_exclude <- grep("^(Planar|Linear)", names(data), value = TRUE)
   data0 <- data[, setdiff(names(data), cols_to_exclude), with = FALSE]
   data0[, Planar.Orientation.Unix.Timestamp := data$Planar.Orientation.Unix.Timestamp]
-  
+
   # Full join on timestamps, using data.table merge with all=TRUE
   res <- merge(data_planes, data_lines,
-               by.x = "Planar.Orientation.Unix.Timestamp",
-               by.y = "Linear.Orientation.Unix.Timestamp",
-               all = TRUE,
-               allow.cartesian = TRUE)
+    by.x = "Planar.Orientation.Unix.Timestamp",
+    by.y = "Linear.Orientation.Unix.Timestamp",
+    all = TRUE,
+    allow.cartesian = TRUE
+  )
   res <- merge(res, data0, by = "Planar.Orientation.Unix.Timestamp", all.x = TRUE)
-  
+
   # Clean up timestamp columns
   res[, Linear.Orientation.Unix.Timestamp := NULL]
-  
+
   # Construct planes and lines
   planes <- as.plane(cbind(res$Planar.Orientation.Dipdirection, res$Planar.Orientation.Dip))
   lines <- as.line(cbind(res$Linear.Orientation.Trend, res$Linear.Orientation.Plunge))
-  
+
   # Convert to sf if requested
   if (sf) {
     res <- st_as_sf(res, coords = c("Longitude", "Latitude"), crs = 4326, remove = FALSE, na.fail = FALSE)
   }
-  
+
   list(
     data = res,
     planar = planes,
@@ -104,36 +105,42 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
 #' @export
 read_strabo_mobile <- function(file, sf = TRUE) {
   # Read the data with data.table::fread for speed
-  data0 <- fread(file, sep = "\t", header = TRUE,
-                 colClasses = c("integer", rep("character", 3), rep("numeric", 11), "character"))
-  
+  data0 <- fread(file,
+    sep = "\t", header = TRUE,
+    colClasses = c("integer", rep("character", 3), rep("numeric", 11), "character")
+  )
+
   # Separate lines and planes using data.table syntax
   lines0 <- data0[Type == "L"]
   planes0 <- data0[Type == "P"]
-  
+
   # Create 'Dipdir' for planes (vectorized)
   planes0[, Dipdir := (`Trd/Strk` + 90) %% 360]
-  
+
   # Construct line and plane objects from orientation data
   lines <- as.line(cbind(lines0$`Trd/Strk`, lines0$`Plg/Dip`))
   planes <- as.plane(cbind(planes0$Dipdir, planes0$`Plg/Dip`))
-  
+
   # Extract metadata tables, dropping columns as needed
   lines.meta <- lines0[, !c("No.", "Trd/Strk", "Plg/Dip"), with = FALSE]
   planes.meta <- planes0[, !c("No.", "Dipdir", "Trd/Strk", "Plg/Dip"), with = FALSE]
-  
+
   # Set row names based on 'No.'
   rownames(lines) <- rownames(lines.meta) <- lines0$No.
   rownames(planes) <- rownames(planes.meta) <- planes0$No.
-  
+
   # Convert metadata to sf objects if requested
   if (sf) {
-    lines.meta <- st_as_sf(lines.meta, coords = c("Longitude", "Latitude"),
-                           crs = 4326, remove = FALSE, na.fail = FALSE)
-    planes.meta <- st_as_sf(planes.meta, coords = c("Longitude", "Latitude"),
-                            crs = 4326, remove = FALSE, na.fail = FALSE)
+    lines.meta <- st_as_sf(lines.meta,
+      coords = c("Longitude", "Latitude"),
+      crs = 4326, remove = FALSE, na.fail = FALSE
+    )
+    planes.meta <- st_as_sf(planes.meta,
+      coords = c("Longitude", "Latitude"),
+      crs = 4326, remove = FALSE, na.fail = FALSE
+    )
   }
-  
+
   # Return list
   list(
     linear = lines,
@@ -148,13 +155,13 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #' @export
 # read_strabo_JSON_old <- function(file, sf = TRUE) {
 #   # works but is super slow
-#   
+#
 #   spot.y <- ds_id <- unix_timestamp <- modified_timestamp <- spot.x <- NULL
-# 
+#
 #   time <- tag_id <- tag_name <- NULL
-# 
+#
 #   dat <- rjson::fromJSON(file = file)
-# 
+#
 #   # read tags
 #   tags_list <- dat$project$project$tags
 #   tags_df <- spot_tags <- tibble()
@@ -162,7 +169,7 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #     spots_t <- data.frame(spot = tags_list[[t]]$spots)
 #     tags_list[[t]]$spots <- NULL
 #     tags_list[[t]]$eon <- NULL
-# 
+#
 #     df_t <- as.data.frame(tags_list[[t]])
 #     tags_df <- dplyr::bind_rows(tags_df, df_t)
 #     if (nrow(spots_t) > 0) {
@@ -171,7 +178,7 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #     }
 #   }
 #   colnames(tags_df) <- paste("tag", colnames(tags_df), sep = "_")
-# 
+#
 #   spot_tags_df <- dplyr::left_join(
 #     unique(spot_tags),
 #     tags_df |> dplyr::select(tag_id, tag_name),
@@ -184,17 +191,17 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #     unique() |>
 #     mutate(spot = as.character(spot)) |>
 #     rename(spot_id = spot)
-# 
+#
 #   # datasets
 #   ds <- seq_along(dat$project$datasets)
 #   ds_name <- ds_name_id <- character()
-# 
+#
 #   for (a in ds) {
 #     ds_name[a] <- dat$project$datasets[[a]]$name
 #     ds_name_id[a] <- names(dat$project$datasets)[[a]]
 #   }
 #   ds_df <- data.frame(ds_name = ds_name, ds_id = ds_name_id)
-# 
+#
 #   # spot lists
 #   spots <- character()
 #   for (i in ds_name_id) {
@@ -202,25 +209,25 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #     spots <- rbind(spots, cbind(ds_id = rep(i, length(ds_spot_ids_i)), spot_id = ds_spot_ids_i))
 #   }
 #   spots_df <- as.data.frame(spots) |> unique()
-# 
+#
 #   # extract the specified dataset
 #   dsn <- data.frame(ds, ds_name) |>
 #     # dplyr::filter(ds_name == dataset) |>
 #     dplyr::pull(ds)
 #   ds_name_id <- names(dat$project$datasets)[dsn]
-# 
-# 
+#
+#
 #   # ds_spot_ids <- dat$project$datasets[[dsn]]$spotIds # spots in dataset
 #   # DSN <- dat$spotsDb[ds_spot_ids]
 #   # for (i in seq_along(dat$spotsDb)) {
 #   #   dat$spotsDb[[i]]
 #   # }
-# 
-# 
+#
+#
 #   spot_id <- spot <- notes <- date <- character()
 #   altitude <- longitude <- latitude <- gps_accuracy <- numeric()
 #   orient_df <- data.frame(check.names = FALSE)
-# 
+#
 #   id <- numeric()
 #   for (i in seq_along(dat$spotsDb)) {
 #     spot_i <- dat$spotsDb[[i]]
@@ -230,31 +237,31 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #         spot[i] <- spot_i$properties$name
 #         date[i] <- spot_i$properties$date
 #         id[i] <- spot_i$properties$id
-# 
+#
 #         notes_i <- spot_i$properties$notes
 #         notes[i] <- ifelse(is.null(notes_i), NA, notes_i)
-# 
+#
 #         altitude_i <- spot_i$properties$altitude
 #         altitude[i] <- ifelse(is.null(altitude_i), NA, altitude_i)
-# 
+#
 #         longitude[i] <- spot_i$geometry$coordinates[1]
 #         latitude[i] <- spot_i$geometry$coordinates[2]
-# 
+#
 #         gps_accuracy_i <- spot_i$properties$gps_accuracy
 #         gps_accuracy[i] <- ifelse(is.null(gps_accuracy_i), NA, gps_accuracy_i)
-# 
+#
 #         # orientation data
 #         orient_ls_i <- spot_i$properties$orientation_data
 #         if (!is.null(orient_ls_i)) {
 #           orient_df_i <- tibble()
 #           for (j in seq_along(orient_ls_i)) { # loop through each measurement
 #             orient_ls_ij <- orient_ls_i[[j]]
-# 
+#
 #             # concatenate directional_indicators into one column
 #             if (length(orient_ls_ij$directional_indicators) > 1) {
 #               orient_ls_ij$directional_indicators <- toString(orient_ls_ij$directional_indicators)
 #             }
-# 
+#
 #             # single P or L measurements
 #             if (is.null(orient_ls_ij$associated_orientation)) {
 #               # append all measurements of spot
@@ -265,15 +272,15 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #               orient_df_i$associated <- FALSE
 #             } else {
 #               # P + L measurements
-# 
+#
 #               L_ls <- orient_ls_ij$associated_orientation
 #               orient_ls_ij$associated_orientation <- NULL
-# 
+#
 #               ## P measurement
 #               P <- orient_ls_ij |>
 #                 as.data.frame(check.names = FALSE) |>
 #                 unique()
-# 
+#
 #               ## L measurement
 #               PL <- data.frame(check.names = FALSE)
 #               for (k in seq_along(L_ls)) {
@@ -288,7 +295,7 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #                     colnames(L) <- paste("associated", colnames(L), sep = "_")
 #                     L$plunge <- plunge
 #                     L$trend <- trend
-# 
+#
 #                     ## combine P + L measurements
 #                     PL_k <- cbind(P, L)
 #                     PL <- plyr::rbind.fill(PL, PL_k) |>
@@ -297,7 +304,7 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #                   PL$associated <- TRUE
 #                 }
 #               }
-# 
+#
 #               # append all P+L measurements of spot
 #               if (nrow(orient_df_i) > 0) {
 #                 orient_df_i <- plyr::rbind.fill(orient_df_i, PL) |>
@@ -305,7 +312,7 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #                 orient_df_i$spot <- spot[i]
 #                 orient_df_i$spot_id <- spot_id[i]
 #               }
-# 
+#
 #               # orient_ls_ij <- NULL
 #             }
 #             # combine all spots
@@ -324,7 +331,7 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #     dplyr::left_join(spot_tags_df) |>
 #     dplyr::select(-c(id))
 #   if (sf) fieldbook <- sf::st_as_sf(fieldbook, coords = c("longitude", "latitude"), remove = FALSE, crs = "WGS84", na.fail = FALSE)
-# 
+#
 #   meta <- orient_df |>
 #     as.data.frame() |>
 #     dplyr::distinct() |>
@@ -336,10 +343,10 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #   if (sf) {
 #     meta <- sf::st_as_sf(meta)
 #   }
-# 
+#
 #   planes <- as.plane(cbind(orient_df$strike + 90, orient_df$dip))
 #   lines <- as.line(cbind(orient_df$trend, orient_df$plunge))
-# 
+#
 #   list(
 #     data = meta,
 #     tags = tags_df,
@@ -350,9 +357,9 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 
 # read_strabo_JSON_fast <- function(file, sf = TRUE) {
 #   # works but it can be faster
-#   
+#
 #   dat <- rjson::fromJSON(file = file)
-#   
+#
 #   ## TAGS
 #   tags_list <- dat$project$project$tags %||% list()
 #   tags_df <- purrr::map_dfr(tags_list, ~{
@@ -366,14 +373,14 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #       list(tags = dplyr::tibble(tag_id = id, tag_name = name), spot_tags = NULL)
 #     }
 #   })
-#   
+#
 #   tags_combined <- bind_rows(purrr::map(tags_list, ~ dplyr::tibble(tag_id = .x$id, tag_name = .x$name)))
 #   spot_tags <- bind_rows(purrr::map(tags_list, ~{
 #     if (!is.null(.x$spots) && length(.x$spots) > 0) {
 #       tibble::tibble(spot = as.character(.x$spots), tag = .x$id)
 #     }
 #   }))
-#   
+#
 #   if (nrow(spot_tags) > 0) {
 #     spot_tags_df <- spot_tags %>%
 #       dplyr::left_join(tags_combined, by = c("tag" = "tag_id")) %>%
@@ -384,7 +391,7 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #   } else {
 #     spot_tags_df <- dplyr::tibble(spot_id = character())
 #   }
-#   
+#
 #   ## DATASETS
 #   datasets <- dat$project$datasets
 #   ds_names <- names(datasets)
@@ -392,7 +399,7 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #     ds_name = purrr::map_chr(datasets, "name", .default = NA_character_),
 #     ds_id = ds_names
 #   )
-#   
+#
 #   ## SPOTS-DATASET RELATION
 #   spots_df <- purrr::imap_dfr(datasets, ~ {
 #     dplyr::tibble(
@@ -401,11 +408,11 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #     )
 #   }) %>%
 #     dplyr::distinct()
-#   
+#
 #   ## SPOTS PROPERTIES
 #   spotsDb <- dat$spotsDb %||% list()
 #   valid_spots <- purrr::keep(spotsDb, ~ !is.null(.x$geometry) && .x$geometry$type == "Point" && .x$type == "Feature")
-#   
+#
 #   fieldbook_df <- purrr::map_dfr(valid_spots, ~{
 #     props <- .x$properties
 #     data.frame(
@@ -420,18 +427,18 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #       id = as.character(props$id %||% NA_character_)         # consistent type
 #     )
 #   }) %>%
-#     dplyr::mutate(time = as.POSIXct(time, tz = "UTC", tryFormats = c("%Y-%m-%dT%H:%M:%OSZ", "%Y-%m-%d %H:%M:%S"))) |> 
+#     dplyr::mutate(time = as.POSIXct(time, tz = "UTC", tryFormats = c("%Y-%m-%dT%H:%M:%OSZ", "%Y-%m-%d %H:%M:%S"))) |>
 #     dplyr::left_join(spots_df, by = "spot_id") %>%
 #     dplyr::left_join(ds_df, by = "ds_id") %>%
 #     dplyr::left_join(spot_tags_df, by = "spot_id") %>%
 #     dplyr::arrange(time) %>%
 #     dplyr::distinct() %>%
 #     dplyr::select(-id)
-#   
+#
 #   if (sf) {
 #     fieldbook_df <- sf::st_as_sf(fieldbook_df, coords = c("longitude", "latitude"), crs = "WGS84", remove = FALSE)
 #   }
-#   
+#
 #   ## ORIENTATION DATA (extract only if needed)
 #   orient_df <- purrr::map_dfr(valid_spots, ~ {
 #     orient <- .x$properties$orientation_data
@@ -460,7 +467,7 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #       })
 #     }
 #   })
-#   
+#
 #   if (nrow(orient_df) > 0) {
 #     # if (sf) orient_df <- sf::st_as_sf(orient_df)
 #     planes <- as.plane(cbind(orient_df$strike + 90, orient_df$dip))
@@ -469,7 +476,7 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #     planes <- NULL
 #     lines <- NULL
 #   }
-#   
+#
 #   list(
 #     data = fieldbook_df,
 #     tags = tags_combined,
@@ -481,7 +488,7 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 read_strabo_JSON <- function(file, sf = TRUE) {
   # --- Load JSON ---
   dat <- rjson::fromJSON(file = file)
-  
+
   # --- Tags ---
   tags_list <- dat$project$project$tags
   tags_dt <- rbindlist(
@@ -498,7 +505,7 @@ read_strabo_JSON <- function(file, sf = TRUE) {
     }),
     fill = TRUE
   )
-  
+
   tag_info_dt <- rbindlist(
     lapply(tags_list, function(tag) {
       tag$spots <- NULL
@@ -508,7 +515,7 @@ read_strabo_JSON <- function(file, sf = TRUE) {
     fill = TRUE
   )
   setnames(tag_info_dt, paste0("tag_", names(tag_info_dt)))
-  
+
   spot_tags_dt <- merge(
     unique(tags_dt),
     tag_info_dt[, .(tag_id = tag_id, tag_name = tag_name)],
@@ -517,16 +524,17 @@ read_strabo_JSON <- function(file, sf = TRUE) {
   )
   spot_tags_dt[, tag_col := paste0("tag:", tag_name)]
   spot_tags_wide <- dcast(spot_tags_dt[, .(spot_id, tag_name = paste0("tag:", tag_name), value = TRUE)],
-                          spot_id ~ tag_name,
-                          fill = FALSE)
-  
+    spot_id ~ tag_name,
+    fill = FALSE
+  )
+
   # --- Datasets ---
   datasets <- dat$project$datasets
   ds_dt <- data.table(
     ds_name = sapply(datasets, `[[`, "name"),
     ds_id = names(datasets)
   )
-  
+
   # Spot-dataset mapping
   spots_dt <- rbindlist(
     lapply(names(datasets), function(ds_id) {
@@ -540,10 +548,10 @@ read_strabo_JSON <- function(file, sf = TRUE) {
     fill = TRUE
   )
   spots_dt <- unique(spots_dt)
-  
+
   # --- Spots ---
   spots_db <- dat$spotsDb
-  
+
   fieldbook_list <- lapply(spots_db, function(spot) {
     if (!is.null(spot$geometry) && spot$geometry$type == "Point" && spot$type == "Feature") {
       props <- spot$properties
@@ -563,12 +571,12 @@ read_strabo_JSON <- function(file, sf = TRUE) {
     }
   })
   fieldbook_dt <- rbindlist(fieldbook_list, fill = TRUE)
-  
+
   fieldbook_dt[, spot_id := as.character(spot_id)]
   spots_dt[, spot_id := as.character(spot_id)]
   spot_tags_wide[, spot_id := as.character(spot_id)]
-  
-  
+
+
   # --- Join with dataset and tag info ---
   fieldbook_dt <- merge(fieldbook_dt, spots_dt, by = "spot_id", all.x = TRUE)
   fieldbook_dt <- merge(fieldbook_dt, ds_dt, by = "ds_id", all.x = TRUE)
@@ -576,11 +584,11 @@ read_strabo_JSON <- function(file, sf = TRUE) {
   fieldbook_dt <- unique(fieldbook_dt)
   setorder(fieldbook_dt, time)
   fieldbook_dt[, id := NULL] # remove id column
-  
+
   if (sf) {
     fieldbook_dt <- st_as_sf(fieldbook_dt, coords = c("longitude", "latitude"), crs = 4326, remove = FALSE)
   }
-  
+
   # --- Orientation data ---
   orient_list <- lapply(spots_db, function(spot) {
     if (!is.null(spot$geometry) && spot$geometry$type == "Point" && spot$type == "Feature") {
@@ -621,7 +629,7 @@ read_strabo_JSON <- function(file, sf = TRUE) {
   })
   orient_dt <- rbindlist(orient_list, fill = TRUE)
   orient_dt <- unique(orient_dt)
-  
+
   if (nrow(orient_dt) > 0) {
     # if (sf) orient_df <- sf::st_as_sf(orient_df)
     planes <- as.plane(cbind(orient_dt$strike + 90, orient_dt$dip))
@@ -630,8 +638,8 @@ read_strabo_JSON <- function(file, sf = TRUE) {
     planes <- NULL
     lines <- NULL
   }
-  
-  
+
+
   # --- Return ---
   list(
     data = fieldbook_dt,

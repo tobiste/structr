@@ -55,9 +55,9 @@ drillcore_orientation <- function(azi, inc, alpha, beta, gamma = NULL) {
   # Initialize matrices
   E <- matrix(NA_real_, n, 3)
   int <- matrix(NA_real_, n, 3)
-  
+
   neg_cos_beta <- cosd(beta) <= 0
-  
+
   # Vectorized split computation
   if (any(neg_cos_beta)) {
     idx <- which(neg_cos_beta)
@@ -70,10 +70,10 @@ drillcore_orientation <- function(azi, inc, alpha, beta, gamma = NULL) {
     E[idx, ] <- t(vrotate(B[idx, , drop = FALSE], C[idx, , drop = FALSE], deg2rad(beta[idx])))
     int[idx, ] <- vcross(C[idx, , drop = FALSE], E[idx, , drop = FALSE])
   }
-  
+
   P <- (vrotate(C, int, -deg2rad(90 - alpha)))
-  
-  
+
+
   if (is.null(gamma)) {
     vec2plane(P)
   } else {

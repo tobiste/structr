@@ -25,42 +25,38 @@
 fault_displacements <- function(
     dip = NULL, delta = NULL, rake = NULL,
     verticalthrow = NULL, dipslip = NULL, heave = NULL,
-    netslip = NULL, horizontalthrow = NULL, strikeslip = NULL
-) {
+    netslip = NULL, horizontalthrow = NULL, strikeslip = NULL) {
   # Calculate based on available parameters
   if (!is.null(dip) && !is.null(verticalthrow) && !is.null(delta)) {
     # Slip components in the vertical plane perpendicular to strike
     dipslip <- verticalthrow / sind(dip)
     heave <- sqrt(dipslip^2 - verticalthrow^2)
-    
+
     # Slip components in the horizontal plane
     horizontalthrow <- heave / sind(delta)
     strikeslip <- sqrt(horizontalthrow^2 - heave^2)
-    
+
     # Slip in the fault plane
     netslip <- sqrt(strikeslip^2 + dipslip^2)
     rake <- asind(dipslip / netslip)
-    
   } else if (!is.null(delta) && !is.null(horizontalthrow) && !is.null(dip)) {
     # Slip components in the horizontal plane
     strikeslip <- abs(cosd(delta) * horizontalthrow)
     heave <- sqrt(horizontalthrow^2 - strikeslip^2)
-    
+
     # Slip components in the vertical plane perpendicular to strike
     dipslip <- heave / cosd(dip)
     verticalthrow <- sqrt(dipslip^2 - heave^2)
-    
+
     # Slip in the fault plane
     netslip <- sqrt(strikeslip^2 + dipslip^2)
     rake <- atan2d(dipslip, strikeslip)
-    
   } else if (!is.null(rake) && !is.null(verticalthrow) && !is.null(dip)) {
     dipslip <- verticalthrow / sind(dip)
     heave <- sqrt(dipslip^2 - verticalthrow^2)
     strikeslip <- dipslip / tand(rake)
     horizontalthrow <- sqrt(strikeslip^2 + heave^2)
     netslip <- sqrt(strikeslip^2 + dipslip^2)
-    
   } else if (!is.null(strikeslip) && !is.null(verticalthrow) && !is.null(heave)) {
     dipslip <- sqrt(heave^2 + verticalthrow^2)
     dip <- atan2d(verticalthrow, heave)
@@ -68,13 +64,12 @@ fault_displacements <- function(
     delta <- atan2d(heave, strikeslip)
     netslip <- sqrt(strikeslip^2 + dipslip^2)
     rake <- atan2d(dipslip, strikeslip)
-    
   } else {
     stop("Insufficient or incompatible parameter combinations provided for computation.")
   }
-  
-  
-  
+
+
+
   cbind(
     "dip" = abs(dip),
     "delta" = delta,
@@ -102,40 +97,40 @@ fault_displacements <- function(
 #' @param ftensor Fault displacement tensor. A 3x3 matrix.
 #' If `NULL`, the fault tensor will be given in the fault displacement
 #' coordinates. Otherwise, the tensor will be in the geographic reference frame.
-#' 
+#'
 #' @returns `fault_tensor()` returns a 3x3 matrix of class `"ftensor"` containing the fault displacement tensor.
 #' `fault_tensor_analysis()` returns a list containing the principal fault displacement tensor and the fault orientation.
 #'
 #' @details
 #' x axis of tensor = heave, y = strike slip, z = vertical throw (positive for
-#' thrusting, negative for normal faulting) is the principal fault displacement tensor. 
+#' thrusting, negative for normal faulting) is the principal fault displacement tensor.
 #' This can be rotated in the fault plane orientation to retrieve slip components and rake.
-#' 
+#'
 #' ([fault_tensor_decomposition()]) retrieves the principal fault displacement tensor using Singular Value Decomposition of a Matrix
 #' and the fault orientation if the dip direction is known.
-#' 
+#'
 #' The orientation of the net-slip vector is the lineation component of the fault orientation.
-#' 
+#'
 #' `det()` of the fault displacement tensor is the net slip on the fault plane.
 #'
 #' @name fault-tensor
 #'
 #' @examples
-#' A_princ = fault_tensor(
+#' A_princ <- fault_tensor(
 #'   displacements =
 #'     data.frame(strikeslip = 2, verticalthrow = -5, heave = 3)
 #' )
 #' print(A_princ)
 #' det(A_princ)
-#' 
+#'
 #' A_geo <- fault_tensor(
 #'   displacements =
 #'     data.frame(strikeslip = 2, verticalthrow = -5, heave = 3),
-#'     dip_direction = 45
+#'   dip_direction = 45
 #' )
 #' print(A_geo)
 #' det(A_geo)
-#' 
+#'
 #' fault_tensor_analysis(A_geo, dip_direction = 45)
 NULL
 
@@ -143,7 +138,7 @@ NULL
 #' @export
 fault_tensor <- function(displacements, dip_direction = NULL) {
   A <- diag(c(displacements$heave, displacements$strikeslip, displacements$verticalthrow), 3, 3)
-  
+
   if (!is.null(dip_direction)) {
     dipdir_rad <- deg2rad(dip_direction)
     # coordinates are measured from E!!!
@@ -152,38 +147,38 @@ fault_tensor <- function(displacements, dip_direction = NULL) {
     A[, 1] <- vrotate(A[, 1], A[, 3], -dipdir_rad) |> as.vector()
     A[, 2] <- vrotate(A[, 2], A[, 3], pi - dipdir_rad) |> as.vector()
   }
-  
+
   class(A) <- append(class(A), "ftensor")
   A
 }
 
 #' @rdname fault-tensor
 #' @export
-fault_tensor_decomposition <- function(ftensor, dip_direction = NULL){
+fault_tensor_decomposition <- function(ftensor, dip_direction = NULL) {
   stopifnot(inherits(ftensor, "ftensor") || is.matrix(ftensor))
   A_svd <- svd(ftensor)
   A_d <- A_svd$d
   A_v <- A_svd$v
-  
+
   A_pr0 <- A_v * A_d
-  A_pr <-  diag(c(-A_pr0[2,3], -A_pr0[3,1], A_pr0[1,2]), 3, 3)
-  
-  strikeslip = A_pr[2,2]
-  verticalthrow = A_pr[3, 3]
-  heave = A_pr[1, 1]
-  
+  A_pr <- diag(c(-A_pr0[2, 3], -A_pr0[3, 1], A_pr0[1, 2]), 3, 3)
+
+  strikeslip <- A_pr[2, 2]
+  verticalthrow <- A_pr[3, 3]
+  heave <- A_pr[1, 1]
+
   fd <- fault_displacements(strikeslip = strikeslip, verticalthrow = verticalthrow, heave = heave)
-  
-  if(!is.null(dip_direction)){
-    fault_p <- Plane(dip_direction, fd[, 'dip'])
-    fault <- fault_from_rake(fault_p, fd[, 'rake'], sense = sign(verticalthrow))
+
+  if (!is.null(dip_direction)) {
+    fault_p <- Plane(dip_direction, fd[, "dip"])
+    fault <- fault_from_rake(fault_p, fd[, "rake"], sense = sign(verticalthrow))
   } else {
-    fault = NULL
+    fault <- NULL
   }
-  
+
   list(
     displacements = fd,
-       fault = fault
+    fault = fault
   )
 }
 

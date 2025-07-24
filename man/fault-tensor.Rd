@@ -42,7 +42,7 @@ The orientation of the net-slip vector is the lineation component of the fault o
 \code{det()} of the fault displacement tensor is the net slip on the fault plane.
 }
 \examples{
-A_princ = fault_tensor(
+A_princ <- fault_tensor(
   displacements =
     data.frame(strikeslip = 2, verticalthrow = -5, heave = 3)
 )
@@ -52,7 +52,7 @@ det(A_princ)
 A_geo <- fault_tensor(
   displacements =
     data.frame(strikeslip = 2, verticalthrow = -5, heave = 3),
-    dip_direction = 45
+  dip_direction = 45
 )
 print(A_geo)
 det(A_geo)

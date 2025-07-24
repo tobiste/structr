@@ -58,7 +58,7 @@ correct_pair <- function(x) {
   #     warning(paste("Mifit angle is", misfit[i], "degrees."))
   #   }
   # }
-  
+
   # Warn if misfit > 20
   exceed_idx <- which(misfit > deg2rad(20))
   if (length(exceed_idx) > 0) {
@@ -68,7 +68,7 @@ correct_pair <- function(x) {
       rad2deg(max(misfit))
     ))
   }
-  
+
   ax <- vcross(fvec, lvec)
   ang <- (vangle(lvec, fvec) - pi / 2) / 2
   list(

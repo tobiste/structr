@@ -215,7 +215,7 @@ spatial_interpolation <- function(x,
 #' Filter spatial interpolation containing a range of search radii or kernel
 #' half widths to find smallest wavelength (R) with the least spherical sd.
 #'
-#' @param grid output of [tectonicr::stress2grid()], 
+#' @param grid output of [tectonicr::stress2grid()],
 #' [tectonicr::PoR_stress2grid()], or [tectonicr::kernel_dispersion()]
 #' @returns \code{sf} object
 #'

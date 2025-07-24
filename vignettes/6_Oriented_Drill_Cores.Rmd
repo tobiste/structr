@@ -51,7 +51,7 @@ The orientations can be plotted in a equal area (lower hemisphere) projection:
 stereoplot()
 
 # plot the core axis *azi and inc angles)
-stereo_point(Line(azi, -inc), lab = "core-axis") 
+stereo_point(Line(azi, -inc), lab = "core-axis")
 
 # plot the plane orientations as poles...
 stereo_point(planes_AB, lab = c("A", "B"), col = c("#B63679FF", "#FB8861FF"))

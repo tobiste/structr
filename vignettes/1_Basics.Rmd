@@ -28,9 +28,9 @@ library(structr)
 
 
 ```{r read_csv, echo=FALSE}
-read.table('path/to/my/file.txt', header=TRUE, sep='\t')
-read.csv('path/to/my/file.csv')
-readxl::read_xlsx('path/to/my/file.xlsx')
+read.table("path/to/my/file.txt", header = TRUE, sep = "\t")
+read.csv("path/to/my/file.csv")
+readxl::read_xlsx("path/to/my/file.xlsx")
 ```
 
 
@@ -38,7 +38,7 @@ readxl::read_xlsx('path/to/my/file.xlsx')
 
 From a Strabospot project, download the json file and import it using the `read_strabo_JSON()` function.
 ```{r read_json, echo=FALSE}
-read_strabo_JSON('path/to/my/file.json')
+read_strabo_JSON("path/to/my/file.json")
 ```
 
 This returns a list which contains all the information and metadata (including coordinates, descriptions etc) extracted from the Strabospot project in the list element `data`, the tags used for the project in the list element `tags`, and the linear and planar orientation measurements in the list elements `lines` and `planes`, respectively.
@@ -97,7 +97,7 @@ dd2rhr(1)
 ```
 
 ```{r helpers}
-#parse_strike_dip(c("E30N", "W10S"), c("45NW", "4SE"))
+# parse_strike_dip(c("E30N", "W10S"), c("45NW", "4SE"))
 ```
 
 ## Vector operations

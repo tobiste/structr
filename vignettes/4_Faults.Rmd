@@ -505,8 +505,8 @@ For a several stress ratios:
 ```{r lund2}
 R <- seq(0, 1, .05)
 cbind(R, SH = sapply(R, function(x) {
-   SH(S1, S2, S3, R = x)
- }))
+  SH(S1, S2, S3, R = x)
+}))
 ```
 
 
