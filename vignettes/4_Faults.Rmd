@@ -126,17 +126,6 @@ For instance, the vector of the strike slip is:
   \vec{f_\text{strike slip}} = \begin{pmatrix} \lVert f_\textrm{strike-slip}\rVert \\ 0 \\ 0 \end{pmatrix}
 \end{equation}
 
-```{r vector}
-por <- data.frame("lat" = 45, "lon" = 0) # Point of origin in lat, lon coordinates
-fault <- data.frame("dipdir" = 0, "dip" = 45) # fault given in dip direction and dip angle
-strikeslip <- c("magnitude" = 2) # magnitude of strike slip component
-
-# geographical_to_cartesian(por)
-# pracma::deg2rad(strike)
-```
-
-
-
 
 ## Net slip vector {#sec.tensors.netslip}
 Net slip vector 
@@ -145,56 +134,24 @@ Net slip vector
   \vec{f_\text{net}} = \begin{pmatrix} \lVert f_\textrm{strike-slip}\rVert \\ \lVert f_\textrm{heave}\rVert \\ \lVert f_\textrm{vertical throw}\rVert \end{pmatrix}
 \end{equation}
 
-```{r netslip_vector_def, include=FALSE, eval=FALSE}
-netslip_vector <- function(location, fault, horizontalthrow) {
-  # location.cart <- geographical_to_cartesian(location)
-  offset.df <- get_offset0(horizontalthrow$direction, horizontalthrow$magnitude, fault)
-  # fault$strike <- fault$dipdir+90
-  # heave <- data.frame('direction' = fault$dipdir, 'magnitude' = offset.df$heave)
 
-  netslip.vector <- c(offset.df$strikeslip, offset.df$heave, offset.df$verticalthrow) # in fault coordinates
-  netslip.vector.norm <- netslip.vector / sqrt(sum(netslip.vector^2)) # normalize vector to unit length
-  netslip <- list("vector" = netslip.vector, "vector.norm" = netslip.vector.norm, "direction" = horizontalthrow$direction)
-  return(netslip)
-}
-# geographical_to_cartesian(por)
-# pracma::deg2rad(strike)
-```
 
 ```{r netslip_vector, eval=FALSE}
-location <- data.frame("lat" = 45, "lon" = 0) # position of fault in lat, lon coordinates
-fault <- data.frame("dipdir" = 0, "dip" = 45) # fault givin in dip direction and dip angle
-horizontalthrow <- data.frame("direction" = 0, "magnitude" = 1) # direction and magnitude of horizontal throw
-netslip_vector(location = location, fault = fault, horizontalthrow = horizontalthrow)
+fault_displacements(strikeslip = 2, verticalthrow = -5, heave = 3)
 ```
 
 
 
 ## Principal displacement tensor {#sec.tensors.principal}
-The Eigen values of $\mathsf{F}_{ij}$; represented as $\{ \vec{f_1}, \vec{f_2}, \vec{f_3} \}$ are referred to as the strike slip, heave, and vertical throw component, respectively. These orthonormal vectors define a orthogonal matrix, i.e. the **principal displacement tensor** $\mathsf{F}_\mathbb{F}$:
+The Eigen values of $\mathsf{F}_{ij}$; represented as $\{ \vec{f_1}, \vec{f_2}, \vec{f_3} \}$ are referred to as the heave, strike slip, and vertical throw component, respectively. These orthonormal vectors define a orthogonal matrix, i.e. the **principal displacement tensor** $\mathsf{F}_\mathbb{F}$:
 
-\begin{equation}\mathsf{F}_{\mathbb{F}} = {\begin{bmatrix} \lVert f_\textrm{strike-slip}\rVert & 0 & 0\\ 0 & \lVert f_\textrm{heave}\rVert & 0\\ 0 & 0 & \lVert f_\textrm{vertical throw}\rVert\end{bmatrix}}\end{equation}
-
-The Eigen values comprise the netslip vector.
-```{r get_displacement_tensor, eval=FALSE}
-# F.f <- eigen(ORT)
-# F.f
-```
-
-```{r displacement_tensor_def, include=FALSE, eval=FALSE}
-displacement_tensor <- function(offsets.df) {
-  D <- matrix(0, nrow = 3, ncol = 3)
-  D[1, 1] <- offsets.df$strike
-  D[2, 2] <- offsets.df$heave
-  D[3, 3] <- offsets.df$verticalthrow
-  return(D)
-}
-```
+\begin{equation}\mathsf{F}_{\mathbb{F}} = {\begin{bmatrix} \lVert f_\textrm{heave}\rVert & 0 & 0\\ 0 & \lVert f_\textrm{strike-slip}\rVert & 0\\ 0 & 0 & \lVert f_\textrm{vertical throw}\rVert\end{bmatrix}}\end{equation}
 
 The tensor $\mathsf{F}$ can also be defined by the magnitudes of the fault displacements:
-```{r displacement_tensor, eval=FALSE}
-F.f <- displacement_tensor(g)
-F.f
+
+```{r displacement_tensor}
+Fu <- fault_tensor(s = 2, v = -5, h = 3)
+print(Fu)
 ```
 
 
@@ -205,22 +162,19 @@ Fault orientation tensor is defined by the fault plane's location, orientation (
 \begin{equation}\mathsf{F}_{ij} = {\begin{bmatrix}f_{11} & f_{12} & f_{13}\\ f_{21} & f_{22} & f_{23}\\ f_{31} & f_{32} & f_{33}\end{bmatrix}}\end{equation} 
 
 
-```{r ortensor_def, include=FALSE, eval=FALSE}
-ortensor <- function(fault.df, netslip.vec) {
-  or <- matrix(NA, nrow = 3, ncol = 3)
-  return(or)
-}
-```
 
-```{r ortensor, include=FALSE, eval=FALSE}
-# ORT <- ortensor(fault, netslip)
+```{r ortensor}
+Fg <- fault_tensor(s = 2, v = -5, h = 3, dip_direction = 45)
+print(Fg)
 ```
 
 
 ### From Principal displacement tensor to Orientation tensor
 Translation point of origin in $\mathsf{F_\mathbb{F}}$ into  point of measurement and rotate into fault orientation $\mathsf{F}_\mathbb{FG}$ 
 
-
+```{r ftensor_decomp}
+fault_tensor_decomposition(Fg, dip_direction = 45)
+```
 
 
 ## Stress tensor
