@@ -17,18 +17,16 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
-
 ```
 
  
 ```{r setup, warning=FALSE, message=FALSE}
 library(structr)
-
 ```
 
 ## Import 
 
-```{r read_csv, echo=FALSE}
+```{r read_csv, echo=FALSE, eval=FALSE}
 read.table("path/to/my/file.txt", header = TRUE, sep = "\t")
 read.csv("path/to/my/file.csv")
 readxl::read_xlsx("path/to/my/file.xlsx")
@@ -37,7 +35,7 @@ readxl::read_xlsx("path/to/my/file.xlsx")
 From a Strabospot project, download the json file and import it using the `read_strabo_JSON()` function.
 
  
-```{r read_json, echo=FALSE}
+```{r read_json, echo=FALSE, eval=FALSE}
 read_strabo_JSON("path/to/my/file.json")
 ```
 

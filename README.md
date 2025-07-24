@@ -5,23 +5,23 @@
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/tobiste/structR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tobiste/structR/actions/workflows/R-CMD-check.yaml)
+[![R-CMD-check](https://github.com/tobiste/structr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tobiste/structr/actions/workflows/R-CMD-check.yaml)
 
 <!-- badges: end -->
 
-`{structur}` is a free and open-source package for R that provides tools
+`{structr}` is a free and open-source package for R that provides tools
 for structural geology. You can
 
 - analyze and visualize orientation data of structural geology
   (including, stereographic projections, contouring, fabric plots, and
-  statistics.)
+  statistics),
 
 - analyze stress (including visualization of the magnitudes of stress in
   the Mohr circle and extracting the maximum horizontal stress of a 3D
-  stress tensor)
+  stress tensor),
 
 - reconstruct the orientation of structures in oriented drill cores
-  using the alpha, beta, and gamma angles
+  using the alpha, beta, and gamma angles, and
 
 - calculate fault displacement components
 
@@ -76,8 +76,8 @@ Tobias Stephan (<tstephan@lakeheadu.ca>)
 
 I welcome feedback, suggestions, issues, and contributions! If you have
 found a bug, please file it
-[here](https://github.com/tobiste/geoprofiler/issues) with minimal code
-to reproduce the issue.
+[here](https://github.com/tobiste/structr/issues) with minimal code to
+reproduce the issue.
 
 ## License
 
