@@ -49,4 +49,8 @@ stereo_point(Line(90, 5), lab = "L")
 stereo_smallcircle(Line(90, 5), d = 10)
 stereo_point(Plane(120, 30), lab = "P", col = "red")
 stereo_greatcircle(Plane(120, 30), col = "red")
+
+stereoplot()
+stereo_point(Line(c(129, 90), c(30, 5)), lab = c("L1", "L2"))
+stereo_smallcircle(Line(c(129, 90), c(30, 5)), d = c(10, 5), col = 1:2, lty = 1:2, lwd = 1:2)
 }

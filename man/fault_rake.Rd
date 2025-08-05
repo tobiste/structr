@@ -18,4 +18,7 @@ Angle between fault slip vector and fault strike.
 \examples{
 f <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
 fault_rake(f)
+
+f2 <- Pair(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23))
+fault_rake(f2)
 }

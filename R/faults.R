@@ -90,12 +90,22 @@ correct_pair <- function(x) {
 #' @examples
 #' f <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
 #' fault_rake(f)
+#' 
+#' f2 <- Pair(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23))
+#' fault_rake(f2)
 fault_rake <- function(x) {
   # x <- correct_pair(x)
   strike <- Line(x[, 1] - 90, rep(0, nrow(x)))
   slip <- Line(x[, 3], x[, 4])
 
-  x[, 5] * vangle(strike, slip)
+  if(inherits(x, 'fault')){
+    sense <- x[, 5]
+  } else {
+    sense <- rep(1, nrow(x))
+    
+  }
+  
+  sense * vangle(strike, slip)
   # setNames(rake, 'rake')
 }
 

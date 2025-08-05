@@ -262,11 +262,34 @@ stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 16, col 
 #' stereo_smallcircle(Line(90, 5), d = 10)
 #' stereo_point(Plane(120, 30), lab = "P", col = "red")
 #' stereo_greatcircle(Plane(120, 30), col = "red")
+#'
+#' stereoplot()
+#' stereo_point(Line(c(129, 90), c(30, 5)), lab = c("L1", "L2"))
+#' stereo_smallcircle(Line(c(129, 90), c(30, 5)), d = c(10, 5), col = 1:2, lty = 1:2, lwd = 1:2)
 NULL
 
 #' @rdname stereo_cones
 #' @export
 stereo_smallcircle <- function(x, d = 90, col = 1, N = 1000, upper.hem = FALSE, earea = TRUE, lty = 1, lwd = 1, BALL.radius = 1, ...) {
+  if (length(d) == 1) {
+    stereo_smallcircle0(x, d, col, N, upper.hem, earea, lty, lwd, BALL.radius, ...)
+  } else {
+    nx <- nrow(x)
+    stopifnot(length(d) == nx)
+
+    if (length(col) == 1) col <- rep(col, nx)
+    if (length(lwd) == 1) lwd <- rep(lwd, nx)
+    if (length(lty) == 1) lty <- rep(lty, nx)
+
+    invisible(
+      lapply(seq_len(nx), function(i) {
+        stereo_smallcircle0(as.line(x[i, ]), d[i], col[i], N, upper.hem, earea, lty[i], lwd[i], BALL.radius, ...)
+      })
+    )
+  }
+}
+
+stereo_smallcircle0 <- function(x, d = 90, col = 1, N = 1000, upper.hem = FALSE, earea = TRUE, lty = 1, lwd = 1, BALL.radius = 1, ...) {
   stopifnot(is.spherical(x))
   if (length(col) == 1) col <- rep(col, nrow(x))
   if (length(lty) == 1) lty <- rep(lty, nrow(x))
@@ -277,6 +300,7 @@ stereo_smallcircle <- function(x, d = 90, col = 1, N = 1000, upper.hem = FALSE, 
 
   phi <- seq(from = 0, to = 2 * pi, length = N)
   theta <- deg2rad(d)
+
   x <- BALL.radius * sin(theta) * cos(phi)
   y <- BALL.radius * sin(theta) * sin(phi)
   z <- rep(BALL.radius * cos(theta), N)
