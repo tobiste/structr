@@ -11,6 +11,7 @@
 <url><loc>https://tobiste.github.io/structr/articles/index.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/authors.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/index.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/Fault_components.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/MohrCircle_calc.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/MohrCircle_plot.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/PR_stress.html</loc></url>
@@ -40,7 +41,6 @@
 <url><loc>https://tobiste.github.io/structr/reference/fault_analysis.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/fault_displacements.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/fault_from_rake.html</loc></url>
-<url><loc>https://tobiste.github.io/structr/reference/fault_rake.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/fisher_ftest.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/fisher_statistics.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ggMohr.html</loc></url>

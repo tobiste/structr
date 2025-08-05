@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +64,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-07-24</h4>
+            <h4 data-toc-skip class="date">2025-08-05</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/4_Faults.Rmd" class="external-link"><code>vignettes/4_Faults.Rmd</code></a></small>
       <div class="d-none name"><code>4_Faults.Rmd</code></div>
@@ -87,14 +87,14 @@ respectively.</p>
 <p>Rake of the fault, i.e. the angle between fault slip vector and fault
 strike:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/fault_rake.html">fault_rake</a></span><span class="op">(</span><span class="va">my_fault</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/Fault_components.html">Fault_rake</a></span><span class="op">(</span><span class="va">my_fault</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##     sense </span></span>
 <span><span class="co">## -107.2294</span></span></code></pre>
 <p>Define a fault by just knowing the orientation of the fault plane,
 the sense, and the rake</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fault_plane</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Plane</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">120</span>, <span class="fl">100</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">60</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span> <span class="co"># dip direction, dip angle</span></span>
-<span><span class="fu"><a href="../reference/fault_from_rake.html">fault_from_rake</a></span><span class="op">(</span><span class="va">fault_plane</span>, rake <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">84.7202</span>, <span class="op">-</span><span class="fl">10</span>, <span class="fl">30</span><span class="op">)</span>, sense <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/fault_from_rake.html">Fault_from_rake</a></span><span class="op">(</span><span class="va">fault_plane</span>, rake <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">84.7202</span>, <span class="op">-</span><span class="fl">10</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      dip_direction dip   azimuth    plunge sense</span></span>
 <span><span class="co">## [1,]           120  60 109.52858 59.581591     1</span></span>
 <span><span class="co">## [2,]           120  60 204.96163  8.649165    -1</span></span>
@@ -304,7 +304,7 @@ into point of measurement and rotate into fault orientation
 <span><span class="co">## </span></span>
 <span><span class="co">## $fault</span></span>
 <span><span class="co">##         dip_direction      dip  azimuth   plunge sense</span></span>
-<span><span class="co">## azimuth            45 59.03624 11.30993 54.20424    -1</span></span>
+<span><span class="co">## azimuth            45 59.03624 78.69007 54.20424    -1</span></span>
 <span><span class="co">## attr(,"class")</span></span>
 <span><span class="co">## [1] "fault" "pair" </span></span>
 <span><span class="co">## </span></span>
