@@ -176,7 +176,7 @@ fault_tensor_decomposition <- function(ftensor, dip_direction = NULL) {
 
   if (!is.null(dip_direction)) {
     fault_p <- Plane(dip_direction, fd[, "dip"])
-    fault <- fault_from_rake(fault_p, fd[, "rake"], sense = sign(verticalthrow))
+    fault <- Fault_from_rake(fault_p, abs(fd[, "rake"]) * sign(verticalthrow))
   } else {
     fault <- NULL
   }

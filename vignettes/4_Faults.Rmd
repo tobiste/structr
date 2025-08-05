@@ -32,12 +32,12 @@ my_fault <- Fault(dip_direction = 120, dip = 50, azimuth = 60, plunge = 110, sen
 
 Rake of the fault, i.e. the angle between fault slip vector and fault strike:
 ```{r faults_rake1}
-fault_rake(my_fault)
+Fault_rake(my_fault)
 ```
 Define a fault by just knowing the orientation of the fault plane, the sense,  and the rake
 ```{r faults_rake2}
 fault_plane <- Plane(c(120, 120, 100), c(60, 60, 50)) # dip direction, dip angle
-fault_from_rake(fault_plane, rake = c(84.7202, -10, 30), sense = c(1, -1, 1))
+Fault_from_rake(fault_plane, rake = c(84.7202, -10, 30))
 ```
 
 Often measured orientation angles can be (slightly) imprecise and subjected to some random noise. Thus the slip vector will not lie (perfectly) on the fault plane, judging by the measurements. To correct the measurements so that this will not be the case:

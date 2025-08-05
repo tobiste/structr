@@ -78,58 +78,77 @@ correct_pair <- function(x) {
   )
 }
 
-#' Rake of a fault
+#' Extract components of fault object
 #'
-#' Angle between fault slip vector and fault strike.
+#' [Fault_plane()] extracts the orientation of the fault plane,
+#' [Fault_slip()] extracts the orientation of the slip vector, and
+#' [Fault_rake()] extracts the rake of the fault. i.e. the angle between fault slip vector and fault strike.
 #'
 #' @param x fault object
 #'
-#' @returns numeric. Angle in degrees
-#' @export
+#' @returns numeric. plane, line or angle in degrees, respectively
+#' @name Fault_components
 #'
 #' @examples
 #' f <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
-#' fault_rake(f)
-#' 
-#' f2 <- Pair(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23))
-#' fault_rake(f2)
-fault_rake <- function(x) {
-  # x <- correct_pair(x)
+#' Fault_plane(f)
+#' Fault_slip(f)
+#' Fault_rake(f)
+NULL
+
+#' @rdname Fault_components
+#' @export
+Fault_rake <- function(x) {
+  stopifnot(inherits(x, "fault"))
   strike <- Line(x[, 1] - 90, rep(0, nrow(x)))
   slip <- Line(x[, 3], x[, 4])
 
-  if(inherits(x, 'fault')){
-    sense <- x[, 5]
-  } else {
-    sense <- rep(1, nrow(x))
-    
-  }
-  
-  sense * vangle(strike, slip)
-  # setNames(rake, 'rake')
+  x[, 5] * vangle(strike, slip)
+}
+
+#' @rdname Fault_components
+#' @export
+Fault_slip <- function(x) {
+  stopifnot(inherits(x, "fault"))
+  azi <- x[, 3]
+  inc <- x[, 4]
+  # sense <- x[, 5]
+  # azi_cor <- ifelse(sense>1, azi + 180, azi)
+  Line(azi, inc)
+}
+
+#' @rdname Fault_components
+#' @export
+Fault_plane <- function(x) {
+  stopifnot(inherits(x, "fault"))
+  Plane(x[, 1], x[, 2])
 }
 
 
 #' Fault from plane and rake
 #'
 #' @param p plane object
-#' @param rake Angle in degrees
-#' @param sense (optional) integer. Sense of the line on a fault plane. Either 1or -1 for normal or thrust offset, respectively.
+#' @param rake Angle in degrees in the range  −180° and 180°
 #'
-#' @returns returns a `"Pair"` object if `sense=NULL`, otherwise a `"Fault"` object
+#' @details Rake is used to describe the direction of fault motion with respect
+#' to the strike (measured anticlockwise from the horizontal, up is positive; values between −180° and 180°):
+#' - left-lateral strike slip: rake near 0°
+#' - right-lateral strike slip: rake near 180°
+#' - normal: rake near −90°
+#' - reverse/thrust: rake near +90°
+#'
+#' @returns `"fault"` object
 #' @export
 #'
 #' @examples
-#' fault_from_rake(Plane(c(120, 120, 100), c(60, 60, 50)), c(84.7202, -10, 30), sense = c(1, -1, 1))
-fault_from_rake <- function(p, rake, sense = NULL) {
+#' Fault_from_rake(Plane(c(120, 120, 100), c(60, 60, 50)), c(84.7202, -10, 30))
+Fault_from_rake <- function(p, rake) {
   strike <- Line(p[, 1] - 90, rep(0, nrow(p)))
+  rake <- rake %% 360
+  rake <- ifelse(rake > 180, rake - 360, rake)
 
   rake_l <- vrotate(strike, Line(0, 90), rake)
-
   l <- vrotate(rake_l, strike, p[, 2])
-  if (is.null(sense)) {
-    Pair(p[, 1], p[, 2], l[, 1], l[, 2])
-  } else {
-    Fault(p[, 1], p[, 2], l[, 1], l[, 2], sense)
-  }
+
+  Fault(p[, 1], p[, 2], l[, 1], l[, 2], sense = sign(rake))
 }

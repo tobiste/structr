@@ -49,7 +49,6 @@ Usually orientation data is stored in a table containing the column dip directio
 ```{r data_p}
 data(example_planes)
 head(example_planes)
-
 ```
 
  
@@ -58,7 +57,6 @@ or the trend (azimuth) and plunge (inclination) of a measured line...
 ```{r data_l}
 data(example_lines)
 head(example_lines)
-
 ```
 
 To convert these data frames to spherical objects, use the `Plane()` and `Line()` functions from the `structr` package. These functions take the dip direction and dip angle for planes, and the trend and plunge for lines as arguments.
@@ -67,7 +65,6 @@ To convert these data frames to spherical objects, use the `Plane()` and `Line()
 data(example_planes)
 planes <- Plane(example_planes$dipdir, example_planes$dip)
 lines <- Line(example_lines$trend, example_lines$plunge)
-
 ```
  > If the raw data was imported using `read_strabo_JSON()` this step is not necessary as the data will come already in the correct format.
 
@@ -82,7 +79,6 @@ head(lines_vector)
 ```{r data_transformation2}
 planes_as_line <- plane2vec(planes)
 head(planes_as_line)
-
 ```
 
 which produces the same output as
