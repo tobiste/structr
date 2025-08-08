@@ -17,7 +17,8 @@
 #' @importFrom sf st_as_sf
 #' @returns `list` containing the following objects:
 #' \describe{
-#' \item{`data`}{`"tbl_df"` object or `"sf"` if `sf == TRUE`. Metadata.}
+#' \item{`data`}{`"tbl_df"` object. Metadata.}
+#' \item{`spots`}{`"tbl_df"` object or `"sf"` if `sf == TRUE`. Locations and spot descriptions.}
 #' \item{`tags`}{`"tbl_df"` object. Tags and their descriptsions.}
 #' \item{`planar`}{Plane elements. Same row IDs as in `data`.}
 #' \item{`linear`}{Line elements. Same row IDs as in `data`.}
@@ -642,9 +643,10 @@ read_strabo_JSON <- function(file, sf = TRUE) {
 
   # --- Return ---
   list(
-    data = fieldbook_dt,
+    data = orient_dt,
+    spots = fieldbook_dt,
     tags = tag_info_dt,
     planar = planes,
-    linear = lines
+    linear = lines,
   )
 }
