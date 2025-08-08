@@ -647,6 +647,6 @@ read_strabo_JSON <- function(file, sf = TRUE) {
     spots = fieldbook_dt,
     tags = tag_info_dt,
     planar = planes,
-    linear = lines,
+    linear = lines
   )
 }
