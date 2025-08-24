@@ -13,7 +13,7 @@
 #' fault_analysis(f)
 fault_analysis <- function(x, ptangle = 90) {
   ptangle <- deg2rad(ptangle)
-  x_corr <- correct_pair(x)
+  x_corr <- misfit_pair(x)
   xp <- x_corr$fvec
   xl <- x_corr$lvec
 
@@ -38,17 +38,26 @@ fault_analysis <- function(x, ptangle = 90) {
 }
 
 #' Orthogonalization of plane and line measurement
+#' 
+#' Both the line and the plane  are rotated in opposite directions by half the angle between 
+#' the slip and the plane normal vector about the vector that is pperpendicular to both.
 #'
 #' @param x Pair or Fault
 #'
-#' @returns list with the orthogonalized plane and line measurements
-#' (as 3d vectors) and the misfit angles (in radians)
-#' @export
-#'
+#' @returns `misfit_pair` returns a list with the orthogonalized plane and line measurements
+#' (as 3d vectors) and the misfit angles (in radians). `correct_pair` returns the orthogonalized vectors.
+#' @name pair_correct
 #' @examples
-#' p <- Pair(120, 60, 110, 58)
+#' p <- Pair(120, 60, 110, 58, correction = FALSE)
+#' misfit_pair(p)
+#' 
 #' correct_pair(p)
-correct_pair <- function(x) {
+NULL
+
+#' @rdname pair_correct
+#' @export
+misfit_pair <- function(x) {
+  stopifnot(inherits(x, "pair"))
   fvec <- Plane(x[, 1], x[, 2]) |> plane2vec()
   lvec <- Line(x[, 3], x[, 4]) |> line2vec()
 
@@ -76,6 +85,20 @@ correct_pair <- function(x) {
     lvec = vrotate(lvec, ax, -ang),
     misfit = misfit
   )
+}
+
+#' @rdname pair_correct
+#' @export
+correct_pair <- function(x) {
+  corr <- misfit_pair(x)
+  p <- vec2plane(corr$fvec)
+  l <- vec2line(corr$lvec)
+  
+  if(inherits(x, "fault")) {
+    Fault(p[,1], p[,2], l[,1], l[,2], x[,5], correction = FALSE)
+  } else {
+    Pair(p[,1], p[,2], l[,1], l[,2], correction = FALSE)
+  }
 }
 
 #' Extract components of fault object
@@ -129,6 +152,7 @@ Fault_plane <- function(x) {
 #'
 #' @param p plane object
 #' @param rake Angle in degrees in the range  −180° and 180°
+#' @param optional arguments passed to [Fault()] description
 #'
 #' @details Rake is used to describe the direction of fault motion with respect
 #' to the strike (measured anticlockwise from the horizontal, up is positive; values between −180° and 180°):
@@ -141,7 +165,7 @@ Fault_plane <- function(x) {
 #' @export
 #'
 #' @examples
-#' Fault_from_rake(Plane(c(120, 120, 100), c(60, 60, 50)), c(84.7202, -10, 30))
+#' Fault_from_rake(Plane(c(120, 120, 100), c(60, 60, 50)), c(84.7202, -10, 30), ...)
 Fault_from_rake <- function(p, rake) {
   strike <- Line(p[, 1] - 90, rep(0, nrow(p)))
   rake <- rake %% 360
@@ -150,5 +174,5 @@ Fault_from_rake <- function(p, rake) {
   rake_l <- vrotate(strike, Line(0, 90), rake)
   l <- vrotate(rake_l, strike, p[, 2])
 
-  Fault(p[, 1], p[, 2], l[, 1], l[, 2], sense = sign(rake))
+  Fault(p[, 1], p[, 2], l[, 1], l[, 2], sense = sign(rake), ...)
 }

@@ -26,7 +26,7 @@ vec2lin0 <- function(x, y, z) {
   azimuth <- atan2d(n[, 2], n[, 1]) %% 360
   plunge <- asind(nz)
   # )
-
+  
   res <- mapply(correct_inc, azi = azimuth, inc = plunge) |> t()
   rownames(res) <- rownames(x)
   colnames(res) <- c("azimuth", "plunge")
@@ -37,10 +37,10 @@ vec2fol0 <- function(x, y, z) {
   n <- vnorm(cbind(x, y, z)) # normalized vector
   # nz <- sapply(n[, 3], function(x) ifelse(x < 0, -x, x))
   nz <- n[, 3]
-
+  
   dip_direction <- (atan2d(n[, 2], n[, 1]) + 180) %% 360
   dip <- 90 - asind(nz)
-
+  
   res <- mapply(correct_inc, azi = dip_direction, inc = dip) |> t()
   rownames(res) <- rownames(x)
   colnames(res) <- c("dip_direction", "dip")
@@ -126,7 +126,7 @@ vec2line <- function(x) {
 vec2plane <- function(x) {
   x <- vec2mat(x)
   structure(vec2fol0(x[, 1], x[, 2], x[, 3]),
-    class = "plane"
+            class = "plane"
   )
 }
 
@@ -165,7 +165,11 @@ geo2vec <- function(g) {
 #' @param dip_direction,dip numeric vectors. Dip direction and dip of a plane
 #' (in degrees)
 #' @param sense (optional) integer. Sense of the line on a fault plane. Either
-#' `1`or `-1` for normal or thrust offset, respectively.
+#' `1`or `-1` for normal or thrust offset, respectively. The "sense" is the sign 
+#' of the fault's rake (see [Fault_from_rake()] for details).
+#' @param correction logical. If `TRUE` (default), both the fault plane and slip 
+#' vector will be rotated so that the slip vector lies on the fault plane by 
+#' minimizing the angle between the slip and the plane normal vector. See [correct_pair()] for details.
 #' @details
 #' `is.line`, `is.plane`, `is.pair`, and `is.fault` return `TRUE` if `l`, `p`, and `f`
 #' are an object of class `"line"`, `"plane"`, `"pair"` or `"fault"`, respectively, and
@@ -182,6 +186,9 @@ geo2vec <- function(g) {
 #' x <- Line(120, 50) # create line
 #' is.line(x) # test if line
 #' as.plane(x) # convert to plane
+#' 
+#' Pair(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23))
+#' Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
 NULL
 
 
@@ -201,7 +208,7 @@ Plane <- function(dip_direction, dip) {
 
 #' @rdname classes
 #' @export
-Fault <- function(dip_direction, dip, azimuth, plunge, sense = NULL) {
+Fault <- function(dip_direction, dip, azimuth, plunge, sense = NULL, correction = FALSE) {
   stopifnot(
     length(dip_direction) == length(dip),
     length(dip_direction) == length(azimuth),
@@ -214,12 +221,13 @@ Fault <- function(dip_direction, dip, azimuth, plunge, sense = NULL) {
       length(dip_direction) == length(sense)
     )
   }
-  cbind(dip_direction, dip, azimuth, plunge, sense) |> as.fault()
+  res <- cbind(dip_direction, dip, azimuth, plunge, sense) |> as.fault()
+  if(correction) correct_pair(res) else res
 }
 
 #' @rdname classes
 #' @export
-Pair <- function(dip_direction, dip, azimuth, plunge) {
+Pair <- function(dip_direction, dip, azimuth, plunge, correction = TRUE) {
   p <- Fault(dip_direction, dip, azimuth, plunge)
   as.pair(p[, -5])
 }
@@ -345,7 +353,7 @@ cartesian_to_acosvec <- function(x) {
   a <- acos(x[, 1])
   b <- acos(x[, 2])
   c <- acos(x[, 3])
-
+  
   a <- ifelse(x[, 1] < 0, -a, a)
   b <- ifelse(x[, 2] < 0, -b, b)
   c <- ifelse(x[, 3] < 0, -c, c)
@@ -360,7 +368,7 @@ acoscartesian_to_cartesian <- function(x) {
   cx <- cos(x[, 1])
   cy <- cos(x[, 2])
   cz <- cos(x[, 3])
-
+  
   cx <- ifelse(x[, 1] < 0, -cx, cx)
   cy <- ifelse(x[, 2] < 0, -cy, cy)
   cz <- ifelse(x[, 3] < 0, -cz, cz)
@@ -391,6 +399,8 @@ dd2rhr <- function(dipdirection) {
   (dipdirection - 90) %% 360
 }
 
+#' @keywords internal 
+#' @noRd
 parse_strike_dip <- function(strike, dip) {
   strike <- parse_azimuth(strike)
   dd <- split_trailing_letters(dip)$measurement
@@ -420,15 +430,17 @@ split_trailing_letters <- function(x) {
     }
     list(num = num_part, alpha = alpha_part)
   }, simplify = FALSE)
-
+  
   # Extract numeric and alpha parts from the list
   number_vector <- sapply(result, function(x) x$num)
   alpha_vector <- sapply(result, function(x) x$alpha)
-
+  
   # Return as a list
   list(measurement = number_vector, direction = alpha_vector)
 }
 
+#' @keywords internal 
+#' @noRd
 parse_azimuth <- function(azimuth) {
   sapply(azimuth, function(x) {
     if (is.numeric(x)) {
@@ -444,6 +456,8 @@ parse_azimuth <- function(azimuth) {
   }, simplify = TRUE)
 }
 
+#' @keywords internal 
+#' @noRd
 rotation_direction <- function(first, second) {
   first_rad <- first * pi / 180
   second_rad <- second * pi / 180
@@ -451,6 +465,8 @@ rotation_direction <- function(first, second) {
     c(cos(second_rad), sin(second_rad))
 }
 
+#' @keywords internal 
+#' @noRd
 quadrantletter_to_azimuth <- function(x) {
   letters <- trimws(x) |>
     strsplit("") |>
@@ -460,33 +476,36 @@ quadrantletter_to_azimuth <- function(x) {
 }
 
 
-#' Title
+#' Quadrant measurement expressions to angles
+#'
+#' Interprets quadrant measurement expressions, such as "E30N" or "W10S" as azimuth angles
 #'
 #' @param x character.
 #'
 #' @return numeric
-#' @export
+#' @noRd
+#' @keywords internal 
 #'
 #' @examples
 #' parse_quadrant_measurement(c("E30N", "W10S"))
 parse_quadrant_measurement <- function(x) {
   sapply(x, function(x) {
     x <- trimws(x)
-
+    
     first_dir <- quadrantletter_to_azimuth(toupper(x[1]))
     sec_dir <- quadrantletter_to_azimuth(toupper(x[length(x)]))
-
+    
     x2 <- trimws(x) |>
       strsplit("") |>
       unlist()
-
+    
     angle <- x2[3:length(x2) - 1] |>
       paste(collapse = "") |>
       as.numeric()
-
+    
     direc <- rotation_direction(first_dir, sec_dir)
     azi <- first_dir + direc * angle
-
+    
     # Catch ambiguous measurements such as N10S and raise an error
     stopifnot(abs(direc) >= 0.9)
     azi %% 360

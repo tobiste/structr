@@ -21,9 +21,9 @@ Line(azimuth, plunge)
 
 Plane(dip_direction, dip)
 
-Fault(dip_direction, dip, azimuth, plunge, sense = NULL)
+Fault(dip_direction, dip, azimuth, plunge, sense = NULL, correction = FALSE)
 
-Pair(dip_direction, dip, azimuth, plunge)
+Pair(dip_direction, dip, azimuth, plunge, correction = TRUE)
 
 as.line(l)
 
@@ -51,7 +51,12 @@ degrees)}
 (in degrees)}
 
 \item{sense}{(optional) integer. Sense of the line on a fault plane. Either
-\code{1}or \code{-1} for normal or thrust offset, respectively.}
+\code{1}or \code{-1} for normal or thrust offset, respectively. The "sense" is the sign
+of the fault's rake (see \code{\link[=Fault_from_rake]{Fault_from_rake()}} for details).}
+
+\item{correction}{logical. If \code{TRUE} (default), both the fault plane and slip
+vector will be rotated so that the slip vector lies on the fault plane by
+minimizing the angle between the slip and the plane normal vector. See \code{\link[=correct_pair]{correct_pair()}} for details.}
 
 \item{l, p, f}{numeric vector or array containing the spherical coordinates
 (1st element/column is azimuth, 2nd element/column is inclination, both in
@@ -82,4 +87,7 @@ argument is a \code{"line"} or \code{"plane"} class, it will be converted.
 x <- Line(120, 50) # create line
 is.line(x) # test if line
 as.plane(x) # convert to plane
+
+Pair(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23))
+Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
 }

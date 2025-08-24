@@ -10,6 +10,8 @@ Fault_from_rake(p, rake)
 \item{p}{plane object}
 
 \item{rake}{Angle in degrees in the range  −180° and 180°}
+
+\item{optional}{arguments passed to \code{\link[=Fault]{Fault()}} description}
 }
 \value{
 \code{"fault"} object
@@ -28,5 +30,5 @@ to the strike (measured anticlockwise from the horizontal, up is positive; value
 }
 }
 \examples{
-Fault_from_rake(Plane(c(120, 120, 100), c(60, 60, 50)), c(84.7202, -10, 30))
+Fault_from_rake(Plane(c(120, 120, 100), c(60, 60, 50)), c(84.7202, -10, 30), ...)
 }
