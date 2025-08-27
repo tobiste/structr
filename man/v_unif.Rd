@@ -29,6 +29,7 @@ Create uniformly distributed vectors using the algorithm
 \verb{"gss} is from  http://www.softimageblog.com/archives/115
 }
 \examples{
+set.seed(20250411)
 v_unif("line", n = 100, method = "sfs") |>
   ortensor() |>
   or_eigen()

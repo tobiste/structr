@@ -101,6 +101,7 @@
 #' @returns description
 #' @examples
 #' @examples
+#' set.seed(20250411)
 #' x <- rvmf(n = 200, mu = Line(120, 30), k = 10)
 #' calculate_density(x)
 calculate_density <- function(x, sigma = NULL, sigma.norm = TRUE, trimzero = TRUE, ngrid = 3000, grid.type = c("sfs", "gss", "rot")) {
@@ -159,6 +160,7 @@ calculate_density <- function(x, sigma = NULL, sigma.norm = TRUE, trimzero = TRU
 #' @importFrom graphics filled.contour
 #' @importFrom stats xtabs
 #' @examples
+#' set.seed(20250411)
 #' x <- rvmf(n = 200, mu = Line(120, 30), k = 10)
 #' stereoplot()
 #' stereo_density_contour(x)

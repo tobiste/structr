@@ -24,6 +24,7 @@ Simulation of random values from a spherical Fisher-Bingham distribution.
 }
 \examples{
 \dontrun{
+set.seed(20250411)
 x <- rfb(100, mu = Line(120, 50), k = 5, A = diag(c(-1, 0, 1)))
 stereoplot()
 stereo_point(x)

@@ -943,7 +943,6 @@ ortensor <- function(x, norm = TRUE, w = NULL) {
   }
 
   if (norm) {
-    # n <- nrow(x)
     n <- sum(w)
   } else {
     n <- 1

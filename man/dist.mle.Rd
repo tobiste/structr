@@ -21,6 +21,7 @@ object of class \code{"line"} or \code{"plane"}}
 Estimates the parameters of a von Mises-Fisher or Kent distribution.
 }
 \examples{
+set.seed(20250411)
 x <- rkent(100, mu = Line(120, 50), k = 5, b = 1)
 kent.mle(x)
 vmf.mle(x)

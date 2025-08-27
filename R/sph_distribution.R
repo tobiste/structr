@@ -14,7 +14,7 @@
 #' @importFrom rotasym r_vMF d_vMF
 #' @name vonmises-fisher
 #' @examples
-#' # example code
+#' set.seed(20250411)
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)
 #' stereoplot()
 #' stereo_point(x)
@@ -45,7 +45,7 @@ dvmf <- function(x, mu, k = 5) {
   if (is.spherical(x)) x <- line2vec(x)
   if (is.spherical(mu)) mu <- line2vec(mu) |> c()
 
-  res <- rotasym::d_vMF(x, mu, k)
+  rotasym::d_vMF(x, mu, k)
 }
 
 
@@ -71,6 +71,7 @@ dvmf <- function(x, mu, k = 5) {
 #' @importFrom rotasym r_unif_sphere
 #' @export
 #' @examples
+#' set.seed(20250411)
 #' v_unif("line", n = 100, method = "sfs") |>
 #'   ortensor() |>
 #'   or_eigen()
@@ -123,6 +124,7 @@ v_unif <- function(class = NULL, n = 100, method = c("gss", "sfs", "rotasym")) {
 #' @export
 #' @examples
 #' \dontrun{
+#' set.seed(20250411)
 #' x <- rfb(100, mu = Line(120, 50), k = 5, A = diag(c(-1, 0, 1)))
 #' stereoplot()
 #' stereo_point(x)
@@ -155,6 +157,7 @@ rfb <- function(n = 100, mu = c(1, 0, 0), k = 5, A) {
 #' @importFrom Directional rkent
 #' @export
 #' @examples
+#' set.seed(20250411)
 #' x <- rkent(100, mu = Line(120, 50), k = 5, b = 1)
 #' stereoplot()
 #' stereo_point(x)
@@ -181,6 +184,7 @@ rkent <- function(n = 100, mu = c(1, 0, 0), k = 5, b) {
 #' @name dist.mle
 #' @importFrom Directional kent.mle vmf.mle
 #' @examples
+#' set.seed(20250411)
 #' x <- rkent(100, mu = Line(120, 50), k = 5, b = 1)
 #' kent.mle(x)
 #' vmf.mle(x)

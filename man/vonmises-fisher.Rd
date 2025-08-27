@@ -27,7 +27,7 @@ Density and random generation for the spherical normal distribution with mean
 and kappa.
 }
 \examples{
-# example code
+set.seed(20250411)
 x <- rvmf(100, mu = Line(120, 50), k = 5)
 stereoplot()
 stereo_point(x)

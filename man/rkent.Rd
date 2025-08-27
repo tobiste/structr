@@ -23,6 +23,7 @@ object of class \code{"line"} or \code{"plane"}}
 Simulation of random values from a spherical Kent distribution.
 }
 \examples{
+set.seed(20250411)
 x <- rkent(100, mu = Line(120, 50), k = 5, b = 1)
 stereoplot()
 stereo_point(x)
