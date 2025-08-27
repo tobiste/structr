@@ -61,7 +61,7 @@ value might not be a good estimator.
 mean \eqn{\mu} (in degree if \code{x} is a \code{"Plane"} or \code{"Line"}, or in radians
 if otherwise). The \eqn{100(1-\alpha)\%} confidence interval is than given by \eqn{\mu \pm q}.
 
-\code{estimate_k} returns the estimated concentration of the von Mises-Fisher distribution \eqn{\kappa} (after Sra, 2011).#'
+\code{estimate_k} returns the estimated concentration of the von Mises-Fisher distribution \eqn{\kappa} (after Sra, 2011).
 }
 \examples{
 set.seed(20250411)
