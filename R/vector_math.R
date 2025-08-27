@@ -5,26 +5,37 @@
 #' @param x,y objects of class `"Vec3"`, `"Line"`, or `"Plane"`.
 #' @param rotaxis Axis of rotation given as object of class `"Vec3"`, `"Line"`, or `"Plane"`.
 #' @param rotangle Angle of rotation in radians for `"Vec3"` objects and in degrees for `"Line"` and `"Plane"` objects.
-#' @param A numeric matrix. Transformation matrix.
+#' @param A numeric 3x3 matrix. Transformation matrix.
 #' @param norm logical. If `TRUE`, the transformed vectors are normalized to unit length.
+#' 
+#' @details
+#' \describe{
+#' \item{`vector_length`}{the length of a vector}
+#' \item{`crossprod`}{the cross-product of two vectors, i.e. the vector perpendicular to the 2 vectors}
+#' \item{`%*%`}{the dot product of two vectors}
+#' \item{`rotate`}{rotation of a vector about a specified vector by a specified angle}
+#' \item{`angle`}{angle between two vectors}
+#' \item{`project`}{projection of one vector onto the other (changes the vector 
+#' length of second vector, unless their are unit vectors)}
+#' \item{`transform`}{transformation of a vector by a 3x3 matrix}
+#' }
 #'
-#' @returns objects of class `"Vec3"`, `"Line"`, or `"Plane"`
+#' @returns objects of same class as `x`, i.e. one of `"Vec3"`, `"Line"`, or 
+#' `"Plane"`. `vector_length()` and `%*%` return a real number. `angle()` 
+#' returns a numeric angle (in degrees, unless `x` is class `"Vec3"`).
 #' @name vecmath
 #'
 #' @examples
 #' vec1 <- Vec3(1, 0, 0)
 #' vec2 <- Vec3(0, 0, 1)
 #'
-#' vlength(vec1)
-#' vsum(vec1)
-#' vnorm(vec1)
-#' crossprod(vec1, vec2)
-#' vdot(vec1, vec2)
-#' vec1 %*% vec2
-#' rotate(vec1, vec2, pi / 2)
-#' angle(vec1, vec2)
-#' project(vec1, vec2)
-#' reject(vec1, vec2)
+#' vector_length(vec1) # lenght of a vector
+#' crossprod(vec1, vec2) # cross product
+#' vec1 %*% vec2 # dot product
+#' rotate(vec1, vec2, pi / 2) # rotation
+#' angle(vec1, vec2) # angle between vectors
+#' project(vec1, vec2) # projection of a vector
+#' transform(vec1, matrix(1:9, nrow = 3, ncol = 3))
 NULL
 
 vlength <- function(x) {
@@ -32,9 +43,16 @@ vlength <- function(x) {
   unname(res)
 }
 
+#' @export
+#' @rdname vecmath
+vector_length <- function(x){
+  Vec3(x) |> vlength()
+}
+
 vsum <- function(x) {
   cbind(x = sum(x[, 1]), y = sum(x[, 2]), z = sum(x[, 3])) # vector sum
 }
+
 
 vnorm <- function(x) {
   x / vlength(x)
@@ -43,6 +61,7 @@ vnorm <- function(x) {
 vscale <- function(x, l) {
   l / vnorm(x) * x
 }
+
 
 vcross <- function(x, y) {
   cbind(
@@ -92,11 +111,12 @@ vdot <- function(x, y) {
 
 
 vrotate <- function(x, rotaxis, rotangle) {
-  rotaxis <- vec2mat(rotaxis) |> vnorm()
+  rotaxis <- vnorm(rotaxis)
   vax <- vcross(rotaxis, x)
   x + vax * sin(rotangle) + vcross(rotaxis, vax) * 2 * (sin(rotangle / 2))^2 # Helmut
 }
 
+#' @export
 rotate <- function(x, rotaxis, rotangle) UseMethod("rotate")
 
 #' @export
@@ -113,15 +133,14 @@ rotate.spherical <- function(x, rotaxis, rotangle) {
     rotangle <- deg2rad(rotangle)
   }
 
-  x_rot <- vrotate(x3, rotaxis3, rotangle)
+  x_rot <- vrotate(x3, rotaxis3, rotangle) |> 
+    Vec3()
 
   if (is.Line(x)) {
     x_rot <- Line(x_rot)
   } else if (is.Plane(x)) {
     x_rot <- Plane(x_rot)
-  } else {
-    x_rot <- as.Vec3(x_rot)
-  }
+  } 
   x_rot
 }
 
@@ -191,11 +210,11 @@ vreject <- function(x, y) {
 
 reject <- function(x, y) UseMethod("reject")
 
-#' @export
+#' @noRd
 reject.default <- function(x, y) vreject(x,y)
 
 
-#' @export
+#' @noRd
 #' @rdname vecmath
 reject.spherical <- function(x, y) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
@@ -246,7 +265,7 @@ v_orthogonalize <- function(x, y) {
 
 
 vtransform <- function(x, A, norm = FALSE) {
-  stopifnot(is.matrix(A))
+  stopifnot(is.matrix(A) & dim(A) == c(3, 3))
 
   xt <- t(A %*% t(x))
   # xt <- t(vdot(A, x))

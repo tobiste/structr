@@ -193,7 +193,7 @@ rkent <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, b) {
 #'
 #' Estimates the parameters of a von Mises-Fisher or Kent distribution.
 #'
-#' @inheritParams ortensor.spherical
+#' @inheritParams ortensor
 #' @source Adapted from [Directional::kent.mle()] and [Directional::vmf.mle()]
 #' @name dist.mle
 #' @importFrom Directional kent.mle vmf.mle

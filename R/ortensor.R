@@ -13,6 +13,7 @@
 #' n = 1
 #'
 #' @export
+#' @name ortensor
 #'
 #' @seealso [or_eigen()], [inertia_tensor()]
 #'
@@ -20,14 +21,16 @@
 #' set.seed(20250411)
 #' x <- rfb(100, mu = Line(120, 50), k = 1, A = diag(c(10, 0, 0)))
 #' ortensor(x)
+ortensor <- function(x, ...) UseMethod("ortensor")
+
+#' @rdname ortensor
+#' @export
 ortensor.spherical <- function(x, norm = TRUE, w = NULL){
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   Vec3(x) |>
     unclass() |>
     ortensor.default(norm, w)
 }
-
-ortensor <- function(...) UseMethod("ortensor")
 
 #' @export
 ortensor.default <- function(x, norm = TRUE, w = NULL) {
@@ -62,7 +65,7 @@ ortensor.default <- function(x, norm = TRUE, w = NULL) {
 
 #' Inertia tensor
 #'
-#' @inheritParams ortensor.spherical
+#' @inheritParams ortensor
 #'
 #' @return 3 x 3 matrix
 #' @details \deqn{D = n - (x_i, y_i, z_i) (x_i, y_i, z_i)^T}
@@ -101,7 +104,7 @@ inertia_tensor.default <- function(x, w = NULL) {
 #'
 #' Decomposition of Orientation Tensor Eigenvectors and Eigenvalues
 #'
-#' @inheritParams ortensor.spherical
+#' @inheritParams ortensor
 #' @param scaled logical. Whether the Eigenvectors should be scaled by the
 #' Eigenvalues (only effective if `x` is in Cartesian coordinates).
 #'
@@ -112,6 +115,7 @@ inertia_tensor.default <- function(x, w = NULL) {
 #' }
 #'
 #' @seealso [ortensor()], [eigen()]
+#' @name eigen
 #'
 #' @export
 #'
@@ -139,10 +143,11 @@ eigen.spherical <- function(x, scaled = FALSE){
   xeig
 }
 
-eigen <- function(...) UseMethod("eigen")
+#' @keywords internal
+eigen <- function(x, ...) UseMethod("eigen")
 
-#' @export
-eigen.default <- function(...) base::eigen(...)
+#' @keywords internal
+eigen.default <- function(x, ...) base::eigen(x, ...)
 
 
 or_eigen <- function(x, scaled = FALSE) {
@@ -161,7 +166,7 @@ or_eigen <- function(x, scaled = FALSE) {
 
 #' Principal Stretches, Strain and Shape Parameters based on the Orientation Tensor.
 #'
-#' @inheritParams ortensor.spherical
+#' @inheritParams ortensor
 #'
 #' @importFrom dplyr near
 #' @name strain_shape
@@ -338,7 +343,7 @@ or_shape_params <- function(x) {
 #' axes of coordinate system: E3||X (north-south), E2||X(east-west),
 #' E1||X(vertical)
 #'
-#' @inheritParams ortensor.spherical
+#' @inheritParams ortensor
 #' @param max_vertical Whether the maximum of the von Mises-Fisher distribution
 #' is already vertical or not.
 #'

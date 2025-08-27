@@ -117,7 +117,7 @@ line2 <- Line(10, 30)
 The **vector length** (or magnitude):
 
 ```{r math_norm}
-vlength(line1)
+vector_length(line1)
 ```
 
 > Orientation vectors are by definition unit vectors, i.e. their length is equal to 1.

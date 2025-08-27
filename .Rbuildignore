@@ -5,15 +5,10 @@
 ^_pkgdown\.yml$
 ^docs$
 ^pkgdown$
-^R/density\.R$
 ^data-raw$
 ^R/preliminary_S4_classes\.R$
 ^R/allmendinger\.R$
-^R/preliminary_S4_classes\.R$
-^R/preliminary_S4_classes$
-^R/preliminary_S4_classes\.R$
-^R/density\.R$
+^R/density2\.R$
 ^README\.Rmd$
-^vignettes/Fault_displacements\.Rmd$
 ^doc$
 ^Meta$

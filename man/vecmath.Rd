@@ -2,15 +2,17 @@
 % Please edit documentation in R/vector_math.R
 \name{vecmath}
 \alias{vecmath}
+\alias{vector_length}
 \alias{crossprod.spherical}
 \alias{\%*\%.spherical}
 \alias{rotate.spherical}
 \alias{angle.spherical}
 \alias{project.spherical}
-\alias{reject.spherical}
 \alias{transform.spherical}
 \title{Vector math operations}
 \usage{
+vector_length(x)
+
 \method{crossprod}{spherical}(x, y)
 
 \method{\%*\%}{spherical}(x, y)
@@ -21,8 +23,6 @@
 
 \method{project}{spherical}(x, y)
 
-\method{reject}{spherical}(x, y)
-
 \method{transform}{spherical}(x, A, norm = FALSE)
 }
 \arguments{
@@ -32,28 +32,39 @@
 
 \item{rotangle}{Angle of rotation in radians for \code{"Vec3"} objects and in degrees for \code{"Line"} and \code{"Plane"} objects.}
 
-\item{A}{numeric matrix. Transformation matrix.}
+\item{A}{numeric 3x3 matrix. Transformation matrix.}
 
 \item{norm}{logical. If \code{TRUE}, the transformed vectors are normalized to unit length.}
 }
 \value{
-objects of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}
+objects of same class as \code{x}, i.e. one of \code{"Vec3"}, \code{"Line"}, or
+\code{"Plane"}. \code{vector_length()} and \code{\%*\%} return a real number. \code{angle()}
+returns a numeric angle (in degrees, unless \code{x} is class \code{"Vec3"}).
 }
 \description{
 Vector math operations
+}
+\details{
+\describe{
+\item{\code{vector_length}}{the length of a vector}
+\item{\code{crossprod}}{the cross-product of two vectors, i.e. the vector perpendicular to the 2 vectors}
+\item{\code{\%*\%}}{the dot product of two vectors}
+\item{\code{rotate}}{rotation of a vector about a specified vector by a specified angle}
+\item{\code{angle}}{angle between two vectors}
+\item{\code{project}}{projection of one vector onto the other (changes the vector
+length of second vector, unless their are unit vectors)}
+\item{\code{transform}}{transformation of a vector by a 3x3 matrix}
+}
 }
 \examples{
 vec1 <- Vec3(1, 0, 0)
 vec2 <- Vec3(0, 0, 1)
 
-vlength(vec1)
-vsum(vec1)
-vnorm(vec1)
-crossprod(vec1, vec2)
-vdot(vec1, vec2)
-vec1 \%*\% vec2
-rotate(vec1, vec2, pi / 2)
-angle(vec1, vec2)
-project(vec1, vec2)
-reject(vec1, vec2)
+vector_length(vec1) # lenght of a vector
+crossprod(vec1, vec2) # cross product
+vec1 \%*\% vec2 # dot product
+rotate(vec1, vec2, pi / 2) # rotation
+angle(vec1, vec2) # angle between vectors
+project(vec1, vec2) # projection of a vector
+transform(vec1, matrix(1:9, nrow = 3, ncol = 3))
 }
