@@ -60,6 +60,7 @@ value might not be a good estimator.
 \code{confidence_angle} returns the semi-vertical angle \eqn{q} about the
 mean \eqn{\mu} (in degree if \code{x} is a \code{"Plane"} or \code{"Line"}, or in radians
 if otherwise). The \eqn{100(1-\alpha)\%} confidence interval is than given by \eqn{\mu \pm q}.
+
 \code{estimate_k} returns the estimated concentration of the von Mises-Fisher distribution \eqn{\kappa} (after Sra, 2011).#'
 }
 \examples{

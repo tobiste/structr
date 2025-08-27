@@ -450,17 +450,15 @@ S1 <- Line(250.89, 70.07)
 S3 <- Line(103.01, 17.07)
 
 # get S2 - which is perpendicular to S1 and S3, hence the cross-product of the two vectors:
-S2 <- vcross(S3, S1)
+S2 <- crossprod(S3, S1)
 
-# get the azimuth of SHmax for a stress ration R = 1:
+# get the azimuth of SHmax for a given stress ration R = 1:
 SH(S1, S2, S3, R = 1) # in degrees:
 ```
 For a several stress ratios:
 ```{r lund2}
-R <- seq(0, 1, .05)
-cbind(R, SH = sapply(R, function(x) {
-  SH(S1, S2, S3, R = x)
-}))
+R <- seq(0, 1, .1)
+cbind(R, SH = SH(S1, S2, S3, R = R))
 ```
 
 

@@ -393,3 +393,23 @@ rbind.spherical <- function(..., .class = NULL){
   do.call(rbind, allargs_class) |>
     Spherical(.class)
 }
+
+head <- function(x, ...) UseMethod("head")
+
+#' @export
+head.default <- function(x, ...) utils::head(x,...)
+
+
+#' @export
+head.spherical <- function(x, n = 6L){
+  end <- nrow(x)
+  x[seq_len(min(n, end)), ]
+}
+
+
+#' @export
+tail.spherical <- function(x, n = 6L){
+  end <- nrow(x)
+  begin <- max(0, end - n + 1)
+  x[seq.int(begin, end), ]
+}

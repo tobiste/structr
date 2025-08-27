@@ -130,6 +130,7 @@ v_confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = FALSE) {
 #' `confidence_angle` returns the semi-vertical angle \eqn{q} about the
 #' mean \eqn{\mu} (in degree if `x` is a `"Plane"` or `"Line"`, or in radians
 #' if otherwise). The \eqn{100(1-\alpha)\%} confidence interval is than given by \eqn{\mu \pm q}.
+#' 
 #' `estimate_k` returns the estimated concentration of the von Mises-Fisher distribution \eqn{\kappa} (after Sra, 2011).#'
 #'
 #' @examples
