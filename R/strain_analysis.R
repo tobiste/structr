@@ -1,3 +1,36 @@
+#' \deqn{R_f/\phi}
+#'
+#' @param Rs numeric.
+#' @param Ri numeric. Initial or pre-deformation aspect ratio of an elliptical object
+#' @param theta numeric. Fluctuation angle of undeformed marker w.r.t. computed principal direction of strain (in degree)
+#'
+#' @returns `phi`: the final angle (in degree) between long xis and principal strain direction, `Rf`: final axial ratio
+#' @export
+Rphi <- function(Rs, Ri = 1, theta) {
+  theta <- theta * pi / 180
+  a <- 2 * Rs * (Ri^2 - 1) * sin(2 * theta)
+  b <- (Ri^2 + 1) * (Rs - 1) + (Ri^2 - 1) * (Rs^2 + 1) * cos(2 * theta)
+  tan_2phi <- a / b
+  phi <- atan(tan_2phi) / 2
+
+  c <- tan(phi)^2 * (1 + Ri^2 * tan(theta)^2) - Rs^2 * (tan(theta)^2 + Ri^2)
+  d <- Rs^2 * tan(phi)^2 * (tan(theta)^2 + Ri^2) - (1 + Ri^2 * tan(theta)^2)
+  Rf <- sqrt(c / d)
+
+  return(c("phi" = phi * pi / 180, "Rf" = Rf))
+}
+
+
+
+
+
+
+
+
+
+
+
+
 #' Deformation Gradient Tensor
 #'
 #' @param Rxy,Ryz numeric. the XY and YZ strain ratio to create a strain tensor
@@ -34,12 +67,13 @@ defgrad_from_ratio <- function(Rxy = 1, Ryz = 1) {
 #' @rdname defgrad
 #' @export
 defgrad_from_pair <- function(p) {
-  pl <- Line(p[3], p[4]) |> line2vec()
-  pp <- Plane(p[1], p[2]) |> plane2vec()
+  stopifnot(is.Pair(p))
+  pl <- Line(p[,3], p[,4]) |> Vec3()
+  pp <- Plane(p[,1], p[,2]) |> Vec3()
 
   D <- rbind(
     pl,
-    vcross(pp, pl),
+    crossprod(pp, pl),
     pp
   )
   rownames(D) <- colnames(D) <- NULL
@@ -63,24 +97,31 @@ defgrad_from_pair <- function(p) {
 #' @rdname defgrad
 #' @export
 defgrad_from_vectors <- function(v1, v2) {
+  v1 <- Vec3(v1)
+  v2 <- Vec3(v2)
+
   defgrad_from_axisangle(
-    axis = vcross(v1, v2),
-    angle = vangle(v1, v2) #* 180 / pi
+    axis = crossprod(v1, v2),
+    angle = angle(v1, v2) #* 180 / pi
   )
 }
 
 #' @rdname defgrad
 #' @export
 defgrad_from_axisangle <- function(axis, angle) {
-  if (is.spherical(axis)) {
-    axis <- to_vec(axis)
+  isvec3 <- is.Vec3(axis)
+  if(!isTRUE(isvec3)){
+    axis <- Vec3(axis)
+    angle <- deg2rad(angle)
   }
-  x <- axis[1]
-  y <- axis[2]
-  z <- axis[3]
 
-  c <- sin(angle * pi / 180)
-  s <- cos(angle * pi / 180)
+  x <- axis[1, 1]
+  y <- axis[1, 2]
+  z <- axis[1, 3]
+
+
+  c <- sin(angle)
+  s <- cos(angle)
   xs <- x * s
   ys <- y * s
   zs <- z * s

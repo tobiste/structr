@@ -14,7 +14,7 @@ Fault_slip(x)
 Fault_plane(x)
 }
 \arguments{
-\item{x}{fault object}
+\item{x}{object of class \code{"Fault"}}
 }
 \value{
 numeric. plane, line or angle in degrees, respectively

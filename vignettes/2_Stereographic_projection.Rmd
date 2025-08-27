@@ -37,8 +37,8 @@ Lambert equal area, lower hemisphere projection is the default plotting setting.
 
 ```{r stereo_earea}
 stereoplot()
-stereo_point(lines, col = "#B63679", pch = 19, cex = .5)
-stereo_point(planes, col = "#000004", pch = 1, cex = .5)
+points(lines, col = "#B63679", pch = 19, cex = .5)
+points(planes, col = "#000004", pch = 1, cex = .5)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 title(main = "Example data", sub = "Lambert equal area, lower hemisphere projection")
 ```
@@ -47,8 +47,8 @@ To change to equal angle stereographic, upper hemisphere projection
 
 ```{r stereo_eangle}
 stereoplot(earea = FALSE)
-stereo_point(lines, col = "#B63679", pch = 19, cex = .5, earea = FALSE, upper.hem = TRUE)
-stereo_point(planes, col = "#000004", pch = 1, cex = .5, earea = FALSE, upper.hem = TRUE)
+points(lines, col = "#B63679", pch = 19, cex = .5, earea = FALSE, upper.hem = TRUE)
+points(planes, col = "#000004", pch = 1, cex = .5, earea = FALSE, upper.hem = TRUE)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 title(main = "Example data", sub = "Equal angle stereographic, upper hemisphere projection")
 ```
@@ -57,8 +57,8 @@ title(main = "Example data", sub = "Equal angle stereographic, upper hemisphere 
 Adding great circles:
 ```{r stereo_greatcircle}
 stereoplot(guides = FALSE)
-stereo_greatcircle(planes, col = "lightgrey", lty = 1)
-stereo_point(planes, col = "#000004", pch = 1, cex = .5)
+lines(planes, col = "lightgrey", lty = 1, d = 90)
+points(planes, col = "#000004", pch = 1, cex = .5)
 ```
 
 ## Statistics
@@ -66,10 +66,10 @@ stereo_point(planes, col = "#000004", pch = 1, cex = .5)
 example_lines$quality <- ifelse(is.na(example_lines$quality), 6, example_lines$quality) # replacing NA values with 6
 line_weightings <- 6 / example_lines$quality
 
-lines_mean <- v_mean(lines, w = line_weightings)
-lines_variance <- v_var(lines, w = line_weightings)
-lines_delta <- v_delta(lines, w = line_weightings)
-lines_confangle <- v_confidence_angle(lines, w = line_weightings)
+lines_mean <- mean(lines, w = line_weightings)
+lines_variance <- var(lines, w = line_weightings)
+lines_delta <- delta(lines, w = line_weightings)
+lines_confangle <- confidence_angle(lines, w = line_weightings)
 
 c(
   "Variance" = lines_variance,
@@ -80,10 +80,10 @@ c(
 
 ```{r stat_plot, message=FALSE,warning=FALSE}
 stereoplot(guides = FALSE)
-stereo_point(lines, col = "lightgrey", pch = 1, cex = .5)
-stereo_point(lines_mean, col = "#B63679", pch = 19, cex = 1)
-stereo_smallcircle(lines_mean, d = lines_confangle, col = "#E65164FF")
-stereo_smallcircle(lines_mean, d = lines_delta, col = "#FB8861FF")
+points(lines, col = "lightgrey", pch = 1, cex = .5)
+points(lines_mean, col = "#B63679", pch = 19, cex = 1)
+lines(lines_mean, d = lines_confangle, col = "#E65164FF")
+lines(lines_mean, d = lines_delta, col = "#FB8861FF")
 legend("topright", legend = c("Mean line", "95% confidence cone", "63% data cone"), col = c("#B63679", "#E65164FF", "#FB8861FF"), pch = c(19, NA, NA), lty = c(NA, 1, 1), cex = .75)
 ```
 
@@ -91,12 +91,12 @@ legend("topright", legend = c("Mean line", "95% confidence cone", "63% data cone
 ### Orientation tensor and eigenvectors:
 
 ```{r eigen}
-planes_eigen <- or_eigen(planes)
+planes_eigen <- eigen(planes)
 
 stereoplot(guides = FALSE)
-stereo_point(planes, col = "lightgrey", pch = 1, cex = .5)
-stereo_greatcircle(planes_eigen$vectors, col = viridis::magma(3), lty = 1)
-stereo_point(planes_eigen$vectors, col = viridis::magma(3), pch = 19, cex = 1)
+points(planes, col = "lightgrey", pch = 1, cex = .5)
+lines(planes_eigen$vectors, d = 90, col = viridis::magma(3), lty = 1)
+points(planes_eigen$vectors, col = viridis::magma(3), pch = 19, cex = 1)
 legend("topright", legend = c("Eigenvectors 1", "Eigenvectors 2", "Eigenvectors 3"), col = viridis::magma(3), pch = 19, cex = .75)
 ```
 
@@ -114,16 +114,14 @@ example_planes$quality <- ifelse(is.na(example_planes$quality), 6, example_plane
 plane_weightings <- 6 / example_planes$quality
 
 fabric_p <- or_shape_params(planes)$Vollmer["D"]
-my_planes_eig <- or_eigen(planes)
-
 fabric_l <- or_shape_params(lines)$Vollmer["D"]
 
 par(mfrow = c(1, 2))
 stereoplot(guides = TRUE, col = "grey96")
-stereo_point(planes, col = "grey", pch = 16, cex = .5)
-stereo_density(planes, type = "contour", add = TRUE, weights = plane_weightings)
-stereo_point(as.plane(planes_eigen$vectors[3, ]), col = "black", pch = 16)
-stereo_greatcircle(as.plane(planes_eigen$vectors[3, ]), col = "black", pch = 16)
+points(planes, col = "grey", pch = 16, cex = .5)
+contour(planes, add = TRUE, weights = plane_weightings)
+points(planes_eigen$vectors[3, ], col = "black", pch = 16)
+lines(planes_eigen$vectors[3, ], d = 90, col = "black", pch = 16)
 title(
   main = "Planes",
   sub = paste0(
@@ -133,9 +131,9 @@ title(
 )
 
 stereoplot(guides = TRUE, col = "grey96")
-stereo_point(lines, col = "grey", pch = 16, cex = .5)
-stereo_density(lines, type = "contour", add = TRUE, weights = line_weightings)
-stereo_point(lines_mean, col = "black", pch = 16)
+points(lines, col = "grey", pch = 16, cex = .5)
+contour(lines, add = TRUE, weights = line_weightings)
+points(lines_mean, col = "black", pch = 16)
 title(
   main = "Lines",
   sub = paste0(

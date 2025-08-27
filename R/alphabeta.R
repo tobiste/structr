@@ -23,10 +23,11 @@
 #' drillcore_orientation(azi, inc, 45, 220)
 #'
 #' # multiple alpha-beta measurements
-#' stereoplot()
-#' stereo_point(Line(azi, -inc), lab = "core-axis")
-#' drillcore_orientation(azi, inc, alpha = c(60, 45), beta = c(320, 220)) |>
-#'   stereo_point(lab = c("A", "B"))
+#' plot(Line(azi, -inc), lab = "core-axis")
+#'
+#' res <- drillcore_orientation(azi, inc, alpha = c(60, 45), beta = c(320, 220))
+#' points(res, col = 2:3)
+#' text(res, labels = c("A", "B"), col = 2:3, pos = 4)
 drillcore_orientation <- function(azi, inc, alpha, beta, gamma = NULL) {
   stopifnot(length(alpha) == length(beta))
   inc <- -inc
@@ -37,8 +38,8 @@ drillcore_orientation <- function(azi, inc, alpha, beta, gamma = NULL) {
     inc <- rep(inc, n)
   }
 
-  C <- line2vec(cbind(azi, inc)) # core axis
-  B <- line2vec(cbind((azi + 180) %% 360, 90 - inc)) # bottom of hole line
+  C <- Vec3(Line(azi, inc)) |> unclass() # core axis
+  B <- Vec3(Line((azi + 180) %% 360, 90 - inc)) |> unclass() # bottom of hole line
 
   # E <- int <- matrix(nrow = n, ncol = 3)
   # for (i in 1:n) {
@@ -71,13 +72,15 @@ drillcore_orientation <- function(azi, inc, alpha, beta, gamma = NULL) {
     int[idx, ] <- vcross(C[idx, , drop = FALSE], E[idx, , drop = FALSE])
   }
 
-  P <- (vrotate(C, int, -deg2rad(90 - alpha)))
+
+  P <- (vrotate(C, int, -deg2rad(90 - alpha))) |>
+    Vec3()
 
 
   if (is.null(gamma)) {
-    vec2plane(P)
+    Plane(P)
   } else {
-    L <- vrotate(int, P, deg2rad(gamma))
-    vec2line(L)
+    L <- rotate(Vec3(int), P, deg2rad(gamma))
+    Line(L)
   }
 }

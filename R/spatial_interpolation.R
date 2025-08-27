@@ -12,7 +12,7 @@
 #' @param threshold Numeric. Threshold for deviation of direction. Default is `25`
 #' @param arte_thres Numeric. Maximum distance (in km) of the grid point to the
 #'  next data point. Default is `200`
-#' @param dist_weight Distance weighting method which should be used:
+#' @param dist_weighting Distance weighting method which should be used:
 #'  `"linear"`, or `"inverse"` (the default).
 #' @param idp Numeric. The weighting power of inverse distance. When set to `0`,
 #'  no weighting is applied.
@@ -20,7 +20,7 @@
 #'  nearby (0 to 1). Default is `0.1`
 #' @param R_range Numeric value or vector specifying the kernel half-width, i.e.
 #'  the search radius (in km). Default is `1`
-#' @param compact logical.
+#' @param .compact logical.
 #' @param lon_range,lat_range two column vector. coordinate range. ignored when
 #'  grid is specified.
 #'
@@ -30,66 +30,64 @@
 #' @details Based on [tectonicr::stress2grid()]
 #'
 #' @seealso [tectonicr::stress2grid()], [v_mean()], [v_delta()]
-#' @export
+#' @noRd
 #' @examples
-#' \dontrun{
-#' data <- read_strabo_JSON("E:/Lakehead/Field work/StraboSpot_07_02_2023.json")
-#' ps <- data$data |>
-#'   dplyr::mutate(dipdir = (strike + 90) %% 360) |>
-#'   dplyr::filter(type == "planar_orientation" &
-#'     !(feature_type %in% c("other", "vector", "option_13")))
+#' ps_vec <- rvmf() |> Line()
+#' ps <- data.frame(x = runif(100, 50, 60), y = runif(100, 40, 45)) |> st_as_sf(coords = c("x", "y"))
 #'
-#' ps_vec <- structr::as.plane(cbind(ps$dipdir, ps$dip))
-#'
-#' spatial_interpolation(
-#'   x = ps_vec, coords = ps, gridsize = .05, R_range = seq(1, 10, 1),
-#'   dist_threshold = 0.01, threshold = Inf
-#' )
-#' }
+#' spatial_interpolation(x = ps_vec, coords = ps, gridsize = .5, compact = FALSE)
 spatial_interpolation <- function(x,
                                   coords,
                                   grid = NULL,
                                   lon_range = NULL,
                                   lat_range = NULL,
-                                  gridsize = .1,
-                                  min_data = 3,
-                                  threshold = Inf,
-                                  arte_thres = 100,
-                                  dist_weight = c("inverse", "linear"),
-                                  idp = 1.0,
-                                  dist_threshold = 0.01,
+                                  gridsize = 1L,
+                                  min_data = 3L,
+                                  max_data = Inf,
+                                  max_sd = Inf,
+                                  min_dist_threshold = Inf,
+                                  dist_weighting = c("inverse", "linear", "none"),
+                                  idp = 1,
+                                  dist_threshold = 0.1,
                                   R_range = seq(1, 10, 1),
-                                  compact = TRUE) {
-  # stopifnot(inherits(coords, "sf"), is.numeric(threshold), is.numeric(arte_thres),
-  #   arte_thres > 0, is.numeric(dist_threshold), is.numeric(R), is.numeric(idp),
-  # )
-  lon.X <- lat.Y <- NULL
+                                  .compact = TRUE) {
+  stopifnot(
+    is.spherical(x),
+    is.numeric(gridsize) && length(gridsize) == 1,
+    is.numeric(max_sd) | is.infinite(max_sd),
+    is.numeric(max_data) | is.infinite(max_data),
+    is.numeric(min_data) | is.infinite(min_data),
+    max_data >= min_data,
+    is.numeric(min_dist_threshold),
+    is.numeric(dist_threshold),
+    min_dist_threshold > 0 && length(min_dist_threshold) == 1,
+    is.numeric(R_range),
+    is.numeric(idp) && length(idp) == 1
+  )
 
-  transform <- FALSE
-  if (is.spherical(x)) {
-    v <- to_vec(x)
-    transform <- TRUE
-  } else {
-    v <- vec2mat(x)
-  }
+  v <- Line(x) |> unclass()
 
+  arte_thres <- min_dist_threshold
+  threshold <- max_sd
   min_data <- as.integer(ceiling(min_data))
-  dist_weight <- match.arg(dist_weight)
+  dist_weighting <- match.arg(dist_weighting)
+  w_distance_fun <- if (dist_weighting == "linear") tectonicr:::dist_weighting_linear else tectonicr:::dist_weighting_inverse
+
+  # colnames_x <- colnames(x)
 
   # pre-allocating
-  # N <- nrow(x)
-  lat <- lon <- numeric()
+  n_vecs <- nrow(x)
+  lat <- lon <- numeric(n_vecs)
+  N <- md <- R <- numeric()
 
-  coords <- coords |>
-    sf::st_transform(crs = "WGS84") |>
-    sf::st_coordinates()
+  if (dist_weighting == "none") idp <- 0
 
+  x_coords <- sf::st_coordinates(coords)
   datas <- cbind(
-    lon = coords[, 1],
-    lat = coords[, 2],
-    x = v[, 1],
-    y = v[, 2],
-    z = v[, 3]
+    lon = x_coords[, 1],
+    lat = x_coords[, 2],
+    azimuth = v[, 1],
+    plunge = v[, 2]
   ) #|> as.matrix()
 
   if (is.null(grid)) {
@@ -116,96 +114,78 @@ spatial_interpolation <- function(x,
       sf::st_as_sf()
   }
   stopifnot(inherits(grid, "sf"), any(sf::st_is(grid, "POINT")))
-  G <- sf::st_coordinates(grid)
+  G <- unname(sf::st_coordinates(grid))
+  R_seq <- seq_along(R_range)
 
-  R <- N <- numeric(nrow(G))
+  res <- lapply(seq_along(G[, 1]), function(i) {
+    # for(i in seq_along(G[, 1])){
+    distij <- dist_greatcircle(G[i, 2], G[i, 1], datas[, 2], datas[, 1])
+    if (max_data < Inf) distij <- distij[tectonicr:::which.nsmallest(distij, max_data)] # select the `max_data` nearest locations
 
-  SH <- c()
-  for (i in seq_along(G[, 1])) {
-    distij <- tectonicr::dist_greatcircle(G[i, 2], G[i, 1], datas[, 2], datas[, 1])
-
-    if (min(distij) <= arte_thres) {
-      for (k in seq_along(R_range)) {
-        R <- R_range[k]
-        ids_R <-
-          which(distij <= R) # select those that are in search radius
-
-        N_in_R <- length(ids_R)
+    if (min(distij) <= min_dist_threshold) {
+    t(vapply(R_seq, function(k) {
+      # for(k in R_seq){
+        R_search <- R_range[k]
+        ids_R <- (distij <= R_search) # select those that are in search radius
+        N_in_R <- sum(ids_R)
 
         if (N_in_R < min_data) {
           # not enough data within search radius
           sd_vec <- NA
-          mean_vec <- cbind(NA, NA, NA)
-          mdr <- NA
+          mean_vec <- cbind(NA, NA)
+          md <- NA
         } else if (N_in_R == 1) {
           sd_vec <- 0
-          mean_vec <- datas[ids_R, 3:5]
-          mdr <- distij[ids_R] / R
+          mean_vec <- datas[ids_R, 3:4]
+          md <- distij[ids_R]
         } else {
-          mdr <- mean(distij[ids_R], na.rm = TRUE) / R
-          dist_threshold_scal <- R * dist_threshold
+          md <- mean(distij[ids_R], na.rm = TRUE)
 
-          if (dist_weight == "linear") {
-            w <- R + 1 - max(dist_threshold_scal, distij[ids_R])
-          } else {
-            w <- 1 / (max(dist_threshold_scal, distij[ids_R]))^idp
-          }
+          # distance weighting
+          w <- w_distance_fun(R_search, dist_threshold, distij[ids_R], idp)
 
-          # mean value
-          mean_vec <- v_mean(datas[ids_R, 3:5], w)
-          sd_vec <- v_delta(datas[ids_R, 3:5], w)
+
+          # mean vector and spherical standard deviation
+          vecs <- datas[ids_R, 3:4] |> as.Line()
+          mean_vec <- mean.spherical(vecs, w) |> unclass()
+          sd_vec <- delta(vecs, w)
         }
-        SH.ik <- c(
+        c(
           lon = G[i, 1],
           lat = G[i, 2],
-          x = mean_vec[1],
-          y = mean_vec[2],
-          z = mean_vec[3],
-          delta = sd_vec / DEG2RAD(),
-          R = R,
-          mdr = mdr,
+          azimuth = mean_vec[1, 1],
+          plunge = mean_vec[1, 2],
+          # z = mean_vec[1,3],
+          delta = sd_vec,
+          R = R_search,
+          md = md,
           N = N_in_R
         )
-
-        if (SH.ik["delta"] <= threshold & !is.na(SH.ik["delta"])) {
-          SH <- rbind(SH, SH.ik)
-        }
-      }
+      }, FUN.VALUE = numeric(8)))
     }
-  }
+  }) |>
+    lapply(as.data.frame) |>
+    dplyr::bind_rows() |>
+    dplyr::mutate(mdr = md / R, N = as.integer(N)) |>
+    dplyr::select(-md) |>
+    # dplyr::filter(delta <= threshold, !is.na(delta)) |>
+    sf::st_as_sf(coords = c("lon", "lat"), crs = sf::st_crs(x), remove = FALSE)
 
-  vec <- to_spherical(cbind(x = SH[, 3], y = SH[, 4], z = SH[, 5]))
-
-  res <- as.data.frame(SH) |>
-    dplyr::rename(lon = lon.X, lat = lat.Y) |>
-    dplyr::mutate(N = as.integer(N)) |>
-    sf::st_as_sf(coords = c("lon", "lat"), crs = sf::st_crs(x), remove = FALSE) |>
-    dplyr::group_by(R)
-
-  res$dipdir <- vec[, 1]
-  res$dip <- vec[, 2]
-
-  if (compact) res <- compact_grid(res)
-
-  # res_coords <- data.frame(X = SH[, 1], Y = SH[, 2])
+  # vec <- Line(res$azimuth, res$plunge)
   #
-  # if (transform) {
-  #   vec <- to_spherical(cbind(x = SH[, 3], y = SH[, 4], z = SH[, 5]), class(x))
-  # } else {
-  #   vec <- cbind(x = SH[, 3], y = SH[, 4], z = SH[, 5])
+  # if (is.Plane(x)) {
+  #   res <- res |> select(-c("azimuth", "plunge"))
+  #   vec <- Plane(vec)
+  #   res$dipdir <- vec[, 1]
+  #   res$dip <- vec[, 2]
+  # } else if (is.Vec3(x)) {
+  #   res <- res |> select(-c("azimuth", "plunge"))
+  #   res$x <- vec[, 1]
+  #   res$y <- vec[, 2]
+  #   res$z <- vec[, 2]
   # }
-  #
-  # stats <- data.frame(
-  #   sd = SH[, "sd"],
-  #   mdr = SH[, "mdr"],
-  #   N = SH[, "N"]
-  # )
-  #
-  # res <- list(
-  #   coords = res_coords,
-  #   mean = vec,
-  #   stats = stats
-  # )
+
+  if (.compact) res <- compact_grid(res)
 
   return(res)
 }

@@ -4,36 +4,35 @@
 #' and kappa.
 #'
 #' @param n integer. number of random samples to be generated
-#' @param x,mu numeric. Can be three element vector, three column array, or an
-#' object of class `"line"` or `"plane"`
+#' @param x,mu object of class `"Vec3"`, `"Line"` or `"Plane"`
 #' @param k numeric. The concentration parameter (\eqn{\kappa}) of the the von
 #' Mises-Fisher distribution
-#' @seealso [v_unif()] for alternative algorithms to generate uniform
-#' distributed samples on a sphere, [rkent()] for Kent distribution.
+#' @seealso [runif.spherical()] for alternative algorithms to generate uniform
+#' distributed samples on a sphere, [rkent()] for Kent distribution,
+#' [rfb()] for Fisher-Bingham distribution.
 #' @source Adapted fom [rotasym::r_vMF()] and [rotasym::d_vMF()]
 #' @importFrom rotasym r_vMF d_vMF
 #' @name vonmises-fisher
 #' @examples
 #' set.seed(20250411)
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)
-#' stereoplot()
-#' stereo_point(x)
+#' dvmf(x, mu = Line(120, 50))
+#' plot(x)
 NULL
 
 #' @rdname vonmises-fisher
 #' @export
-rvmf <- function(n = 100, mu = c(1, 0, 0), k = 5) {
-  transform <- FALSE
-  if (is.spherical(mu)) {
-    class <- class(mu)
-    mu <- line2vec(mu) |> c()
-    transform <- TRUE
-  }
-
-  res <- rotasym::r_vMF(n, mu, k)
+rvmf <- function(n = 100, mu = Vec3(1, 0, 0), k = 5) {
+  stopifnot(nrow(mu) == 1)
+  muv <- Vec3(mu) |> unclass() |> c()
+  res <- rotasym::r_vMF(n, muv, k)
   colnames(res) <- c("x", "y", "z")
-  if (transform) {
-    res |> to_spherical(class)
+  res <- Vec3(res)
+
+  if(is.Line(mu)){
+    Line(res)
+  } else if(is.Plane(mu)){
+    Plane(res)
   } else {
     res
   }
@@ -42,10 +41,10 @@ rvmf <- function(n = 100, mu = c(1, 0, 0), k = 5) {
 #' @rdname vonmises-fisher
 #' @export
 dvmf <- function(x, mu, k = 5) {
-  if (is.spherical(x)) x <- line2vec(x)
-  if (is.spherical(mu)) mu <- line2vec(mu) |> c()
-
-  rotasym::d_vMF(x, mu, k)
+  stopifnot(nrow(mu) == 1)
+  xv <- Vec3(x) |> unclass()
+  muv <- Vec3(mu) |> unclass() |> c()
+  rotasym::d_vMF(xv, muv, k)
 }
 
 
@@ -57,7 +56,7 @@ dvmf <- function(x, mu, k = 5) {
 #' *Golden Section Spiral points on a sphere*.
 #'
 #' @param class character. Coordinate class of the output vectors.
-#' @param n number of observations
+#' @param n integer. number of random samples to be generated
 #' @param method character. The algorithm for generating uniformly distributed
 #' vectors. Either `"sfs"` for the "Spherical Fibonacci Spiral points on a sphere",
 #' `"gss"` for "Golden Section Spiral points on a sphere", or the algorithm
@@ -67,22 +66,22 @@ dvmf <- function(x, mu, k = 5) {
 #'  `"sfs"` algorithm is from on John Burkardt (http://people.sc.fsu.edu/~jburkardt/),
 #'  `"gss` is from  http://www.softimageblog.com/archives/115
 #' @seealso [rvmf()] to draw samples from the von Mises Fisher distribution
-#' around a specified mean vector.
+#' around a specified mean vector. [rkent()] to draw from a Kent-distribution. [rfb()] to draw from a Fisher-Bingham distribution.
 #' @importFrom rotasym r_unif_sphere
 #' @export
 #' @examples
 #' set.seed(20250411)
-#' v_unif("line", n = 100, method = "sfs") |>
-#'   ortensor() |>
-#'   or_eigen()
-#' v_unif("line", n = 100, method = "gss") |>
-#'   ortensor() |>
-#'   or_eigen()
-#' v_unif("line", n = 100, method = "rotasym") |>
-#'   ortensor() |>
-#'   or_eigen()
-v_unif <- function(class = NULL, n = 100, method = c("gss", "sfs", "rotasym")) {
+#' x1 <- runif.spherical(n = 100, "Line", method = "sfs")
+#' plot(x1)
+#'
+#' x2 <- runif.spherical(n = 100, "Line", method = "gss")
+#' plot(x2)
+
+#' x3 <- runif.spherical(n = 100, "Line", method = "rotasym")
+#' plot(x3)
+runif.spherical <- function(n = 100, class = c('Vec3', 'Line', 'Plane'), method = c("gss", "sfs", "rotasym")) {
   method <- match.arg(method)
+  class <- match.arg(class)
 
   if (method == "sfs") {
     # Spherical Fibonacci Spiral points on a sphere
@@ -104,10 +103,15 @@ v_unif <- function(class = NULL, n = 100, method = c("gss", "sfs", "rotasym")) {
   } else {
     dc <- rotasym::r_unif_sphere(n, p = 3)
   }
-  if (!is.null(class)) {
-    dc <- to_spherical(dc, class)
+
+  dc <- Vec3(dc)
+  if (class=="Line") {
+    Line(dc)
+  } else if(class=='Plane'){
+    Plane(dc)
+  } else {
+    dc
   }
-  dc
 }
 
 #' Spherical Fisher-Bingham distribution
@@ -115,31 +119,36 @@ v_unif <- function(class = NULL, n = 100, method = c("gss", "sfs", "rotasym")) {
 #' Simulation of random values from a spherical Fisher-Bingham distribution.
 #'
 #' @param n integer. number of random samples to be generated
-#' @param mu numeric. Can be three element vector, three column array, or an
-#' object of class `"line"` or `"plane"`
+#' @param mu object of class `"Vec3"`, `"Line"` or `"Plane"`
 #' @param k numeric. The concentration parameter (\eqn{\kappa})
 #' @param A symmetric matrix
 #' @source Adapted from [Directional::rfb()]
 #' @importFrom Directional rfb
+#'
+#' @seealso [rvmf()] to draw samples from the von Mises Fisher distribution
+#' around a specified mean vector. [rkent()] to draw from a Kent-distribution.
+#' [runif.spherical()] to draw from a a spherical uniform distribution.
+#'
 #' @export
 #' @examples
-#' \dontrun{
 #' set.seed(20250411)
 #' x <- rfb(100, mu = Line(120, 50), k = 5, A = diag(c(-1, 0, 1)))
-#' stereoplot()
-#' stereo_point(x)
-#' }
-rfb <- function(n = 100, mu = c(1, 0, 0), k = 5, A) {
-  transform <- is.spherical(mu)
-  if (transform) {
-    class <- class(mu)
-    mu <- c(line2vec(mu))
+#' plot(x)
+rfb <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, A) {
+ muv <- Vec3(mu) |> unclass() |> c()
+
+  res <- Directional::rfb(n = n, k = k, m = muv, A = A)
+  colnames(res) <- c("x", "y", "z")
+  res <- Vec3(res)
+
+  if(is.Line(mu)){
+    Line(res)
+  } else if(is.Plane(mu)){
+    Plane(res)
+  } else {
+    res
   }
 
-  res <- Directional::rfb(n = n, k = k, m = mu, A = A)
-  colnames(res) <- c("x", "y", "z")
-
-  if (transform) to_spherical(res, class) else res
 }
 
 
@@ -147,29 +156,35 @@ rfb <- function(n = 100, mu = c(1, 0, 0), k = 5, A) {
 #'
 #' Simulation of random values from a spherical Kent distribution.
 #'
-#' @param n integer. number of random samples to be generated
-#' @param mu numeric. Can be three element vector, three column array, or an
-#' object of class `"line"` or `"plane"`
+#' @inheritParams rvmf
+#' @param mu Mean orientation. object of class description `"Vec3()"`, `"Line()"`, or `"Plane"`
 #' @param k numeric. The concentration parameter (\eqn{\kappa})
 #' @param b numeric. \eqn{\beta} (ellipticity): \eqn{0 \leq \beta < \kappa}
+#'
 #' @source Adapted from [Directional::rkent()]
-#' @seealso [rvmf()] for von Mises-Fisher distribution
+#' @seealso [rvmf()] to draw samples from the von Mises Fisher distribution
+#' around a specified mean vector. [runif.spherical()] to draw from a a spherical uniform distribution.
+#'  [rfb()] to draw from a Fisher-Bingham distribution.
+#'
 #' @importFrom Directional rkent
 #' @export
 #' @examples
 #' set.seed(20250411)
 #' x <- rkent(100, mu = Line(120, 50), k = 5, b = 1)
-#' stereoplot()
-#' stereo_point(x)
-rkent <- function(n = 100, mu = c(1, 0, 0), k = 5, b) {
-  transform <- is.spherical(mu)
-  if (transform) {
-    class <- class(mu)
-    mu <- c(line2vec(mu))
-  }
-  res <- Directional::rkent(n = n, k = k, m = mu, b = b)
+#' plot(x)
+rkent <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, b) {
+  muv <- Vec3(mu) |> c()
+  res <- Directional::rkent(n = n, k = k, m = muv, b = b)
   colnames(res) <- c("x", "y", "z")
-  if (transform) to_spherical(res, class) else res
+  res <- Vec3(res)
+
+  if(is.Line(mu)){
+    Line(res)
+  } else if(is.Plane(mu)){
+    Plane(res)
+  } else {
+    res
+  }
 }
 
 
@@ -178,30 +193,29 @@ rkent <- function(n = 100, mu = c(1, 0, 0), k = 5, b) {
 #'
 #' Estimates the parameters of a von Mises-Fisher or Kent distribution.
 #'
-#' @param x numeric. Can be three element vector, three column array, or an
-#' object of class `"line"` or `"plane"`
+#' @inheritParams ortensor.spherical
 #' @source Adapted from [Directional::kent.mle()] and [Directional::vmf.mle()]
 #' @name dist.mle
 #' @importFrom Directional kent.mle vmf.mle
 #' @examples
-#' set.seed(20250411)
 #' x <- rkent(100, mu = Line(120, 50), k = 5, b = 1)
-#' kent.mle(x)
-#' vmf.mle(x)
+#' kent_mle(x)
+#' vmf_mle(x)
 NULL
 
 #' @rdname dist.mle
 #' @export
-kent.mle <- function(x) {
-  transform <- is.spherical(x)
-  if (transform) {
-    class <- class(x)
-    x <- to_vec(x)
+kent_mle <- function(x) {
+  xv <- Vec3(x) |> unclass()
+  res <- Directional::kent.mle(xv)
+  nm <- colnames(res$G)
+  res$G <- t(res$G) |> Vec3()
+  rownames(res$G) <- nm
+  if (is.Line(x)){
+    res$G <- Line(res$G)
+  } else if(is.Plane(x)){
+    res$G <- Plane(res$G)
   }
-  res <- Directional::kent.mle(x)
-
-  res$G <- t(res$G)
-  if (transform) res$G <- to_spherical(res$G, class)
 
   res$runtime <- NULL
   return(res)
@@ -209,15 +223,19 @@ kent.mle <- function(x) {
 
 #' @rdname dist.mle
 #' @export
-vmf.mle <- function(x) {
-  transform <- is.spherical(x)
-  if (transform) {
-    class <- class(x)
-    x <- to_vec(x)
-  }
-  res <- Directional::vmf.mle(x, fast = TRUE)
+vmf_mle <- function(x) {
+  xv <- Vec3(x) |> unclass()
 
-  if (transform) res$mu <- to_spherical(res$mu, class)
+  res <- Directional::vmf.mle(xv, fast = TRUE)
+  res$mu <- t(res$mu)
+  colnames(res$mu) <- c("x", "y", "z")
+  res$mu <- Vec3(res$mu)
+
+  if (is.Line(x)){
+    res$mu <- Line(res$mu)
+  } else if(is.Plane(x)){
+    res$mu <- Plane(res$mu)
+  }
 
   return(res)
 }

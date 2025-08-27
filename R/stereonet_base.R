@@ -103,7 +103,7 @@ stereo_coords <- function(az, inc, upper.hem = FALSE, earea = TRUE, r = 1) {
 #'
 #' Visualization of lines, planes in a stereographic projection.
 #'
-#' @param x Object of class `"line"` or `"plane"`
+#' @param x object of class `"Vec3"`, `"Line"`, `"Plane"`. `"Pair"`, or `"Fault"`
 #' @param upper.hem logical. Whether the projection is shown for upper
 #' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
 #' @param earea logical `TRUE` for Lambert equal-area projection (also "Schmidt net"; the default), or
@@ -114,17 +114,18 @@ stereo_coords <- function(az, inc, upper.hem = FALSE, earea = TRUE, r = 1) {
 #' @param text.pos position for labels
 #' @param cex character expansion of labels
 #' @param ... optional graphical parameters
-#' @note `"plane"` and `"fault"` objects will be displayed as pole to the plane (only).
+#' @note `"Plane"` and `"Fault"` objects will be displayed as pole to the plane (only).
 #' @importFrom graphics points text
 #' @export
 #' @examples
 #' stereoplot()
-#' stereo_point(Line(azimuth = c(90, 80), plunge = c(10, 75)), lab = c("L1", "L2"))
+#' stereo_point(Line(c(90, 80), c(10, 75)), lab = c("L1", "L2"))
 #' stereo_point(Plane(120, 30), lab = "P", col = "red")
 stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1, upper.hem = FALSE, earea = TRUE, ...) {
   stopifnot(is.spherical(x))
+  if(is.Vec3(x)) x <- Line(x)
 
-  if (is.plane(x) | is.fault(x)) {
+  if (is.Plane(x) | is.Fault(x)) {
     x[, 1] <- 180 + x[, 1]
     x[, 2] <- 90 - x[, 2]
   }
@@ -145,7 +146,7 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1
 #'
 #' Visualization of faults (planes and lines) in a stereographic projection.
 #'
-#' @param x Object of class `"fault"`
+#' @param x Object of class `"Fault"`
 #' @param hoeppner logical. `TRUE` for Hoeppner plot
 #' @param greatcirles logical. Whether greatcircles are displayed (`TRUE`, the default) or poles to planes (`FALSE`)
 #' @param pch,col,lwd,lty plotting parameters for planes and lines
@@ -175,7 +176,7 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1
 #' # stereo_fault(faults, col =1:4, hoeppner = TRUE)
 #' legend("bottomright", c("normal", "thrust", "unknown", "normal"), fill = 1:4)
 stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex = 1, text.pos = 4, upper.hem = FALSE, earea = TRUE, ...) {
-  stopifnot(is.fault(x))
+  stopifnot(is.Fault(x))
   x0 <- x
 
   if (length(col) == 1) col <- rep(col, nrow(x))
@@ -244,7 +245,7 @@ stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 16, col 
 #'
 #' Visualization of smallcircles and greatcircles in a stereographic projection.
 #'
-#' @param x Object of class `"line"` or `"plane"`
+#' @param x object of class `"Vec3"`, `"Line"`, `"Plane"`, `"Pair"`, or `"Fault"`.
 #' @param d numeric. conical angle in degrees.
 #' @param col,lty,lwd color, line type, and line width parameters
 #' @param N integer. number of points to calculate
@@ -283,7 +284,7 @@ stereo_smallcircle <- function(x, d = 90, col = 1, N = 1000, upper.hem = FALSE, 
 
     invisible(
       lapply(seq_len(nx), function(i) {
-        stereo_smallcircle0(as.line(x[i, ]), d[i], col[i], N, upper.hem, earea, lty[i], lwd[i], BALL.radius, ...)
+        stereo_smallcircle0(Line(x[i, ]), d[i], col[i], N, upper.hem, earea, lty[i], lwd[i], BALL.radius, ...)
       })
     )
   }
@@ -295,6 +296,7 @@ stereo_smallcircle0 <- function(x, d = 90, col = 1, N = 1000, upper.hem = FALSE,
   if (length(lty) == 1) lty <- rep(lty, nrow(x))
   if (length(lwd) == 1) lwd <- rep(lwd, nrow(x))
 
+  if(is.Vec3(x)) x <- Line(x)
   az <- x[, 1]
   inc <- 90 - x[, 2]
 
@@ -370,8 +372,8 @@ stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = grDevices::gra
                        lwd = 1, lty = 1, border = "black", title = NULL,
                        sub = NULL, centercross = TRUE, ticks = NULL) {
   plot(c(-1, 1), c(-1, 1),
-    type = "n", xlab = NULL, ylab = NULL, asp = 1,
-    axes = FALSE, ann = FALSE
+       type = "n", xlab = NULL, ylab = NULL, asp = 1,
+       axes = FALSE, ann = FALSE
   )
 
   graphics::title(main = title, sub = sub)
@@ -419,11 +421,11 @@ stereo_guides_schmidt <- function(d = 10, n = 512, ...) {
   }
 
   # Longitude lines (constant lambda)
-  phi_seq <- seq(-90, 90, 5) * DEG2RAD()
+  phi_seq <- seq(-90, 90, 5)  |> deg2rad()
   cos_phi_seq <- cos(phi_seq)
   sin_phi_seq <- sin(phi_seq)
 
-  lam_vals <- seq(d, 180 - d, d) * DEG2RAD()
+  lam_vals <- seq(d, 180 - d, d) |> deg2rad()
   cos_lam_vals <- cos(lam_vals - lam0)
   sin_lam_vals <- sin(lam_vals - lam0)
 
@@ -438,14 +440,14 @@ stereo_guides_schmidt <- function(d = 10, n = 512, ...) {
 
 stereo_guides_wulff <- function(d = 9, r = 1, n = 512, ...) {
   if (n %% 2 != 0) n <- n + 1
-  beta0 <- seq(0, 360, length.out = n) * DEG2RAD()
+  beta0 <- seq(0, 360, length.out = n) |> deg2rad()
   beta <- c(beta0[(n / 2):n], beta0[1:(n / 2 - 1)])
 
   cos_beta <- cos(beta)
   sin_beta <- sin(beta)
 
   # great circles
-  phi <- seq(0, 180, by = d) * DEG2RAD()
+  phi <- seq(0, 180, by = d) |> deg2rad()
   rcos_phi <- r / cos(phi)
   rtan_phi <- r * tan(phi)
 
@@ -459,7 +461,7 @@ stereo_guides_wulff <- function(d = 9, r = 1, n = 512, ...) {
 
 
   # small circles
-  gamma <- seq(0, 180, by = d) * DEG2RAD()
+  gamma <- seq(0, 180, by = d) |> deg2rad()
   rtan_gamma <- r * tan(gamma)
   rcos_gamma <- r / cos(gamma)
   for (j in seq_along(gamma)) {
@@ -486,4 +488,101 @@ stereo_guides <- function(d = 10, earea = TRUE, ...) {
   } else {
     stereo_guides_wulff(d = d, ...)
   }
+}
+
+
+#' Plot spherical objects
+#'
+#' @param x objects of class `"Vec3"`, `"Line"`, `"Plane"`, `"Pair"`, or `"Fault"`.
+#' @inheritParams stereoplot
+#' @param upper.hem logical. Whether the projection is shown for upper
+#' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
+#' @param grid.params list.
+#' @param ... parameters passed to [stereo_point()], [stereo_smallcircle()], [stereo_greatcircle()], or [stereo_fault()]
+#'
+#' @export
+#'
+#' @examples
+#' plot(Line(c(90, 80), c(10, 75)), lab = c("L1", "L2"))
+#' plot(Plane(120, 30), col = "red")
+plot.spherical <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...){
+  do.call(stereoplot, append(grid.params, earea))
+
+  if(is.Line(x) | is.Vec3(x)) stereo_point(x, upper.hem = upper.hem, earea = earea, ...)
+  if(is.Plane(x)) stereo_greatcircle(x, upper.hem = upper.hem, earea = earea, ...)
+  if(is.Fault(x)) stereo_fault(x, upper.hem = upper.hem, earea = earea, ...)
+}
+
+
+#' Add Points to a Plot
+#'
+#' @param ... arguments passed to [graphics::points()]
+#' @inheritParams plot.spherical
+#' @inheritParams graphics::text
+#'
+#' @export
+#' @examples
+#' stereoplot()
+#' points(rvmf(n = 100))
+#' 
+#' points(Plane(120, 30), col = "red")
+points.spherical <- function(x, upper.hem = FALSE, earea = TRUE, ...){
+  stopifnot(is.spherical(x))
+  if(is.Vec3(x)) x <- Line(x)
+
+  if (is.Plane(x) | is.Fault(x)) {
+    x[, 1] <- 180 + x[, 1]
+    x[, 2] <- 90 - x[, 2]
+  }
+
+  crds <- stereo_coords(
+    x[, 1],
+    x[, 2],
+    upper.hem, earea
+  )
+
+  graphics::points(crds[, "x"], crds[, "y"], ...)
+
+}
+
+#' Add Lines to a Plot
+#'
+#' @inheritParams plot.spherical
+#' @inheritParams graphics::text
+#' @param ... arguments passed to [graphics::lines()]
+#'
+#' @export
+#' @examples
+#' stereoplot()
+#' lines(rvmf(n = 5), d = runif(5, 0, 90), col = 1:5)
+lines.spherical <- function(x, ...) stereo_smallcircle(x, ...)
+
+#' Add Points to a Plot
+#'
+#' @param ... arguments passed to [graphics::text()]
+#' @inheritParams plot.spherical
+#' @inheritParams graphics::text
+#'
+#' @export
+#'
+#' @examples
+#' stereoplot()
+#' points(Line(c(90, 80), c(10, 75)), col= 1:2)
+#' text(Line(c(90, 80), c(10, 75)), labels = c("L1", "L2"), col= 1:2, pos = 3)
+text.spherical <- function(x, labels = seq_along(x[, 1]), upper.hem = FALSE, earea = TRUE, ...){
+  stopifnot(is.spherical(x))
+  if(is.Vec3(x)) x <- Line(x)
+
+  if (is.Plane(x) | is.Fault(x)) {
+    x[, 1] <- 180 + x[, 1]
+    x[, 2] <- 90 - x[, 2]
+  }
+
+  crds <- stereo_coords(
+    x[, 1],
+    x[, 2],
+    upper.hem, earea
+  )
+
+  graphics::text(crds[, "x"], crds[, "y"], labels = labels, ...)
 }

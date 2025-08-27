@@ -1,0 +1,262 @@
+deg2rad <- function(x) x * pi/180
+rad2deg <- function(x) x * 180/pi
+
+sind <- function(x) sin(deg2rad(x))
+cosd <- function(x) cos(deg2rad(x))
+tand <- function(x) tan(deg2rad(x))
+asind <- function(x) rad2deg(asin(x))
+acosd <- function(x) rad2deg(acos(x))
+atand <- function(x) rad2deg(atan(x))
+atan2d <- function(y, x) rad2deg(atan2(y, x)) %% 360
+
+
+
+
+#' Converts strike into dip direction using right-hand rule
+#' @param strike strike direction in degrees
+#' @param dipdirection strike direction in degrees
+#'
+#' @name rhr
+NULL
+
+#' @rdname rhr
+#' @export
+rhr2dd <- function(strike) {
+  (strike + 90) %% 360
+}
+
+#' @rdname rhr
+#' @export
+dd2rhr <- function(dipdirection) {
+  (dipdirection - 90) %% 360
+}
+
+#' @keywords internal
+#' @noRd
+parse_strike_dip <- function(strike, dip) {
+  strike <- parse_azimuth(strike)
+  dd <- split_trailing_letters(dip)$measurement
+}
+
+
+
+#' Parse measurement and direction strings
+#'
+#' @param x character or number
+#'
+#' @return list
+#' @export
+#'
+#' @examples
+#' test <- c("45NW", "4SE")
+#' split_trailing_letters(test)
+split_trailing_letters <- function(x) {
+  result <- sapply(x, function(x) {
+    if (grepl("[NESWnesw]", x)) {
+      # Separate numeric and alphabetic parts
+      num_part <- as.numeric(gsub("[^0-9.-]", "", x))
+      alpha_part <- gsub("[0-9.-]", "", x)
+    } else {
+      num_part <- as.numeric(x)
+      alpha_part <- NA
+    }
+    list(num = num_part, alpha = alpha_part)
+  }, simplify = FALSE)
+
+  # Extract numeric and alpha parts from the list
+  number_vector <- sapply(result, function(x) x$num)
+  alpha_vector <- sapply(result, function(x) x$alpha)
+
+  # Return as a list
+  list(measurement = number_vector, direction = alpha_vector)
+}
+
+#' @keywords internal
+#' @noRd
+parse_azimuth <- function(azimuth) {
+  sapply(azimuth, function(x) {
+    if (is.numeric(x)) {
+      parse_quadrant_measurement(x)
+    } else {
+      stop(
+        paste(
+          "Ambiguous azimuth:",
+          x
+        )
+      )
+    }
+  }, simplify = TRUE)
+}
+
+#' @keywords internal
+#' @noRd
+rotation_direction <- function(first, second) {
+  first_rad <- first * pi / 180
+  second_rad <- second * pi / 180
+  t(c(cos(first_rad), sin(first_rad))) %*%
+    c(cos(second_rad), sin(second_rad))
+}
+
+#' @keywords internal
+#' @noRd
+quadrantletter_to_azimuth <- function(x) {
+  letters <- trimws(x) |>
+    strsplit("") |>
+    unlist()
+  azimuth <- c("N" = 0, "S" = 180, "E" = 90, "W" = 270)
+  tectonicr::circular_mean(azimuth[letters], axial = FALSE)
+}
+
+
+#' Quadrant measurement expressions to angles
+#'
+#' Interprets quadrant measurement expressions, such as "E30N" or "W10S" as azimuth angles
+#'
+#' @param x character.
+#'
+#' @return numeric
+#' @noRd
+#' @keywords internal
+#'
+#' @examples
+#' parse_quadrant_measurement(c("E30N", "W10S"))
+parse_quadrant_measurement <- function(x) {
+  sapply(x, function(x) {
+    x <- trimws(x)
+
+    first_dir <- quadrantletter_to_azimuth(toupper(x[1]))
+    sec_dir <- quadrantletter_to_azimuth(toupper(x[length(x)]))
+
+    x2 <- trimws(x) |>
+      strsplit("") |>
+      unlist()
+
+    angle <- x2[3:length(x2) - 1] |>
+      paste(collapse = "") |>
+      as.numeric()
+
+    direc <- rotation_direction(first_dir, sec_dir)
+    azi <- first_dir + direc * angle
+
+    # Catch ambiguous measurements such as N10S and raise an error
+    stopifnot(abs(direc) >= 0.9)
+    azi %% 360
+  }, simplify = TRUE)
+}
+
+
+
+
+# Color assignment helper functions --------------------------------------------
+
+normalize <- function(x) {
+  (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
+}
+
+#' Helper functions for color assignment and legends
+#'
+#' @param x vector to colorize
+#' @param breaks numeric.
+#' @param n integer.
+#' @param title character. Legend title
+#' @param pal color function; Default is [viridis::viridis()]
+#' @param fill color vector
+#' @param labels character.vector. Names of discrete colors.
+#' Can be ignored when `cols` is a named vector.
+#' @param position Legend position
+#' @param ... arguments passed to color function
+#'
+#' @return .
+#' @import viridis
+#' @importFrom grDevices colorRamp
+#' @name colorize
+#'
+#' @examples
+#' set.seed(1234)
+#'
+#' # example for discrete colors
+#' x <- rvmf(5, mu = Line(120, 50), k = 5)
+#' key <- letters[round(runif(5, 1, 26))]
+#' plot(x, col = assign_col_d(key), grid.params = list(guides = FALSE))
+#' legend_d(assign_col_d(key))
+#'
+#' # example for continuous colors:
+#' x <- rvmf(100, mu = Line(120, 50), k = 5)
+#' plot(x, col = assign_col(runif(100)), grid.params = list(guides = FALSE))
+#' legend_c(seq(0, 1, .1), title = "test")
+NULL
+
+#' @rdname colorize
+#' @export
+assign_col_d <- function(x, pal = viridis::viridis, ...) {
+  groups <- unique(x)
+  n <- length(groups)
+  cols <- do.call(pal, args = list(n = n, ...))
+  named_cols <- stats::setNames(cols, groups)
+  named_cols[x]
+}
+
+#' @rdname colorize
+#' @export
+assign_col <- function(x, n = length(x), pal = viridis::viridis, ...) {
+  normalized_data <- normalize(x)
+  colors <- do.call(pal, args = list(n = n, ...))
+  colors[as.numeric(cut(normalized_data, breaks = n))]
+}
+
+#' @rdname colorize
+#' @export
+assign_col_binned <- function(x, breaks, pal = viridis::viridis, ...) {
+  breaks <- pretty(x, n = breaks)
+  n2 <- length(breaks) - 1
+  cols <- do.call(pal, args = list(n2, ...)) # [order]
+  named_cols <- cut(x, breaks = breaks, labels = cols, include.lowest = TRUE) |>
+    as.character()
+  names(named_cols) <- cut(x, breaks = breaks, include.lowest = TRUE)
+  named_cols
+}
+
+#' @importFrom grDevices colorRamp
+color_func <- function(x, pal = viridis::viridis, ...) {
+  color_func0 <- colorRamp(do.call(pal, args = list(n = 10000, ...)))
+
+  grDevices::rgb(color_func0(x, ...) / 255)
+}
+
+#' @rdname colorize
+#' @export
+legend_c <- function(breaks, title = NULL, pal = viridis::viridis, ...) {
+  label_pos <- normalize(breaks)
+  legend_image <- grDevices::as.raster(
+    matrix(
+      color_func(seq(0, 1, .001), pal = pal, ...),
+      ncol = 1
+    )
+  )
+
+  graphics::par(new = TRUE)
+  graphics::layout(matrix(1, 1))
+
+  plot(c(0, 1), c(0, 1), type = "n", axes = FALSE, xlab = NA, ylab = NA, main = NA)
+  graphics::text(x = 0.9 + (0.1 * 1.1), y = label_pos, labels = breaks, adj = 0)
+  graphics::text(x = .925, y = .5, labels = title, adj = 0.5, srt = 90, font = 2)
+  graphics::rasterImage(legend_image, .95, 0, 1, 1)
+}
+
+#' @rdname colorize
+#' @export
+legend_d <- function(fill, labels = names(fill), position = "topright", ...) {
+  graphics::legend(position,
+                   legend = labels,
+                   fill = fill,
+                   ...
+  )
+}
+
+# Modes from a kde distribution ------------------------------------------------
+modes <- function(kde) {
+  c(
+    kde$x[kde$x < 0][which.max(kde$y[kde$x < 0])],
+    kde$x[kde$x > 0][which.max(kde$y[kde$x > 0])]
+  )
+}

@@ -71,13 +71,13 @@ lines <- Line(example_lines$trend, example_lines$plunge)
 The spherical objects can be easily converted into Cartesian coordinate vectors using the functions `line2vec()` or `plane2vec()`:
 
 ```{r data_transformation}
-lines_vector <- line2vec(lines)
+lines_vector <- Vec3(lines)
 head(lines_vector)
 ```
 
  
 ```{r data_transformation2}
-planes_as_line <- plane2vec(planes)
+planes_as_line <- Vec3(planes)
 head(planes_as_line)
 ```
 
@@ -85,7 +85,7 @@ which produces the same output as
 
  
 ```{r data_transformation3}
-head(line2vec(planes_as_line))
+head(Vec3(planes_as_line))
 ```
 
  
@@ -125,14 +125,14 @@ vlength(line1)
 The **angle** between two vectors
 
 ```{r math_angle}
-vangle(line1, line2)
+angle(line1, line2)
 ```
 
  
 The **dot product** (or scalar product) of two  vectors
 
 ```{r math_dot}
-vdot(line1, line2)
+line1 %*% line2
 ```
 
 Intuitively, it tells us something about how much two vectors point in the same direction.
@@ -141,7 +141,7 @@ The **cross product** of two  vectors:
 
  
 ```{r math_cross}
-vcross(line1, line2)
+crossprod(line1, line2)
 ```
 
 This gives the vector that is perpendicular to the plane spanned by the two vectors.
@@ -149,7 +149,7 @@ This gives the vector that is perpendicular to the plane spanned by the two vect
 The **projection** of a vector on another vector:
 
 ```{r math_project}
-vproject(line1, line2)
+project(line1, line2)
 ```
 
 > Because of vectors a unit vectors, the projected vector is equal to the second vector.
@@ -158,5 +158,5 @@ vproject(line1, line2)
 The **rotation** of a vector about another vector (rotation axis) by a specified rotation angle:
 
 ```{r math_rotate}
-vrotate(line1, rotaxis = line2, rotangle = 45)
+rotate(line1, rotaxis = line2, rotangle = 45)
 ```

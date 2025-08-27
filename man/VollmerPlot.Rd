@@ -7,7 +7,7 @@
 VollmerPlot(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...)
 }
 \arguments{
-\item{x}{numeric. Can be three element vector, three column array, or an object of class \code{"line"} or \code{"plane"}}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}.}
 
 \item{labels}{character. text labels}
 
@@ -33,7 +33,7 @@ b <- rfb(100, mu = mu, k = 1, A = diag(c(10, 0, 0)))
 VollmerPlot(b, lab = "FB", add = TRUE, col = "red")
 
 set.seed(1)
-c <- v_unif("line", n = 100, method = "rotasym")
+c <- runif.spherical(n = 100, "Line", method = "rotasym")
 VollmerPlot(c, lab = "UNIF", add = TRUE, col = "green")
 
 set.seed(1)

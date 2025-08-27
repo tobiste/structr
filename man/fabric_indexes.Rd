@@ -7,7 +7,7 @@
 fabric_indexes(x)
 }
 \arguments{
-\item{x}{numeric. Can be three element vector, three column array, or an object of class \code{"line"} or \code{"plane"}}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}.}
 }
 \value{
 numeric vector containing the fabric shape and intensity indices:

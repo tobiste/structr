@@ -55,8 +55,8 @@ ggstereo() +
 ```{r stat, message=FALSE,warning=FALSE}
 quality <- runif(nrow(lines), min = 1, max = 45) # assigning a random quality score to the data (can be replaced with real data)
 
-lines_mean <- v_mean(lines, w = 1 / quality)
-lines_delta <- v_delta(lines, w = 1 / quality)
+lines_mean <- mean(lines, w = 1 / quality)
+lines_delta <- delta(lines, w = 1 / quality)
 
 ggstereo() +
   geom_point(data = gg(lines, quality), aes(x, y, size = quality)) +
@@ -65,8 +65,8 @@ ggstereo() +
   geom_point(data = gg(lines_mean), aes(x, y, color = "Mean"), size = 5, shape = 17) +
   labs(title = "Example data", color = NULL)
 ```
-```{r eigen, include=FALSE}
-planes_eigen <- or_eigen(planes)
+```{r eigen, include = FALSE}
+planes_eigen <- eigen(planes)
 
 ggstereo() +
   geom_point(data = gg(planes), aes(x, y)) +
