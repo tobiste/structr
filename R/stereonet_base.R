@@ -123,7 +123,7 @@ stereo_coords <- function(az, inc, upper.hem = FALSE, earea = TRUE, r = 1) {
 #' stereo_point(Plane(120, 30), lab = "P", col = "red")
 stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1, upper.hem = FALSE, earea = TRUE, ...) {
   stopifnot(is.spherical(x))
-  if(is.Vec3(x)) x <- Line(x)
+  if (is.Vec3(x)) x <- Line(x)
 
   if (is.Plane(x) | is.Fault(x)) {
     x[, 1] <- 180 + x[, 1]
@@ -296,7 +296,7 @@ stereo_smallcircle0 <- function(x, d = 90, col = 1, N = 1000, upper.hem = FALSE,
   if (length(lty) == 1) lty <- rep(lty, nrow(x))
   if (length(lwd) == 1) lwd <- rep(lwd, nrow(x))
 
-  if(is.Vec3(x)) x <- Line(x)
+  if (is.Vec3(x)) x <- Line(x)
   az <- x[, 1]
   inc <- 90 - x[, 2]
 
@@ -372,8 +372,8 @@ stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = grDevices::gra
                        lwd = 1, lty = 1, border = "black", title = NULL,
                        sub = NULL, centercross = TRUE, ticks = NULL) {
   plot(c(-1, 1), c(-1, 1),
-       type = "n", xlab = NULL, ylab = NULL, asp = 1,
-       axes = FALSE, ann = FALSE
+    type = "n", xlab = NULL, ylab = NULL, asp = 1,
+    axes = FALSE, ann = FALSE
   )
 
   graphics::title(main = title, sub = sub)
@@ -421,7 +421,7 @@ stereo_guides_schmidt <- function(d = 10, n = 512, ...) {
   }
 
   # Longitude lines (constant lambda)
-  phi_seq <- seq(-90, 90, 5)  |> deg2rad()
+  phi_seq <- seq(-90, 90, 5) |> deg2rad()
   cos_phi_seq <- cos(phi_seq)
   sin_phi_seq <- sin(phi_seq)
 
@@ -505,12 +505,12 @@ stereo_guides <- function(d = 10, earea = TRUE, ...) {
 #' @examples
 #' plot(Line(c(90, 80), c(10, 75)), lab = c("L1", "L2"))
 #' plot(Plane(120, 30), col = "red")
-plot.spherical <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...){
+plot.spherical <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
   do.call(stereoplot, append(grid.params, earea))
 
-  if(is.Line(x) | is.Vec3(x)) stereo_point(x, upper.hem = upper.hem, earea = earea, ...)
-  if(is.Plane(x)) stereo_greatcircle(x, upper.hem = upper.hem, earea = earea, ...)
-  if(is.Fault(x)) stereo_fault(x, upper.hem = upper.hem, earea = earea, ...)
+  if (is.Line(x) | is.Vec3(x)) stereo_point(x, upper.hem = upper.hem, earea = earea, ...)
+  if (is.Plane(x)) stereo_greatcircle(x, upper.hem = upper.hem, earea = earea, ...)
+  if (is.Fault(x)) stereo_fault(x, upper.hem = upper.hem, earea = earea, ...)
 }
 
 
@@ -524,11 +524,11 @@ plot.spherical <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = lis
 #' @examples
 #' stereoplot()
 #' points(rvmf(n = 100))
-#' 
+#'
 #' points(Plane(120, 30), col = "red")
-points.spherical <- function(x, upper.hem = FALSE, earea = TRUE, ...){
+points.spherical <- function(x, upper.hem = FALSE, earea = TRUE, ...) {
   stopifnot(is.spherical(x))
-  if(is.Vec3(x)) x <- Line(x)
+  if (is.Vec3(x)) x <- Line(x)
 
   if (is.Plane(x) | is.Fault(x)) {
     x[, 1] <- 180 + x[, 1]
@@ -542,7 +542,6 @@ points.spherical <- function(x, upper.hem = FALSE, earea = TRUE, ...){
   )
 
   graphics::points(crds[, "x"], crds[, "y"], ...)
-
 }
 
 #' Add Lines to a Plot
@@ -567,11 +566,11 @@ lines.spherical <- function(x, ...) stereo_smallcircle(x, ...)
 #'
 #' @examples
 #' stereoplot()
-#' points(Line(c(90, 80), c(10, 75)), col= 1:2)
-#' text(Line(c(90, 80), c(10, 75)), labels = c("L1", "L2"), col= 1:2, pos = 3)
-text.spherical <- function(x, labels = seq_along(x[, 1]), upper.hem = FALSE, earea = TRUE, ...){
+#' points(Line(c(90, 80), c(10, 75)), col = 1:2)
+#' text(Line(c(90, 80), c(10, 75)), labels = c("L1", "L2"), col = 1:2, pos = 3)
+text.spherical <- function(x, labels = seq_along(x[, 1]), upper.hem = FALSE, earea = TRUE, ...) {
   stopifnot(is.spherical(x))
-  if(is.Vec3(x)) x <- Line(x)
+  if (is.Vec3(x)) x <- Line(x)
 
   if (is.Plane(x) | is.Fault(x)) {
     x[, 1] <- 180 + x[, 1]

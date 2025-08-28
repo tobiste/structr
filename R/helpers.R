@@ -1,5 +1,5 @@
-deg2rad <- function(x) x * pi/180
-rad2deg <- function(x) x * 180/pi
+deg2rad <- function(x) x * pi / 180
+rad2deg <- function(x) x * 180 / pi
 
 sind <- function(x) sin(deg2rad(x))
 cosd <- function(x) cos(deg2rad(x))
@@ -247,9 +247,9 @@ legend_c <- function(breaks, title = NULL, pal = viridis::viridis, ...) {
 #' @export
 legend_d <- function(fill, labels = names(fill), position = "topright", ...) {
   graphics::legend(position,
-                   legend = labels,
-                   fill = fill,
-                   ...
+    legend = labels,
+    fill = fill,
+    ...
   )
 }
 

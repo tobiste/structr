@@ -76,10 +76,10 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
 
   # Full join on timestamps, using data.table merge with all=TRUE
   res <- merge(data_planes, data_lines,
-               by.x = "Planar.Orientation.Unix.Timestamp",
-               by.y = "Linear.Orientation.Unix.Timestamp",
-               all = TRUE,
-               allow.cartesian = TRUE
+    by.x = "Planar.Orientation.Unix.Timestamp",
+    by.y = "Linear.Orientation.Unix.Timestamp",
+    all = TRUE,
+    allow.cartesian = TRUE
   )
   res <- merge(res, data0, by = "Planar.Orientation.Unix.Timestamp", all.x = TRUE)
 
@@ -107,8 +107,8 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
 read_strabo_mobile <- function(file, sf = TRUE) {
   # Read the data with data.table::fread for speed
   data0 <- fread(file,
-                 sep = "\t", header = TRUE,
-                 colClasses = c("integer", rep("character", 3), rep("numeric", 11), "character")
+    sep = "\t", header = TRUE,
+    colClasses = c("integer", rep("character", 3), rep("numeric", 11), "character")
   )
 
   # Separate lines and planes using data.table syntax
@@ -133,12 +133,12 @@ read_strabo_mobile <- function(file, sf = TRUE) {
   # Convert metadata to sf objects if requested
   if (sf) {
     lines.meta <- st_as_sf(lines.meta,
-                           coords = c("Longitude", "Latitude"),
-                           crs = 4326, remove = FALSE, na.fail = FALSE
+      coords = c("Longitude", "Latitude"),
+      crs = 4326, remove = FALSE, na.fail = FALSE
     )
     planes.meta <- st_as_sf(planes.meta,
-                            coords = c("Longitude", "Latitude"),
-                            crs = 4326, remove = FALSE, na.fail = FALSE
+      coords = c("Longitude", "Latitude"),
+      crs = 4326, remove = FALSE, na.fail = FALSE
     )
   }
 
@@ -525,8 +525,8 @@ read_strabo_JSON <- function(file, sf = TRUE) {
   )
   spot_tags_dt[, tag_col := paste0("tag:", tag_name)]
   spot_tags_wide <- dcast(spot_tags_dt[, .(spot_id, tag_name = paste0("tag:", tag_name), value = TRUE)],
-                          spot_id ~ tag_name,
-                          fill = FALSE
+    spot_id ~ tag_name,
+    fill = FALSE
   )
 
   # --- Datasets ---

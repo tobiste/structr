@@ -29,6 +29,6 @@ Add Points to a Plot
 }
 \examples{
 stereoplot()
-points(Line(c(90, 80), c(10, 75)), col= 1:2)
-text(Line(c(90, 80), c(10, 75)), labels = c("L1", "L2"), col= 1:2, pos = 3)
+points(Line(c(90, 80), c(10, 75)), col = 1:2)
+text(Line(c(90, 80), c(10, 75)), labels = c("L1", "L2"), col = 1:2, pos = 3)
 }

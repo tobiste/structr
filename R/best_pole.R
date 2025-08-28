@@ -58,13 +58,13 @@ best_fit_plane <- function(x) {
   axis_g <- as.Vec3(g_res$eig3)
 
   if (is.Line(x) | is.Plane(x)) {
-    #if (is.Line(x)) {
-      axis_s <- Line(axis_s)
-      axis_g <- Line(axis_g)
-    #} else if (is.Plane(x)) {
+    # if (is.Line(x)) {
+    axis_s <- Line(axis_s)
+    axis_g <- Line(axis_g)
+    # } else if (is.Plane(x)) {
     #  axis_s <- Plane(axis_s)
     #  axis_g <- Plane(axis_g)
-    #}
+    # }
     K_s <- rad2deg(K_s)
   }
 

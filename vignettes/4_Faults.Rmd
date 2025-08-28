@@ -25,7 +25,7 @@ library("structr")
 A fault is given by the orientation of its plane (dip direction and dip angle), the orientation of the slip (e.g. measured from striae, given in azimuth and plunge angles), and the sense of displacement:
 
 ```{r faults_import}
-my_fault <- Fault(120, 50, 60,110, sense = -1)
+my_fault <- Fault(120, 50, 60, 110, sense = -1)
 ```
  > Sense of fault displacement is 1 or -1 for normal or thrust offset, respectively.
 

@@ -123,8 +123,8 @@ spatial_interpolation <- function(x,
     if (max_data < Inf) distij <- distij[tectonicr:::which.nsmallest(distij, max_data)] # select the `max_data` nearest locations
 
     if (min(distij) <= min_dist_threshold) {
-    t(vapply(R_seq, function(k) {
-      # for(k in R_seq){
+      t(vapply(R_seq, function(k) {
+        # for(k in R_seq){
         R_search <- R_range[k]
         ids_R <- (distij <= R_search) # select those that are in search radius
         N_in_R <- sum(ids_R)

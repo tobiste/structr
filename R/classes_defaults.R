@@ -36,7 +36,7 @@ lin2vec <- function(azi, inc) {
 vec2lin <- function(x, y, z) {
   n <- vnorm(cbind(x, y, z)) # normalized vector
   nz <- n[, 3]
-  azimuth_rad <- atan2(n[, 2], n[, 1]) %% (2*pi)
+  azimuth_rad <- atan2(n[, 2], n[, 1]) %% (2 * pi)
   plunge_rad <- asin(nz)
   azimuth <- azimuth_rad * 180 / pi
   plunge <- plunge_rad * 180 / pi
@@ -51,8 +51,8 @@ vec2fol <- function(x, y, z) {
   n <- vnorm(cbind(x, y, z)) # normalized vector
   nz <- n[, 3]
 
-  dip_direction_rad <- (atan2(n[, 2], n[, 1]) + pi) %% (2*pi)
-  dip_rad <- pi/2 - asin(nz)
+  dip_direction_rad <- (atan2(n[, 2], n[, 1]) + pi) %% (2 * pi)
+  dip_rad <- pi / 2 - asin(nz)
 
   dip_direction <- dip_direction_rad * 180 / pi
   dip <- dip_rad * 180 / pi

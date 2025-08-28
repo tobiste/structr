@@ -97,9 +97,6 @@ rhr2dd(271)
 dd2rhr(1)
 ```
 
-```{r helpers}
-# parse_strike_dip(c("E30N", "W10S"), c("45NW", "4SE"))
-```
 
  
 ## Vector operations

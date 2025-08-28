@@ -7,7 +7,7 @@
 #' @param rotangle Angle of rotation in radians for `"Vec3"` objects and in degrees for `"Line"` and `"Plane"` objects.
 #' @param A numeric 3x3 matrix. Transformation matrix.
 #' @param norm logical. If `TRUE`, the transformed vectors are normalized to unit length.
-#' 
+#'
 #' @details
 #' \describe{
 #' \item{`vector_length`}{the length of a vector}
@@ -15,13 +15,13 @@
 #' \item{`%*%`}{the dot product of two vectors}
 #' \item{`rotate`}{rotation of a vector about a specified vector by a specified angle}
 #' \item{`angle`}{angle between two vectors}
-#' \item{`project`}{projection of one vector onto the other (changes the vector 
+#' \item{`project`}{projection of one vector onto the other (changes the vector
 #' length of second vector, unless their are unit vectors)}
 #' \item{`transform`}{transformation of a vector by a 3x3 matrix}
 #' }
 #'
-#' @returns objects of same class as `x`, i.e. one of `"Vec3"`, `"Line"`, or 
-#' `"Plane"`. `vector_length()` and `%*%` return a real number. `angle()` 
+#' @returns objects of same class as `x`, i.e. one of `"Vec3"`, `"Line"`, or
+#' `"Plane"`. `vector_length()` and `%*%` return a real number. `angle()`
 #' returns a numeric angle (in degrees, unless `x` is class `"Vec3"`).
 #' @name vecmath
 #'
@@ -45,7 +45,7 @@ vlength <- function(x) {
 
 #' @export
 #' @rdname vecmath
-vector_length <- function(x){
+vector_length <- function(x) {
   Vec3(x) |> vlength()
 }
 
@@ -133,14 +133,14 @@ rotate.spherical <- function(x, rotaxis, rotangle) {
     rotangle <- deg2rad(rotangle)
   }
 
-  x_rot <- vrotate(x3, rotaxis3, rotangle) |> 
+  x_rot <- vrotate(x3, rotaxis3, rotangle) |>
     Vec3()
 
   if (is.Line(x)) {
     x_rot <- Line(x_rot)
   } else if (is.Plane(x)) {
     x_rot <- Plane(x_rot)
-  } 
+  }
   x_rot
 }
 
@@ -211,7 +211,7 @@ vreject <- function(x, y) {
 reject <- function(x, y) UseMethod("reject")
 
 #' @noRd
-reject.default <- function(x, y) vreject(x,y)
+reject.default <- function(x, y) vreject(x, y)
 
 
 #' @noRd

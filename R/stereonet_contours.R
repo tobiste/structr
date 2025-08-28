@@ -238,15 +238,17 @@ stereo_density <- function(x,
 #' @export
 contour.spherical <- function(x, add = FALSE, density.params = list(),
                               nlevels = 10L, col.palette = viridis::viridis, col = NULL,
-                              col.params = list(), ...){
-  stereo_density(x, type = "contour",
-                 add = add,
-                 density.params = density.params,
-                 nlevels = nlevels,
-                 col = col,
-                 col.palette = col.palette,
-                 col.params = col.params,
-                 ...)
+                              col.params = list(), ...) {
+  stereo_density(x,
+    type = "contour",
+    add = add,
+    density.params = density.params,
+    nlevels = nlevels,
+    col = col,
+    col.palette = col.palette,
+    col.params = col.params,
+    ...
+  )
 }
 
 filled.contour <- function(x, ...) UseMethod("filled.contour")
@@ -258,28 +260,29 @@ filled.contour.default <- function(x, ...) graphics::filled.contour(x, ...)
 #' @export
 filled.contour.spherical <- function(x, add = FALSE, density.params = list(),
                                      nlevels = 10L, col.palette = viridis::viridis,
-                                     col.params = list()){
+                                     col.params = list()) {
   stereo_density(x,
-                 type = "contour_filled",
-                 add = add,
-                 density.params = density.params,
-                 nlevels = nlevels,
-                 col.palette = col.palette,
-                 col.params = col.params
-                 )
+    type = "contour_filled",
+    add = add,
+    density.params = density.params,
+    nlevels = nlevels,
+    col.palette = col.palette,
+    col.params = col.params
+  )
 }
 
 #' @rdname stereo_contour
 #' @export
 image.spherical <- function(x, add = FALSE, density.params = list(),
                             nlevels = 10L, col.palette = viridis::viridis,
-                            col.params = list(), ...){
-  stereo_density(x, type = "image",
-                 add = add,
-                 density.params = density.params,
-                 nlevels = nlevels,
-                 col.palette = col.palette,
-                 col.params = lcol.params,
-                 ...)
+                            col.params = list(), ...) {
+  stereo_density(x,
+    type = "image",
+    add = add,
+    density.params = density.params,
+    nlevels = nlevels,
+    col.palette = col.palette,
+    col.params = lcol.params,
+    ...
+  )
 }
-

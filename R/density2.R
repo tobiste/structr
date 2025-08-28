@@ -102,50 +102,42 @@
 #' x <- rvmf(n = 200, mu = Line(120, 30), k = 10)
 #' calculate_density(x)
 # calculate_density <- function(x, sigma = NULL, sigma.norm = TRUE, trimzero = TRUE, ngrid = 3000, grid.type = c("sfs", "gss", "rot")) {
-#   x <- Vec3(x) |> unclass()
-#   # parse options
-#   grid.type <- match.arg(grid.type)
-#   n <- nrow(x)
-#
-#   if (is.null(sigma)) {
-#     # k = estimate_k(x)
-#     # sigma = sqrt(2 * n / (k - 2))
-#     # Totally empirical as estimate_k is problematic
-#     sigma <- sqrt(2 * n / (log(n) - 2)) / 3
-#     k <- 2 * (1 + n / sigma^2)
-#   } else {
-#     k <- 2 * (1 + n / sigma^2)
-#   }
-#   # method = kwargs.get("method", "exp_kamb")
-#
-#   # do calc
-#   scale <- sqrt(n * (k / 2 - 1) / k^2)
-#
-#   grid <- runif.spherical(n = ngrid, method = grid.type) |> unclass()
-#
-#   cnt <- exp(k * abs(grid %*% t(x)) - 1)
-#   x2 <- colSums(cnt) / scale
-#
-#   if (sigma.norm) {
-#     x2 <- x2 / sigma
-#   }
-#
-#   x2[which(x2 < 0)] <- 0
-#   # x2 <- abs(x)
-#
-#   if (trimzero) {
-#     x2[which(x2 == 0)] <- .Machine$double.xmin
-#   }
-#
-#   # density_params
-#   list(
-#     grid = grid,
-#     density = x2,
-#     k = k,
-#     scale = scale,
-#     sigma = sigma,
-#     sigma.norm = sigma.norm
-#   )
+#' #  x <- Vec3(x) |> unclass()
+#' #  # parse options
+#' #  grid.type <- match.arg(grid.type)
+#' #  n <- nrow(x)
+#' #  if (is.null(sigma)) {
+#' #    # k = estimate_k(x)
+#' #    # sigma = sqrt(2 * n / (k - 2))
+#' #    # Totally empirical as estimate_k is problematic
+#' #    sigma <- sqrt(2 * n / (log(n) - 2)) / 3
+#' #    k <- 2 * (1 + n / sigma^2)
+#' #  } else {
+#' #    k <- 2 * (1 + n / sigma^2)
+#' #  }
+#' #  # method = kwargs.get("method", "exp_kamb")
+#' #  # do calc
+#' #  scale <- sqrt(n * (k / 2 - 1) / k^2)
+#' #  grid <- runif.spherical(n = ngrid, method = grid.type) |> unclass()
+#' #  cnt <- exp(k * abs(grid %*% t(x)) - 1)
+#' #  x2 <- colSums(cnt) / scale
+#' #  if (sigma.norm) {
+#' #    x2 <- x2 / sigma
+#' #  }
+#' #  x2[which(x2 < 0)] <- 0
+#' #  # x2 <- abs(x)
+#' #  if (trimzero) {
+#' #    x2[which(x2 == 0)] <- .Machine$double.xmin
+#' #  }
+#' #  # density_params
+#' #  list(
+#' #    grid = grid,
+#' #    density = x2,
+#' #    k = k,
+#' #    scale = scale,
+#' #    sigma = sigma,
+#' #    sigma.norm = sigma.norm
+#' #  )
 # }
 
 #' Contour lines of density in stereographic projection

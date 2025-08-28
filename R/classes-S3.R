@@ -40,7 +40,7 @@
 #' Plane(x) # convert to plane
 #'
 #' Pair(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23))
-#' Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
+#' Fault(c("a" = 120, "b" = 120, "c" = 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
 NULL
 
 #' @rdname classes
@@ -70,59 +70,66 @@ is.Fault <- function(x) inherits(x, "Fault")
 #' @rdname classes
 #' @export
 as.spherical <- function(x) {
-  class(x) <- append(class(x), "spherical")
-  rownames(x) <- rownames(x)
-  x
+  structure(
+    x,
+    class = append(class(x), "spherical"),
+    rownames = rownames(x)
+  )
 }
 
 #' @rdname classes
 #' @export
 as.Vec3 <- function(x) {
-  xm <- vec2mat(x)
-  class(xm) <- c("Vec3", "spherical", "matrix", "array")
-  rownames(xm) <- rownames(x)
-  colnames(xm) <- c("x", "y", "z")
-  xm
+  structure(
+    vec2mat(x),
+    class = c("Vec3", "spherical", "matrix", "array"),
+    rownames = rownames(x),
+    colnames = c("x", "y", "z")
+  )
 }
 
 #' @rdname classes
 #' @export
 as.Line <- function(x) {
-  xm <- vec2mat(x)
-  class(xm) <- c("Line", "spherical", "matrix", "array")
-  rownames(xm) <- rownames(x)
-  colnames(xm) <- c("azimuth", "plunge")
-  xm
+  structure(
+    vec2mat(x),
+    class = c("Line", "spherical", "matrix", "array"),
+    rownames = rownames(x),
+    colnames = c("azimuth", "plunge")
+  )
 }
 
 #' @rdname classes
 #' @export
 as.Plane <- function(x) {
-  xm <- vec2mat(x)
-  class(xm) <- c("Plane", "spherical", "matrix", "array")
-  rownames(xm) <- rownames(x)
-  colnames(xm) <- c("dip_direction", "dip")
-  xm
+  structure(
+    vec2mat(x),
+    class = c("Plane", "spherical", "matrix", "array"),
+    rownames = rownames(x),
+    colnames = c("dip_direction", "dip")
+  )
 }
 
 #' @rdname classes
 #' @export
 as.Pair <- function(x) {
-  xm <- vec2mat(x)
-  class(xm) <- c("Pair", "spherical", "matrix", "array")
-  rownames(xm) <- rownames(x)
-  colnames(xm) <- c("dip_direction", "dip", "azimuth", "plunge")
-  xm
+  structure(
+    vec2mat(x),
+    class = c("Pair", "spherical", "matrix", "array"),
+    rownames = rownames(x),
+    colnames = c("dip_direction", "dip", "azimuth", "plunge")
+  )
 }
 
 #' @rdname classes
 #' @export
 as.Fault <- function(x) {
-  xm <- vec2mat(x)
-  class(xm) <- c("Fault", "Pair", "spherical", "matrix", "array")
-  rownames(xm) <- rownames(x)
-  colnames(xm) <- c("dip_direction", "dip", "azimuth", "plunge", "sense")
-  xm
+  structure(
+    vec2mat(x),
+    class = c("Fault", "Pair", "spherical", "matrix", "array"),
+    rownames = rownames(x),
+    colnames = c("dip_direction", "dip", "azimuth", "plunge", "sense")
+  )
 }
 
 
@@ -152,6 +159,8 @@ Vec3 <- function(x, y, z) {
       z <- x[, 3]
       y <- x[, 2]
       x <- x[, 1]
+    } else {
+      rn <- rownames(x)
     }
     x <- as.double(x)
     y <- as.double(y)
@@ -182,6 +191,8 @@ Line <- function(x, plunge) {
       xm <- vec2mat(x)
       plunge <- xm[, 2]
       x <- xm[, 1]
+    } else {
+      rn <- rownames(x)
     }
     azimuth <- as.double(x)
     plunge <- as.double(plunge)
@@ -212,6 +223,8 @@ Plane <- function(x, dip) {
       xm <- vec2mat(x)
       plunge <- xm[, 2]
       x <- xm[, 1]
+    } else {
+      rn <- names(x)
     }
     dip_direction <- as.double(x)
     dip <- as.double(dip)
@@ -227,24 +240,24 @@ Plane <- function(x, dip) {
 Pair <- function(x, y, azimuth, plunge, correction = FALSE) {
   # p <- Fault(x, y, azimuth, plunge, sense = NA, correction = correction)
 
-  rn <- rownames(x)
   if (is.Plane(x) & is.Line(y)) {
     dip_direction <- x[, "dip"]
     dip <- x[, "dip"]
     azimuth <- y[, "azimuth"]
     plunge <- y[, "plunge"]
+    rn <- rownames(x)
   } else {
     dip_direction <- as.double(x)
     dip <- as.double(y)
     azimuth <- as.double(azimuth)
     plunge <- as.double(plunge)
+    rn <- names(x)
   }
 
   res <- cbind(dip_direction, dip, azimuth, plunge)
   rownames(res) <- rn
   p <- as.Pair(res)
-  if(correction) correct_pair(p) else p
-
+  if (correction) correct_pair(p) else p
 }
 
 #' @rdname classes
@@ -267,6 +280,7 @@ Fault <- function(x, y, azimuth, plunge, sense, correction = FALSE) {
     azimuth <- y[, "azimuth"]
     plunge <- y[, "plunge"]
   } else {
+    rn <- names(x)
     dip_direction <- as.double(x)
     dip <- as.double(y)
     azimuth <- as.double(azimuth)
@@ -280,21 +294,22 @@ Fault <- function(x, y, azimuth, plunge, sense, correction = FALSE) {
   res <- cbind(dip_direction, dip, azimuth, plunge, sense)
   rownames(res) <- rn
   f <- as.Fault(res)
-  if(correction) correct_pair(f) else f
+  if (correction) correct_pair(f) else f
 }
 
 #' @rdname classes
 #' @param .class character. Spherical class the object should be coerced to.
 #' @export
-Spherical <- function(x, .class){
-  # class.x <- class(x)[1]
+Spherical <- function(x, .class) {
   switch(.class,
-         Vec3 = Vec3(x),
-         Line = Line(x),
-         Plane = Plane(x)
-         )
+    Vec3 = Vec3(x),
+    Line = Line(x),
+    Plane = Plane(x)
+  )
 }
 
+# #' @export
+# print <- function(x, ...) UseMethod('print')
 
 #' @export
 print.spherical <- function(x, ...) {
@@ -305,8 +320,10 @@ print.spherical <- function(x, ...) {
   if (is.Plane(x)) cat(paste0("Plane object (n = ", n, "):\n"))
   if (is.Pair(x) & !is.Fault(x)) cat(paste0("Pair object (n = ", n, "):\n"))
   if (is.Fault(x)) cat(paste0("Fault object (n = ", n, "):\n"))
-  print(unclass(x))
-  invisible(x)
+
+  print(unclass(x)[seq_len(n), ]) # avoids printing all the attributes of x
+
+  return(invisible(x))
 }
 
 
@@ -317,11 +334,13 @@ print.spherical <- function(x, ...) {
   if (missing(j)) {
     j <- TRUE
   }
-  y <- as.matrix(unclass(x))[i, j]
-  if (isTRUE(j)) {
-    y <- as.Vec3(y)
-  }
-  invisible(y)
+  # y <- as.matrix(unclass(x))[i, j]
+  # if (isTRUE(j)) {
+  #   y <- as.Vec3(y)
+  # }
+  # invisible(y)
+  res <- NextMethod("`[`")
+  if (isTRUE(j)) as.Vec3(res) else as.numeric(res)
 }
 
 #' @export
@@ -329,11 +348,13 @@ print.spherical <- function(x, ...) {
   if (missing(j)) {
     j <- TRUE
   }
-  y <- vec2mat(unclass(x))[i, j]
-  if (isTRUE(j)) {
-    y <- as.Line(y)
-  }
-  invisible(y)
+  # y <- vec2mat(unclass(x))[i, j]
+  # if (isTRUE(j)) {
+  #   y <- as.Line(y)
+  # }
+  # invisible(y)
+  res <- NextMethod("`[`")
+  if (isTRUE(j)) as.Line(res) else as.numeric(res)
 }
 
 #' @export
@@ -341,11 +362,13 @@ print.spherical <- function(x, ...) {
   if (missing(j)) {
     j <- TRUE
   }
-  y <- vec2mat(unclass(x))[i, j]
-  if (isTRUE(j)) {
-    y <- as.Plane(y)
-  }
-  invisible(y)
+  # y <- vec2mat(unclass(x))[i, j]
+  # if (isTRUE(j)) {
+  #   y <- as.Plane(y)
+  # }
+  # invisible(y)
+  res <- NextMethod("`[`")
+  if (isTRUE(j)) as.Plane(res) else as.numeric(res)
 }
 
 #' @export
@@ -353,11 +376,22 @@ print.spherical <- function(x, ...) {
   if (missing(j)) {
     j <- TRUE
   }
-  y <- vec2mat(unclass(x))[i, j]
+  # y <- vec2mat(unclass(x))[i, j]
+  # if (isTRUE(j)) {
+  #   if (is(x, "Fault")) y <- as.Fault(y) else y <- as.Pair(y)
+  # }
+  # invisible(y)
+  # if (is(x, "Fault")) {
+  #   as.Fault(NextMethod("`[`"))
+  # } else {
+  #   as.Pair(NextMethod("`[`"))
+  # }
+  res <- NextMethod("`[`")
   if (isTRUE(j)) {
-    if (is(x, "Fault")) y <- as.Fault(y) else y <- as.Pair(y)
+    if (is(x, "Fault")) as.Fault(res) else as.Pair(res)
+  } else {
+    as.numeric(res)
   }
-  invisible(y)
 }
 
 
@@ -375,40 +409,47 @@ print.spherical <- function(x, ...) {
 #' set.seed(20250411)
 #' rbind.spherical(
 #'   rvmf(n = 5, mu = Line(90, 45)),
-#'   runif.spherical('Vec3', n = 5),
+#'   runif.spherical("Vec3", n = 5),
 #'   rkent(n = 5, mu = Plane(0, 10), b = 1)
 #' )
-rbind.spherical <- function(..., .class = NULL){
+rbind.spherical <- function(..., .class = NULL) {
   allargs <- list(...)
   allargs <- allargs[lengths(allargs) > 0L]
 
-  if(is.null(.class)){
+  if (is.null(.class)) {
     .class <- class(allargs[[1]])[1]
   }
 
-  allargs_class <- lapply(allargs, function(i){
+  allargs_class <- lapply(allargs, function(i) {
     Spherical(i, .class = .class) |> unclass()
-    })
+  })
 
   do.call(rbind, allargs_class) |>
     Spherical(.class)
 }
 
+#' @export
 head <- function(x, ...) UseMethod("head")
 
 #' @export
-head.default <- function(x, ...) utils::head(x,...)
+tail <- function(x, ...) UseMethod("tail")
+
+##' @export
+# head.default <- function(x, ...) utils::head(x,...)
+
+##' @export
+# tail.default <- function(x, ...) utils::tail(x,...)
 
 
 #' @export
-head.spherical <- function(x, n = 6L){
+head.spherical <- function(x, ...) {
   end <- nrow(x)
   x[seq_len(min(n, end)), ]
 }
 
 
 #' @export
-tail.spherical <- function(x, n = 6L){
+tail.spherical <- function(x, n = 6L) {
   end <- nrow(x)
   begin <- max(0, end - n + 1)
   x[seq.int(begin, end), ]

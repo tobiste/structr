@@ -25,8 +25,10 @@ blank_grid_regular <- function(n, r = 1) {
 }
 
 .schmidt2cart <- function(x, y, r = 1) {
-  res <- .schmdit2spherical(x, y, r)  |> rad2deg()
-  Line(res[, 1], res[, 2]) |> Vec3() |> unclass()
+  res <- .schmdit2spherical(x, y, r) |> rad2deg()
+  Line(res[, 1], res[, 2]) |>
+    Vec3() |>
+    unclass()
 }
 
 
@@ -62,7 +64,9 @@ count_points <- function(azi, inc, FUN, sigma, ngrid, weights, r) {
   grid_coords <- grid$grid
 
   # Stereonet math transformations to Cartesian coordinates
-  xyz_points <- Line(azi, inc) |> Vec3() |> unclass()
+  xyz_points <- Line(azi, inc) |>
+    Vec3() |>
+    unclass()
 
   # cos_dist_matrix <- abs(grid_coords %*% t(xyz_points))
 
@@ -354,7 +358,7 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #' set.seed(20250411)
 #' test <- rfb(100, mu = Line(120, 10), k = 5, A = diag(c(-1, 0, 1)))
 #' density(x = test, ngrid = 100, sigma = 3, weights = runif(100))
-density <- function(x, ...) UseMethod('density')
+density <- function(x, ...) UseMethod("density")
 
 #' @rdname density
 #' @export
@@ -364,17 +368,17 @@ density.spherical <- function(x,
                               vmf_hw = NULL, vmf_optimal = c("cross", "rot"),
                               weights = NULL, upper.hem = FALSE, r = 1) {
   x_grid <- y_grid <- seq(-1, 1, length.out = ngrid)
-  
+
   grid <- expand.grid(x_grid, y_grid) |> as.matrix()
-  
+
   dg <- if (kamb) {
     density_grid(x, weights = weights, upper.hem = upper.hem, kamb = TRUE, FUN = FUN, sigma = sigma, ngrid = ngrid, r = r)
   } else {
     stop("vmf not supported at the moment")
     # density_grid(x, weights = NULL, upper.hem = upper.hem, kamb = FALSE, ngrid = ngrid, hw = vmf_hw, kernel_method = vmf_optimal)
   }
-  
-  
+
+
   # if(!kamb){
   #   grd_lines <- dg$grid |> vec2line()
   #   grid <- .schmidt_crds(deg2rad(grd_lines[, 1]), deg2rad(grd_lines[, 2]), r = r)
@@ -389,15 +393,15 @@ density.spherical <- function(x,
   # } else{
   density_matrix <- matrix(dg$density, nrow = ngrid, byrow = FALSE)
   # }
-  
+
   dist_matrix <- grid[, 1]^2 + grid[, 2]^2
-  
-  
+
+
   # Create a logical mask where TRUE if outside the unit circle
   outside <- dist_matrix > r^2
-  
+
   density_matrix[outside] <- NA
-  
+
   res <- list(
     x = x_grid, y = y_grid,
     density = density_matrix
@@ -408,5 +412,3 @@ density.spherical <- function(x,
 
 #' @export
 density.default <- function(x, ...) stats::density(x, ...)
-
-

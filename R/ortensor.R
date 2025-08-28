@@ -25,7 +25,7 @@ ortensor <- function(x, ...) UseMethod("ortensor")
 
 #' @rdname ortensor
 #' @export
-ortensor.spherical <- function(x, norm = TRUE, w = NULL){
+ortensor.spherical <- function(x, norm = TRUE, w = NULL) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   Vec3(x) |>
     unclass() |>
@@ -115,7 +115,7 @@ inertia_tensor.default <- function(x, w = NULL) {
 #' }
 #'
 #' @seealso [ortensor()], [eigen()]
-#' @name eigen
+#' @name eigen-spherical
 #'
 #' @export
 #'
@@ -128,7 +128,7 @@ inertia_tensor.default <- function(x, w = NULL) {
 #' plot(x, col = "grey")
 #' points(mu, labels = "mu", col = 4)
 #' points(x_eigen$vectors, col = c(1, 2, 3), labels = c("E1", "E2", "E3"))
-eigen.spherical <- function(x, scaled = FALSE){
+eigen.spherical <- function(x, scaled = FALSE) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   xeig <- Vec3(x) |>
     unclass() |>
@@ -138,12 +138,14 @@ eigen.spherical <- function(x, scaled = FALSE){
 
   if (is.Line(x) | is.Plane(x)) {
     xeig$vectors <- Line(xeig$vectors)
-  } 
+  }
 
   xeig
 }
 
 #' @keywords internal
+#' @export
+#' @rdname eigen-spherical
 eigen <- function(x, ...) UseMethod("eigen")
 
 #' @keywords internal
@@ -371,9 +373,9 @@ center <- function(x, max_vertical = FALSE) {
     Vec3()
 
   if (!max_vertical) x_trans <- rotate(x_trans, Vec3(0, -1, 0), pi / 2)
-  if (is.Line(x)){
+  if (is.Line(x)) {
     x_trans <- Line(x_trans)
-  } else if(is.Plane(x)){
+  } else if (is.Plane(x)) {
     x_trans <- Plane(x_trans)
   }
   x_trans

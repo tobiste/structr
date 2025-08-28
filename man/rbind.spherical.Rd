@@ -22,7 +22,7 @@ Combine R Objects by Rows or Columns
 set.seed(20250411)
 rbind.spherical(
   rvmf(n = 5, mu = Line(90, 45)),
-  runif.spherical('Vec3', n = 5),
+  runif.spherical("Vec3", n = 5),
   rkent(n = 5, mu = Plane(0, 10), b = 1)
 )
 }

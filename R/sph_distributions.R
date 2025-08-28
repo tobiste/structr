@@ -24,14 +24,16 @@ NULL
 #' @export
 rvmf <- function(n = 100, mu = Vec3(1, 0, 0), k = 5) {
   stopifnot(nrow(mu) == 1)
-  muv <- Vec3(mu) |> unclass() |> c()
+  muv <- Vec3(mu) |>
+    unclass() |>
+    c()
   res <- rotasym::r_vMF(n, muv, k)
   colnames(res) <- c("x", "y", "z")
   res <- Vec3(res)
 
-  if(is.Line(mu)){
+  if (is.Line(mu)) {
     Line(res)
-  } else if(is.Plane(mu)){
+  } else if (is.Plane(mu)) {
     Plane(res)
   } else {
     res
@@ -43,7 +45,9 @@ rvmf <- function(n = 100, mu = Vec3(1, 0, 0), k = 5) {
 dvmf <- function(x, mu, k = 5) {
   stopifnot(nrow(mu) == 1)
   xv <- Vec3(x) |> unclass()
-  muv <- Vec3(mu) |> unclass() |> c()
+  muv <- Vec3(mu) |>
+    unclass() |>
+    c()
   rotasym::d_vMF(xv, muv, k)
 }
 
@@ -79,7 +83,7 @@ dvmf <- function(x, mu, k = 5) {
 
 #' x3 <- runif.spherical(n = 100, "Line", method = "rotasym")
 #' plot(x3)
-runif.spherical <- function(n = 100, class = c('Vec3', 'Line', 'Plane'), method = c("gss", "sfs", "rotasym")) {
+runif.spherical <- function(n = 100, class = c("Vec3", "Line", "Plane"), method = c("gss", "sfs", "rotasym")) {
   method <- match.arg(method)
   class <- match.arg(class)
 
@@ -105,9 +109,9 @@ runif.spherical <- function(n = 100, class = c('Vec3', 'Line', 'Plane'), method 
   }
 
   dc <- Vec3(dc)
-  if (class=="Line") {
+  if (class == "Line") {
     Line(dc)
-  } else if(class=='Plane'){
+  } else if (class == "Plane") {
     Plane(dc)
   } else {
     dc
@@ -135,20 +139,21 @@ runif.spherical <- function(n = 100, class = c('Vec3', 'Line', 'Plane'), method 
 #' x <- rfb(100, mu = Line(120, 50), k = 5, A = diag(c(-1, 0, 1)))
 #' plot(x)
 rfb <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, A) {
- muv <- Vec3(mu) |> unclass() |> c()
+  muv <- Vec3(mu) |>
+    unclass() |>
+    c()
 
   res <- Directional::rfb(n = n, k = k, m = muv, A = A)
   colnames(res) <- c("x", "y", "z")
   res <- Vec3(res)
 
-  if(is.Line(mu)){
+  if (is.Line(mu)) {
     Line(res)
-  } else if(is.Plane(mu)){
+  } else if (is.Plane(mu)) {
     Plane(res)
   } else {
     res
   }
-
 }
 
 
@@ -178,9 +183,9 @@ rkent <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, b) {
   colnames(res) <- c("x", "y", "z")
   res <- Vec3(res)
 
-  if(is.Line(mu)){
+  if (is.Line(mu)) {
     Line(res)
-  } else if(is.Plane(mu)){
+  } else if (is.Plane(mu)) {
     Plane(res)
   } else {
     res
@@ -211,9 +216,9 @@ kent_mle <- function(x) {
   nm <- colnames(res$G)
   res$G <- t(res$G) |> Vec3()
   rownames(res$G) <- nm
-  if (is.Line(x)){
+  if (is.Line(x)) {
     res$G <- Line(res$G)
-  } else if(is.Plane(x)){
+  } else if (is.Plane(x)) {
     res$G <- Plane(res$G)
   }
 
@@ -231,9 +236,9 @@ vmf_mle <- function(x) {
   colnames(res$mu) <- c("x", "y", "z")
   res$mu <- Vec3(res$mu)
 
-  if (is.Line(x)){
+  if (is.Line(x)) {
     res$mu <- Line(res$mu)
-  } else if(is.Plane(x)){
+  } else if (is.Plane(x)) {
     res$mu <- Plane(res$mu)
   }
 

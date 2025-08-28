@@ -48,15 +48,15 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 0.005) 
   if ((S2 %*% S3) > ortho.tol) stop("S2 and S3 are not orthogonal.")
 
   # Check R validity
-  if(length(R) == 1 & n>1){
+  if (length(R) == 1 & n > 1) {
     R <- rep(R, n)
   }
 
   if (!is.numeric(R) || any(R < 0) || any(R > 1)) stop("SH(): R must be between 0 and 1.")
 
   # Calculate the denominator and numerator in Eq. 11
-  X <- S1[,1] * S1[,1] - S1[,2] * S1[,2] + (1 - R) * (S2[,1] * S2[,1] - S2[,2] * S2[,2])
-  Y <- 2 * (S1[,1] * S1[,2] + (1 - R) * (S2[,1] * S2[,2]))
+  X <- S1[, 1] * S1[, 1] - S1[, 2] * S1[, 2] + (1 - R) * (S2[, 1] * S2[, 1] - S2[, 2] * S2[, 2])
+  Y <- 2 * (S1[, 1] * S1[, 2] + (1 - R) * (S2[, 1] * S2[, 2]))
   # print 'SH: X %f Y %f' % (X,Y)
 
   # Is the denominator (X here) from Eq. 11 in Lund and Townend (2007) zero?
@@ -75,15 +75,15 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 0.005) 
       # If (A) holds, R = 1 + s1Ns1E/s2Ns2E unless s2Ns2E = 0, in which case
       # s1Ns1E also has to be zero for (A) to hold.
 
-      if (abs(S2[i,1] * S2[i,2]) < tol) {
+      if (abs(S2[i, 1] * S2[i, 2]) < tol) {
         # s2Ns2E = 0
         # print 'SH: s2Ns2E = 0'
 
         # print 'SH: s1Ns1E = s2Ns2E = 0 => SH undefined'
-        if (abs(S1[i,1] * S1[i,2]) < tol) NA_real_ else pi / 4
+        if (abs(S1[i, 1] * S1[i, 2]) < tol) NA_real_ else pi / 4
       } else {
         # print 'SH: R fits => SH undefined'
-        if (abs(R[i] - (1 + S1[i,1] * S1[i,2] / S2[i,1] * S2[i,2])) < tol) NA_real_ else pi / 4
+        if (abs(R[i] - (1 + S1[i, 1] * S1[i, 2] / S2[i, 1] * S2[i, 2])) < tol) NA_real_ else pi / 4
       }
     } else {
       # The denominator is non-zero
@@ -91,7 +91,7 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 0.005) 
       # alpha <- atan(Y / X) / 2
       atan2(Y[i], X[i]) / 2
     }
-    }, FUN.VALUE = numeric(n))
+  }, FUN.VALUE = numeric(n))
 
 
   # Have we found a minimum or maximum? Use 2nd derivative to find out.
@@ -102,7 +102,7 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 0.005) 
 
   # We found a minimum. Add 90 degrees to get the maximum.
   # if (dev2 > 0) alpha <- alpha + pi / 2
-  alpha <- ifelse(dev2 > 0,  alpha + pi / 2, alpha)
+  alpha <- ifelse(dev2 > 0, alpha + pi / 2, alpha)
 
   # The resulting direction of SH is given as [0,180[ degrees.
 
@@ -115,7 +115,7 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 0.005) 
   alpha <- alpha %% pi
 
   # Return angle in radians only if all principles axes were given as Cartesian vectors
-  if(!all_rad) alpha <- rad2deg(alpha)
+  if (!all_rad) alpha <- rad2deg(alpha)
 
 
   return(unname(alpha))
@@ -152,7 +152,7 @@ SH_from_tensor <- function(S) {
     as.Vec3(S[, 2]),
     as.Vec3(S[, 3]),
     R = (S1 - S2) / (S1 - S3)
-    ) |>
+  ) |>
     rad2deg()
 
   # Y <- 2 * (S1 * S[1, 1] * S[2, 1] + S2 * S[1, 2] * S[2, 2] + S3 * S[1, 3] * S[2, 3])

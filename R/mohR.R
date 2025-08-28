@@ -198,8 +198,8 @@ MohrCircle_plot <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, s
 
   graphics::par(mgp = c(2.8, 1, 0), las = 1)
   plot(sigma, tau,
-       col = "black", type = "l", xlab = xLab, ylab = yLab, xaxs = "i",
-       xlim = c(min(0, min(sigma)), max(sigma) * 1.1), main = "Mohr Circle Plot", asp = 1
+    col = "black", type = "l", xlab = xLab, ylab = yLab, xaxs = "i",
+    xlim = c(min(0, min(sigma)), max(sigma) * 1.1), main = "Mohr Circle Plot", asp = 1
   )
   graphics::abline(h = 0)
 }
@@ -280,7 +280,9 @@ tauMax <- function(sigmaX, sigmaZ, tauXZ) {
 #' @examples
 #' ggMohr(1025, 400, 250)
 ggMohr <- function(sigma1, sigma2, sigma3, coulomb = c(70, 0.6), sliding = 0.81, units = "MPa", fill = "gray", alpha = .5) {
-  s1 = sigma1; s2 = sigma2; s3 = sigma3
+  s1 <- sigma1
+  s2 <- sigma2
+  s3 <- sigma3
   circle13.r <- diff_stress(s1, s3) / 2
   circle13.m <- mean_stress(s1, s3)
 

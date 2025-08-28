@@ -94,10 +94,10 @@ correct_pair <- function(x) {
   p <- Plane(corr$fvec)
   l <- Line(corr$lvec)
 
-  if(inherits(x, "fault")) {
-    Fault(p[,1], p[,2], l[,1], l[,2], x[,5], correction = FALSE)
+  if (inherits(x, "fault")) {
+    Fault(p[, 1], p[, 2], l[, 1], l[, 2], x[, 5], correction = FALSE)
   } else {
-    Pair(p[,1], p[,2], l[,1], l[,2], correction = FALSE)
+    Pair(p[, 1], p[, 2], l[, 1], l[, 2], correction = FALSE)
   }
 }
 

@@ -9,7 +9,9 @@
 #' and numeric otherwise.
 #' @noRd
 #' @examples
-#' x <- rvmf(100, mu = Line(120, 50), k = 5) |> Vec3() |> unclass()
+#' x <- rvmf(100, mu = Line(120, 50), k = 5) |>
+#'   Vec3() |>
+#'   unclass()
 #' vresultant(x, mean = FALSE)
 #' vresultant(x, mean = TRUE)
 vresultant <- function(x, w = NULL, mean = FALSE, na.rm = TRUE) {
@@ -130,7 +132,7 @@ v_confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = FALSE) {
 #' `confidence_angle` returns the semi-vertical angle \eqn{q} about the
 #' mean \eqn{\mu} (in degree if `x` is a `"Plane"` or `"Line"`, or in radians
 #' if otherwise). The \eqn{100(1-\alpha)\%} confidence interval is than given by \eqn{\mu \pm q}.
-#' 
+#'
 #' `estimate_k` returns the estimated concentration of the von Mises-Fisher distribution \eqn{\kappa} (after Sra, 2011).
 #'
 #' @examples
@@ -252,7 +254,7 @@ sd_error <- function(x, w = NULL, na.rm = FALSE) {
 
 #' @rdname stats
 #' @export
-delta <- function(x, w = NULL, na.rm = TRUE){
+delta <- function(x, w = NULL, na.rm = TRUE) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   d <- Vec3(x) |>
     unclass() |>

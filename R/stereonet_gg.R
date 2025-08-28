@@ -107,7 +107,7 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
     ) |>
       Vec3()
 
-    strike <- as.Line(x[i, ])[1,1] - 90
+    strike <- as.Line(x[i, ])[1, 1] - 90
 
     rotaxis <- Line(strike, 0) |> Vec3()
     D1 <- rotate(D, zaxis, deg2rad(strike))
@@ -131,7 +131,7 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
     D_rot <- rotate(D1, rotaxis, k * rotangle) |> Line()
     D_fixed <- .fix_inc(az = D_rot[, 1], inc = D_rot[, 2])
 
-    if (d[i] != 90 & d[i] > as.Line(x[i, ])[1,2]) {
+    if (d[i] != 90 & d[i] > as.Line(x[i, ])[1, 2]) {
       D_rotrot_fixed <- D_fixed
 
       dangle <- angle(Line(D_fixed[, 1], D_fixed[, 2]), as.Line(x[i, ]))

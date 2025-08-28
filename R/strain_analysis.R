@@ -68,8 +68,8 @@ defgrad_from_ratio <- function(Rxy = 1, Ryz = 1) {
 #' @export
 defgrad_from_pair <- function(p) {
   stopifnot(is.Pair(p))
-  pl <- Line(p[,3], p[,4]) |> Vec3()
-  pp <- Plane(p[,1], p[,2]) |> Vec3()
+  pl <- Line(p[, 3], p[, 4]) |> Vec3()
+  pp <- Plane(p[, 1], p[, 2]) |> Vec3()
 
   D <- rbind(
     pl,
@@ -110,7 +110,7 @@ defgrad_from_vectors <- function(v1, v2) {
 #' @export
 defgrad_from_axisangle <- function(axis, angle) {
   isvec3 <- is.Vec3(axis)
-  if(!isTRUE(isvec3)){
+  if (!isTRUE(isvec3)) {
     axis <- Vec3(axis)
     angle <- deg2rad(angle)
   }
