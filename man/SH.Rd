@@ -36,7 +36,7 @@ S2 <- crossprod(S3, S1)
 SH(S1, S2, S3, R = 1) #  70.89
 
 R <- seq(0, 1, .05)
-cbind(R, SH(S1, S2, S3, R = R))
+cbind(R, SH = SH(S1, S2, S3, R = R))
 }
 \references{
 Lund and Townend, (2007). Calculating horizontal stress

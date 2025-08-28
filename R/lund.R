@@ -29,10 +29,10 @@
 #' SH(S1, S2, S3, R = 1) #  70.89
 #'
 #' R <- seq(0, 1, .05)
-#' cbind(R, SH(S1, S2, S3, R = R))
+#' cbind(R, SH = SH(S1, S2, S3, R = R))
 SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 0.005) {
   # Convert to unit vectors
-  all_rad <- is.Vec3(S1) & is.Vec3(S2) & is.Vec3(S3)
+  all_rad <- all(is.Vec3(S1), is.Vec3(S2), is.Vec3(S3))
 
   S1 <- Vec3(S1) |> vnorm()
   S2 <- Vec3(S2) |> vnorm()
