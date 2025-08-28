@@ -38,5 +38,5 @@ stereo_point(x)
 bingham_statistics(x)
 }
 \seealso{
-\code{\link[=inertia_tensor]{inertia_tensor()}}
+\code{\link[=inertia_tensor.spherical]{inertia_tensor.spherical()}}
 }

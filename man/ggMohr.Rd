@@ -16,13 +16,13 @@ ggMohr(
 )
 }
 \arguments{
-\item{sigma1, ssigma2, sigma3}{numeric}
+\item{sigma1, sigma2, sigma3}{numeric. Magnitudes of major, intermediate, and minor principal stresses}
 
 \item{coulomb}{numeric 2 element vector. Coulomb criterion containing the cohesion and the coefficient of sliding: (\code{c(70, 0.6)})}
 
 \item{sliding}{Sliding criteria (\code{0.81} by default)}
 
-\item{units}{units of the \code{sigma1}, \code{sigma2}, and \code{sigma3} (\code{"MPa"} by default).}
+\item{units}{units of \code{sigma1}, \code{sigma2}, and \code{sigma3} (\code{"MPa"} by default).}
 
 \item{fill}{fill color of Mohr circle}
 

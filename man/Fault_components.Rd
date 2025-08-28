@@ -22,7 +22,8 @@ numeric. plane, line or angle in degrees, respectively
 \description{
 \code{\link[=Fault_plane]{Fault_plane()}} extracts the orientation of the fault plane,
 \code{\link[=Fault_slip]{Fault_slip()}} extracts the orientation of the slip vector, and
-\code{\link[=Fault_rake]{Fault_rake()}} extracts the rake of the fault. i.e. the angle between fault slip vector and fault strike.
+\code{\link[=Fault_rake]{Fault_rake()}} extracts the rake of the fault, i.e. the angle between fault
+slip vector and fault strike.
 }
 \examples{
 f <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))

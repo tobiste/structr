@@ -3,20 +3,29 @@
 \name{vecmath}
 \alias{vecmath}
 \alias{vector_length}
+\alias{crossprod}
 \alias{crossprod.spherical}
 \alias{\%*\%.spherical}
+\alias{rotate}
 \alias{rotate.spherical}
 \alias{angle}
 \alias{angle.spherical}
+\alias{project}
 \alias{project.spherical}
-\alias{transform.spherical}
+\alias{reject}
+\alias{reject.default}
+\alias{transform_linear}
 \title{Vector math operations}
 \usage{
 vector_length(x)
 
-\method{crossprod}{spherical}(x, y)
+crossprod(x, ...)
+
+\method{crossprod}{spherical}(x, y = NULL)
 
 \method{\%*\%}{spherical}(x, y)
+
+rotate(x, ...)
 
 \method{rotate}{spherical}(x, rotaxis, rotangle)
 
@@ -24,12 +33,20 @@ angle(x, y)
 
 \method{angle}{spherical}(x, y)
 
+project(x, y)
+
 \method{project}{spherical}(x, y)
 
-\method{transform}{spherical}(x, A, norm = FALSE)
+reject(x, y)
+
+\method{reject}{default}(x, y)
+
+transform_linear(x, A, norm = FALSE)
 }
 \arguments{
 \item{x, y}{objects of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}.}
+
+\item{...}{arguments passed to function call}
 
 \item{rotaxis}{Axis of rotation given as object of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}.}
 
@@ -50,13 +67,13 @@ Vector math operations
 \details{
 \describe{
 \item{\code{vector_length}}{the length of a vector}
-\item{\code{crossprod}}{the cross-product of two vectors, i.e. the vector perpendicular to the 2 vectors}
+\item{\code{crossprod}}{the cross-product of two vectors, i.e. the vector perpendicular to the 2 vectors. If \code{y = NULL} is taken to be the sam,e vector as \code{x}.}
 \item{\code{\%*\%}}{the dot product of two vectors}
 \item{\code{rotate}}{rotation of a vector about a specified vector by a specified angle}
 \item{\code{angle}}{angle between two vectors}
 \item{\code{project}}{projection of one vector onto the other (changes the vector
 length of second vector, unless their are unit vectors)}
-\item{\code{transform}}{transformation of a vector by a 3x3 matrix}
+\item{\code{transform_linear}}{Linear transformation of a vector by a 3x3 matrix}
 }
 }
 \examples{
@@ -69,5 +86,5 @@ vec1 \%*\% vec2 # dot product
 rotate(vec1, vec2, pi / 2) # rotation
 angle(vec1, vec2) # angle between vectors
 project(vec1, vec2) # projection of a vector
-transform(vec1, matrix(1:9, nrow = 3, ncol = 3))
+transform_linear(vec1, matrix(runif(9), 3, 3)) # linear transformation
 }

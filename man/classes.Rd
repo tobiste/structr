@@ -59,12 +59,10 @@ Fault(x, y, azimuth, plunge, sense, correction = FALSE)
 Spherical(x, .class)
 }
 \arguments{
-\item{x, y}{numeric vector or array containing the spherical coordinates
-(1st element/column is azimuth, 2nd element/column is inclination, both in
-degrees), or object of class \code{"Line"}, \code{"Plane"}, and  \code{"Pair"}, and \code{"Fault"}}
+\item{x, y}{object of class \code{"Line"}, \code{"Plane"}, and  \code{"Pair"}, and \code{"Fault"}  or
+numeric vector or array containing the spherical coordinates}
 
-\item{azimuth, plunge}{numeric vectors. Azimuth and plunge of a line (in
-degrees)}
+\item{azimuth, plunge, z, dip}{numeric vectors of the spherical coordinates}
 
 \item{correction}{logical. If \code{TRUE} (default), both the fault plane and slip
 vector will be rotated so that the slip vector lies on the fault plane by
@@ -75,9 +73,6 @@ minimizing the angle between the slip and the plane normal vector. See \code{\li
 of the fault's rake (see \code{\link[=Fault_from_rake]{Fault_from_rake()}} for details).}
 
 \item{.class}{character. Spherical class the object should be coerced to.}
-
-\item{dip_direction, dip}{numeric vectors. Dip direction and dip of a plane
-(in degrees)}
 }
 \description{
 \code{Vec3}, \code{Line}, \code{Plane}, \code{"Pair"} and \code{Fault} create or convert a \code{"Vec3"}, \code{"Line"}, \code{"Plane"}, \code{"Pair"}, and \code{"Fault"}

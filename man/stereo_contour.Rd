@@ -2,8 +2,12 @@
 % Please edit documentation in R/stereonet_contours.R
 \name{stereo_contour}
 \alias{stereo_contour}
+\alias{contour}
+\alias{image}
+\alias{density-plot}
+\alias{density_plot}
 \alias{contour.spherical}
-\alias{filled.contour.spherical}
+\alias{contourf}
 \alias{image.spherical}
 \title{Plot spherical densities in a stereonet}
 \usage{
@@ -18,7 +22,7 @@
   ...
 )
 
-filled.contour.spherical(
+contourf(
   x,
   add = FALSE,
   density.params = list(),
@@ -42,6 +46,8 @@ filled.contour.spherical(
 
 \item{add}{logical. Whether the contours should be added to an existing plot.}
 
+\item{density.params}{list of parameters passed to \link{density.spherical}}
+
 \item{nlevels}{integer. Number of contour levels for plotting}
 
 \item{col.palette}{a color palette function to be used to assign colors in the plot.}
@@ -50,19 +56,16 @@ filled.contour.spherical(
 
 \item{col.params}{list. Arguments passed to \code{col.palette}}
 
-\item{...}{optional parameters passed to \code{\link[=image.default]{image.default()}} or \code{\link[=contour.default]{contour.default()}}.}
-
-\item{dens.params}{list of parameters passed to \link{density.spherical}}
-
-\item{type}{character. Type of plot: \code{'contour'} for contour lines,
-\code{'contour_filled'} for filled contours, or \code{'image'} for a raster image.}
+\item{...}{optional parameters passed to \code{\link[graphics:image]{graphics::image()}} or \code{\link[graphics:contour]{graphics::contour()}}.}
 }
 \value{
 list containing the stereographic x and coordinates of of the grid,
 the counts, and the density.
 }
 \description{
-Kamb counts and densities on the sphere
+Kamb counts and densities on the sphere. \code{contour} plots the contour lines,
+\code{contourf} displays a contour plot with the areas between the contours filled,
+and \code{image} creates a dense grid of colored rectangles.
 }
 \examples{
 set.seed(20250411)
@@ -70,7 +73,7 @@ x <- rfb(100, mu = Line(120, 10), k = 5, A = diag(c(-1, 0, 1)))
 
 contour(x)
 
-filled.contour(x,
+contourf(x,
   col.params = list(direction = -1, begin = .05, end = .95, alpha = .75)
 )
 stereo_point(x, col = "black", pch = 21)
@@ -80,17 +83,17 @@ stereo_point(x, col = "lightgrey", pch = 21)
 
 
 # complete example:
-par(mfrow = c(2, 1))
+par(mfrow = c(1, 2))
 wp <- 6 / ifelse(is.na(example_planes$quality), 6, example_planes$quality)
 my_planes <- Plane(example_planes$dipdir, example_planes$dip)
 fabric_p <- or_shape_params(my_planes)$Vollmer["D"]
-my_planes_eig <- or_eigen(my_planes)
+my_planes_eig <- eigen(my_planes)
 
 stereoplot(guides = TRUE, col = "grey96")
-stereo_point(my_planes, col = "grey", pch = 16, cex = .5)
-stereo_density(my_planes, type = "contour", add = TRUE, weights = wp)
-stereo_point(as.plane(my_planes_eig$vectors[3, ]), col = "black", pch = 16)
-stereo_greatcircle(as.plane(my_planes_eig$vectors[3, ]), col = "black", pch = 16)
+points(my_planes, col = "grey", pch = 16, cex = .5)
+contour(my_planes, add = TRUE, weights = wp)
+points(my_planes_eig$vectors[3, ], col = "black", pch = 16)
+lines(my_planes_eig$vectors[3, ], d = 90, col = "black", pch = 16)
 title(
   main = "Planes",
   sub = paste0(
@@ -104,9 +107,9 @@ wl <- 6 / ifelse(is.na(example_lines$quality), 6, example_lines$quality)
 fabric_l <- or_shape_params(my_lines)$Vollmer["D"]
 
 stereoplot(guides = TRUE, col = "grey96")
-stereo_point(my_lines, col = "grey", pch = 16, cex = .5)
-stereo_density(my_lines, type = "contour", add = TRUE, weights = wl)
-stereo_point(v_mean(my_lines, w = wl), col = "black", pch = 16)
+points(my_lines, col = "grey", pch = 16, cex = .5)
+contour(my_lines, add = TRUE, weights = wl)
+points(mean(my_lines, w = wl), col = "black", pch = 16)
 title(
   main = "Lines",
   sub = paste0(
@@ -116,5 +119,5 @@ title(
 )
 }
 \seealso{
-\code{\link[=count_points]{count_points()}}
+\code{\link[=count_points]{count_points()}}, \link{density}
 }

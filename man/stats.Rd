@@ -3,7 +3,10 @@
 \name{stats}
 \alias{stats}
 \alias{mean.spherical}
+\alias{mean}
+\alias{sd}
 \alias{sd.spherical}
+\alias{var}
 \alias{var.spherical}
 \alias{confidence_angle}
 \alias{rdegree}
@@ -14,7 +17,13 @@
 \usage{
 \method{mean}{spherical}(x, w = NULL, na.rm = TRUE)
 
+mean(x, ...)
+
+sd(x, ...)
+
 \method{sd}{spherical}(x, w = NULL, na.rm = TRUE)
+
+var(x, ...)
 
 \method{var}{spherical}(x, w = NULL, na.rm = TRUE)
 
@@ -34,6 +43,8 @@ estimate_k(x, w = NULL, na.rm = FALSE)
 \item{w}{numeric. Optional weights for each observation.}
 
 \item{na.rm}{logical. Whether \code{NA} values should be removed before the computation proceeds.}
+
+\item{...}{arguments passed to function call}
 
 \item{alpha}{numeric. Significance level for the confidence angle (default is 0.05 for a 95\% confidence angle).}
 }

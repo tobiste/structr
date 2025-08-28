@@ -44,10 +44,17 @@ Often measured orientation angles can be (slightly) imprecise and subjected to s
 
 ```{r faults_correct}
 p <- Pair(120, 60, 110, 58)
+```
+
+```{r faults_correct2}
+misfit_pair(p)
+```
+
+```{r faults_correct3}
 correct_pair(p)
 ```
 
-> A `pair` object is a container of associated plane and line measurements. Basically like a fault wihtout the sense of displacement.
+> A `"Pair"` object is a container of associated plane and line measurements. Basically like a fault wihtout the sense of displacement.
 
 
 
@@ -55,11 +62,14 @@ correct_pair(p)
 
 Calculates PT-axes, kinematic plane (M), and dihedra separation plane (d):
 
-```{r faults_stress}
+```{r faults_stress1}
 my_fault2 <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
-fault_analysis(my_fault2)
+print(my_fault2)
 ```
 
+```{r faults_stress2}
+fault_analysis(my_fault2)
+```
 
 # Fault offsets {#sec.offset}
 

@@ -1,3 +1,4 @@
+#' @keywords internal
 roty3 <- function(deg) {
   theta <- deg2rad(deg)
   c <- cos(theta)
@@ -10,6 +11,7 @@ roty3 <- function(deg) {
   ), nrow = 3, byrow = TRUE)
 }
 
+#' @keywords internal
 rotz3 <- function(deg) {
   theta <- deg2rad(deg)
   c <- cos(theta)
@@ -23,6 +25,7 @@ rotz3 <- function(deg) {
 }
 
 
+#' @keywords internal
 .fix_inc <- function(az, inc) {
   tinc <- deg2rad(inc %% 360)
   co <- cos(tinc)
@@ -84,6 +87,7 @@ stereo_coords <- function(az, inc, upper.hem = FALSE, earea = TRUE, r = 1) {
   cbind(x = pltx, y = plty)
 }
 
+#' @keywords internal
 .schmidt_crds <- function(az_rad, inc_rad, r = 1) {
   tq <- r * sqrt(2) * sin(pi / 4 - inc_rad / 2)
   x <- tq * sin(az_rad)
@@ -91,6 +95,7 @@ stereo_coords <- function(az, inc, upper.hem = FALSE, earea = TRUE, r = 1) {
   cbind(x = x, y = y)
 }
 
+#' @keywords internal
 .wulff_crds <- function(az_rad, inc_rad, r = 1) {
   tq <- r * tan(pi / 4 - inc_rad / 2)
   x <- tq * sin(az_rad)
@@ -500,7 +505,7 @@ stereo_guides <- function(d = 10, earea = TRUE, ...) {
 #' @param grid.params list.
 #' @param ... parameters passed to [stereo_point()], [stereo_smallcircle()], [stereo_greatcircle()], or [stereo_fault()]
 #'
-#' @export
+#' @exportS3Method graphics::plot 
 #'
 #' @examples
 #' plot(Line(c(90, 80), c(10, 75)), lab = c("L1", "L2"))
@@ -513,14 +518,19 @@ plot.spherical <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = lis
   if (is.Fault(x)) stereo_fault(x, upper.hem = upper.hem, earea = earea, ...)
 }
 
+# #' @export
+# #' @keywords internal
+# plot <- function(x, ...) UseMethod("plot", x, ...)
 
 #' Add Points to a Plot
 #'
 #' @param ... arguments passed to [graphics::points()]
 #' @inheritParams plot.spherical
 #' @inheritParams graphics::text
+#' @importFrom graphics points
 #'
-#' @export
+#' @exportS3Method graphics::points
+#'  
 #' @examples
 #' stereoplot()
 #' points(rvmf(n = 100))
@@ -544,25 +554,37 @@ points.spherical <- function(x, upper.hem = FALSE, earea = TRUE, ...) {
   graphics::points(crds[, "x"], crds[, "y"], ...)
 }
 
+# #' @export
+# #' @keywords internal
+# points <- function(x, ...) UseMethod("points", x, ...)
+
+
 #' Add Lines to a Plot
 #'
 #' @inheritParams plot.spherical
 #' @inheritParams graphics::text
 #' @param ... arguments passed to [graphics::lines()]
+#' @importFrom graphics lines
+#' @exportS3Method graphics::lines
 #'
-#' @export
 #' @examples
 #' stereoplot()
 #' lines(rvmf(n = 5), d = runif(5, 0, 90), col = 1:5)
 lines.spherical <- function(x, ...) stereo_smallcircle(x, ...)
+
+# #' @export
+# #' @keywords internal
+# lines <- function(x, ...) UseMethod("lines", x, ...)
+
 
 #' Add Points to a Plot
 #'
 #' @param ... arguments passed to [graphics::text()]
 #' @inheritParams plot.spherical
 #' @inheritParams graphics::text
+#' @importFrom graphics text
 #'
-#' @export
+#' @exportS3Method graphics::text
 #'
 #' @examples
 #' stereoplot()
@@ -585,3 +607,7 @@ text.spherical <- function(x, labels = seq_along(x[, 1]), upper.hem = FALSE, ear
 
   graphics::text(crds[, "x"], crds[, "y"], labels = labels, ...)
 }
+
+# #' @export
+# #' @keywords internal
+# text <- function(x, ...) UseMethod("text", x, ...)

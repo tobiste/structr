@@ -29,7 +29,7 @@
 #' @importFrom sf st_transform st_coordinates st_is st_as_sf st_make_grid st_crs st_bbox
 #' @details Based on [tectonicr::stress2grid()]
 #'
-#' @seealso [tectonicr::stress2grid()], [v_mean()], [v_delta()]
+#' @seealso [tectonicr::stress2grid()], [mean.spherical()], [delta()]
 #' @noRd
 #' @examples
 #' ps_vec <- rvmf() |> Line()
@@ -200,9 +200,9 @@ spatial_interpolation <- function(x,
 #' @returns \code{sf} object
 #'
 #' @importFrom stats aggregate
-#' @seealso [spatial_interpolation()], [v_mean()], [v_delta()]
+#' @seealso [spatial_interpolation()], [mean.spherical()], [delta()]
 #'
-#' @export
+#' @noRd
 compact_grid <- function(grid) {
   lon <- lat <- x <- y <- z <- dipdir <- dip <- R <- numeric()
   group <- character()

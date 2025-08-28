@@ -1,3 +1,4 @@
+#' @keywords internal
 blank_grid_regular <- function(n, r = 1) {
   x_grid <- seq(-1, 1, length.out = n)
   y_grid <- seq(-1, 1, length.out = n)
@@ -11,6 +12,7 @@ blank_grid_regular <- function(n, r = 1) {
   list(grid = grid_cart, density = values)
 }
 
+#' @keywords internal
 .schmdit2spherical <- function(x, y, r = 1) {
   tq <- sqrt(x^2 + y^2)
 
@@ -24,6 +26,7 @@ blank_grid_regular <- function(n, r = 1) {
   cbind(az_rad = az_rad, inc_rad = inc_rad)
 }
 
+#' @keywords internal
 .schmidt2cart <- function(x, y, r = 1) {
   res <- .schmdit2spherical(x, y, r) |> rad2deg()
   Line(res[, 1], res[, 2]) |>
@@ -178,11 +181,13 @@ density_grid <- function(x, weights = NULL, upper.hem = FALSE, kamb = TRUE, ...)
 }
 
 
+#' @keywords internal
 kamb_radius <- function(n, sigma) {
   a <- sigma^2 / (n + sigma^2)
   return(1 - a)
 }
 
+#' @keywords internal
 kamb_units <- function(n, radius) {
   return(sqrt(n * radius * (1 - radius)))
 }
@@ -233,6 +238,7 @@ kamb_units <- function(n, radius) {
 #'
 #' @returns list
 #' @name density-funs
+#' @importFrom Directional euclid vmfkde.tune vmf.mle
 NULL
 
 #' @rdname density-funs
@@ -287,6 +293,7 @@ schmidt_count <- function(cos_dist, sigma = NULL) {
 
 
 
+#' @keywords internal
 vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngrid = 100) {
   n <- nrow(u)
   x <- Directional::euclid(u)
@@ -352,17 +359,21 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #' @param r numeric. radius of stereonet circle
 #'
 #' @name density
-#' @export
-#'
+#' @aliases density.spherical density_spherical
+#' 
 #' @examples
 #' set.seed(20250411)
 #' test <- rfb(100, mu = Line(120, 10), k = 5, A = diag(c(-1, 0, 1)))
 #' density(x = test, ngrid = 100, sigma = 3, weights = runif(100))
-density <- function(x, ...) UseMethod("density")
 NULL
 
 #' @rdname density
 #' @export
+density <- function(x, ...) UseMethod("density")
+
+
+#' @rdname density
+#' @exportS3Method stats::density 
 density.spherical <- function(x,
                               kamb = TRUE, FUN = exponential_kamb,
                               ngrid = 128L, sigma = 3,
@@ -411,5 +422,7 @@ density.spherical <- function(x,
   return(res)
 }
 
-# #' @export
-# density.default <- function(x, ...) stats::density(x, ...)
+#' @export
+#' @noRd
+#' @importFrom stats density
+density.default <- function(x, ...) stats::density(x, ...)

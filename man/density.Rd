@@ -3,6 +3,7 @@
 \name{density}
 \alias{density}
 \alias{density.spherical}
+\alias{density_spherical}
 \title{Spherical density estimation}
 \usage{
 density(x, ...)

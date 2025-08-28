@@ -12,16 +12,15 @@
 #' @details The normalized orientation tensor is given as \deqn{D = \frac{1}{n} (x_i, y_i, z_i) (x_i, y_i, z_i)^T}
 #' n = 1
 #'
-#' @export
 #' @name ortensor
 #'
-#' @seealso [or_eigen()], [inertia_tensor()]
+#' @seealso [eigen.spherical()], [inertia_tensor.spherical()]
 #'
 #' @examples
 #' set.seed(20250411)
 #' x <- rfb(100, mu = Line(120, 50), k = 1, A = diag(c(10, 0, 0)))
 #' ortensor(x)
-ortensor <- function(x, ...) UseMethod("ortensor")
+NULL
 
 #' @rdname ortensor
 #' @export
@@ -31,6 +30,10 @@ ortensor.spherical <- function(x, norm = TRUE, w = NULL) {
     unclass() |>
     ortensor.default(norm, w)
 }
+
+#' @rdname ortensor
+#' @export
+ortensor <- function(x, norm = TRUE, w = NULL) UseMethod("ortensor")
 
 #' @export
 ortensor.default <- function(x, norm = TRUE, w = NULL) {
@@ -69,13 +72,17 @@ ortensor.default <- function(x, norm = TRUE, w = NULL) {
 #'
 #' @return 3 x 3 matrix
 #' @details \deqn{D = n - (x_i, y_i, z_i) (x_i, y_i, z_i)^T}
-#' @export
+#' @name inertia
+#' @method inertia_tensor spherical
 #' @seealso [ortensor()]
 #'
 #' @examples
 #' set.seed(20250411)
 #' x <- rfb(100, mu = Line(120, 50), k = 1, A = diag(c(10, 0, 0)))
 #' inertia_tensor(x)
+
+#' @rdname inertia
+#' @export
 inertia_tensor.spherical <- function(x, w = NULL) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   Vec3(x) |>
@@ -83,7 +90,9 @@ inertia_tensor.spherical <- function(x, w = NULL) {
     inertia_tensor.default(w)
 }
 
-inertia_tensor <- function(...) UseMethod("inertia_tensor")
+#' @rdname inertia
+#' @export
+inertia_tensor <- function(x, w = NULL) UseMethod("inertia_tensor")
 
 #' @export
 inertia_tensor.default <- function(x, w = NULL) {
@@ -107,6 +116,7 @@ inertia_tensor.default <- function(x, w = NULL) {
 #' @inheritParams ortensor
 #' @param scaled logical. Whether the Eigenvectors should be scaled by the
 #' Eigenvalues (only effective if `x` is in Cartesian coordinates).
+#' @param ... arguments passed from other functions
 #'
 #' @returns list containing
 #' \describe{
@@ -116,8 +126,7 @@ inertia_tensor.default <- function(x, w = NULL) {
 #'
 #' @seealso [ortensor()], [eigen()]
 #' @name eigen-spherical
-#'
-#' @export
+#' @aliases eigen eigen_spherical
 #'
 #' @examples
 #' set.seed(20250411)
@@ -128,6 +137,10 @@ inertia_tensor.default <- function(x, w = NULL) {
 #' plot(x, col = "grey")
 #' points(mu, labels = "mu", col = 4)
 #' points(x_eigen$vectors, col = c(1, 2, 3), labels = c("E1", "E2", "E3"))
+NULL
+
+#' @export
+#' @rdname eigen-spherical
 eigen.spherical <- function(x, scaled = FALSE) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   xeig <- Vec3(x) |>
@@ -143,20 +156,18 @@ eigen.spherical <- function(x, scaled = FALSE) {
   xeig
 }
 
-#' @keywords internal
 #' @export
-# #' @rdname eigen-spherical
+#' @rdname eigen-spherical
 eigen <- function(x, ...) UseMethod("eigen")
 
-#' @keywords internal
 #' @export
 eigen.default <- function(x, ...) base::eigen(x, ...)
 
-#' @keywords internal
 #' @export
 eigen.matrix <- function(x, ...) base::eigen(x, ...)
 
 
+#' @keywords internal
 or_eigen <- function(x, scaled = FALSE) {
   x_or <- ortensor.default(x, norm = FALSE)
   x_eigen <- eigen(x_or, symmetric = TRUE)
@@ -175,7 +186,7 @@ or_eigen <- function(x, scaled = FALSE) {
 #'
 #' @inheritParams ortensor
 #'
-#' @importFrom dplyr near
+#' @importFrom dplyr near case_when
 #' @name strain_shape
 #'
 #' @details \describe{

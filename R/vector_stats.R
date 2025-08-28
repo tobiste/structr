@@ -27,6 +27,7 @@ vresultant <- function(x, w = NULL, mean = FALSE, na.rm = TRUE) {
   R
 }
 
+#' @keywords internal
 v_mean <- function(x, w = NULL, na.rm = TRUE) {
   if (isTRUE(na.rm)) x <- x[!rowSums(!is.finite(x)), ]
 
@@ -42,6 +43,7 @@ v_mean <- function(x, w = NULL, na.rm = TRUE) {
   xbar / Rbar
 }
 
+#' @keywords internal
 v_var <- function(x, w = NULL, na.rm = TRUE) {
   if (isTRUE(na.rm)) x <- x[!rowSums(!is.finite(x)), ]
 
@@ -50,6 +52,7 @@ v_var <- function(x, w = NULL, na.rm = TRUE) {
   1 - Rbar
 }
 
+#' @keywords internal
 v_sd <- function(x, w = NULL, na.rm = TRUE) {
   Rbar <- vresultant(x, w, mean = TRUE, na.rm = na.rm) |>
     vlength()
@@ -58,12 +61,14 @@ v_sd <- function(x, w = NULL, na.rm = TRUE) {
   return(d)
 }
 
+#' @keywords internal
 v_delta <- function(x, w = NULL, na.rm = TRUE) {
   Rbar <- vresultant(x, w, mean = TRUE, na.rm = na.rm) |> vlength()
   acos(Rbar)
 }
 
 
+#' @keywords internal
 v_rdegree <- function(x, w = NULL, na.rm = FALSE) {
   if (isTRUE(na.rm)) x <- x[!rowSums(!is.finite(x)), ]
   w <- if (is.null(w)) rep(1, times = nrow(x)) else as.numeric(w)
@@ -74,6 +79,7 @@ v_rdegree <- function(x, w = NULL, na.rm = FALSE) {
   (2 * Rbar - N) / N
 }
 
+#' @keywords internal
 v_sde <- function(x, w = NULL, na.rm = FALSE) {
   if (isTRUE(na.rm)) x <- x[!rowSums(!is.finite(x)), ]
 
@@ -111,6 +117,10 @@ v_confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = FALSE) {
 #' @param w numeric. Optional weights for each observation.
 #' @param alpha numeric. Significance level for the confidence angle (default is 0.05 for a 95% confidence angle).
 #' @param na.rm logical. Whether `NA` values should be removed before the computation proceeds.
+#' @param ... arguments passed to function call
+#' 
+#' @importFrom stats sd var
+#'
 #' @name stats
 #' @details
 #' `mean` returns the spherical mean of a set of vectors
@@ -155,7 +165,7 @@ v_confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = FALSE) {
 NULL
 
 #' @rdname stats
-#' @export
+#' @exportS3Method base::mean 
 mean.spherical <- function(x, w = NULL, na.rm = TRUE) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
 
@@ -175,16 +185,23 @@ mean.spherical <- function(x, w = NULL, na.rm = TRUE) {
   x_mean
 }
 
+#' @rdname stats
 #' @export
-#' @keywords internal
 mean <- function(x, ...) UseMethod("mean")
 
 #' @export
-#' @keywords internal
+mean.default <- function(x, ...) base::mean(x, ...)
+
+#' @export
+eigen.numeric <- function(x, ...) base::mean(x, ...)
+
+#' @rdname stats
+#' @export
+# #' @keywords internal
 sd <- function(x, ...) UseMethod("sd")
 
-# #' @exportS3Method stats::sd
-# sd.default <- function(x, ...) stats::sd(x, ...)
+#' @export
+sd.default <- function(x, ...) stats::sd(x)
 
 #' @rdname stats
 #' @export
@@ -201,12 +218,12 @@ sd.spherical <- function(x, w = NULL, na.rm = TRUE) {
 }
 
 #' @export
-#' @keywords internal
+#' @rdname stats
 var <- function(x, ...) UseMethod("var")
 
-# #' @export
+#' @export
 # #' @exportS3Method stats::var
-# var.default <- function(x, ...) stats::var(x, ...)
+var.default <- function(x, ...) stats::var(x, ...)
 
 # #' @export
 # var.data.frame <- function(x, ...) {
@@ -214,7 +231,7 @@ var <- function(x, ...) UseMethod("var")
 # }
 
 #' @rdname stats
-#' @export
+#' @export 
 var.spherical <- function(x, w = NULL, na.rm = TRUE) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   Vec3(x) |>
@@ -364,7 +381,7 @@ fisher_statistics <- function(x, w = NULL, alpha = 0.05, na.rm = TRUE) {
 #'
 #' @export
 #'
-#' @seealso [inertia_tensor()]
+#' @seealso [inertia_tensor.spherical()]
 #'
 #' @source Borradaile, G. (2003). Spherical-Orientation Data. In: Statistics of
 #' Earth Science Data. Springer, Berlin, Heidelberg. https://doi.org/10.1007/978-3-662-05223-5_10

@@ -7,17 +7,18 @@
 #' @param rotangle Angle of rotation in radians for `"Vec3"` objects and in degrees for `"Line"` and `"Plane"` objects.
 #' @param A numeric 3x3 matrix. Transformation matrix.
 #' @param norm logical. If `TRUE`, the transformed vectors are normalized to unit length.
+#' @param ... arguments passed to function call
 #'
 #' @details
 #' \describe{
 #' \item{`vector_length`}{the length of a vector}
-#' \item{`crossprod`}{the cross-product of two vectors, i.e. the vector perpendicular to the 2 vectors}
+#' \item{`crossprod`}{the cross-product of two vectors, i.e. the vector perpendicular to the 2 vectors. If `y = NULL` is taken to be the sam,e vector as `x`.}
 #' \item{`%*%`}{the dot product of two vectors}
 #' \item{`rotate`}{rotation of a vector about a specified vector by a specified angle}
 #' \item{`angle`}{angle between two vectors}
 #' \item{`project`}{projection of one vector onto the other (changes the vector
 #' length of second vector, unless their are unit vectors)}
-#' \item{`transform`}{transformation of a vector by a 3x3 matrix}
+#' \item{`transform_linear`}{Linear transformation of a vector by a 3x3 matrix}
 #' }
 #'
 #' @returns objects of same class as `x`, i.e. one of `"Vec3"`, `"Line"`, or
@@ -35,9 +36,10 @@
 #' rotate(vec1, vec2, pi / 2) # rotation
 #' angle(vec1, vec2) # angle between vectors
 #' project(vec1, vec2) # projection of a vector
-#' transform(vec1, matrix(1:9, nrow = 3, ncol = 3))
+#' transform_linear(vec1, matrix(runif(9), 3, 3)) # linear transformation
 NULL
 
+#' @keywords internal
 vlength <- function(x) {
   res <- sqrt(x[, 1]^2 + x[, 2]^2 + x[, 3]^2) # length of a vector
   unname(res)
@@ -49,20 +51,24 @@ vector_length <- function(x) {
   Vec3(x) |> vlength()
 }
 
+#' @keywords internal
 vsum <- function(x) {
   cbind(x = sum(x[, 1]), y = sum(x[, 2]), z = sum(x[, 3])) # vector sum
 }
 
 
+#' @keywords internal
 vnorm <- function(x) {
   x / vlength(x)
 }
 
+#' @keywords internal
 vscale <- function(x, l) {
   l / vnorm(x) * x
 }
 
 
+#' @keywords internal
 vcross <- function(x, y) {
   cbind(
     x = x[, 2] * y[, 3] - x[, 3] * y[, 2],
@@ -70,17 +76,20 @@ vcross <- function(x, y) {
     z = x[, 1] * y[, 2] - x[, 2] * y[, 1]
   )
 }
-#' @export
-crossprod <- function(x, y) UseMethod("crossprod")
 
-#' @export
-crossprod.default <- function(x, y) base::crossprod(x, y)
-
-#' @export
 #' @rdname vecmath
-crossprod.spherical <- function(x, y) {
+#' @export
+# #' @keywords internal
+crossprod <- function(x, ...) UseMethod("crossprod")
+
+#' @export
+crossprod.default <- function(x, ...) base::crossprod(x, ...)
+
+#' @rdname vecmath
+#' @export
+crossprod.spherical <- function(x, y = NULL) {
   xv <- Vec3(x) |> unclass()
-  yv <- Vec3(y) |> unclass()
+  if(is.null(y)) yv <- xv else yv <- Vec3(y) |> unclass()
 
   xy <- vcross(xv, yv) |>
     as.Vec3()
@@ -110,7 +119,7 @@ vdot <- function(x, y) {
 }
 
 
-
+#' @keywords internal
 vrotate <- function(x, rotaxis, rotangle) {
   rotaxis <- vnorm(rotaxis)
   vax <- vcross(rotaxis, x)
@@ -118,14 +127,15 @@ vrotate <- function(x, rotaxis, rotangle) {
 }
 
 #' @export
-rotate <- function(x, rotaxis, rotangle) UseMethod("rotate")
+#' @rdname vecmath
+rotate <- function(x, ...) UseMethod("rotate")
 
 #' @export
 rotate.default <- function(x, rotaxis, rotangle) vrotate(x, rotaxis, rotangle)
 
-
 #' @export
 #' @rdname vecmath
+#' @method rotate spherical
 rotate.spherical <- function(x, rotaxis, rotangle) {
   x3 <- Vec3(x) |> unclass()
   rotaxis3 <- Vec3(rotaxis) |> unclass()
@@ -145,6 +155,7 @@ rotate.spherical <- function(x, rotaxis, rotangle) {
   x_rot
 }
 
+#' @keywords internal
 vangle <- function(x, y) {
   acos(vdot(x, y))
 }
@@ -155,6 +166,10 @@ angle <- function(x, y) UseMethod("angle")
 
 #' @export
 angle.default <- function(x, y) vangle(x, y)
+
+#' @export
+angle.matrix <- function(x, y) vangle(x, y)
+
 
 #' @export
 #' @rdname vecmath
@@ -172,6 +187,7 @@ angle.spherical <- function(x, y) {
   }
 }
 
+#' @keywords internal
 vproject_length <- function(x, y) {
   xn <- vnorm(x)
   yn <- vnorm(y)
@@ -179,12 +195,14 @@ vproject_length <- function(x, y) {
 }
 
 #' @export
+#' @rdname vecmath
 project <- function(x, y) UseMethod("project")
 
 #' @export
 project.default <- function(x, y) vproject(x, y)
 
 
+#' @keywords internal
 vproject <- function(x, y) {
   vproject_length(x, y) * y
 }
@@ -208,18 +226,21 @@ project.spherical <- function(x, y) {
 
 
 
+#' @keywords internal
 vreject <- function(x, y) {
   x - vproject(x, y)
 }
 
 #' @export
+#' @rdname vecmath
 reject <- function(x, y) UseMethod("reject")
 
-#' @noRd
+#' @rdname vecmath
 reject.default <- function(x, y) vreject(x, y)
 
 
-#' @noRd
+#' @export
+#' @method reject spherical
 reject.spherical <- function(x, y) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   xv <- Vec3(x) |> unclass()
@@ -236,6 +257,7 @@ reject.spherical <- function(x, y) {
   }
 }
 
+#' @keywords internal
 v_orthogonalize <- function(x, y) {
   # Early exit if already orthogonal
   if (abs(vdot(x, y)) < 1e-4) {
@@ -268,6 +290,7 @@ v_orthogonalize <- function(x, y) {
 
 
 
+#' @keywords internal
 vtransform <- function(x, A, norm = FALSE) {
   stopifnot(is.matrix(A) & dim(A) == c(3, 3))
 
@@ -277,10 +300,9 @@ vtransform <- function(x, A, norm = FALSE) {
   return(xt)
 }
 
-
 #' @export
 #' @rdname vecmath
-transform.spherical <- function(x, A, norm = FALSE) {
+transform_linear <- function(x, A, norm = FALSE) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   x <- Vec3(x) |> unclass()
   xt <- vtransform(x, A, norm) |> Vec3()
@@ -294,6 +316,7 @@ transform.spherical <- function(x, A, norm = FALSE) {
   }
 }
 
+#' @keywords internal
 v_antipode <- function(x) {
   -x
 }

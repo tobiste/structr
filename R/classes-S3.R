@@ -10,13 +10,9 @@
 #' `is.Line`, `is.Plane`, `is.Pair`, and `is.Fault` test if its argument is a
 #' `"Line"`, `"Plane"`, and  `"Pair"`, and `"Fault"` S3 class object, respectively.
 #'
-#' @param x,y numeric vector or array containing the spherical coordinates
-#' (1st element/column is azimuth, 2nd element/column is inclination, both in
-#' degrees), or object of class `"Line"`, `"Plane"`, and  `"Pair"`, and `"Fault"`
-#' @param azimuth,plunge numeric vectors. Azimuth and plunge of a line (in
-#' degrees)
-#' @param dip_direction,dip numeric vectors. Dip direction and dip of a plane
-#' (in degrees)
+#' @param x,y object of class `"Line"`, `"Plane"`, and  `"Pair"`, and `"Fault"`  or 
+#' numeric vector or array containing the spherical coordinates
+#' @param azimuth,plunge,z,dip numeric vectors of the spherical coordinates
 #' @param sense (optional) integer. Sense of the line on a fault plane. Either
 #' `1`or `-1` for normal or thrust offset, respectively. The "sense" is the sign
 #' of the fault's rake (see [Fault_from_rake()] for details).
@@ -398,11 +394,14 @@ print.spherical <- function(x, ...) {
 #' will be coerced to the first element's class
 #'
 #' @returns combined objects as class defined in `.class`
-#' @export
+#' @method rbind spherical
+#' @exportS3Method base::rbind
+#' @keywords internal
 #'
+#' @noRd
 #' @examples
 #' set.seed(20250411)
-#' rbind.spherical(
+#' rbind(
 #'   rvmf(n = 5, mu = Line(90, 45)),
 #'   runif.spherical("Vec3", n = 5),
 #'   rkent(n = 5, mu = Plane(0, 10), b = 1)
@@ -424,31 +423,64 @@ rbind.spherical <- function(..., .class = NULL) {
 }
 
 # #' @export
-# head <- function(x, ...) UseMethod("head")
+# rbind <- function(x, ...) UseMethod("rbind")
+# .S3method("rbind", "spherical", rbind.spherical)
 
-# #' @export
-# tail <- function(x, ...) UseMethod("tail")
+#' Return the First or Last Parts of an Object
+#' 
+#' Returns the first or last parts of a vector.
+#'
+#' @param x objects of class `"Vec3"`, `"Line"`, `"Plane"`, `"Pair"`, or `"Fault`
+#' @inheritParams utils::head
+#' 
+#' @importFrom utils head tail
+#'
+#' @name head-sphere
+#' @examples
+#' x <- rvmf(n = 10)
+#' head(x)
+#' tail(x)
+NULL
 
-# #' @export
-# head.default <- function(x, ...) utils::head(x,...)
-
-# #' @export
-# tail.default <- function(x, ...) utils::tail(x,...)
-
-
+#' @rdname head-sphere
+#' @keywords internal
 #' @export
-head.spherical <- function(x, n = 6L) {
+head <- function(x, n = 6L, ...) UseMethod("head")
+# .S3method("head", "spherical", head.spherical)
+
+#' @rdname head-sphere
+#' @keywords internal
+#' @export
+tail <- function(x, n = 6L, ...) UseMethod("tail")
+# .S3method("tail", "spherical", tail.spherical)
+
+#' @keywords internal
+#' @export
+head.default <- function(x, n = 6L, ...) utils::head(x, n = 6L, ...)
+
+#' @keywords internal
+#' @export
+tail.default <- function(x, n = 6L, ...) utils::tail(x, n = 6L, ...)
+
+
+#' @rdname head-sphere
+#' @keywords internal
+#' @export
+#' @exportS3Method utils::head
+head.spherical <- function(x, n = 6L, ...) {
   end <- nrow(x)
   x[seq_len(min(n, end)), ]
 }
 
+
+#' @rdname head-sphere
 #' @export
-tail.spherical <- function(x, n = 6L) {
+#' @exportS3Method utils::tail
+tail.spherical <- function(x, n = 6L, ...) {
   end <- nrow(x)
   begin <- max(0, end - n + 1)
   x[seq.int(begin, end), ]
 }
-
 
 # #' @exportS3Method utils::tail
 # tail.data.frame <- function(x, ...) {

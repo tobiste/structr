@@ -230,7 +230,7 @@ ggstereo_grid <- function(d = 10, rot = 0, ...) {
 #'   test_data <- rbind(
 #'     rvmf(100, mu = Line(90, 45), k = 10),
 #'     rvmf(50, mu = Line(0, 0), k = 20)
-#'   ) |> as.line()
+#'   )
 #'
 #'   ggstereo(grid = TRUE) +
 #'     ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y))
@@ -271,13 +271,14 @@ ggstereo <- function(data = NULL, mapping = aes(), earea = TRUE, centercross = T
   # coord_sf(crs = crs, default_crs = crs)
 }
 
+#' @keywords internal
 ignore_unused_imports <- function() {
   mapproj::mapproject
 }
 
 
 
-
+#' @keywords internal
 .full_hem <- function(azi, inc) {
   inc <- inc + 90
 
@@ -317,7 +318,7 @@ ignore_unused_imports <- function() {
 #' @name ggstereocontour
 #' @examples
 #' if (require("mapproj")) {
-#'   test_data <- rbind.spherical(
+#'   test_data <- rbind(
 #'     rvmf(100, mu = Line(90, 45), k = 10),
 #'     rvmf(50, mu = Line(0, 0), k = 20)
 #'   )

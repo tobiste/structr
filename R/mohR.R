@@ -268,8 +268,8 @@ tauMax <- function(sigmaX, sigmaZ, tauXZ) {
 #'
 #' @param coulomb numeric 2 element vector. Coulomb criterion containing the cohesion and the coefficient of sliding: (`c(70, 0.6)`)
 #' @param sliding Sliding criteria (`0.81` by default)
-#' @param units units of the `sigma1`, `sigma2`, and `sigma3` (`"MPa"` by default).
-#' @param sigma1,ssigma2,sigma3 numeric
+#' @param units units of `sigma1`, `sigma2`, and `sigma3` (`"MPa"` by default).
+#' @param sigma1,sigma2,sigma3 numeric. Magnitudes of major, intermediate, and minor principal stresses
 #' @param fill fill color of Mohr circle
 #' @param alpha opacity of Mohr circle
 #'

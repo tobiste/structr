@@ -3,7 +3,7 @@
 #' Calculates PT-axes, kinematic plane (M), and dihedra separation plane (d)
 #'
 #' @param x object of class `"Fault"`
-#' @param ptangle numeric. angle between P and T axes in degrees (90 by default).
+#' @param ptangle numeric. angle between P and T axes in degrees (90&deg; by default).
 #'
 #' @returns list
 #' @export
@@ -72,13 +72,13 @@ misfit_pair <- function(x) {
   exceed_idx <- which(misfit > deg2rad(20))
   if (length(exceed_idx) > 0) {
     warning(sprintf(
-      "Misfit angle exceeds 20° for %d cases. Max misfit: %.2f°.",
+      "Misfit angle exceeds 20\u00B0 for %d cases. Max misfit: %.2f\u00B0.",
       length(exceed_idx),
       rad2deg(max(misfit))
     ))
   }
 
-  ax <- crossprod(fvec, lvec)
+  ax <- crossprod.spherical(fvec, lvec)
   ang <- (angle(lvec, fvec) - pi / 2) / 2
   list(
     fvec = rotate(fvec, ax, ang),
@@ -105,7 +105,8 @@ correct_pair <- function(x) {
 #'
 #' [Fault_plane()] extracts the orientation of the fault plane,
 #' [Fault_slip()] extracts the orientation of the slip vector, and
-#' [Fault_rake()] extracts the rake of the fault. i.e. the angle between fault slip vector and fault strike.
+#' [Fault_rake()] extracts the rake of the fault, i.e. the angle between fault 
+#' slip vector and fault strike.
 #'
 #' @inheritParams fault_analysis
 #'
@@ -150,15 +151,15 @@ Fault_plane <- function(x) {
 #' Fault from plane and rake
 #'
 #' @param p object of class `"Plane"`
-#' @param rake Angle in degrees in the range  −180° and 180°
+#' @param rake Angle in degrees in the range  −180&deg; and 180&deg;
 #' @param ... optional arguments passed to [Fault()]
 #'
 #' @details Rake is used to describe the direction of fault motion with respect
 #' to the strike (measured anticlockwise from the horizontal, up is positive; values between −180° and 180°):
-#' - left-lateral strike slip: rake near 0°
-#' - right-lateral strike slip: rake near 180°
-#' - normal: rake near −90°
-#' - reverse/thrust: rake near +90°
+#' - left-lateral strike slip: rake near 0&deg;
+#' - right-lateral strike slip: rake near 180&deg;
+#' - normal: rake near −90&deg;
+#' - reverse/thrust: rake near +90&deg;
 #'
 #' @returns `"Fault"` object
 #' @export

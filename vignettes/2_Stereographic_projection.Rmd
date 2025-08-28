@@ -62,21 +62,34 @@ points(planes, col = "#000004", pch = 1, cex = .5)
 ```
 
 ## Statistics
-```{r stat, message=FALSE,warning=FALSE}
+```{r stat0}    
 example_lines$quality <- ifelse(is.na(example_lines$quality), 6, example_lines$quality) # replacing NA values with 6
 line_weightings <- 6 / example_lines$quality
+```
 
+
+```{r stat_mean}
 lines_mean <- mean(lines, w = line_weightings)
+```
+
+```{r stat_var}
 lines_variance <- var(lines, w = line_weightings)
+```
+
+```{r stat_delta}
 lines_delta <- delta(lines, w = line_weightings)
 lines_confangle <- confidence_angle(lines, w = line_weightings)
+```
 
+```{r stat}
 c(
   "Variance" = lines_variance,
   "63% cone" = lines_delta,
   "Confidence angle" = lines_confangle
 )
 ```
+
+
 
 ```{r stat_plot, message=FALSE,warning=FALSE}
 stereoplot(guides = FALSE)

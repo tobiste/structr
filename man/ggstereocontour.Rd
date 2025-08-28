@@ -56,7 +56,7 @@ Stereonet contouring using ggplot
 }
 \examples{
 if (require("mapproj")) {
-  test_data <- rbind.spherical(
+  test_data <- rbind(
     rvmf(100, mu = Line(90, 45), k = 10),
     rvmf(50, mu = Line(0, 0), k = 20)
   )

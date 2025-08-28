@@ -1,21 +1,25 @@
 #' Plot spherical densities in a stereonet
 #'
-#' Kamb counts and densities on the sphere
-#'
+#' Kamb counts and densities on the sphere. `contour` plots the contour lines, 
+#' `contourf` displays a contour plot with the areas between the contours filled, 
+#' and `image` creates a dense grid of colored rectangles. 
+#' 
 #' @param x object of class `"Vec3"`, `"Line"`, `"Plane"` or `'spherical.density'` (for plotting only).
-#' @param dens.params list of parameters passed to [density.spherical]
+#' @param density.params list of parameters passed to [density.spherical]
 #' @param nlevels integer. Number of contour levels for plotting
-#' @param type character. Type of plot: `'contour'` for contour lines,
-#' `'contour_filled'` for filled contours, or `'image'` for a raster image.
+# #' @param type character. Type of plot: `'contour'` for contour lines,
+# #' `'contour_filled'` for filled contours, or `'image'` for a raster image.
 #' @param add logical. Whether the contours should be added to an existing plot.
 #' @param col colour(s) for the contour lines drawn. If `NULL`, lines are color based on `col.palette`.
 #' @param col.palette a color palette function to be used to assign colors in the plot.
 #' @param col.params list. Arguments passed to `col.palette`
-#' @param ... optional parameters passed to [image.default()] or [contour.default()].
+#' @param ... optional parameters passed to [graphics::image()] or [graphics::contour()].
 #'
 #' @name stereo_contour
+#' @aliases contour image density-plot density_plot
 #'
-#' @seealso [count_points()]
+#' @seealso [count_points()], [density]
+#' @importFrom graphics image.default .filled.contour contour 
 #'
 #' @returns list containing the stereographic x and coordinates of of the grid,
 #' the counts, and the density.
@@ -26,7 +30,7 @@
 #'
 #' contour(x)
 #'
-#' filled.contour(x,
+#' contourf(x,
 #'   col.params = list(direction = -1, begin = .05, end = .95, alpha = .75)
 #' )
 #' stereo_point(x, col = "black", pch = 21)
@@ -36,17 +40,17 @@
 #'
 #'
 #' # complete example:
-#' par(mfrow = c(2, 1))
+#' par(mfrow = c(1, 2))
 #' wp <- 6 / ifelse(is.na(example_planes$quality), 6, example_planes$quality)
 #' my_planes <- Plane(example_planes$dipdir, example_planes$dip)
 #' fabric_p <- or_shape_params(my_planes)$Vollmer["D"]
-#' my_planes_eig <- or_eigen(my_planes)
+#' my_planes_eig <- eigen(my_planes)
 #'
 #' stereoplot(guides = TRUE, col = "grey96")
-#' stereo_point(my_planes, col = "grey", pch = 16, cex = .5)
-#' stereo_density(my_planes, type = "contour", add = TRUE, weights = wp)
-#' stereo_point(as.plane(my_planes_eig$vectors[3, ]), col = "black", pch = 16)
-#' stereo_greatcircle(as.plane(my_planes_eig$vectors[3, ]), col = "black", pch = 16)
+#' points(my_planes, col = "grey", pch = 16, cex = .5)
+#' contour(my_planes, add = TRUE, weights = wp)
+#' points(my_planes_eig$vectors[3, ], col = "black", pch = 16)
+#' lines(my_planes_eig$vectors[3, ], d = 90, col = "black", pch = 16)
 #' title(
 #'   main = "Planes",
 #'   sub = paste0(
@@ -60,9 +64,9 @@
 #' fabric_l <- or_shape_params(my_lines)$Vollmer["D"]
 #'
 #' stereoplot(guides = TRUE, col = "grey96")
-#' stereo_point(my_lines, col = "grey", pch = 16, cex = .5)
-#' stereo_density(my_lines, type = "contour", add = TRUE, weights = wl)
-#' stereo_point(v_mean(my_lines, w = wl), col = "black", pch = 16)
+#' points(my_lines, col = "grey", pch = 16, cex = .5)
+#' contour(my_lines, add = TRUE, weights = wl)
+#' points(mean(my_lines, w = wl), col = "black", pch = 16)
 #' title(
 #'   main = "Lines",
 #'   sub = paste0(
@@ -127,8 +131,10 @@ NULL
 #   return(res)
 # }
 
+#' @keywords internal
 #' @rdname stereo_contour
 #' @noRd
+#' @importFrom viridis viridis
 stereo_density <- function(x,
                            # kamb = TRUE, FUN = exponential_kamb, ngrid = 128L, sigma = 3,
                            # vmf_hw = NULL, vmf_optimal = c("cross", "rot"),
@@ -235,7 +241,7 @@ stereo_density <- function(x,
 
 
 #' @rdname stereo_contour
-#' @export
+#' @exportS3Method stats::contour 
 contour.spherical <- function(x, add = FALSE, density.params = list(),
                               nlevels = 10L, col.palette = viridis::viridis, col = NULL,
                               col.params = list(), ...) {
@@ -251,6 +257,13 @@ contour.spherical <- function(x, add = FALSE, density.params = list(),
   )
 }
 
+# #' @export
+# #' @keywords internal
+# contour <- function(x, ...) UseMethod("contour", x, ...)
+
+# #' @export
+# #' @keywords internal
+# #' @rdname stereo_contour
 # filled.contour <- function(x, ...) UseMethod("filled.contour")
 
 # #' @export
@@ -258,21 +271,29 @@ contour.spherical <- function(x, add = FALSE, density.params = list(),
 
 #' @rdname stereo_contour
 #' @export
-filled.contour.spherical <- function(x, add = FALSE, density.params = list(),
+contourf <- function(x, add = FALSE, density.params = list(),
                                      nlevels = 10L, col.palette = viridis::viridis,
                                      col.params = list()) {
   stereo_density(x,
-    type = "contour_filled",
-    add = add,
-    density.params = density.params,
-    nlevels = nlevels,
-    col.palette = col.palette,
-    col.params = col.params
+                 type = "contour_filled",
+                 add = add,
+                 density.params = density.params,
+                 nlevels = nlevels,
+                 col.palette = col.palette,
+                 col.params = col.params
   )
 }
 
+
+# #' @rdname stereo_contour
+# #' @exportS3Method stats::filled.contour 
+# #' @export
+# filled.contour.spherical <- function(x, ...) {
+#   contourf(x, ...)
+# }
+
 #' @rdname stereo_contour
-#' @export
+#' @exportS3Method stats::image 
 image.spherical <- function(x, add = FALSE, density.params = list(),
                             nlevels = 10L, col.palette = viridis::viridis,
                             col.params = list(), ...) {
@@ -282,7 +303,11 @@ image.spherical <- function(x, add = FALSE, density.params = list(),
     density.params = density.params,
     nlevels = nlevels,
     col.palette = col.palette,
-    col.params = lcol.params,
+    col.params = col.params,
     ...
   )
 }
+
+# #' @export
+# #' @keywords internal
+# image <- function(x, ...) UseMethod("image", x, ...)

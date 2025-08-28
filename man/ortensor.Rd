@@ -5,9 +5,9 @@
 \alias{ortensor.spherical}
 \title{Orientation tensor}
 \usage{
-ortensor(x, ...)
-
 \method{ortensor}{spherical}(x, norm = TRUE, w = NULL)
+
+ortensor(x, norm = TRUE, w = NULL)
 }
 \arguments{
 \item{x}{Object of class \code{"Vec3"}, \code{"Line"} or \code{"Plane"}}
@@ -33,5 +33,5 @@ x <- rfb(100, mu = Line(120, 50), k = 1, A = diag(c(10, 0, 0)))
 ortensor(x)
 }
 \seealso{
-\code{\link[=or_eigen]{or_eigen()}}, \code{\link[=inertia_tensor]{inertia_tensor()}}
+\code{\link[=eigen.spherical]{eigen.spherical()}}, \code{\link[=inertia_tensor.spherical]{inertia_tensor.spherical()}}
 }
