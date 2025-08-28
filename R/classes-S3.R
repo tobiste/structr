@@ -73,7 +73,7 @@ as.spherical <- function(x) {
   structure(
     x,
     class = append(class(x), "spherical"),
-    rownames = rownames(x)
+    dimnames = list(rownames(x), colnames(x))
   )
 }
 
@@ -83,8 +83,7 @@ as.Vec3 <- function(x) {
   structure(
     vec2mat(x),
     class = c("Vec3", "spherical", "matrix", "array"),
-    rownames = rownames(x),
-    colnames = c("x", "y", "z")
+    dimnames = list(rownames(x), c("x", "y", "z"))
   )
 }
 
@@ -94,8 +93,7 @@ as.Line <- function(x) {
   structure(
     vec2mat(x),
     class = c("Line", "spherical", "matrix", "array"),
-    rownames = rownames(x),
-    colnames = c("azimuth", "plunge")
+    dimnames = list(rownames(x), c("azimuth", "plunge"))
   )
 }
 
@@ -105,8 +103,7 @@ as.Plane <- function(x) {
   structure(
     vec2mat(x),
     class = c("Plane", "spherical", "matrix", "array"),
-    rownames = rownames(x),
-    colnames = c("dip_direction", "dip")
+    dimnames = list(rownames(x), c("dip_direction", "dip"))
   )
 }
 
@@ -116,8 +113,7 @@ as.Pair <- function(x) {
   structure(
     vec2mat(x),
     class = c("Pair", "spherical", "matrix", "array"),
-    rownames = rownames(x),
-    colnames = c("dip_direction", "dip", "azimuth", "plunge")
+    dimnames = list(rownames(x), c("dip_direction", "dip", "azimuth", "plunge"))
   )
 }
 
@@ -127,8 +123,7 @@ as.Fault <- function(x) {
   structure(
     vec2mat(x),
     class = c("Fault", "Pair", "spherical", "matrix", "array"),
-    rownames = rownames(x),
-    colnames = c("dip_direction", "dip", "azimuth", "plunge", "sense")
+    dimnames = list(rownames(x), c("dip_direction", "dip", "azimuth", "plunge", "sense"))
   )
 }
 
@@ -428,25 +423,24 @@ rbind.spherical <- function(..., .class = NULL) {
     Spherical(.class)
 }
 
-#' @export
-head <- function(x, ...) UseMethod("head")
+# #' @export
+# head <- function(x, ...) UseMethod("head")
 
-#' @export
-tail <- function(x, ...) UseMethod("tail")
+# #' @export
+# tail <- function(x, ...) UseMethod("tail")
 
-##' @export
+# #' @export
 # head.default <- function(x, ...) utils::head(x,...)
 
-##' @export
+# #' @export
 # tail.default <- function(x, ...) utils::tail(x,...)
 
 
 #' @export
-head.spherical <- function(x, ...) {
+head.spherical <- function(x, n = 6L) {
   end <- nrow(x)
   x[seq_len(min(n, end)), ]
 }
-
 
 #' @export
 tail.spherical <- function(x, n = 6L) {
@@ -454,3 +448,9 @@ tail.spherical <- function(x, n = 6L) {
   begin <- max(0, end - n + 1)
   x[seq.int(begin, end), ]
 }
+
+
+# #' @exportS3Method utils::tail
+# tail.data.frame <- function(x, ...) {
+#   utils::tails.matrix(x, ...)
+# }

@@ -6,6 +6,7 @@
 \alias{crossprod.spherical}
 \alias{\%*\%.spherical}
 \alias{rotate.spherical}
+\alias{angle}
 \alias{angle.spherical}
 \alias{project.spherical}
 \alias{transform.spherical}
@@ -18,6 +19,8 @@ vector_length(x)
 \method{\%*\%}{spherical}(x, y)
 
 \method{rotate}{spherical}(x, rotaxis, rotangle)
+
+angle(x, y)
 
 \method{angle}{spherical}(x, y)
 

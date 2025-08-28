@@ -148,6 +148,8 @@ vangle <- function(x, y) {
   acos(vdot(x, y))
 }
 
+#' @export
+#' @rdname vecmath
 angle <- function(x, y) UseMethod("angle")
 
 #' @export
@@ -175,6 +177,7 @@ vproject_length <- function(x, y) {
   vdot(xn, yn)
 }
 
+#' @export
 project <- function(x, y) UseMethod("project")
 
 #' @export
@@ -208,6 +211,7 @@ vreject <- function(x, y) {
   x - vproject(x, y)
 }
 
+#' @export
 reject <- function(x, y) UseMethod("reject")
 
 #' @noRd
@@ -215,7 +219,6 @@ reject.default <- function(x, y) vreject(x, y)
 
 
 #' @noRd
-#' @rdname vecmath
 reject.spherical <- function(x, y) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   xv <- Vec3(x) |> unclass()

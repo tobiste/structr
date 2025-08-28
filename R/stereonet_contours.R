@@ -251,10 +251,10 @@ contour.spherical <- function(x, add = FALSE, density.params = list(),
   )
 }
 
-filled.contour <- function(x, ...) UseMethod("filled.contour")
+# filled.contour <- function(x, ...) UseMethod("filled.contour")
 
-#' @export
-filled.contour.default <- function(x, ...) graphics::filled.contour(x, ...)
+# #' @export
+# filled.contour.default <- function(x, ...) graphics::filled.contour(x, ...)
 
 #' @rdname stereo_contour
 #' @export

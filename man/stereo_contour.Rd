@@ -18,7 +18,7 @@
   ...
 )
 
-\method{filled.contour}{spherical}(
+filled.contour.spherical(
   x,
   add = FALSE,
   density.params = list(),

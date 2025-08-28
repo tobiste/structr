@@ -445,16 +445,22 @@ Using the second derivative of $\sigma_n$ with respect to $\alpha$ we can determ
 
 ### Code
 
-```{r lund1}
+Define the orientation of the principle stress axes:
+```{r lund0}
 S1 <- Line(250.89, 70.07)
 S3 <- Line(103.01, 17.07)
-
-# get S2 - which is perpendicular to S1 and S3, hence the cross-product of the two vectors:
-S2 <- crossprod(S3, S1)
-
-# get the azimuth of SHmax for a given stress ration R = 1:
-SH(S1, S2, S3, R = 1) # in degrees:
 ```
+
+To get S2 - which is perpendicular to S1 and S3, we calculate the cross-product of the two vectors:
+```{r lund01}
+S2 <- crossprod(S3, S1)
+```
+
+The azimuth of SHmax for a given stress ratio `R = 1`:
+```{r lund1}
+SH(S1, S2, S3, R = 1) # in degrees
+```
+
 For a several stress ratios:
 ```{r lund2}
 R <- seq(0, 1, .1)

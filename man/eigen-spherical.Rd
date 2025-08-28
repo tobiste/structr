@@ -3,12 +3,9 @@
 \name{eigen-spherical}
 \alias{eigen-spherical}
 \alias{eigen.spherical}
-\alias{eigen}
 \title{Eigenvalues and Eigenvectors of a Set of Vectors}
 \usage{
 \method{eigen}{spherical}(x, scaled = FALSE)
-
-eigen(x, ...)
 }
 \arguments{
 \item{x}{Object of class \code{"Vec3"}, \code{"Line"} or \code{"Plane"}}
@@ -39,4 +36,3 @@ points(x_eigen$vectors, col = c(1, 2, 3), labels = c("E1", "E2", "E3"))
 \seealso{
 \code{\link[=ortensor]{ortensor()}}, \code{\link[=eigen]{eigen()}}
 }
-\keyword{internal}

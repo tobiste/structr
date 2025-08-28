@@ -145,16 +145,21 @@ eigen.spherical <- function(x, scaled = FALSE) {
 
 #' @keywords internal
 #' @export
-#' @rdname eigen-spherical
+# #' @rdname eigen-spherical
 eigen <- function(x, ...) UseMethod("eigen")
 
 #' @keywords internal
+#' @export
 eigen.default <- function(x, ...) base::eigen(x, ...)
+
+#' @keywords internal
+#' @export
+eigen.matrix <- function(x, ...) base::eigen(x, ...)
 
 
 or_eigen <- function(x, scaled = FALSE) {
   x_or <- ortensor.default(x, norm = FALSE)
-  x_eigen <- eigen.default(x_or, symmetric = TRUE)
+  x_eigen <- eigen(x_or, symmetric = TRUE)
   x_eigen$vectors <- t(x_eigen$vectors)
 
   if (scaled) {

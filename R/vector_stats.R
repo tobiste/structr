@@ -175,10 +175,16 @@ mean.spherical <- function(x, w = NULL, na.rm = TRUE) {
   x_mean
 }
 
-sd <- function(x, ...) UseMethod("sd")
+#' @export
+#' @keywords internal
+mean <- function(x, ...) UseMethod("mean")
 
 #' @export
-sd.default <- function(x, ...) stats::sd(x, ...)
+#' @keywords internal
+sd <- function(x, ...) UseMethod("sd")
+
+# #' @exportS3Method stats::sd
+# sd.default <- function(x, ...) stats::sd(x, ...)
 
 #' @rdname stats
 #' @export
@@ -194,15 +200,18 @@ sd.spherical <- function(x, w = NULL, na.rm = TRUE) {
   }
 }
 
+#' @export
+#' @keywords internal
 var <- function(x, ...) UseMethod("var")
 
-#' @export
-var.default <- function(x, ...) stats::var(x, ...)
+# #' @export
+# #' @exportS3Method stats::var
+# var.default <- function(x, ...) stats::var(x, ...)
 
-#' @export
-var.data.frame <- function(x, ...) {
-  sapply(x, var, ...)
-}
+# #' @export
+# var.data.frame <- function(x, ...) {
+#   sapply(x, var, ...)
+# }
 
 #' @rdname stats
 #' @export

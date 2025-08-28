@@ -359,6 +359,7 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #' test <- rfb(100, mu = Line(120, 10), k = 5, A = diag(c(-1, 0, 1)))
 #' density(x = test, ngrid = 100, sigma = 3, weights = runif(100))
 density <- function(x, ...) UseMethod("density")
+NULL
 
 #' @rdname density
 #' @export
@@ -410,5 +411,5 @@ density.spherical <- function(x,
   return(res)
 }
 
-#' @export
-density.default <- function(x, ...) stats::density(x, ...)
+# #' @export
+# density.default <- function(x, ...) stats::density(x, ...)
