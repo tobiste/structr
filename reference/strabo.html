@@ -11,7 +11,7 @@ creates a list with the metadata, and the line or plane orientations."></head><b
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,14 +101,14 @@ using the Longitude and Latitude columns.</p></dd>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="kw">if</span> <span class="op">(</span><span class="cn">FALSE</span><span class="op">)</span> <span class="op">{</span> <span class="co"># \dontrun{</span></span></span>
-<span class="r-in"><span><span class="va">dt</span> <span class="op">&lt;-</span> <span class="fu">read_strabo_xls</span><span class="op">(</span><span class="st">"C:/Users/tstephan/Documents/Lakehead/Field work/StraboSpot_Output_11_01_2022_TS.xlsx"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="stereoplot.html">stereoplot</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="stereo_cones.html">stereo_greatcircle</a></span><span class="op">(</span><span class="va">dt</span><span class="op">$</span><span class="va">planar</span>, col <span class="op">=</span> <span class="st">"lightgrey"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="stereo_point.html">stereo_point</a></span><span class="op">(</span><span class="va">dt</span><span class="op">$</span><span class="va">linear</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># import from excel file</span></span></span>
+<span class="r-in"><span><span class="fu">read_strabo_xls</span><span class="op">(</span><span class="st">"path/to/my/file.xlsx"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">read_strabo_mobile</span><span class="op">(</span><span class="st">"C:/Users/tstephan/Documents/Lakehead/Field work/StraboSpot_Search_06_25_2023.txt"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># import from text file</span></span></span>
+<span class="r-in"><span><span class="fu">read_strabo_mobile</span><span class="op">(</span><span class="st">"path/to/my/file.txt"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">read_strabo_JSON</span><span class="op">(</span><span class="st">"G:/My Drive/Moss_Lake/data.json"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># import from .json file</span></span></span>
+<span class="r-in"><span><span class="fu">read_strabo_JSON</span><span class="op">(</span><span class="st">"path/to/my/file.json"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

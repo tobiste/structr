@@ -9,7 +9,7 @@ and kappa."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +39,7 @@ and kappa."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>von Mises-Fisher Distribution</h1>
-      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/sph_distribution.R" class="external-link"><code>R/sph_distribution.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/sph_distributions.R" class="external-link"><code>R/sph_distributions.R</code></a></small>
       <div class="d-none name"><code>vonmises-fisher.Rd</code></div>
     </div>
 
@@ -50,7 +50,7 @@ and kappa.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rvmf</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>, mu <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">rvmf</span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span>, mu <span class="op">=</span> <span class="fu"><a href="classes.html">Vec3</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">dvmf</span><span class="op">(</span><span class="va">x</span>, <span class="va">mu</span>, k <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -73,22 +73,123 @@ Mises-Fisher distribution</p></dd>
 
 
 <dt id="arg-x-mu">x, mu<a class="anchor" aria-label="anchor" href="#arg-x-mu"></a></dt>
-<dd><p>numeric. Can be three element vector, three column array, or an
-object of class <code>"line"</code> or <code>"plane"</code></p></dd>
+<dd><p>object of class <code>"Vec3"</code>, <code>"Line"</code> or <code>"Plane"</code></p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="v_unif.html">v_unif()</a></code> for alternative algorithms to generate uniform
-distributed samples on a sphere, <code><a href="rkent.html">rkent()</a></code> for Kent distribution.</p></div>
+    <div class="dont-index"><p><code><a href="runif.spherical.html">runif.spherical()</a></code> for alternative algorithms to generate uniform
+distributed samples on a sphere, <code><a href="rkent.html">rkent()</a></code> for Kent distribution,
+<code><a href="rfb.html">rfb()</a></code> for Fisher-Bingham distribution.</p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># example code</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20250411</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu">rvmf</span><span class="op">(</span><span class="fl">100</span>, mu <span class="op">=</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">50</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="stereoplot.html">stereoplot</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="stereo_point.html">stereo_point</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">dvmf</span><span class="op">(</span><span class="va">x</span>, mu <span class="op">=</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                [,1]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [1,] 0.3539638684</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [2,] 0.3456838512</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [3,] 0.3298219243</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [4,] 0.2878725467</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [5,] 0.3416723702</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [6,] 0.3087497280</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [7,] 0.5029607511</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [8,] 0.6655797562</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   [9,] 0.7907738489</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [10,] 0.0037954383</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [11,] 0.6941862756</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [12,] 0.2215063746</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [13,] 0.6595268453</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [14,] 0.0005060201</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [15,] 0.7195109535</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [16,] 0.0733917426</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [17,] 0.6958226791</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [18,] 0.6722856633</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [19,] 0.6780233707</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [20,] 0.3776313507</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [21,] 0.6946564573</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [22,] 0.5766307194</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [23,] 0.7759395592</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [24,] 0.7901589106</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [25,] 0.6272959464</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [26,] 0.4489849106</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [27,] 0.6963171147</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [28,] 0.2077329205</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [29,] 0.4884814860</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [30,] 0.3942015612</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [31,] 0.7024778981</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [32,] 0.0009551707</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [33,] 0.7484831155</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [34,] 0.6860774055</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [35,] 0.0991952887</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [36,] 0.5446196691</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [37,] 0.2645460130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [38,] 0.4137899293</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [39,] 0.2787976931</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [40,] 0.0008812961</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [41,] 0.3279258107</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [42,] 0.0575149554</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [43,] 0.3095756565</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [44,] 0.6331699361</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [45,] 0.5687413756</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [46,] 0.3877695235</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [47,] 0.7037452677</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [48,] 0.6272525066</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [49,] 0.4839627489</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [50,] 0.0074576675</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [51,] 0.0703558313</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [52,] 0.2590478470</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [53,] 0.1393608634</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [54,] 0.6407961152</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [55,] 0.1680944634</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [56,] 0.1146974769</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [57,] 0.6714866658</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [58,] 0.3713923453</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [59,] 0.3256224108</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [60,] 0.2225528050</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [61,] 0.7945046115</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [62,] 0.0302259400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [63,] 0.7334812584</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [64,] 0.7544944369</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [65,] 0.6794339163</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [66,] 0.7217814257</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [67,] 0.0848180617</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [68,] 0.7887117130</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [69,] 0.0003715124</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [70,] 0.3587100009</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [71,] 0.4406101476</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [72,] 0.1213333354</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [73,] 0.6950889621</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [74,] 0.4436411860</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [75,] 0.5731018054</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [76,] 0.1131717267</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [77,] 0.3333639706</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [78,] 0.4203673749</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [79,] 0.7774430701</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [80,] 0.3796139755</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [81,] 0.2822486781</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [82,] 0.1697738070</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [83,] 0.1937737433</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [84,] 0.7613930727</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [85,] 0.6273298854</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [86,] 0.2486908813</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [87,] 0.4865129857</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [88,] 0.6431243513</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [89,] 0.5875447305</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [90,] 0.3346200855</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [91,] 0.5347723283</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [92,] 0.0008189982</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [93,] 0.4533583635</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [94,] 0.4058711922</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [95,] 0.4600893515</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [96,] 0.4565435898</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [97,] 0.6740864570</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [98,] 0.1553085088</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [99,] 0.2685622708</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [100,] 0.4133662866</span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="vonmises-fisher-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>

@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +64,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-08-08</h4>
+            <h4 data-toc-skip class="date">2025-08-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/4_Faults.Rmd" class="external-link"><code>vignettes/4_Faults.Rmd</code></a></small>
       <div class="d-none name"><code>4_Faults.Rmd</code></div>
@@ -79,7 +79,7 @@ Stephan</h4>
 dip angle), the orientation of the slip (e.g. measured from striae,
 given in azimuth and plunge angles), and the sense of displacement:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_fault</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Fault</a></span><span class="op">(</span>dip_direction <span class="op">=</span> <span class="fl">120</span>, dip <span class="op">=</span> <span class="fl">50</span>, azimuth <span class="op">=</span> <span class="fl">60</span>, plunge <span class="op">=</span> <span class="fl">110</span>, sense <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">my_fault</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Fault</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">50</span>, <span class="fl">60</span>, <span class="fl">110</span>, sense <span class="op">=</span> <span class="op">-</span><span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <blockquote>
 <p>Sense of fault displacement is 1 or -1 for normal or thrust offset,
 respectively.</p>
@@ -88,39 +88,44 @@ respectively.</p>
 strike:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Fault_components.html">Fault_rake</a></span><span class="op">(</span><span class="va">my_fault</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##     sense </span></span>
-<span><span class="co">## -107.2294</span></span></code></pre>
+<pre><code><span><span class="co">## [1] -107.2294</span></span></code></pre>
 <p>Define a fault by just knowing the orientation of the fault plane,
 the sense, and the rake</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fault_plane</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Plane</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">120</span>, <span class="fl">100</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">60</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span> <span class="co"># dip direction, dip angle</span></span>
 <span><span class="fu"><a href="../reference/fault_from_rake.html">Fault_from_rake</a></span><span class="op">(</span><span class="va">fault_plane</span>, rake <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">84.7202</span>, <span class="op">-</span><span class="fl">10</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##      dip_direction dip   azimuth    plunge sense</span></span>
+<pre><code><span><span class="co">## Fault object (n = 3):</span></span>
+<span><span class="co">##      dip_direction dip   azimuth    plunge sense</span></span>
 <span><span class="co">## [1,]           120  60 109.52858 59.581591     1</span></span>
 <span><span class="co">## [2,]           120  60 204.96163  8.649165    -1</span></span>
-<span><span class="co">## [3,]           100  50  30.36057 22.521012     1</span></span>
-<span><span class="co">## attr(,"class")</span></span>
-<span><span class="co">## [1] "fault" "pair"</span></span></code></pre>
+<span><span class="co">## [3,]           100  50  30.36057 22.521012     1</span></span></code></pre>
 <p>Often measured orientation angles can be (slightly) imprecise and
 subjected to some random noise. Thus the slip vector will not lie
 (perfectly) on the fault plane, judging by the measurements. To correct
 the measurements so that this will not be the case:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Pair</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">60</span>, <span class="fl">110</span>, <span class="fl">58</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/correct_pair.html">correct_pair</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Pair</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">60</span>, <span class="fl">110</span>, <span class="fl">58</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/pair_correct.html">misfit_pair</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## $fvec</span></span>
-<span><span class="co">##              x          y        z</span></span>
-<span><span class="co">## [1,] 0.4306074 -0.7432627 0.511994</span></span>
+<span><span class="co">## Vector (Vec3) object (n = 1):</span></span>
+<span><span class="co">##          x          y          z </span></span>
+<span><span class="co">##  0.4306074 -0.7432627  0.5119940 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $lvec</span></span>
-<span><span class="co">##               x         y         z</span></span>
-<span><span class="co">## [1,] -0.1752467 0.4876291 0.8552815</span></span>
+<span><span class="co">## Vector (Vec3) object (n = 1):</span></span>
+<span><span class="co">##          x          y          z </span></span>
+<span><span class="co">## -0.1752467  0.4876291  0.8552815 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $misfit</span></span>
-<span><span class="co">##          x </span></span>
-<span><span class="co">## 0.02793105</span></span></code></pre>
+<span><span class="co">## [1] 0.02793105</span></span></code></pre>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/pair_correct.html">correct_pair</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Pair object (n = 1):</span></span>
+<span><span class="co">## dip_direction           dip       azimuth        plunge </span></span>
+<span><span class="co">##     120.08575      59.20326     109.76769      58.79085</span></span></code></pre>
 <blockquote>
-<p>A <code>pair</code> object is a container of associated plane and
+<p>A <code>"Pair"</code> object is a container of associated plane and
 line measurements. Basically like a fault wihtout the sense of
 displacement.</p>
 </blockquote>
@@ -130,40 +135,43 @@ displacement.</p>
 </h2>
 <p>Calculates PT-axes, kinematic plane (M), and dihedra separation plane
 (d):</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_fault2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Fault</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">120</span>, <span class="fl">100</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">60</span>, <span class="fl">50</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">110</span>, <span class="fl">25</span>, <span class="fl">30</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">58</span>, <span class="fl">9</span>, <span class="fl">23</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/fault_analysis.html">fault_analysis</a></span><span class="op">(</span><span class="va">my_fault2</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">my_fault2</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Fault object (n = 3):</span></span>
+<span><span class="co">##      dip_direction dip azimuth plunge sense</span></span>
+<span><span class="co">## [1,]           120  60     110     58     1</span></span>
+<span><span class="co">## [2,]           120  60      25      9    -1</span></span>
+<span><span class="co">## [3,]           100  50      30     23     1</span></span></code></pre>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/fault_analysis.html">fault_analysis</a></span><span class="op">(</span><span class="va">my_fault2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## $p</span></span>
+<span><span class="co">## Line object (n = 3):</span></span>
 <span><span class="co">##       azimuth   plunge</span></span>
 <span><span class="co">## [1,] 314.9694 75.19695</span></span>
 <span><span class="co">## [2,] 248.4032 15.30354</span></span>
 <span><span class="co">## [3,] 342.4517 46.65113</span></span>
-<span><span class="co">## attr(,"class")</span></span>
-<span><span class="co">## [1] "line"</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $t</span></span>
+<span><span class="co">## Line object (n = 3):</span></span>
 <span><span class="co">##       azimuth   plunge</span></span>
 <span><span class="co">## [1,] 116.2068 14.04837</span></span>
 <span><span class="co">## [2,] 345.9417 25.61490</span></span>
 <span><span class="co">## [3,] 241.3308 10.31892</span></span>
-<span><span class="co">## attr(,"class")</span></span>
-<span><span class="co">## [1] "line"</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $m</span></span>
+<span><span class="co">## Plane object (n = 3):</span></span>
 <span><span class="co">##      dip_direction      dip</span></span>
 <span><span class="co">## [1,]      27.35344 85.42739</span></span>
 <span><span class="co">## [2,]     310.64119 30.43222</span></span>
 <span><span class="co">## [3,]     322.06010 48.49732</span></span>
-<span><span class="co">## attr(,"class")</span></span>
-<span><span class="co">## [1] "plane"</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $d</span></span>
+<span><span class="co">## Plane object (n = 3):</span></span>
 <span><span class="co">##      dip_direction      dip</span></span>
 <span><span class="co">## [1,]      289.7677 31.20915</span></span>
 <span><span class="co">## [2,]      208.8622 83.16168</span></span>
-<span><span class="co">## [3,]      210.2233 67.19865</span></span>
-<span><span class="co">## attr(,"class")</span></span>
-<span><span class="co">## [1] "plane"</span></span></code></pre>
+<span><span class="co">## [3,]      210.2233 67.19865</span></span></code></pre>
 </div>
 <div class="section level2">
 <h2 id="sec-offset">Fault offsets<a class="anchor" aria-label="anchor" href="#sec-offset"></a>
@@ -243,7 +251,7 @@ For instance, the vector of the strike slip is:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><msub><mi>f</mi><mtext mathvariant="normal">net</mtext></msub><mo accent="true">→</mo></mover><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">strike-slip</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">heave</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">vertical throw</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}
   \vec{f_\text{net}} = \begin{pmatrix} \lVert f_\textrm{strike-slip}\rVert \\ \lVert f_\textrm{heave}\rVert \\ \lVert f_\textrm{vertical throw}\rVert \end{pmatrix}
 \end{equation}</annotation></semantics></math></p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/fault_displacements.html">fault_displacements</a></span><span class="op">(</span>strikeslip <span class="op">=</span> <span class="fl">2</span>, verticalthrow <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, heave <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -261,7 +269,7 @@ i.e. the <strong>principal displacement tensor</strong>
 <p>The tensor
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝖥</mi><annotation encoding="application/x-tex">\mathsf{F}</annotation></semantics></math>
 can also be defined by the magnitudes of the fault displacements:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Fu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fault-tensor.html">fault_tensor</a></span><span class="op">(</span>s <span class="op">=</span> <span class="fl">2</span>, v <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, h <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">Fu</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      [,1] [,2] [,3]</span></span>
@@ -278,7 +286,7 @@ can also be defined by the magnitudes of the fault displacements:</p>
 orientation (dip direction and dip angle), and the fault’s slip
 (direction and magnitude):</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝖥</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>13</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>22</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>23</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>31</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>32</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>33</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}\mathsf{F}_{ij} = {\begin{bmatrix}f_{11} &amp; f_{12} &amp; f_{13}\\ f_{21} &amp; f_{22} &amp; f_{23}\\ f_{31} &amp; f_{32} &amp; f_{33}\end{bmatrix}}\end{equation}</annotation></semantics></math></p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">Fg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fault-tensor.html">fault_tensor</a></span><span class="op">(</span>s <span class="op">=</span> <span class="fl">2</span>, v <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, h <span class="op">=</span> <span class="fl">3</span>, dip_direction <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">Fg</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##         [,1]      [,2] [,3]</span></span>
@@ -294,19 +302,18 @@ orientation (dip direction and dip angle), and the fault’s slip
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝖥</mi><mi>𝔽</mi></msub><annotation encoding="application/x-tex">\mathsf{F_\mathbb{F}}</annotation></semantics></math>
 into point of measurement and rotate into fault orientation
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝖥</mi><mrow><mi>𝔽</mi><mi>𝔾</mi></mrow></msub><annotation encoding="application/x-tex">\mathsf{F}_\mathbb{FG}</annotation></semantics></math></p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/fault-tensor.html">fault_tensor_decomposition</a></span><span class="op">(</span><span class="va">Fg</span>, dip_direction <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## $displacements</span></span>
 <span><span class="co">##           dip    delta     rake verticalthrow horizontalthrow heave  dipslip</span></span>
-<span><span class="co">## [1,] 59.03624 56.30993 71.06818            -5        3.605551     3 5.830952</span></span>
+<span><span class="co">## [1,] 300.9638 56.30993 71.06818            -5        3.605551     3 5.830952</span></span>
 <span><span class="co">##      strikeslip  netslip</span></span>
 <span><span class="co">## [1,]          2 6.164414</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $fault</span></span>
-<span><span class="co">##         dip_direction      dip  azimuth   plunge sense</span></span>
-<span><span class="co">## azimuth            45 59.03624 78.69007 54.20424    -1</span></span>
-<span><span class="co">## attr(,"class")</span></span>
-<span><span class="co">## [1] "fault" "pair" </span></span>
+<span><span class="co">## Fault object (n = 1):</span></span>
+<span><span class="co">## dip_direction           dip       azimuth        plunge         sense </span></span>
+<span><span class="co">##      45.00000     300.96376     258.69007      54.20424      -1.00000 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $strain_tensor</span></span>
 <span><span class="co">##      [,1] [,2] [,3]</span></span>
@@ -753,44 +760,34 @@ accordingly:</p>
 <div class="section level4">
 <h4 id="code">Code<a class="anchor" aria-label="anchor" href="#code"></a>
 </h4>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<p>Define the orientation of the principle stress axes:</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">S1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">250.89</span>, <span class="fl">70.07</span><span class="op">)</span></span>
-<span><span class="va">S3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">103.01</span>, <span class="fl">17.07</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># get S2 - which is perpendicular to S1 and S3, hence the cross-product of the two vectors:</span></span>
-<span><span class="va">S2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/operations.html">vcross</a></span><span class="op">(</span><span class="va">S3</span>, <span class="va">S1</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># get the azimuth of SHmax for a stress ration R = 1:</span></span>
-<span><span class="fu"><a href="../reference/SH.html">SH</a></span><span class="op">(</span><span class="va">S1</span>, <span class="va">S2</span>, <span class="va">S3</span>, R <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># in degrees:</span></span></code></pre></div>
+<span><span class="va">S3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">103.01</span>, <span class="fl">17.07</span><span class="op">)</span></span></code></pre></div>
+<p>To get S2 - which is perpendicular to S1 and S3, we calculate the
+cross-product of the two vectors:</p>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">S2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vecmath.html">crossprod</a></span><span class="op">(</span><span class="va">S3</span>, <span class="va">S1</span><span class="op">)</span></span></code></pre></div>
+<p>The azimuth of SHmax for a given stress ratio <code>R = 1</code>:</p>
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.html">SH</a></span><span class="op">(</span><span class="va">S1</span>, <span class="va">S2</span>, <span class="va">S3</span>, R <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># in degrees</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 70.89</span></span></code></pre>
 <p>For a several stress ratios:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">R</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">.05</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">R</span>, SH <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">R</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span>
-<span>  <span class="fu"><a href="../reference/SH.html">SH</a></span><span class="op">(</span><span class="va">S1</span>, <span class="va">S2</span>, <span class="va">S3</span>, R <span class="op">=</span> <span class="va">x</span><span class="op">)</span></span>
-<span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##          R       SH</span></span>
-<span><span class="co">##  [1,] 0.00 13.01021</span></span>
-<span><span class="co">##  [2,] 0.05 13.18337</span></span>
-<span><span class="co">##  [3,] 0.10 13.37695</span></span>
-<span><span class="co">##  [4,] 0.15 13.59476</span></span>
-<span><span class="co">##  [5,] 0.20 13.84162</span></span>
-<span><span class="co">##  [6,] 0.25 14.12371</span></span>
-<span><span class="co">##  [7,] 0.30 14.44908</span></span>
-<span><span class="co">##  [8,] 0.35 14.82843</span></span>
-<span><span class="co">##  [9,] 0.40 15.27621</span></span>
-<span><span class="co">## [10,] 0.45 15.81249</span></span>
-<span><span class="co">## [11,] 0.50 16.46586</span></span>
-<span><span class="co">## [12,] 0.55 17.27842</span></span>
-<span><span class="co">## [13,] 0.60 18.31445</span></span>
-<span><span class="co">## [14,] 0.65 19.67656</span></span>
-<span><span class="co">## [15,] 0.70 21.53704</span></span>
-<span><span class="co">## [16,] 0.75 24.20154</span></span>
-<span><span class="co">## [17,] 0.80 28.23884</span></span>
-<span><span class="co">## [18,] 0.85 34.69668</span></span>
-<span><span class="co">## [19,] 0.90 45.01043</span></span>
-<span><span class="co">## [20,] 0.95 58.66746</span></span>
-<span><span class="co">## [21,] 1.00 70.89000</span></span></code></pre>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">R</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">.1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">R</span>, SH <span class="op">=</span> <span class="fu"><a href="../reference/SH.html">SH</a></span><span class="op">(</span><span class="va">S1</span>, <span class="va">S2</span>, <span class="va">S3</span>, R <span class="op">=</span> <span class="va">R</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##         R       SH</span></span>
+<span><span class="co">##  [1,] 0.0 13.01021</span></span>
+<span><span class="co">##  [2,] 0.1 13.37695</span></span>
+<span><span class="co">##  [3,] 0.2 13.84162</span></span>
+<span><span class="co">##  [4,] 0.3 14.44908</span></span>
+<span><span class="co">##  [5,] 0.4 15.27621</span></span>
+<span><span class="co">##  [6,] 0.5 16.46586</span></span>
+<span><span class="co">##  [7,] 0.6 18.31445</span></span>
+<span><span class="co">##  [8,] 0.7 21.53704</span></span>
+<span><span class="co">##  [9,] 0.8 28.23884</span></span>
+<span><span class="co">## [10,] 0.9 45.01043</span></span>
+<span><span class="co">## [11,] 1.0 70.89000</span></span></code></pre>
 </div>
 </div>
 </div>

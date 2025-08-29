@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -130,7 +130,7 @@
         <dd>Centering vectors</dd>
       </dl><dl><dt>
 
-          <code><a href="classes.html">Line()</a></code> <code><a href="classes.html">Plane()</a></code> <code><a href="classes.html">Fault()</a></code> <code><a href="classes.html">Pair()</a></code> <code><a href="classes.html">as.line()</a></code> <code><a href="classes.html">as.plane()</a></code> <code><a href="classes.html">as.fault()</a></code> <code><a href="classes.html">as.pair()</a></code> <code><a href="classes.html">is.line()</a></code> <code><a href="classes.html">is.plane()</a></code> <code><a href="classes.html">is.fault()</a></code> <code><a href="classes.html">is.pair()</a></code> <code><a href="classes.html">is.spherical()</a></code>
+          <code><a href="classes.html">is.spherical()</a></code> <code><a href="classes.html">is.Vec3()</a></code> <code><a href="classes.html">is.Line()</a></code> <code><a href="classes.html">is.Plane()</a></code> <code><a href="classes.html">is.Pair()</a></code> <code><a href="classes.html">is.Fault()</a></code> <code><a href="classes.html">as.spherical()</a></code> <code><a href="classes.html">as.Vec3()</a></code> <code><a href="classes.html">as.Line()</a></code> <code><a href="classes.html">as.Plane()</a></code> <code><a href="classes.html">as.Pair()</a></code> <code><a href="classes.html">as.Fault()</a></code> <code><a href="classes.html">Vec3()</a></code> <code><a href="classes.html">Line()</a></code> <code><a href="classes.html">Plane()</a></code> <code><a href="classes.html">Pair()</a></code> <code><a href="classes.html">Fault()</a></code> <code><a href="classes.html">Spherical()</a></code>
 
         </dt>
         <dd>Structure classes</dd>
@@ -140,24 +140,6 @@
 
         </dt>
         <dd>Helper functions for color assignment and legends</dd>
-      </dl><dl><dt>
-
-          <code><a href="compact_grid.html">compact_grid()</a></code>
-
-        </dt>
-        <dd>Compact grid</dd>
-      </dl><dl><dt>
-
-          <code><a href="coordinates.html">to_vec()</a></code> <code><a href="coordinates.html">to_spherical()</a></code> <code><a href="coordinates.html">line2vec()</a></code> <code><a href="coordinates.html">plane2vec()</a></code> <code><a href="coordinates.html">vec2line()</a></code> <code><a href="coordinates.html">vec2plane()</a></code>
-
-        </dt>
-        <dd>Cartesian and spherical coordinates</dd>
-      </dl><dl><dt>
-
-          <code><a href="correct_pair.html">correct_pair()</a></code>
-
-        </dt>
-        <dd>Orthogonalization of plane and line measurement</dd>
       </dl><dl><dt>
 
           <code><a href="count_points.html">count_points()</a></code>
@@ -178,7 +160,13 @@
         <dd>Density estimation</dd>
       </dl><dl><dt>
 
-          <code><a href="dist.mle.html">kent.mle()</a></code> <code><a href="dist.mle.html">vmf.mle()</a></code>
+          <code><a href="density.html">density()</a></code>
+
+        </dt>
+        <dd>Spherical density estimation</dd>
+      </dl><dl><dt>
+
+          <code><a href="dist.mle.html">kent_mle()</a></code> <code><a href="dist.mle.html">vmf_mle()</a></code>
 
         </dt>
         <dd>MLE of spherical rotational symmetric distributions</dd>
@@ -188,6 +176,12 @@
 
         </dt>
         <dd>Orientation of structures from drill core orientation angles</dd>
+      </dl><dl><dt>
+
+          <code><a href="eigen-spherical.html">eigen()</a></code>
+
+        </dt>
+        <dd>Eigenvalues and Eigenvectors of a Set of Vectors</dd>
       </dl><dl><dt>
 
           <code><a href="example_lines.html">example_lines</a></code>
@@ -280,22 +274,16 @@
         <dd>Example data from Gray et al. 1980 to find best small and great circle</dd>
       </dl><dl><dt>
 
-          <code><a href="inertia_tensor.html">inertia_tensor()</a></code>
+          <code><a href="inertia.html">inertia_tensor()</a></code>
 
         </dt>
         <dd>Inertia tensor</dd>
       </dl><dl><dt>
 
-          <code><a href="operations.html">vlength()</a></code> <code><a href="operations.html">vsum()</a></code> <code><a href="operations.html">vnorm()</a></code> <code><a href="operations.html">vscale()</a></code> <code><a href="operations.html">vcross()</a></code> <code><a href="operations.html">vdot()</a></code> <code><a href="operations.html">vrotate()</a></code> <code><a href="operations.html">vangle()</a></code> <code><a href="operations.html">vproject()</a></code> <code><a href="operations.html">vreject()</a></code>
+          <code><a href="lines.spherical.html">lines(<i>&lt;spherical&gt;</i>)</a></code>
 
         </dt>
-        <dd>Vector operations</dd>
-      </dl><dl><dt>
-
-          <code><a href="or_eigen.html">or_eigen()</a></code>
-
-        </dt>
-        <dd>Eigenvalues and Eigenvectors of a Set of Vectors</dd>
+        <dd>Add Lines to a Plot</dd>
       </dl><dl><dt>
 
           <code><a href="ortensor.html">ortensor()</a></code>
@@ -304,22 +292,28 @@
         <dd>Orientation tensor</dd>
       </dl><dl><dt>
 
-          <code><a href="parse_quadrant_measurement.html">parse_quadrant_measurement()</a></code>
+          <code><a href="pair_correct.html">misfit_pair()</a></code> <code><a href="pair_correct.html">correct_pair()</a></code>
 
         </dt>
-        <dd>Title</dd>
+        <dd>Orthogonalization of plane and line measurement</dd>
+      </dl><dl><dt>
+
+          <code><a href="plot.spherical.html">plot(<i>&lt;spherical&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Plot spherical objects</dd>
+      </dl><dl><dt>
+
+          <code><a href="points.spherical.html">points(<i>&lt;spherical&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Add Points to a Plot</dd>
       </dl><dl><dt>
 
           <code><a href="prepare-ggplot.html">gg()</a></code> <code><a href="prepare-ggplot.html">ggl()</a></code>
 
         </dt>
         <dd>Prepare points and lines for ggplot</dd>
-      </dl><dl><dt>
-
-          <code><a href="ramsay_coords.html">cartesian_to_acosvec()</a></code> <code><a href="ramsay_coords.html">acoscartesian_to_cartesian()</a></code>
-
-        </dt>
-        <dd>Spherical coordinate conversion</dd>
       </dl><dl><dt>
 
           <code><a href="rfb.html">rfb()</a></code>
@@ -340,6 +334,12 @@
         <dd>Kent distribution</dd>
       </dl><dl><dt>
 
+          <code><a href="runif.spherical.html">runif.spherical()</a></code>
+
+        </dt>
+        <dd>Uniformly distributed vectors</dd>
+      </dl><dl><dt>
+
           <code><a href="sigma13.html">sigma13()</a></code>
 
         </dt>
@@ -358,19 +358,13 @@
         <dd>Example data set</dd>
       </dl><dl><dt>
 
-          <code><a href="spatial_interpolation.html">spatial_interpolation()</a></code>
-
-        </dt>
-        <dd>Spatial interpolation</dd>
-      </dl><dl><dt>
-
           <code><a href="split_trailing_letters.html">split_trailing_letters()</a></code>
 
         </dt>
         <dd>Parse measurement and direction strings</dd>
       </dl><dl><dt>
 
-          <code><a href="stats.html">v_mean()</a></code> <code><a href="stats.html">v_var()</a></code> <code><a href="stats.html">v_delta()</a></code> <code><a href="stats.html">v_rdegree()</a></code> <code><a href="stats.html">v_sde()</a></code> <code><a href="stats.html">v_confidence_angle()</a></code> <code><a href="stats.html">estimate_k()</a></code>
+          <code><a href="stats.html">mean()</a></code> <code><a href="stats.html">sd()</a></code> <code><a href="stats.html">var()</a></code> <code><a href="stats.html">confidence_angle()</a></code> <code><a href="stats.html">rdegree()</a></code> <code><a href="stats.html">sd_error()</a></code> <code><a href="stats.html">delta()</a></code> <code><a href="stats.html">estimate_k()</a></code>
 
         </dt>
         <dd>Statistical estimators of the distribution of a set of vectors</dd>
@@ -382,16 +376,16 @@
         <dd>Stereographic projection of cones</dd>
       </dl><dl><dt>
 
+          <code><a href="stereo_contour.html">contour(<i>&lt;spherical&gt;</i>)</a></code> <code><a href="stereo_contour.html">contourf()</a></code> <code><a href="stereo_contour.html">image(<i>&lt;spherical&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Plot spherical densities in a stereonet</dd>
+      </dl><dl><dt>
+
           <code><a href="stereo_coords.html">stereo_coords()</a></code>
 
         </dt>
         <dd>Stereographic projection</dd>
-      </dl><dl><dt>
-
-          <code><a href="stereo_density.html">spherical_density()</a></code> <code><a href="stereo_density.html">stereo_density()</a></code>
-
-        </dt>
-        <dd>Calculate and plot densities in a stereonet</dd>
       </dl><dl><dt>
 
           <code><a href="stereo_fault.html">stereo_fault()</a></code>
@@ -436,16 +430,16 @@
         <dd>Maximum in-plane shear stress</dd>
       </dl><dl><dt>
 
-          <code><a href="v_orthogonalize.html">v_orthogonalize()</a></code>
+          <code><a href="text.spherical.html">text(<i>&lt;spherical&gt;</i>)</a></code>
 
         </dt>
-        <dd>Orthogonalize two vectors</dd>
+        <dd>Add Points to a Plot</dd>
       </dl><dl><dt>
 
-          <code><a href="v_unif.html">v_unif()</a></code>
+          <code><a href="vecmath.html">vector_length()</a></code> <code><a href="vecmath.html">crossprod()</a></code> <code><a href="vecmath.html">`%*%`(<i>&lt;spherical&gt;</i>)</a></code> <code><a href="vecmath.html">rotate()</a></code> <code><a href="vecmath.html">angle()</a></code> <code><a href="vecmath.html">project()</a></code> <code><a href="vecmath.html">reject()</a></code> <code><a href="vecmath.html">transform_linear()</a></code>
 
         </dt>
-        <dd>Uniformly distributed vectors</dd>
+        <dd>Vector math operations</dd>
       </dl><dl><dt>
 
           <code><a href="vel_rate.html">velgrad_rate()</a></code> <code><a href="vel_rate.html">velgrad_spin()</a></code>
@@ -460,22 +454,10 @@
         <dd>von Mises-Fisher Distribution</dd>
       </dl><dl><dt>
 
-          <code><a href="vresultant.html">vresultant()</a></code>
-
-        </dt>
-        <dd>Mean resultant of a set of vectors</dd>
-      </dl><dl><dt>
-
           <code><a href="vslerp.html">vslerp()</a></code>
 
         </dt>
         <dd>Spherical Linear Interpolation (Slerp)</dd>
-      </dl><dl><dt>
-
-          <code><a href="vtransform.html">vtransform()</a></code>
-
-        </dt>
-        <dd>Affine transformation of vector by matrix</dd>
       </dl></div>
   </main></div>
 

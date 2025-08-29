@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +37,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Stereonet contouring using ggplot</h1>
-      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/gg_stereonet.R" class="external-link"><code>R/gg_stereonet.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/stereonet_gg.R" class="external-link"><code>R/stereonet_gg.R</code></a></small>
       <div class="d-none name"><code>ggstereocontour.Rd</code></div>
     </div>
 
@@ -74,7 +74,9 @@
 
 
 <dl><dt id="arg-data">data<a class="anchor" aria-label="anchor" href="#arg-data"></a></dt>
-<dd><p>data.frame containing the orientation</p></dd>
+<dd><p>Default dataset to use for plot. If not already a data.frame,
+will be converted to one by <code><a href="https://ggplot2.tidyverse.org/reference/fortify.html" class="external-link">ggplot2::fortify()</a></code>. If not specified, must be
+supplied in each layer added to the plot.</p></dd>
 
 
 <dt id="arg-ngrid">ngrid<a class="anchor" aria-label="anchor" href="#arg-ngrid"></a></dt>
@@ -124,7 +126,7 @@ Electronic Journal of Statistics, 7, 1655-1685.</p>
 <span class="r-in"><span>  <span class="va">test_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span></span>
 <span class="r-in"><span>    <span class="fu"><a href="vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">100</span>, mu <span class="op">=</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">90</span>, <span class="fl">45</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">10</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>    <span class="fu"><a href="vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">50</span>, mu <span class="op">=</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="classes.html">as.line</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span>  <span class="fu"><a href="ggstereo.html">ggstereo</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span></span>
 <span class="r-in"><span>    <span class="fu">geom_contourf_stereo</span><span class="op">(</span><span class="fu"><a href="prepare-ggplot.html">gg</a></span><span class="op">(</span><span class="va">test_data</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span></span>
@@ -140,7 +142,7 @@ Electronic Journal of Statistics, 7, 1655-1685.</p>
 <span class="r-in"><span><span class="op">}</span></span></span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Contour data has duplicated <span style="color: #00BB00;">x</span>, <span style="color: #00BB00;">y</span> coordinates.</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> <span style="color: #00BBBB;">ℹ</span> 19800 duplicated rows have been dropped.</span>
-<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 13225 rows containing non-finite outside the scale range</span>
+<span class="r-wrn co"><span class="r-pr">#&gt;</span> <span class="warning">Warning: </span>Removed 11224 rows containing non-finite outside the scale range</span>
 <span class="r-wrn co"><span class="r-pr">#&gt;</span> (`stat_contour_filled()`).</span>
 <span class="r-plt img"><img src="ggstereocontour-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>

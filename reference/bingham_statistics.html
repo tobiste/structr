@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +37,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Elliptical concentration and confidence cone estimation</h1>
-      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/math.R" class="external-link"><code>R/math.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/vector_stats.R" class="external-link"><code>R/vector_stats.R</code></a></small>
       <div class="d-none name"><code>bingham_statistics.Rd</code></div>
     </div>
 
@@ -47,7 +47,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">bingham_statistics</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">bingham_statistics</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -60,12 +60,15 @@ Earth Science Data. Springer, Berlin, Heidelberg. https://doi.org/10.1007/978-3-
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>numeric. Can be three element vector, three column array, or an
-object of class <code>"line"</code> or <code>"plane"</code></p></dd>
+<dd><p>object of class <code>"Vec3"</code>, <code>"Line"</code>, or <code>"Plane"</code>.</p></dd>
 
 
 <dt id="arg-w">w<a class="anchor" aria-label="anchor" href="#arg-w"></a></dt>
-<dd><p>numeric. Weights</p></dd>
+<dd><p>numeric. Optional weights for each observation.</p></dd>
+
+
+<dt id="arg-na-rm">na.rm<a class="anchor" aria-label="anchor" href="#arg-na-rm"></a></dt>
+<dd><p>logical. Whether <code>NA</code> values should be removed before the computation proceeds.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -83,7 +86,7 @@ object of class <code>"line"</code> or <code>"plane"</code></p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="inertia_tensor.html">inertia_tensor()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="inertia.html">inertia_tensor.spherical()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -97,13 +100,13 @@ object of class <code>"line"</code> or <code>"plane"</code></p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">bingham_statistics</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $k</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.617234 3.894810</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.418660 3.734661</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $a95</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8.653798 7.093898</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 9.002033 7.244400</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $beta</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.67198</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.6476251</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

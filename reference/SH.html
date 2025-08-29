@@ -11,7 +11,7 @@ This function Equations 11 and 10 from Lund and Townend (2007)."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -53,7 +53,7 @@ This function Equations 11 and 10 from Lund and Townend (2007).</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">SH</span><span class="op">(</span><span class="va">S1</span>, <span class="va">S2</span>, <span class="va">S3</span>, <span class="va">R</span>, tol <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">^</span><span class="fl">0.5</span>, ortho.tol <span class="op">=</span> <span class="fl">1e-04</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">SH</span><span class="op">(</span><span class="va">S1</span>, <span class="va">S2</span>, <span class="va">S3</span>, <span class="va">R</span>, tol <span class="op">=</span> <span class="va">.Machine</span><span class="op">$</span><span class="va">double.eps</span><span class="op">^</span><span class="fl">0.5</span>, ortho.tol <span class="op">=</span> <span class="fl">0.005</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -61,9 +61,9 @@ This function Equations 11 and 10 from Lund and Townend (2007).</p>
 
 
 <dl><dt id="arg-s-s-s-">S1, S2, S3<a class="anchor" aria-label="anchor" href="#arg-s-s-s-"></a></dt>
-<dd><p>numeric three-column vectors. The principal stress orientations.
+<dd><p>The principal stress orientations.
 The variables hold the coordinates in the North, East and Down geographical
-coordinate system, e.g. <code>S1 = c(s1N,s1E,s1D)</code></p></dd>
+coordinate system, e.g. <code>S1 = c(s1N,s1E,s1D)</code>. Given as object of class <code>"Vec3"</code> or <code>"Line"</code></p></dd>
 
 
 <dt id="arg-r">R<a class="anchor" aria-label="anchor" href="#arg-r"></a></dt>
@@ -77,13 +77,13 @@ coordinate system, e.g. <code>S1 = c(s1N,s1E,s1D)</code></p></dd>
 
 
 <dt id="arg-ortho-tol">ortho.tol<a class="anchor" aria-label="anchor" href="#arg-ortho-tol"></a></dt>
-<dd><p>tolerance angle (in radians) for orthogonality check of the
+<dd><p>tolerance angle (in degree) for orthogonality check of the
 three principal stress vectors.</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>numeric angle in degrees. The direction of SH from North.</p>
+    <p>The direction of SH from North as numeric angle in degrees (radians if all principal stress axes were given as <code>"Vec3"</code> objects).</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -98,14 +98,12 @@ Geophys. J. Int., doi:<a href="https://doi.org/10.1111/j.1365-246X.2007.03468.x"
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># first example from https://www.snsn.se/SH/SHcode/benchmark.out</span></span></span>
 <span class="r-in"><span><span class="va">S1</span> <span class="op">&lt;-</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">250.89</span>, <span class="fl">70.07</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">S3</span> <span class="op">&lt;-</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">103.01</span>, <span class="fl">17.07</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">S2</span> <span class="op">&lt;-</span> <span class="fu"><a href="operations.html">vcross</a></span><span class="op">(</span><span class="va">S3</span>, <span class="va">S1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">S2</span> <span class="op">&lt;-</span> <span class="fu"><a href="vecmath.html">crossprod</a></span><span class="op">(</span><span class="va">S3</span>, <span class="va">S1</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">SH</span><span class="op">(</span><span class="va">S1</span>, <span class="va">S2</span>, <span class="va">S3</span>, R <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co">#  70.89</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 70.89</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">R</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">.05</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">R</span>, SH <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">R</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
-<span class="r-in"><span>  <span class="fu">SH</span><span class="op">(</span><span class="va">S1</span>, <span class="va">S2</span>, <span class="va">S3</span>, R <span class="op">=</span> <span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">R</span>, SH <span class="op">=</span> <span class="fu">SH</span><span class="op">(</span><span class="va">S1</span>, <span class="va">S2</span>, <span class="va">S3</span>, R <span class="op">=</span> <span class="va">R</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          R       SH</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1,] 0.00 13.01021</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2,] 0.05 13.18337</span>

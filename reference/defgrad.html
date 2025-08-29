@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +37,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Deformation Gradient Tensor</h1>
-      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/defgrad.R" class="external-link"><code>R/defgrad.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/strain_analysis.R" class="external-link"><code>R/strain_analysis.R</code></a></small>
       <div class="d-none name"><code>defgrad.Rd</code></div>
     </div>
 
@@ -117,10 +117,11 @@ the tensor. Identity matrix by default.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.5937433 -0.1963513 0.7803301</span>
 <span class="r-in"><span><span class="fu">defgrad_from_vectors</span><span class="op">(</span><span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">30</span><span class="op">)</span>, <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">210</span>, <span class="fl">60</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             [,1]       [,2]       [,3]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.97419453 -0.1931138  0.1168422</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.22291137  0.9044366 -0.3637374</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.03543362  0.3803964  0.9241445</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.96054327 -0.1753947  0.1017020</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.19960527  0.9038650 -0.3286089</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.03555755  0.3421443  0.9198776</span>
 <span class="r-in"><span><span class="fu">defgrad_from_pair</span><span class="op">(</span><span class="fu"><a href="classes.html">Pair</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">20</span>, <span class="fl">75</span>, <span class="fl">16</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Vector (Vec3) object (n = 3):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]       [,2]       [,3]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.2487928 -0.9331095 -0.2620026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.9285075  0.3060065 -0.2198463</span>

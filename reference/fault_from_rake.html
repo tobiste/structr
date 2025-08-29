@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -47,7 +47,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">Fault_from_rake</span><span class="op">(</span><span class="va">p</span>, <span class="va">rake</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">Fault_from_rake</span><span class="op">(</span><span class="va">p</span>, <span class="va">rake</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -55,16 +55,20 @@
 
 
 <dl><dt id="arg-p">p<a class="anchor" aria-label="anchor" href="#arg-p"></a></dt>
-<dd><p>plane object</p></dd>
+<dd><p>object of class <code>"Plane"</code></p></dd>
 
 
 <dt id="arg-rake">rake<a class="anchor" aria-label="anchor" href="#arg-rake"></a></dt>
 <dd><p>Angle in degrees in the range  −180° and 180°</p></dd>
 
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>optional arguments passed to <code><a href="classes.html">Fault()</a></code></p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p><code>"fault"</code> object</p>
+    <p><code>"Fault"</code> object</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -78,12 +82,11 @@ to the strike (measured anticlockwise from the horizontal, up is positive; value
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">Fault_from_rake</span><span class="op">(</span><span class="fu"><a href="classes.html">Plane</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">120</span>, <span class="fl">100</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">60</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">84.7202</span>, <span class="op">-</span><span class="fl">10</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Fault object (n = 3):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      dip_direction dip   azimuth    plunge sense</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]           120  60 109.52858 59.581591     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]           120  60 204.96163  8.649165    -1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,]           100  50  30.36057 22.521012     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "fault" "pair" </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

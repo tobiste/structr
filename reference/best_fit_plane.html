@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +37,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Least-square fit of small and great circles to spherically projected data</h1>
-      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/best_pole_gray.R" class="external-link"><code>R/best_pole_gray.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/best_pole.R" class="external-link"><code>R/best_pole.R</code></a></small>
       <div class="d-none name"><code>best_fit_plane.Rd</code></div>
     </div>
 
@@ -55,8 +55,7 @@
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>numeric. Can be three element vector, three column array, or an
-object of class <code>"line"</code> or <code>"plane"</code></p></dd>
+<dd><p>object of class <code>"Vec3"</code>, <code>"Line"</code>, or <code>"Plane"</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -81,18 +80,18 @@ Mathematical Geology, Vol. 12, No. 3, 1980.</p>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">gray_cleavage</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">gray_example1</span>, <span class="va">Type</span> <span class="op">==</span> <span class="st">"Cleavage"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">gray_bedding</span> <span class="op">&lt;-</span> <span class="fu">dplyr</span><span class="fu">::</span><span class="fu"><a href="https://dplyr.tidyverse.org/reference/filter.html" class="external-link">filter</a></span><span class="op">(</span><span class="va">gray_example1</span>, <span class="va">Type</span> <span class="op">==</span> <span class="st">"Bedding"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">test_clea</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">gray_cleavage</span><span class="op">$</span><span class="va">dipdir</span>, <span class="va">gray_cleavage</span><span class="op">$</span><span class="va">dip</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="classes.html">as.plane</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">test_bedd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">gray_bedding</span><span class="op">$</span><span class="va">dipdir</span>, <span class="va">gray_bedding</span><span class="op">$</span><span class="va">dip</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="classes.html">as.plane</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">best_clea</span> <span class="op">&lt;-</span> <span class="fu">best_fit_plane</span><span class="op">(</span><span class="op">(</span><span class="va">test_clea</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">best_bedd</span> <span class="op">&lt;-</span> <span class="fu">best_fit_plane</span><span class="op">(</span><span class="op">(</span><span class="va">test_bedd</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">test_clea</span> <span class="op">&lt;-</span> <span class="fu"><a href="classes.html">Plane</a></span><span class="op">(</span><span class="va">gray_cleavage</span><span class="op">$</span><span class="va">dipdir</span>, <span class="va">gray_cleavage</span><span class="op">$</span><span class="va">dip</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">test_bedd</span> <span class="op">&lt;-</span> <span class="fu"><a href="classes.html">Plane</a></span><span class="op">(</span><span class="va">gray_bedding</span><span class="op">$</span><span class="va">dipdir</span>, <span class="va">gray_bedding</span><span class="op">$</span><span class="va">dip</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">best_clea</span> <span class="op">&lt;-</span> <span class="fu">best_fit_plane</span><span class="op">(</span><span class="va">test_clea</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">best_bedd</span> <span class="op">&lt;-</span> <span class="fu">best_fit_plane</span><span class="op">(</span><span class="va">test_bedd</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="stereoplot.html">stereoplot</a></span><span class="op">(</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="stereo_point.html">stereo_point</a></span><span class="op">(</span><span class="va">test_clea</span>, col <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="stereo_point.html">stereo_point</a></span><span class="op">(</span><span class="va">test_bedd</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="stereo_cones.html">stereo_smallcircle</a></span><span class="op">(</span><span class="va">best_clea</span><span class="op">$</span><span class="va">axis_c</span>, <span class="va">best_clea</span><span class="op">$</span><span class="va">cone_angle</span>, col <span class="op">=</span> <span class="st">"lightblue"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="stereo_cones.html">stereo_smallcircle</a></span><span class="op">(</span><span class="va">best_clea</span><span class="op">$</span><span class="va">axis_g</span>, <span class="fl">90</span>, lty <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="stereo_cones.html">stereo_smallcircle</a></span><span class="op">(</span><span class="va">best_bedd</span><span class="op">$</span><span class="va">axis_c</span>, <span class="va">best_bedd</span><span class="op">$</span><span class="va">cone_angle</span>, col <span class="op">=</span> <span class="st">"sienna"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="stereo_cones.html">stereo_smallcircle</a></span><span class="op">(</span><span class="va">best_bedd</span><span class="op">$</span><span class="va">axis_g</span>, <span class="fl">90</span>, lty <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">test_clea</span>, col <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">test_bedd</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">best_clea</span><span class="op">$</span><span class="va">axis_c</span>, <span class="va">best_clea</span><span class="op">$</span><span class="va">cone_angle</span>, col <span class="op">=</span> <span class="st">"lightblue"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">best_clea</span><span class="op">$</span><span class="va">axis_g</span>, <span class="fl">90</span>, lty <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">best_bedd</span><span class="op">$</span><span class="va">axis_c</span>, <span class="va">best_bedd</span><span class="op">$</span><span class="va">cone_angle</span>, col <span class="op">=</span> <span class="st">"sienna"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">best_bedd</span><span class="op">$</span><span class="va">axis_g</span>, <span class="fl">90</span>, lty <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="best_fit_plane-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>

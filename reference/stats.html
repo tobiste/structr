@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -37,7 +37,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Statistical estimators of the distribution of a set of vectors</h1>
-      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/math.R" class="external-link"><code>R/math.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/vector_stats.R" class="external-link"><code>R/vector_stats.R</code></a></small>
       <div class="d-none name"><code>stats.Rd</code></div>
     </div>
 
@@ -47,19 +47,30 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">v_mean</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'spherical'</span></span>
+<span><span class="fu">mean</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">v_var</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="fu">mean</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">v_delta</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="fu">sd</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">v_rdegree</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="co"># S3 method for class 'spherical'</span></span>
+<span><span class="fu">sd</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">v_sde</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+<span><span class="fu">var</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">v_confidence_angle</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span>, alpha <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span>
+<span><span class="co"># S3 method for class 'spherical'</span></span>
+<span><span class="fu">var</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">estimate_k</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">confidence_angle</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span>, alpha <span class="op">=</span> <span class="fl">0.05</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">rdegree</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">sd_error</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">delta</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">estimate_k</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -67,93 +78,78 @@
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>numeric. Can be three element vector, three column array, or an
-object of class <code>"line"</code> or <code>"plane"</code></p></dd>
+<dd><p>object of class <code>"Vec3"</code>, <code>"Line"</code>, or <code>"Plane"</code>.</p></dd>
 
 
 <dt id="arg-w">w<a class="anchor" aria-label="anchor" href="#arg-w"></a></dt>
-<dd><p>numerical vector of weights the same length as <code>x</code> giving the
-weights to use for elements of <code>x</code>.</p></dd>
+<dd><p>numeric. Optional weights for each observation.</p></dd>
+
+
+<dt id="arg-na-rm">na.rm<a class="anchor" aria-label="anchor" href="#arg-na-rm"></a></dt>
+<dd><p>logical. Whether <code>NA</code> values should be removed before the computation proceeds.</p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>arguments passed to function call</p></dd>
 
 
 <dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
-<dd><p>significance level (0.05 by default)</p></dd>
+<dd><p>numeric. Significance level for the confidence angle (default is 0.05 for a 95% confidence angle).</p></dd>
 
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><code>v_mean</code> returns the spherical mean of a set of vectors
-(object of class of <code>x</code>). The function is shortcut for
-<code>vresultant(x, mean = TRUE)</code> when the argument is a <code>"plane"</code> or <code>"line"</code> object.</p>
-<p><code>v_var</code> returns the spherical variance (numeric), based on resultant length
+    <p><code>mean</code> returns the spherical mean of a set of vectors
+(object of class of <code>x</code>).</p>
+<p><code>var</code> returns the spherical variance (numeric), based on resultant length
 (Mardia 1972).</p>
-<p><code>v_delta</code> returns the cone angle containing ~63% of the data (in degree if <code>x</code> is a <code>"plane"</code> or <code>"line"</code>, or in radians
+<p><code>delta</code> returns the cone angle containing ~63% of the data (in degree if <code>x</code> is a <code>"Plane"</code> or <code>"Line"</code>, or in radians
 if otherwise). For enough large sample it approaches the angular standard
 deviation (<code>"csd"</code>) of the Fisher statistics.</p>
-<p><code>v_rdegree</code> returns the degree of preferred orientation of vectors, range: (0, 1).</p>
-<p><code>v_sde</code> returns the spherical standard error (numeric). If the number of
+<p><code>rdegree</code> returns the degree of preferred orientation of vectors, range: (0, 1).</p>
+<p><code>sd_error</code> returns the spherical standard error (numeric). If the number of
 data is less than 25, if will print a additional message, that the output
 value might not be a good estimator.</p>
-<p><code>v_confidence_angle</code> returns the semi-vertical angle \(q\) about the
-mean \(\mu\) (in degree if <code>x</code> is a <code>"plane"</code> or <code>"line"</code>, or in radians
-if otherwise). The \(100(1-\alpha)\%\) confidence interval is than given by \(\mu \pm q\).
-<code>estimate_k</code> returns the estimated concentration of the von Mises-Fisher distribution \(\kappa\) (after Sra, 2011).</p>
-    </div>
-    <div class="section level2">
-    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="vresultant.html">vresultant()</a></code>, <code><a href="fisher_statistics.html">fisher_statistics()</a></code></p></div>
+<p><code>confidence_angle</code> returns the semi-vertical angle \(q\) about the
+mean \(\mu\) (in degree if <code>x</code> is a <code>"Plane"</code> or <code>"Line"</code>, or in radians
+if otherwise). The \(100(1-\alpha)\%\) confidence interval is than given by \(\mu \pm q\).</p>
+<p><code>estimate_k</code> returns the estimated concentration of the von Mises-Fisher distribution \(\kappa\) (after Sra, 2011).</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1234</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20250411</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">100</span>, mu <span class="op">=</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">50</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">v_mean</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       azimuth   plunge</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 112.3871 52.61507</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "line"</span>
-<span class="r-in"><span><span class="fu">v_var</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.254336</span>
-<span class="r-in"><span><span class="fu">v_delta</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 41.78384</span>
-<span class="r-in"><span><span class="fu">v_rdegree</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.4913279</span>
-<span class="r-in"><span><span class="fu">v_sde</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.625489</span>
-<span class="r-in"><span><span class="fu">v_confidence_angle</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8.032164</span>
+<span class="r-in"><span><span class="fu">mean</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Line object (n = 1):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   azimuth    plunge </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 115.21007  52.67744 </span>
+<span class="r-in"><span><span class="fu">var</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.224176</span>
+<span class="r-in"><span><span class="fu">delta</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39.1202</span>
+<span class="r-in"><span><span class="fu">rdegree</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.551648</span>
+<span class="r-in"><span><span class="fu">sd_error</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.01451</span>
+<span class="r-in"><span><span class="fu">confidence_angle</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.965534</span>
 <span class="r-in"><span><span class="fu">estimate_k</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.104622</span>
-<span class="r-in"><span><span class="fu"><a href="fisher_statistics.html">fisher_statistics</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $k</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.892488</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $csd</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 41.0555</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $csd_2s</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 70.96013</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $alpha</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8.301902</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.673486</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#' weights:</span></span></span>
 <span class="r-in"><span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">v_mean</span><span class="op">(</span><span class="va">x2</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      azimuth plunge</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]       0     45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "line"</span>
-<span class="r-in"><span><span class="fu">v_mean</span><span class="op">(</span><span class="va">x2</span>, w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      azimuth   plunge</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]       0 63.43495</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "line"</span>
-<span class="r-in"><span><span class="fu">v_var</span><span class="op">(</span><span class="va">x2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">mean</span><span class="op">(</span><span class="va">x2</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Line object (n = 1):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> azimuth  plunge </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       0      45 </span>
+<span class="r-in"><span><span class="fu">mean</span><span class="op">(</span><span class="va">x2</span>, w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Line object (n = 1):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  azimuth   plunge </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  0.00000 63.43495 </span>
+<span class="r-in"><span><span class="fu">var</span><span class="op">(</span><span class="va">x2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.2928932</span>
-<span class="r-in"><span><span class="fu">v_var</span><span class="op">(</span><span class="va">x2</span>, w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">var</span><span class="op">(</span><span class="va">x2</span>, w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.254644</span>
 </code></pre></div>
     </div>

@@ -9,7 +9,7 @@ components $$sigma_x$$, $$\sigma_y$$, $$\tau_{xy}$$."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9004</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -39,7 +39,7 @@ components $$sigma_x$$, $$\sigma_y$$, $$\tau_{xy}$$."></head><body>
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Principal stresses from 2D stress components</h1>
-      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/mohR.R" class="external-link"><code>R/mohR.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/mohr.R" class="external-link"><code>R/mohr.R</code></a></small>
       <div class="d-none name"><code>PR_stress.Rd</code></div>
     </div>
 
@@ -50,25 +50,24 @@ components $$sigma_x$$, $$\sigma_y$$, $$\tau_{xy}$$.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PR_stress</span><span class="op">(</span><span class="va">sx</span>, <span class="va">sy</span>, <span class="va">txy</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PR_stress</span><span class="op">(</span><span class="va">sigmaX</span>, <span class="va">sigmaY</span>, <span class="va">tauXY</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-sx">sx<a class="anchor" aria-label="anchor" href="#arg-sx"></a></dt>
-<dd><p>numeric. Normal stress acting on plane facing in X direction
-($$sigma_x$$).</p></dd>
+<dl><dt id="arg-sigmax">sigmaX<a class="anchor" aria-label="anchor" href="#arg-sigmax"></a></dt>
+<dd><p>numeric. Magnitude of normal stress acting in the horizontal direction</p></dd>
 
 
-<dt id="arg-sy">sy<a class="anchor" aria-label="anchor" href="#arg-sy"></a></dt>
-<dd><p>numeric. Normal stress acting on plane facing in Y direction
+<dt id="arg-sigmay">sigmaY<a class="anchor" aria-label="anchor" href="#arg-sigmay"></a></dt>
+<dd><p>numeric. Magnitude of normal stress acting on plane facing in Y direction
 ($$\sigma_y$$).</p></dd>
 
 
-<dt id="arg-txy">txy<a class="anchor" aria-label="anchor" href="#arg-txy"></a></dt>
-<dd><p>numeric. Shear stress acting on planes facing X and Y
+<dt id="arg-tauxy">tauXY<a class="anchor" aria-label="anchor" href="#arg-tauxy"></a></dt>
+<dd><p>numeric. Magnitude of shear stress acting on planes facing X and Y
 ($$\tau_{xy}$$).</p></dd>
 
 </dl></div>
