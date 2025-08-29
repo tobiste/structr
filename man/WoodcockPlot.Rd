@@ -7,7 +7,7 @@
 WoodcockPlot(x, labels = NULL, add = FALSE, ...)
 }
 \arguments{
-\item{x}{numeric. Can be three element vector, three column array, or an object of class \code{"line"} or \code{"plane"}}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}.}
 
 \item{labels}{character. text labels}
 

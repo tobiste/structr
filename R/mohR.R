@@ -28,25 +28,24 @@ theta <- function(phi) {
 #' Determines the principal stresses and their orientations from the stress
 #' components \deqn{sigma_x}, \deqn{\sigma_y}, \deqn{\tau_{xy}}.
 #'
-#' @param sx numeric. Normal stress acting on plane facing in X direction
-#' (\deqn{sigma_x}).
-#' @param sy numeric. Normal stress acting on plane facing in Y direction
+#' @inheritParams MohrCircle_calc
+#' @param sigmaY numeric. Magnitude of normal stress acting on plane facing in Y direction
 #' (\deqn{\sigma_y}).
-#' @param txy numeric. Shear stress acting on planes facing X and Y
+#' @param tauXY numeric. Magnitude of shear stress acting on planes facing X and Y
 #' (\deqn{\tau_{xy}}).
 #'
 #' @returns angle in degrees
 #'
 #' @references Richard J. Lisle (1999)
 #' @export
-PR_stress <- function(sx, sy, txy) {
-  mean <- (sx + sy) / 2
-  diam <- sqrt(4 * txy^2 + (sx - sy)^2)
+PR_stress <- function(sigmaX, sigmaY, tauXY) {
+  mean <- (sigmaX + sigmaY) / 2
+  diam <- sqrt(4 * tauXY^2 + (sigmaX - sigmaY)^2)
   radius <- diam / 2
   s1 <- mean + radius
   s2 <- mean - radius
 
-  theta1 <- atan(txy / (s1 - sy)) * 180 / pi
+  theta1 <- atan(tauXY / (s1 - sigmaY)) * 180 / pi
   return(
     data.frame(s1 = s1, s2 = s2, theta1 = theta1)
   )
@@ -57,12 +56,7 @@ PR_stress <- function(sx, sy, txy) {
 #'
 #' calculates the magnitudes of the normal stress and the shear stress
 #'
-#' @param theta angle of inclination (degrees)
-#' @param sigmaX normal stress acting in the horizontal direction
-#' @param sigmaZ normal stress acting in the vertical direction
-#' @param tauXZ shear stress acting on the same plane as `"sigmaX"`
-#' @param sigma1 major principal stress
-#' @param sigma3 minor principal stress
+#' @inheritParams MohrCircle_calc
 #' @returns A two-element list containing
 #' \describe{
 #' \item{\code{"sigma"}}{normal stress on an inclined plane}
@@ -107,12 +101,12 @@ sigmaTrans <- function(theta, sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA,
 #'
 #' calculates parameters of the Mohr circle
 #
-#' @param sigmaX normal stress acting in the horizontal direction
-#' @param sigmaZ normal stress acting in the vertical direction
-#' @param tauXZ shear stress acting on the same plane as `"sigmaX"`
-#' @param sigma1 major principal stress
-#' @param sigma3 minor principal stress
-#' @param theta vector of angles (degrees); defaults to 0-180 in increments of 1
+#' @param sigmaX numeric. Magnitude of normal stress acting in the horizontal direction
+#' @param sigmaZ numeric. Magnitude of normal stress acting in the vertical direction
+#' @param tauXZ numeric. Magnitude of shear stress acting on the same plane as `"sigmaX"`
+#' @param sigma1 numeric. Magnitude of major principal stress
+#' @param sigma3 numeric. Magnitude of minor principal stress
+#' @param theta numeric. Angles (degrees); defaults to 0-180 in increments of 1
 #' @note One of the following two sets of data must be entered
 #' \enumerate{
 #' \item{`"sigmaX"`, `"sigmaZ"`, `"tauXZ"`}
@@ -168,11 +162,7 @@ MohrCircle_calc <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, s
 #'
 #' plots the Mohr Circle
 #'
-#' @param sigmaX normal stress acting in the horizontal direction
-#' @param sigmaZ normal stress acting in the vertical direction
-#' @param tauXZ shear stress acting on the same plane as `"sigmaX"`
-#' @param sigma1 major principal stress
-#' @param sigma3 minor principal stress
+#' @inheritParams MohrCircle_calc
 #' @param metric logical variable: `TRUE` for metric units (kPa), and `FALSE` for English units
 #' @note One of the following two sets of data must be entered
 #' \enumerate{
@@ -218,9 +208,7 @@ MohrCircle_plot <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, s
 #'
 #' calculates the magnitudes and directions of the principal stresses S1 and S2
 #
-#' @param sigmaX normal stress acting in the horizontal direction
-#' @param sigmaZ normal stress acting in the vertical direction
-#' @param tauXZ shear stress acting on the same plane as `"sigmaX"`
+#' @inheritParams MohrCircle_calc
 #' @returns A four-element list containing
 #' \describe{
 #' \item{`"sigma1"`}{magnitude of major principal stress}
@@ -254,9 +242,7 @@ sigma13 <- function(sigmaX, sigmaZ, tauXZ) {
 #'
 #' calculates the magnitude and direction of the maximum in-plane shear stress
 #'
-#' @param sigmaX normal stress acting in the horizontal direction
-#' @param sigmaZ normal stress acting in the vertical direction
-#' @param tauXZ shear stress acting on the same plane as `"sigmaX"`
+#' @inheritParams MohrCircle_calc
 #' @returns A two-element list containing
 #' \describe{
 #' \item{`"tauMax"`}{maximum in-plane shear stress}
@@ -280,10 +266,10 @@ tauMax <- function(sigmaX, sigmaZ, tauXZ) {
 
 #' Plot Mohr Circle in ggplots
 #'
-#' @param coulomb numeric 2 element vector. Coulomb criteria (`c(70, 0.6)`)
-#' @param sliding Sliding criteria (0.81 by default)
-#' @param units units of the `s1`, `s2`, and `s3` (`"MPa"` by default).
-#' @param s1,s2,s3 numeric
+#' @param coulomb numeric 2 element vector. Coulomb criterion containing the cohesion and the coefficient of sliding: (`c(70, 0.6)`)
+#' @param sliding Sliding criteria (`0.81` by default)
+#' @param units units of `sigma1`, `sigma2`, and `sigma3` (`"MPa"` by default).
+#' @param sigma1,sigma2,sigma3 numeric. Magnitudes of major, intermediate, and minor principal stresses
 #' @param fill fill color of Mohr circle
 #' @param alpha opacity of Mohr circle
 #'
@@ -293,7 +279,10 @@ tauMax <- function(sigmaX, sigmaZ, tauXZ) {
 #' @importFrom ggplot2 aes coord_fixed geom_abline geom_hline geom_line geom_point geom_text geom_vline ggplot labs theme_classic
 #' @examples
 #' ggMohr(1025, 400, 250)
-ggMohr <- function(s1, s2, s3, coulomb = c(70, 0.6), sliding = 0.81, units = "MPa", fill = "gray", alpha = .5) {
+ggMohr <- function(sigma1, sigma2, sigma3, coulomb = c(70, 0.6), sliding = 0.81, units = "MPa", fill = "gray", alpha = .5) {
+  s1 <- sigma1
+  s2 <- sigma2
+  s3 <- sigma3
   circle13.r <- diff_stress(s1, s3) / 2
   circle13.m <- mean_stress(s1, s3)
 

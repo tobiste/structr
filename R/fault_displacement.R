@@ -148,8 +148,8 @@ fault_tensor <- function(h, s, v, dip_direction = NULL) {
     # coordinates are measured from E!!!
     # c(1, 0, 0) = E
     # c(0, 1, 0) = N
-    A[, 1] <- vrotate(A[, 1], A[, 3], -dipdir_rad) |> as.vector()
-    A[, 2] <- vrotate(A[, 2], A[, 3], pi - dipdir_rad) |> as.vector()
+    A[, 1] <- vrotate(t(A[, 1]), t(A[, 3]), -dipdir_rad) |> as.vector()
+    A[, 2] <- vrotate(t(A[, 2]), t(A[, 3]), pi - dipdir_rad) |> as.vector()
   }
   # A <- A/det(A) * A_det
 

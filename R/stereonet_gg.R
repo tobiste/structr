@@ -1,6 +1,6 @@
 #' Prepare points and lines for ggplot
 #'
-#' @param x Spherical or vector orientation data
+#' @inheritParams plot.spherical
 #' @param ... [`<data-masking>`][rlang::args_data_masking()] Name-value pairs. The name gives the name of the column in the output.
 #' The value can be:
 #' \itemize{
@@ -54,11 +54,13 @@ NULL
 #' @rdname prepare-ggplot
 #' @export
 gg <- function(x, ...) {
+  stopifnot(is.spherical(x))
   azi <- inc <- NULL
-  if (!is.spherical(x)) x <- to_spherical(x)
-  if (is.plane(x) | is.fault(x)) {
+  if (is.Plane(x) | is.Pair(x)) {
     x[, 1] <- (180 + x[, 1]) %% 360
     x[, 2] <- 90 - x[, 2]
+  } else {
+    x <- Line(x)
   }
 
   xdf <- data.frame(cbind(x))
@@ -76,40 +78,42 @@ gg <- function(x, ...) {
 ggl <- function(x, ..., d = 90, n = 1e3) {
   id <- NULL
   stopifnot(is.spherical(x))
+
   if (n %% 2 > 0) n <- n + 1
 
-  if (is.plane(x) | is.fault(x)) {
+  if (is.Plane(x) | is.Fault(x)) {
     # x[, 1] <- 180 + x[, 1]
     x[, 2] <- 90 - x[, 2]
+  } else {
+    x <- Line(x)
   }
 
   nx <- nrow(x)
   if (length(d) == 1) d <- rep(d, nx)
 
   xdf <- data.frame(cbind(x), ...) |>
-    # dplyr::bind_cols(...) |>
     dplyr::mutate(id = dplyr::row_number(), d = d)
 
-  zaxis <- c(0, 0, 1)
+  zaxis <- Vec3(0, 0, 1)
 
   res <- matrix(ncol = 3, nrow = n * nx) |>
     as.data.frame()
   colnames(res) <- c("x", "y", "id")
 
   for (i in seq_len(nx)) {
-    D <- cbind(
-      azimuth = seq(0, 360, length.out = n),
-      plunge = rep(90 - d[i], n)
+    D <- Line(
+      seq(0, 360, length.out = n),
+      rep(90 - d[i], n)
     ) |>
-      line2vec()
+      Vec3()
 
-    strike <- as.line(x[i, ])[1] - 90
+    strike <- as.Line(x[i, ])[1, 1] - 90
 
-    rotaxis <- Line(strike, 0) |> line2vec()
-    D1 <- vrotate(D, zaxis, deg2rad(strike))
-    rotangle <- vangle(zaxis, as.line(x[i, ]))
+    rotaxis <- Line(strike, 0) |> Vec3()
+    D1 <- rotate(D, zaxis, deg2rad(strike))
+    rotangle <- angle(zaxis, as.Line(x[i, ]))
 
-    if (d[i] < 90 & is.plane(x)) {
+    if (d[i] < 90 & is.Plane(x)) {
       d[i] <- 180 - d[i]
       D1 <- -D1
       x[i, 1] <- x[i, 1] + 180
@@ -124,13 +128,13 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
     k <- if (d[i] < 90) -1 else 1
 
     # lower hemisphere
-    D_rot <- vrotate(D1, rotaxis, k * rotangle) |> vec2line()
+    D_rot <- rotate(D1, rotaxis, k * rotangle) |> Line()
     D_fixed <- .fix_inc(az = D_rot[, 1], inc = D_rot[, 2])
 
-    if (d[i] != 90 & d[i] > as.line(x[i, ])[2]) {
+    if (d[i] != 90 & d[i] > as.Line(x[i, ])[1, 2]) {
       D_rotrot_fixed <- D_fixed
 
-      dangle <- vangle(Line(D_fixed[, 1], D_fixed[, 2]), as.line(x[i, ]))
+      dangle <- angle(Line(D_fixed[, 1], D_fixed[, 2]), as.Line(x[i, ]))
       cond <- dplyr::near(d[i], dangle)
 
       D_fixed[cond, 1] <- D_rotrot_fixed[cond, 1]
@@ -152,8 +156,7 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
 #'
 #' Adds a frame to the stereographic projection
 #'
-#' @param n resolution of frame
-#'
+#' @inheritParams gg
 #' @param color,fill,lwd Graphical parameters
 #' @param ... optional graphical parameters passed to [ggplot2::geom_polygon()]
 #'
@@ -187,9 +190,9 @@ ggstereo_grid <- function(d = 10, rot = 0, ...) {
 
   if (rot != 0) {
     zaxis <- Line(0, 90)
-    np <- vrotate(np, zaxis, rot)
-    ep <- vrotate(ep, zaxis, rot)
-    zp <- vrotate(zp, zaxis, rot)
+    np <- rotate(np, zaxis, rot)
+    ep <- rotate(ep, zaxis, rot)
+    zp <- rotate(zp, zaxis, rot)
   }
 
   sm_ggl <- ggl(np, d = sm)
@@ -227,7 +230,7 @@ ggstereo_grid <- function(d = 10, rot = 0, ...) {
 #'   test_data <- rbind(
 #'     rvmf(100, mu = Line(90, 45), k = 10),
 #'     rvmf(50, mu = Line(0, 0), k = 20)
-#'   ) |> as.line()
+#'   )
 #'
 #'   ggstereo(grid = TRUE) +
 #'     ggplot2::geom_point(data = gg(test_data), ggplot2::aes(x = x, y = y))
@@ -268,13 +271,14 @@ ggstereo <- function(data = NULL, mapping = aes(), earea = TRUE, centercross = T
   # coord_sf(crs = crs, default_crs = crs)
 }
 
+#' @keywords internal
 ignore_unused_imports <- function() {
   mapproj::mapproject
 }
 
 
 
-
+#' @keywords internal
 .full_hem <- function(azi, inc) {
   inc <- inc + 90
 
@@ -292,7 +296,7 @@ ignore_unused_imports <- function() {
 
 #' Stereonet contouring using ggplot
 #'
-#' @param data data.frame containing the orientation
+#' @inheritParams ggstereo
 #' @param ngrid integer. Resolution of density calculation.
 #' @param hw numeric. Kernel bandwidth in degree.
 #' @param optimal_bw character. Calculates an optimal kernel bandwidth
@@ -317,7 +321,7 @@ ignore_unused_imports <- function() {
 #'   test_data <- rbind(
 #'     rvmf(100, mu = Line(90, 45), k = 10),
 #'     rvmf(50, mu = Line(0, 0), k = 20)
-#'   ) |> as.line()
+#'   )
 #'
 #'   ggstereo() +
 #'     geom_contourf_stereo(gg(test_data)) +

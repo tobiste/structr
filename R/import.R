@@ -26,14 +26,14 @@
 #' @name strabo
 #' @examples
 #' \dontrun{
-#' dt <- read_strabo_xls("C:/Users/tstephan/Documents/Lakehead/Field work/StraboSpot_Output_11_01_2022_TS.xlsx")
-#' stereoplot()
-#' stereo_greatcircle(dt$planar, col = "lightgrey")
-#' stereo_point(dt$linear)
+#' # import from excel file
+#' read_strabo_xls("path/to/my/file.xlsx")
+#' 
+#' # import from text file
+#' read_strabo_mobile("path/to/my/file.txt")
 #'
-#' read_strabo_mobile("C:/Users/tstephan/Documents/Lakehead/Field work/StraboSpot_Search_06_25_2023.txt")
-#'
-#' read_strabo_JSON("G:/My Drive/Moss_Lake/data.json")
+#' # import from .json file
+#' read_strabo_JSON("path/to/my/file.json")
 #' }
 NULL
 
@@ -87,8 +87,8 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
   res[, Linear.Orientation.Unix.Timestamp := NULL]
 
   # Construct planes and lines
-  planes <- as.plane(cbind(res$Planar.Orientation.Dipdirection, res$Planar.Orientation.Dip))
-  lines <- as.line(cbind(res$Linear.Orientation.Trend, res$Linear.Orientation.Plunge))
+  planes <- Plane(res$Planar.Orientation.Dipdirection, res$Planar.Orientation.Dip)
+  lines <- Line(res$Linear.Orientation.Trend, res$Linear.Orientation.Plunge)
 
   # Convert to sf if requested
   if (sf) {
@@ -119,8 +119,8 @@ read_strabo_mobile <- function(file, sf = TRUE) {
   planes0[, Dipdir := (`Trd/Strk` + 90) %% 360]
 
   # Construct line and plane objects from orientation data
-  lines <- as.line(cbind(lines0$`Trd/Strk`, lines0$`Plg/Dip`))
-  planes <- as.plane(cbind(planes0$Dipdir, planes0$`Plg/Dip`))
+  lines <- Line(lines0$`Trd/Strk`, lines0$`Plg/Dip`)
+  planes <- Plane(planes0$Dipdir, planes0$`Plg/Dip`)
 
   # Extract metadata tables, dropping columns as needed
   lines.meta <- lines0[, !c("No.", "Trd/Strk", "Plg/Dip"), with = FALSE]
@@ -633,8 +633,8 @@ read_strabo_JSON <- function(file, sf = TRUE) {
 
   if (nrow(orient_dt) > 0) {
     # if (sf) orient_df <- sf::st_as_sf(orient_df)
-    planes <- as.plane(cbind(orient_dt$strike + 90, orient_dt$dip))
-    lines <- as.line(cbind(orient_dt$associated_trend, orient_dt$associated_plunge))
+    planes <- Plane(orient_dt$strike + 90, orient_dt$dip)
+    lines <- Line(orient_dt$associated_trend, orient_dt$associated_plunge)
   } else {
     planes <- NULL
     lines <- NULL

@@ -25,7 +25,7 @@ library("structr")
 A fault is given by the orientation of its plane (dip direction and dip angle), the orientation of the slip (e.g. measured from striae, given in azimuth and plunge angles), and the sense of displacement:
 
 ```{r faults_import}
-my_fault <- Fault(dip_direction = 120, dip = 50, azimuth = 60, plunge = 110, sense = -1)
+my_fault <- Fault(120, 50, 60, 110, sense = -1)
 ```
  > Sense of fault displacement is 1 or -1 for normal or thrust offset, respectively.
 
@@ -44,10 +44,17 @@ Often measured orientation angles can be (slightly) imprecise and subjected to s
 
 ```{r faults_correct}
 p <- Pair(120, 60, 110, 58)
+```
+
+```{r faults_correct2}
+misfit_pair(p)
+```
+
+```{r faults_correct3}
 correct_pair(p)
 ```
 
-> A `pair` object is a container of associated plane and line measurements. Basically like a fault wihtout the sense of displacement.
+> A `"Pair"` object is a container of associated plane and line measurements. Basically like a fault wihtout the sense of displacement.
 
 
 
@@ -55,11 +62,14 @@ correct_pair(p)
 
 Calculates PT-axes, kinematic plane (M), and dihedra separation plane (d):
 
-```{r faults_stress}
+```{r faults_stress1}
 my_fault2 <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
-fault_analysis(my_fault2)
+print(my_fault2)
 ```
 
+```{r faults_stress2}
+fault_analysis(my_fault2)
+```
 
 # Fault offsets {#sec.offset}
 
@@ -445,22 +455,26 @@ Using the second derivative of $\sigma_n$ with respect to $\alpha$ we can determ
 
 ### Code
 
-```{r lund1}
+Define the orientation of the principle stress axes:
+```{r lund0}
 S1 <- Line(250.89, 70.07)
 S3 <- Line(103.01, 17.07)
-
-# get S2 - which is perpendicular to S1 and S3, hence the cross-product of the two vectors:
-S2 <- vcross(S3, S1)
-
-# get the azimuth of SHmax for a stress ration R = 1:
-SH(S1, S2, S3, R = 1) # in degrees:
 ```
+
+To get S2 - which is perpendicular to S1 and S3, we calculate the cross-product of the two vectors:
+```{r lund01}
+S2 <- crossprod(S3, S1)
+```
+
+The azimuth of SHmax for a given stress ratio `R = 1`:
+```{r lund1}
+SH(S1, S2, S3, R = 1) # in degrees
+```
+
 For a several stress ratios:
 ```{r lund2}
-R <- seq(0, 1, .05)
-cbind(R, SH = sapply(R, function(x) {
-  SH(S1, S2, S3, R = x)
-}))
+R <- seq(0, 1, .1)
+cbind(R, SH = SH(S1, S2, S3, R = R))
 ```
 
 

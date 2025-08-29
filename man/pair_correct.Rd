@@ -11,7 +11,7 @@ misfit_pair(x)
 correct_pair(x)
 }
 \arguments{
-\item{x}{Pair or Fault}
+\item{x}{object of class \code{"Pair"} or \code{"Fault"}}
 }
 \value{
 \code{misfit_pair} returns a list with the orthogonalized plane and line measurements

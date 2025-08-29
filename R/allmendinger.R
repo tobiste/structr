@@ -13,18 +13,18 @@
 #' #'
 #' StCoordLine <- function(trd, plg, sttype = c("earea", "eangle")) {
 #'   sttype <- match.arg(sttype)
-#' 
+#'
 #'   # Take care of negative plunges
 #'   if (plg < 0) {
 #'     trd <- ZeroTwoPi(trd + pi)
 #'     plg <- -plg
 #'   }
-#' 
+#'
 #'   # Some constants
 #'   piS4 <- pi / 4
 #'   s2 <- sqrt(2)
 #'   plgS2 <- plg / 2
-#' 
+#'
 #'   if (sttype == "eangle") {
 #'     # Equal angle stereonet: From Equation 1.5 above
 #'     # Also see Pollard and Fletcher (2005), eq.2.72
@@ -38,8 +38,8 @@
 #'   }
 #'   cbind(xp, yp)
 #' }
-#' 
-#' 
+#'
+#'
 #' #' constrains azimuth to lie between 0 and 2*pi radians
 #' #'
 #' #' @param a azimuth in radians
@@ -57,8 +57,8 @@
 #'   }
 #'   b
 #' }
-#' 
-#' 
+#'
+#'
 #' #' converts from spherical to cartesian coordinates
 #' #'
 #' #' @param trd,plg Angles in radians
@@ -84,8 +84,8 @@
 #'   }
 #'   cbind(cn, ce, cd)
 #' }
-#' 
-#' 
+#'
+#'
 #' #' Converts from cartesian to spherical coordinates
 #' #'
 #' #' @param cn,ce,cd north (cn), east (ce), and down (cd) direction cosines
@@ -96,7 +96,7 @@
 #' CartToSph <- function(cn, ce, cd) {
 #'   # Plunge (see Table 2.1)
 #'   plg <- asin(cd)
-#' 
+#'
 #'   # Trend
 #'   # If north direction cosine is zero, trend is east or west
 #'   # Choose which one by the sign of the east direction cosine
@@ -118,8 +118,8 @@
 #'   }
 #'   cbind(plg, trd)
 #' }
-#' 
-#' 
+#'
+#'
 #' #' #' calculates the mean vector for a given series of lines
 #' #' #'
 #' #' #' @param t,p numeric vectors of trends and plunges (in radians)
@@ -199,9 +199,9 @@
 #' #'   }
 #' #'   cbind(trd, plg, Rave, conc, d99, d95)
 #' #' }
-#' 
-#' 
-#' 
+#'
+#'
+#'
 #' #' Angles between vectors
 #' #'
 #' #' Angles calculates the angles between two lines, between two planes,
@@ -223,7 +223,7 @@
 #' #'
 #' Angles <- function(trd1, plg1, trd2, plg2, ans0 = c("a", "l", "i", "p")) {
 #'   ans0 <- match.arg(ans0)
-#' 
+#'
 #'   # If planes have been entered
 #'   if (ans0 == "i" || ans0 == "p") {
 #'     k <- 1
@@ -231,25 +231,25 @@
 #'     # Else if lines have been entered
 #'     k <- 0
 #'   }
-#' 
+#'
 #'   # Calculate the direction cosines of the lines or poles to planes
 #'   c1 <- SphToCart(trd1, plg1, k)
 #'   cn1 <- c1[, 1]
 #'   ce1 <- c1[, 2]
 #'   cd1 <- c1[, 3]
-#' 
+#'
 #'   c2 <- SphToCart(trd2, plg2, k)
 #'   cn2 <- c2[, 1]
 #'   ce2 <- c2[, 2]
 #'   cd2 <- c2[, 3]
-#' 
+#'
 #'   # If angle between 2 lines or between the poles to 2 planes
 #'   if (ans0 == "l" || ans0 == "p") {
 #'     # Use dot product = Sum of the products of the direction cosines
 #'     ans1 <- acos(cn1 * cn2 + ce1 * ce2 + cd1 * cd2)
 #'     ans2 <- pi - ans1
 #'   }
-#' 
+#'
 #'   # If intersection of two planes or pole to a plane containing two apparent dips
 #'   if (ans0 == "a" || ans0 == "i") {
 #'     # If the 2 planes or apparent dips are parallel, return an error
@@ -260,22 +260,22 @@
 #'       cn <- ce1 * cd2 - cd1 * ce2
 #'       ce <- cd1 * cn2 - cn1 * cd2
 #'       cd <- cn1 * ce2 - ce1 * cn2
-#' 
+#'
 #'       # Make sure the vector points down into the lower hemisphere
 #'       if (cd < 0) {
 #'         cn <- -cn
 #'         ce <- -ce
 #'         cd <- -cd
 #'       }
-#' 
+#'
 #'       # Convert vector to unit vector by dividing it by its length
 #'       r <- sqrt(cn * cn + ce * ce + cd * cd)
-#' 
+#'
 #'       # Calculate line of intersection or pole to plane
 #'       vec <- CartToSph(cn / r, ce / r, cd / r)
 #'       trd <- vec[, 1]
 #'       plg <- vec[, 2]
-#' 
+#'
 #'       # If intersection of two planes
 #'       if (ans0 == "i") {
 #'         ans1 <- trd
@@ -290,8 +290,8 @@
 #'   }
 #'   cbind(ans1, ans2)
 #' }
-#' 
-#' 
+#'
+#'
 #' #' returns the pole to a plane or the plane which correspond to a pole
 #' #'
 #' #' @param trd,plg trend and plunge of a ploe, or strike and dip of a plane
@@ -305,7 +305,7 @@
 #' Pole <- function(trd, plg, k) {
 #'   # Some constants
 #'   east <- pi / 2
-#' 
+#'
 #'   # Calculate plane given its pole
 #'   if (k == 0) {
 #'     if (plg >= 0) {
@@ -315,7 +315,7 @@
 #'       plg1 <- east + plg
 #'       dipaz <- trd
 #'     }
-#' 
+#'
 #'     # Calculate trd1 and make sure it is between 0 and 2*pi
 #'     trd1 <- ZeroTwoPi(dipaz - east)
 #'   } else if (k == 1) {
@@ -330,9 +330,9 @@
 #'   }
 #'   cbind(trd1, plg1)
 #' }
-#' 
-#' 
-#' 
+#'
+#'
+#'
 #' #' Constructs the down plunge projection of a bed
 #' #'
 #' #' @param bedseg The array `bedseg` is a two-dimensional array of size `npoints` x 3
@@ -344,11 +344,11 @@
 #' DownPlunge <- function(bedseg, trd, plg) {
 #'   # Number of points in bed
 #'   nvtex <- length(bedseg[, 1])
-#' 
+#'
 #'   # Allocate some arrays
 #'   a <- matrix(0, nrow = 3, ncol = 3)
 #'   dpbedseg <- matrix(0, nrow = nvtex, ncol = 3)
-#' 
+#'
 #'   # Calculate the transformation matrix a(i,j). The convention is that
 #'   # the first index refers to the new axis and the second to the old axis.
 #'   # The new coordinate system is with X3<U+2019> parallel to the fold axis, X1'
@@ -364,13 +364,13 @@
 #'   a[3, 1] <- sin(trd) * cos(plg)
 #'   a[3, 2] <- cos(trd) * cos(plg)
 #'   a[3, 3] <- -sin(plg)
-#' 
+#'
 #'   # The east, north, up coordinates of each point to be rotated already define
 #'   # the coordinates of vectors. Thus we don't need to convert them to
 #'   # direction cosines (and don't want to either because they are not unit vectors)
 #'   # The following nested do-loops perform the coordinate transformation on the
 #'   # bed. The details of this algorithm are described in Chapter 4
-#' 
+#'
 #'   for (nv in 1:nvtex) {
 #'     for (i in 1:3) {
 #'       dpbedseg[nv, i] <- 0
@@ -381,8 +381,8 @@
 #'   }
 #'   dpbedseg
 #' }
-#' 
-#' 
+#'
+#'
 #' #' rotates a line by performing a coordinate transformation on
 #' #'
 #' #' @param raz  trend of rotation axis
@@ -403,14 +403,14 @@
 #'   pole <- rep(0, 3) # Direction cosines of rotation axis
 #'   plotr <- rep(0, 3) # Direction cosines of rotated vector
 #'   temp <- rep(0, 3) # Direction cosines of unrotated vector
-#' 
+#'
 #'   # Convert rotation axis to direction cosines. Note that the convention here
 #'   # is X1 = North, X2 = East, X3 = Down
 #'   p <- SphToCart(raz, rdip, 0)
 #'   pole[1] <- p[, 1]
 #'   pole[2] <- p[, 2]
 #'   pole[3] <- p[, 3]
-#' 
+#'
 #'   # Calculate the transformation matrix
 #'   x <- 1 - cos(rot)
 #'   sinRot <- sin(rot) # Just reduces the number of calculations
@@ -424,13 +424,13 @@
 #'   a[3, 1] <- -pole[2] * sinRot + pole[3] * pole[1] * x
 #'   a[3, 2] <- pole[1] * sinRot + pole[3] * pole[2] * x
 #'   a[3, 3] <- cosRot + pole[3] * pole[3] * x
-#' 
+#'
 #'   # Convert trend and plunge of vector to be rotated into direction cosines
 #'   t <- SphToCart(trd, plg, 0)
 #'   temp[1] <- t[, 1]
 #'   temp[2] <- t[, 3]
 #'   temp[3] <- t[, 3]
-#' 
+#'
 #'   # The following nested loops perform the coordinate transformation
 #'   for (i in 1:3) {
 #'     plotr[i] <- 0
@@ -438,21 +438,21 @@
 #'       plotr[i] <- a[i, j] * temp[j] + plotr[i]
 #'     }
 #'   }
-#' 
+#'
 #'   # Convert to lower hemisphere projection if data are axes (ans0 = 'a')
 #'   if (plotr[3] < 0 && axis) {
 #'     plotr[1] <- -plotr[1]
 #'     plotr[2] <- -plotr[2]
 #'     plotr[3] <- -plotr[3]
 #'   }
-#' 
+#'
 #'   # Convert from direction cosines back to trend and plunge
 #'   r <- CartToSph(plotr[1], plotr[2], plotr[3])
 #'   rtrd <- r[, 1]
 #'   rplg <- r[, 2]
 #'   cbind(rtrd, rplg)
 #' }
-#' 
+#'
 #' #' computes the great circle path of a plane in an equal angle or equal area
 #' #' stereonet of unit radius
 #' #'
@@ -471,42 +471,42 @@
 #'   p <- Pole(strike, dip, 1)
 #'   trda <- p[, 1]
 #'   plga <- p[, 2]
-#' 
+#'
 #'   # Now pick a line at the intersection of the great circle with the primitive
 #'   # of the stereonet
 #'   trd <- strike
 #'   plg <- 0
-#' 
+#'
 #'   # To make the great circle, rotate the line 180 degrees in increments
 #'   # of 1 degree
 #'   rot <- seq(0, 180, 1) * pi / 180
-#' 
+#'
 #'   path <- matrix(0, nrow = length(rot), ncol = 2)
-#' 
+#'
 #'   for (i in 1:length(rot)) {
 #'     # Avoid joining ends of path
 #'     if (rot[i] == pi) {
 #'       rot[i] <- rot[i] * 0.9999
 #'     }
-#' 
+#'
 #'     # Rotate line
 #'     r <- Rotate(trda, plga, rot[i], trd, plg)
 #'     rtrd <- r[, 1]
 #'     rplg <- r[, 2]
-#' 
+#'
 #'     # Calculate stereonet coordinates of rotated line and add to great
 #'     # circle path
-#' 
+#'
 #'     t <- StCoordLine(rtrd, rplg, sttype)
-#' 
+#'
 #'     path[i, 1] <- t[, 1]
 #'     path[i, 2] <- t[, 2]
 #'     path
 #'   }
 #' }
-#' 
-#' 
-#' 
+#'
+#'
+#'
 #' #' computes the paths of a small circle defined by its axis and cone angle,
 #' #' for an equal angle or equal area stereonet of unit radius
 #' #'
@@ -533,31 +533,31 @@
 #'     trd <- ZeroTwoPi(trda + angle)
 #'     plg <- 0
 #'   }
-#' 
+#'
 #'   # To make the small circle, rotate the starting line 360 degrees in
 #'   # increments of 1 degree
 #'   rot <- seq(0, 360, 1) * pi / 180
 #'   path1 <- path2 <- matrix(0, nrow = length(rot), ncol = 3)
 #'   np1 <- np2 <- 0
-#' 
+#'
 #'   for (i in 1:length(rot)) {
 #'     # Rotate line: Notice that here the line is considered as a vector
 #'     r <- Rotate(trda, plga, rot[i], trd, plg, FALSE)
 #'     rtrd <- r[, 1]
 #'     rplg <- r[, 2]
-#' 
+#'
 #'     # Add to the right path
 #'     # If plunge of rotated line is positive add to first path
 #'     if (rplg >= 0) {
 #'       np1 <- np1 + 1
-#' 
+#'
 #'       # Calculate stereonet coordinates and add to path
 #'       t1 <- StCoordLine(rtrd, rplg, sttype)
 #'       path1[np1, 1] <- t1[, 1]
 #'       path1[np1, 2] <- t1[, 2]
 #'     } else {
 #'       # If plunge of rotated line is negative add to second path
-#' 
+#'
 #'       np2 <- np2 + 1
 #'       # Calculate stereonet coordinates and add to path
 #'       t2 <- StCoordLine(rtrd, rplg, sttype)
@@ -567,9 +567,9 @@
 #'   }
 #'   cbind(path1, path2, np1, np2)
 #' }
-#' 
-#' 
-#' 
+#'
+#'
+#'
 #' #' #' multiplies two conformable matrices
 #' #' #'
 #' #' #' @param a,b matrices
@@ -597,7 +597,7 @@
 #' #'   }
 #' #' C
 #' #' }
-#' 
+#'
 #' #' calculates all of the cofactor elements for a 3 x 3 matrix
 #' #'
 #' #' @param a matrix
@@ -605,12 +605,12 @@
 #'   # Number of rows and columns in a
 #'   n <- dim(a)[1]
 #'   m <- dim(a)[2]
-#' 
+#'
 #'   # If matrix is 3 x 3
 #'   if (n == 3 & m == 3) {
 #'     # Initialize cofactor
 #'     cofac <- matrix(0, nrow = 3, ncol = 3)
-#' 
+#'
 #'     # Calculate cofactor. When i+j is odd, the cofactor is negative
 #'     cofac[1, 1] <- a[2, 2] * a[3, 3] - a[2, 3] * a[3, 2]
 #'     cofac[1, 2] <- -(a[2, 1] * a[3, 3] - a[2, 3] * a[3, 1])
@@ -626,10 +626,10 @@
 #'   }
 #'   cofac
 #' }
-#' 
-#' 
-#' 
-#' 
+#'
+#'
+#'
+#'
 #' #' Cauchy
 #' #'
 #' #' Given the stress tensor in a X1,X2,X3 coordinate system of any orientation,
@@ -649,15 +649,15 @@
 #' Cauchy <- function(stress, tX1, pX1, tX3, strike, dip) {
 #'   # Compute direction cosines of X1,X2,X3
 #'   dC <- DirCosAxes(tX1, pX1, tX3)
-#' 
+#'
 #'   # Calculate direction cosines of pole to plane
 #'   p <- matrix(nrow = 1, ncol = 3)
-#' 
+#'
 #'   cart <- SphToCart(strike, dip, 1)
 #'   p[1] <- cart[, 1]
 #'   p[2] <- cart[, 2]
 #'   p[3] <- cart[, 3]
-#' 
+#'
 #'   # Transform pole to plane to stress coordinates X1,X2,X3
 #'   # The transformation matrix is just the direction cosines of X1,X2,X3
 #'   pT <- matrix(nrow = 1, ncol = 3)
@@ -666,14 +666,14 @@
 #'       pT[i] <- dC[i, j] * p[j] + pT[i]
 #'     }
 #'   }
-#' 
+#'
 #'   # Convert transformed pole to unit vector
 #'   r <- sqrt(pT[1] * pT[1] + pT[2] * pT[2] + pT[3] * pT[3])
 #'   # for(i in 1:3){
 #'   #   pT[i] = pT[i]/r
 #'   # }
 #'   pT <- pT / r
-#' 
+#'
 #'   # Calculate the tractions in stress coordinates X1,X2,X3
 #'   t <- matrix(nrow = 1, ncol = 3) # Initialize t
 #'   # Compute tractions using Cauchy's law (Eq. 6.7b)
@@ -682,11 +682,11 @@
 #'       t[i] <- stress[i, j] * pT[j] + t[i]
 #'     }
 #'   }
-#' 
+#'
 #'   list(t = t, pT = pT)
 #' }
-#' 
-#' 
+#'
+#'
 #' #' direction cosines
 #' #'
 #' #' calculates the direction cosines of a right handed, orthogonal X1,X2,X3
@@ -702,16 +702,16 @@
 #'   # Some constants
 #'   east <- pi / 2
 #'   west <- 1.5 * pi
-#' 
+#'
 #'   # Initialize matrix of direction cosines
 #'   dC <- matrix(nrow = 3, ncol = 3)
-#' 
+#'
 #'   # Direction cosines of X1
 #'   cart <- SphToCart(tX1, pX1, 0)
 #'   dC[1, 1] <- cart[, 1]
 #'   dC[1, 2] <- cart[, 2]
 #'   dC[1, 3] <- cart[, 3]
-#' 
+#'
 #'   # Calculate plunge of axis 3
 #'   # If axis 1 is horizontal
 #'   if (pX1 == 0) {
@@ -724,25 +724,25 @@
 #'     # From Equation 2.14 and with theta equal to 90 degrees
 #'     pX3 <- atan(-(dC[1, 1] * cos(tX3) + dC[1, 2] * sin(tX3)) / dC[1, 3])
 #'   }
-#' 
+#'
 #'   # Direction cosines of X3
 #'   crt <- SphToCart(tX3, pX3, 0)
 #'   dC[3, 1] <- cart[, 1]
 #'   dC[3, 2] <- cart[, 2]
 #'   dC[3, 3] <- cart[, 3]
-#' 
+#'
 #'   # Compute direction cosines of X2 by the cross product of X3 and X1
 #'   dC[2, 1] <- dC[3, 2] * dC[1, 3] - dC[3, 3] * dC[1, 2]
 #'   dC[2, 2] <- dC[3, 3] * dC[1, 1] - dC[3, 1] * dC[1, 3]
 #'   dC[2, 3] <- dC[3, 1] * dC[1, 2] - dC[3, 2] * dC[1, 1]
-#' 
+#'
 #'   # Convert X2 to a unit vector
 #'   r <- sqrt(dC[2, 1] * dC[2, 1] + dC[2, 2] * dC[2, 2] + dC[2, 3] * dC[2, 3])
-#' 
+#'
 #'   # for(i in 1:3){
 #'   #   dC[2,i] = dC[2,i]/r
 #'   # }
 #'   dc[2, ] <- dC[2, ] / r
-#' 
+#'
 #'   dC
 #' }
