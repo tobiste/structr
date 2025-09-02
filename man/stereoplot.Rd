@@ -14,11 +14,15 @@ stereoplot(
   col = grDevices::gray(0.9),
   lwd = 1,
   lty = 1,
-  border = "black",
+  border.col = "black",
   title = NULL,
   sub = NULL,
+  origin.text = "N",
+  labels = FALSE,
+  ladj = 0.04,
   centercross = TRUE,
-  ticks = NULL
+  ticks = NULL,
+  radius = 1
 )
 }
 \arguments{
@@ -35,18 +39,29 @@ projection (the default), or \code{FALSE} for meridional stereographic projectio
 
 \item{lty}{linetype of guide lines}
 
-\item{border}{color of outer rim of stereo plot}
+\item{border.col}{color of primitive circle (frame), center-cross and ticks of the stereo plot}
 
-\item{title, sub}{character. Title and subtitle of the plot}
+\item{title, sub}{character. Title and subtitle of plot}
+
+\item{origin.text}{character. Text at origin of stereoplot.}
+
+\item{labels}{this can either be a logical value specifying whether (numerical)
+annotations are to be made next to the tickmarks, or a character or expression
+vector of labels to be placed next to the tickpoints.}
+
+\item{ladj}{adjustment for all labels away from origin of stereoplot circle.
+This essentially an amount that is added to \code{radius} and the length of the ticks.}
 
 \item{centercross}{logical. Whether a center cross should be added (\code{TRUE} by default)}
 
 \item{ticks}{integer. Angle between ticks. if \code{NULL} (the default), no ticks are drawn.}
+
+\item{radius}{numeric. Radius of circle}
 }
 \description{
 Initialize the plot for equal-area stereographic projections (Wulff) or Lambert
 Equal-Area projections (Schmidt).
 }
 \examples{
-stereoplot(ticks = 45, title = "title", sub = "subtitle")
+stereoplot(ticks = 30, title = "title", sub = "subtitle", border.col = "purple", labels = TRUE)
 }

@@ -342,13 +342,25 @@ stereo_greatcircle <- function(x, ...) {
 }
 
 
-#' Circle plot
-#' @noRd
-stereoplot_frame <- function(col = "black", border = "black", ndiv = 36) {
+#' Stereoplot frame
+#' 
+#' Adds a (primitive) circle with given radius to an existing plot
+#' 
+#' @param ndiv integer. Resolution of circle's line
+#' @inheritParams stereoplot
+#' @param ... optional arguments passed to [graphics::lines()]
+#'
+#' @export
+#' @seealso [stereo_plot()], [stereoplot_ticks()], [stereoplot_guides()]
+#' 
+#' @examples
+#' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
+#' stereoplot_frame(col = 'red', lwd = 3)
+stereoplot_frame <- function(ndiv = 144, radius = 1, ...) {
   phi <- seq(0, 2 * pi, by = 2 * pi / ndiv)
-  x <- cos(phi)
-  y <- sin(phi)
-  graphics::lines(x, y, col = border)
+  x <- cos(phi) * radius
+  y <- sin(phi) * radius
+  graphics::lines(x, y, ...)
 }
 
 
@@ -364,48 +376,90 @@ stereoplot_frame <- function(col = "black", border = "black", ndiv = 36) {
 #' @param col color of guide lines
 #' @param lwd linewidth of guide lines
 #' @param lty linetype of guide lines
-#' @param border color of outer rim of stereo plot
-#' @param title,sub character. Title and subtitle of the plot
+#' @param border.col color of primitive circle (frame), center-cross and ticks of the stereo plot
 #' @param centercross logical. Whether a center cross should be added (`TRUE` by default)
 #' @param ticks integer. Angle between ticks. if `NULL` (the default), no ticks are drawn.
+#' @param title,sub character. Title and subtitle of plot
+#' @param origin.text character. Text at origin of stereoplot.
+#' @param labels this can either be a logical value specifying whether (numerical) 
+#' annotations are to be made next to the tickmarks, or a character or expression 
+#' vector of labels to be placed next to the tickpoints.
+#' @param ladj adjustment for all labels away from origin of stereoplot circle. 
+#' This essentially an amount that is added to `radius` and the length of the ticks.
+#' @param radius numeric. Radius of circle
+#'
 #' @source Adapted from the `RFOC` package
 #' @importFrom graphics points
 #' @export
 #' @examples
-#' stereoplot(ticks = 45, title = "title", sub = "subtitle")
+#' stereoplot(ticks = 30, title = "title", sub = "subtitle", border.col = "purple", labels = TRUE)
 stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = grDevices::gray(0.9),
-                       lwd = 1, lty = 1, border = "black", title = NULL,
-                       sub = NULL, centercross = TRUE, ticks = NULL) {
-  plot(c(-1, 1), c(-1, 1),
+                       lwd = 1, lty = 1, border.col = "black", title = NULL,
+                       sub = NULL, origin.text = "N", labels = FALSE, ladj = 0.04, centercross = TRUE, ticks = NULL, radius = 1) {
+  plot(radius * c(-1, 1), radius * c(-1, 1),
     type = "n", xlab = NULL, ylab = NULL, asp = 1,
     axes = FALSE, ann = FALSE
   )
 
   graphics::title(main = title, sub = sub)
-  graphics::mtext("N")
+  graphics::mtext(origin.text, col = border.col)
 
-  if (guides) stereo_guides(d = d, earea = earea, col = col, lwd = lwd, lty = lty)
+  if (guides) stereoplot_guides(d = d, earea = earea, col = col, lwd = lwd, lty = lty, radius = radius)
 
-  if (!is.null(ticks)) stereoplot_ticks(angle = ticks, col = border)
+  if (!is.null(ticks)) stereoplot_ticks(angle = ticks, col = border.col, radius = radius, labels = labels, ladj = ladj)
 
-  if (centercross) points(0, 0, pch = 3, col = border)
+  if (centercross) points(0, 0, pch = 3, col = border.col)
 
-  stereoplot_frame(col = col, border = border, ndiv = 100)
+  stereoplot_frame(col = border.col, ndiv = 100, radius = radius)
 }
 
+#' Stereoplot tickmarks
+#' 
+#' Adds stereoplot rickmarks to an existing plot
+#' 
+#' @inheritParams stereoplot
+#' @param length numeric. Length of ticks as fraction of `radius`
+#' @param angle numeric. Division angle in degrees
+#' @param rotation numeric. Rotation (positive for counter-clockwise) of tickmarks and labels
+#' @param ... optional arguments passed to [graphics::segments()] and [graphics::text()]
+#' 
 #' @importFrom graphics segments
-stereoplot_ticks <- function(radius = 1, length = 0.02, angle = 10, ...) {
+#' @export
+#' @seealso [stereo_plot()], [stereoplot_frame()], [stereoplot_guides()]
+#' @examples
+#' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
+#' stereoplot_frame()
+#' stereoplot_ticks(length = 0.05, angle = 45, col = 'blue', lwd = 2, labels = TRUE)
+stereoplot_ticks <- function(length = 0.02, angle = 10, labels = FALSE, ladj = 2 * length, radius = 1, rotation = 0, ...) {
   DR <- radius + length
-  ang <- pi * seq(0, 360, by = angle) / 180
-  segments(
+  ang_deg <- (seq(0, 360, by = angle) + rotation) %% 360
+  ang <- pi * ang_deg / 180
+  graphics::segments(
     radius * cos(ang), radius * sin(ang), DR * cos(ang), DR * sin(ang),
     ...
   )
+  
+  do.label <- is.logical(labels)
+  if(do.label & isTRUE(labels)){
+    labels <- seq(0, 360, by = angle)
+    labels[length(labels)] <- NA
+    labels <- as.character((-labels+90) %% 360)
+    } else labels <- NULL
+  if(!is.null(labels)){
+    stopifnot(length(labels)==length(ang))
+    DR.labs <- DR + ladj
+    graphics::text(
+      DR.labs * cos(ang), DR.labs * sin(ang), labels = labels, ...
+    )
+  }
 }
 
-stereo_guides_schmidt <- function(d = 10, n = 512, ...) {
-  lam_seq <- seq(0, 180, length.out = n) * pi / 180
-  lam0 <- pi / 2
+
+
+stereo_guides_schmidt <- function(d = 10, n = 512, r = 1, rotation = 0, ...) {
+  rot <- deg2rad(rotation)
+  lam_seq <- deg2rad(seq(0, 180, length.out = n))
+  lam0 <- pi / 2 
   R <- sqrt(2) / 2
 
   # Precompute sin and cos of lam - lam0
@@ -413,7 +467,7 @@ stereo_guides_schmidt <- function(d = 10, n = 512, ...) {
   sin_lam <- sin(lam_seq - lam0)
 
   # Latitude lines (constant phi)
-  phi_vals <- seq(-90 + d, 90 - d, 10) * pi / 180
+  phi_vals <- deg2rad(seq(-90 + d, 90 - d, 10))
   cos_phi <- cos(phi_vals)
   sin_phi <- sin(phi_vals)
 
@@ -426,33 +480,36 @@ stereo_guides_schmidt <- function(d = 10, n = 512, ...) {
   }
 
   # Longitude lines (constant lambda)
-  phi_seq <- seq(-90, 90, 5) |> deg2rad()
+  phi_seq <- deg2rad(seq(-90, 90, 5))
   cos_phi_seq <- cos(phi_seq)
   sin_phi_seq <- sin(phi_seq)
 
-  lam_vals <- seq(d, 180 - d, d) |> deg2rad()
-  cos_lam_vals <- cos(lam_vals - lam0)
-  sin_lam_vals <- sin(lam_vals - lam0)
+  lam_vals <- deg2rad(seq(d, 180 - d, d) )
+  
+  lam_vals_rot <- (lam_vals - lam0)
+  cos_lam_vals <- cos(lam_vals_rot)
+  sin_lam_vals <- sin(lam_vals_rot)
 
   for (j in seq_along(lam_vals)) {
     lam <- lam_vals[j]
     kp <- sqrt(2 / (1 + cos_phi_seq * cos_lam_vals[j]))
-    x <- R * kp * cos_phi_seq * sin_lam_vals[j]
-    y <- R * kp * sin_phi_seq
+    x <- R * kp * cos_phi_seq * sin_lam_vals[j] * r
+    y <- R * kp * sin_phi_seq * r
     graphics::lines(x, y, ...)
   }
 }
 
-stereo_guides_wulff <- function(d = 9, r = 1, n = 512, ...) {
+stereo_guides_wulff <- function(d = 9, n = 512, r = 1, rotation = 0, ...) {
+  rot <- deg2rad(rotation)
   if (n %% 2 != 0) n <- n + 1
-  beta0 <- seq(0, 360, length.out = n) |> deg2rad()
+  beta0 <- deg2rad(seq(0, 360, length.out = n))
   beta <- c(beta0[(n / 2):n], beta0[1:(n / 2 - 1)])
 
   cos_beta <- cos(beta)
   sin_beta <- sin(beta)
 
   # great circles
-  phi <- seq(0, 180, by = d) |> deg2rad()
+  phi <- deg2rad(seq(0, 180, by = d))
   rcos_phi <- r / cos(phi)
   rtan_phi <- r * tan(phi)
 
@@ -466,9 +523,10 @@ stereo_guides_wulff <- function(d = 9, r = 1, n = 512, ...) {
 
 
   # small circles
-  gamma <- seq(0, 180, by = d) |> deg2rad()
+  gamma <- phi
   rtan_gamma <- r * tan(gamma)
-  rcos_gamma <- r / cos(gamma)
+  cos_gamma <- cos(gamma) 
+  rcos_gamma <- r / cos_gamma
   for (j in seq_along(gamma)) {
     xs <- rtan_gamma[j] * cos_beta
     ys1 <- rcos_gamma[j] + rtan_gamma[j] * sin_beta
@@ -485,13 +543,29 @@ stereo_guides_wulff <- function(d = 9, r = 1, n = 512, ...) {
   graphics::lines(c(-1, 1), c(0, 0), ...)
 }
 
-
+#' Stereoplot gridlines
+#' 
+#' Adds equal-area or equal-angle projection gridlines to an existing stereoplot. 
+#' 
+#' @param d angle between grid lines
+#' @inheritParams stereoplot
+#' @param ... optional arguments passed to [graphics::lines()]
+#'
 #' @importFrom graphics lines
-stereo_guides <- function(d = 10, earea = TRUE, ...) {
+#' 
+#' @seealso [stereo_plot()], [stereoplot_frame()], [stereoplot_ticks()]
+#' @export
+#' @examples
+#' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
+#' stereoplot_guides(d = 5, earea = FALSE, col = 'green', rotation = 20)
+#' 
+#' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
+#' stereoplot_guides(d = 15, earea = TRUE, col = 'orange', rotation = 90)
+stereoplot_guides <- function(d = 10, earea = TRUE, radius = 1, ...) {
   if (earea) {
-    stereo_guides_schmidt(d = d, ...)
+    stereo_guides_schmidt(d = d, r = radius, ...)
   } else {
-    stereo_guides_wulff(d = d, ...)
+    stereo_guides_wulff(d = d, r = radius, ...)
   }
 }
 
