@@ -344,7 +344,7 @@ stereo_greatcircle <- function(x, ...) {
 
 #' Circle plot
 #' @noRd
-stereoplot_frame <- function(col = "black", border = "black", ndiv = 36) {
+stereoplot_frame <- function(col = "black", border = "black", ndiv = 144) {
   phi <- seq(0, 2 * pi, by = 2 * pi / ndiv)
   x <- cos(phi)
   y <- sin(phi)
