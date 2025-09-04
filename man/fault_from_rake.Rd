@@ -30,5 +30,9 @@ to the strike (measured anticlockwise from the horizontal, up is positive; value
 }
 }
 \examples{
-Fault_from_rake(Plane(c(120, 120, 100), c(60, 60, 50)), c(84.7202, -10, 30))
+fr <- Fault_from_rake(Plane(c(120, 120, 100), c(60, 60, 50)), c(84.7202, -10, 30))
+plot(fr, col = 1:3)
+
+fr2 <- Fault_from_rake(Plane(c(90, 90, 90), c(80, 40, 10)), c(10, 20, 90))
+plot(fr2, col = 1:3)
 }

@@ -189,7 +189,7 @@ Line <- function(x, plunge) {
     plunge <- as.double(plunge)
   }
 
-  res <- cbind(azimuth, plunge)
+  res <- cbind(azimuth %% 360, plunge)
   rownames(res) <- rn
   as.Line(res)
 }
@@ -207,7 +207,7 @@ Plane <- function(x, dip) {
     dip_direction <- x[, "azimuth"] + 180
     dip <- 90 - x[, "plunge"]
   } else if (is.Plane(x) | is.Pair(x)) {
-    dip_direction <- x[, "dip"]
+    dip_direction <- x[, "dip_direction"]
     dip <- x[, "dip"]
   } else {
     if (missing(dip)) {
@@ -221,7 +221,7 @@ Plane <- function(x, dip) {
     dip <- as.double(dip)
   }
 
-  res <- cbind(dip_direction, dip)
+  res <- cbind(dip_direction %% 360, dip)
   rownames(res) <- rn
   as.Plane(res)
 }
@@ -232,7 +232,7 @@ Pair <- function(x, y, azimuth, plunge, correction = FALSE) {
   # p <- Fault(x, y, azimuth, plunge, sense = NA, correction = correction)
 
   if (is.Plane(x) & is.Line(y)) {
-    dip_direction <- x[, "dip"]
+    dip_direction <- x[, "dip_direction"]
     dip <- x[, "dip"]
     azimuth <- y[, "azimuth"]
     plunge <- y[, "plunge"]
@@ -245,7 +245,7 @@ Pair <- function(x, y, azimuth, plunge, correction = FALSE) {
     rn <- names(x)
   }
 
-  res <- cbind(dip_direction, dip, azimuth, plunge)
+  res <- cbind(dip_direction %% 360, dip, azimuth %% 360, plunge)
   rownames(res) <- rn
   p <- as.Pair(res)
   if (correction) correct_pair(p) else p
@@ -258,7 +258,7 @@ Fault <- function(x, y, azimuth, plunge, sense, correction = FALSE) {
   rn <- rownames(x)
 
   if (is.Pair(x)) {
-    dip_direction <- x[, "dip"]
+    dip_direction <- x[, "dip_direction"]
     dip <- x[, "dip"]
     azimuth <- x[, "azimuth"]
     plunge <- x[, "plunge"]
@@ -266,7 +266,7 @@ Fault <- function(x, y, azimuth, plunge, sense, correction = FALSE) {
     if (missing(sense)) {
       sense <- azimuth
     }
-    dip_direction <- x[, "dip"]
+    dip_direction <- x[, "dip_direction"]
     dip <- x[, "dip"]
     azimuth <- y[, "azimuth"]
     plunge <- y[, "plunge"]
@@ -282,7 +282,7 @@ Fault <- function(x, y, azimuth, plunge, sense, correction = FALSE) {
   #   sense <- rep(NA, length(dip_direction))
   # }
 
-  res <- cbind(dip_direction, dip, azimuth, plunge, sense)
+  res <- cbind(dip_direction %% 360, dip, azimuth %% 360, plunge, sense)
   rownames(res) <- rn
   f <- as.Fault(res)
   if (correction) correct_pair(f) else f

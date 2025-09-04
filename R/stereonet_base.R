@@ -147,7 +147,7 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1
   }
 }
 
-#' Stereographic projection of faults
+#' Stereographic projection of faults and pairs
 #'
 #' Visualization of faults (planes and lines) in a stereographic projection.
 #'
@@ -162,11 +162,9 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1
 #' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
 #' @param earea logical `TRUE` for Lambert equal-area projection (also "Schmidt net"; the default), or
 #' `FALSE` for meridional stereographic projection (also "Wulff net" or "Stereonet").
-#' @param ... optional graphical parameters
-#' @note `"plane"` objects will be displayed as pole to the plane.
+#' @note `"Plane"` objects will be displayed as pole to the plane.
 #' @importFrom graphics points text
-#'
-#' @export
+#' @name stereo-fault
 #'
 #' @examples
 #' faults <- Fault(
@@ -180,7 +178,14 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1
 #' stereo_fault(faults, col = 1:4)
 #' # stereo_fault(faults, col =1:4, hoeppner = TRUE)
 #' legend("bottomright", c("normal", "thrust", "unknown", "normal"), fill = 1:4)
-stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex = 1, text.pos = 4, upper.hem = FALSE, earea = TRUE, ...) {
+#' 
+#' stereoplot()
+#' stereo_pair(faults, col = 1:4)
+NULL
+
+#' @rdname stereo-fault
+#' @export
+stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex = 1, text.pos = 4, upper.hem = FALSE, earea = TRUE) {
   stopifnot(is.Fault(x))
   x0 <- x
 
@@ -243,6 +248,13 @@ stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 16, col 
       }
     }
   }
+}
+
+#' @rdname stereo-fault
+#' @export
+stereo_pair <- function(x, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex = 1, upper.hem = FALSE, earea = TRUE){
+  stereo_greatcircle(Fault_plane(x), lwd = lwd, lty = lty, col = col, upper.hem = upper.hem, earea = earea)
+  stereo_point(Fault_slip(x), pch = pch, cex = cex, col = col, upper.hem = upper.hem, earea = earea)
 }
 
 
@@ -590,6 +602,7 @@ plot.spherical <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = lis
   if (is.Line(x) | is.Vec3(x)) stereo_point(x, upper.hem = upper.hem, earea = earea, ...)
   if (is.Plane(x)) stereo_greatcircle(x, upper.hem = upper.hem, earea = earea, ...)
   if (is.Fault(x)) stereo_fault(x, upper.hem = upper.hem, earea = earea, ...)
+  if (is.Pair(x) & !is.Fault(x)) stereo_fault(x, upper.hem = upper.hem, earea = earea, ...)
 }
 
 # #' @export
@@ -644,7 +657,9 @@ points.spherical <- function(x, upper.hem = FALSE, earea = TRUE, ...) {
 #' @examples
 #' stereoplot()
 #' lines(rvmf(n = 5), d = runif(5, 0, 90), col = 1:5)
-lines.spherical <- function(x, ...) stereo_smallcircle(x, ...)
+lines.spherical <- function(x, ...){
+  if(is.Plane(x)) stereo_greatcircle(x, ...) else stereo_smallcircle(x, ...)
+}
 
 # #' @export
 # #' @keywords internal
