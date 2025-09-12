@@ -10,7 +10,7 @@ dist(x, ...)
 \arguments{
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}.}
 
-\item{...}{optional parameters passed to \code{\link[=stats:as.dist]{stats:as.dist()}}}
+\item{...}{optional parameters passed to \code{\link[stats:dist]{stats::as.dist()}}}
 }
 \value{
 distance matrix

@@ -200,7 +200,7 @@ spatial_interpolation <- function(x,
 #' @returns \code{sf} object
 #'
 #' @importFrom stats aggregate
-#' @seealso [spatial_interpolation()], [mean.spherical()], [delta()]
+# #' @seealso [spatial_interpolation()], [mean.spherical()], [delta()]
 #'
 #' @noRd
 compact_grid <- function(grid) {

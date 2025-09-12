@@ -612,7 +612,7 @@ v_dist <- function(x, ...) {
 #' Cosine similarity to compute the distances between the rows of a data matrix.
 #'
 #' @inheritParams stats
-#' @param ... optional parameters passed to [stats:as.dist()]
+#' @param ... optional parameters passed to [stats::as.dist()]
 #' @returns distance matrix
 #' @name dist-sphere
 #'
