@@ -21,5 +21,5 @@ plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
 stereoplot_frame(col = 'red', lwd = 3)
 }
 \seealso{
-\code{\link[=stereo_plot]{stereo_plot()}}, \code{\link[=stereoplot_ticks]{stereoplot_ticks()}}, \code{\link[=stereoplot_guides]{stereoplot_guides()}}
+\code{\link[=stereoplot]{stereoplot()}}, \code{\link[=stereoplot_ticks]{stereoplot_ticks()}}, \code{\link[=stereoplot_guides]{stereoplot_guides()}}
 }

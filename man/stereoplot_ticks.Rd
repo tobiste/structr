@@ -41,5 +41,5 @@ stereoplot_frame()
 stereoplot_ticks(length = 0.05, angle = 45, col = 'blue', lwd = 2, labels = TRUE)
 }
 \seealso{
-\code{\link[=stereo_plot]{stereo_plot()}}, \code{\link[=stereoplot_frame]{stereoplot_frame()}}, \code{\link[=stereoplot_guides]{stereoplot_guides()}}
+\code{\link[=stereoplot]{stereoplot()}}, \code{\link[=stereoplot_frame]{stereoplot_frame()}}, \code{\link[=stereoplot_guides]{stereoplot_guides()}}
 }

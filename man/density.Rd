@@ -24,7 +24,7 @@ density(x, ...)
 \arguments{
 \item{x}{object of class \code{"Vec3()"}, \code{"Line()"}, or \code{"Plane()"}.}
 
-\item{...}{parameters passed to \code{\link[=stereo_point]{stereo_point()}}, \code{\link[=stereo_smallcircle]{stereo_smallcircle()}}, \code{\link[=stereo_greatcircle]{stereo_greatcircle()}}, or \code{\link[=stereo_fault]{stereo_fault()}}}
+\item{...}{parameters passed to \code{\link[=stereo_point]{stereo_point()}}, \code{\link[=stereo_smallcircle]{stereo_smallcircle()}}, \code{\link[=stereo_greatcircle]{stereo_greatcircle()}}, or \code{\link[=fault_plot]{fault_plot()}}}
 
 \item{kamb}{logical. Whether to use the von Mises-Fisher kernel density estimation (\code{FALSE}) or Kamb's method (\code{TRUE}, the default).}
 

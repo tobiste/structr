@@ -23,6 +23,5 @@ Add Points to a Plot
 \examples{
 stereoplot()
 points(rvmf(n = 100))
-
-points(Plane(120, 30), col = "red")
+points(Plane(120, 30), col = "red", pch = 19)
 }

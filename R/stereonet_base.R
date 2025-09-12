@@ -147,6 +147,7 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1
   }
 }
 
+
 #' Stereographic projection of faults and pairs
 #'
 #' Visualization of faults (planes and lines) in a stereographic projection.
@@ -363,7 +364,7 @@ stereo_greatcircle <- function(x, ...) {
 #' @param ... optional arguments passed to [graphics::lines()]
 #'
 #' @export
-#' @seealso [stereo_plot()], [stereoplot_ticks()], [stereoplot_guides()]
+#' @seealso [stereoplot()], [stereoplot_ticks()], [stereoplot_guides()]
 #' 
 #' @examples
 #' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
@@ -437,7 +438,7 @@ stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = grDevices::gra
 #' 
 #' @importFrom graphics segments
 #' @export
-#' @seealso [stereo_plot()], [stereoplot_frame()], [stereoplot_guides()]
+#' @seealso [stereoplot()], [stereoplot_frame()], [stereoplot_guides()]
 #' @examples
 #' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
 #' stereoplot_frame()
@@ -565,7 +566,7 @@ stereo_guides_wulff <- function(d = 9, n = 512, r = 1, rotation = 0, ...) {
 #'
 #' @importFrom graphics lines
 #' 
-#' @seealso [stereo_plot()], [stereoplot_frame()], [stereoplot_ticks()]
+#' @seealso [stereoplot()], [stereoplot_frame()], [stereoplot_ticks()]
 #' @export
 #' @examples
 #' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
@@ -589,20 +590,25 @@ stereoplot_guides <- function(d = 10, earea = TRUE, radius = 1, ...) {
 #' @param upper.hem logical. Whether the projection is shown for upper
 #' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
 #' @param grid.params list.
-#' @param ... parameters passed to [stereo_point()], [stereo_smallcircle()], [stereo_greatcircle()], or [stereo_fault()]
+#' @param ... parameters passed to [stereo_point()], [stereo_smallcircle()], [stereo_greatcircle()], or [fault_plot()]
 #'
 #' @exportS3Method graphics::plot 
 #'
 #' @examples
 #' plot(Line(c(90, 80), c(10, 75)), lab = c("L1", "L2"))
 #' plot(Plane(120, 30), col = "red")
+#' plot(Pair(120, 50, 36, 8))
+#' plot(Fault(120, 50, 36, 8, -1))
 plot.spherical <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
   do.call(stereoplot, append(grid.params, earea))
 
   if (is.Line(x) | is.Vec3(x)) stereo_point(x, upper.hem = upper.hem, earea = earea, ...)
-  if (is.Plane(x)) stereo_greatcircle(x, upper.hem = upper.hem, earea = earea, ...)
-  if (is.Fault(x)) stereo_fault(x, upper.hem = upper.hem, earea = earea, ...)
-  if (is.Pair(x) & !is.Fault(x)) stereo_fault(x, upper.hem = upper.hem, earea = earea, ...)
+  if (is.Plane(x) & !is.Pair(x)) stereo_greatcircle(x, upper.hem = upper.hem, earea = earea, ...)
+  if (is.Fault(x)) fault_plot(x, upper.hem = upper.hem, earea = earea, ...)
+  if (is.Pair(x) & !is.Fault(x)){
+    stereo_greatcircle(Fault_plane(x), upper.hem = upper.hem, earea = earea, ...)
+    stereo_point(Fault_slip(x), upper.hem = upper.hem, earea = earea, ...)
+  }
 }
 
 # #' @export
@@ -621,8 +627,7 @@ plot.spherical <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = lis
 #' @examples
 #' stereoplot()
 #' points(rvmf(n = 100))
-#'
-#' points(Plane(120, 30), col = "red")
+#' points(Plane(120, 30), col = "red", pch = 19)
 points.spherical <- function(x, upper.hem = FALSE, earea = TRUE, ...) {
   stopifnot(is.spherical(x))
   if (is.Vec3(x)) x <- Line(x)
@@ -650,15 +655,17 @@ points.spherical <- function(x, upper.hem = FALSE, earea = TRUE, ...) {
 #'
 #' @inheritParams plot.spherical
 #' @inheritParams graphics::text
+#' @param ang numeric. Conical angle in degrees. 
 #' @param ... arguments passed to [graphics::lines()]
 #' @importFrom graphics lines
 #' @exportS3Method graphics::lines
 #'
 #' @examples
+#' set.seed(20250411)
 #' stereoplot()
-#' lines(rvmf(n = 5), d = runif(5, 0, 90), col = 1:5)
-lines.spherical <- function(x, ...){
-  if(is.Plane(x)) stereo_greatcircle(x, ...) else stereo_smallcircle(x, ...)
+#' lines(rvmf(n = 5), ang = runif(5, 0, 90), col = 1:5)
+lines.spherical <- function(x,  ang = 90, ...){
+  if(is.Plane(x)) stereo_greatcircle(x, ...) else stereo_smallcircle(x, d = ang, ...)
 }
 
 # #' @export
@@ -700,3 +707,120 @@ text.spherical <- function(x, labels = seq_along(x[, 1]), upper.hem = FALSE, ear
 # #' @export
 # #' @keywords internal
 # text <- function(x, ...) UseMethod("text", x, ...)
+
+
+hypot <- function(x, y){
+  sqrt(x^2 + y^2)
+}
+
+#' Add Arrows to a Stereoplot
+#' 
+#' A quiver plot displays displacement vectors into pointing into the direction of movement.
+#'
+#' @param x object of class `"Vec3"`, `"Line"`, or `"Plane"`.
+#' @param sense numeric. Sense of the line on a fault plane. Either
+#' `1`or `-1` for normal or thrust offset, respectively. The "sense" is the sign
+#' of the fault's rake (see [Fault_from_rake()] for details).
+#' @param ... arguments passed to [graphics::arrows()]
+#' @inheritParams plot.spherical
+#' @param length numeric. Length of the edges of the arrow head (in inches).
+#' @param angle numeric. Angle from the shaft of the arrow to the edge of the arrow head.
+#' @param scale numeric. Scales the length of the vector. `0.05` by default
+#' 
+#' @seealso [hoeppner()], [angelier()]
+#' 
+#' @importFrom graphics arrows
+#' @export
+#'
+#' @examples
+#' set.seed(20250411)
+#' stereoplot()
+#' p <- rvmf(n = 100)
+#' points(p, pch = 16, cex = .5)
+#' stereo_arrows(p, sense = 1, col = "red")
+stereo_arrows <- function(x, sense, scale = .05, angle = 10, length = 0.1, upper.hem = FALSE, earea = TRUE, ...){
+  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  
+  if(nrow(x) > 1 & length(sense)==1) sense <- rep(sense, nrow(x))
+  
+  if (is.Vec3(x)) x <- Line(x)
+  
+  if (is.Plane(x)) {
+    x[, 1] <- 180 + x[, 1]
+    x[, 2] <- 90 - x[, 2]
+  }
+  
+  crds <- stereo_coords(
+    x[, 1],
+    x[, 2],
+    upper.hem = upper.hem, earea
+  )
+  
+  dx <- crds[, "x"]
+  dy <- crds[, "y"]
+  
+  mag <- hypot(dx, dy)
+  u <- sense * dx / mag
+  v <- sense * dy / mag
+  
+  graphics::arrows(dx, dy, dx + scale * u, dy + scale * v, angle = angle, length = length, ...)
+}
+
+
+#' Add fault data to existing plot
+#'
+#' @param x `"Fault"` object
+#' @param type character. One of `"angelier"` (for "Angelier plot") or `"hoeppner"` (for "Hoeppner plot"). See details.
+#' @param ... arguments passed to [stereo_arrows()]
+#'
+#' @returns Plot
+#' @name fault-plot
+#' 
+#' @seealso [stereo_arrows()]
+#' 
+#' @details
+#' **Angelier plot** shows all planes as *great circles* and lineations as points. Fault striae are plotted as vectors on top of the lineation pointing in the movement direction of the hangingwall. Easy to read in case of homogeneous or small datasets.  
+#' 
+#' **Hoeppner plot** shows all planes as *poles* while lineations are not shown. Fault striae are plotted as vectors on top of poles pointing in the movement direction of the hangingwall. Useful in case of large or heterogeneous datasets.
+#'
+#' @references 
+#' Angelier, J. Tectonic analysis of fault slip data sets, J. Geophys. Res. 89 (B7), 5835-5848 (1984)
+#'  
+#' Hoeppener, R. Tektonik im Schiefergebirge. Geol Rundsch 44, 26-58 (1955). https://doi.org/10.1007/BF01802903
+#'
+#' @examples
+#' f <- Fault(c("a" = 120, "b" = 125, "c" = 100), c(60, 62, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
+#' 
+#' stereoplot(title = 'Angelier plot')
+#' angelier(f, col = 1:nrow(f))
+#' 
+#' 
+#' stereoplot(title = 'Hoeppner plot')
+#' hoeppner(f, col = 1:nrow(f))
+NULL
+
+#' @rdname fault-plot
+#' @export
+fault_plot <- function(x, type = c('angelier', 'hoeppner'), ...){
+  type = match.arg(type)
+  if(type == 'angelier') angelier(x, ...) else hoeppner(x, ...)
+}
+
+#' @rdname fault-plot
+#' @export
+hoeppner <- function(x, ...){
+  stopifnot(is.Fault(x))
+  
+  stereo_arrows(Fault_plane(x), sense = x[, 'sense'],  ...)
+  points(Fault_plane(x), pch = 1, ...)
+}
+
+#' @rdname fault-plot
+#' @export
+angelier <- function(x, ...){
+  stopifnot(is.Fault(x))
+  
+  lines(Fault_plane(x), ...)
+  stereo_arrows(Fault_slip(x), sense = x[, 'sense'],  ...)
+  points(Fault_slip(x), pch = 1, ...)
+}

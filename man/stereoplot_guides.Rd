@@ -27,5 +27,5 @@ plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
 stereoplot_guides(d = 15, earea = TRUE, col = 'orange', rotation = 90)
 }
 \seealso{
-\code{\link[=stereo_plot]{stereo_plot()}}, \code{\link[=stereoplot_frame]{stereoplot_frame()}}, \code{\link[=stereoplot_ticks]{stereoplot_ticks()}}
+\code{\link[=stereoplot]{stereoplot()}}, \code{\link[=stereoplot_frame]{stereoplot_frame()}}, \code{\link[=stereoplot_ticks]{stereoplot_ticks()}}
 }

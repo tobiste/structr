@@ -17,7 +17,7 @@ projection (the default), or \code{FALSE} for meridional stereographic projectio
 
 \item{grid.params}{list.}
 
-\item{...}{parameters passed to \code{\link[=stereo_point]{stereo_point()}}, \code{\link[=stereo_smallcircle]{stereo_smallcircle()}}, \code{\link[=stereo_greatcircle]{stereo_greatcircle()}}, or \code{\link[=stereo_fault]{stereo_fault()}}}
+\item{...}{parameters passed to \code{\link[=stereo_point]{stereo_point()}}, \code{\link[=stereo_smallcircle]{stereo_smallcircle()}}, \code{\link[=stereo_greatcircle]{stereo_greatcircle()}}, or \code{\link[=fault_plot]{fault_plot()}}}
 }
 \description{
 Plot spherical objects
@@ -25,4 +25,6 @@ Plot spherical objects
 \examples{
 plot(Line(c(90, 80), c(10, 75)), lab = c("L1", "L2"))
 plot(Plane(120, 30), col = "red")
+plot(Pair(120, 50, 36, 8))
+plot(Fault(120, 50, 36, 8, -1))
 }

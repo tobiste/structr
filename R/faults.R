@@ -132,7 +132,7 @@ Fault_rake <- function(x) {
 #' @rdname Fault_components
 #' @export
 Fault_slip <- function(x) {
-  stopifnot(is.Fault(x))
+  stopifnot(is.Pair(x))
   azi <- x[, 3]
   inc <- x[, 4]
   # sense <- x[, 5]
@@ -143,7 +143,7 @@ Fault_slip <- function(x) {
 #' @rdname Fault_components
 #' @export
 Fault_plane <- function(x) {
-  stopifnot(is.Fault(x))
+  stopifnot(is.Pair(x))
   Plane(x[, 1], x[, 2])
 }
 

@@ -110,7 +110,7 @@ quadrantletter_to_azimuth <- function(x) {
 #' Converts azimuth angles into Cardinal directions
 #'
 #' @param x angles in degree.
-#' @param n_direction either 8 for 8-point (N, NE, E, …) or 6 for 16-point (N, NNE, NE, …) cardinal version.
+#' @param n_directions either 8 for 8-point (N, NE, E, …) or 6 for 16-point (N, NNE, NE, …) cardinal version.
 #'
 #' @returns character vector
 #' @export

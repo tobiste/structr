@@ -57,7 +57,7 @@ title(main = "Example data", sub = "Equal angle stereographic, upper hemisphere 
 Adding great circles:
 ```{r stereo_greatcircle}
 stereoplot(guides = FALSE)
-lines(planes, col = "lightgrey", lty = 1, d = 90)
+lines(planes, col = "lightgrey", lty = 1)
 points(planes, col = "#000004", pch = 1, cex = .5)
 ```
 
@@ -95,8 +95,8 @@ c(
 stereoplot(guides = FALSE)
 points(lines, col = "lightgrey", pch = 1, cex = .5)
 points(lines_mean, col = "#B63679", pch = 19, cex = 1)
-lines(lines_mean, d = lines_confangle, col = "#E65164FF")
-lines(lines_mean, d = lines_delta, col = "#FB8861FF")
+lines(lines_mean, ang = lines_confangle, col = "#E65164FF")
+lines(lines_mean, ang = lines_delta, col = "#FB8861FF")
 legend("topright", legend = c("Mean line", "95% confidence cone", "63% data cone"), col = c("#B63679", "#E65164FF", "#FB8861FF"), pch = c(19, NA, NA), lty = c(NA, 1, 1), cex = .75)
 ```
 
@@ -108,7 +108,7 @@ planes_eigen <- eigen(planes)
 
 stereoplot(guides = FALSE)
 points(planes, col = "lightgrey", pch = 1, cex = .5)
-lines(planes_eigen$vectors, d = 90, col = viridis::magma(3), lty = 1)
+lines(planes_eigen$vectors, col = viridis::magma(3), lty = 1)
 points(planes_eigen$vectors, col = viridis::magma(3), pch = 19, cex = 1)
 legend("topright", legend = c("Eigenvectors 1", "Eigenvectors 2", "Eigenvectors 3"), col = viridis::magma(3), pch = 19, cex = .75)
 ```
@@ -134,7 +134,7 @@ stereoplot(guides = TRUE, col = "grey96")
 points(planes, col = "grey", pch = 16, cex = .5)
 contour(planes, add = TRUE, weights = plane_weightings)
 points(planes_eigen$vectors[3, ], col = "black", pch = 16)
-lines(planes_eigen$vectors[3, ], d = 90, col = "black", pch = 16)
+lines(planes_eigen$vectors[3, ], col = "black", pch = 16)
 title(
   main = "Planes",
   sub = paste0(

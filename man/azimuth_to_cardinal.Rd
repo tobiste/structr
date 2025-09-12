@@ -9,7 +9,7 @@ azimuth_to_cardinal(x, n_directions = 8)
 \arguments{
 \item{x}{angles in degree.}
 
-\item{n_direction}{either 8 for 8-point (N, NE, E, …) or 6 for 16-point (N, NNE, NE, …) cardinal version.}
+\item{n_directions}{either 8 for 8-point (N, NE, E, …) or 6 for 16-point (N, NNE, NE, …) cardinal version.}
 }
 \value{
 character vector

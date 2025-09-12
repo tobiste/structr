@@ -4,10 +4,12 @@
 \alias{lines.spherical}
 \title{Add Lines to a Plot}
 \usage{
-\method{lines}{spherical}(x, ...)
+\method{lines}{spherical}(x, ang = 90, ...)
 }
 \arguments{
 \item{x}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"}.}
+
+\item{ang}{numeric. Conical angle in degrees.}
 
 \item{...}{arguments passed to \code{\link[graphics:lines]{graphics::lines()}}}
 }
@@ -15,6 +17,7 @@
 Add Lines to a Plot
 }
 \examples{
+set.seed(20250411)
 stereoplot()
-lines(rvmf(n = 5), d = runif(5, 0, 90), col = 1:5)
+lines(rvmf(n = 5), ang = runif(5, 0, 90), col = 1:5)
 }

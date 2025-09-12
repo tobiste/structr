@@ -525,3 +525,109 @@ vslerp <- function(x, y, t, na.rm = TRUE) {
     slerp
   }
 }
+
+
+
+#' Cluster spherical data
+#' 
+#' Finds k groups of clusters using the angular distance matrix
+#'
+#' @inheritParams mean.spherical
+#' @param k integer. Number of desired clusters.
+#' @param method character. Clustering method to be applied. Currently implemented are
+#' \describe{
+#'  \item{`"hclust"`}{Hierarchical Clustering using [stats::hclust()], the default)}
+#'  \item{`"kmeans"`}{K-Means Clustering using [stats::kmeans()])}
+#'  \item{`"pam"`}{Partitioning Around Medoids using [cluster::pam()]}
+#'  \item{`"agnes"`}{Agglomerative hierarchical clustering using [cluster::agnes()]}
+#'  \item{`"diana"`}{Divisive hierarchical clustering using [cluster::diana()]}
+#'  \item{`"clara"`}{Clustering Large Applications using [cluster::clara()]}
+#'  \item{`"fanny"`}{Fuzzy Analysis Clustering using [cluster::fanny()]}
+#' }
+#' @param ... optional arguments passed to cluster algorithm.
+#' 
+#' @importFrom cluster diana agnes pam clara fanny
+#' @importFrom stats kmeans hclust
+#' 
+#' @seealso [dist()]
+#'
+#' @returns output of applied cluster function
+#' @export
+#'
+#' @examples
+#' set.seed(20250411)
+#' x1 <- rvmf(100, mu = Line(90, 0), k = 20)
+#' x2 <- rvmf(100, mu = Line(0, 0), k = 20)
+#' x3 <- rvmf(100, mu = Line(0, 90), k = 20)
+#' x123 <- rbind(x1, x2, x3)
+#' cl <- v_cluster(x123, k = 3)
+#' plot(x123, col = cl$cluster)
+v_cluster <- function(x, k, method = c("hclust", "kmeans", 'diana', 'agnes', 'pam', 'clara', 'fanny'), ...){
+  method <- match.arg(method)
+  dmat <- v_dist(x)
+  
+  switch(method,
+         hclust = v_hcut(dmat, k = k, FUN = stats::hclust, ...),
+         diana = v_hcut(dmat, k = k, FUN = cluster::diana, ...),
+         agnes = v_hcut(dmat, k = k, FUN = cluster::agnes, ...),
+         kmeans = stats::kmeans(dmat, centers = k, ...),
+         pam = cluster::pam(dmat, k = k, ...),
+         #dbscan = dbscan::dbscan(dmat, ...)$cluster,
+         #hdbscan = dbscan::hdbscan(dmat, ...)$cluster,
+         #specc = as.integer(kernlab::specc(as.matrix(dmat), centers = k, ...)),
+         clara = cluster::clara(as.matrix(dmat), k = k, ...),
+         fanny = cluster::fanny(dmat, k = k, ...)$clustering
+  )
+  
+}
+
+v_hcut <- function(x, k, FUN = stats::hclust, ...) {
+  hc <- FUN(x, ...)
+  
+  hc.cut <- stats::cutree(hc, k = k)
+  hc$cluster <- hc.cut
+  hc$nbclust <- k
+  
+  hc$size <- tabulate(hc.cut, nbins = k)
+  class(hc) <- c(class(hc), "hcut")
+  hc
+}
+
+
+v_dist <- function(x, ...){
+  M <- Vec3(x) |> 
+    vnorm()
+  
+  # angular distance matrix (in radians)
+  cosine_sim <- abs(tcrossprod(M))   # take absolute value!
+  cosine_sim[cosine_sim > 1] <- 1 
+  angular_dist <- acos(cosine_sim)
+  
+  # convert to 'dist' object
+  stats::as.dist(angular_dist, ...)
+}
+
+#' Angular distance matrix for orientation vectors
+#' 
+#' This function computes and returns the distance matrix computed by using the 
+#' Cosine similarity to compute the distances between the rows of a data matrix.
+#'
+#' @inheritParams stats
+#' @param ... optional parameters passed to [stats:as.dist()]
+#' @returns distance matrix
+#' @name dist-sphere
+#'
+#' @examples
+#' set.seed(20250411)
+#' dist(rvmf(100, mu = Line(90, 0), k = 20))
+NULL
+
+#' @exportS3Method stats::dist 
+dist.spherical <- function(x, ...) v_dist(x, ...)
+
+#' @rdname dist-sphere
+#' @export
+dist <- function(x, ...) UseMethod("dist")
+
+#' @export
+dist.default <- function(x, ...) stats::dist(x, ...)
