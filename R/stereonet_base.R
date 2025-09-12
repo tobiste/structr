@@ -179,7 +179,7 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1
 #' stereo_fault(faults, col = 1:4)
 #' # stereo_fault(faults, col =1:4, hoeppner = TRUE)
 #' legend("bottomright", c("normal", "thrust", "unknown", "normal"), fill = 1:4)
-#' 
+#'
 #' stereoplot()
 #' stereo_pair(faults, col = 1:4)
 NULL
@@ -253,7 +253,7 @@ stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 16, col 
 
 #' @rdname stereo-fault
 #' @export
-stereo_pair <- function(x, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex = 1, upper.hem = FALSE, earea = TRUE){
+stereo_pair <- function(x, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex = 1, upper.hem = FALSE, earea = TRUE) {
   stereo_greatcircle(Fault_plane(x), lwd = lwd, lty = lty, col = col, upper.hem = upper.hem, earea = earea)
   stereo_point(Fault_slip(x), pch = pch, cex = cex, col = col, upper.hem = upper.hem, earea = earea)
 }
@@ -356,19 +356,19 @@ stereo_greatcircle <- function(x, ...) {
 
 
 #' Stereoplot frame
-#' 
+#'
 #' Adds a (primitive) circle with given radius to an existing plot
-#' 
+#'
 #' @param ndiv integer. Resolution of circle's line
 #' @inheritParams stereoplot
 #' @param ... optional arguments passed to [graphics::lines()]
 #'
 #' @export
 #' @seealso [stereoplot()], [stereoplot_ticks()], [stereoplot_guides()]
-#' 
+#'
 #' @examples
 #' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
-#' stereoplot_frame(col = 'red', lwd = 3)
+#' stereoplot_frame(col = "red", lwd = 3)
 stereoplot_frame <- function(ndiv = 144, radius = 1, ...) {
   phi <- seq(0, 2 * pi, by = 2 * pi / ndiv)
   x <- cos(phi) * radius
@@ -394,10 +394,10 @@ stereoplot_frame <- function(ndiv = 144, radius = 1, ...) {
 #' @param ticks integer. Angle between ticks. if `NULL` (the default), no ticks are drawn.
 #' @param title,sub character. Title and subtitle of plot
 #' @param origin.text character. Text at origin of stereoplot.
-#' @param labels this can either be a logical value specifying whether (numerical) 
-#' annotations are to be made next to the tickmarks, or a character or expression 
+#' @param labels this can either be a logical value specifying whether (numerical)
+#' annotations are to be made next to the tickmarks, or a character or expression
 #' vector of labels to be placed next to the tickpoints.
-#' @param ladj adjustment for all labels away from origin of stereoplot circle. 
+#' @param ladj adjustment for all labels away from origin of stereoplot circle.
 #' This essentially an amount that is added to `radius` and the length of the ticks.
 #' @param radius numeric. Radius of circle
 #'
@@ -427,22 +427,22 @@ stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = grDevices::gra
 }
 
 #' Stereoplot tickmarks
-#' 
+#'
 #' Adds stereoplot rickmarks to an existing plot
-#' 
+#'
 #' @inheritParams stereoplot
 #' @param length numeric. Length of ticks as fraction of `radius`
 #' @param angle numeric. Division angle in degrees
 #' @param rotation numeric. Rotation (positive for counter-clockwise) of tickmarks and labels
 #' @param ... optional arguments passed to [graphics::segments()] and [graphics::text()]
-#' 
+#'
 #' @importFrom graphics segments
 #' @export
 #' @seealso [stereoplot()], [stereoplot_frame()], [stereoplot_guides()]
 #' @examples
 #' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
 #' stereoplot_frame()
-#' stereoplot_ticks(length = 0.05, angle = 45, col = 'blue', lwd = 2, labels = TRUE)
+#' stereoplot_ticks(length = 0.05, angle = 45, col = "blue", lwd = 2, labels = TRUE)
 stereoplot_ticks <- function(length = 0.02, angle = 10, labels = FALSE, ladj = 2 * length, radius = 1, rotation = 0, ...) {
   DR <- radius + length
   ang_deg <- (seq(0, 360, by = angle) + rotation) %% 360
@@ -451,18 +451,21 @@ stereoplot_ticks <- function(length = 0.02, angle = 10, labels = FALSE, ladj = 2
     radius * cos(ang), radius * sin(ang), DR * cos(ang), DR * sin(ang),
     ...
   )
-  
+
   do.label <- is.logical(labels)
-  if(do.label & isTRUE(labels)){
+  if (do.label & isTRUE(labels)) {
     labels <- seq(0, 360, by = angle)
     labels[length(labels)] <- NA
-    labels <- as.character((-labels+90) %% 360)
-    } else labels <- NULL
-  if(!is.null(labels)){
-    stopifnot(length(labels)==length(ang))
+    labels <- as.character((-labels + 90) %% 360)
+  } else {
+    labels <- NULL
+  }
+  if (!is.null(labels)) {
+    stopifnot(length(labels) == length(ang))
     DR.labs <- DR + ladj
     graphics::text(
-      DR.labs * cos(ang), DR.labs * sin(ang), labels = labels, ...
+      DR.labs * cos(ang), DR.labs * sin(ang),
+      labels = labels, ...
     )
   }
 }
@@ -472,7 +475,7 @@ stereoplot_ticks <- function(length = 0.02, angle = 10, labels = FALSE, ladj = 2
 stereo_guides_schmidt <- function(d = 10, n = 512, r = 1, rotation = 0, ...) {
   rot <- deg2rad(rotation)
   lam_seq <- deg2rad(seq(0, 180, length.out = n))
-  lam0 <- pi / 2 
+  lam0 <- pi / 2
   R <- sqrt(2) / 2
 
   # Precompute sin and cos of lam - lam0
@@ -497,8 +500,8 @@ stereo_guides_schmidt <- function(d = 10, n = 512, r = 1, rotation = 0, ...) {
   cos_phi_seq <- cos(phi_seq)
   sin_phi_seq <- sin(phi_seq)
 
-  lam_vals <- deg2rad(seq(d, 180 - d, d) )
-  
+  lam_vals <- deg2rad(seq(d, 180 - d, d))
+
   lam_vals_rot <- (lam_vals - lam0)
   cos_lam_vals <- cos(lam_vals_rot)
   sin_lam_vals <- sin(lam_vals_rot)
@@ -538,7 +541,7 @@ stereo_guides_wulff <- function(d = 9, n = 512, r = 1, rotation = 0, ...) {
   # small circles
   gamma <- phi
   rtan_gamma <- r * tan(gamma)
-  cos_gamma <- cos(gamma) 
+  cos_gamma <- cos(gamma)
   rcos_gamma <- r / cos_gamma
   for (j in seq_along(gamma)) {
     xs <- rtan_gamma[j] * cos_beta
@@ -557,23 +560,23 @@ stereo_guides_wulff <- function(d = 9, n = 512, r = 1, rotation = 0, ...) {
 }
 
 #' Stereoplot gridlines
-#' 
-#' Adds equal-area or equal-angle projection gridlines to an existing stereoplot. 
-#' 
+#'
+#' Adds equal-area or equal-angle projection gridlines to an existing stereoplot.
+#'
 #' @param d angle between grid lines
 #' @inheritParams stereoplot
 #' @param ... optional arguments passed to [graphics::lines()]
 #'
 #' @importFrom graphics lines
-#' 
+#'
 #' @seealso [stereoplot()], [stereoplot_frame()], [stereoplot_ticks()]
 #' @export
 #' @examples
 #' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
-#' stereoplot_guides(d = 5, earea = FALSE, col = 'green', rotation = 20)
-#' 
+#' stereoplot_guides(d = 5, earea = FALSE, col = "green", rotation = 20)
+#'
 #' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
-#' stereoplot_guides(d = 15, earea = TRUE, col = 'orange', rotation = 90)
+#' stereoplot_guides(d = 15, earea = TRUE, col = "orange", rotation = 90)
 stereoplot_guides <- function(d = 10, earea = TRUE, radius = 1, ...) {
   if (earea) {
     stereo_guides_schmidt(d = d, r = radius, ...)
@@ -592,7 +595,7 @@ stereoplot_guides <- function(d = 10, earea = TRUE, radius = 1, ...) {
 #' @param grid.params list.
 #' @param ... parameters passed to [stereo_point()], [stereo_smallcircle()], [stereo_greatcircle()], or [fault_plot()]
 #'
-#' @exportS3Method graphics::plot 
+#' @exportS3Method graphics::plot
 #'
 #' @examples
 #' plot(Line(c(90, 80), c(10, 75)), lab = c("L1", "L2"))
@@ -605,7 +608,7 @@ plot.spherical <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = lis
   if (is.Line(x) | is.Vec3(x)) stereo_point(x, upper.hem = upper.hem, earea = earea, ...)
   if (is.Plane(x) & !is.Pair(x)) stereo_greatcircle(x, upper.hem = upper.hem, earea = earea, ...)
   if (is.Fault(x)) fault_plot(x, upper.hem = upper.hem, earea = earea, ...)
-  if (is.Pair(x) & !is.Fault(x)){
+  if (is.Pair(x) & !is.Fault(x)) {
     stereo_greatcircle(Fault_plane(x), upper.hem = upper.hem, earea = earea, ...)
     stereo_point(Fault_slip(x), upper.hem = upper.hem, earea = earea, ...)
   }
@@ -623,7 +626,7 @@ plot.spherical <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = lis
 #' @importFrom graphics points
 #'
 #' @exportS3Method graphics::points
-#'  
+#'
 #' @examples
 #' stereoplot()
 #' points(rvmf(n = 100))
@@ -655,7 +658,7 @@ points.spherical <- function(x, upper.hem = FALSE, earea = TRUE, ...) {
 #'
 #' @inheritParams plot.spherical
 #' @inheritParams graphics::text
-#' @param ang numeric. Conical angle in degrees. 
+#' @param ang numeric. Conical angle in degrees.
 #' @param ... arguments passed to [graphics::lines()]
 #' @importFrom graphics lines
 #' @exportS3Method graphics::lines
@@ -664,8 +667,8 @@ points.spherical <- function(x, upper.hem = FALSE, earea = TRUE, ...) {
 #' set.seed(20250411)
 #' stereoplot()
 #' lines(rvmf(n = 5), ang = runif(5, 0, 90), col = 1:5)
-lines.spherical <- function(x,  ang = 90, ...){
-  if(is.Plane(x)) stereo_greatcircle(x, ...) else stereo_smallcircle(x, d = ang, ...)
+lines.spherical <- function(x, ang = 90, ...) {
+  if (is.Plane(x)) stereo_greatcircle(x, ...) else stereo_smallcircle(x, d = ang, ...)
 }
 
 # #' @export
@@ -709,12 +712,12 @@ text.spherical <- function(x, labels = seq_along(x[, 1]), upper.hem = FALSE, ear
 # text <- function(x, ...) UseMethod("text", x, ...)
 
 
-hypot <- function(x, y){
+hypot <- function(x, y) {
   sqrt(x^2 + y^2)
 }
 
 #' Add Arrows to a Stereoplot
-#' 
+#'
 #' A quiver plot displays displacement vectors into pointing into the direction of movement.
 #'
 #' @param x object of class `"Vec3"`, `"Line"`, or `"Plane"`.
@@ -726,9 +729,9 @@ hypot <- function(x, y){
 #' @param length numeric. Length of the edges of the arrow head (in inches).
 #' @param angle numeric. Angle from the shaft of the arrow to the edge of the arrow head.
 #' @param scale numeric. Scales the length of the vector. `0.05` by default
-#' 
+#'
 #' @seealso [hoeppner()], [angelier()]
-#' 
+#'
 #' @importFrom graphics arrows
 #' @export
 #'
@@ -738,31 +741,31 @@ hypot <- function(x, y){
 #' p <- rvmf(n = 100)
 #' points(p, pch = 16, cex = .5)
 #' stereo_arrows(p, sense = 1, col = "red")
-stereo_arrows <- function(x, sense, scale = .05, angle = 10, length = 0.1, upper.hem = FALSE, earea = TRUE, ...){
+stereo_arrows <- function(x, sense, scale = .05, angle = 10, length = 0.1, upper.hem = FALSE, earea = TRUE, ...) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
-  
-  if(nrow(x) > 1 & length(sense)==1) sense <- rep(sense, nrow(x))
-  
+
+  if (nrow(x) > 1 & length(sense) == 1) sense <- rep(sense, nrow(x))
+
   if (is.Vec3(x)) x <- Line(x)
-  
+
   if (is.Plane(x)) {
     x[, 1] <- 180 + x[, 1]
     x[, 2] <- 90 - x[, 2]
   }
-  
+
   crds <- stereo_coords(
     x[, 1],
     x[, 2],
     upper.hem = upper.hem, earea
   )
-  
+
   dx <- crds[, "x"]
   dy <- crds[, "y"]
-  
+
   mag <- hypot(dx, dy)
   u <- sense * dx / mag
   v <- sense * dy / mag
-  
+
   graphics::arrows(dx, dy, dx + scale * u, dy + scale * v, angle = angle, length = length, ...)
 }
 
@@ -775,52 +778,58 @@ stereo_arrows <- function(x, sense, scale = .05, angle = 10, length = 0.1, upper
 #'
 #' @returns Plot
 #' @name fault-plot
-#' 
+#'
 #' @seealso [stereo_arrows()]
-#' 
+#'
 #' @details
-#' **Angelier plot** shows all planes as *great circles* and lineations as points. Fault striae are plotted as vectors on top of the lineation pointing in the movement direction of the hangingwall. Easy to read in case of homogeneous or small datasets.  
-#' 
+#' **Angelier plot** shows all planes as *great circles* and lineations as points. Fault striae are plotted as vectors on top of the lineation pointing in the movement direction of the hangingwall. Easy to read in case of homogeneous or small datasets.
+#'
 #' **Hoeppner plot** shows all planes as *poles* while lineations are not shown. Fault striae are plotted as vectors on top of poles pointing in the movement direction of the hangingwall. Useful in case of large or heterogeneous datasets.
 #'
-#' @references 
+#' @references
 #' Angelier, J. Tectonic analysis of fault slip data sets, J. Geophys. Res. 89 (B7), 5835-5848 (1984)
-#'  
+#'
 #' Hoeppener, R. Tektonik im Schiefergebirge. Geol Rundsch 44, 26-58 (1955). https://doi.org/10.1007/BF01802903
 #'
 #' @examples
-#' f <- Fault(c("a" = 120, "b" = 125, "c" = 100), c(60, 62, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
-#' 
-#' stereoplot(title = 'Angelier plot')
+#' f <- Fault(
+#'   c("a" = 120, "b" = 125, "c" = 100),
+#'   c(60, 62, 50),
+#'   c(110, 25, 30),
+#'   c(58, 9, 23),
+#'   c(1, -1, 1)
+#' )
+#'
+#' stereoplot(title = "Angelier plot")
 #' angelier(f, col = 1:nrow(f))
-#' 
-#' 
-#' stereoplot(title = 'Hoeppner plot')
+#'
+#'
+#' stereoplot(title = "Hoeppner plot")
 #' hoeppner(f, col = 1:nrow(f))
 NULL
 
 #' @rdname fault-plot
 #' @export
-fault_plot <- function(x, type = c('angelier', 'hoeppner'), ...){
-  type = match.arg(type)
-  if(type == 'angelier') angelier(x, ...) else hoeppner(x, ...)
+fault_plot <- function(x, type = c("angelier", "hoeppner"), ...) {
+  type <- match.arg(type)
+  if (type == "angelier") angelier(x, ...) else hoeppner(x, ...)
 }
 
 #' @rdname fault-plot
 #' @export
-hoeppner <- function(x, ...){
+hoeppner <- function(x, ...) {
   stopifnot(is.Fault(x))
-  
-  stereo_arrows(Fault_plane(x), sense = x[, 'sense'],  ...)
+
+  stereo_arrows(Fault_plane(x), sense = x[, "sense"], ...)
   points(Fault_plane(x), pch = 1, ...)
 }
 
 #' @rdname fault-plot
 #' @export
-angelier <- function(x, ...){
+angelier <- function(x, ...) {
   stopifnot(is.Fault(x))
-  
+
   lines(Fault_plane(x), ...)
-  stereo_arrows(Fault_slip(x), sense = x[, 'sense'],  ...)
+  stereo_arrows(Fault_slip(x), sense = x[, "sense"], ...)
   points(Fault_slip(x), pch = 1, ...)
 }

@@ -105,7 +105,7 @@ correct_pair <- function(x) {
 #'
 #' [Fault_plane()] extracts the orientation of the fault plane,
 #' [Fault_slip()] extracts the orientation of the slip vector, and
-#' [Fault_rake()] extracts the rake of the fault, i.e. the angle between fault 
+#' [Fault_rake()] extracts the rake of the fault, i.e. the angle between fault
 #' slip vector and fault strike.
 #'
 #' @inheritParams fault_analysis
@@ -167,7 +167,7 @@ Fault_plane <- function(x) {
 #' @examples
 #' fr <- Fault_from_rake(Plane(c(120, 120, 100), c(60, 60, 50)), c(84.7202, -10, 30))
 #' plot(fr, col = 1:3)
-#' 
+#'
 #' fr2 <- Fault_from_rake(Plane(c(90, 90, 90), c(80, 40, 10)), c(10, 20, 90))
 #' plot(fr2, col = 1:3)
 Fault_from_rake <- function(p, rake, ...) {
@@ -182,7 +182,7 @@ Fault_from_rake <- function(p, rake, ...) {
   Fault(p[, 1], p[, 2], l[, 1], l[, 2], sense = sign(rake), ...)
 }
 
-rake2pitch <- function(rake){
+rake2pitch <- function(rake) {
   rake <- abs(rake)
   ifelse(rake > 90, 180 - rake, rake)
 }
@@ -197,7 +197,7 @@ rake2pitch <- function(rake){
 #'
 #' @examples
 #' Plane_pitch(Plane(90, 70), Line(175, 13)) # 13.9
-Plane_pitch <- function(p, l){
+Plane_pitch <- function(p, l) {
   Fault_rake(Fault(p[, 1], p[, 2], l[, 1], l[, 2], 1)) |> rake2pitch()
 }
 
@@ -211,7 +211,7 @@ Plane_pitch <- function(p, l){
 #'
 #' @examples
 #' apparent_dip_direction(Plane(63, 45), 10)
-apparent_dip_direction <- function(p, apparent_dip){
+apparent_dip_direction <- function(p, apparent_dip) {
   res <- Fault_from_rake(p, rake = -apparent_dip)
   res[, 3]
 }
@@ -227,12 +227,11 @@ apparent_dip_direction <- function(p, apparent_dip){
 #' a1 <- Line(45, 22)
 #' a2 <- Line(352, 10)
 #' res <- Plane_from_apparent_dips(a1, a2)
-#' 
+#'
 #' stereoplot()
 #' points(rbind(a1, a2))
-#' lines(res, lty = 2) 
-Plane_from_apparent_dips <- function(a1, a2){
+#' lines(res, lty = 2)
+Plane_from_apparent_dips <- function(a1, a2) {
   res <- crossprod(a1, a2)
   Plane(res)
 }
-

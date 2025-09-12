@@ -32,7 +32,13 @@ Add fault data to existing plot
 \strong{Hoeppner plot} shows all planes as \emph{poles} while lineations are not shown. Fault striae are plotted as vectors on top of poles pointing in the movement direction of the hangingwall. Useful in case of large or heterogeneous datasets.
 }
 \examples{
-f <- Fault(c("a" = 120, "b" = 125, "c" = 100), c(60, 62, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
+f <- Fault(
+  c("a" = 120, "b" = 125, "c" = 100), 
+  c(60, 62, 50), 
+  c(110, 25, 30), 
+  c(58, 9, 23), 
+  c(1, -1, 1)
+)
 
 stereoplot(title = 'Angelier plot')
 angelier(f, col = 1:nrow(f))

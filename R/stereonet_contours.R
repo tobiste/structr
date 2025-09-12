@@ -1,9 +1,9 @@
 #' Plot spherical densities in a stereonet
 #'
-#' Kamb counts and densities on the sphere. `contour` plots the contour lines, 
-#' `contourf` displays a contour plot with the areas between the contours filled, 
-#' and `image` creates a dense grid of colored rectangles. 
-#' 
+#' Kamb counts and densities on the sphere. `contour` plots the contour lines,
+#' `contourf` displays a contour plot with the areas between the contours filled,
+#' and `image` creates a dense grid of colored rectangles.
+#'
 #' @param x object of class `"Vec3"`, `"Line"`, `"Plane"` or `'spherical.density'` (for plotting only).
 #' @param density.params list of parameters passed to [density.spherical]
 #' @param nlevels integer. Number of contour levels for plotting
@@ -19,7 +19,7 @@
 #' @aliases contour image density-plot density_plot
 #'
 #' @seealso [count_points()], [density]
-#' @importFrom graphics image.default .filled.contour contour 
+#' @importFrom graphics image.default .filled.contour contour
 #'
 #' @returns list containing the stereographic x and coordinates of of the grid,
 #' the counts, and the density.
@@ -241,7 +241,7 @@ stereo_density <- function(x,
 
 
 #' @rdname stereo_contour
-#' @exportS3Method stats::contour 
+#' @exportS3Method stats::contour
 contour.spherical <- function(x, add = FALSE, density.params = list(),
                               nlevels = 10L, col.palette = viridis::viridis, col = NULL,
                               col.params = list(), ...) {
@@ -272,28 +272,28 @@ contour.spherical <- function(x, add = FALSE, density.params = list(),
 #' @rdname stereo_contour
 #' @export
 contourf <- function(x, add = FALSE, density.params = list(),
-                                     nlevels = 10L, col.palette = viridis::viridis,
-                                     col.params = list()) {
+                     nlevels = 10L, col.palette = viridis::viridis,
+                     col.params = list()) {
   stereo_density(x,
-                 type = "contour_filled",
-                 add = add,
-                 density.params = density.params,
-                 nlevels = nlevels,
-                 col.palette = col.palette,
-                 col.params = col.params
+    type = "contour_filled",
+    add = add,
+    density.params = density.params,
+    nlevels = nlevels,
+    col.palette = col.palette,
+    col.params = col.params
   )
 }
 
 
 # #' @rdname stereo_contour
-# #' @exportS3Method stats::filled.contour 
+# #' @exportS3Method stats::filled.contour
 # #' @export
 # filled.contour.spherical <- function(x, ...) {
 #   contourf(x, ...)
 # }
 
 #' @rdname stereo_contour
-#' @exportS3Method stats::image 
+#' @exportS3Method stats::image
 image.spherical <- function(x, add = FALSE, density.params = list(),
                             nlevels = 10L, col.palette = viridis::viridis,
                             col.params = list(), ...) {

@@ -51,11 +51,11 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 0.005) 
   if (length(R) == 1 & n > 1) {
     R <- rep(R, n)
   }
-  
+
   S1 <- unclass(S1)
   S2 <- unclass(S2)
   S3 <- unclass(S3)
-  
+
   if (!is.numeric(R) || any(R < 0) || any(R > 1)) stop("SH(): R must be between 0 and 1.")
 
   # Calculate the denominator and numerator in Eq. 11

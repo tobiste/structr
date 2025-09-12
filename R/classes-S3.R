@@ -10,7 +10,7 @@
 #' `is.Line`, `is.Plane`, `is.Pair`, and `is.Fault` test if its argument is a
 #' `"Line"`, `"Plane"`, and  `"Pair"`, and `"Fault"` S3 class object, respectively.
 #'
-#' @param x,y object of class `"Line"`, `"Plane"`, and  `"Pair"`, and `"Fault"`  or 
+#' @param x,y object of class `"Line"`, `"Plane"`, and  `"Pair"`, and `"Fault"`  or
 #' numeric vector or array containing the spherical coordinates
 #' @param azimuth,plunge,z,dip numeric vectors of the spherical coordinates
 #' @param sense (optional) integer. Sense of the line on a fault plane. Either
@@ -427,12 +427,12 @@ rbind.spherical <- function(..., .class = NULL) {
 # .S3method("rbind", "spherical", rbind.spherical)
 
 #' Return the First or Last Parts of an Object
-#' 
+#'
 #' Returns the first or last parts of a vector.
 #'
 #' @param x objects of class `"Vec3"`, `"Line"`, `"Plane"`, `"Pair"`, or `"Fault`
 #' @inheritParams utils::head
-#' 
+#'
 #' @importFrom utils head tail
 #'
 #' @name head-sphere

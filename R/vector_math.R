@@ -89,7 +89,7 @@ crossprod.default <- function(x, ...) base::crossprod(x, ...)
 #' @export
 crossprod.spherical <- function(x, y = NULL) {
   xv <- Vec3(x) |> unclass()
-  if(is.null(y)) yv <- xv else yv <- Vec3(y) |> unclass()
+  if (is.null(y)) yv <- xv else yv <- Vec3(y) |> unclass()
 
   xy <- vcross(xv, yv) |>
     as.Vec3()

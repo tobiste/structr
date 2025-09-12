@@ -20,7 +20,7 @@
 #'   # register_vctrs_methods()
 #' }
 #' # nocov end
-#' 
+#'
 #' .onLoad <- function(...) {
 #'   register_all_s3_methods()
 #' }

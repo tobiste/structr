@@ -360,7 +360,7 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #'
 #' @name density
 #' @aliases density.spherical density_spherical
-#' 
+#'
 #' @examples
 #' set.seed(20250411)
 #' test <- rfb(100, mu = Line(120, 10), k = 5, A = diag(c(-1, 0, 1)))
@@ -373,7 +373,7 @@ density <- function(x, ...) UseMethod("density")
 
 
 #' @rdname density
-#' @exportS3Method stats::density 
+#' @exportS3Method stats::density
 density.spherical <- function(x,
                               kamb = TRUE, FUN = exponential_kamb,
                               ngrid = 128L, sigma = 3,

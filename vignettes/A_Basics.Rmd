@@ -163,3 +163,19 @@ rotate(line1, rotaxis = line2, rotangle = 45)
 trans_mat <- matrix(runif(9), 3, 3)
 transform_linear(line1, trans_mat)
 ```
+
+
+## Cluster vectors
+
+To find k clusters of orientation vectors:
+
+```{r cluster}
+set.seed(20250411)
+x1 <- rvmf(100, mu = Line(90, 0), k = 20)
+x2 <- rvmf(100, mu = Line(0, 0), k = 20)
+x3 <- rvmf(100, mu = Line(0, 90), k = 20)
+x123 <- rbind(x1, x2, x3)
+cl <- v_cluster(x123, k = 3)
+
+plot(x123, col = cl$cluster)
+```

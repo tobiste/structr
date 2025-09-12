@@ -28,7 +28,7 @@
 #' \dontrun{
 #' # import from excel file
 #' read_strabo_xls("path/to/my/file.xlsx")
-#' 
+#'
 #' # import from text file
 #' read_strabo_mobile("path/to/my/file.txt")
 #'

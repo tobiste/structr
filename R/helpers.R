@@ -116,26 +116,28 @@ quadrantletter_to_azimuth <- function(x) {
 #' @export
 #'
 #' @examples
-#' azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350))          # 8-point compass
-#' azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350), 16)     # 16-point compass
-azimuth_to_cardinal <- function(x, n_directions = 8){
+#' azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350)) # 8-point compass
+#' azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350), 16) # 16-point compass
+azimuth_to_cardinal <- function(x, n_directions = 8) {
   # Normalize to 0–360
   azimuth <- x %% 360
-  
+
   if (n_directions == 8) {
     dirs <- c("N", "NE", "E", "SE", "S", "SW", "W", "NW")
   } else if (n_directions == 16) {
-    dirs <- c("N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
-              "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW")
+    dirs <- c(
+      "N", "NNE", "NE", "ENE", "E", "ESE", "SE", "SSE",
+      "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"
+    )
   } else {
     stop("n_directions must be 8 or 16")
   }
-  
+
   step <- 360 / n_directions
   # Round to nearest sector center
-  idx <- floor((azimuth + step/2) / step) + 1
+  idx <- floor((azimuth + step / 2) / step) + 1
   idx[idx > n_directions] <- 1
-  
+
   dirs[idx]
 }
 
