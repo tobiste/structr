@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9004</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9005</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -18,12 +18,12 @@
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/1_Basics.html">1. Basics</a></li>
-    <li><a class="dropdown-item" href="../articles/2_Stereographic_projection.html">2. Stereographic projections</a></li>
-    <li><a class="dropdown-item" href="../articles/3_Stereographic_projection_ggplot.html">3. Stereographic projections with ggplot</a></li>
-    <li><a class="dropdown-item" href="../articles/4_Faults.html">4. Faults</a></li>
-    <li><a class="dropdown-item" href="../articles/5_Mohr_Circle.html">5. Mohr Circle</a></li>
-    <li><a class="dropdown-item" href="../articles/6_Oriented_Drill_Cores.html">6. Oriented drill cores</a></li>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/A_Basics.html">1. Basics</a></li>
+    <li><a class="dropdown-item" href="../articles/B_Stereographic_projection.html">2. Stereographic projections</a></li>
+    <li><a class="dropdown-item" href="../articles/C_Stereographic_projection_ggplot.html">3. Stereographic projections with ggplot</a></li>
+    <li><a class="dropdown-item" href="../articles/D_Faults.html">4. Faults</a></li>
+    <li><a class="dropdown-item" href="../articles/E_Mohr_Circle.html">5. Mohr Circle</a></li>
+    <li><a class="dropdown-item" href="../articles/F_Oriented_Drill_Cores.html">6. Oriented drill cores</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -73,17 +73,17 @@ projection (the default), or <code>FALSE</code> for meridional stereographic pro
 </dl></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code>stereo_plot()</code>, <code><a href="stereoplot_frame.html">stereoplot_frame()</a></code>, <code><a href="stereoplot_ticks.html">stereoplot_ticks()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="stereoplot.html">stereoplot()</a></code>, <code><a href="stereoplot_frame.html">stereoplot_frame()</a></code>, <code><a href="stereoplot_ticks.html">stereoplot_ticks()</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"n"</span>, asp <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">stereoplot_guides</span><span class="op">(</span>d <span class="op">=</span> <span class="fl">5</span>, earea <span class="op">=</span> <span class="cn">FALSE</span>, col <span class="op">=</span> <span class="st">'green'</span>, rotation <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">stereoplot_guides</span><span class="op">(</span>d <span class="op">=</span> <span class="fl">5</span>, earea <span class="op">=</span> <span class="cn">FALSE</span>, col <span class="op">=</span> <span class="st">"green"</span>, rotation <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="stereoplot_guides-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, type <span class="op">=</span> <span class="st">"n"</span>, asp <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">stereoplot_guides</span><span class="op">(</span>d <span class="op">=</span> <span class="fl">15</span>, earea <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">'orange'</span>, rotation <span class="op">=</span> <span class="fl">90</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">stereoplot_guides</span><span class="op">(</span>d <span class="op">=</span> <span class="fl">15</span>, earea <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"orange"</span>, rotation <span class="op">=</span> <span class="fl">90</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="stereoplot_guides-2.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
