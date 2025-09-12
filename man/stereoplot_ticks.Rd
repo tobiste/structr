@@ -38,7 +38,7 @@ Adds stereoplot rickmarks to an existing plot
 \examples{
 plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
 stereoplot_frame()
-stereoplot_ticks(length = 0.05, angle = 45, col = 'blue', lwd = 2, labels = TRUE)
+stereoplot_ticks(length = 0.05, angle = 45, col = "blue", lwd = 2, labels = TRUE)
 }
 \seealso{
 \code{\link[=stereoplot]{stereoplot()}}, \code{\link[=stereoplot_frame]{stereoplot_frame()}}, \code{\link[=stereoplot_guides]{stereoplot_guides()}}

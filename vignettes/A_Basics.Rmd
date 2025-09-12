@@ -170,12 +170,16 @@ transform_linear(line1, trans_mat)
 To find k clusters of orientation vectors:
 
 ```{r cluster}
+# generate some random vectors:
 set.seed(20250411)
 x1 <- rvmf(100, mu = Line(90, 0), k = 20)
 x2 <- rvmf(100, mu = Line(0, 0), k = 20)
 x3 <- rvmf(100, mu = Line(0, 90), k = 20)
 x123 <- rbind(x1, x2, x3)
+
+# cluster the vectors:
 cl <- v_cluster(x123, k = 3)
 
+# visualize the result:
 plot(x123, col = cl$cluster)
 ```

@@ -18,7 +18,7 @@ Adds a (primitive) circle with given radius to an existing plot
 }
 \examples{
 plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
-stereoplot_frame(col = 'red', lwd = 3)
+stereoplot_frame(col = "red", lwd = 3)
 }
 \seealso{
 \code{\link[=stereoplot]{stereoplot()}}, \code{\link[=stereoplot_ticks]{stereoplot_ticks()}}, \code{\link[=stereoplot_guides]{stereoplot_guides()}}

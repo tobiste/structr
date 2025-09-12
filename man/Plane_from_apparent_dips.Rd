@@ -22,5 +22,5 @@ res <- Plane_from_apparent_dips(a1, a2)
 
 stereoplot()
 points(rbind(a1, a2))
-lines(res, lty = 2) 
+lines(res, lty = 2)
 }

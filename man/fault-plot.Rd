@@ -33,18 +33,18 @@ Add fault data to existing plot
 }
 \examples{
 f <- Fault(
-  c("a" = 120, "b" = 125, "c" = 100), 
-  c(60, 62, 50), 
-  c(110, 25, 30), 
-  c(58, 9, 23), 
+  c("a" = 120, "b" = 125, "c" = 100),
+  c(60, 62, 50),
+  c(110, 25, 30),
+  c(58, 9, 23),
   c(1, -1, 1)
 )
 
-stereoplot(title = 'Angelier plot')
+stereoplot(title = "Angelier plot")
 angelier(f, col = 1:nrow(f))
 
 
-stereoplot(title = 'Hoeppner plot')
+stereoplot(title = "Hoeppner plot")
 hoeppner(f, col = 1:nrow(f))
 }
 \references{

@@ -18,6 +18,6 @@ character vector
 Converts azimuth angles into Cardinal directions
 }
 \examples{
-azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350))          # 8-point compass
-azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350), 16)     # 16-point compass
+azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350)) # 8-point compass
+azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350), 16) # 16-point compass
 }

@@ -21,10 +21,10 @@ Adds equal-area or equal-angle projection gridlines to an existing stereoplot.
 }
 \examples{
 plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
-stereoplot_guides(d = 5, earea = FALSE, col = 'green', rotation = 20)
+stereoplot_guides(d = 5, earea = FALSE, col = "green", rotation = 20)
 
 plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
-stereoplot_guides(d = 15, earea = TRUE, col = 'orange', rotation = 90)
+stereoplot_guides(d = 15, earea = TRUE, col = "orange", rotation = 90)
 }
 \seealso{
 \code{\link[=stereoplot]{stereoplot()}}, \code{\link[=stereoplot_frame]{stereoplot_frame()}}, \code{\link[=stereoplot_ticks]{stereoplot_ticks()}}
