@@ -171,6 +171,9 @@ transform_linear(line1, trans_mat)
 To find k clusters of orientation vectors:
 
 ```{r cluster}
+#| fig.alt: >
+#|   Stereoplot showing the the cluster result of an example dataset
+
 # generate some random vectors:
 set.seed(20250411)
 x1 <- rvmf(100, mu = Line(90, 0), k = 20)

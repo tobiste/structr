@@ -36,6 +36,9 @@ lines <- Line(example_lines$trend, example_lines$plunge)
 Lambert equal area, lower hemisphere projection is the default plotting setting.
 
 ```{r stereo_earea}
+#| fig.alt: >
+#|   Diagram showing the equal-area Lambert projection of some example data
+#|   
 stereoplot()
 points(lines, col = "#B63679", pch = 19, cex = .5)
 points(planes, col = "#000004", pch = 1, cex = .5)
@@ -46,6 +49,9 @@ title(main = "Example data", sub = "Lambert equal area, lower hemisphere project
 To change to equal angle stereographic, upper hemisphere projection
 
 ```{r stereo_eangle}
+#| fig.alt: >
+#|   Diagram showing the equal-angle stereographic projection of some example data
+
 stereoplot(earea = FALSE)
 points(lines, col = "#B63679", pch = 19, cex = .5, earea = FALSE, upper.hem = TRUE)
 points(planes, col = "#000004", pch = 1, cex = .5, earea = FALSE, upper.hem = TRUE)
@@ -56,6 +62,8 @@ title(main = "Example data", sub = "Equal angle stereographic, upper hemisphere 
 
 Adding great circles:
 ```{r stereo_greatcircle}
+#| fig.alt: >
+#|   Diagram showing greatcircles
 stereoplot(guides = FALSE)
 lines(planes, col = "lightgrey", lty = 1)
 points(planes, col = "#000004", pch = 1, cex = .5)
@@ -92,7 +100,9 @@ c(
 
 
 ```{r stat_plot, message=FALSE,warning=FALSE}
-stereoplot(guides = FALSE)
+#| fig.alt: >
+#|   Diagram showing statistical results of some example data plotted in an 
+#|   equal-area projection
 points(lines, col = "lightgrey", pch = 1, cex = .5)
 points(lines_mean, col = "#B63679", pch = 19, cex = 1)
 lines(lines_mean, ang = lines_confangle, col = "#E65164FF")
@@ -104,6 +114,9 @@ legend("topright", legend = c("Mean line", "95% confidence cone", "63% data cone
 ### Orientation tensor and eigenvectors:
 
 ```{r eigen}
+#| fig.alt: >
+#|   Diagram showing eigen-vector analysis of some example data plotted in an 
+#|   equal-area projection
 planes_eigen <- eigen(planes)
 
 stereoplot(guides = FALSE)
@@ -116,6 +129,10 @@ legend("topright", legend = c("Eigenvectors 1", "Eigenvectors 2", "Eigenvectors 
 ### Fabric plots
 
 ```{r vollmer, message=FALSE,warning=FALSE}
+#| fig.alt: >
+#|   Diagram showing eigen-vector analysis of some example data plotted in an 
+#|   triangular plot after Vollmer
+
 VollmerPlot(planes, col = "#000004", pch = 1, cex = 2)
 VollmerPlot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
@@ -123,6 +140,9 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 
 ## Density plots
 ```{r density, message=FALSE,warning=FALSE}
+#| fig.alt: >
+#|   Diagram showing the density distribution some example data plotted in an 
+#|   equal-area projection
 example_planes$quality <- ifelse(is.na(example_planes$quality), 6, example_planes$quality) # replacing NA values with 6
 plane_weightings <- 6 / example_planes$quality
 
@@ -160,6 +180,9 @@ title(
 ## Fault plots
 
 ```{r faults1}
+#| fig.alt: >
+#|   Diagram showing example fault data plotted in an 
+#|   equal-area projection 
 f <- Fault(
    c("a" = 120, "b" = 125, "c" = 100),
    c(60, 62, 50),
@@ -173,6 +196,9 @@ angelier(f, col = 1:nrow(f))
 ```
 
 ```{r faults2}
+#| fig.alt: >
+#|   Diagram showing example fault data plotted in an 
+#|   equal-area projection 
 stereoplot(title = "Hoeppner plot")
 hoeppner(f, col = 1:nrow(f))
 ```

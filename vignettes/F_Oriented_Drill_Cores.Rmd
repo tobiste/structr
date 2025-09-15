@@ -47,6 +47,9 @@ planes_AB <- drillcore_orientation(azi, inc, alpha = c(60, 45), beta = c(320, 22
 
 The orientations can be plotted in a equal area (lower hemisphere) projection:
 ```{r stereonet}
+#| fig.alt: >
+#|   Diagram showing the orientation of the drillcore in a equal-area projection
+
 # initialize stereonet:
 stereoplot()
 

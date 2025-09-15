@@ -21,6 +21,7 @@ knitr::opts_chunk$set(
 
 ```{r setup, warning=FALSE, message=FALSE}
 library(structr)
+library(ggplot2)
 ```
 
 ```{r stress}
@@ -46,7 +47,9 @@ fracture_angle(mu = 0.6)
 ```
 
 To draw the Mohr circle:
-```{r mohr1}
+```{r mohr1, message=FALSE, warning=FALSE}
+#| fig.alt: >
+#|   Diagram showing the stress state at some point including the Mohr circle
 ggMohr(sigma1 = s1, sigma2 = s2, sigma3 = s3, unit = 'MPa') +
   theme_classic()
 ```
