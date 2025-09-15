@@ -1,4 +1,5 @@
 url: https://tobiste.github.io/structr/
 template:
   bootstrap: 5
-
+  bslib:
+    danger: "#A6081A"
