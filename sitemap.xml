@@ -13,8 +13,8 @@
 <url><loc>https://tobiste.github.io/structr/authors.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/index.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/Fault_components.html</loc></url>
-<url><loc>https://tobiste.github.io/structr/reference/MohrCircle_calc.html</loc></url>
-<url><loc>https://tobiste.github.io/structr/reference/MohrCircle_plot.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/Mohr_calc.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/Mohr_plot.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/PR_stress.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/Plane_from_apparent_dips.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/Plane_pitch.html</loc></url>
@@ -88,6 +88,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/stereoplot_ticks.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/strabo.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/strain_shape.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/stress-comp.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/structr.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/tauMax.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/text.spherical.html</loc></url>
