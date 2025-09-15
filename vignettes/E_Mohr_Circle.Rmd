@@ -47,5 +47,6 @@ fracture_angle(mu = 0.6)
 
 To draw the Mohr circle:
 ```{r mohr1}
-ggMohr(sigma1 = s1, sigma2 = s2, sigma3 = s3, unit = 'MPa')
+ggMohr(sigma1 = s1, sigma2 = s2, sigma3 = s3, unit = 'MPa') +
+  theme_classic()
 ```

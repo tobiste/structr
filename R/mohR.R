@@ -62,7 +62,7 @@ fracture_angle <- function(mu) {
 #' Determines the principal stresses and their orientations from the stress
 #' components \deqn{sigma_x}, \deqn{\sigma_y}, \deqn{\tau_{xy}}.
 #'
-#' @inheritParams MohrCircle_calc
+#' @inheritParams Mohr_calc
 #' @param sigmaY numeric. Magnitude of normal stress acting on plane facing in Y direction
 #' (\deqn{\sigma_y}).
 #' @param tauXY numeric. Magnitude of shear stress acting on planes facing X and Y
@@ -93,7 +93,7 @@ PR_stress <- function(sigmaX, sigmaY, tauXY) {
 #'
 #' calculates the magnitudes of the normal stress and the shear stress
 #'
-#' @inheritParams MohrCircle_calc
+#' @inheritParams Mohr_calc
 #' @returns A two-element list containing
 #' \describe{
 #' \item{\code{"normal"}}{normal stress on an inclined plane}
@@ -162,12 +162,12 @@ sigmaTrans <- function(theta, sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA,
 #'          as the angle of inclination above the horizontal.  If `"theta"` is entered in conjunction
 #'          with the principal stresses, then it is interpreted as the angle of inclination above the
 #'          major principal plane.
-#' @seealso [MohrCircle_plot()]
+#' @seealso [Mohr_plot()]
 #' @author Kyle Elmy and Jim Kaklamanos
 #' @export
 #' @examples
-#' MohrCircle_calc(sigmaX = 80, sigmaZ = 120, tauXZ = 20)
-MohrCircle_calc <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, sigma3 = NA,
+#' Mohr_calc(sigmaX = 80, sigmaZ = 120, tauXZ = 20)
+Mohr_calc <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, sigma3 = NA,
                             theta = seq(from = 0, to = 180, by = 1)) {
   ##  Calculate normal and shear stresses
   stress.vec <- sapply(
@@ -199,7 +199,7 @@ MohrCircle_calc <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, s
 #'
 #' plots the Mohr Circle
 #'
-#' @inheritParams MohrCircle_calc
+#' @inheritParams Mohr_calc
 #' @param unit character. The unit used for magnitude of stress (`"MPa"` by default).
 #' @param col color for Mohr circle.
 #' @param ... optional graphical parameters.
@@ -208,13 +208,13 @@ MohrCircle_calc <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, s
 #' \item{`"sigmaX"`, `"sigmaZ"`, `"tauXZ"`}
 #' \item{`"sigma1"`, `"sigma3"`}
 #' }
-#' @seealso [MohrCircle_calc()], [ggMohr()]
+#' @seealso [Mohr_calc()], [ggMohr()]
 #' @author Kyle Elmy and Jim Kaklamanos
 #' @export
 #' @examples
-#' MohrCircle_plot(sigmaX = 80, sigmaZ = 120, unit = "kPa", tauXZ = 20, col = '#B63679', lwd = 2)
-#' MohrCircle_plot(sigma1 = 1025, sigma3 = 250, col = '#B63679', lwd = 2)
-MohrCircle_plot <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, sigma3 = NA,
+#' Mohr_plot(sigmaX = 80, sigmaZ = 120, unit = "kPa", tauXZ = 20, col = '#B63679', lwd = 2)
+#' Mohr_plot(sigma1 = 1025, sigma3 = 250, col = '#B63679', lwd = 2)
+Mohr_plot <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, sigma3 = NA,
                             unit = "MPa", col = 'black', ...) {
   ##  Calculate normal and shear stresses
   theta <- seq(from = 0, to = 180, by = 1)
@@ -247,7 +247,7 @@ MohrCircle_plot <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, s
 #'
 #' calculates the magnitudes and directions of the principal stresses \eqn{\sigma_1} and \eqn{\sigma_3}
 #
-#' @inheritParams MohrCircle_calc
+#' @inheritParams Mohr_calc
 #' @returns A four-element list containing
 #' \describe{
 #' \item{`"sigma1"`}{magnitude of major principal stress}
@@ -281,7 +281,7 @@ sigma13 <- function(sigmaX, sigmaZ, tauXZ) {
 #'
 #' calculates the magnitude and direction of the maximum in-plane shear stress
 #'
-#' @inheritParams MohrCircle_calc
+#' @inheritParams Mohr_calc
 #' @returns A two-element list containing
 #' \describe{
 #' \item{`"tauMax"`}{maximum in-plane shear stress}
@@ -311,6 +311,8 @@ tauMax <- function(sigmaX, sigmaZ, tauXZ) {
 #' @param sigma1,sigma2,sigma3 numeric. Magnitudes of major, intermediate, and minor principal stresses
 #' @param fill fill color of Mohr circle
 #' @param alpha opacity of Mohr circle
+#' 
+#' @seealso [Mohr_plot()]
 #'
 #' @export
 #' @import ggplot2

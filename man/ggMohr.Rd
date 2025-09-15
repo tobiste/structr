@@ -34,3 +34,6 @@ Plot Mohr Circle in ggplots
 \examples{
 ggMohr(1025, 400, 250)
 }
+\seealso{
+\code{\link[=Mohr_plot]{Mohr_plot()}}
+}

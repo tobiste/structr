@@ -16,24 +16,26 @@ for structural geology. You can
   (including, stereographic projections, contouring, fabric plots, and
   statistics),
 
-- cluster analysis of orientation data
+- do a cluster analysis of orientation data,
 
 - analyze stress (including visualization of the magnitudes of stress in
   the **Mohr circle** and extracting the maximum horizontal stress of a
   3D stress tensor),
 
 - reconstruct the orientation of structures in oriented drill cores
-  using the alpha, beta, and gamma angles, and
+  using the alpha, beta, and gamma angles,
 
-- calculate fault displacement components
+- calculate fault displacement components,
 
 - reconstruct orientation and magnitudes using fault-slip inversion
-  (**Paleostress analysis**)
+  (**Paleostress analysis**),
 
 - contour geologic fabric and finite strain data (**R<sub>f</sub>/ϕ**)
-  on the unit hyperboloid
+  on the unit hyperboloid,
 
-- perform vorticity analysis using the **Rigid Grain Net** method
+- perform vorticity analysis using the **Rigid Grain Net** method, and
+
+- directly import your field data from **StraboSpot**.
 
 ## Installation
 
