@@ -7,7 +7,7 @@
 stereo_arrows(
   x,
   sense,
-  scale = 0.05,
+  scale = 0.1,
   angle = 10,
   length = 0.1,
   upper.hem = FALSE,
@@ -22,7 +22,7 @@ stereo_arrows(
 \code{1}or \code{-1} for normal or thrust offset, respectively. The "sense" is the sign
 of the fault's rake (see \code{\link[=Fault_from_rake]{Fault_from_rake()}} for details).}
 
-\item{scale}{numeric. Scales the length of the vector. \code{0.05} by default}
+\item{scale}{numeric. Scales the length of the vector. \code{0.1} by default}
 
 \item{angle}{numeric. Angle from the shaft of the arrow to the edge of the arrow head.}
 

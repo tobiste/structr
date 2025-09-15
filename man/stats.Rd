@@ -16,11 +16,11 @@
 \usage{
 \method{mean}{spherical}(x, w = NULL, na.rm = TRUE)
 
-sd(x, ...)
+sd(x, na.rm = TRUE, ...)
 
 \method{sd}{spherical}(x, w = NULL, na.rm = TRUE)
 
-var(x, ...)
+var(x, na.rm = TRUE, ...)
 
 \method{var}{spherical}(x, w = NULL, na.rm = TRUE)
 

@@ -50,7 +50,7 @@
 #' points(my_planes, col = "grey", pch = 16, cex = .5)
 #' contour(my_planes, add = TRUE, weights = wp)
 #' points(my_planes_eig$vectors[3, ], col = "black", pch = 16)
-#' lines(my_planes_eig$vectors[3, ], d = 90, col = "black", pch = 16)
+#' lines(my_planes_eig$vectors[3, ], ang = 90, col = "black", pch = 16)
 #' title(
 #'   main = "Planes",
 #'   sub = paste0(

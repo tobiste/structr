@@ -19,13 +19,13 @@
 \usage{
 vector_length(x)
 
-crossprod(x, ...)
+crossprod(x, y, ...)
 
-\method{crossprod}{spherical}(x, y = NULL)
+\method{crossprod}{spherical}(x, y = NULL, ...)
 
 \method{\%*\%}{spherical}(x, y)
 
-rotate(x, ...)
+rotate(x, rotaxis, rotangle)
 
 \method{rotate}{spherical}(x, rotaxis, rotangle)
 

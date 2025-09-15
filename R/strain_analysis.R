@@ -431,7 +431,10 @@ vorticity_boot <- function(B, R = 100, probs = 0.975){
 #'
 #' @examples
 #' data(ramsay)
-#' ramsay[, 2] <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2] # assuming the mean orientation resembles the foliation
+#' 
+#' # assuming the mean orientation resembles the foliation:
+#' ramsay[, 2] <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2] 
+#' 
 #' RGN_plot(ramsay, col = 'darkred')
 RGN_plot <- function(x, angle_error = 3, boot = 100L, probs = 0.972, grid = 0.05, ...){
   R_val <- x[, 1]
@@ -502,7 +505,7 @@ RGN_plot <- function(x, angle_error = 3, boot = 100L, probs = 0.972, grid = 0.05
   
   invisible(
     list(
-      values = cbind(B = B, theta = theta),
+      values = cbind(B = B_val, theta = theta),
       Rc_CI = c(geo.lowerCI, geo.upperCI)
     )
   )

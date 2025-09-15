@@ -73,7 +73,7 @@ position and infinitely rotating porphyroclasts.
 This threshold can be interpreted as the the **mean kinmatic vorticity number**.
 Here the `Rc` is estimated using the bootstrap method described in Stephan et al. (2025).
 
-```{r vorticity}
+```{r vorticity, message=FALSE, warning=FALSE}
 ramsay_shift <- ramsay
 ramsay_shift[, 2] <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2] # assuming the mean orientation resembles the foliation
 

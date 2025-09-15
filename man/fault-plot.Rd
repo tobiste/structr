@@ -9,9 +9,19 @@
 \usage{
 fault_plot(x, type = c("angelier", "hoeppner"), ...)
 
-hoeppner(x, ...)
+hoeppner(x, pch = 1, col = "black", cex = 1, bg = NULL, points = TRUE, ...)
 
-angelier(x, ...)
+angelier(
+  x,
+  pch = 1,
+  lwd = 1,
+  lty = 1,
+  col = "black",
+  cex = 1,
+  points = TRUE,
+  bg = NULL,
+  ...
+)
 }
 \arguments{
 \item{x}{\code{"Fault"} object}
@@ -19,6 +29,10 @@ angelier(x, ...)
 \item{type}{character. One of \code{"angelier"} (for "Angelier plot") or \code{"hoeppner"} (for "Hoeppner plot"). See details.}
 
 \item{...}{arguments passed to \code{\link[=stereo_arrows]{stereo_arrows()}}}
+
+\item{points}{logical. Whether the lineation points (Angelier plot) or poles (Hoeppner plot) should be added to the plot}
+
+\item{lty, lwd, cex, pch, col, bg}{plotting parameters}
 }
 \value{
 Plot
@@ -41,11 +55,10 @@ f <- Fault(
 )
 
 stereoplot(title = "Angelier plot")
-angelier(f, col = 1:nrow(f))
-
+angelier(f, col = 1:nrow(f), pch = 16, scale = 0.1)
 
 stereoplot(title = "Hoeppner plot")
-hoeppner(f, col = 1:nrow(f))
+hoeppner(f, col = 1:nrow(f), cex = 1, scale = 0.1, points = FALSE)
 }
 \references{
 Angelier, J. Tectonic analysis of fault slip data sets, J. Geophys. Res. 89 (B7), 5835-5848 (1984)

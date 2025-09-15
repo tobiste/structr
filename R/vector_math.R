@@ -80,14 +80,14 @@ vcross <- function(x, y) {
 #' @rdname vecmath
 #' @export
 # #' @keywords internal
-crossprod <- function(x, ...) UseMethod("crossprod")
+crossprod <- function(x, y, ...) UseMethod("crossprod")
 
 #' @export
-crossprod.default <- function(x, ...) base::crossprod(x, ...)
+crossprod.default <- function(x, y, ...) base::crossprod(x, y, ...)
 
 #' @rdname vecmath
 #' @export
-crossprod.spherical <- function(x, y = NULL) {
+crossprod.spherical <- function(x, y = NULL, ...) {
   xv <- Vec3(x) |> unclass()
   if (is.null(y)) yv <- xv else yv <- Vec3(y) |> unclass()
 
@@ -128,7 +128,7 @@ vrotate <- function(x, rotaxis, rotangle) {
 
 #' @export
 #' @rdname vecmath
-rotate <- function(x, ...) UseMethod("rotate")
+rotate <- function(x, rotaxis, rotangle) UseMethod("rotate")
 
 #' @export
 rotate.default <- function(x, rotaxis, rotangle) vrotate(x, rotaxis, rotangle)

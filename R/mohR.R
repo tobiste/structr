@@ -316,10 +316,10 @@ ggMohr <- function(sigma1, sigma2, sigma3, coulomb = c(70, 0.6), sliding = 0.81,
     geom_line(aes(x = c(circle13.m, sigma_n), y = c(0, sigma_s)), lty = 3) +
     geom_hline(yintercept = 0, alpha = .2) +
     geom_vline(xintercept = 0, alpha = .2) +
-    geom_text(aes(x = (s1 + s3) / 2, y = 0), label = expression(sigma["m"]), vjust = -.5, hjust = -1) +
-    geom_text(aes(x = s3, y = 0), label = expression(sigma[3]), vjust = -.5, hjust = -1) +
-    geom_text(aes(x = s2, y = 0), label = expression(sigma[2]), vjust = -.5, hjust = -1) +
-    geom_text(aes(x = s1, y = 0), label = expression(sigma[1]), vjust = -.5, hjust = -1) +
+    geom_text(aes(x = (s1 + s3) / 2, y = 0), label = "sigma['m']", vjust = -.5, hjust = -1, parse = TRUE) +
+    geom_text(aes(x = s3, y = 0), label = "sigma[3]", vjust = -.5, hjust = -1, parse = TRUE) +
+    geom_text(aes(x = s2, y = 0), label = "sigma[2]", vjust = -.5, hjust = -1, parse = TRUE) +
+    geom_text(aes(x = s1, y = 0), label = "sigma[1]", vjust = -.5, hjust = -1, parse = TRUE) +
     coord_fixed() +
     labs(x = bquote(sigma[n] ~ (.(units))), y = bquote(sigma[s] ~ (.(units))), caption = bquote(theta[f] == .(round(theta.f, 2)) ~ alpha[f] == .(round(90 - theta.f, 2)))) +
     theme_classic()
