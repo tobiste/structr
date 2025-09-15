@@ -1,25 +1,59 @@
+
+
+#' Stress components
+#' 
+#' Calculates some stress components 
+#'
+#' @param s1,s3 numeric. Magnitudes of maximum and minimum principal stress (\eqn{\sigma_1} and \eqn{\sigma_3}), respectively. 
+#' @param theta numeric. Angle \eqn{\theta} between fracture and \eqn{\sigma_1}. 
+#' @param mu numeric. Coefficient of internal friction \eqn{\mu}.
+#'
+#' @returns numeric
+#' @name stress-comp
+#'
+#' @examples
+#' s1 <- 1025
+#' s3 <- 250
+#' 
+#' diff_stress(s1, s3)
+#' mean_stress(s1, s3)
+#' shear_stress(s1, s3, theta = 35)
+#' normal_stress(s1, s3, theta = 35)
+#' fracture_angle(mu = 0.6)
+NULL
+
+#' @rdname stress-comp
+#' @export
 diff_stress <- function(s1, s3) {
   stopifnot(s1 >= s3)
   s1 - s3
 }
 
+#' @rdname stress-comp
+#' @export
 mean_stress <- function(s1, s3) {
   stopifnot(s1 >= s3)
   (s1 + s3) / 2
 }
 
+#' @rdname stress-comp
+#' @export
 shear_stress <- function(s1, s3, theta) {
   stopifnot(s1 >= s3)
   diff_stress(s1, s3) / 2 * sind(2 * theta)
 }
 
+#' @rdname stress-comp
+#' @export
 normal_stress <- function(s1, s3, theta) {
   stopifnot(s1 >= s3)
   mean_stress(s1, s3) - diff_stress(s1, s3) / 2 * cosd(2 * theta)
 }
 
-theta <- function(phi) {
-  (90 + atand(phi)) / 2
+#' @rdname stress-comp
+#' @export
+fracture_angle <- function(mu) {
+  (90 + atand(mu)) / 2
 }
 
 
@@ -293,7 +327,7 @@ ggMohr <- function(sigma1, sigma2, sigma3, coulomb = c(70, 0.6), sliding = 0.81,
   circle23.m <- mean_stress(s2, s3)
 
   if (!is.null(coulomb)) {
-    theta.f <- theta(coulomb[2]) # (90 + tectonicr:::atand(coulomb[2]))/2
+    theta.f <- fracture_angle(coulomb[2]) # (90 + tectonicr:::atand(coulomb[2]))/2
   } else {
     theta.f <- 0
   }

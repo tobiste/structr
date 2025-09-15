@@ -23,3 +23,29 @@ knitr::opts_chunk$set(
 library(structr)
 ```
 
+```{r stress}
+s1 <- 1025
+s2 <- 400
+s3 <- 250
+ 
+# Differential stress
+diff_stress(s1, s3)
+
+# Mean stress
+mean_stress(s1, s3)
+
+# Shear stress at given angle
+shear_stress(s1, s3, theta = 35)
+
+# Normal stress at given angle
+normal_stress(s1, s3, theta = 35)
+
+
+# Angle of fracture for given coefficient of internal friction
+fracture_angle(mu = 0.6)
+```
+
+To draw the Mohr circle:
+```{r mohr1}
+ggMohr(sigma1 = s1, sigma2 = s2, sigma3 = s3, unit = 'MPa')
+```

@@ -40,7 +40,7 @@ Rf/phi plot
 image(out$x, out$y, out$z, asp = ifelse(out$proj != 'rfp', 1, NA),
   ylim = c(1, out$rmax),
   xlab = bquote(varphi*' ('*degree*')'), ylab = bquote(R[f]),
-  main = out$proj, 
+  main = 'Rf/phi plot', 
  col = viridis::viridis(50)
  )
 contour(out$x, out$y, out$z, add = TRUE, lwd = .5)
@@ -60,7 +60,7 @@ plot(out2$x, y = out2$y, 'n', xlab = NULL, ylab = NULL, asp = 1, axes = FALSE, a
 graphics::.filled.contour(out2$x, out2$y, out2$z, levels = levels, col = cols)
 # points(out2$points, col = "grey", cex = .5)
 lines( out2$frame, lwd = 2)
-title(main = out2$proj)
+title(main = 'Elliot plot')
 ```
 
 ## Vorticity analysis
@@ -77,5 +77,6 @@ Here the `Rc` is estimated using the bootstrap method described in Stephan et al
 ramsay_shift <- ramsay
 ramsay_shift[, 2] <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2] # assuming the mean orientation resembles the foliation
 
-RGN_plot(ramsay, col = 'darkred')
+RGN_plot(ramsay_shift, col = "#B63679")
+title(main = 'Rigid Grain Net')
 ```
