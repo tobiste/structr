@@ -1,0 +1,64 @@
+---
+title: "7. Mohr Circle"
+author: "Tobias Stephan"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{7. Strain Analysis}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, warning=FALSE, message=FALSE}
+library(structr)
+```
+
+Import some R-phi data
+```{r data}
+data(ramsay)
+head(ramsay)
+```
+
+Calculate densities in Rf-Phi space:
+```{r density}
+out <- hypercontour(ramsay, angfmt = "deg", proj = 'rfp')
+```
+
+
+Rf/phi plot
+```{r rphi}
+image(out$x, out$y, out$z, asp = ifelse(out$proj != 'rfp', 1, NA),
+  ylim = c(1, out$rmax),
+  xlab = bquote(varphi~'('*degree*')'), ylab = bquote(R[f]),
+  main = out$proj, 
+ col = viridis::viridis(100)
+ )
+contour(out$x, out$y, out$z, add = TRUE, lwd = .5)
+points(out$points)
+```
+
+
+Equidistant polar plot:
+```{r plot2}
+out <- hypercontour(ramsay, angfmt = "deg", proj = 'eqd')
+ 
+# calculate some colors
+levels <- pretty(range(out$z, na.rm = TRUE), 100)
+cols <- viridis::viridis(n = length(levels) - 1)
+ 
+plot(out$x, y = out$y, 'n', xlab = NULL, ylab = NULL, asp = 1, axes = FALSE, ann = FALSE)
+graphics::.filled.contour(out$x, out$y, out$z, levels = levels, col = cols)
+points(out$points)
+lines( out$frame, lwd = 2)
+title(main = out$proj)
+```

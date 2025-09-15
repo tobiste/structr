@@ -57,3 +57,20 @@
 #' data("simongomez")
 #' head(simongomez)
 "simongomez"
+
+
+
+#' R/phi data 
+#'
+#' example data set from Ramsay and Huber 1983
+#'
+#' @docType data
+#'
+#' @usage data('ramsay')
+#'
+#' @format An object of class `matrix` 
+#' @keywords datasets
+#' @examples
+#' data("ramsay")
+#' head(ramsay)
+"ramsay"

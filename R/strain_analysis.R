@@ -23,210 +23,331 @@ Rphi <- function(Rs, Ri = 1, theta) {
 
 
 
-
-
-
-
-
-
-
-
-#' Deformation Gradient Tensor
+#' Calculates densities for fabric and strain data
 #'
-#' @param Rxy,Ryz numeric. the XY and YZ strain ratio to create a strain tensor
-#' with axial stretches.Values must be greater than or equal to 1.
-#' @param p object of class `pair`
-#' @param v1,v2 objects of class `"spherical"` or three-element vector.
-#' Deformation gradient results from the rotation around axis perpendicular to
-#' both vectors to rotate `v1` to `v2`.
-#' @param axis,angle rotation axis and angle, axis can be an object of class
-#' `"spherical"` (incl. `"line"` and `"plane"`) or a three-element vector. Angle in
-#' degrees when axis is a object of class `"spherical"`, and radians otherwise.
-#' @param xx,xy,xz,yx,yy,yz,zx,zy,zz numeric. Directly specify components of
-#' the tensor. Identity matrix by default.
+#' Densities in hyperbaloidal projections of geological fabric and
+#' finite strain data density calculations done on the unit hyperbaloid
+#' (Vollmer, 2018). Options are given for equidistant (Elliott), equal-area,
+#' stereographic, orthographic, exponential, and radial projections, as polar
+#' azimuthal or cylindrical (cartesian, RfPhi-type) plots.
 #'
-#' @return 3x3 matrix.
-#' @name defgrad
+#' @param rphi matrix with two  named columns representing the `R` and `phi` values
+#' @param rmax maximum R value (if `NULL`, computed automatically)
+#' @param kappa smoothing parameter
+#' @param nnodes grid resolution. higher is more accurate but slower, 30 is good, but 50 is recommended for final plots, default = 50.
+#' @param angfmt character. Angle format, `'deg'` for degree, `'rad'` for radians, and `'grd'` for gradians.
+#' @param proj character. Projection,  `'eqd'` for equidistant (Elliot plot),
+#' `'eqa'` for equal-area, `'stg'` for stereographic, `'ort'` for orthographic,
+#' `'gno'` for gnomonic, `'lin'` for exponential (linear R), `'rdl'` for radial,
+#' `'rfp'` for Rf/phi (cylindrical instead of polar).
+#' @param normalize logical.
+#'
+#' @return list with:
+#'   - x, y: vectors of the projection coordinates for the density grid
+#'   - z: density matrix
+#'   - points: projected data points
+#'   - frame: plot frame (circle or square)
+#'
+#' @details
+#' The data must be in a comma delimited csv text file with one (R, phi) pair
+#' per line, where R = strain ratio (max/min), phi = orientation of long (max)
+#' axis from x. Contours are equally spaced over the probability density
+#' distribution.
+#'
+#' @references
+#' Vollmer, F.W., 2018. Automatic contouring of geological fabric and finite
+#' strain data on the unit hyperboloid. Computers & Geosciences,
+#' https://doi.org/10.1016/j.cageo.2018.03.006
 #'
 #' @examples
-#' defgrad_from_ratio(2, 3)
-#' defgrad_from_axisangle(Line(120, 30), 45)
-#' defgrad_from_vectors(Line(120, 30), Line(210, 60))
-#' defgrad_from_pair(Pair(40, 20, 75, 16))
-NULL
-
-#' @rdname defgrad
-#' @export
-defgrad_from_ratio <- function(Rxy = 1, Ryz = 1) {
-  stopifnot(Rxy >= 1, Ryz >= 1)
-  A <- diag(3)
-  y <- (Ryz / Rxy)**(1 / 3)
-  A * c(y * Rxy, y, y / Ryz)
-}
-
-#' @rdname defgrad
-#' @export
-defgrad_from_pair <- function(p) {
-  stopifnot(is.Pair(p))
-  pl <- Line(p[, 3], p[, 4]) |> Vec3()
-  pp <- Plane(p[, 1], p[, 2]) |> Vec3()
-
-  D <- rbind(
-    pl,
-    crossprod(pp, pl),
-    pp
-  )
-  rownames(D) <- colnames(D) <- NULL
-  t(D)
-}
-
-# defgrad_from_pairs <- function(p1, p2, symmetry = FALSE) {
-#   p1l <- Line(p1[3], p1[4]) |> to_vec()
-#   p1p <- Plane(p1[1], p1[2]) |> plane2vec()
-#   p2l <- Line(p2[3], p2[4]) |> to_vec()
-#   p2p <- Plane(p2[1], p2[2]) |> plane2vec()
-#
-#   R4 <- rbind(
-#     Pair(p2p, p2l) %*% (p1),
-#     Pair(-p2p, p2l) %*% (p1),
-#     Pair(p2p, -p2l) %*% (p1),
-#     Pair(-p2p, -p2l) %*% (p1)
-#   )
-# }
-
-#' @rdname defgrad
-#' @export
-defgrad_from_vectors <- function(v1, v2) {
-  v1 <- Vec3(v1)
-  v2 <- Vec3(v2)
-
-  defgrad_from_axisangle(
-    axis = crossprod(v1, v2),
-    angle = angle(v1, v2) #* 180 / pi
-  )
-}
-
-#' @rdname defgrad
-#' @export
-defgrad_from_axisangle <- function(axis, angle) {
-  isvec3 <- is.Vec3(axis)
-  if (!isTRUE(isvec3)) {
-    axis <- Vec3(axis)
-    angle <- deg2rad(angle)
+#' data(ramsay)
+#' out <- hypercontour(ramsay, angfmt = "deg", proj = 'rfp')
+#'
+#' image(out$x, out$y, out$z,s asp = ifelse(out$proj != 'rfp', 1, NA),
+#'  ylim = c(1, out$rmax),
+#'  xlab = bquote(varphi~'('*degree*')'), ylab = 'R',
+#'  main = out$proj, 
+#' col = viridis::viridis(100)
+#' )
+#' contour(out$x, out$y, out$z, add = TRUE, lwd = .5)
+#' points(out$points)
+#'
+#'
+#' out <- hypercontour(ramsay, angfmt = "deg", proj = 'eqa')
+#' levels <- pretty(range(out$z, na.rm = TRUE), 100)
+#' cols <- viridis::viridis(n = length(levels) - 1)
+#' plot(out$x, y = out$y, 'n', xlab = NULL, ylab = NULL, asp = 1, axes = FALSE, ann = FALSE)
+#' graphics::.filled.contour(out$x, out$y, out$z, levels = levels, col = cols)
+#' points(out$points)
+#' lines( out$frame, lwd = 2)
+#' title(main = out$proj)
+hypercontour <- function(rphi,
+                         angfmt = c("deg", "rad", "grd"),
+                         proj = c("eqd", "eqa", "stg", "ort", "gno", "lin", "rdl", "rfp"),
+                         normalize = TRUE,
+                         rmax = NULL, kappa = 40, nnodes = 50L) {
+  angfmt <- match.arg(angfmt)
+  proj <- match.arg(proj)
+  
+  rphi <- cbind(R = rphi[, 'R'], phi = rphi[, 'phi'])
+  
+  frame <- .drawFrame(TRUE, proj)
+  
+  if (is.null(rmax)) {
+    rmax <- ceiling(max(rphi[, 1])) + 1
   }
-
-  x <- axis[1, 1]
-  y <- axis[1, 2]
-  z <- axis[1, 3]
-
-
-  c <- sin(angle)
-  s <- cos(angle)
-  xs <- x * s
-  ys <- y * s
-  zs <- z * s
-
-  xc <- x * (1 - c)
-  yc <- y * (1 - c)
-  zc <- z * (1 - c)
-  xyc <- x * yc
-  yzc <- y * zc
-  zxc <- z * xc
-
-  rbind(
-    c(x * xc + c, xyc - zs, zxc + ys),
-    c(xyc + zs, y * yc + c, yzc - xs),
-    c(zxc - ys, yzc + xs, z * zc + c)
-  )
-}
-
-#' @rdname defgrad
-#' @export
-defgrad_from_comp <- function(xx = 1, xy = 0, xz = 0, yx = 0, yy = 1, yz = 0,
-                              zx = 0, zy = 0, zz = 1) {
-  rbind(
-    c(xx, xy, xz),
-    c(yx, yy, yz),
-    c(zx, zy, zz)
-  )
-}
-
-
-
-#' Velocity gradient and Deformation gradient tensors
-#'
-#' Calculates the velocity gradient tensor as the matrix logarithm  of the
-#' deformation gradient tensor divided by given time, and
-#' the deformation gradient tensor accumulated after some time.
-#'
-#' @param R 3x3 matrix. Deformation gradient tensor.
-#' @param V 3x3 matrix. Velocity gradient tensor.
-#' @param time numeric. Total time (default is 1)
-#' @param steps numeric. Time increments (default is 1)
-#'
-#' @name gradient
-#'
-#' @return 3x3 matrix. If steps is > 1, then a list
-#' of matrices is returned.
-#'
-#' @importFrom expm logm expm
-#'
-#' @examples
-#' D <- defgrad_from_comp(xx = 2, xy = 1, zz = 0.5)
-#' L <- velgrad_from_defgrad(D, time = 10)
-#' L
-#' defgrad_from_velgrad(L, time = 10, steps = 2)
-NULL
-
-#' @rdname gradient
-#' @export
-velgrad_from_defgrad <- function(R, time = 1) {
-  # L = pracma::logm(R) / time
-  expm::logm(R) / time
-}
-
-#' @rdname gradient
-#' @export
-defgrad_from_velgrad <- function(V, time = 1, steps = 1) {
-  if (steps > 1) {
-    R <- list()
-    t <- seq(0, time, steps)
-    for (i in t) {
-      Ri <- structure(expm::expm(V * i), class = "defgrad")
-      Ri <- list(Ri)
-      names(Ri) <- i
-      R <- append(R, Ri)
-    }
+  
+  # convert angles
+  f <- switch(angfmt,
+              "deg" = pi / 180, # degrees
+              "grd" = pi / 200, # gradians
+              "rad" = pi
+  ) # radians
+  rphi[, 'phi'] <- rphi[, 'phi'] * f
+  
+  points <- .Rphi2xy(rphi[, 'R'], rphi[, 'phi'], rmax = rmax, proj = proj)
+  
+  grd <- gridHyper(rphi, rmax = rmax, kappa = kappa, nnodes = nnodes, normalize = normalize, proj = proj)
+  
+  x <- seq(-1, 1, length.out = nnodes)
+  y <- seq(-1, 1, length.out = nnodes)
+  z <- grd
+  
+  if(proj == 'rfp'){
+    # xy <- .xy2Rphi(x, y, rmax=rmax, proj = 'rfp')
+    x <- (x * pi/2) / f
+    y <- .scale(y, to = c(0, rmax))
+    #
+    frame[, 'x'] <- (frame[, 'x'] * pi/2) / f
+    frame[, 'y'] <- .scale(frame[, 'y'], to = c(0, rmax))
+    #
+    # points <- .xy2Rphi(points[, 1], points[, 2], rmax, proj='rfp')
+    
+    points <- cbind(x = rphi[, 'phi']/f, y = rphi[, 'R'])
+    #points[, 'phi'] <- points[, 'phi'] / f
   } else {
-    R <- structure(expm::expm(V * time), class = "defgrad")
+    xy <- expand.grid(x, y)
+    r <- 1
+    r2 <- r * r
+    mask <- xy[, 1]^2 + xy[, 2]^2 > r2
+    z[mask] <- NA
   }
-  R
+  
+  return(list(
+    x = x,
+    y = y,
+    z = z,
+    frame = frame,
+    points = points,
+    proj = proj,
+    rmax = rmax
+  ))
+}
+
+.scale <- function(x, from = range(x), to){
+  original_min <- from[1]
+  original_max <- from[2]
+  
+  target_min <- to[1]
+  target_max <- to[2]
+  
+  target_min + (x - original_min) * (target_max - target_min) / (original_max - original_min)
 }
 
 
-#' Rate and spin of velocity gradient tensor
-#'
-#' @param x 3x3 matrix. Velocity gradient tensor.
-#'
-#' @return 3x3 matrix
-#'
-#' @name vel_rate
-#'
-#' @examples
-#' R <- defgrad_from_comp(xx = 2, xy = 1, zz = 0.5)
-#' L <- velgrad_from_defgrad(R, time = 10)
-#' velgrad_rate(L)
-#' velgrad_spin(L)
-NULL
-
-#' @rdname vel_rate
-#' @export
-velgrad_rate <- function(x) {
-  (x + t(x)) / 2
+.R2zeta <- function(r, proj) {
+  switch(as.character(proj),
+         "eqd" = log(r),
+         "eqa" = sqrt(r) - 1 / sqrt(r),
+         "stg" = {
+           t <- sqrt(r)
+           s <- 1 / t
+           2 * (t - s) / (t + s)
+         },
+         "ort" = 0.5 * (r - 1 / r),
+         "gno" = {
+           t <- r * r
+           (t - 1) / (t + 1)
+         },
+         "lin" = r - 1,
+         "rdl" = 0.5 * (r + 1 / r) - 1,
+         "rfp" = r,
+         stop("Unknown proj in rToZeta")
+  )
 }
 
-#' @rdname vel_rate
-#' @export
-velgrad_spin <- function(x) {
-  (x - t(x)) / 2
+
+.zeta2R <- function(z, proj) {
+  switch(as.character(proj),
+         "eqd" = exp(z),
+         "eqa" = {
+           t <- z + sqrt(z^2 + 4)
+           (t^2) / 4
+         },
+         "stg" = {
+           t <- z / 2
+           (1 + t) / (1 - t)
+         },
+         "ort" = z + sqrt(z^2 + 1),
+         "gno" = {
+           t <- 0
+           if (z < 0.99) t <- sqrt((1 + z) / (1 - z))
+           if (t < 50.001) t else 0
+         },
+         "lin" = z + 1,
+         "rdl" = {
+           t <- z + 1
+           t + sqrt(t^2 - 1)
+         },
+         "rfp" = z,
+         stop("Unknown proj in zetaToR")
+  )
 }
+
+# rPhiToXY - projects R, phi to cartesian coordinates of unit hyperbaloidal
+# projection. Maps to [-1..-1, +1..+1] to overlie unit image.
+.Rphi2xy <- function(r, phi, rmax, proj) {
+  # stopifnot(is.logical(rfp))
+  z <- .R2zeta(r, proj)
+  zm <- .R2zeta(rmax, proj)
+  s <- z / zm
+  if (proj == "rfp") {
+    p <- phi
+    p <- ifelse(p < -pi/2, p + pi, p)
+    p <- ifelse(p >= pi/2, p - pi, p)
+    x <- 2 * p / pi
+    y <- 2 * s - 1
+  } else {
+    x <- s * cos(2 * phi)
+    y <- s * sin(2 * phi)
+  }
+  
+  cbind(x = x, y = y)
+}
+
+
+# xYToRPhi - back projects cartesian coordinates of hyperbaloidal projection.
+# Not scaled from unit plot.
+.xy2Rphi <- function(x, y, rmax, proj) {
+  zm <- .R2zeta(rmax, proj)
+  if (proj == "rfp") {
+    z <- (y + zm) / 2
+    r <- .zeta2R(z, proj)
+    phi <- x * (0.5 * pi / zm)
+    if (phi < -pi/2) {
+      phi <- phi + pi
+    } else if (phi >= pi/2) phi <- phi - pi
+  } else { # polar
+    t <- sqrt(x * x + y * y)
+    r <- .zeta2R(t, proj)
+    phi <- atan2(y, x)/2
+  }
+  cbind(R = r, phi = phi)
+}
+
+# rhoPsiToH - set as a hyperbolic position vector from rho and psi. For strain
+# ellipses: rho = ln(R), psi = 2 phi. Ref: Yamaji, 2008. }
+.rhopsi2H <- function(rho, psi) {
+  s <- sinh(rho)
+  x <- cosh(rho)
+  y <- s * cos(psi)
+  z <- s * sin(psi)
+  cbind(x = x, y = y, z = z)
+}
+
+#  converts R, phi to hyperbaloidal point.
+.Rphi2H <- function(r, phi) {
+  rho <- ifelse(r < 1, 0, log(r))
+  
+  psi <- 2 * phi
+  .rhopsi2H(rho, psi)
+}
+
+# dotH - hyperbolic inner product. Ref: Yamaji, 2008, eqn 4.
+.dotH <- function(hn, H) {
+  (-hn[, 1] * H[, 1]) + (hn[, 2] * H[, 2]) + (hn[, 3] * H[, 3])
+}
+
+
+
+# gridHyper - calculate a grid for contouring.
+#   Input:
+#     rphi           = array (R, phi) ellipse axial ratios
+#     kappa          = weighting parameter
+#     nnodes         = number of grid nodes, n, in x and y
+#     opts.normalize = normalize by n
+#   Output:
+#     z              = matrix of z values at the nxn grid nodes.
+gridHyper <- function(rphi, rmax, kappa, nnodes, normalize = TRUE, proj = "eqd") {
+  n <- nrow(rphi)
+  stopifnot(n >= 2L)
+  # Pre-allocate matrix (fixes subscript OOB)
+  z <- matrix(0, nrow = nnodes, ncol = nnodes)
+  
+  s <- .R2zeta(rmax, proj)
+  dx <- (2 * s) / (nnodes - 1)
+  dy <- dx
+  f <- if (normalize) kappa / (n^(1 / 3)) else kappa
+  
+  H <- .Rphi2H(rphi[, 1], rphi[, 2])
+  
+  # Precompute grid coordinates (x_i, y_j)
+  xs <- seq(-s, s, length.out = nnodes)
+  ys <- seq(-s, s, length.out = nnodes)
+  
+  # vectorized across data points using matrix operations for inner product
+  for (i in seq_len(nnodes)) {
+    xi <- xs[i]
+    # build all y values for column i
+    for (j in seq_len(nnodes)) {
+      yj <- ys[j]
+      # back-project node to (r,phi)
+      rn_phi <- .xy2Rphi(xi, yj, rmax, proj)
+      rn <- rn_phi[, "R"]
+      pn <- rn_phi[, "phi"]
+      hn <- .Rphi2H(rn, pn)
+      hn_neg <- -hn
+      # compute dot products with all H rows in a vectorized way:
+      dvec <- .dotH(hn_neg, H) # length n
+      zsum <- sum(exp(f * (1 - dvec)))
+      z[i, j] <- zsum
+    }
+  }
+  z
+}
+
+.drawFrame <- function(frame, proj, n = 512) {
+  if (!frame) {
+    return(NULL)
+  }
+  if (proj == "rfp") {
+    data.frame(
+      x = c(-1, 1, 1, 1, 1, -1, -1, -1),
+      y = c(-1, -1, -1, 1, 1, 1, 1, -1)
+    )
+  } else {
+    t <- seq(0, 2 * pi, length.out = n)
+    data.frame(x = cos(t), y = sin(t))
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

@@ -16,6 +16,8 @@ for structural geology. You can
   (including, stereographic projections, contouring, fabric plots, and
   statistics),
 
+- cluster analysis of orientation data
+
 - analyze stress (including visualization of the magnitudes of stress in
   the Mohr circle and extracting the maximum horizontal stress of a 3D
   stress tensor),
@@ -24,6 +26,9 @@ for structural geology. You can
   using the alpha, beta, and gamma angles, and
 
 - calculate fault displacement components
+
+- contouring geologic fabric and finite strain data on the unit
+  hyperboloids
 
 ## Installation
 
@@ -43,6 +48,7 @@ on a sterographic projection.
 ``` r
 library(structr)
 library(ggplot2)
+require(mapproj)
 
 data(example_planes)
 planes <- Plane(example_planes$dipdir, example_planes$dip)

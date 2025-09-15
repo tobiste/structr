@@ -157,7 +157,8 @@ The **rotation** of a vector about another vector (rotation axis) by a specified
 ```{r math_rotate}
 rotate(line1, rotaxis = line2, rotangle = 45)
 ```
-**Linear *transformation**
+
+**Linear transformation**
 
 ```{r math_transform}
 trans_mat <- matrix(runif(9), 3, 3)

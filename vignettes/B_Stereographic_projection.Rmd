@@ -159,7 +159,7 @@ title(
 
 ## Fault plots
 
-```{f faults1}
+```{r faults1}
 f <- Fault(
    c("a" = 120, "b" = 125, "c" = 100),
    c(60, 62, 50),
@@ -172,7 +172,7 @@ stereoplot(title = "Angelier plot")
 angelier(f, col = 1:nrow(f))
 ```
 
-```{f faults2}
+```{r faults2}
 stereoplot(title = "Hoeppner plot")
 hoeppner(f, col = 1:nrow(f))
 ```
