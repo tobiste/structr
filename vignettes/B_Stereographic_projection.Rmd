@@ -103,6 +103,7 @@ c(
 #| fig.alt: >
 #|   Diagram showing statistical results of some example data plotted in an 
 #|   equal-area projection
+stereoplot(guides = FALSE)
 points(lines, col = "lightgrey", pch = 1, cex = .5)
 points(lines_mean, col = "#B63679", pch = 19, cex = 1)
 lines(lines_mean, ang = lines_confangle, col = "#E65164FF")
@@ -192,7 +193,7 @@ f <- Fault(
 )
 
 stereoplot(title = "Angelier plot")
-angelier(f, col = 1:nrow(f))
+angelier(f, col = viridis::magma(nrow(f), end = .9))
 ```
 
 ```{r faults2}
@@ -200,5 +201,5 @@ angelier(f, col = 1:nrow(f))
 #|   Diagram showing example fault data plotted in an 
 #|   equal-area projection 
 stereoplot(title = "Hoeppner plot")
-hoeppner(f, col = 1:nrow(f))
+hoeppner(f, col = viridis::magma(nrow(f), end = .9))
 ```
