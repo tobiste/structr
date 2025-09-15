@@ -9,18 +9,18 @@
 \alias{fracture_angle}
 \title{Stress components}
 \usage{
-diff_stress(s1, s3)
+diff_stress(sigma1, sigma3)
 
-mean_stress(s1, s3)
+mean_stress(sigma1, sigma3)
 
-shear_stress(s1, s3, theta)
+shear_stress(sigma1, sigma3, theta)
 
-normal_stress(s1, s3, theta)
+normal_stress(sigma1, sigma3, theta)
 
 fracture_angle(mu)
 }
 \arguments{
-\item{s1, s3}{numeric. Magnitudes of maximum and minimum principal stress (\eqn{\sigma_1} and \eqn{\sigma_3}), respectively.}
+\item{sigma1, sigma3}{numeric. Magnitudes of maximum and minimum principal stress (\eqn{\sigma_1} and \eqn{\sigma_3}), respectively.}
 
 \item{theta}{numeric. Angle \eqn{\theta} between fracture and \eqn{\sigma_1}.}
 

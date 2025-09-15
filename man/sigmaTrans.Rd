@@ -29,8 +29,8 @@ sigmaTrans(
 \value{
 A two-element list containing
 \describe{
-\item{\code{"sigma"}}{normal stress on an inclined plane}
-\item{\code{"tau"}}{shear stress on an inclined plane}
+\item{\code{"normal"}}{normal stress on an inclined plane}
+\item{\code{"shear"}}{shear stress on an inclined plane}
 }
 }
 \description{

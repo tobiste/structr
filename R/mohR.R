@@ -4,7 +4,7 @@
 #' 
 #' Calculates some stress components 
 #'
-#' @param s1,s3 numeric. Magnitudes of maximum and minimum principal stress (\eqn{\sigma_1} and \eqn{\sigma_3}), respectively. 
+#' @param sigma1,sigma3 numeric. Magnitudes of maximum and minimum principal stress (\eqn{\sigma_1} and \eqn{\sigma_3}), respectively. 
 #' @param theta numeric. Angle \eqn{\theta} between fracture and \eqn{\sigma_1}. 
 #' @param mu numeric. Coefficient of internal friction \eqn{\mu}.
 #'
@@ -24,30 +24,30 @@ NULL
 
 #' @rdname stress-comp
 #' @export
-diff_stress <- function(s1, s3) {
-  stopifnot(s1 >= s3)
-  s1 - s3
+diff_stress <- function(sigma1, sigma3) {
+  stopifnot(sigma1 >= sigma3)
+  sigma1 - sigma3
 }
 
 #' @rdname stress-comp
 #' @export
-mean_stress <- function(s1, s3) {
-  stopifnot(s1 >= s3)
-  (s1 + s3) / 2
+mean_stress <- function(sigma1, sigma3) {
+  stopifnot(sigma1 >= sigma3)
+  (sigma1 + sigma3) / 2
 }
 
 #' @rdname stress-comp
 #' @export
-shear_stress <- function(s1, s3, theta) {
-  stopifnot(s1 >= s3)
-  diff_stress(s1, s3) / 2 * sind(2 * theta)
+shear_stress <- function(sigma1, sigma3, theta) {
+  stopifnot(sigma1 >= sigma3)
+  diff_stress(sigma1, sigma3) / 2 * sind(2 * theta)
 }
 
 #' @rdname stress-comp
 #' @export
-normal_stress <- function(s1, s3, theta) {
-  stopifnot(s1 >= s3)
-  mean_stress(s1, s3) - diff_stress(s1, s3) / 2 * cosd(2 * theta)
+normal_stress <- function(sigma1, sigma3, theta) {
+  stopifnot(sigma1 >= sigma3)
+  mean_stress(sigma1, sigma3) - diff_stress(sigma1, sigma3) / 2 * cosd(2 * theta)
 }
 
 #' @rdname stress-comp
@@ -72,6 +72,9 @@ fracture_angle <- function(mu) {
 #'
 #' @references Richard J. Lisle (1999)
 #' @export
+#' 
+#' @examples
+#' PR_stress(sigmaX = 80, sigmaY = 120, tauXY = 20)
 PR_stress <- function(sigmaX, sigmaY, tauXY) {
   mean <- (sigmaX + sigmaY) / 2
   diam <- sqrt(4 * tauXY^2 + (sigmaX - sigmaY)^2)
@@ -81,7 +84,7 @@ PR_stress <- function(sigmaX, sigmaY, tauXY) {
 
   theta1 <- atan(tauXY / (s1 - sigmaY)) * 180 / pi
   return(
-    data.frame(s1 = s1, s2 = s2, theta1 = theta1)
+    data.frame(sigma1 = s1, sigma2 = s2, theta = theta1)
   )
 }
 
@@ -93,8 +96,8 @@ PR_stress <- function(sigmaX, sigmaY, tauXY) {
 #' @inheritParams MohrCircle_calc
 #' @returns A two-element list containing
 #' \describe{
-#' \item{\code{"sigma"}}{normal stress on an inclined plane}
-#' \item{\code{"tau"}}{shear stress on an inclined plane}
+#' \item{\code{"normal"}}{normal stress on an inclined plane}
+#' \item{\code{"shear"}}{shear stress on an inclined plane}
 #' }
 #' @note In addition to theta, One of the following two sets of data must be entered:
 #' \enumerate{
@@ -127,7 +130,7 @@ sigmaTrans <- function(theta, sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA,
     }
   }
 
-  return(list(sigma = sigma, tau = tau))
+  return(list(normal = sigma, shear = tau))
 }
 
 
@@ -188,7 +191,7 @@ MohrCircle_calc <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, s
     }
   }
 
-  return(list(C = C, R = R, sigma = sigma, tau = tau, theta = theta))
+  return(list(C = C, R = R, normal = sigma, shear = tau, theta = theta))
 }
 
 
@@ -197,7 +200,9 @@ MohrCircle_calc <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, s
 #' plots the Mohr Circle
 #'
 #' @inheritParams MohrCircle_calc
-#' @param metric logical variable: `TRUE` for metric units (kPa), and `FALSE` for English units
+#' @param unit character. The unit used for magnitude of stress (`"MPa"` by default).
+#' @param col color for Mohr circle.
+#' @param ... optional graphical parameters.
 #' @note One of the following two sets of data must be entered
 #' \enumerate{
 #' \item{`"sigmaX"`, `"sigmaZ"`, `"tauXZ"`}
@@ -207,9 +212,10 @@ MohrCircle_calc <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, s
 #' @author Kyle Elmy and Jim Kaklamanos
 #' @export
 #' @examples
-#' MohrCircle_plot(sigmaX = 80, sigmaZ = 120, tauXZ = 20, metric = FALSE)
+#' MohrCircle_plot(sigmaX = 80, sigmaZ = 120, unit = "kPa", tauXZ = 20, col = '#B63679', lwd = 2)
+#' MohrCircle_plot(sigma1 = 1025, sigma3 = 250, col = '#B63679', lwd = 2)
 MohrCircle_plot <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, sigma3 = NA,
-                            metric = TRUE) {
+                            unit = "MPa", col = 'black', ...) {
   ##  Calculate normal and shear stresses
   theta <- seq(from = 0, to = 180, by = 1)
   stress.vec <- sapply(
@@ -220,27 +226,26 @@ MohrCircle_plot <- function(sigmaX = NA, sigmaZ = NA, tauXZ = NA, sigma1 = NA, s
   tau <- as.numeric(stress.vec[2, ])
 
   ##  Expression for axes
-  if (metric == TRUE) {
-    xLab <- expression("Normal Stress, " * sigma * " (kPa)")
-    yLab <- expression("Shear Stress, " * tau * " (kPa)")
-  } else {
-    if (metric == FALSE) {
-      xLab <- expression("Normal Stress, " * sigma * " (psf)")
-      yLab <- expression("Shear Stress, " * tau * " (psf)")
-    }
-  }
-
-  graphics::par(mgp = c(2.8, 1, 0), las = 1)
-  plot(sigma, tau,
-    col = "black", type = "l", xlab = xLab, ylab = yLab, xaxs = "i",
-    xlim = c(min(0, min(sigma)), max(sigma) * 1.1), main = "Mohr Circle Plot", asp = 1
-  )
+    xLab <- bquote("Normal stress,"~sigma[n] ~ (.(unit)))
+    yLab <- bquote("Shear stress,"~sigma[s] ~ (.(unit)))
+  
+  plot(
+    range(sigma), range(tau),
+    type = 'n', 
+       xlab = xLab, ylab = yLab, 
+       xaxs = "i",
+       xlim = c(min(0, min(sigma)), max(sigma) * 1.1), 
+    asp = 1)
+    
   graphics::abline(h = 0)
+  graphics::ines(sigma, tau, col = col, ...)
+  graphics::points(mean(range(sigma)), 0, col = col)
+  
 }
 
 #' Principle stresses
 #'
-#' calculates the magnitudes and directions of the principal stresses S1 and S2
+#' calculates the magnitudes and directions of the principal stresses \eqn{\sigma_1} and \eqn{\sigma_3}
 #
 #' @inheritParams MohrCircle_calc
 #' @returns A four-element list containing
@@ -310,7 +315,7 @@ tauMax <- function(sigmaX, sigmaZ, tauXZ) {
 #' @export
 #' @import ggplot2
 #' @importFrom ggforce geom_circle
-#' @importFrom ggplot2 aes coord_fixed geom_abline geom_hline geom_line geom_point geom_text geom_vline ggplot labs theme_classic
+#' @importFrom ggplot2 aes coord_fixed geom_abline geom_hline geom_line geom_point geom_text geom_vline ggplot labs
 #' @examples
 #' ggMohr(1025, 400, 250)
 ggMohr <- function(sigma1, sigma2, sigma3, coulomb = c(70, 0.6), sliding = 0.81, units = "MPa", fill = "gray", alpha = .5) {
@@ -355,6 +360,6 @@ ggMohr <- function(sigma1, sigma2, sigma3, coulomb = c(70, 0.6), sliding = 0.81,
     geom_text(aes(x = s2, y = 0), label = "sigma[2]", vjust = -.5, hjust = -1, parse = TRUE) +
     geom_text(aes(x = s1, y = 0), label = "sigma[1]", vjust = -.5, hjust = -1, parse = TRUE) +
     coord_fixed() +
-    labs(x = bquote(sigma[n] ~ (.(units))), y = bquote(sigma[s] ~ (.(units))), caption = bquote(theta[f] == .(round(theta.f, 2)) ~ alpha[f] == .(round(90 - theta.f, 2)))) +
-    theme_classic()
+    labs(x = bquote("Normal stress,"~sigma[n] ~ (.(units))), y = bquote("Shear stress,"~sigma[s] ~ (.(units))), 
+         caption = bquote(theta[f] == .(round(theta.f, 2))*degree ~ alpha[f] == .(round(90 - theta.f, 2))*degree)) 
 }

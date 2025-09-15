@@ -22,6 +22,9 @@ angle in degrees
 Determines the principal stresses and their orientations from the stress
 components \deqn{sigma_x}, \deqn{\sigma_y}, \deqn{\tau_{xy}}.
 }
+\examples{
+PR_stress(sigmaX = 80, sigmaY = 120, tauXY = 20)
+}
 \references{
 Richard J. Lisle (1999)
 }

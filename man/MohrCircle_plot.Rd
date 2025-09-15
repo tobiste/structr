@@ -10,7 +10,9 @@ MohrCircle_plot(
   tauXZ = NA,
   sigma1 = NA,
   sigma3 = NA,
-  metric = TRUE
+  unit = "MPa",
+  col = "black",
+  ...
 )
 }
 \arguments{
@@ -24,7 +26,11 @@ MohrCircle_plot(
 
 \item{sigma3}{numeric. Magnitude of minor principal stress}
 
-\item{metric}{logical variable: \code{TRUE} for metric units (kPa), and \code{FALSE} for English units}
+\item{unit}{character. The unit used for magnitude of stress (\code{"MPa"} by default).}
+
+\item{col}{color for Mohr circle.}
+
+\item{...}{optional graphical parameters.}
 }
 \description{
 plots the Mohr Circle
@@ -37,7 +43,8 @@ One of the following two sets of data must be entered
 }
 }
 \examples{
-MohrCircle_plot(sigmaX = 80, sigmaZ = 120, tauXZ = 20, metric = FALSE)
+MohrCircle_plot(sigmaX = 80, sigmaZ = 120, unit = "kPa", tauXZ = 20, col = '#B63679', lwd = 2)
+MohrCircle_plot(sigma1 = 1025, sigma3 = 250, col = '#B63679', lwd = 2)
 }
 \seealso{
 \code{\link[=MohrCircle_calc]{MohrCircle_calc()}}, \code{\link[=ggMohr]{ggMohr()}}

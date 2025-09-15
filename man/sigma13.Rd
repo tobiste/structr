@@ -23,7 +23,7 @@ A four-element list containing
 }
 }
 \description{
-calculates the magnitudes and directions of the principal stresses S1 and S2
+calculates the magnitudes and directions of the principal stresses \eqn{\sigma_1} and \eqn{\sigma_3}
 }
 \examples{
 sigma13(sigmaX = 80, sigmaZ = 120, tauXZ = 20)
