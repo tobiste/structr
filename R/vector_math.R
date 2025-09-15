@@ -235,6 +235,7 @@ vreject <- function(x, y) {
 #' @rdname vecmath
 reject <- function(x, y) UseMethod("reject")
 
+#' @export
 #' @rdname vecmath
 reject.default <- function(x, y) vreject(x, y)
 

@@ -58,7 +58,7 @@ distribution.
 data(ramsay)
 out <- hypercontour(ramsay, angfmt = "deg", proj = 'rfp')
 
-image(out$x, out$y, out$z,s asp = ifelse(out$proj != 'rfp', 1, NA),
+image(out$x, out$y, out$z, asp = ifelse(out$proj != 'rfp', 1, NA),
  ylim = c(1, out$rmax),
  xlab = bquote(varphi~'('*degree*')'), ylab = 'R',
  main = out$proj, 
