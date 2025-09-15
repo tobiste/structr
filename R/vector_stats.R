@@ -185,15 +185,12 @@ mean.spherical <- function(x, w = NULL, na.rm = TRUE) {
   x_mean
 }
 
-#' @rdname stats
-#' @export
-mean <- function(x, ...) UseMethod("mean")
+# #' @rdname stats
+# #' @export
+#mean <- function(x, ...) UseMethod("mean")
 
-#' @export
-mean.default <- function(x, ...) base::mean(x, ...)
-
-#' @export
-eigen.numeric <- function(x, ...) base::mean(x, ...)
+# #' @export
+# mean.default <- function(x, ...) base::mean(x, ...)
 
 #' @rdname stats
 #' @export

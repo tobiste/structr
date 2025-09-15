@@ -3,7 +3,6 @@
 \name{stats}
 \alias{stats}
 \alias{mean.spherical}
-\alias{mean}
 \alias{sd}
 \alias{sd.spherical}
 \alias{var}
@@ -16,8 +15,6 @@
 \title{Statistical estimators of the distribution of a set of vectors}
 \usage{
 \method{mean}{spherical}(x, w = NULL, na.rm = TRUE)
-
-mean(x, ...)
 
 sd(x, ...)
 

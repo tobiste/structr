@@ -333,6 +333,184 @@ gridHyper <- function(rphi, rmax, kappa, nnodes, normalize = TRUE, proj = "eqd")
 
 
 
+mean_vorticity <- function(R) {
+  (R^2 - 1) / (R^2 + 1)
+}
+
+crit_angle <- function(w, b = w) {
+  (1 / 2) * asind(w / b) * (sqrt(1 - w^2) - sqrt(b^2 - w^2))
+}
+
+.b2r <- function(b) {
+  sqrt((-b - 1) / (b - 1))
+}
+
+shape_factor <- function(r) {
+  mean_vorticity(r)
+}
+
+.near <-function (x, y, tol = .Machine$double.eps^0.5) 
+{
+  abs(x - y) < tol
+}
+
+
+RGN_hyperbola <- function(steps = 0.05, w = seq(0.1, 1, steps/100)){
+  hyperbola_crit <- data.frame(
+    b = w, 
+    theta = crit_angle(w), 
+    r = .b2r(w)
+    )
+  
+  hyperbola_in <- expand.grid(w = w, b = w)
+  hyperbola_in$theta = crit_angle(hyperbola_in$w, hyperbola_in$b)
+  hyperbola_in$r = .b2r(hyperbola_in$b)
+  
+  hyperbola_in <- subset(hyperbola_in, !is.nan(hyperbola_in$theta) &
+           (.near(hyperbola_in$w%%steps, 0) | .near(hyperbola_in$w%%steps, steps))
+           )
+
+  res <- split(hyperbola_in, hyperbola_in$w) |> 
+    lapply(function(h){
+      hs <- subset(h, theta == max(theta) & 
+        b == min(b)
+      )
+      hs$theta <- 90
+      hs
+    })
+  
+  res2 <- rbind(hyperbola_in, do.call(rbind, res))
+  hyperbola <- res2[order(res2$w, res2$b, -res2$theta), ]
+  
+  list(hyperbola=hyperbola, crit = hyperbola_crit)
+}
+
+
+vorticity_boot <- function(B, R = 100, probs = 0.975){
+  vapply(1:R, function(r){
+    quantile(sample(B, replace = TRUE), probs = probs, na.rm = TRUE) # take the upper 97.5% quantile to remove outliers
+  }, FUN.VALUE = numeric(1))
+}
+
+
+#' Rigid Grain Net (RGN)
+#' 
+#' The rigid grain net after (Jessup et al. 2007) plots the distribution the 
+#' strain ratio (`R`) of orientation (`phi`) of 
+#' porphyroclast over the theoretical distribution of tailless clasts. The plot estimates 
+#' the critical shape factor `Rc` marking the transition between the stable-sink 
+#' position and infinitely rotating porphyroclasts. 
+#' This critical shape factor can be interpreted as the the **mean kinmatic vorticity number**.
+#' Here the `Rc` is estimated using the bootstrap method described in Stephan et al. (2025).
+#'
+#' @param x matrix. Two-column matrix, with first column containing the 
+#' porphyroclast aspect ratio (long axis/short axis), and the second 
+#' column containing the angle between long axis and the foliation.
+#' @param angle_error numeric. Uncertainty of angle measurement. `3` by default.
+#' @param probs integer. Probability with values in \eqn{[0, 1]} to estimate 
+#' critical shape factor, i.e. the largest shape factor of measurements outside 
+#' of critical hyperbole.
+#' @param boot integer. Number of bootstrap iterations
+#' @param grid numeric. Spacing of hyperboles.
+#' @param ... plotting arguments passed to [graphics::points()]
+#'
+#' @returns a plot or a list of the calculated `B` (shape factor) and `theta` values, 
+#' and the bootstrapped confidence interval of the critical B value (`Rc_CI`).
+#' 
+#' @references Jessup, Micah J., Richard D. Law, and Chiara Frassi. 
+#' "The rigid grain net (RGN): an alternative method for estimating mean 
+#' kinematic vorticity number (Wm)." Journal of Structural Geology 29.3 (2007): 
+#' 411-421. doi: 10.1016/j.jsg.2006.11.003
+#' 
+#' Stephan, Tobias, et al. "Going with the flow—Changes of vorticity control 
+#' gold enrichment in Archean shear zones (Shebandowan Greenstone Belt, 
+#' Superior Province, Canada)." Journal of Structural Geology (2025): 105542. 
+#' doi: 10.1016/j.jsg.2025.105542
+#' 
+#' @export
+#'
+#' @examples
+#' data(ramsay)
+#' ramsay[, 2] <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2] # assuming the mean orientation resembles the foliation
+#' RGN_plot(ramsay, col = 'darkred')
+RGN_plot <- function(x, angle_error = 3, boot = 100L, probs = 0.972, grid = 0.05, ...){
+  R_val <- x[, 1]
+  
+  theta <- x[, 2] %% 180
+  theta <- ifelse(theta > 90, theta - 180, theta)
+  
+  B_val <- (R_val^2 - 1) / (R_val^2 + 1)
+  # e_val = log(R_val) / 2
+  
+  
+  crit_angleB <- crit_angle(B_val)
+  infinite_rot_pos <- theta - angle_error > crit_angleB
+  infinite_rot_neg <- theta + angle_error < crit_angleB
+  crit <- abs(theta) - angle_error > crit_angleB
+  
+  
+  bmax_r <- vorticity_boot(B_val[crit], R = boot, probs = probs)
+  bmax_log <- log(bmax_r)
+  
+  bmax_geomean <- exp(mean(bmax_log, na.rm = TRUE))
+  bmax_geosd <- exp(sd(bmax_log, na.rm = TRUE))
+  
+  
+  R_test <- 10000
+  t_score <- qt(p = 0.05 / 2, df = R_test - 1, lower.tail = FALSE)
+  geo.sde <- bmax_geosd / sqrt(R_test)
+  geo.margin_error <- t_score * geo.sde
+  geo.lowerCI <- bmax_geomean - geo.margin_error
+  geo.upperCI <- bmax_geomean + geo.margin_error
+  
+  hyp <- RGN_hyperbola(steps = grid)
+  hyperbola <- split(hyp$hyperbola, hyp$hyperbola$w)
+  
+  plot(c(0, max(hyp$crit$b)), c(-90, 90),
+       type = "n",
+       axes = FALSE, frame.plot = FALSE,
+       # xgap.axis = 0, ygap.axis = 0,
+       ylim = c(-90, 90),
+       xlab = "Shape factor, B*",
+       ylab = expression("Angle between clast long axis and foliation," ~ theta ~ "(" * degree * ")")
+  )
+  
+  # CI of critical B
+  graphics::rect(geo.lowerCI, -100, geo.upperCI, 100, col = "grey80", border = NA)
+  
+  graphics::axis(2, at = seq(-90, 90, 30), gap.axis = 0)
+  graphics::axis(1, at = seq(0, max(hyp$crit$b), .1), gap.axis = 0)
+  
+  
+  # add hyperbola net
+  lapply(hyperbola, function(h) {
+    graphics::lines(h$b, h$theta, col = "grey85")
+    graphics::lines(h$b, -h$theta, col = "grey85")
+  })
+  graphics::lines(hyp$crit$b, hyp$crit$theta, col = "grey30")
+  graphics::lines(hyp$crit$b, -hyp$crit$theta, col = "grey30")
+  
+  graphics::abline(v = cosd(45), col = "grey10", lty = 3, lwd = .1) # pure-shear simple shear separation
+  graphics::abline(v = c(geo.lowerCI, geo.upperCI), col = "black", lty = 2, lwd = .5) # CI interval of bootstrapped B
+  
+  graphics::points(B_val, theta, ...)
+  
+  
+  graphics::mtext(paste0("Rc = ", round(bmax_geomean, 2), " \u00B1 ", round(geo.margin_error, 2)))
+  graphics::title(sub = paste0("(n: ", nrow(x), ')'))
+  
+  
+  invisible(
+    list(
+      values = cbind(B = B, theta = theta),
+      Rc_CI = c(geo.lowerCI, geo.upperCI)
+    )
+  )
+}
+
+
+
+
 
 
 
