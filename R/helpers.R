@@ -179,11 +179,20 @@ parse_quadrant_measurement <- function(x) {
 }
 
 
+.scale <- function(x, from = range(x), to){
+  original_min <- from[1]
+  original_max <- from[2]
+  
+  target_min <- to[1]
+  target_max <- to[2]
+  
+  target_min + (x - original_min) * (target_max - target_min) / (original_max - original_min)
+}
 
 
 # Color assignment helper functions --------------------------------------------
 
-normalize <- function(x) {
+.normalize <- function(x) {
   (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
 }
 
@@ -233,7 +242,7 @@ assign_col_d <- function(x, pal = viridis::viridis, ...) {
 #' @rdname colorize
 #' @export
 assign_col <- function(x, n = length(x), pal = viridis::viridis, ...) {
-  normalized_data <- normalize(x)
+  normalized_data <- .normalize(x)
   colors <- do.call(pal, args = list(n = n, ...))
   colors[as.numeric(cut(normalized_data, breaks = n))]
 }
@@ -260,7 +269,7 @@ color_func <- function(x, pal = viridis::viridis, ...) {
 #' @rdname colorize
 #' @export
 legend_c <- function(breaks, title = NULL, pal = viridis::viridis, ...) {
-  label_pos <- normalize(breaks)
+  label_pos <- .normalize(breaks)
   legend_image <- grDevices::as.raster(
     matrix(
       color_func(seq(0, 1, .001), pal = pal, ...),

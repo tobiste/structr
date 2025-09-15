@@ -48,7 +48,7 @@ on a sterographic projection.
 ``` r
 library(structr)
 library(ggplot2)
-require(mapproj)
+library(mapproj)
 
 data(example_planes)
 planes <- Plane(example_planes$dipdir, example_planes$dip)

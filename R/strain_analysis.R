@@ -58,6 +58,8 @@ Rphi <- function(Rs, Ri = 1, theta) {
 #' Vollmer, F.W., 2018. Automatic contouring of geological fabric and finite
 #' strain data on the unit hyperboloid. Computers & Geosciences,
 #' https://doi.org/10.1016/j.cageo.2018.03.006
+#' 
+#' @export
 #'
 #' @examples
 #' data(ramsay)
@@ -143,17 +145,6 @@ hypercontour <- function(rphi,
     rmax = rmax
   ))
 }
-
-.scale <- function(x, from = range(x), to){
-  original_min <- from[1]
-  original_max <- from[2]
-  
-  target_min <- to[1]
-  target_max <- to[2]
-  
-  target_min + (x - original_min) * (target_max - target_min) / (original_max - original_min)
-}
-
 
 .R2zeta <- function(r, proj) {
   switch(as.character(proj),

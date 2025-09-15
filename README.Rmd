@@ -51,7 +51,7 @@ This is a basic example which shows you how to import data and plot them on a st
 ```{r stereo, warning=FALSE,message=FALSE}
 library(structr)
 library(ggplot2)
-require(mapproj)
+library(mapproj)
 
 data(example_planes)
 planes <- Plane(example_planes$dipdir, example_planes$dip)

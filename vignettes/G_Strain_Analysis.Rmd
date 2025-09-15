@@ -1,5 +1,5 @@
 ---
-title: "7. Mohr Circle"
+title: "7. Strain and Vorticity Analysis"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette

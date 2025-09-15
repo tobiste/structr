@@ -348,7 +348,7 @@ geom_contour_stereo <- function(data, ngrid = 200, hw = NULL, optimal_bw = c("cr
   res <- expand.grid(Lat = dens$lat - 90, Long = dens$long - 180)
   res$Density <- c(dens$den)
   if (norm) {
-    res$Density <- normalize(res$Density)
+    res$Density <- .normalize(res$Density)
   }
   res$Density[res$Density <= threshold] <- NA
 
@@ -367,7 +367,7 @@ geom_contourf_stereo <- function(data, ngrid = 200, hw = NULL, optimal_bw = c("c
   res <- expand.grid(Lat = dens$lat - 90, Long = dens$long - 180)
   res$Density <- c(dens$den)
   if (norm) {
-    res$Density <- normalize(res$Density)
+    res$Density <- .normalize(res$Density)
   }
   res$Density[res$Density <= threshold] <- NA
 
