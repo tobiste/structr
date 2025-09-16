@@ -2,37 +2,45 @@
 % Please edit documentation in R/mohR.R
 \name{ggMohr}
 \alias{ggMohr}
-\title{Plot Mohr Circle in ggplots}
+\title{Mohr Circle plot}
 \usage{
 ggMohr(
   sigma1,
   sigma2,
-  sigma3,
+  sigma3 = NULL,
   coulomb = c(70, 0.6),
   sliding = 0.81,
   units = "MPa",
   fill = "gray",
-  alpha = 0.5
+  alpha = 0.5,
+  ...
 )
 }
 \arguments{
-\item{sigma1, sigma2, sigma3}{numeric. Magnitudes of major, intermediate, and minor principal stresses}
+\item{sigma1, sigma2, sigma3}{numeric. Magnitudes of major, intermediate, and
+minor principal stresses. If only two principal stresses are given, only
+one Mohr Circle will be drawn, otherwise three.}
 
 \item{coulomb}{numeric 2 element vector. Coulomb criterion containing the cohesion and the coefficient of sliding: (\code{c(70, 0.6)})}
 
 \item{sliding}{Sliding criteria (\code{0.81} by default)}
 
-\item{units}{units of \code{sigma1}, \code{sigma2}, and \code{sigma3} (\code{"MPa"} by default).}
+\item{units}{units of \code{sigma1}, \code{sigma2}, and \code{sigma3} (\code{"MPa"} by default)}
 
-\item{fill}{fill color of Mohr circle}
+\item{fill}{fill color of Mohr circle spanned by sigma1 and sigma3}
 
-\item{alpha}{opacity of Mohr circle}
+\item{alpha}{opacity of Mohr circle spanned sigma1 and sigma3}
+
+\item{...}{optional parameters passed to \code{\link[ggforce:geom_circle]{ggforce::geom_circle()}}}
 }
 \description{
-Plot Mohr Circle in ggplots
+Plots the Mohr Circle diagram using ggplot functionality.
+}
+\details{
+The subcaption gives the fracture angles \eqn{\theta_f} and \eqn{\alpha_f = 90 - \theta_f}
 }
 \examples{
-ggMohr(1025, 400, 250)
+ggMohr(1025, 450, 250)
 }
 \seealso{
 \code{\link[=Mohr_plot]{Mohr_plot()}}

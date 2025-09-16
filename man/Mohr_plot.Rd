@@ -5,22 +5,23 @@
 \title{Mohr Circle plot}
 \usage{
 Mohr_plot(
-  sigmaX = NA,
-  sigmaZ = NA,
-  tauXZ = NA,
+  sigma_x = NA,
+  sigma_z = NA,
+  tau_xz = NA,
   sigma1 = NA,
   sigma3 = NA,
   unit = "MPa",
   col = "black",
+  n = 512,
   ...
 )
 }
 \arguments{
-\item{sigmaX}{numeric. Magnitude of normal stress acting in the horizontal direction}
+\item{sigma_x}{numeric. Magnitude of normal stress acting in the horizontal direction}
 
-\item{sigmaZ}{numeric. Magnitude of normal stress acting in the vertical direction}
+\item{sigma_z}{numeric. Magnitude of normal stress acting in the vertical direction}
 
-\item{tauXZ}{numeric. Magnitude of shear stress acting on the same plane as \code{"sigmaX"}}
+\item{tau_xz}{numeric. Magnitude of shear stress acting on the same plane as \code{"sigma_x"}}
 
 \item{sigma1}{numeric. Magnitude of major principal stress}
 
@@ -30,6 +31,9 @@ Mohr_plot(
 
 \item{col}{color for Mohr circle.}
 
+\item{n}{integer. Resolution given amount of points along the generated path
+representing the full Mohr circle (\code{512} by default).}
+
 \item{...}{optional graphical parameters.}
 }
 \description{
@@ -38,12 +42,12 @@ plots the Mohr Circle
 \note{
 One of the following two sets of data must be entered
 \enumerate{
-\item{\code{"sigmaX"}, \code{"sigmaZ"}, \code{"tauXZ"}}
+\item{\code{"sigma_x"}, \code{"sigma_z"}, \code{"tau_xz"}}
 \item{\code{"sigma1"}, \code{"sigma3"}}
 }
 }
 \examples{
-Mohr_plot(sigmaX = 80, sigmaZ = 120, unit = "kPa", tauXZ = 20, col = '#B63679', lwd = 2)
+Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = '#B63679', lwd = 2)
 Mohr_plot(sigma1 = 1025, sigma3 = 250, col = '#B63679', lwd = 2)
 }
 \seealso{

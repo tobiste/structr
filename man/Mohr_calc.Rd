@@ -5,20 +5,20 @@
 \title{Mohr circle parameters}
 \usage{
 Mohr_calc(
-  sigmaX = NA,
-  sigmaZ = NA,
-  tauXZ = NA,
+  sigma_x = NA,
+  sigma_z = NA,
+  tau_xz = NA,
   sigma1 = NA,
   sigma3 = NA,
   theta = seq(from = 0, to = 180, by = 1)
 )
 }
 \arguments{
-\item{sigmaX}{numeric. Magnitude of normal stress acting in the horizontal direction}
+\item{sigma_x}{numeric. Magnitude of normal stress acting in the horizontal direction}
 
-\item{sigmaZ}{numeric. Magnitude of normal stress acting in the vertical direction}
+\item{sigma_z}{numeric. Magnitude of normal stress acting in the vertical direction}
 
-\item{tauXZ}{numeric. Magnitude of shear stress acting on the same plane as \code{"sigmaX"}}
+\item{tau_xz}{numeric. Magnitude of shear stress acting on the same plane as \code{"sigma_x"}}
 
 \item{sigma1}{numeric. Magnitude of major principal stress}
 
@@ -29,8 +29,8 @@ Mohr_calc(
 \value{
 A five-element list containing
 \describe{
-\item{\code{"C"}}{center of Mohr circle}
-\item{\code{"R"}}{radius of Mohr circle}
+\item{\code{"mean"}}{center of Mohr circle, i.e. the mean stress}
+\item{\code{"deviatoric"}}{radius of Mohr circle, i.e. the deviatoric stress}
 \item{\code{"sigma"}}{vector of normal stresses for Mohr circle}
 \item{\code{"tau"}}{vector of shear stresses for Mohr circle}
 \item{\code{"theta"}}{vector of angles (degrees)}
@@ -40,7 +40,7 @@ A five-element list containing
 calculates parameters of the Mohr circle
 }
 \details{
-If theta is entered in conjunction with \code{"sigmaX"}, \code{"sigmaZ"}, and \code{"tauXZ"}, it is interpreted
+If theta is entered in conjunction with \code{"sigma_x"}, \code{"sigma_z"}, and \code{"tau_xz"}, it is interpreted
 as the angle of inclination above the horizontal.  If \code{"theta"} is entered in conjunction
 with the principal stresses, then it is interpreted as the angle of inclination above the
 major principal plane.
@@ -48,12 +48,12 @@ major principal plane.
 \note{
 One of the following two sets of data must be entered
 \enumerate{
-\item{\code{"sigmaX"}, \code{"sigmaZ"}, \code{"tauXZ"}}
+\item{\code{"sigma_x"}, \code{"sigma_z"}, \code{"tau_xz"}}
 \item{\code{"sigma1"}, \code{"sigma3"}}
 }
 }
 \examples{
-Mohr_calc(sigmaX = 80, sigmaZ = 120, tauXZ = 20)
+Mohr_calc(sigma_x = 80, sigma_z = 120, tau_xz = 20)
 }
 \seealso{
 \code{\link[=Mohr_plot]{Mohr_plot()}}

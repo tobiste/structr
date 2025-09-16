@@ -4,14 +4,14 @@
 \alias{sigma13}
 \title{Principle stresses}
 \usage{
-sigma13(sigmaX, sigmaZ, tauXZ)
+sigma13(sigma_x, sigma_z, tau_xz)
 }
 \arguments{
-\item{sigmaX}{numeric. Magnitude of normal stress acting in the horizontal direction}
+\item{sigma_x}{numeric. Magnitude of normal stress acting in the horizontal direction}
 
-\item{sigmaZ}{numeric. Magnitude of normal stress acting in the vertical direction}
+\item{sigma_z}{numeric. Magnitude of normal stress acting in the vertical direction}
 
-\item{tauXZ}{numeric. Magnitude of shear stress acting on the same plane as \code{"sigmaX"}}
+\item{tau_xz}{numeric. Magnitude of shear stress acting on the same plane as \code{"sigma_x"}}
 }
 \value{
 A four-element list containing
@@ -26,7 +26,7 @@ A four-element list containing
 calculates the magnitudes and directions of the principal stresses \eqn{\sigma_1} and \eqn{\sigma_3}
 }
 \examples{
-sigma13(sigmaX = 80, sigmaZ = 120, tauXZ = 20)
+sigma13(sigma_x = 80, sigma_z = 120, tau_xz = 20)
 }
 \author{
 Kyle Elmy and Jim Kaklamanos

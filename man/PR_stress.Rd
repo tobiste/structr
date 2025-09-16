@@ -4,15 +4,15 @@
 \alias{PR_stress}
 \title{Principal stresses from 2D stress components}
 \usage{
-PR_stress(sigmaX, sigmaY, tauXY)
+PR_stress(sigma_x, sigma_y, tau_xy)
 }
 \arguments{
-\item{sigmaX}{numeric. Magnitude of normal stress acting in the horizontal direction}
+\item{sigma_x}{numeric. Magnitude of normal stress acting in the horizontal direction}
 
-\item{sigmaY}{numeric. Magnitude of normal stress acting on plane facing in Y direction
+\item{sigma_y}{numeric. Magnitude of normal stress acting on plane facing in Y direction
 (\deqn{\sigma_y}).}
 
-\item{tauXY}{numeric. Magnitude of shear stress acting on planes facing X and Y
+\item{tau_xy}{numeric. Magnitude of shear stress acting on planes facing X and Y
 (\deqn{\tau_{xy}}).}
 }
 \value{
@@ -23,7 +23,7 @@ Determines the principal stresses and their orientations from the stress
 components \deqn{sigma_x}, \deqn{\sigma_y}, \deqn{\tau_{xy}}.
 }
 \examples{
-PR_stress(sigmaX = 80, sigmaY = 120, tauXY = 20)
+PR_stress(sigma_x = 80, sigma_y = 120, tau_xy = 20)
 }
 \references{
 Richard J. Lisle (1999)
