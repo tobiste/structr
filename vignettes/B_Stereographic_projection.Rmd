@@ -27,6 +27,7 @@ library(structr)
 Import and convert to spherical objects:
 ```{r example}
 data(example_planes)
+data(example_lines)
 
 planes <- Plane(example_planes$dipdir, example_planes$dip)
 lines <- Line(example_lines$trend, example_lines$plunge)
@@ -93,13 +94,18 @@ lines_delta <- delta(lines, w = line_weightings)
 lines_confangle <- confidence_angle(lines, w = line_weightings)
 ```
 
-Summary of stats:
+Taken together, this prints as
 ```{r stat}
 c(
   "Variance" = lines_variance,
   "63% cone" = lines_delta,
   "Confidence angle" = lines_confangle
 )
+```
+
+Summary stats can also be retrieved through
+```{r summary}
+summary(lines)
 ```
 
 Plotting a summary of the stats on a equal-area projection:
