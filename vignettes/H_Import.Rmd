@@ -46,8 +46,9 @@ you could import the file like
 imported_data <- read.table("path/to/my/file.xt", header = TRUE, sep = "", row.names = 1) 
 ```
 
-This imports the  tab-separated file as an `data.frame` object with the first column
-representing the row names, and the two other columns the headers of the table. Say these measurements represent plane
+This imports the tab-separated file as an `data.frame` object with the
+first column representing the row names, and the two other columns the
+headers of the table. Say these measurements represent plane
 measurements (e.g. bedding or fault plane orientation), we just need to
 coerce that data.frame into a `"Plane"` object:
 
@@ -59,7 +60,8 @@ If you want a `"Line"` object, coerce the data.frame using `as.Line()`.
 For `"Pair"` (line-on-plane) and `"Fault"` (line-on-plane with sense of
 motion) objects, you'll need a four and five-column table, respectively,
 representing dip directions, dip angle, trend, and plunge and sense
-measurements. Then use `as.Pair()` or `as.Fault()` to parse the object into {structr}.
+measurements. Then use `as.Pair()` or `as.Fault()` to parse the object
+into {structr}.
 
 > Note that the **dip direction** is the preferred notation for plane
 > measurements in {structr}. To convert from right-hand-rule strike
@@ -100,5 +102,5 @@ indices have been measured simultaneously (e.g. as a fault).
 > `.csv` or `.xls` file, this connection is lost...
 
 Alternatively, the function `read_strabo_xls()` and
-`read_strabo_mobile()` provide import of `.xls` and any character-separated table
-files (e.g. `.csv` or `.txt`).
+`read_strabo_mobile()` provide import of `.xls` and any
+character-separated table files (e.g. `.csv` or `.txt`).
