@@ -79,12 +79,12 @@ Stephan</h4>
 <div class="section level2">
 <h2 id="general">General<a class="anchor" aria-label="anchor" href="#general"></a>
 </h2>
-<p>Data can be imported with the R generic functions such as
-<code><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table()</a></code>, <code><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv()</a></code> or any other import
-functions (e.g. using the {readr} or {data.table} packages). Just make
-sure that the import produces a matrix or data.frame like object with
-each measurement stored in a row, and columns representing dip
-directions, dip angles, plunge, etc.</p>
+<p>Data can be imported with already in R implemented functions such as
+<code><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table()</a></code>, <code><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv()</a></code> or from other
+packages functions (e.g. <a href="https://readr.tidyverse.org/" class="external-link">{readr}</a> and <a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link">{data.table}</a>).
+Just make sure that the import produces a matrix or data.frame like
+object with each measurement stored in a row, and columns representing
+dip directions, dip angles, plunge, etc.</p>
 <p>For example your <code>.txt</code> file is tab-separated and may look
 like this:</p>
 <table class="table">
@@ -112,11 +112,15 @@ like this:</p>
 </tbody>
 </table>
 <p>you could import the file like</p>
-<p>This imports the tab-separated file as an <code>data.frame</code>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">imported_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="st">"path/to/my/file.xt"</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">""</span>, row.names <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> </span></code></pre></div>
+<p>This imports the tab-separated file as an <code>"data.frame"</code>
 object with the first column representing the row names, and the two
 other columns the headers of the table. Say these measurements represent
 plane measurements (e.g. bedding or fault plane orientation), we just
 need to coerce that data.frame into a <code>"Plane"</code> object:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">my_planes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">as.Plane</a></span><span class="op">(</span><span class="va">imported_data</span><span class="op">)</span></span></code></pre></div>
 <p>If you want a <code>"Line"</code> object, coerce the data.frame using
 <code><a href="../reference/classes.html">as.Line()</a></code>. For <code>"Pair"</code> (line-on-plane) and
 <code>"Fault"</code> (line-on-plane with sense of motion) objects,
@@ -128,8 +132,11 @@ object into {structr}.</p>
 <p>Note that the <strong>dip direction</strong> is the preferred
 notation for plane measurements in {structr}. To convert from
 right-hand-rule strike measurements to dip directions, you can simply
-use the <code><a href="../reference/rhr.html">rhr2dd()</a></code> function for that column.</p>
+use the <code><a href="../reference/rhr.html">rhr2dd()</a></code> function for that column:</p>
 </blockquote>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">imported_data</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rhr.html">rhr2dd</a></span><span class="op">(</span><span class="va">imported_data</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/classes.html">as.Plane</a></span><span class="op">(</span><span class="va">imported_data</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="strabospot">StraboSpot<a class="anchor" aria-label="anchor" href="#strabospot"></a>
@@ -142,6 +149,8 @@ scroll down to your project &gt; click on <strong>Options…</strong> &gt;
 <strong>Download Project in Strabo JSON Format</strong></p>
 <p>Now you can import the downloaded file via
 <code><a href="../reference/strabo.html">read_strabo_JSON()</a></code>:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">strabo_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/strabo.html">read_strabo_JSON</a></span><span class="op">(</span><span class="st">"path/to/my/file.json"</span><span class="op">)</span></span></code></pre></div>
 <p>The import function produces a <code>list</code> object with all the
 meta data (<code>data</code>), the geographic locations
 (<code>spots</code>), the used tags (<code>tags</code>), and all the
