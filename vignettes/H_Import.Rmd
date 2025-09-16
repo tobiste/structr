@@ -1,0 +1,104 @@
+---
+title: "8. Import data"
+author: "Tobias Stephan"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{8. Import}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, warning=FALSE, message=FALSE}
+library(structr)
+```
+
+## General
+
+Data can be imported with the R generic functions such as
+`read.table()`, `read.csv()` or any other import functions (e.g. using
+the {readr} or {data.table} packages). Just make sure that the import
+produces a matrix or data.frame like object with each measurement stored
+in a row, and columns representing dip directions, dip angles, plunge,
+etc.
+
+For example your `.txt` file is tab-separated and may look like this:
+
+|     | Dip direction | Dip |
+|-----|---------------|-----|
+| 1   | 120           | 50  |
+| 2   | 60            | 12  |
+| 3   | 287           | 82  |
+
+you could import the file like
+
+```{r import, include=TRUE,eval=FALSE,echo=FALSE}
+imported_data <- read.table("path/to/my/file.xt", header = TRUE, sep = "", row.names = 1) 
+```
+
+This imports the  tab-separated file as an `data.frame` object with the first column
+representing the row names, and the two other columns the headers of the table. Say these measurements represent plane
+measurements (e.g. bedding or fault plane orientation), we just need to
+coerce that data.frame into a `"Plane"` object:
+
+```{r import2, include=TRUE,eval=FALSE,echo=FALSE}
+as.Plane(imported_data)
+```
+
+If you want a `"Line"` object, coerce the data.frame using `as.Line()`.
+For `"Pair"` (line-on-plane) and `"Fault"` (line-on-plane with sense of
+motion) objects, you'll need a four and five-column table, respectively,
+representing dip directions, dip angle, trend, and plunge and sense
+measurements. Then use `as.Pair()` or `as.Fault()` to parse the object into {structr}.
+
+> Note that the **dip direction** is the preferred notation for plane
+> measurements in {structr}. To convert from right-hand-rule strike
+> measurements to dip directions, you can simply use the `rhr2dd()`
+> function for that column.
+
+## StraboSpot
+
+The package {structr} can import all the collected field data from your
+[Strabospot](https://strabospot.org) project.
+
+The best way is to import the .json file database of the StraboSpot
+project. Go to your field data **My StraboField Data** \> scroll down to
+your project \> click on **Options...** \> **Download Project in Strabo
+JSON Format**
+
+Now you can import the downloaded file via `read_strabo_JSON()`:
+
+```{r strabo, include=TRUE,eval=FALSE,echo=FALSE}
+strabo_data <- read_strabo_JSON("path/to/my/file.json")
+```
+
+The import function produces a `list` object with all the meta data
+(`data`), the geographic locations (`spots`), the used tags (`tags`),
+and all the plane (`planes`) and line measurements (`lines`) already
+converted into {structr} data objects.
+
+Additional to descriptions and comments, the meta data (`data`) also
+contains information on the dataset name and time of measurement.
+
+**IMPORTANT**: The meta data and the plane and line measurements all
+share the same row indices. Thus, planes and lines with identical row
+indices have been measured simultaneously (e.g. as a fault).
+
+> This import allows that the connection of simultaneously measured
+> plane and lines (such as faults and their striae) will be preserved.
+> Unfortunately, if you **export** your StraboSpot field data into a
+> `.csv` or `.xls` file, this connection is lost...
+
+Alternatively, the function `read_strabo_xls()` and
+`read_strabo_mobile()` provide import of `.xls` and any character-separated table
+files (e.g. `.csv` or `.txt`).

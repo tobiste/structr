@@ -4,14 +4,14 @@
 \alias{fisher_statistics}
 \title{Fisher's statistics}
 \usage{
-fisher_statistics(x, w = NULL, alpha = 0.05, na.rm = TRUE)
+fisher_statistics(x, w = NULL, conf.level = 0.95, na.rm = TRUE)
 }
 \arguments{
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}.}
 
 \item{w}{numeric. Optional weights for each observation.}
 
-\item{alpha}{numeric. Significance level for the confidence angle (default is 0.05 for a 95\% confidence angle).}
+\item{conf.level}{numeric. Level of confidence.}
 
 \item{na.rm}{logical. Whether \code{NA} values should be removed before the computation proceeds.}
 }
@@ -21,7 +21,7 @@ list, with
 \item{\code{"k"}}{estimated concentration parameter \eqn{\kappa} for the von Mises-Fisher
 distribution}
 \item{\code{"csd"}}{estimated angular standard deviation enclosing 63\% of the orientation data. Angle is in degrees if \code{x} is a spherical object, and raidan if otherwise.}
-\item{\code{"a95"}}{Confidence limit for given \code{p}. Angle is in degrees if \code{x} is a spherical object, and raidan if otherwise.}
+\item{\code{"alpha"}}{Confidence limit for given \code{conf.level}. Angle is in degrees if \code{x} is a spherical object, and raidan if otherwise.}
 }
 }
 \description{

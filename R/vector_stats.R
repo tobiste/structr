@@ -632,4 +632,21 @@ dist.default <- function(x, ...) stats::dist(x, ...)
 
 
 
-summary.spherical <- function(x, na.rm = TRUE, w = NULL)
+#' Summary statistics
+#' 
+#' Lists the mean, vartiance, 68% cone, and the confidence cone around the mean.
+#'
+#' @inheritParams mean.spherical
+#' @param ... parameters passed to [mean()], [sd()], 
+#'
+#' @returns
+#' @export
+#'
+#' @examples
+summary.spherical <- function(x, ...){
+  m <- mean(x, ...)
+  v <- var(x, ...)
+  d <- delta(x, ...)
+  ca <- confidence_angle(x, ...)
+  c(mean = m, variance = v, `68% cone` = d, 'confidence cone' = ca)
+}

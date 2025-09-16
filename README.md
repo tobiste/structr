@@ -30,12 +30,16 @@ for structural geology. You can
 - reconstruct orientation and magnitudes using fault-slip inversion
   (**Paleostress analysis**),
 
-- contour geologic fabric and finite strain data (**R<sub>f</sub>/ϕ**)
+- contour geologic fabric and finite strain data (**R**<sub>f</sub>/ϕ)
   on the unit hyperboloid,
 
 - perform vorticity analysis using the **Rigid Grain Net** method, and
 
 - directly import your field data from **StraboSpot**.
+
+> The {structr} package is all about structures in 3D. For analyzing
+> orientations in 2D (statistics, rose diagrams, etc.), check out the
+> [tectonicr](https://github.com/tobiste/tectonicr) package!
 
 ## Installation
 
@@ -50,7 +54,7 @@ devtools::install_github("tobiste/structr")
 ## Example
 
 This is a basic example which shows you how to import data and plot them
-on a sterographic projection.
+on stereographic or equal-area projections.
 
 ``` r
 library(structr)
