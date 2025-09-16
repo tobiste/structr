@@ -51,23 +51,23 @@ components $$sigma_x$$, $$\sigma_y$$, $$\tau_{xy}$$.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PR_stress</span><span class="op">(</span><span class="va">sigmaX</span>, <span class="va">sigmaY</span>, <span class="va">tauXY</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">PR_stress</span><span class="op">(</span><span class="va">sigma_x</span>, <span class="va">sigma_y</span>, <span class="va">tau_xy</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-sigmax">sigmaX<a class="anchor" aria-label="anchor" href="#arg-sigmax"></a></dt>
+<dl><dt id="arg-sigma-x">sigma_x<a class="anchor" aria-label="anchor" href="#arg-sigma-x"></a></dt>
 <dd><p>numeric. Magnitude of normal stress acting in the horizontal direction</p></dd>
 
 
-<dt id="arg-sigmay">sigmaY<a class="anchor" aria-label="anchor" href="#arg-sigmay"></a></dt>
+<dt id="arg-sigma-y">sigma_y<a class="anchor" aria-label="anchor" href="#arg-sigma-y"></a></dt>
 <dd><p>numeric. Magnitude of normal stress acting on plane facing in Y direction
 ($$\sigma_y$$).</p></dd>
 
 
-<dt id="arg-tauxy">tauXY<a class="anchor" aria-label="anchor" href="#arg-tauxy"></a></dt>
+<dt id="arg-tau-xy">tau_xy<a class="anchor" aria-label="anchor" href="#arg-tau-xy"></a></dt>
 <dd><p>numeric. Magnitude of shear stress acting on planes facing X and Y
 ($$\tau_{xy}$$).</p></dd>
 
@@ -83,7 +83,7 @@ components $$sigma_x$$, $$\sigma_y$$, $$\tau_{xy}$$.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">PR_stress</span><span class="op">(</span>sigmaX <span class="op">=</span> <span class="fl">80</span>, sigmaY <span class="op">=</span> <span class="fl">120</span>, tauXY <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">PR_stress</span><span class="op">(</span>sigma_x <span class="op">=</span> <span class="fl">80</span>, sigma_y <span class="op">=</span> <span class="fl">120</span>, tau_xy <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     sigma1   sigma2 theta</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1 128.2843 71.71573  67.5</span>
 </code></pre></div>

@@ -49,9 +49,9 @@
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">Mohr_calc</span><span class="op">(</span></span>
-<span>  sigmaX <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  sigmaZ <span class="op">=</span> <span class="cn">NA</span>,</span>
-<span>  tauXZ <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  sigma_x <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  sigma_z <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  tau_xz <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  sigma1 <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  sigma3 <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  theta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span>from <span class="op">=</span> <span class="fl">0</span>, to <span class="op">=</span> <span class="fl">180</span>, by <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
@@ -62,16 +62,16 @@
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-sigmax">sigmaX<a class="anchor" aria-label="anchor" href="#arg-sigmax"></a></dt>
+<dl><dt id="arg-sigma-x">sigma_x<a class="anchor" aria-label="anchor" href="#arg-sigma-x"></a></dt>
 <dd><p>numeric. Magnitude of normal stress acting in the horizontal direction</p></dd>
 
 
-<dt id="arg-sigmaz">sigmaZ<a class="anchor" aria-label="anchor" href="#arg-sigmaz"></a></dt>
+<dt id="arg-sigma-z">sigma_z<a class="anchor" aria-label="anchor" href="#arg-sigma-z"></a></dt>
 <dd><p>numeric. Magnitude of normal stress acting in the vertical direction</p></dd>
 
 
-<dt id="arg-tauxz">tauXZ<a class="anchor" aria-label="anchor" href="#arg-tauxz"></a></dt>
-<dd><p>numeric. Magnitude of shear stress acting on the same plane as <code>"sigmaX"</code></p></dd>
+<dt id="arg-tau-xz">tau_xz<a class="anchor" aria-label="anchor" href="#arg-tau-xz"></a></dt>
+<dd><p>numeric. Magnitude of shear stress acting on the same plane as <code>"sigma_x"</code></p></dd>
 
 
 <dt id="arg-sigma-">sigma1<a class="anchor" aria-label="anchor" href="#arg-sigma-"></a></dt>
@@ -88,11 +88,11 @@
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>A five-element list containing</p><dl><dt><code>"C"</code></dt>
-<dd><p>center of Mohr circle</p></dd>
+    <p>A five-element list containing</p><dl><dt><code>"mean"</code></dt>
+<dd><p>center of Mohr circle, i.e. the mean stress</p></dd>
 
-<dt><code>"R"</code></dt>
-<dd><p>radius of Mohr circle</p></dd>
+<dt><code>"deviatoric"</code></dt>
+<dd><p>radius of Mohr circle, i.e. the deviatoric stress</p></dd>
 
 <dt><code>"sigma"</code></dt>
 <dd><p>vector of normal stresses for Mohr circle</p></dd>
@@ -107,14 +107,14 @@
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>If theta is entered in conjunction with <code>"sigmaX"</code>, <code>"sigmaZ"</code>, and <code>"tauXZ"</code>, it is interpreted
+    <p>If theta is entered in conjunction with <code>"sigma_x"</code>, <code>"sigma_z"</code>, and <code>"tau_xz"</code>, it is interpreted
 as the angle of inclination above the horizontal.  If <code>"theta"</code> is entered in conjunction
 with the principal stresses, then it is interpreted as the angle of inclination above the
 major principal plane.</p>
     </div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
-    <p>One of the following two sets of data must be entered</p><ol><li><p><code>"sigmaX"</code>, <code>"sigmaZ"</code>, <code>"tauXZ"</code></p></li>
+    <p>One of the following two sets of data must be entered</p><ol><li><p><code>"sigma_x"</code>, <code>"sigma_z"</code>, <code>"tau_xz"</code></p></li>
 <li><p><code>"sigma1"</code>, <code>"sigma3"</code></p></li>
 </ol></div>
     <div class="section level2">
@@ -128,11 +128,11 @@ major principal plane.</p>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">Mohr_calc</span><span class="op">(</span>sigmaX <span class="op">=</span> <span class="fl">80</span>, sigmaZ <span class="op">=</span> <span class="fl">120</span>, tauXZ <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $C</span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">Mohr_calc</span><span class="op">(</span>sigma_x <span class="op">=</span> <span class="fl">80</span>, sigma_z <span class="op">=</span> <span class="fl">120</span>, tau_xz <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $mean</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 100</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $R</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $deviatoric</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 28.28427</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $normal</span>
