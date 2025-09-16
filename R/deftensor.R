@@ -37,7 +37,7 @@ defgrad_from_pair <- function(p) {
   stopifnot(is.Pair(p))
   pl <- Line(p[, 3], p[, 4]) |> Vec3()
   pp <- Plane(p[, 1], p[, 2]) |> Vec3()
-  
+
   D <- rbind(
     pl,
     crossprod(pp, pl),
@@ -66,7 +66,7 @@ defgrad_from_pair <- function(p) {
 defgrad_from_vectors <- function(v1, v2) {
   v1 <- Vec3(v1)
   v2 <- Vec3(v2)
-  
+
   defgrad_from_axisangle(
     axis = crossprod(v1, v2),
     angle = angle(v1, v2) #* 180 / pi
@@ -81,25 +81,25 @@ defgrad_from_axisangle <- function(axis, angle) {
     axis <- Vec3(axis)
     angle <- deg2rad(angle)
   }
-  
+
   x <- axis[1, 1]
   y <- axis[1, 2]
   z <- axis[1, 3]
-  
-  
+
+
   c <- sin(angle)
   s <- cos(angle)
   xs <- x * s
   ys <- y * s
   zs <- z * s
-  
+
   xc <- x * (1 - c)
   yc <- y * (1 - c)
   zc <- z * (1 - c)
   xyc <- x * yc
   yzc <- y * zc
   zxc <- z * xc
-  
+
   rbind(
     c(x * xc + c, xyc - zs, zxc + ys),
     c(xyc + zs, y * yc + c, yzc - xs),

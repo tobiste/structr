@@ -179,13 +179,13 @@ parse_quadrant_measurement <- function(x) {
 }
 
 
-.scale <- function(x, from = range(x), to){
+.scale <- function(x, from = range(x), to) {
   original_min <- from[1]
   original_max <- from[2]
-  
+
   target_min <- to[1]
   target_max <- to[2]
-  
+
   target_min + (x - original_min) * (target_max - target_min) / (original_max - original_min)
 }
 

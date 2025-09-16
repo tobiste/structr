@@ -60,7 +60,7 @@
 
 
 
-#' R/phi data 
+#' R/phi data
 #'
 #' example data set from Ramsay and Huber 1983
 #'
@@ -68,7 +68,7 @@
 #'
 #' @usage data('ramsay')
 #'
-#' @format An object of class `matrix` 
+#' @format An object of class `matrix`
 #' @keywords datasets
 #' @examples
 #' data("ramsay")

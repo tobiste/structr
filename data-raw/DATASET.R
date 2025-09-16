@@ -24,7 +24,7 @@ example_lines <- readr::read_csv("inst/example_lines.csv")
 usethis::use_data(example_lines, overwrite = TRUE)
 
 
-ramsay <- read.csv('inst/RamsayHuber1983.csv')
-colnames(ramsay) <- c('R', 'phi')
+ramsay <- read.csv("inst/RamsayHuber1983.csv")
+colnames(ramsay) <- c("R", "phi")
 ramsay <- as.matrix(ramsay)
 usethis::use_data(ramsay, overwrite = TRUE)

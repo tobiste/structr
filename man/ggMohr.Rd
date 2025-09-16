@@ -37,7 +37,8 @@ one Mohr Circle will be drawn, otherwise three.}
 Plots the Mohr Circle diagram using ggplot functionality.
 }
 \details{
-The subcaption gives the fracture angles \eqn{\theta_f} and \eqn{\alpha_f = 90 - \theta_f}
+The subcaption gives the mean stress \eqn{\sigma_m}, the differential
+stress \eqn{\sigma_d}, and the fracture angles \eqn{\theta_f} and \eqn{\alpha_f = 90 - \theta_f}
 }
 \examples{
 ggMohr(1025, 450, 250)

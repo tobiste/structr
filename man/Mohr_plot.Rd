@@ -47,8 +47,8 @@ One of the following two sets of data must be entered
 }
 }
 \examples{
-Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = '#B63679', lwd = 2)
-Mohr_plot(sigma1 = 1025, sigma3 = 250, col = '#B63679', lwd = 2)
+Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = "#B63679", lwd = 2)
+Mohr_plot(sigma1 = 1025, sigma3 = 250, col = "#B63679", lwd = 2)
 }
 \seealso{
 \code{\link[=Mohr_calc]{Mohr_calc()}}, \code{\link[=ggMohr]{ggMohr()}}

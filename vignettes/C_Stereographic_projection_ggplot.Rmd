@@ -37,8 +37,8 @@ lines <- Line(example_lines$trend, example_lines$plunge)
 ## Stereographic projection
 ```{r stereo1}
 #| fig.alt: >
-#|   Diagram showing example data plotted in an 
-#|   equal-area projection 
+#|   Diagram showing example data plotted in an
+#|   equal-area projection
 ggstereo() +
   geom_point(data = gg(planes), aes(x, y, color = "planes")) +
   geom_point(data = gg(lines), aes(x, y, color = "lines")) +
@@ -49,8 +49,8 @@ ggstereo() +
 Adding great circles:
 ```{r stereo2}
 #| fig.alt: >
-#|   Diagram showing example data as greatcircles plotted in an 
-#|   equal-area projection 
+#|   Diagram showing example data as greatcircles plotted in an
+#|   equal-area projection
 ggstereo() +
   geom_path(data = ggl(planes), aes(x, y, color = "planes"), lwd = .1) +
   geom_point(data = gg(lines), aes(x, y, color = "lines")) +
@@ -60,7 +60,7 @@ ggstereo() +
 ## Statistics
 ```{r stat, message=FALSE,warning=FALSE}
 #| fig.alt: >
-#|   Diagram showing statistical results of some example data plotted in an 
+#|   Diagram showing statistical results of some example data plotted in an
 #|   equal-area projection
 quality <- runif(nrow(lines), min = 1, max = 45) # assigning a random quality score to the data (can be replaced with real data)
 
@@ -77,7 +77,7 @@ ggstereo() +
 
 ```{r eigen, include = FALSE}
 #| fig.alt: >
-#|   Diagram showing statistical results of some example data plotted in an 
+#|   Diagram showing statistical results of some example data plotted in an
 #|   equal-area projection
 planes_eigen <- eigen(planes)
 
@@ -92,7 +92,7 @@ ggstereo() +
 ## Density plots
 ```{r density, message=FALSE,warning=FALSE}
 #| fig.alt: >
-#|   Diagram showing the density distribution some example data plotted in an 
+#|   Diagram showing the density distribution some example data plotted in an
 #|   equal-area projection
 ggstereo() +
   geom_contourf_stereo(gg(planes), show.legend = TRUE, norm = TRUE) +

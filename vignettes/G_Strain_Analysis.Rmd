@@ -31,20 +31,21 @@ head(ramsay)
 
 Calculate densities in Rf-Phi space:
 ```{r density}
-out <- hypercontour(ramsay, angfmt = "deg", proj = 'rfp')
+out <- hypercontour(ramsay, angfmt = "deg", proj = "rfp")
 ```
 
 
 Rf/phi plot
 ```{r rphi}
 #| fig.alt: >
-#|   Rf-phi plot 
-image(out$x, out$y, out$z, asp = ifelse(out$proj != 'rfp', 1, NA),
+#|   Rf-phi plot
+image(out$x, out$y, out$z,
+  asp = ifelse(out$proj != "rfp", 1, NA),
   ylim = c(1, out$rmax),
-  xlab = bquote(varphi*' ('*degree*')'), ylab = bquote(R[f]),
-  main = 'Rf/phi plot', 
- col = viridis::viridis(50)
- )
+  xlab = bquote(varphi * " (" * degree * ")"), ylab = bquote(R[f]),
+  main = "Rf/phi plot",
+  col = viridis::viridis(50)
+)
 contour(out$x, out$y, out$z, add = TRUE, lwd = .5)
 points(out$points, col = "grey", pch = 16, cex = .5)
 ```
@@ -54,17 +55,17 @@ Equidistant polar plot:
 ```{r plot2}
 #| fig.alt: >
 #|   Elliot plot
-out2 <- hypercontour(ramsay, angfmt = "deg", proj = 'eqd')
- 
+out2 <- hypercontour(ramsay, angfmt = "deg", proj = "eqd")
+
 # calculate some colors
 levels <- pretty(range(out2$z, na.rm = TRUE), 20)
 cols <- viridis::viridis(n = length(levels) - 1)
- 
-plot(out2$x, y = out2$y, 'n', xlab = NULL, ylab = NULL, asp = 1, axes = FALSE, ann = FALSE)
+
+plot(out2$x, y = out2$y, "n", xlab = NULL, ylab = NULL, asp = 1, axes = FALSE, ann = FALSE)
 graphics::.filled.contour(out2$x, out2$y, out2$z, levels = levels, col = cols)
 # points(out2$points, col = "grey", cex = .5)
-lines( out2$frame, lwd = 2)
-title(main = 'Elliot plot')
+lines(out2$frame, lwd = 2)
+title(main = "Elliot plot")
 ```
 
 ## Vorticity analysis
@@ -84,5 +85,5 @@ ramsay_shift <- ramsay
 ramsay_shift[, 2] <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2] # assuming the mean orientation resembles the foliation
 
 RGN_plot(ramsay_shift, col = "#B63679")
-title(main = 'Rigid Grain Net')
+title(main = "Rigid Grain Net")
 ```

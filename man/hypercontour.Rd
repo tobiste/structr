@@ -56,25 +56,26 @@ distribution.
 }
 \examples{
 data(ramsay)
-out <- hypercontour(ramsay, angfmt = "deg", proj = 'rfp')
+out <- hypercontour(ramsay, angfmt = "deg", proj = "rfp")
 
-image(out$x, out$y, out$z, asp = ifelse(out$proj != 'rfp', 1, NA),
- ylim = c(1, out$rmax),
- xlab = bquote(varphi~'('*degree*')'), ylab = 'R',
- main = out$proj, 
-col = viridis::viridis(100)
+image(out$x, out$y, out$z,
+  asp = ifelse(out$proj != "rfp", 1, NA),
+  ylim = c(1, out$rmax),
+  xlab = bquote(varphi ~ "(" * degree * ")"), ylab = "R",
+  main = out$proj,
+  col = viridis::viridis(100)
 )
 contour(out$x, out$y, out$z, add = TRUE, lwd = .5)
 points(out$points)
 
 
-out <- hypercontour(ramsay, angfmt = "deg", proj = 'eqa')
+out <- hypercontour(ramsay, angfmt = "deg", proj = "eqa")
 levels <- pretty(range(out$z, na.rm = TRUE), 100)
 cols <- viridis::viridis(n = length(levels) - 1)
-plot(out$x, y = out$y, 'n', xlab = NULL, ylab = NULL, asp = 1, axes = FALSE, ann = FALSE)
+plot(out$x, y = out$y, "n", xlab = NULL, ylab = NULL, asp = 1, axes = FALSE, ann = FALSE)
 graphics::.filled.contour(out$x, out$y, out$z, levels = levels, col = cols)
 points(out$points)
-lines( out$frame, lwd = 2)
+lines(out$frame, lwd = 2)
 title(main = out$proj)
 }
 \references{

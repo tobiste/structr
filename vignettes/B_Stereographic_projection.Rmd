@@ -38,7 +38,7 @@ Lambert equal area, lower hemisphere projection is the default plotting setting.
 ```{r stereo_earea}
 #| fig.alt: >
 #|   Diagram showing the equal-area Lambert projection of some example data
-#|   
+#|
 stereoplot()
 points(lines, col = "#B63679", pch = 19, cex = .5)
 points(planes, col = "#000004", pch = 1, cex = .5)
@@ -101,7 +101,7 @@ c(
 
 ```{r stat_plot, message=FALSE,warning=FALSE}
 #| fig.alt: >
-#|   Diagram showing statistical results of some example data plotted in an 
+#|   Diagram showing statistical results of some example data plotted in an
 #|   equal-area projection
 stereoplot(guides = FALSE)
 points(lines, col = "lightgrey", pch = 1, cex = .5)
@@ -116,7 +116,7 @@ legend("topright", legend = c("Mean line", "95% confidence cone", "63% data cone
 
 ```{r eigen}
 #| fig.alt: >
-#|   Diagram showing eigen-vector analysis of some example data plotted in an 
+#|   Diagram showing eigen-vector analysis of some example data plotted in an
 #|   equal-area projection
 planes_eigen <- eigen(planes)
 
@@ -131,7 +131,7 @@ legend("topright", legend = c("Eigenvectors 1", "Eigenvectors 2", "Eigenvectors 
 
 ```{r vollmer, message=FALSE,warning=FALSE}
 #| fig.alt: >
-#|   Diagram showing eigen-vector analysis of some example data plotted in an 
+#|   Diagram showing eigen-vector analysis of some example data plotted in an
 #|   triangular plot after Vollmer
 
 VollmerPlot(planes, col = "#000004", pch = 1, cex = 2)
@@ -142,7 +142,7 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 ## Density plots
 ```{r density, message=FALSE,warning=FALSE}
 #| fig.alt: >
-#|   Diagram showing the density distribution some example data plotted in an 
+#|   Diagram showing the density distribution some example data plotted in an
 #|   equal-area projection
 example_planes$quality <- ifelse(is.na(example_planes$quality), 6, example_planes$quality) # replacing NA values with 6
 plane_weightings <- 6 / example_planes$quality
@@ -182,14 +182,14 @@ title(
 
 ```{r faults1}
 #| fig.alt: >
-#|   Diagram showing example fault data plotted in an 
-#|   equal-area projection 
+#|   Diagram showing example fault data plotted in an
+#|   equal-area projection
 f <- Fault(
-   c("a" = 120, "b" = 125, "c" = 100),
-   c(60, 62, 50),
-   c(110, 25, 30),
-   c(58, 9, 23),
-   c(1, -1, 1)
+  c("a" = 120, "b" = 125, "c" = 100),
+  c(60, 62, 50),
+  c(110, 25, 30),
+  c(58, 9, 23),
+  c(1, -1, 1)
 )
 
 stereoplot(title = "Angelier plot")
@@ -198,8 +198,8 @@ angelier(f, col = viridis::magma(nrow(f), end = .9))
 
 ```{r faults2}
 #| fig.alt: >
-#|   Diagram showing example fault data plotted in an 
-#|   equal-area projection 
+#|   Diagram showing example fault data plotted in an
+#|   equal-area projection
 stereoplot(title = "Hoeppner plot")
 hoeppner(f, col = viridis::magma(nrow(f), end = .9))
 ```

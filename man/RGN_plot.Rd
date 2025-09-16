@@ -40,9 +40,9 @@ Here the \code{Rc} is estimated using the bootstrap method described in Stephan 
 data(ramsay)
 
 # assuming the mean orientation resembles the foliation:
-ramsay[, 2] <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2] 
+ramsay[, 2] <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2]
 
-RGN_plot(ramsay, col = 'darkred')
+RGN_plot(ramsay, col = "darkred")
 }
 \references{
 Jessup, Micah J., Richard D. Law, and Chiara Frassi.
