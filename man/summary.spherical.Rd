@@ -11,6 +11,13 @@
 
 \item{...}{parameters passed to \code{\link[=mean]{mean()}}, \code{\link[=sd]{sd()}},}
 }
+\value{
+named vector
+}
 \description{
-Lists the mean, vartiance, 68\% cone, and the confidence cone around the mean.
+Calculates the mean, variance, 68\% cone, and the confidence cone around the mean.
+}
+\examples{
+set.seed(20250411)
+summary.spherical(rvmf(100, mu = Line(90, 20), k = 20))
 }

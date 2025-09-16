@@ -25,12 +25,13 @@ library(structr)
 
 ## General
 
-Data can be imported with the R generic functions such as
-`read.table()`, `read.csv()` or any other import functions (e.g. using
-the {readr} or {data.table} packages). Just make sure that the import
-produces a matrix or data.frame like object with each measurement stored
-in a row, and columns representing dip directions, dip angles, plunge,
-etc.
+Data can be imported with already in R implemented functions such as
+`read.table()`, `read.csv()` or from other packages
+functions (e.g. [{readr}](https://readr.tidyverse.org/) and
+[{data.table}](https://cran.r-project.org/web/packages/data.table/index.html)). 
+Just make sure that the import produces a matrix or
+data.frame like object with each measurement stored in a row, and
+columns representing dip directions, dip angles, plunge, etc.
 
 For example your `.txt` file is tab-separated and may look like this:
 
@@ -42,18 +43,18 @@ For example your `.txt` file is tab-separated and may look like this:
 
 you could import the file like
 
-```{r import, include=TRUE,eval=FALSE,echo=FALSE}
+```{r import, include=TRUE,eval=FALSE}
 imported_data <- read.table("path/to/my/file.xt", header = TRUE, sep = "", row.names = 1) 
 ```
 
-This imports the tab-separated file as an `data.frame` object with the
+This imports the tab-separated file as an `"data.frame"` object with the
 first column representing the row names, and the two other columns the
 headers of the table. Say these measurements represent plane
 measurements (e.g. bedding or fault plane orientation), we just need to
 coerce that data.frame into a `"Plane"` object:
 
-```{r import2, include=TRUE,eval=FALSE,echo=FALSE}
-as.Plane(imported_data)
+```{r import2, include=TRUE,eval=FALSE}
+my_planes <- as.Plane(imported_data)
 ```
 
 If you want a `"Line"` object, coerce the data.frame using `as.Line()`.
@@ -66,7 +67,12 @@ into {structr}.
 > Note that the **dip direction** is the preferred notation for plane
 > measurements in {structr}. To convert from right-hand-rule strike
 > measurements to dip directions, you can simply use the `rhr2dd()`
-> function for that column.
+> function for that column:
+
+```{r strike, include=TRUE,eval=FALSE}
+imported_data[, 1] <- rhr2dd(imported_data[, 1])
+as.Plane(imported_data)
+```
 
 ## StraboSpot
 
@@ -80,7 +86,7 @@ JSON Format**
 
 Now you can import the downloaded file via `read_strabo_JSON()`:
 
-```{r strabo, include=TRUE,eval=FALSE,echo=FALSE}
+```{r strabo, include=TRUE,eval=FALSE}
 strabo_data <- read_strabo_JSON("path/to/my/file.json")
 ```
 
