@@ -40,6 +40,7 @@
     <li><a class="dropdown-item" href="../articles/E_Mohr_Circle.html">5. Mohr Circle</a></li>
     <li><a class="dropdown-item" href="../articles/F_Oriented_Drill_Cores.html">6. Oriented drill cores</a></li>
     <li><a class="dropdown-item" href="../articles/G_Strain_Analysis.html">7. Strain and Vorticity Analysis</a></li>
+    <li><a class="dropdown-item" href="../articles/H_Import.html">8. Import data</a></li>
   </ul>
 </li>
       </ul>
@@ -87,8 +88,7 @@ Stephan</h4>
 <p>Lambert equal area, lower hemisphere projection is the default
 plotting setting.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co">#|</span></span>
-<span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">lines</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Lines"</span>, <span class="st">"Planes"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679"</span>, <span class="st">"#000004"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="fl">1</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
@@ -116,13 +116,18 @@ projection</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example_lines</span><span class="op">$</span><span class="va">quality</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span>, <span class="fl">6</span>, <span class="va">example_lines</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span> <span class="co"># replacing NA values with 6</span></span>
 <span><span class="va">line_weightings</span> <span class="op">&lt;-</span> <span class="fl">6</span> <span class="op">/</span> <span class="va">example_lines</span><span class="op">$</span><span class="va">quality</span></span></code></pre></div>
+<p>The (weighted) mean orientation</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lines_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">lines</span>, w <span class="op">=</span> <span class="va">line_weightings</span><span class="op">)</span></span></code></pre></div>
+<p>The (weighted) variance</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lines_variance</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stats.html">var</a></span><span class="op">(</span><span class="va">lines</span>, w <span class="op">=</span> <span class="va">line_weightings</span><span class="op">)</span></span></code></pre></div>
+<p>the (weighted) standard deviation (i.e. the 63% cone around the mean)
+and the 95% confidence cone around the mean:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lines_delta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stats.html">delta</a></span><span class="op">(</span><span class="va">lines</span>, w <span class="op">=</span> <span class="va">line_weightings</span><span class="op">)</span></span>
 <span><span class="va">lines_confangle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stats.html">confidence_angle</a></span><span class="op">(</span><span class="va">lines</span>, w <span class="op">=</span> <span class="va">line_weightings</span><span class="op">)</span></span></code></pre></div>
+<p>Summary of stats:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
 <span>  <span class="st">"Variance"</span> <span class="op">=</span> <span class="va">lines_variance</span>,</span>
@@ -131,6 +136,7 @@ projection</p>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;         Variance         63% cone Confidence angle </span></span>
 <span><span class="co">#&gt;        0.1938084       36.2745102        6.9017035</span></span></code></pre></div>
+<p>Plotting a summary of the stats on a equal-area projection:</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">lines</span>, col <span class="op">=</span> <span class="st">"lightgrey"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
@@ -139,9 +145,19 @@ projection</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">lines_mean</span>, ang <span class="op">=</span> <span class="va">lines_delta</span>, col <span class="op">=</span> <span class="st">"#FB8861FF"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Mean line"</span>, <span class="st">"95% confidence cone"</span>, <span class="st">"63% data cone"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679"</span>, <span class="st">"#E65164FF"</span>, <span class="st">"#FB8861FF"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">.75</span><span class="op">)</span></span></code></pre></div>
 <p><img src="B_Stereographic_projection_files/figure-html/stat_plot-1.png" alt="Diagram showing statistical results of some example data plotted in an equal-area projection" width="700"></p>
+</div>
+<div class="section level2">
+<h2 id="orientation-tensor">Orientation tensor<a class="anchor" aria-label="anchor" href="#orientation-tensor"></a>
+</h2>
 <div class="section level3">
-<h3 id="orientation-tensor-and-eigenvectors">Orientation tensor and eigenvectors:<a class="anchor" aria-label="anchor" href="#orientation-tensor-and-eigenvectors"></a>
+<h3 id="eigenvectors">Eigenvectors<a class="anchor" aria-label="anchor" href="#eigenvectors"></a>
 </h3>
+<p>The orientation tensor (Scheidegger 1965) is a matrix comprised of
+all direction cosines of the orientation vectors. In case of a Bingham
+distribution, the <strong>eigenvectors</strong> of this tensor describe
+the orientation of the most dense, intermediate and least dense
+orientation, and thus, are used to determine the orientation of
+girdle-distributed vectors (e.g. folded planes).</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">planes_eigen</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eigen-spherical.html">eigen</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span></span>
 <span></span>
@@ -150,22 +166,99 @@ projection</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">planes_eigen</span><span class="op">$</span><span class="va">vectors</span>, col <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">magma</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">planes_eigen</span><span class="op">$</span><span class="va">vectors</span>, col <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">magma</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Eigenvectors 1"</span>, <span class="st">"Eigenvectors 2"</span>, <span class="st">"Eigenvectors 3"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">magma</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">.75</span><span class="op">)</span></span></code></pre></div>
-<p><img src="B_Stereographic_projection_files/figure-html/eigen-1.png" alt="Diagram showing eigen-vector analysis of some example data plotted in an equal-area projection" width="700"></p>
-</div>
-<div class="section level3">
-<h3 id="fabric-plots">Fabric plots<a class="anchor" aria-label="anchor" href="#fabric-plots"></a>
-</h3>
+<p><img src="B_Stereographic_projection_files/figure-html/eigen-1.png" alt="Diagram showing eigen-vector analysis of some example data plotted in an equal-area projection" width="700">
+### Eigenvalues The <strong>eigenvalues</strong> of the orientation
+tensor. describe the shape of the distribution of these vectors, that is
+who clustered, cylindrical or random these vectors are distributed.</p>
+<p>A Fabric plot visualizes the shape of the distribution by plotting
+the eigenvalues of the orientation tensor. Two different diagram are
+provided by {structr}, namely the triangular <em>Vollmer plot</em> after
+Vollmer (1990) and the logarithmic biplot (<em>Woodcock plot</em>) after
+Woodcock (1977).</p>
+<div class="section level4">
+<h4 id="vollmer-plot">Vollmer plot<a class="anchor" aria-label="anchor" href="#vollmer-plot"></a>
+</h4>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/VollmerPlot.html">VollmerPlot</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/VollmerPlot.html">VollmerPlot</a></span><span class="op">(</span><span class="va">lines</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Lines"</span>, <span class="st">"Planes"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679"</span>, <span class="st">"#000004"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="fl">1</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="B_Stereographic_projection_files/figure-html/vollmer-1.png" alt="Diagram showing eigen-vector analysis of some example data plotted in an triangular plot after Vollmer" width="700"></p>
+<p><img src="B_Stereographic_projection_files/figure-html/vollmer-1.png" alt="Diagram showing eigen-vector analysis of some example data plotted in an triangular plot after Vollmer 1990" width="700">
+#### Woodcock plot</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/WoodcockPlot.html">WoodcockPlot</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/WoodcockPlot.html">WoodcockPlot</a></span><span class="op">(</span><span class="va">lines</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Lines"</span>, <span class="st">"Planes"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679"</span>, <span class="st">"#000004"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="fl">1</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<p><img src="B_Stereographic_projection_files/figure-html/woodcock-1.png" alt="Diagram showing eigen-vector analysis of some example data plotted in an biplot plot after Woodcok 1977" width="700"></p>
+</div>
+<div class="section level4">
+<h4 id="shape-parameters">Shape parameters<a class="anchor" aria-label="anchor" href="#shape-parameters"></a>
+</h4>
+<p>There are more shape parameters using different algorithms based on
+the orientation tensor:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/strain_shape.html">or_shape_params</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $stretch_ratios</span></span>
+<span><span class="co">#&gt;   Rxy.S1   Ryz.S2   Rxz.S1 </span></span>
+<span><span class="co">#&gt; 1.478428 1.873104 2.769250 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $strain_ratios</span></span>
+<span><span class="co">#&gt;    e12.e1    e13.e1    e23.e2 </span></span>
+<span><span class="co">#&gt; 0.3909795 1.0185765 0.6275970 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $Vollmer</span></span>
+<span><span class="co">#&gt;         P         G         R         B         C         I         D </span></span>
+<span><span class="co">#&gt; 0.3416388 0.4120004 0.2463608 0.7536392 2.0371530 2.4750912 0.4790938 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $Flinn</span></span>
+<span><span class="co">#&gt; intensity.S1  symmetry.S1 </span></span>
+<span><span class="co">#&gt;    0.9955924    0.5479625 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $Ramsay</span></span>
+<span><span class="co">#&gt; intensity.e1  symmetry.e1 </span></span>
+<span><span class="co">#&gt;    0.5467429    0.6229787 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $Woodcock</span></span>
+<span><span class="co">#&gt; strength.e1    shape.e1 </span></span>
+<span><span class="co">#&gt;   1.0185765   0.6229787 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $Watterson_intensity</span></span>
+<span><span class="co">#&gt;       S1 </span></span>
+<span><span class="co">#&gt; 2.351532 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $Lisle_intensity</span></span>
+<span><span class="co">#&gt; [1] 1.147654</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $Nadai</span></span>
+<span><span class="co">#&gt;   goct.e1   eoct.e1 </span></span>
+<span><span class="co">#&gt; 0.8391109 0.7266914 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $Lode</span></span>
+<span><span class="co">#&gt;        e1 </span></span>
+<span><span class="co">#&gt; 0.2323021 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $kind</span></span>
+<span><span class="co">#&gt; [1] "SSL"</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $MAD_approx</span></span>
+<span><span class="co">#&gt; [1] 16.6525</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $MAD</span></span>
+<span><span class="co">#&gt; [1] 32.80303</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $US</span></span>
+<span><span class="co">#&gt; [1] 229.5308</span></span></code></pre></div>
+</div>
 </div>
 </div>
 <div class="section level2">
 <h2 id="density-plots">Density plots<a class="anchor" aria-label="anchor" href="#density-plots"></a>
 </h2>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<p>Densities are estimated using <strong>Kamb</strong> contouring (after
+Kamb, 1959) and exponential (the default), linear, square-inverse or no
+smoothing. Weighted densities can be controlled by the
+<code>weights</code> argument and are useful when the orientation
+measurements have different accuracies.</p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example_planes</span><span class="op">$</span><span class="va">quality</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span>, <span class="fl">6</span>, <span class="va">example_planes</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span> <span class="co"># replacing NA values with 6</span></span>
 <span><span class="va">plane_weightings</span> <span class="op">&lt;-</span> <span class="fl">6</span> <span class="op">/</span> <span class="va">example_planes</span><span class="op">$</span><span class="va">quality</span></span>
 <span></span>
@@ -202,7 +295,19 @@ projection</p>
 <div class="section level2">
 <h2 id="fault-plots">Fault plots<a class="anchor" aria-label="anchor" href="#fault-plots"></a>
 </h2>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<p>Fault objects consist of planes (fault plane), lines (e.g. striae),
+and the sense of movement. There are two ways how these combined
+features can be visualized, namely the Angelier and the Hoeppner
+plot.</p>
+<div class="section level3">
+<h3 id="angelier-plot">Angelier plot<a class="anchor" aria-label="anchor" href="#angelier-plot"></a>
+</h3>
+<p>The <strong>Angelier plot</strong> shows all planes as <em>great
+circles</em> and lineations as points (after Angelier , 1984). Fault
+striae are plotted as vectors on top of the lineation pointing in the
+movement direction of the hangingwall. Easy to read in case of
+homogeneous or small datasets.</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Fault</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span> <span class="op">=</span> <span class="fl">120</span>, <span class="st">"b"</span> <span class="op">=</span> <span class="fl">125</span>, <span class="st">"c"</span> <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">62</span>, <span class="fl">50</span><span class="op">)</span>,</span>
@@ -214,10 +319,19 @@ projection</p>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Angelier plot"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/fault-plot.html">angelier</a></span><span class="op">(</span><span class="va">f</span>, col <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">magma</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>, end <span class="op">=</span> <span class="fl">.9</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="B_Stereographic_projection_files/figure-html/faults1-1.png" alt="Diagram showing example fault data plotted in an equal-area projection" width="700"></p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+</div>
+<div class="section level3">
+<h3 id="hoeppner-plot">Hoeppner plot<a class="anchor" aria-label="anchor" href="#hoeppner-plot"></a>
+</h3>
+<p>The <strong>Hoeppner plot</strong> shows all planes as <em>poles</em>
+while lineations are not shown (after Hoeppner, 1955). Fault striae are
+plotted as vectors on top of poles pointing in the movement direction of
+the hangingwall. Useful in case of large or heterogeneous datasets.</p>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Hoeppner plot"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/fault-plot.html">hoeppner</a></span><span class="op">(</span><span class="va">f</span>, col <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">magma</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>, end <span class="op">=</span> <span class="fl">.9</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="B_Stereographic_projection_files/figure-html/faults2-1.png" alt="Diagram showing example fault data plotted in an equal-area projection" width="700"></p>
+</div>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

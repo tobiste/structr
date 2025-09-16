@@ -42,6 +42,7 @@
     <li><a class="dropdown-item" href="articles/E_Mohr_Circle.html">5. Mohr Circle</a></li>
     <li><a class="dropdown-item" href="articles/F_Oriented_Drill_Cores.html">6. Oriented drill cores</a></li>
     <li><a class="dropdown-item" href="articles/G_Strain_Analysis.html">7. Strain and Vorticity Analysis</a></li>
+    <li><a class="dropdown-item" href="articles/H_Import.html">8. Import data</a></li>
   </ul>
 </li>
       </ul>
@@ -71,10 +72,13 @@
 <li><p>reconstruct the orientation of structures in oriented drill cores using the alpha, beta, and gamma angles,</p></li>
 <li><p>calculate fault displacement components,</p></li>
 <li><p>reconstruct orientation and magnitudes using fault-slip inversion (<strong>Paleostress analysis</strong>),</p></li>
-<li><p>contour geologic fabric and finite strain data (<strong>R<sub>f</sub>/ϕ</strong>) on the unit hyperboloid,</p></li>
+<li><p>contour geologic fabric and finite strain data (<strong>R</strong><sub>f</sub>/ϕ) on the unit hyperboloid,</p></li>
 <li><p>perform vorticity analysis using the <strong>Rigid Grain Net</strong> method, and</p></li>
 <li><p>directly import your field data from <strong>StraboSpot</strong>.</p></li>
 </ul>
+<blockquote>
+<p>The {structr} package is all about structures in 3D. For analyzing orientations in 2D (statistics, rose diagrams, etc.), check out the <a href="https://github.com/tobiste/tectonicr" class="external-link">tectonicr</a> package!</p>
+</blockquote>
 <div class="section level2">
 <h2 id="installation">Installation<a class="anchor" aria-label="anchor" href="#installation"></a>
 </h2>
@@ -86,7 +90,7 @@
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
-<p>This is a basic example which shows you how to import data and plot them on a sterographic projection.</p>
+<p>This is a basic example which shows you how to import data and plot them on stereographic or equal-area projections.</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tobiste.github.io/structr/">structr</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
