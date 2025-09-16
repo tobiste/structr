@@ -24,10 +24,13 @@ library(structr)
 library(ggplot2)
 ```
 
+Some basic calculations:
+
 ```{r stress}
-s1 <- 1025
-s2 <- 400
-s3 <- 250
+# Define the magnitudes of the principal stress axes
+s1 <- 1025 # maximum stress, sigma 1
+s2 <- 400 # intermediate stress, sigma 2
+s3 <- 250 # minimum stress, sigma 3
 
 # Differential stress
 diff_stress(s1, s3)
@@ -41,12 +44,11 @@ shear_stress(s1, s3, theta = 35)
 # Normal stress at given angle
 normal_stress(s1, s3, theta = 35)
 
-
 # Angle of fracture for given coefficient of internal friction
 fracture_angle(mu = 0.6)
 ```
 
-To draw the Mohr circle:
+To plot the Mohr circle:
 ```{r mohr1, message=FALSE, warning=FALSE}
 #| fig.alt: >
 #|   Diagram showing the stress state at some point including the Mohr circle

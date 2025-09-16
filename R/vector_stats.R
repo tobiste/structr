@@ -308,13 +308,14 @@ estimate_k <- function(x, w = NULL, na.rm = FALSE) {
 #' confidence limit.
 #'
 #' @inheritParams mean.spherical
+#' @param conf.level numeric. Level of confidence.
 #'
 #' @returns list, with
 #' \describe{
 #' \item{`"k"`}{estimated concentration parameter \eqn{\kappa} for the von Mises-Fisher
 #' distribution}
 #' \item{`"csd"`}{estimated angular standard deviation enclosing 63% of the orientation data. Angle is in degrees if `x` is a spherical object, and raidan if otherwise.}
-#' \item{`"a95"`}{Confidence limit for given `p`. Angle is in degrees if `x` is a spherical object, and raidan if otherwise.}
+#' \item{`"alpha"`}{Confidence limit for given `conf.level`. Angle is in degrees if `x` is a spherical object, and raidan if otherwise.}
 #' }
 #'
 #' @export
@@ -323,7 +324,7 @@ estimate_k <- function(x, w = NULL, na.rm = FALSE) {
 #' set.seed(20250411)
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)
 #' fisher_statistics(x)
-fisher_statistics <- function(x, w = NULL, alpha = 0.05, na.rm = TRUE) {
+fisher_statistics <- function(x, w = NULL, conf.level = 0.95, na.rm = TRUE) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   if (isTRUE(na.rm)) x <- x[!rowSums(!is.finite(x)), ]
   v <- Vec3(x) |> unclass()
@@ -334,6 +335,7 @@ fisher_statistics <- function(x, w = NULL, alpha = 0.05, na.rm = TRUE) {
     as.numeric(w)
   }
 
+  alpha <- 1 - conf.level
   N <- sum(w)
 
   R <- vresultant(v, w, na.rm = FALSE) |>
@@ -627,3 +629,7 @@ dist <- function(x, ...) UseMethod("dist")
 
 #' @export
 dist.default <- function(x, ...) stats::dist(x, ...)
+
+
+
+summary.spherical <- function(x, na.rm = TRUE, w = NULL)

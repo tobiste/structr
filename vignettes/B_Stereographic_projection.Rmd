@@ -38,7 +38,6 @@ Lambert equal area, lower hemisphere projection is the default plotting setting.
 ```{r stereo_earea}
 #| fig.alt: >
 #|   Diagram showing the equal-area Lambert projection of some example data
-#|
 stereoplot()
 points(lines, col = "#B63679", pch = 19, cex = .5)
 points(planes, col = "#000004", pch = 1, cex = .5)
@@ -51,7 +50,6 @@ To change to equal angle stereographic, upper hemisphere projection
 ```{r stereo_eangle}
 #| fig.alt: >
 #|   Diagram showing the equal-angle stereographic projection of some example data
-
 stereoplot(earea = FALSE)
 points(lines, col = "#B63679", pch = 19, cex = .5, earea = FALSE, upper.hem = TRUE)
 points(planes, col = "#000004", pch = 1, cex = .5, earea = FALSE, upper.hem = TRUE)
@@ -76,19 +74,26 @@ line_weightings <- 6 / example_lines$quality
 ```
 
 
+The (weighted) mean orientation
+
 ```{r stat_mean}
 lines_mean <- mean(lines, w = line_weightings)
 ```
 
+The (weighted) variance
+
 ```{r stat_var}
 lines_variance <- var(lines, w = line_weightings)
 ```
+
+the (weighted) standard deviation (i.e. the 63% cone around the mean) and the 95% confidence cone around the mean:
 
 ```{r stat_delta}
 lines_delta <- delta(lines, w = line_weightings)
 lines_confangle <- confidence_angle(lines, w = line_weightings)
 ```
 
+Summary of stats:
 ```{r stat}
 c(
   "Variance" = lines_variance,
@@ -97,8 +102,7 @@ c(
 )
 ```
 
-
-
+Plotting a summary of the stats on a equal-area projection:
 ```{r stat_plot, message=FALSE,warning=FALSE}
 #| fig.alt: >
 #|   Diagram showing statistical results of some example data plotted in an
@@ -112,7 +116,10 @@ legend("topright", legend = c("Mean line", "95% confidence cone", "63% data cone
 ```
 
 
-### Orientation tensor and eigenvectors:
+## Orientation tensor 
+### Eigenvectors
+
+The orientation tensor (Scheidegger 1965) is a matrix comprised of all direction cosines of the orientation vectors. In case of a Bingham distribution, the **eigenvectors** of this tensor describe the orientation of the most dense, intermediate and least dense orientation, and thus, are used to determine the orientation of girdle-distributed vectors (e.g. folded planes).
 
 ```{r eigen}
 #| fig.alt: >
@@ -126,20 +133,48 @@ lines(planes_eigen$vectors, col = viridis::magma(3), lty = 1)
 points(planes_eigen$vectors, col = viridis::magma(3), pch = 19, cex = 1)
 legend("topright", legend = c("Eigenvectors 1", "Eigenvectors 2", "Eigenvectors 3"), col = viridis::magma(3), pch = 19, cex = .75)
 ```
+### Eigenvalues
+The **eigenvalues** of the orientation tensor. describe the shape of the distribution of these vectors, that is who clustered, cylindrical or random these vectors are distributed.
 
-### Fabric plots
+A Fabric plot visualizes the shape of the distribution by plotting the eigenvalues of the orientation tensor.
+Two different diagram are provided by {structr}, namely the triangular *Vollmer plot* after Vollmer (1990) and the logarithmic biplot (*Woodcock plot*) after Woodcock (1977).
+
+
+#### Vollmer plot
 
 ```{r vollmer, message=FALSE,warning=FALSE}
 #| fig.alt: >
 #|   Diagram showing eigen-vector analysis of some example data plotted in an
-#|   triangular plot after Vollmer
+#|   triangular plot after Vollmer 1990
 
 VollmerPlot(planes, col = "#000004", pch = 1, cex = 2)
 VollmerPlot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```
+#### Woodcock plot 
+
+```{r woodcock, message=FALSE,warning=FALSE}
+#| fig.alt: >
+#|   Diagram showing eigen-vector analysis of some example data plotted in an
+#|   biplot plot after Woodcok 1977
+
+WoodcockPlot(planes, col = "#000004", pch = 1, cex = 2)
+WoodcockPlot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
+legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
+```
+
+#### Shape parameters
+There are more shape parameters using different algorithms based on the orientation tensor:
+
+```{r shapes}
+or_shape_params(planes)
+```
 
 ## Density plots
+
+Densities are estimated using **Kamb** contouring (after Kamb, 1959) and exponential (the default), linear, square-inverse or no smoothing. 
+Weighted densities can be controlled by the `weights` argument and are useful when the orientation measurements have different accuracies.
+
 ```{r density, message=FALSE,warning=FALSE}
 #| fig.alt: >
 #|   Diagram showing the density distribution some example data plotted in an
@@ -180,6 +215,11 @@ title(
 
 ## Fault plots
 
+Fault objects consist of planes (fault plane), lines (e.g. striae), and the sense of movement. There are two ways how these combined features can be visualized, namely the Angelier and the Hoeppner plot.
+
+### Angelier plot
+The **Angelier plot** shows all planes as *great circles* and lineations as points (after Angelier , 1984). Fault striae are plotted as vectors on top of the lineation pointing in the movement direction of the hangingwall. Easy to read in case of homogeneous or small datasets. 
+
 ```{r faults1}
 #| fig.alt: >
 #|   Diagram showing example fault data plotted in an
@@ -195,6 +235,10 @@ f <- Fault(
 stereoplot(title = "Angelier plot")
 angelier(f, col = viridis::magma(nrow(f), end = .9))
 ```
+
+### Hoeppner plot
+
+The **Hoeppner plot** shows all planes as *poles* while lineations are not shown (after Hoeppner, 1955). Fault striae are plotted as vectors on top of poles pointing in the movement direction of the hangingwall. Useful in case of large or heterogeneous datasets.
 
 ```{r faults2}
 #| fig.alt: >

@@ -132,7 +132,7 @@ The **dot product** (or scalar product) of two  vectors
 line1 %*% line2
 ```
 
-Intuitively, it tells us something about how much two vectors point in the same direction.
+Intuitively, the dot product tells us how much two vectors point in the same direction.
 
 The **cross product** of two  vectors:
 
@@ -158,7 +158,7 @@ The **rotation** of a vector about another vector (rotation axis) by a specified
 rotate(line1, rotaxis = line2, rotangle = 45)
 ```
 
-**Linear transformation**
+**Linear transformation** transforms vectors using a transformation matrix (second-order tensor). 
 
 ```{r math_transform}
 trans_mat <- matrix(runif(9), 3, 3)

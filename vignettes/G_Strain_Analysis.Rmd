@@ -23,6 +23,8 @@ knitr::opts_chunk$set(
 library(structr)
 ```
 
+## Strain analysis (fabric analysis)
+
 Import some R-phi data
 ```{r data}
 data(ramsay)
