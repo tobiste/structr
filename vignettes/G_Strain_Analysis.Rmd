@@ -67,8 +67,8 @@ contour(out$x, out$y, out$z, add = TRUE, lwd = .5)
 points(out$points, col = "grey", pch = 16, cex = .5)
 
 # add mean strain ellipse
-
 if(require(DescTools)) {
+  #95% confidence interval
 DescTools::DrawEllipse(x = ramsay_mean$phi, y = ramsay_mean$R, 
             radius.x = diff(ramsay_mean$phi_CI)/2, radius.y = diff(ramsay_mean$R_CI)/2, 
             rot = 0, 
