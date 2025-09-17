@@ -148,6 +148,7 @@ mean_strain_ellipse0 <- function(r, phi){
 #'
 #' image(out$x, out$y, out$z,
 #'   asp = ifelse(out$proj != "rfp", 1, NA),
+#'   xlim = c(-90, 90),
 #'   ylim = c(1, out$rmax),
 #'   xlab = bquote(varphi ~ "(" * degree * ")"), ylab = "R",
 #'   main = out$proj,
@@ -511,9 +512,9 @@ vorticity_boot <- function(B, R = 100, probs = 0.975) {
 #' set.seed(20250411)
 #'
 #' # assuming the mean orientation is the foliation:
-#' ramsay[, 2] <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2]
+#' theta <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2]
 #'
-#' RGN_plot(ramsay[, 'R'], ramsay[, 'phi'], col = "darkred")
+#' RGN_plot(ramsay[, 'R'], theta, col = "darkred")
 RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.972, grid = 0.05, ...) {
   R_val <- r
   theta <- theta %% 180

@@ -48,21 +48,35 @@ out <- hypercontour(r = ramsay[, 1], phi = ramsay[, 2], proj = "rfp")
 
 
 plotted in a **Rf/phi** diagram:
-```{r rphi}
-#| fig.alt: >
-#|   Rf-phi plot
+```{r rphi, message=FALSE, warning=FALSE}
+#| fig-alt: Rf-phi plot
 image(out$x, out$y, out$z,
   asp = ifelse(out$proj != "rfp", 1, NA),
+  axes = FALSE,
   ylim = c(1, out$rmax),
-  xlab = bquote(varphi * " (" * degree * ")"), ylab = bquote(R[f]),
+  xlab = bquote('Long-axis orientation,'~varphi * " (" * degree * ")"), 
+  ylab = bquote('Strain ratio,'~R[f]),
   main = "Rf/phi plot",
   col = viridis::viridis(50)
 )
+
+graphics::axis(1, at = seq(-90, 90, 30), gap.axis = 0)
+graphics::axis(2, at = pretty(c(1, max(out$y))), gap.axis = 0)
+
 contour(out$x, out$y, out$z, add = TRUE, lwd = .5)
 points(out$points, col = "grey", pch = 16, cex = .5)
 
 # add mean strain ellipse
-points(ramsay_mean$phi, ramsay_mean$R, col = 'red', pch = 1, cex = 2, lwd = 2)
+
+if(require(DescTools)) {
+DescTools::DrawEllipse(x = ramsay_mean$phi, y = ramsay_mean$R, 
+            radius.x = diff(ramsay_mean$phi_CI)/2, radius.y = diff(ramsay_mean$R_CI)/2, 
+            rot = 0, 
+            border = "red", lwd = 2)
+} else {
+  points(ramsay_mean$phi, ramsay_mean$R, col = 'red', pch = 16)
+}
+
 
 title(sub = bquote('R' == .(round(ramsay_mean$R, 2))~'|'~ phi == .(round(ramsay_mean$phi, 2))*degree))
 ```

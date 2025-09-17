@@ -56,6 +56,7 @@ out <- hypercontour(ramsay[, 'R'], ramsay[, 'phi'],  proj = "rfp")
 
 image(out$x, out$y, out$z,
   asp = ifelse(out$proj != "rfp", 1, NA),
+  xlim = c(-90, 90),
   ylim = c(1, out$rmax),
   xlab = bquote(varphi ~ "(" * degree * ")"), ylab = "R",
   main = out$proj,
