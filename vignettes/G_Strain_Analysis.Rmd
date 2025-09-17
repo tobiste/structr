@@ -17,6 +17,7 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+set.seed(20250411)
 ```
 
 ```{r setup, warning=FALSE, message=FALSE}
@@ -25,19 +26,28 @@ library(structr)
 
 ## Strain analysis (fabric analysis)
 
-Import some R-phi data
+Import some R-phi data from elliptical strain markers
 ```{r data}
 data(ramsay)
 head(ramsay)
 ```
 
-Calculate densities in Rf-Phi space:
+The mean mean strain ellipse (shape and orientation) of deformed elliptical objects as strain markers can be calculated by using the mean shape matrix and its eigenvalues (Shimamoto and Ikeda, 1976):
+
+```{r mean_strain}
+ramsay_mean <- mean_strain_ellipse(r = ramsay[, 1], phi = ramsay[, 2])
+print(ramsay_mean)
+```
+The {structr} algorithm also calculates bootstrapped 95% confidence interval.
+
+
+To visualize the distribution of the strain values, we  can calculate densities in Rf-Phi space:
 ```{r density}
-out <- hypercontour(ramsay, angfmt = "deg", proj = "rfp")
+out <- hypercontour(r = ramsay[, 1], phi = ramsay[, 2], proj = "rfp")
 ```
 
 
-Rf/phi plot
+plotted in a **Rf/phi** diagram:
 ```{r rphi}
 #| fig.alt: >
 #|   Rf-phi plot
@@ -50,21 +60,25 @@ image(out$x, out$y, out$z,
 )
 contour(out$x, out$y, out$z, add = TRUE, lwd = .5)
 points(out$points, col = "grey", pch = 16, cex = .5)
+
+# add mean strain ellipse
+points(ramsay_mean$phi, ramsay_mean$R, col = 'red', pch = 1, cex = 2, lwd = 2)
+
+title(sub = bquote('R' == .(round(ramsay_mean$R, 2))~'|'~ phi == .(round(ramsay_mean$phi, 2))*degree))
 ```
 
-
-Equidistant polar plot:
+orin an **Equidistant polar plot**:
 ```{r plot2}
 #| fig.alt: >
 #|   Elliot plot
-out2 <- hypercontour(ramsay, angfmt = "deg", proj = "eqd")
+out2 <- hypercontour(r = ramsay[, 1], phi = ramsay[, 2], proj = "eqd")
 
 # calculate some colors
 levels <- pretty(range(out2$z, na.rm = TRUE), 20)
 cols <- viridis::viridis(n = length(levels) - 1)
 
 plot(out2$x, y = out2$y, "n", xlab = NULL, ylab = NULL, asp = 1, axes = FALSE, ann = FALSE)
-graphics::.filled.contour(out2$x, out2$y, out2$z, levels = levels, col = cols)
+.filled.contour(out2$x, out2$y, out2$z, levels = levels, col = cols)
 # points(out2$points, col = "grey", cex = .5)
 lines(out2$frame, lwd = 2)
 title(main = "Elliot plot")
@@ -83,9 +97,8 @@ Here the `Rc` is estimated using the bootstrap method described in Stephan et al
 ```{r vorticity, message=FALSE, warning=FALSE}
 #| fig.alt: >
 #|   Rigid grain net
-ramsay_shift <- ramsay
-ramsay_shift[, 2] <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2] # assuming the mean orientation resembles the foliation
+theta <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2] # assuming the mean orientation resembles the foliation
 
-RGN_plot(ramsay_shift, col = "#B63679")
+RGN_plot(r = ramsay[, 1], theta = theta, col = "#B63679")
 title(main = "Rigid Grain Net")
 ```

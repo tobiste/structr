@@ -11,11 +11,15 @@ Rphi(Rs, Ri = 1, theta)
 
 \item{Ri}{numeric. Initial or pre-deformation aspect ratio of an elliptical object}
 
-\item{theta}{numeric. Fluctuation angle of undeformed marker w.r.t. computed principal direction of strain (in degree)}
+\item{theta}{numeric. Fluctuation angle of undeformed marker w.r.t. computed principal direction of strain (in degrees)}
 }
 \value{
-\code{phi}: the final angle (in degree) between long xis and principal strain direction, \code{Rf}: final axial ratio
+list. \code{phi}: the final angle (in degrees) between long axis and principal strain direction, \code{Rf}: final axial ratio
 }
 \description{
 \deqn{R_f/\phi}
+}
+\examples{
+#' data(ramsay)
+Rphi(ramsay[, 'R'], theta = ramsay[, 'phi'])
 }

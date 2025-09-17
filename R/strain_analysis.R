@@ -2,10 +2,14 @@
 #'
 #' @param Rs numeric.
 #' @param Ri numeric. Initial or pre-deformation aspect ratio of an elliptical object
-#' @param theta numeric. Fluctuation angle of undeformed marker w.r.t. computed principal direction of strain (in degree)
+#' @param theta numeric. Fluctuation angle of undeformed marker w.r.t. computed principal direction of strain (in degrees)
 #'
-#' @returns `phi`: the final angle (in degree) between long xis and principal strain direction, `Rf`: final axial ratio
+#' @returns list. `phi`: the final angle (in degrees) between long axis and principal strain direction, `Rf`: final axial ratio
 #' @export
+#' 
+#' @examples
+#' #' data(ramsay)
+#' Rphi(ramsay[, 'R'], theta = ramsay[, 'phi'])
 Rphi <- function(Rs, Ri = 1, theta) {
   theta <- theta * pi / 180
   a <- 2 * Rs * (Ri^2 - 1) * sin(2 * theta)
@@ -17,7 +21,84 @@ Rphi <- function(Rs, Ri = 1, theta) {
   d <- Rs^2 * tan(phi)^2 * (tan(theta)^2 + Ri^2) - (1 + Ri^2 * tan(theta)^2)
   Rf <- sqrt(c / d)
 
-  return(c("phi" = phi * pi / 180, "Rf" = Rf))
+  return(list("phi" = phi * pi / 180, "Rf" = Rf))
+}
+
+
+#' Mean strain ellipse
+#' 
+#' determines the shape and orientation of the strain ellipse by using 
+#' deformed elliptical objects as strain markers. The algorithm is based on the 
+#' mean shape matrix and its eigenvalues (Shimamoto and Ikeda, 1976).
+#'
+#' @param r numeric. Aspect ratio of deformed object (long axis / short axis)
+#' @param phi numeric. Orientation of long axis of deformed object (in degrees)
+#' @param boot logical. Whether a 95% confidence interval from on bootstrapping should be calculated. `TRUE` by default.
+#' @param iter integer. Number of bootstrap resamples (`1000` by default). Ignored when `boot = FALSE`.
+#' @param boot.values logical. Whether the bootstrapped R and phi values should be added to the output. `FALSE` by default.
+#' 
+#' @returns list. `R` gives the mean aspect ratio of the strain ellipse, 
+#' and `phi` gives the orientation of its long axis. If `boot=TRUE`, then 
+#' the bootstrapped 95% confidence interval for the mean aspect ratio (`R_CI`) 
+#' and for its orientation (`phi_CI`) are added. If `boot.values=TRUE`, a matrix 
+#' containing the bootstrapped R and phi values are added.
+#' 
+#' @export
+#' 
+#' @references Shimamoto, T., Ikeda, Y., 1976. A simple algebraic method for 
+#' strain estimation from ellipsoidal objects. Tectonophysics 36, 315–337. 
+#' doi: 10.1016/0040-1951(76)90107-4
+#'
+#' @examples
+#' set.seed(20250411)
+#' data(ramsay)
+#' mean_strain_ellipse(ramsay[, 'R'], ramsay[, 'phi'])
+mean_strain_ellipse <- function(r, phi, boot = TRUE, resamples = 1000, boot.values = FALSE){
+  res <- mean_strain_ellipse0(r, phi)
+  if(boot){
+    rphi_boot <- vapply(1:resamples, function(i) {
+      rsmpl <- sample(seq_along(r), replace = TRUE)
+      mse <- mean_strain_ellipse0(r[rsmpl], phi[rsmpl])
+      unlist(mse)
+    }, FUN.VALUE = numeric(2)) |> 
+      t()
+    
+    res$R_CI <- quantile(rphi_boot[, 1], probs=c(.025, .975)) |> unname()
+    res$phi_CI <- quantile(rphi_boot[, 2], probs=c(.025, .975)) |> unname()
+    
+    if(boot.values) res$boot <- rphi_boot
+  } 
+  res
+}
+
+mean_strain_ellipse0 <- function(r, phi){
+  n <- length(r)
+  stopifnot(n==length(phi))
+  phi <-  phi * pi / 180
+  cosp2 <- cos(phi)^2
+  sinp2 <- sin(phi)^2
+  f <- cosp2/r + r * sinp2
+  g <- sinp2/r + r * cosp2
+  h <- ((1/r) - r) *  sin(phi) * cos(phi)
+  
+  if(n>1){
+    f <- mean(f)
+    g <- mean(g)
+    h <- mean(h)
+  }
+  
+  sm <- matrix(c(f, h, h, g), nrow = 2, ncol = 2)
+  
+  
+  theta <- (atan((2*h / (f-g)))/2) * 180 / pi
+  
+  sm_eig <- eigen(sm, symmetric = TRUE, only.values = TRUE)
+  pa <- sqrt(sm_eig$values)
+  
+  list(
+    R = pa[1]/pa[2],
+    phi = theta
+  )
 }
 
 
@@ -31,11 +112,11 @@ Rphi <- function(Rs, Ri = 1, theta) {
 #' stereographic, orthographic, exponential, and radial projections, as polar
 #' azimuthal or cylindrical (cartesian, RfPhi-type) plots.
 #'
-#' @param rphi matrix with two  named columns representing the `R` and `phi` values
+#' @inheritParams hypercontour
 #' @param rmax maximum R value (if `NULL`, computed automatically)
 #' @param kappa smoothing parameter
 #' @param nnodes grid resolution. higher is more accurate but slower, 30 is good, but 50 is recommended for final plots, default = 50.
-#' @param angfmt character. Angle format, `'deg'` for degree, `'rad'` for radians, and `'grd'` for gradians.
+# #' @param angfmt character. Angle format of `phi`: `'deg'` for degree (the default), `'rad'` for radians, and `'grd'` for gradians.
 #' @param proj character. Projection,  `'eqd'` for equidistant (Elliot plot),
 #' `'eqa'` for equal-area, `'stg'` for stereographic, `'ort'` for orthographic,
 #' `'gno'` for gnomonic, `'lin'` for exponential (linear R), `'rdl'` for radial,
@@ -63,7 +144,7 @@ Rphi <- function(Rs, Ri = 1, theta) {
 #'
 #' @examples
 #' data(ramsay)
-#' out <- hypercontour(ramsay, angfmt = "deg", proj = "rfp")
+#' out <- hypercontour(ramsay[, 'R'], ramsay[, 'phi'],  proj = "rfp")
 #'
 #' image(out$x, out$y, out$z,
 #'   asp = ifelse(out$proj != "rfp", 1, NA),
@@ -76,7 +157,7 @@ Rphi <- function(Rs, Ri = 1, theta) {
 #' points(out$points)
 #'
 #'
-#' out <- hypercontour(ramsay, angfmt = "deg", proj = "eqa")
+#' out <- hypercontour(ramsay[, 'R'], ramsay[, 'phi'], proj = "eqa")
 #' levels <- pretty(range(out$z, na.rm = TRUE), 100)
 #' cols <- viridis::viridis(n = length(levels) - 1)
 #' plot(out$x, y = out$y, "n", xlab = NULL, ylab = NULL, asp = 1, axes = FALSE, ann = FALSE)
@@ -84,33 +165,32 @@ Rphi <- function(Rs, Ri = 1, theta) {
 #' points(out$points)
 #' lines(out$frame, lwd = 2)
 #' title(main = out$proj)
-hypercontour <- function(rphi,
-                         angfmt = c("deg", "rad", "grd"),
+hypercontour <- function(r, phi,
+                         # angfmt = c("deg", "rad", "grd"),
                          proj = c("eqd", "eqa", "stg", "ort", "gno", "lin", "rdl", "rfp"),
                          normalize = TRUE,
                          rmax = NULL, kappa = 40, nnodes = 50L) {
-  angfmt <- match.arg(angfmt)
+  # angfmt <- match.arg(angfmt)
   proj <- match.arg(proj)
 
-  rphi <- cbind(R = rphi[, "R"], phi = rphi[, "phi"])
 
   frame <- .drawFrame(TRUE, proj)
 
   if (is.null(rmax)) {
-    rmax <- ceiling(max(rphi[, 1])) + 1
+    rmax <- ceiling(max(r)) + 1
   }
 
   # convert angles
-  f <- switch(angfmt,
-    "deg" = pi / 180, # degrees
-    "grd" = pi / 200, # gradians
-    "rad" = pi
-  ) # radians
-  rphi[, "phi"] <- rphi[, "phi"] * f
+  # f <- switch(angfmt,
+  #   "deg" = pi / 180, # degrees
+  #   "grd" = pi / 200, # gradians
+  #   "rad" = pi
+  # ) # radians
+  f <- pi / 180
+  phi <- phi * f
 
-  points <- .Rphi2xy(rphi[, "R"], rphi[, "phi"], rmax = rmax, proj = proj)
-
-  grd <- gridHyper(rphi, rmax = rmax, kappa = kappa, nnodes = nnodes, normalize = normalize, proj = proj)
+  points <- .Rphi2xy(r, phi, rmax = rmax, proj = proj)
+  grd <- gridHyper(cbind(R = r, phi = phi), rmax = rmax, kappa = kappa, nnodes = nnodes, normalize = normalize, proj = proj)
 
   x <- seq(-1, 1, length.out = nnodes)
   y <- seq(-1, 1, length.out = nnodes)
@@ -126,7 +206,7 @@ hypercontour <- function(rphi,
     #
     # points <- .xy2Rphi(points[, 1], points[, 2], rmax, proj='rfp')
 
-    points <- cbind(x = rphi[, "phi"] / f, y = rphi[, "R"])
+    points <- cbind(x = phi / f, y = r)
     # points[, 'phi'] <- points[, 'phi'] / f
   } else {
     xy <- expand.grid(x, y)
@@ -401,14 +481,13 @@ vorticity_boot <- function(B, R = 100, probs = 0.975) {
 #' This critical shape factor can be interpreted as the the **mean kinmatic vorticity number**.
 #' Here the `Rc` is estimated using the bootstrap method described in Stephan et al. (2025).
 #'
-#' @param x matrix. Two-column matrix, with first column containing the
-#' porphyroclast aspect ratio (long axis/short axis), and the second
-#' column containing the angle between long axis and the foliation.
+#' @param r numeric. The porphyroclast aspect ratio (long axis/short axis)
+#' @param theta numeric. Angle between long axis and foliation (in degrees)
 #' @param angle_error numeric. Uncertainty of angle measurement. `3` by default.
 #' @param probs integer. Probability with values in \eqn{[0, 1]} to estimate
 #' critical shape factor, i.e. the largest shape factor of measurements outside
 #' of critical hyperbole.
-#' @param boot integer. Number of bootstrap iterations
+#' @param boot integer. Number of bootstrap resamples
 #' @param grid numeric. Spacing of hyperboles.
 #' @param ... plotting arguments passed to [graphics::points()]
 #'
@@ -429,15 +508,15 @@ vorticity_boot <- function(B, R = 100, probs = 0.975) {
 #'
 #' @examples
 #' data(ramsay)
+#' set.seed(20250411)
 #'
-#' # assuming the mean orientation resembles the foliation:
+#' # assuming the mean orientation is the foliation:
 #' ramsay[, 2] <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2]
 #'
-#' RGN_plot(ramsay, col = "darkred")
-RGN_plot <- function(x, angle_error = 3, boot = 100L, probs = 0.972, grid = 0.05, ...) {
-  R_val <- x[, 1]
-
-  theta <- x[, 2] %% 180
+#' RGN_plot(ramsay[, 'R'], ramsay[, 'phi'], col = "darkred")
+RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.972, grid = 0.05, ...) {
+  R_val <- r
+  theta <- theta %% 180
   theta <- ifelse(theta > 90, theta - 180, theta)
 
   B_val <- (R_val^2 - 1) / (R_val^2 + 1)
@@ -498,7 +577,7 @@ RGN_plot <- function(x, angle_error = 3, boot = 100L, probs = 0.972, grid = 0.05
 
 
   graphics::mtext(paste0("Rc = ", round(bmax_geomean, 2), " \u00B1 ", round(geo.margin_error, 2)))
-  graphics::title(sub = paste0("(n: ", nrow(x), ")"))
+  graphics::title(sub = paste0("(n: ", length(r), ")"))
 
 
   invisible(

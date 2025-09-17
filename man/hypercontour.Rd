@@ -5,8 +5,8 @@
 \title{Calculates densities for fabric and strain data}
 \usage{
 hypercontour(
-  rphi,
-  angfmt = c("deg", "rad", "grd"),
+  r,
+  phi,
   proj = c("eqd", "eqa", "stg", "ort", "gno", "lin", "rdl", "rfp"),
   normalize = TRUE,
   rmax = NULL,
@@ -15,10 +15,6 @@ hypercontour(
 )
 }
 \arguments{
-\item{rphi}{matrix with two  named columns representing the \code{R} and \code{phi} values}
-
-\item{angfmt}{character. Angle format, \code{'deg'} for degree, \code{'rad'} for radians, and \code{'grd'} for gradians.}
-
 \item{proj}{character. Projection,  \code{'eqd'} for equidistant (Elliot plot),
 \code{'eqa'} for equal-area, \code{'stg'} for stereographic, \code{'ort'} for orthographic,
 \code{'gno'} for gnomonic, \code{'lin'} for exponential (linear R), \code{'rdl'} for radial,
@@ -56,7 +52,7 @@ distribution.
 }
 \examples{
 data(ramsay)
-out <- hypercontour(ramsay, angfmt = "deg", proj = "rfp")
+out <- hypercontour(ramsay[, 'R'], ramsay[, 'phi'],  proj = "rfp")
 
 image(out$x, out$y, out$z,
   asp = ifelse(out$proj != "rfp", 1, NA),
@@ -69,7 +65,7 @@ contour(out$x, out$y, out$z, add = TRUE, lwd = .5)
 points(out$points)
 
 
-out <- hypercontour(ramsay, angfmt = "deg", proj = "eqa")
+out <- hypercontour(ramsay[, 'R'], ramsay[, 'phi'], proj = "eqa")
 levels <- pretty(range(out$z, na.rm = TRUE), 100)
 cols <- viridis::viridis(n = length(levels) - 1)
 plot(out$x, y = out$y, "n", xlab = NULL, ylab = NULL, asp = 1, axes = FALSE, ann = FALSE)

@@ -4,16 +4,24 @@
 \alias{RGN_plot}
 \title{Rigid Grain Net (RGN)}
 \usage{
-RGN_plot(x, angle_error = 3, boot = 100L, probs = 0.972, grid = 0.05, ...)
+RGN_plot(
+  r,
+  theta,
+  angle_error = 3,
+  boot = 100L,
+  probs = 0.972,
+  grid = 0.05,
+  ...
+)
 }
 \arguments{
-\item{x}{matrix. Two-column matrix, with first column containing the
-porphyroclast aspect ratio (long axis/short axis), and the second
-column containing the angle between long axis and the foliation.}
+\item{r}{numeric. The porphyroclast aspect ratio (long axis/short axis)}
+
+\item{theta}{numeric. Angle between long axis and foliation (in degrees)}
 
 \item{angle_error}{numeric. Uncertainty of angle measurement. \code{3} by default.}
 
-\item{boot}{integer. Number of bootstrap iterations}
+\item{boot}{integer. Number of bootstrap resamples}
 
 \item{probs}{integer. Probability with values in \eqn{[0, 1]} to estimate
 critical shape factor, i.e. the largest shape factor of measurements outside
@@ -38,11 +46,12 @@ Here the \code{Rc} is estimated using the bootstrap method described in Stephan 
 }
 \examples{
 data(ramsay)
+set.seed(20250411)
 
-# assuming the mean orientation resembles the foliation:
+# assuming the mean orientation is the foliation:
 ramsay[, 2] <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2]
 
-RGN_plot(ramsay, col = "darkred")
+RGN_plot(ramsay[, 'R'], ramsay[, 'phi'], col = "darkred")
 }
 \references{
 Jessup, Micah J., Richard D. Law, and Chiara Frassi.
