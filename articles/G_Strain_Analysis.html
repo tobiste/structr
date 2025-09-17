@@ -66,7 +66,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-09-16</h4>
+            <h4 data-toc-skip class="date">2025-09-17</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/G_Strain_Analysis.Rmd" class="external-link"><code>vignettes/G_Strain_Analysis.Rmd</code></a></small>
       <div class="d-none name"><code>G_Strain_Analysis.Rmd</code></div>
@@ -79,22 +79,42 @@ Stephan</h4>
 <div class="section level2">
 <h2 id="strain-analysis-fabric-analysis">Strain analysis (fabric analysis)<a class="anchor" aria-label="anchor" href="#strain-analysis-fabric-analysis"></a>
 </h2>
-<p>Import some R-phi data</p>
+<p>Import some R-phi data from elliptical strain markers</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ramsay</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/head-sphere.html">head</a></span><span class="op">(</span><span class="va">ramsay</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         R   phi</span></span>
-<span><span class="co">#&gt; [1,] 1.52 27.59</span></span>
-<span><span class="co">#&gt; [2,] 1.33 36.91</span></span>
-<span><span class="co">#&gt; [3,] 1.78 27.31</span></span>
-<span><span class="co">#&gt; [4,] 1.51 17.73</span></span>
-<span><span class="co">#&gt; [5,] 1.70 24.45</span></span>
-<span><span class="co">#&gt; [6,] 1.39 45.84</span></span></code></pre></div>
-<p>Calculate densities in Rf-Phi space:</p>
+<span><span class="co">#&gt; [1,] 1.24 35.96</span></span>
+<span><span class="co">#&gt; [2,] 1.52 27.59</span></span>
+<span><span class="co">#&gt; [3,] 1.33 36.91</span></span>
+<span><span class="co">#&gt; [4,] 1.78 27.31</span></span>
+<span><span class="co">#&gt; [5,] 1.51 17.73</span></span>
+<span><span class="co">#&gt; [6,] 1.70 24.45</span></span></code></pre></div>
+<p>The mean mean strain ellipse (shape and orientation) of deformed
+elliptical objects as strain markers can be calculated by using the mean
+shape matrix and its eigenvalues (Shimamoto and Ikeda, 1976):</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hypercontour.html">hypercontour</a></span><span class="op">(</span><span class="va">ramsay</span>, angfmt <span class="op">=</span> <span class="st">"deg"</span>, proj <span class="op">=</span> <span class="st">"rfp"</span><span class="op">)</span></span></code></pre></div>
-<p>Rf/phi plot</p>
+<code class="sourceCode R"><span><span class="va">ramsay_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mean_strain_ellipse.html">mean_strain_ellipse</a></span><span class="op">(</span>r <span class="op">=</span> <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, phi <span class="op">=</span> <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ramsay_mean</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $R</span></span>
+<span><span class="co">#&gt; [1] 1.628138</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $phi</span></span>
+<span><span class="co">#&gt; [1] 25.73632</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $R_CI</span></span>
+<span><span class="co">#&gt; [1] 1.59275 1.66359</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $phi_CI</span></span>
+<span><span class="co">#&gt; [1] 24.71905 26.75180</span></span></code></pre></div>
+<p>The {structr} algorithm also calculates bootstrapped 95% confidence
+interval.</p>
+<p>To visualize the distribution of the strain values, we can calculate
+densities in Rf-Phi space:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hypercontour.html">hypercontour</a></span><span class="op">(</span>r <span class="op">=</span> <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, phi <span class="op">=</span> <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>, proj <span class="op">=</span> <span class="st">"rfp"</span><span class="op">)</span></span></code></pre></div>
+<p>plotted in a <strong>Rf/phi</strong> diagram:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stereo_contour.html">image</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">x</span>, <span class="va">out</span><span class="op">$</span><span class="va">y</span>, <span class="va">out</span><span class="op">$</span><span class="va">z</span>,</span>
 <span>  asp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">proj</span> <span class="op">!=</span> <span class="st">"rfp"</span>, <span class="fl">1</span>, <span class="cn">NA</span><span class="op">)</span>,</span>
 <span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">out</span><span class="op">$</span><span class="va">rmax</span><span class="op">)</span>,</span>
@@ -103,18 +123,23 @@ Stephan</h4>
 <span>  col <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">viridis</a></span><span class="op">(</span><span class="fl">50</span><span class="op">)</span></span>
 <span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/stereo_contour.html">contour</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">x</span>, <span class="va">out</span><span class="op">$</span><span class="va">y</span>, <span class="va">out</span><span class="op">$</span><span class="va">z</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, lwd <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">points</span>, col <span class="op">=</span> <span class="st">"grey"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">points</span>, col <span class="op">=</span> <span class="st">"grey"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># add mean strain ellipse</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">ramsay_mean</span><span class="op">$</span><span class="va">phi</span>, <span class="va">ramsay_mean</span><span class="op">$</span><span class="va">R</span>, col <span class="op">=</span> <span class="st">'red'</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">2</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>sub <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/bquote.html" class="external-link">bquote</a></span><span class="op">(</span><span class="st">'R'</span> <span class="op">==</span> <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">ramsay_mean</span><span class="op">$</span><span class="va">R</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">~</span><span class="st">'|'</span><span class="op">~</span> <span class="va">phi</span> <span class="op">==</span> <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">ramsay_mean</span><span class="op">$</span><span class="va">phi</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">*</span><span class="va">degree</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="G_Strain_Analysis_files/figure-html/rphi-1.png" alt="Rf-phi plot" width="700"></p>
-<p>Equidistant polar plot:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">out2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hypercontour.html">hypercontour</a></span><span class="op">(</span><span class="va">ramsay</span>, angfmt <span class="op">=</span> <span class="st">"deg"</span>, proj <span class="op">=</span> <span class="st">"eqd"</span><span class="op">)</span></span>
+<p>orin an <strong>Equidistant polar plot</strong>:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">out2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/hypercontour.html">hypercontour</a></span><span class="op">(</span>r <span class="op">=</span> <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, phi <span class="op">=</span> <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>, proj <span class="op">=</span> <span class="st">"eqd"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># calculate some colors</span></span>
 <span><span class="va">levels</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/pretty.html" class="external-link">pretty</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/range.html" class="external-link">range</a></span><span class="op">(</span><span class="va">out2</span><span class="op">$</span><span class="va">z</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>, <span class="fl">20</span><span class="op">)</span></span>
 <span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">viridis</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">levels</span><span class="op">)</span> <span class="op">-</span> <span class="fl">1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">out2</span><span class="op">$</span><span class="va">x</span>, y <span class="op">=</span> <span class="va">out2</span><span class="op">$</span><span class="va">y</span>, <span class="st">"n"</span>, xlab <span class="op">=</span> <span class="cn">NULL</span>, ylab <span class="op">=</span> <span class="cn">NULL</span>, asp <span class="op">=</span> <span class="fl">1</span>, axes <span class="op">=</span> <span class="cn">FALSE</span>, ann <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu">graphics</span><span class="fu">::</span><span class="fu"><a href="https://rdrr.io/r/graphics/filled.contour.html" class="external-link">.filled.contour</a></span><span class="op">(</span><span class="va">out2</span><span class="op">$</span><span class="va">x</span>, <span class="va">out2</span><span class="op">$</span><span class="va">y</span>, <span class="va">out2</span><span class="op">$</span><span class="va">z</span>, levels <span class="op">=</span> <span class="va">levels</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/filled.contour.html" class="external-link">.filled.contour</a></span><span class="op">(</span><span class="va">out2</span><span class="op">$</span><span class="va">x</span>, <span class="va">out2</span><span class="op">$</span><span class="va">y</span>, <span class="va">out2</span><span class="op">$</span><span class="va">z</span>, levels <span class="op">=</span> <span class="va">levels</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">)</span></span>
 <span><span class="co"># points(out2$points, col = "grey", cex = .5)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">out2</span><span class="op">$</span><span class="va">frame</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Elliot plot"</span><span class="op">)</span></span></code></pre></div>
@@ -132,11 +157,10 @@ porphyroclasts. This threshold can be interpreted as the the
 <strong>mean kinmatic vorticity number</strong>. Here the
 <code>Rc</code> is estimated using the bootstrap method described in
 Stephan et al. (2025).</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ramsay_shift</span> <span class="op">&lt;-</span> <span class="va">ramsay</span></span>
-<span><span class="va">ramsay_shift</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu">tectonicr</span><span class="fu">::</span><span class="fu"><a href="https://tobiste.github.io/tectonicr/reference/circle_stats.html" class="external-link">circular_mean</a></span><span class="op">(</span><span class="va">ramsay</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">-</span> <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span> <span class="co"># assuming the mean orientation resembles the foliation</span></span>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">theta</span> <span class="op">&lt;-</span> <span class="fu">tectonicr</span><span class="fu">::</span><span class="fu"><a href="https://tobiste.github.io/tectonicr/reference/circle_stats.html" class="external-link">circular_mean</a></span><span class="op">(</span><span class="va">ramsay</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">-</span> <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span> <span class="co"># assuming the mean orientation resembles the foliation</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/RGN_plot.html">RGN_plot</a></span><span class="op">(</span><span class="va">ramsay_shift</span>, col <span class="op">=</span> <span class="st">"#B63679"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/RGN_plot.html">RGN_plot</a></span><span class="op">(</span>r <span class="op">=</span> <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, theta <span class="op">=</span> <span class="va">theta</span>, col <span class="op">=</span> <span class="st">"#B63679"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Rigid Grain Net"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="G_Strain_Analysis_files/figure-html/vorticity-1.png" alt="Rigid grain net" width="700"></p>
 </div>
