@@ -114,11 +114,11 @@ like this:</p>
 <p>you could import the file like</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">imported_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span></span>
-<span>  <span class="st">"path/to/my/file.xt"</span>, </span>
-<span>  header <span class="op">=</span> <span class="cn">TRUE</span>, </span>
-<span>  sep <span class="op">=</span> <span class="st">""</span>, </span>
+<span>  <span class="st">"path/to/my/file.xt"</span>,</span>
+<span>  header <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  sep <span class="op">=</span> <span class="st">""</span>,</span>
 <span>  row.names <span class="op">=</span> <span class="fl">1</span></span>
-<span>  <span class="op">)</span> </span></code></pre></div>
+<span><span class="op">)</span></span></code></pre></div>
 <p>This imports the tab-separated file as an <code>"data.frame"</code>
 object with the first column representing the row names, and the two
 other columns the headers of the table. Say these measurements represent
