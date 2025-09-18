@@ -193,13 +193,21 @@ read_strabo_JSON <- function(file, sf = TRUE) {
   )
   setnames(tag_info_dt, paste0("tag_", names(tag_info_dt)))
 
+  # spot_tags_dt <- merge(
+  #   unique(tags_dt),
+  #   tag_info_dt[, .(tag_id = tag_id, tag_name = tag_name)],
+  #   by.x = "tag_id", by.y = "tag_id",
+  #   all.x = TRUE
+  # )
   spot_tags_dt <- merge(
     unique(tags_dt),
-    tag_info_dt[, .(tag_id = tag_id, tag_name = tag_name)],
+    tag_info_dt[, list(tag_id = tag_id, tag_name = tag_name)],
     by.x = "tag_id", by.y = "tag_id",
     all.x = TRUE
   )
+  
   spot_tags_dt[, tag_col := paste0("tag:", tag_name)]
+  
   # spot_tags_wide <- dcast(spot_tags_dt[, .(spot_id, tag_name = paste0("tag:", tag_name), value = TRUE)],
   #   spot_id ~ tag_name,
   #   fill = FALSE
