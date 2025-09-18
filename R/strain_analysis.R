@@ -55,19 +55,22 @@ Rphi <- function(Rs, Ri = 1, theta) {
 #' mean_strain_ellipse(ramsay[, "R"], ramsay[, "phi"])
 mean_strain_ellipse <- function(r, phi, boot = TRUE, resamples = 1000, boot.values = FALSE) {
   res <- mean_strain_ellipse0(r, phi)
+  
   if (boot) {
-    rphi_boot <- vapply(1:resamples, function(i) {
-      rsmpl <- sample(seq_along(r), replace = TRUE)
-      mse <- mean_strain_ellipse0(r[rsmpl], phi[rsmpl])
-      unlist(mse)
-    }, FUN.VALUE = numeric(2)) |>
-      t()
-
-    res$R_CI <- quantile(rphi_boot[, 1], probs = c(.025, .975)) |> unname()
-    res$phi_CI <- quantile(rphi_boot[, 2], probs = c(.025, .975)) |> unname()
-
-    if (boot.values) res$boot <- rphi_boot
+    n <- length(r)
+    boot_mat <- matrix(NA_real_, nrow = resamples, ncol = 2)
+    
+    for (i in seq_len(resamples)) {
+      idx <- sample.int(n, n, replace = TRUE)
+      boot_mat[i, ] <- unlist(mean_strain_ellipse0(r[idx], phi[idx]))
+    }
+    
+    res$R_CI   <- unname(quantile(boot_mat[, 1], probs = c(0.025, 0.975)))
+    res$phi_CI <- unname(quantile(boot_mat[, 2], probs = c(0.025, 0.975)))
+    
+    if (boot.values) res$boot <- boot_mat
   }
+  
   res
 }
 

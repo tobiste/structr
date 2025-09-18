@@ -314,52 +314,61 @@ legend_d <- function(fill, labels = names(fill), position = "topright", ...) {
 #' @examples
 #' plot(c(0, 1), c(0, 1), type = "n")
 #' ellipse(.5, .5, radius.x = 0.5, radius.y = .25, col = "darkgreen", border = "red")
-ellipse <- function(x = 0, y = x, radius.x = 1, radius.y = radius.x, rot = 0,
-                    nv = 100, border = par("fg"), col = par("bg"), lty = par("lty"),
-                    lwd = par("lwd"), plot = TRUE) {
-  lgp <- list(
-    x = x, y = y, radius.x = radius.x, radius.y = radius.y,
-    rot = rot, nv = nv
-  )
-  maxdim <- max(unlist(lapply(lgp, length)))
+ellipse <- function(
+    x = 0, y = x,
+    radius.x = 1, radius.y = radius.x,
+    rot = 0, nv = 512,
+    border = par("fg"), col = par("bg"),
+    lty = par("lty"), lwd = par("lwd"),
+    plot = TRUE
+) {
+  # normalize inputs to same length
+  lgp <- list(x = x, y = y, radius.x = radius.x,
+              radius.y = radius.y, rot = rot, nv = nv)
+  maxdim <- max(vapply(lgp, length, 1L))
   lgp <- lapply(lgp, rep, length.out = maxdim)
-  if (length(col) < maxdim) {
-    col <- rep(col, length.out = maxdim)
-  }
-  if (length(border) < maxdim) {
-    border <- rep(border, length.out = maxdim)
-  }
-  if (length(lwd) < maxdim) {
-    lwd <- rep(lwd, length.out = maxdim)
-  }
-  if (length(lty) < maxdim) {
-    lty <- rep(lty, length.out = maxdim)
-  }
-  lst <- list()
-  for (i in 1:maxdim) {
-    theta.inc <- 2 * pi / lgp$nv[i]
-    theta <- seq(0, 2 * pi - theta.inc, by = theta.inc)
-    ptx <- cos(theta) * lgp$radius.x[i] + lgp$x[i]
-    pty <- sin(theta) * lgp$radius.y[i] + lgp$y[i]
-    if (lgp$rot[i] > 0) {
-      dx <- ptx - lgp$x[i]
-      dy <- pty - lgp$y[i]
-      ptx <- lgp$x[i] + cos(lgp$rot[i]) * dx - sin(lgp$rot[i]) *
-        dy
-      pty <- lgp$y[i] + sin(lgp$rot[i]) * dx + cos(lgp$rot[i]) *
-        dy
+  
+  border <- rep(border, length.out = maxdim)
+  col    <- rep(col,    length.out = maxdim)
+  lwd    <- rep(lwd,    length.out = maxdim)
+  lty    <- rep(lty,    length.out = maxdim)
+  
+  # preallocate result
+  lst <- vector("list", maxdim)
+  
+  for (i in seq_len(maxdim)) {
+    # only recompute theta if nv changes
+    theta <- seq(0, 2 * pi, length.out = lgp$nv[i] + 1L)[-1L]
+    ct <- cos(theta); st <- sin(theta)
+    
+    # unrotated ellipse
+    dx <- lgp$radius.x[i] * ct
+    dy <- lgp$radius.y[i] * st
+    
+    # rotation
+    if (lgp$rot[i] != 0) {
+      cr <- cos(lgp$rot[i]); sr <- sin(lgp$rot[i])
+      ptx <- lgp$x[i] + cr * dx - sr * dy
+      pty <- lgp$y[i] + sr * dx + cr * dy
+    } else {
+      ptx <- lgp$x[i] + dx
+      pty <- lgp$y[i] + dy
     }
+    
+    # plot if requested
     if (plot) {
-      polygon(ptx, pty,
-        border = border[i], col = col[i],
-        lty = lty[i], lwd = lwd[i]
-      )
+      polygon(ptx, pty, border = border[i],
+              col = col[i], lty = lty[i], lwd = lwd[i])
     }
+    
     lst[[i]] <- list(x = ptx, y = pty)
   }
-  lst <- lapply(lst, xy.coords)
-  if (length(lst) == 1) {
-    lst <- lst[[1]]
+  
+  # simplify result if only one ellipse
+  if (maxdim == 1L) {
+    lst <- xy.coords(lst[[1]])
+  } else {
+    lst <- lapply(lst, xy.coords)
   }
   invisible(lst)
 }

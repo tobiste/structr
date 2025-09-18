@@ -10,7 +10,7 @@ ellipse(
   radius.x = 1,
   radius.y = radius.x,
   rot = 0,
-  nv = 100,
+  nv = 512,
   border = par("fg"),
   col = par("bg"),
   lty = par("lty"),
