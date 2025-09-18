@@ -13,7 +13,8 @@
 #' using the Longitude and Latitude columns.
 #' @importFrom readxl read_xlsx
 #' @importFrom rjson fromJSON
-#' @importFrom data.table rbindlist dcast fread setDT fifelse melt data.table as.data.table setnames setorder `:=` .SD .SDcols patterns
+# #' @importFrom data.table rbindlist dcast fread setDT fifelse melt data.table as.data.table setnames setorder patterns .SD .( := 
+#' @import data.table
 #' @importFrom sf st_as_sf
 #' @returns `list` containing the following objects:
 #' \describe{
@@ -492,7 +493,7 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 # }
 
 read_strabo_JSON <- function(file, sf = TRUE) {
-  tag_name <- NULL
+  tag_name <- spot_id <- tag_col <- tag_id <- NULL
   
   # --- Load JSON ---
   dat <- rjson::fromJSON(file = file)

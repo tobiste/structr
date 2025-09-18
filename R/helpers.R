@@ -384,3 +384,28 @@ modes <- function(kde) {
     kde$x[kde$x > 0][which.max(kde$y[kde$x > 0])]
   )
 }
+
+
+.bind_cols <- function(x, ...) {
+  dots <- list(...)
+  
+  # keep only non-NULL and non-zero-length columns
+  dots <- dots[vapply(dots, function(y) !is.null(y) && length(y) > 0, logical(1))]
+  
+  # convert vectors to column matrices
+  dots <- lapply(dots, function(y) {
+    if (is.vector(y) && !is.matrix(y)) y <- matrix(y, ncol = 1)
+    y
+  })
+  
+  # check row consistency
+  n <- nrow(x)
+  for (i in seq_along(dots)) {
+    if (nrow(dots[[i]]) != n) {
+      stop("All inputs must have the same number of rows as x")
+    }
+  }
+  
+  # combine
+  as.data.frame(cbind(x, do.call(cbind, dots)), check.names = FALSE)
+}

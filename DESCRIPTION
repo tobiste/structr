@@ -16,7 +16,6 @@ Imports:
     cluster,
     data.table,
     Directional,
-    dplyr,
     expm,
     ggforce,
     ggplot2,

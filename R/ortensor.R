@@ -188,7 +188,6 @@ or_eigen <- function(x, scaled = FALSE) {
 #'
 #' @inheritParams ortensor
 #'
-#' @importFrom dplyr near case_when
 #' @name strain_shape
 #'
 #' @details \describe{
@@ -261,6 +260,16 @@ principal_strain <- function(x) {
   return(e)
 }
 
+.get_kind <- function(eoct, lode) {
+  kind <- rep("LS", length(eoct))  # default
+  kind[.near(eoct, 0)] <- "O"
+  kind[lode < -0.75] <- "L"
+  kind[lode > 0.75] <- "S"
+  kind[lode < -0.15 & lode >= -0.75] <- "LLS"
+  kind[lode > 0.15 & lode <= 0.75] <- "SSL"
+  kind
+}
+
 #' @rdname strain_shape
 #' @export
 or_shape_params <- function(x) {
@@ -287,15 +296,8 @@ or_shape_params <- function(x) {
 
   lode <- ifelse((e[1] - e[3]) > 0, (2 * e[2] - e[1] - e[3]) / (e[1] - e[3]), 0)
 
-  kind <- dplyr::case_when(
-    dplyr::near(eoct, 0) ~ "O",
-    lode < -0.75 ~ "L",
-    lode > 0.75 ~ "S",
-    lode < -0.15 ~ "LLS",
-    lode > 0.15 ~ "SSL",
-    TRUE ~ "LS"
-  )
-
+  kind <- .get_kind(eoct, lode)
+ 
   # Vollmer
   N <- nrow(x)
   P <- eig$values[1] - eig$values[2] #  Point index (Vollmer, 1990)

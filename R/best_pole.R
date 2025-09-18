@@ -163,142 +163,183 @@ gray_algorithm <- function(x, sm = TRUE) {
 NULL
 
 #' @rdname best_pole
+# best_cone_ramsay <- function(x) {
+#   l <- m <- n <- l2 <- m2 <- lm <- ln <- mn <- numeric()
+#   xsum <- data.frame(l = x[, 1], m = x[, 2], n = x[, 3]) |>
+#     dplyr::mutate(
+#       l2 = l^2,
+#       m2 = m^2,
+#       lm = l * m,
+#       ln = l * n,
+#       mn = m * n
+#     ) |>
+#     dplyr::summarise(
+#       l = sum(l),
+#       m = sum(m),
+#       n = sum(n),
+#       l2 = sum(l2),
+#       m2 = sum(m2),
+#       lm = sum(lm),
+#       ln = sum(ln),
+#       mn = sum(mn)
+#     )
+#   N <- nrow(xsum)
+# 
+#   D <- Da <- Db <- Dc <- matrix(nrow = 3, ncol = 3)
+#   D[1, 1] <- xsum$l2
+#   D[1, 2] <- D[2, 1] <- xsum$lm
+#   D[1, 3] <- D[3, 1] <- xsum$l
+#   D[2, 2] <- xsum$m2
+#   D[2, 3] <- D[3, 2] <- xsum$m
+#   D[3, 3] <- N
+# 
+#   Da[1, 1] <- -xsum$ln
+#   Da[1, 2] <- D[1, 2]
+#   Da[1, 3] <- D[1, 3]
+#   Da[2, 1] <- -xsum$mn
+#   Da[2, 2] <- D[2, 2]
+#   Da[2, 3] <- Da[3, 2] <- D[2, 3]
+#   Da[3, 1] <- -xsum$n
+#   Da[3, 3] <- N
+# 
+#   Db[1, 1] <- D[1, 1]
+#   Db[1, 2] <- Da[1, 1]
+#   Db[1, 3] <- D[1, 3]
+#   Db[2, 1] <- D[1, 2]
+#   Db[2, 2] <- Da[2, 1]
+#   Db[2, 3] <- D[2, 3]
+#   Db[3, 1] <- D[1, 3]
+#   Db[3, 2] <- Da[3, 1]
+#   Db[3, 3] <- N
+# 
+#   Dc[1, 1] <- D[1, 1]
+#   Dc[1, 2] <- D[1, 2]
+#   Dc[1, 3] <- Da[1, 1]
+#   Dc[2, 1] <- D[1, 2]
+#   Dc[2, 2] <- D[2, 2]
+#   Dc[2, 3] <- Da[2, 1]
+#   Dc[3, 1] <- D[1, 3]
+#   Dc[3, 2] <- D[2, 3]
+#   Dc[3, 3] <- Da[3, 1]
+# 
+#   A <- det(Da) / det(D)
+#   B <- det(Db) / det(D)
+#   C <- det(Dc) / det(D)
+# 
+#   # gamma <- -acos((1 + A^2 + B^2)^(-1 / 2))
+#   # alpha <- pi - acos(A * (1 + A^2 + B^2)^(-1 / 2))
+#   # beta <- -acos(B * (1 + A^2 + B^2)^(-1 / 2))
+#   cos_gamma <- 1 / sqrt(1 + A^2 + B^2)
+#   cos_alpha <- A * cos_gamma
+#   cos_beta <- B * cos_gamma
+#   cos_K <- -C * cos_gamma
+# 
+#   # half apical angle
+#   K <- acos(cos_K)
+# 
+#   cart <- cbind(x = -cos_alpha, y = -cos_beta, z = -cos_gamma)
+#   e <- cos_alpha^2 + cos_beta^2 + cos_gamma^2
+# 
+#   # alpha <- acos(cos_alpha)
+#   # beta <- acos(cos_beta)
+#   # gamma <- acos(cos_gamma)
+# 
+#   # correct for lower hemisphere and convert to Cartesian coordinates
+#   # cart <- cbind(pi-alpha, -beta, -gamma) |>
+#   #   tectonicr::rad2deg() |>
+#   #   acoscartesian_to_cartesian()
+#   # #names(cart) <- NULL
+#   # e <- cos(alpha)^2 + cos(beta)^2 + cos(gamma)^2
+# 
+# 
+#   return(c(cart[, 1], cart[, 2], cart[, 3], "e" = 1 - e, "K" = K))
+# }
 best_cone_ramsay <- function(x) {
-  l <- m <- n <- l2 <- m2 <- lm <- ln <- mn <- numeric()
-  xsum <- data.frame(l = x[, 1], m = x[, 2], n = x[, 3]) |>
-    dplyr::mutate(
-      l2 = l^2,
-      m2 = m^2,
-      lm = l * m,
-      ln = l * n,
-      mn = m * n
-    ) |>
-    dplyr::summarise(
-      l = sum(l),
-      m = sum(m),
-      n = sum(n),
-      l2 = sum(l2),
-      m2 = sum(m2),
-      lm = sum(lm),
-      ln = sum(ln),
-      mn = sum(mn)
-    )
-  N <- nrow(xsum)
-
-  D <- Da <- Db <- Dc <- matrix(nrow = 3, ncol = 3)
-  D[1, 1] <- xsum$l2
-  D[1, 2] <- D[2, 1] <- xsum$lm
-  D[1, 3] <- D[3, 1] <- xsum$l
-  D[2, 2] <- xsum$m2
-  D[2, 3] <- D[3, 2] <- xsum$m
-  D[3, 3] <- N
-
-  Da[1, 1] <- -xsum$ln
-  Da[1, 2] <- D[1, 2]
-  Da[1, 3] <- D[1, 3]
-  Da[2, 1] <- -xsum$mn
-  Da[2, 2] <- D[2, 2]
-  Da[2, 3] <- Da[3, 2] <- D[2, 3]
-  Da[3, 1] <- -xsum$n
-  Da[3, 3] <- N
-
-  Db[1, 1] <- D[1, 1]
-  Db[1, 2] <- Da[1, 1]
-  Db[1, 3] <- D[1, 3]
-  Db[2, 1] <- D[1, 2]
-  Db[2, 2] <- Da[2, 1]
-  Db[2, 3] <- D[2, 3]
-  Db[3, 1] <- D[1, 3]
-  Db[3, 2] <- Da[3, 1]
-  Db[3, 3] <- N
-
-  Dc[1, 1] <- D[1, 1]
-  Dc[1, 2] <- D[1, 2]
-  Dc[1, 3] <- Da[1, 1]
-  Dc[2, 1] <- D[1, 2]
-  Dc[2, 2] <- D[2, 2]
-  Dc[2, 3] <- Da[2, 1]
-  Dc[3, 1] <- D[1, 3]
-  Dc[3, 2] <- D[2, 3]
-  Dc[3, 3] <- Da[3, 1]
-
-  A <- det(Da) / det(D)
-  B <- det(Db) / det(D)
-  C <- det(Dc) / det(D)
-
-  # gamma <- -acos((1 + A^2 + B^2)^(-1 / 2))
-  # alpha <- pi - acos(A * (1 + A^2 + B^2)^(-1 / 2))
-  # beta <- -acos(B * (1 + A^2 + B^2)^(-1 / 2))
+  # ensure x is a matrix
+  x <- as.matrix(x)
+  l <- x[, 1]
+  m <- x[, 2]
+  n <- x[, 3]
+  
+  # precompute sums directly (avoids mutate/summarise)
+  l2 <- sum(l^2)
+  m2 <- sum(m^2)
+  lm <- sum(l * m)
+  ln <- sum(l * n)
+  mn <- sum(m * n)
+  l_sum <- sum(l)
+  m_sum <- sum(m)
+  n_sum <- sum(n)
+  N <- nrow(x)
+  
+  # construct matrices directly
+  D  <- matrix(c(l2, lm, l_sum,
+                 lm, m2, m_sum,
+                 l_sum, m_sum, N), nrow = 3, byrow = TRUE)
+  
+  Da <- matrix(c(-ln,  lm,  l_sum,
+                 -mn,  m2,  m_sum,
+                 -n_sum, m_sum, N), nrow = 3, byrow = TRUE)
+  
+  Db <- matrix(c(l2,   -ln, l_sum,
+                 lm,   -mn, m_sum,
+                 l_sum, -n_sum, N), nrow = 3, byrow = TRUE)
+  
+  Dc <- matrix(c(l2,  lm,  -ln,
+                 lm,  m2,  -mn,
+                 l_sum, m_sum, -n_sum), nrow = 3, byrow = TRUE)
+  
+  # determinants
+  detD  <- det(D)
+  A <- det(Da) / detD
+  B <- det(Db) / detD
+  C <- det(Dc) / detD
+  
+  # direction cosines
   cos_gamma <- 1 / sqrt(1 + A^2 + B^2)
   cos_alpha <- A * cos_gamma
-  cos_beta <- B * cos_gamma
-  cos_K <- -C * cos_gamma
-
+  cos_beta  <- B * cos_gamma
+  cos_K     <- -C * cos_gamma
+  
   # half apical angle
   K <- acos(cos_K)
-
-  cart <- cbind(x = -cos_alpha, y = -cos_beta, z = -cos_gamma)
+  
+  cart <- c(x = -cos_alpha, y = -cos_beta, z = -cos_gamma)
   e <- cos_alpha^2 + cos_beta^2 + cos_gamma^2
-
-  # alpha <- acos(cos_alpha)
-  # beta <- acos(cos_beta)
-  # gamma <- acos(cos_gamma)
-
-  # correct for lower hemisphere and convert to Cartesian coordinates
-  # cart <- cbind(pi-alpha, -beta, -gamma) |>
-  #   tectonicr::rad2deg() |>
-  #   acoscartesian_to_cartesian()
-  # #names(cart) <- NULL
-  # e <- cos(alpha)^2 + cos(beta)^2 + cos(gamma)^2
-
-
-  return(c(cart[, 1], cart[, 2], cart[, 3], "e" = 1 - e, "K" = K))
+  
+  c(cart, e = 1 - e, K = K)
 }
+
 
 #' @rdname best_pole
 best_cone_ramsay2 <- function(x) {
-  l <- m <- n <- l2 <- m2 <- lm <- ln <- mn <- numeric()
-  xsum <- data.frame(l = x[, 1], m = x[, 2], n = x[, 3]) |>
-    dplyr::mutate(
-      l2 = l^2,
-      m2 = m^2,
-      lm = l * m,
-      ln = l * n,
-      mn = m * n
-    ) |>
-    dplyr::summarise(
-      l = sum(l),
-      m = sum(m),
-      n = sum(n),
-      l2 = sum(l2),
-      m2 = sum(m2),
-      lm = sum(lm),
-      ln = sum(ln),
-      mn = sum(mn)
-    )
-
-  t <- 1 / (xsum$l2 * xsum$m2 - (xsum$lm)^2)
-  A <- (xsum$lm * xsum$mn - xsum$ln * xsum$m2) * t
-  B <- (xsum$lm * xsum$ln - xsum$mn * xsum$l2) * t
-
+  # ensure matrix
+  x <- as.matrix(x)
+  l <- x[, 1]
+  m <- x[, 2]
+  n <- x[, 3]
+  
+  # compute sums directly
+  l2 <- sum(l^2)
+  m2 <- sum(m^2)
+  lm <- sum(l * m)
+  ln <- sum(l * n)
+  mn <- sum(m * n)
+  
+  # precompute
+  t <- 1 / (l2 * m2 - lm^2)
+  A <- (lm * mn - ln * m2) * t
+  B <- (lm * ln - mn * l2) * t
+  
+  # direction cosines
   cos_gamma <- 1 / sqrt(1 + A^2 + B^2)
   cos_alpha <- A * cos_gamma
-  cos_beta <- B * cos_gamma
-
-  cart <- cbind(x = -cos_alpha, y = -cos_beta, z = -cos_gamma)
+  cos_beta  <- B * cos_gamma
+  
+  # Cartesian coordinates
+  cart <- c(x = -cos_alpha, y = -cos_beta, z = -cos_gamma)
   e <- cos_alpha^2 + cos_beta^2 + cos_gamma^2
-  # alpha = acos(cos_alpha)
-  # beta = acos(cos_beta)
-  # gamma = acos(cos_gamma)
-  #
-  # cart <- cbind(-alpha, -beta, -gamma) |>
-  #   tectonicr::rad2deg() |>
-  #   acoscartesian_to_cartesian()
-  # #names(cart) <- NULL
-
-  # e <- cos(alpha)^2 + cos(beta)^2 + cos(gamma)^2
-
-  return(
-    c(cart[, 1], cart[, 2], cart[, 3], e = 1 - e)
-  )
+  
+  c(cart, e = 1 - e)
 }
+

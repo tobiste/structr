@@ -179,7 +179,6 @@
 # }
 
 
-#' @importFrom dplyr near
 # project_data0 <- function(self, x, y, z) {
 #   # Equal-area projection
 #   d <- sqrt(x * x + y * y + z * z)

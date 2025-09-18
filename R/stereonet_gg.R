@@ -91,8 +91,9 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
   nx <- nrow(x)
   if (length(d) == 1) d <- rep(d, nx)
 
-  xdf <- data.frame(cbind(x), ...) |>
-    dplyr::mutate(id = dplyr::row_number(), d = d)
+  xdf <- data.frame(cbind(x), ...)
+  xdf$id <- seq_along(xdf[, 1])
+  xdf$d <- d
 
   zaxis <- Vec3(0, 0, 1)
 
@@ -135,7 +136,7 @@ ggl <- function(x, ..., d = 90, n = 1e3) {
       D_rotrot_fixed <- D_fixed
 
       dangle <- angle(Line(D_fixed[, 1], D_fixed[, 2]), as.Line(x[i, ]))
-      cond <- dplyr::near(d[i], dangle)
+      cond <- .near(d[i], dangle)
 
       D_fixed[cond, 1] <- D_rotrot_fixed[cond, 1]
       D_fixed[cond, 2] <- D_rotrot_fixed[cond, 2]
@@ -200,7 +201,7 @@ ggstereo_grid <- function(d = 10, rot = 0, ...) {
   zp_ggl <- ggl(zp)
 
 
-  geom_path(data = dplyr::bind_rows(sm_ggl, gc_ggl, zp_ggl), mapping = aes(x, y, group = group), ..., inherit.aes = FALSE)
+  geom_path(data = data.table::rbindlist(sm_ggl, gc_ggl, zp_ggl), mapping = aes(x, y, group = group), ..., inherit.aes = FALSE)
 }
 
 

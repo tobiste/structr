@@ -542,6 +542,7 @@ Rphi_polar_plot <- function(r, phi,
                             point.params = list(col = "grey", pch = 16, cex = .5),
                             ...) {
   proj <- match.arg(proj)
+  cols <- NULL
 
   out <- hypercontour(r, phi, proj = proj, ...)
   rmax <- max(out$rmax)
@@ -634,7 +635,7 @@ shape_factor <- function(r) {
 
 
 RGN_hyperbola <- function(steps = 0.05, w = seq(0.1, 1, steps / 100)) {
- b <- NULL
+ b <- theta <- NULL
  
    hyperbola_crit <- data.frame(
     b = w,

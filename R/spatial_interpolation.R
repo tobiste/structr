@@ -207,13 +207,12 @@ compact_grid <- function(grid) {
   lon <- lat <- x <- y <- z <- dipdir <- dip <- R <- numeric()
   group <- character()
 
-  data <- grid |>
-    dplyr::ungroup() |>
-    dplyr::filter(!is.na(x)) |>
-    dplyr::mutate(group = paste(lon, lat))
+  data <- subset(grid, !is.na(grid$x))
+  data$group = paste(lon, lat)
 
-  aggregate(R ~ group, data, min, na.rm = TRUE) |>
-    dplyr::left_join(data, by = c("group", "R")) |>
-    dplyr::select(-group) |>
-    sf::st_as_sf()
+  temp <- aggregate(R ~ group, data, min, na.rm = TRUE) 
+  temp2 <- merge(temp, data, by.x = "group", by.y = "R")
+  temp2$group <- NULL
+  
+    sf::st_as_sf(temp2)
 }
