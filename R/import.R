@@ -331,3 +331,5 @@ read_strabo_JSON <- function(file, sf = TRUE) {
     linear = lines
   )
 }
+
+# if (getRversion() >= "2.15.1")  utils::globalVariables(".")
