@@ -201,7 +201,7 @@ ggstereo_grid <- function(d = 10, rot = 0, ...) {
   zp_ggl <- ggl(zp)
 
 
-  geom_path(data = data.table::rbindlist(sm_ggl, gc_ggl, zp_ggl), mapping = aes(x, y, group = group), ..., inherit.aes = FALSE)
+  geom_path(data = dplyr::bind_rows(sm_ggl, gc_ggl, zp_ggl), mapping = aes(x, y, group = group), ..., inherit.aes = FALSE)
 }
 
 
@@ -221,7 +221,7 @@ ggstereo_grid <- function(d = 10, rot = 0, ...) {
 #' @param ... argument passed to [ggplot2::geom_polygon()]
 #'
 #' @import ggplot2
-#' @importFrom ggplot2 aes annotate coord_map element_blank element_text ggplot scale_x_continuous scale_y_continuous theme
+#' @importFrom dplyr bind_rows
 #'
 #' @return ggplot
 #' @export

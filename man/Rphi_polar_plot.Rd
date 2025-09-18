@@ -18,6 +18,7 @@ Rphi_polar_plot(
   mean.ellipse = TRUE,
   mean.ellipse.params = list(col = "red", lwd = 2),
   point.params = list(col = "grey", pch = 16, cex = 0.5),
+  main = "Polar R/phi plot",
   ...
 )
 }

@@ -20,6 +20,7 @@ Rphi_plot(
   rmax = NULL,
   at.x = seq(-90, 90, 30),
   at.y = NULL,
+  main = "Rf/phi plot",
   ...
 )
 }
@@ -55,6 +56,8 @@ drawn as density grid. Ignored when \code{contour=FALSE}}
 axes are to be drawn.}
 
 \item{...}{optional arguments passed to \code{\link[=hypercontour]{hypercontour()}}}
+
+\item{character.}{The title}
 }
 \value{
 plot

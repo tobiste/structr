@@ -409,6 +409,7 @@ gridHyper <- function(rphi, rmax, kappa, nnodes, normalize = TRUE, proj = "eqd")
 #' @param point.params list of plotting arguments passed to [graphics::points()]
 #' @param at.x,at.y the points at which tick-marks and labels for the x and y
 #' axes are to be drawn.
+#' @param character. The title
 #'
 #' @returns plot
 #'
@@ -433,6 +434,7 @@ Rphi_plot <- function(r, phi,
                       rmax = NULL,
                       at.x = seq(-90, 90, 30),
                       at.y = NULL,
+                      main = "Rf/phi plot",
                       ...) {
   if (is.null(rmax)) {
     rmax <- ceiling(max(r)) + 1
@@ -447,7 +449,7 @@ Rphi_plot <- function(r, phi,
     ylim = c(1, rmax),
     xlab = bquote("Long-axis orientation," ~ varphi * " (" * degree * ")"),
     ylab = bquote("Strain ratio," ~ R[f]),
-    main = "Rf/phi plot"
+    main = main
   )
 
   if (contour | contour.lines) {
@@ -540,6 +542,7 @@ Rphi_polar_plot <- function(r, phi,
                             mean.ellipse = TRUE,
                             mean.ellipse.params = list(col = "red", lwd = 2),
                             point.params = list(col = "grey", pch = 16, cex = .5),
+                            main = "Polar R/phi plot", 
                             ...) {
   proj <- match.arg(proj)
   cols <- NULL
@@ -606,7 +609,7 @@ Rphi_polar_plot <- function(r, phi,
     "lin" = "Linear",
     "rdl" = "Radial"
   )[proj]
-  graphics::title(main = "Polar R/phi plot")
+  graphics::title(main = main)
   graphics::mtext(paste(proj.pretty, "projection"))
 }
 
