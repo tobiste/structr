@@ -51,7 +51,7 @@ set.seed(20250411)
 # assuming the mean orientation is the foliation:
 theta <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2]
 
-RGN_plot(ramsay[, 'R'], theta, col = "darkred")
+RGN_plot(ramsay[, "R"], theta, col = "darkred")
 }
 \references{
 Jessup, Micah J., Richard D. Law, and Chiara Frassi.

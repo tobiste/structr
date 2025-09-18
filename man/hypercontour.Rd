@@ -15,6 +15,10 @@ hypercontour(
 )
 }
 \arguments{
+\item{r}{numeric. Aspect ratio of deformed object (long axis / short axis)}
+
+\item{phi}{numeric. Orientation of long axis of deformed object (in degrees)}
+
 \item{proj}{character. Projection,  \code{'eqd'} for equidistant (Elliot plot),
 \code{'eqa'} for equal-area, \code{'stg'} for stereographic, \code{'ort'} for orthographic,
 \code{'gno'} for gnomonic, \code{'lin'} for exponential (linear R), \code{'rdl'} for radial,
@@ -52,31 +56,14 @@ distribution.
 }
 \examples{
 data(ramsay)
-out <- hypercontour(ramsay[, 'R'], ramsay[, 'phi'],  proj = "rfp")
-
-image(out$x, out$y, out$z,
-  asp = ifelse(out$proj != "rfp", 1, NA),
-  xlim = c(-90, 90),
-  ylim = c(1, out$rmax),
-  xlab = bquote(varphi ~ "(" * degree * ")"), ylab = "R",
-  main = out$proj,
-  col = viridis::viridis(100)
-)
-contour(out$x, out$y, out$z, add = TRUE, lwd = .5)
-points(out$points)
-
-
-out <- hypercontour(ramsay[, 'R'], ramsay[, 'phi'], proj = "eqa")
-levels <- pretty(range(out$z, na.rm = TRUE), 100)
-cols <- viridis::viridis(n = length(levels) - 1)
-plot(out$x, y = out$y, "n", xlab = NULL, ylab = NULL, asp = 1, axes = FALSE, ann = FALSE)
-graphics::.filled.contour(out$x, out$y, out$z, levels = levels, col = cols)
-points(out$points)
-lines(out$frame, lwd = 2)
-title(main = out$proj)
+out <- hypercontour(ramsay[, "R"], ramsay[, "phi"], proj = "rfp")
+head(out$z)
 }
 \references{
 Vollmer, F.W., 2018. Automatic contouring of geological fabric and finite
 strain data on the unit hyperboloid. Computers & Geosciences,
 https://doi.org/10.1016/j.cageo.2018.03.006
+}
+\seealso{
+\code{\link[=Rphi_plot]{Rphi_plot()}}, \code{\link[=Rphi_polar_plot]{Rphi_polar_plot()}}
 }

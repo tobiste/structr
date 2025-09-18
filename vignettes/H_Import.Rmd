@@ -45,11 +45,11 @@ you could import the file like
 
 ```{r import, include=TRUE,eval=FALSE}
 imported_data <- read.table(
-  "path/to/my/file.xt", 
-  header = TRUE, 
-  sep = "", 
+  "path/to/my/file.xt",
+  header = TRUE,
+  sep = "",
   row.names = 1
-  ) 
+)
 ```
 
 This imports the tab-separated file as an `"data.frame"` object with the

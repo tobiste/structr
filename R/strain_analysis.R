@@ -6,10 +6,10 @@
 #'
 #' @returns list. `phi`: the final angle (in degrees) between long axis and principal strain direction, `Rf`: final axial ratio
 #' @export
-#' 
+#'
 #' @examples
 #' #' data(ramsay)
-#' Rphi(ramsay[, 'R'], theta = ramsay[, 'phi'])
+#' Rphi(ramsay[, "R"], theta = ramsay[, "phi"])
 Rphi <- function(Rs, Ri = 1, theta) {
   theta <- theta * pi / 180
   a <- 2 * Rs * (Ri^2 - 1) * sin(2 * theta)
@@ -26,9 +26,9 @@ Rphi <- function(Rs, Ri = 1, theta) {
 
 
 #' Mean strain ellipse
-#' 
-#' determines the shape and orientation of the strain ellipse by using 
-#' deformed elliptical objects as strain markers. The algorithm is based on the 
+#'
+#' determines the shape and orientation of the strain ellipse by using
+#' deformed elliptical objects as strain markers. The algorithm is based on the
 #' mean shape matrix and its eigenvalues (Shimamoto and Ikeda, 1976).
 #'
 #' @param r numeric. Aspect ratio of deformed object (long axis / short axis)
@@ -36,67 +36,67 @@ Rphi <- function(Rs, Ri = 1, theta) {
 #' @param boot logical. Whether a 95% confidence interval from on bootstrapping should be calculated. `TRUE` by default.
 #' @param iter integer. Number of bootstrap resamples (`1000` by default). Ignored when `boot = FALSE`.
 #' @param boot.values logical. Whether the bootstrapped R and phi values should be added to the output. `FALSE` by default.
-#' 
-#' @returns list. `R` gives the mean aspect ratio of the strain ellipse, 
-#' and `phi` gives the orientation of its long axis. If `boot=TRUE`, then 
-#' the bootstrapped 95% confidence interval for the mean aspect ratio (`R_CI`) 
-#' and for its orientation (`phi_CI`) are added. If `boot.values=TRUE`, a matrix 
+#'
+#' @returns list. `R` gives the mean aspect ratio of the strain ellipse,
+#' and `phi` gives the orientation of its long axis. If `boot=TRUE`, then
+#' the bootstrapped 95% confidence interval for the mean aspect ratio (`R_CI`)
+#' and for its orientation (`phi_CI`) are added. If `boot.values=TRUE`, a matrix
 #' containing the bootstrapped R and phi values are added.
-#' 
+#'
 #' @export
-#' 
-#' @references Shimamoto, T., Ikeda, Y., 1976. A simple algebraic method for 
-#' strain estimation from ellipsoidal objects. Tectonophysics 36, 315–337. 
+#'
+#' @references Shimamoto, T., Ikeda, Y., 1976. A simple algebraic method for
+#' strain estimation from ellipsoidal objects. Tectonophysics 36, 315–337.
 #' doi: 10.1016/0040-1951(76)90107-4
 #'
 #' @examples
 #' set.seed(20250411)
 #' data(ramsay)
-#' mean_strain_ellipse(ramsay[, 'R'], ramsay[, 'phi'])
-mean_strain_ellipse <- function(r, phi, boot = TRUE, resamples = 1000, boot.values = FALSE){
+#' mean_strain_ellipse(ramsay[, "R"], ramsay[, "phi"])
+mean_strain_ellipse <- function(r, phi, boot = TRUE, resamples = 1000, boot.values = FALSE) {
   res <- mean_strain_ellipse0(r, phi)
-  if(boot){
+  if (boot) {
     rphi_boot <- vapply(1:resamples, function(i) {
       rsmpl <- sample(seq_along(r), replace = TRUE)
       mse <- mean_strain_ellipse0(r[rsmpl], phi[rsmpl])
       unlist(mse)
-    }, FUN.VALUE = numeric(2)) |> 
+    }, FUN.VALUE = numeric(2)) |>
       t()
-    
-    res$R_CI <- quantile(rphi_boot[, 1], probs=c(.025, .975)) |> unname()
-    res$phi_CI <- quantile(rphi_boot[, 2], probs=c(.025, .975)) |> unname()
-    
-    if(boot.values) res$boot <- rphi_boot
-  } 
+
+    res$R_CI <- quantile(rphi_boot[, 1], probs = c(.025, .975)) |> unname()
+    res$phi_CI <- quantile(rphi_boot[, 2], probs = c(.025, .975)) |> unname()
+
+    if (boot.values) res$boot <- rphi_boot
+  }
   res
 }
 
-mean_strain_ellipse0 <- function(r, phi){
+mean_strain_ellipse0 <- function(r, phi) {
   n <- length(r)
-  stopifnot(n==length(phi))
-  phi <-  phi * pi / 180
+  stopifnot(n == length(phi))
+  phi <- phi * pi / 180
   cosp2 <- cos(phi)^2
   sinp2 <- sin(phi)^2
-  f <- cosp2/r + r * sinp2
-  g <- sinp2/r + r * cosp2
-  h <- ((1/r) - r) *  sin(phi) * cos(phi)
-  
-  if(n>1){
+  f <- cosp2 / r + r * sinp2
+  g <- sinp2 / r + r * cosp2
+  h <- ((1 / r) - r) * sin(phi) * cos(phi)
+
+  if (n > 1) {
     f <- mean(f)
     g <- mean(g)
     h <- mean(h)
   }
-  
+
   sm <- matrix(c(f, h, h, g), nrow = 2, ncol = 2)
-  
-  
-  theta <- (atan((2*h / (f-g)))/2) * 180 / pi
-  
+
+
+  theta <- (atan((2 * h / (f - g))) / 2) * 180 / pi
+
   sm_eig <- eigen(sm, symmetric = TRUE, only.values = TRUE)
   pa <- sqrt(sm_eig$values)
-  
+
   list(
-    R = pa[1]/pa[2],
+    R = pa[1] / pa[2],
     phi = theta
   )
 }
@@ -112,7 +112,7 @@ mean_strain_ellipse0 <- function(r, phi){
 #' stereographic, orthographic, exponential, and radial projections, as polar
 #' azimuthal or cylindrical (cartesian, RfPhi-type) plots.
 #'
-#' @inheritParams hypercontour
+#' @inheritParams mean_strain_ellipse
 #' @param rmax maximum R value (if `NULL`, computed automatically)
 #' @param kappa smoothing parameter
 #' @param nnodes grid resolution. higher is more accurate but slower, 30 is good, but 50 is recommended for final plots, default = 50.
@@ -142,30 +142,12 @@ mean_strain_ellipse0 <- function(r, phi){
 #'
 #' @export
 #'
+#' @seealso [Rphi_plot()], [Rphi_polar_plot()]
+#'
 #' @examples
 #' data(ramsay)
-#' out <- hypercontour(ramsay[, 'R'], ramsay[, 'phi'],  proj = "rfp")
-#'
-#' image(out$x, out$y, out$z,
-#'   asp = ifelse(out$proj != "rfp", 1, NA),
-#'   xlim = c(-90, 90),
-#'   ylim = c(1, out$rmax),
-#'   xlab = bquote(varphi ~ "(" * degree * ")"), ylab = "R",
-#'   main = out$proj,
-#'   col = viridis::viridis(100)
-#' )
-#' contour(out$x, out$y, out$z, add = TRUE, lwd = .5)
-#' points(out$points)
-#'
-#'
-#' out <- hypercontour(ramsay[, 'R'], ramsay[, 'phi'], proj = "eqa")
-#' levels <- pretty(range(out$z, na.rm = TRUE), 100)
-#' cols <- viridis::viridis(n = length(levels) - 1)
-#' plot(out$x, y = out$y, "n", xlab = NULL, ylab = NULL, asp = 1, axes = FALSE, ann = FALSE)
-#' graphics::.filled.contour(out$x, out$y, out$z, levels = levels, col = cols)
-#' points(out$points)
-#' lines(out$frame, lwd = 2)
-#' title(main = out$proj)
+#' out <- hypercontour(ramsay[, "R"], ramsay[, "phi"], proj = "rfp")
+#' head(out$z)
 hypercontour <- function(r, phi,
                          # angfmt = c("deg", "rad", "grd"),
                          proj = c("eqd", "eqa", "stg", "ort", "gno", "lin", "rdl", "rfp"),
@@ -406,11 +388,223 @@ gridHyper <- function(rphi, rmax, kappa, nnodes, normalize = TRUE, proj = "eqd")
 
 
 
+#' R/phi plot
+#'
+#' @inheritParams mean_strain_ellipse
+#' @inheritParams hypercontour
+#' @param ... optional arguments passed to [hypercontour()]
+#' @param contour logical. Whether a grid of densities should be drawn in the background.
+#' @param image logical. Whether a raster image or filled contour lines should be
+#' drawn as density grid. Ignored when `contour=FALSE`
+#' @param n integer. Grid resolution or number of fille dcontours
+#' @param contour.lines logical. Whether contour lines should be added.
+#' @param contour.lines.params list of plotting arguments passed to [graphics::contour()]
+#' @param col.palette function to produce color palette used for contouring
+#' @param col.params list of plotting arguments passed `col.palette`
+#' @param mean.ellipse logical. Whether the mean ellipse should be plotted
+#' @param mean.ellipse.params list of plotting arguments passed to [ellipse()]
+#' @param point.params list of plotting arguments passed to [graphics::points()]
+#' @param at.x,at.y the points at which tick-marks and labels for the x and y
+#' axes are to be drawn.
+#'
+#' @returns plot
+#'
+#' @seealso [hypercontour()], [Rphi_polar_plot()]
+#'
+#' @export
+#'
+#' @examples
+#' data(ramsay)
+#' Rphi_plot(ramsay[, 1], ramsay[, 2])
+Rphi_plot <- function(r, phi,
+                      contour = TRUE,
+                      image = FALSE,
+                      n = 10L,
+                      contour.lines = TRUE,
+                      contour.lines.params = list(lwd = .5, col = par("col")),
+                      contour.col = viridis,
+                      contour.col.params = list(),
+                      mean.ellipse = TRUE,
+                      mean.ellipse.params = list(border = "red", lwd = 2),
+                      point.params = list(col = "grey", pch = 16, cex = .5),
+                      rmax = NULL,
+                      at.x = seq(-90, 90, 30),
+                      at.y = NULL,
+                      ...) {
+  if (is.null(rmax)) {
+    rmax <- ceiling(max(r)) + 1
+  }
+
+  plot(
+    x = c(-90, 90),
+    y = c(1, rmax),
+    type = "n",
+    axes = FALSE,
+    xlim = c(-90, 90),
+    ylim = c(1, rmax),
+    xlab = bquote("Long-axis orientation," ~ varphi * " (" * degree * ")"),
+    ylab = bquote("Strain ratio," ~ R[f]),
+    main = "Rf/phi plot"
+  )
+
+  if (contour | contour.lines) {
+    out <- hypercontour(r = r, phi = phi, proj = "rfp", rmax = rmax, ...)
+  }
+
+
+  if (contour) {
+    if (image) {
+      contour.col.params <- append(list(n = n), contour.col.params)
+      colpal <- do.call(contour.col, contour.col.params)
+
+      graphics::image(out$x, out$y, out$z,
+        col = colpal,
+        add = TRUE
+      )
+    } else {
+      levels <- pretty(range(out$z, na.rm = TRUE), n)
+      contour.col.params <- append(list(n = length(levels) - 1), contour.col.params)
+      colpal <- do.call(contour.col, contour.col.params)
+
+      graphics::.filled.contour(out$x, out$y, out$z, levels = levels, col = colpal)
+    }
+  }
+
+  if (is.null(at.y)) at.y <- pretty(c(1, rmax))
+
+  graphics::axis(1, at = at.x)
+  graphics::axis(2, at = at.y)
+
+  if (contour.lines) {
+    contour.lines.params <- append(list(
+      out$x, out$y, out$z,
+      add = TRUE
+    ), contour.lines.params)
+
+    do.call(graphics::contour, contour.lines.params)
+  }
+
+  point.params <- append(list(x = out$points[, 1], y = out$points[, 2]), point.params)
+  do.call(graphics::points, point.params)
+
+  # add mean strain ellipse and its #95% confidence interval
+  if (mean.ellipse) {
+    rphi_mean <- mean_strain_ellipse(r, phi)
+
+    mean.ellipse.params <- append(
+      list(
+        x = rphi_mean$phi, y = rphi_mean$R,
+        radius.x = diff(rphi_mean$phi_CI) / 2,
+        radius.y = diff(rphi_mean$R_CI) / 2
+      ),
+      mean.ellipse.params
+    )
+
+    do.call(ellipse, mean.ellipse.params)
+
+    graphics::title(sub = bquote("R" == .(round(rphi_mean$R, 2)) ~ "|" ~ phi == .(round(rphi_mean$phi, 2)) * degree))
+  }
+}
+
+
+#' Polar R/phi plot
+#'
+#' Plots R/phi fabric plot in polar coordinates
+#'
+#' @inheritParams mean_strain_ellipse
+#' @param proj character. Projection,  `'eqd'` for equidistant (Elliot plot),
+#' `'eqa'` for equal-area, `'stg'` for stereographic, `'ort'` for orthographic,
+#' `'gno'` for gnomonic, `'lin'` for exponential (linear R), `'rdl'` for radial.
+#' @param proj character.
+#' @inheritParams Rphi_plot
+#' @returns plot
+#'
+#' @seealso [hypercontour()], [Rphi_plot()]
+#'
+#' @export
+#'
+#' @examples
+#' Rphi_polar_plot(ramsay[, 1], ramsay[, 2], proj = "eqa")
+Rphi_polar_plot <- function(r, phi,
+                            proj = c("eqd", "eqa", "stg", "ort", "gno", "lin", "rdl"),
+                            contour = TRUE,
+                            image = FALSE,
+                            n = 10L,
+                            contour.lines = TRUE,
+                            contour.lines.params = list(lwd = .5, col = par("col")),
+                            contour.col = viridis,
+                            contour.col.params = list(),
+                            mean.ellipse = TRUE,
+                            mean.ellipse.params = list(col = "red", lwd = 2),
+                            point.params = list(col = "grey", pch = 16, cex = .5),
+                            ...) {
+  proj <- match.arg(proj)
+
+  out <- hypercontour(r, phi, proj = proj, ...)
+  rmax <- max(out$rmax)
+
+  plot(out$x, y = out$y, "n", xlab = NULL, ylab = NULL, asp = 1, axes = FALSE, ann = FALSE)
+
+  if (contour) {
+    if (image) {
+      contour.col.params <- append(list(n = n), contour.col.params)
+      colpal <- do.call(contour.col, contour.col.params)
+      graphics::image(out$x, out$y, out$z,
+        col = cols,
+        add = TRUE
+      )
+    } else {
+      levels <- pretty(range(out$z, na.rm = TRUE), n)
+      contour.col.params <- append(list(n = length(levels) - 1), contour.col.params)
+      colpal <- do.call(contour.col, contour.col.params)
+      graphics::.filled.contour(out$x, out$y, out$z, levels = levels, col = colpal)
+    }
+  }
+
+  if (contour.lines) {
+    contour.lines.params <- append(list(
+      out$x, out$y, out$z,
+      add = TRUE
+    ), contour.lines.params)
+
+    do.call(graphics::contour, contour.lines.params)
+  }
+
+  point.params <- append(list(x = out$points[, 1], y = out$points[, 2]), point.params)
+  do.call(graphics::points, point.params)
+
+  if (mean.ellipse) {
+    rphi_mean <- mean_strain_ellipse(r, phi)
+
+    rphi_mean_xy <- .Rphi2xy(rphi_mean$R, deg2rad(rphi_mean$phi), rmax = rmax, proj = proj)
+
+    mean.ellipse.params <- append(
+      list(
+        x = rphi_mean_xy[, 1],
+        y = rphi_mean_xy[, 2]
+      ),
+      mean.ellipse.params
+    )
+
+    do.call(graphics::points, mean.ellipse.params)
+    graphics::title(sub = bquote("R" == .(round(rphi_mean$R, 2)) ~ "|" ~ phi == .(round(rphi_mean$phi, 2)) * degree))
+  }
+  graphics::lines(out$frame, lwd = 2)
 
 
 
-
-
+  proj.pretty <- c(
+    "eqd" = "Equidistant",
+    "eqa" = "Equal-area",
+    "stg" = "Stereographic",
+    "ort" = "Ortographic",
+    "gno" = "Gnomonic",
+    "lin" = "Linear",
+    "rdl" = "Radial"
+  )[proj]
+  graphics::title(main = "Polar R/phi plot")
+  graphics::mtext(paste(proj.pretty, "projection"))
+}
 
 
 
@@ -514,7 +708,7 @@ vorticity_boot <- function(B, R = 100, probs = 0.975) {
 #' # assuming the mean orientation is the foliation:
 #' theta <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2]
 #'
-#' RGN_plot(ramsay[, 'R'], theta, col = "darkred")
+#' RGN_plot(ramsay[, "R"], theta, col = "darkred")
 RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.972, grid = 0.05, ...) {
   R_val <- r
   theta <- theta %% 180

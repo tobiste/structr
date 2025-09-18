@@ -32,7 +32,7 @@ mean shape matrix and its eigenvalues (Shimamoto and Ikeda, 1976).
 \examples{
 set.seed(20250411)
 data(ramsay)
-mean_strain_ellipse(ramsay[, 'R'], ramsay[, 'phi'])
+mean_strain_ellipse(ramsay[, "R"], ramsay[, "phi"])
 }
 \references{
 Shimamoto, T., Ikeda, Y., 1976. A simple algebraic method for

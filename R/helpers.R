@@ -296,6 +296,77 @@ legend_d <- function(fill, labels = names(fill), position = "topright", ...) {
   )
 }
 
+#' Add an Ellipse to existing plot
+#'
+#' @param x,y the x and y co-ordinates for the center(s) of the ellipse(s).
+#' @param radius.x  scalar or a vector giving the semi-major axis of the ellipse.
+#' @param radius.y a scalar or a vector giving the semi-minor axis of the ellipse.
+#' @param rot angle of rotation in radians.
+#' @param nv number of vertices to draw the ellipses.
+#' @param border color for borders. The default is par("fg"). Use border = NA to omit borders.
+#' @param col color(s) to fill or shade the annulus sector with. The default NA (or also NULL) means do not fill (say draw transparent).
+#' @param lty line type for borders and shading; defaults to "solid".
+#' @param lwd line width for borders and shading.
+#' @param plot logical. If TRUE the structure will be plotted. If FALSE only the points are calculated and returned. Use this if you want to combine several geometric structures to a single polygon.
+#'
+#' @returns The function invisibly returns a list of the calculated coordinates for all shapes.
+#' @export
+#' @examples
+#' plot(c(0, 1), c(0, 1), type = "n")
+#' ellipse(.5, .5, radius.x = 0.5, radius.y = .25, col = "darkgreen", border = "red")
+ellipse <- function(x = 0, y = x, radius.x = 1, radius.y = radius.x, rot = 0,
+                    nv = 100, border = par("fg"), col = par("bg"), lty = par("lty"),
+                    lwd = par("lwd"), plot = TRUE) {
+  lgp <- list(
+    x = x, y = y, radius.x = radius.x, radius.y = radius.y,
+    rot = rot, nv = nv
+  )
+  maxdim <- max(unlist(lapply(lgp, length)))
+  lgp <- lapply(lgp, rep, length.out = maxdim)
+  if (length(col) < maxdim) {
+    col <- rep(col, length.out = maxdim)
+  }
+  if (length(border) < maxdim) {
+    border <- rep(border, length.out = maxdim)
+  }
+  if (length(lwd) < maxdim) {
+    lwd <- rep(lwd, length.out = maxdim)
+  }
+  if (length(lty) < maxdim) {
+    lty <- rep(lty, length.out = maxdim)
+  }
+  lst <- list()
+  for (i in 1:maxdim) {
+    theta.inc <- 2 * pi / lgp$nv[i]
+    theta <- seq(0, 2 * pi - theta.inc, by = theta.inc)
+    ptx <- cos(theta) * lgp$radius.x[i] + lgp$x[i]
+    pty <- sin(theta) * lgp$radius.y[i] + lgp$y[i]
+    if (lgp$rot[i] > 0) {
+      dx <- ptx - lgp$x[i]
+      dy <- pty - lgp$y[i]
+      ptx <- lgp$x[i] + cos(lgp$rot[i]) * dx - sin(lgp$rot[i]) *
+        dy
+      pty <- lgp$y[i] + sin(lgp$rot[i]) * dx + cos(lgp$rot[i]) *
+        dy
+    }
+    if (plot) {
+      polygon(ptx, pty,
+        border = border[i], col = col[i],
+        lty = lty[i], lwd = lwd[i]
+      )
+    }
+    lst[[i]] <- list(x = ptx, y = pty)
+  }
+  lst <- lapply(lst, xy.coords)
+  if (length(lst) == 1) {
+    lst <- lst[[1]]
+  }
+  invisible(lst)
+}
+
+
+
+
 # Modes from a kde distribution ------------------------------------------------
 modes <- function(kde) {
   c(

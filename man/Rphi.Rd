@@ -21,5 +21,5 @@ list. \code{phi}: the final angle (in degrees) between long axis and principal s
 }
 \examples{
 #' data(ramsay)
-Rphi(ramsay[, 'R'], theta = ramsay[, 'phi'])
+Rphi(ramsay[, "R"], theta = ramsay[, "phi"])
 }
