@@ -43,7 +43,8 @@ The {structr} algorithm also calculates bootstrapped 95% confidence interval.
 
 To visualize the distribution of the strain values, we can calculate densities in Rf-Phi space and plot them in a **Rf/phi** diagram:
 ```{r rphi, message=FALSE, warning=FALSE}
-#| fig-alt: Rf-phi plot
+#| fig-alt: >
+#|    Rf-phi plot
 Rphi_plot(r = ramsay[, 1], phi = ramsay[, 2])
 ```
 
@@ -51,7 +52,7 @@ or in an **Equidistant polar plot**:
 ```{r plot2}
 #| fig.alt: >
 #|   R/phi data in polar plot
-Rphi_polar_plot(ramsay[, 1], ramsay[, 2])
+Rphi_polar_plot(ramsay[, 1], ramsay[, 2], proj = "eqd")
 ```
 
 ## Vorticity analysis
@@ -67,7 +68,9 @@ Here the `Rc` is estimated using the bootstrap method described in Stephan et al
 ```{r vorticity, message=FALSE, warning=FALSE}
 #| fig.alt: >
 #|   Rigid grain net
-theta <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2] # assuming the mean orientation resembles the foliation
+
+# assuming the mean orientation resembles the foliation
+theta <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2]
 
 RGN_plot(r = ramsay[, 1], theta = theta, col = "#B63679")
 title(main = "Rigid Grain Net")
