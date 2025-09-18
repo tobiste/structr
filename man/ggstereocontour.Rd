@@ -4,7 +4,7 @@
 \alias{ggstereocontour}
 \alias{geom_contour_stereo}
 \alias{geom_contourf_stereo}
-\title{Stereonet contouring using ggplot}
+\title{Stereoplot contouring using ggplot}
 \usage{
 geom_contour_stereo(
   data,
@@ -52,7 +52,7 @@ suggested by Garcia-Portugues (2013). Ignored when \code{hw} is specified.}
 ggplot
 }
 \description{
-Stereonet contouring using ggplot
+Stereoplot contouring using ggplot
 }
 \examples{
 if (require("mapproj")) {

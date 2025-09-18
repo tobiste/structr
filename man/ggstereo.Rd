@@ -2,7 +2,7 @@
 % Please edit documentation in R/stereonet_gg.R
 \name{ggstereo}
 \alias{ggstereo}
-\title{Stereonet using ggplot}
+\title{Stereoplot using ggplot}
 \usage{
 ggstereo(
   data = NULL,
@@ -28,7 +28,7 @@ specified, must be supplied in each layer added to the plot.}
 
 \item{centercross}{logical. Whether a center cross should be added.}
 
-\item{grid}{logical. Whether a gid should be added.}
+\item{grid}{logical. Whether a grid should be added.}
 
 \item{grid.spacing}{numeric. Grid spacing in degree}
 
@@ -40,7 +40,7 @@ specified, must be supplied in each layer added to the plot.}
 ggplot
 }
 \description{
-Stereonet using ggplot
+Stereoplot using ggplot
 }
 \examples{
 if (require("mapproj")) {

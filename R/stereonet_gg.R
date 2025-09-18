@@ -205,7 +205,7 @@ ggstereo_grid <- function(d = 10, rot = 0, ...) {
 }
 
 
-#' Stereonet using ggplot
+#' Stereoplot using ggplot
 #'
 #' @param data Default dataset to use for plot. If not already a data.frame,
 #' will be converted to one by [ggplot2::fortify()]. If not specified, must be
@@ -217,7 +217,7 @@ ggstereo_grid <- function(d = 10, rot = 0, ...) {
 #' @param grid.spacing numeric. Grid spacing in degree
 #' @param grid.rot numeric. Angle (in degrees) to rotate the grid.
 #' @param centercross logical. Whether a center cross should be added.
-#' @param grid logical. Whether a gid should be added.
+#' @param grid logical. Whether a grid should be added.
 #' @param ... argument passed to [ggplot2::geom_polygon()]
 #'
 #' @import ggplot2
@@ -295,7 +295,7 @@ ignore_unused_imports <- function() {
 }
 
 
-#' Stereonet contouring using ggplot
+#' Stereoplot contouring using ggplot
 #'
 #' @inheritParams ggstereo
 #' @param ngrid integer. Resolution of density calculation.
