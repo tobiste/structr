@@ -65,8 +65,8 @@ mean_strain_ellipse <- function(r, phi, boot = TRUE, resamples = 1000, boot.valu
       boot_mat[i, ] <- unlist(mean_strain_ellipse0(r[idx], phi[idx]))
     }
     
-    res$R_CI   <- unname(quantile(boot_mat[, 1], probs = c(0.025, 0.975)))
-    res$phi_CI <- unname(quantile(boot_mat[, 2], probs = c(0.025, 0.975)))
+    res$R_CI   <- unname(stats::quantile(boot_mat[, 1], probs = c(0.025, 0.975)))
+    res$phi_CI <- unname(stats::quantile(boot_mat[, 2], probs = c(0.025, 0.975)))
     
     if (boot.values) res$boot <- boot_mat
   }
@@ -634,7 +634,9 @@ shape_factor <- function(r) {
 
 
 RGN_hyperbola <- function(steps = 0.05, w = seq(0.1, 1, steps / 100)) {
-  hyperbola_crit <- data.frame(
+ b <- NULL
+ 
+   hyperbola_crit <- data.frame(
     b = w,
     theta = crit_angle(w),
     r = .b2r(w)
@@ -664,7 +666,7 @@ RGN_hyperbola <- function(steps = 0.05, w = seq(0.1, 1, steps / 100)) {
 
 vorticity_boot <- function(B, R = 100, probs = 0.975) {
   vapply(1:R, function(r) {
-    quantile(sample(B, replace = TRUE), probs = probs, na.rm = TRUE) # take the upper 97.5% quantile to remove outliers
+    stats::quantile(sample(B, replace = TRUE), probs = probs, na.rm = TRUE) # take the upper 97.5% quantile to remove outliers
   }, FUN.VALUE = numeric(1))
 }
 
@@ -735,7 +737,7 @@ RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.972, grid
 
 
   R_test <- 10000
-  t_score <- qt(p = 0.05 / 2, df = R_test - 1, lower.tail = FALSE)
+  t_score <- stats::qt(p = 0.05 / 2, df = R_test - 1, lower.tail = FALSE)
   geo.sde <- bmax_geosd / sqrt(R_test)
   geo.margin_error <- t_score * geo.sde
   geo.lowerCI <- bmax_geomean - geo.margin_error

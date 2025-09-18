@@ -332,7 +332,7 @@ tau_max <- function(sigma_x, sigma_z, tau_xz) {
 ggMohr <- function(sigma1, sigma2, sigma3 = NULL, coulomb = c(70, 0.6), sliding = 0.81, units = "MPa", fill = "gray", alpha = .5, ...) {
   stress <- c(sigma1, sigma2, sigma3)
   one_circle <- any(is.na(stress)) || length(stress) == 2
-  stress <- sort(na.omit(stress), decreasing = TRUE)
+  stress <- sort(stats::na.omit(stress), decreasing = TRUE)
 
   s1 <- stress[1]
   if (one_circle) {

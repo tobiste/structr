@@ -61,6 +61,7 @@ fabric_indexes <- function(x) {
 #' VollmerPlot(d, lab = "KENT", add = TRUE, col = "blue")
 #' title("Fabric plot of Vollmer (1990)")
 VollmerPlot <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...) {
+  b <- NULL
   x_vollmer <- fabric_indexes(x)
   R <- x_vollmer["R"]
   P <- x_vollmer["P"]

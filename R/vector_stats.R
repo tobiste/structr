@@ -652,5 +652,5 @@ summary.spherical <- function(object, ...) {
   ca <- confidence_angle(object, ...)
   c(m, v, d, ca) |>
     unname() |>
-    setNames(c(colnames(m), "variance", "68% cone", "confidence cone"))
+    stats::setNames(c(colnames(m), "variance", "68% cone", "confidence cone"))
 }

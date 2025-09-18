@@ -13,7 +13,7 @@
 #' using the Longitude and Latitude columns.
 #' @importFrom readxl read_xlsx
 #' @importFrom rjson fromJSON
-#' @importFrom data.table rbindlist dcast fread setDT fifelse melt data.table as.data.table setnames setorder
+#' @importFrom data.table rbindlist dcast fread setDT fifelse melt data.table as.data.table setnames setorder `:=` .SD .SDcols patterns
 #' @importFrom sf st_as_sf
 #' @returns `list` containing the following objects:
 #' \describe{
@@ -40,6 +40,10 @@ NULL
 #' @rdname strabo
 #' @export
 read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
+  Date <- Dipdir <- Linear.Orientation.Trend <- Linear.Orientation.Unix.Timestamp <-  Linear.Sense <- Planar.Orientation.Dipdirection <- 
+    temp <- Planar.Orientation.Fault.Or.Sz.Type <- Planar.Orientation.Movement <- Planar.Orientation.Strike <- Planar.Orientation.Unix.Timestamp <-  Tag <-  NULL
+  
+  
   # Read data fast with fread (via readxl first, then as data.table)
   data <- readxl::read_xlsx(file, sheet = 1, skip = 2)
   setDT(data)
@@ -105,6 +109,7 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
 #' @rdname strabo
 #' @export
 read_strabo_mobile <- function(file, sf = TRUE) {
+  Trd/Strk <- Dipdir <- Type <- NULL
   # Read the data with data.table::fread for speed
   data0 <- fread(file,
     sep = "\t", header = TRUE,
@@ -487,6 +492,8 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 # }
 
 read_strabo_JSON <- function(file, sf = TRUE) {
+  tag_name <- NULL
+  
   # --- Load JSON ---
   dat <- rjson::fromJSON(file = file)
 

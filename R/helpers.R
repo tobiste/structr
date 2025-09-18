@@ -310,6 +310,7 @@ legend_d <- function(fill, labels = names(fill), position = "topright", ...) {
 #' @param plot logical. If TRUE the structure will be plotted. If FALSE only the points are calculated and returned. Use this if you want to combine several geometric structures to a single polygon.
 #'
 #' @returns The function invisibly returns a list of the calculated coordinates for all shapes.
+#' @importFrom graphics par polygon
 #' @export
 #' @examples
 #' plot(c(0, 1), c(0, 1), type = "n")
@@ -366,9 +367,9 @@ ellipse <- function(
   
   # simplify result if only one ellipse
   if (maxdim == 1L) {
-    lst <- xy.coords(lst[[1]])
+    lst <- grDevices::xy.coords(lst[[1]])
   } else {
-    lst <- lapply(lst, xy.coords)
+    lst <- lapply(lst, grDevices::xy.coords)
   }
   invisible(lst)
 }

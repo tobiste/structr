@@ -379,7 +379,7 @@ print.spherical <- function(x, ...) {
   # }
   res <- NextMethod("`[`")
   if (isTRUE(j)) {
-    if (is(x, "Fault")) as.Fault(res) else as.Pair(res)
+    if (is.Fault(x)) as.Fault(res) else as.Pair(res)
   } else {
     as.numeric(res)
   }
