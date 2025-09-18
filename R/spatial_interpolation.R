@@ -209,11 +209,11 @@ compact_grid <- function(grid) {
   group <- character()
 
   data <- subset(grid, !is.na(grid$x))
-  data$group = paste(lon, lat)
+  data$group <- paste(lon, lat)
 
-  temp <- aggregate(R ~ group, data, min, na.rm = TRUE) 
+  temp <- aggregate(R ~ group, data, min, na.rm = TRUE)
   temp2 <- merge(temp, data, by.x = "group", by.y = "R")
   temp2$group <- NULL
-  
-    sf::st_as_sf(temp2)
+
+  sf::st_as_sf(temp2)
 }

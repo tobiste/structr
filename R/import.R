@@ -13,7 +13,7 @@
 #' using the Longitude and Latitude columns.
 #' @importFrom readxl read_xlsx
 #' @importFrom rjson fromJSON
-# #' @importFrom data.table rbindlist dcast fread setDT fifelse melt data.table as.data.table setnames setorder patterns .SD .( := 
+# #' @importFrom data.table rbindlist dcast fread setDT fifelse melt data.table as.data.table setnames setorder patterns .SD .( :=
 #' @import data.table
 #' @importFrom sf st_as_sf
 #' @returns `list` containing the following objects:
@@ -41,10 +41,10 @@ NULL
 #' @rdname strabo
 #' @export
 read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
-  Date <- Dipdir <- Linear.Orientation.Trend <- Linear.Orientation.Unix.Timestamp <-  Linear.Sense <- Planar.Orientation.Dipdirection <- 
-    temp <- Planar.Orientation.Fault.Or.Sz.Type <- Planar.Orientation.Movement <- Planar.Orientation.Strike <- Planar.Orientation.Unix.Timestamp <-  Tag <-  NULL
-  
-  
+  Date <- Dipdir <- Linear.Orientation.Trend <- Linear.Orientation.Unix.Timestamp <- Linear.Sense <- Planar.Orientation.Dipdirection <-
+    temp <- Planar.Orientation.Fault.Or.Sz.Type <- Planar.Orientation.Movement <- Planar.Orientation.Strike <- Planar.Orientation.Unix.Timestamp <- Tag <- NULL
+
+
   # Read data fast with fread (via readxl first, then as data.table)
   data <- readxl::read_xlsx(file, sheet = 1, skip = 2)
   setDT(data)
@@ -162,7 +162,7 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #' @export
 read_strabo_JSON <- function(file, sf = TRUE) {
   tag_name <- spot_id <- tag_col <- tag_id <- time <- id <- NULL
-  
+
   # --- Load JSON ---
   dat <- rjson::fromJSON(file = file)
 
@@ -200,7 +200,12 @@ read_strabo_JSON <- function(file, sf = TRUE) {
     all.x = TRUE
   )
   spot_tags_dt[, tag_col := paste0("tag:", tag_name)]
-  spot_tags_wide <- dcast(spot_tags_dt[, .(spot_id, tag_name = paste0("tag:", tag_name), value = TRUE)],
+  # spot_tags_wide <- dcast(spot_tags_dt[, .(spot_id, tag_name = paste0("tag:", tag_name), value = TRUE)],
+  #   spot_id ~ tag_name,
+  #   fill = FALSE
+  # )
+  spot_tags_wide <- dcast(
+    spot_tags_dt[, list(spot_id, tag_name = paste0("tag:", tag_name), value = TRUE)],
     spot_id ~ tag_name,
     fill = FALSE
   )

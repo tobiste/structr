@@ -55,22 +55,22 @@ Rphi <- function(Rs, Ri = 1, theta) {
 #' mean_strain_ellipse(ramsay[, "R"], ramsay[, "phi"])
 mean_strain_ellipse <- function(r, phi, boot = TRUE, resamples = 1000, boot.values = FALSE) {
   res <- mean_strain_ellipse0(r, phi)
-  
+
   if (boot) {
     n <- length(r)
     boot_mat <- matrix(NA_real_, nrow = resamples, ncol = 2)
-    
+
     for (i in seq_len(resamples)) {
       idx <- sample.int(n, n, replace = TRUE)
       boot_mat[i, ] <- unlist(mean_strain_ellipse0(r[idx], phi[idx]))
     }
-    
-    res$R_CI   <- unname(stats::quantile(boot_mat[, 1], probs = c(0.025, 0.975)))
+
+    res$R_CI <- unname(stats::quantile(boot_mat[, 1], probs = c(0.025, 0.975)))
     res$phi_CI <- unname(stats::quantile(boot_mat[, 2], probs = c(0.025, 0.975)))
-    
+
     if (boot.values) res$boot <- boot_mat
   }
-  
+
   res
 }
 
@@ -409,7 +409,7 @@ gridHyper <- function(rphi, rmax, kappa, nnodes, normalize = TRUE, proj = "eqd")
 #' @param point.params list of plotting arguments passed to [graphics::points()]
 #' @param at.x,at.y the points at which tick-marks and labels for the x and y
 #' axes are to be drawn.
-#' @param character. The title
+#' @param main character. The title
 #'
 #' @returns plot
 #'
@@ -542,7 +542,7 @@ Rphi_polar_plot <- function(r, phi,
                             mean.ellipse = TRUE,
                             mean.ellipse.params = list(col = "red", lwd = 2),
                             point.params = list(col = "grey", pch = 16, cex = .5),
-                            main = "Polar R/phi plot", 
+                            main = "Polar R/phi plot",
                             ...) {
   proj <- match.arg(proj)
   cols <- NULL
@@ -638,9 +638,9 @@ shape_factor <- function(r) {
 
 
 RGN_hyperbola <- function(steps = 0.05, w = seq(0.1, 1, steps / 100)) {
- b <- theta <- NULL
- 
-   hyperbola_crit <- data.frame(
+  b <- theta <- NULL
+
+  hyperbola_crit <- data.frame(
     b = w,
     theta = crit_angle(w),
     r = .b2r(w)

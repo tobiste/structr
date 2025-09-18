@@ -321,50 +321,55 @@ ellipse <- function(
     rot = 0, nv = 512,
     border = par("fg"), col = par("bg"),
     lty = par("lty"), lwd = par("lwd"),
-    plot = TRUE
-) {
+    plot = TRUE) {
   # normalize inputs to same length
-  lgp <- list(x = x, y = y, radius.x = radius.x,
-              radius.y = radius.y, rot = rot, nv = nv)
+  lgp <- list(
+    x = x, y = y, radius.x = radius.x,
+    radius.y = radius.y, rot = rot, nv = nv
+  )
   maxdim <- max(vapply(lgp, length, 1L))
   lgp <- lapply(lgp, rep, length.out = maxdim)
-  
+
   border <- rep(border, length.out = maxdim)
-  col    <- rep(col,    length.out = maxdim)
-  lwd    <- rep(lwd,    length.out = maxdim)
-  lty    <- rep(lty,    length.out = maxdim)
-  
+  col <- rep(col, length.out = maxdim)
+  lwd <- rep(lwd, length.out = maxdim)
+  lty <- rep(lty, length.out = maxdim)
+
   # preallocate result
   lst <- vector("list", maxdim)
-  
+
   for (i in seq_len(maxdim)) {
     # only recompute theta if nv changes
     theta <- seq(0, 2 * pi, length.out = lgp$nv[i] + 1L)[-1L]
-    ct <- cos(theta); st <- sin(theta)
-    
+    ct <- cos(theta)
+    st <- sin(theta)
+
     # unrotated ellipse
     dx <- lgp$radius.x[i] * ct
     dy <- lgp$radius.y[i] * st
-    
+
     # rotation
     if (lgp$rot[i] != 0) {
-      cr <- cos(lgp$rot[i]); sr <- sin(lgp$rot[i])
+      cr <- cos(lgp$rot[i])
+      sr <- sin(lgp$rot[i])
       ptx <- lgp$x[i] + cr * dx - sr * dy
       pty <- lgp$y[i] + sr * dx + cr * dy
     } else {
       ptx <- lgp$x[i] + dx
       pty <- lgp$y[i] + dy
     }
-    
+
     # plot if requested
     if (plot) {
-      polygon(ptx, pty, border = border[i],
-              col = col[i], lty = lty[i], lwd = lwd[i])
+      polygon(ptx, pty,
+        border = border[i],
+        col = col[i], lty = lty[i], lwd = lwd[i]
+      )
     }
-    
+
     lst[[i]] <- list(x = ptx, y = pty)
   }
-  
+
   # simplify result if only one ellipse
   if (maxdim == 1L) {
     lst <- grDevices::xy.coords(lst[[1]])
@@ -388,16 +393,16 @@ modes <- function(kde) {
 
 .bind_cols <- function(x, ...) {
   dots <- list(...)
-  
+
   # keep only non-NULL and non-zero-length columns
   dots <- dots[vapply(dots, function(y) !is.null(y) && length(y) > 0, logical(1))]
-  
+
   # convert vectors to column matrices
   dots <- lapply(dots, function(y) {
     if (is.vector(y) && !is.matrix(y)) y <- matrix(y, ncol = 1)
     y
   })
-  
+
   # check row consistency
   n <- nrow(x)
   for (i in seq_along(dots)) {
@@ -405,7 +410,7 @@ modes <- function(kde) {
       stop("All inputs must have the same number of rows as x")
     }
   }
-  
+
   # combine
   as.data.frame(cbind(x, do.call(cbind, dots)), check.names = FALSE)
 }

@@ -370,7 +370,7 @@ NULL
 
 #' @rdname density
 #' @export
-density <- function(x, n , weights = NULL, ...) UseMethod("density")
+density <- function(x, n, weights = NULL, ...) UseMethod("density")
 
 
 #' @rdname density
@@ -378,20 +378,20 @@ density <- function(x, n , weights = NULL, ...) UseMethod("density")
 density.spherical <- function(x, n = 128L, weights = NULL, ...) density_calc(x, n = n, weights = weights, ...)
 
 
-#' @name density  
+#' @name density
 #' @export
 density_calc <- function(x,
-                              #kamb = TRUE, 
-                              FUN = exponential_kamb,
-                              n = 128L, sigma = 3,
-                              #vmf_hw = NULL, vmf_optimal = c("cross", "rot"),
-                              weights = NULL, upper.hem = FALSE, r = 1) {
+                         # kamb = TRUE,
+                         FUN = exponential_kamb,
+                         n = 128L, sigma = 3,
+                         # vmf_hw = NULL, vmf_optimal = c("cross", "rot"),
+                         weights = NULL, upper.hem = FALSE, r = 1) {
   x_grid <- y_grid <- seq(-1, 1, length.out = n)
 
   grid <- expand.grid(x_grid, y_grid) |> as.matrix()
 
   dg <- density_grid(x, weights = weights, upper.hem = upper.hem, kamb = TRUE, FUN = FUN, sigma = sigma, ngrid = n, r = r)
-  
+
   # dg <- if (kamb) {
   #   density_grid(x, weights = weights, upper.hem = upper.hem, kamb = TRUE, FUN = FUN, sigma = sigma, ngrid = ngrid, r = r)
   # } else {
@@ -434,4 +434,4 @@ density_calc <- function(x,
 #' @export
 #' @noRd
 #' @importFrom stats density
-density.default <- function(x, n, weights, ...) stats::density(x, n , weights, ...)
+density.default <- function(x, n, weights, ...) stats::density(x, n, weights, ...)

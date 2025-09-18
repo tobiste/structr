@@ -165,7 +165,7 @@ eigen.default <- function(x, ...) base::eigen(x, ...)
 eigen.matrix <- function(x, ...) base::eigen(x, ...)
 
 #' Helper function for Eigenvalues and Eigenvectors of a Set of Vectors
-#' 
+#'
 #' @keywords internal
 #' @inheritParams ortensor
 #' @param scaled logical. Whether the Eigenvectors should be scaled by the
@@ -261,7 +261,7 @@ principal_strain <- function(x) {
 }
 
 .get_kind <- function(eoct, lode) {
-  kind <- rep("LS", length(eoct))  # default
+  kind <- rep("LS", length(eoct)) # default
   kind[.near(eoct, 0)] <- "O"
   kind[lode < -0.75] <- "L"
   kind[lode > 0.75] <- "S"
@@ -297,7 +297,7 @@ or_shape_params <- function(x) {
   lode <- ifelse((e[1] - e[3]) > 0, (2 * e[2] - e[1] - e[3]) / (e[1] - e[3]), 0)
 
   kind <- .get_kind(eoct, lode)
- 
+
   # Vollmer
   N <- nrow(x)
   P <- eig$values[1] - eig$values[2] #  Point index (Vollmer, 1990)
