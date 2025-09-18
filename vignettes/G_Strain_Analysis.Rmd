@@ -62,7 +62,7 @@ strain ratio (`R`) of orientation (`phi`) of
 porphyroclast over the theoretical distribution of tailless clasts. The plot estimates 
 the critical threshold `Rc` marking the transition between the stable-sink 
 position and infinitely rotating porphyroclasts. 
-This threshold can be interpreted as the the **mean kinmatic vorticity number**.
+This threshold can be interpreted as the the **mean kinematic vorticity number**.
 Here the `Rc` is estimated using the bootstrap method described in Stephan et al. (2025).
 
 ```{r vorticity, message=FALSE, warning=FALSE}
