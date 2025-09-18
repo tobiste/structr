@@ -26,6 +26,7 @@
 #'
 #' @returns list
 #' @importFrom tectonicr dist_greatcircle
+#' @importFrom dplyr bind_rows mutate select
 #' @importFrom sf st_transform st_coordinates st_is st_as_sf st_make_grid st_crs st_bbox
 #' @details Based on [tectonicr::stress2grid()]
 #'

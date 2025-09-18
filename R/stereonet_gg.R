@@ -12,7 +12,7 @@
 #' @param d numeric. Cone angle (small circle radius) in degrees. `90` (the default) produces great circles.
 #' @param n integer. Resolution of line.
 #'
-#' @import dplyr
+#' @importFrom dplyr bind_cols
 #'
 #' @return data.frame
 #'

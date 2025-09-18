@@ -139,6 +139,7 @@ lines(planes_eigen$vectors, col = viridis::magma(3), lty = 1)
 points(planes_eigen$vectors, col = viridis::magma(3), pch = 19, cex = 1)
 legend("topright", legend = c("Eigenvectors 1", "Eigenvectors 2", "Eigenvectors 3"), col = viridis::magma(3), pch = 19, cex = .75)
 ```
+
 ### Eigenvalues
 The **eigenvalues** of the orientation tensor. describe the shape of the distribution of these vectors, that is who clustered, cylindrical or random these vectors are distributed.
 
@@ -157,6 +158,7 @@ VollmerPlot(planes, col = "#000004", pch = 1, cex = 2)
 VollmerPlot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```
+
 #### Woodcock plot 
 
 ```{r woodcock, message=FALSE,warning=FALSE}
