@@ -14,15 +14,15 @@
 \alias{estimate_k}
 \title{Statistical estimators of the distribution of a set of vectors}
 \usage{
-\method{mean}{spherical}(x, w = NULL, na.rm = TRUE)
+\method{mean}{spherical}(x, na.rm = TRUE, ...)
 
 sd(x, na.rm = TRUE, ...)
 
-\method{sd}{spherical}(x, w = NULL, na.rm = TRUE)
+\method{sd}{spherical}(x, na.rm = TRUE, ...)
 
 var(x, na.rm = TRUE, ...)
 
-\method{var}{spherical}(x, w = NULL, na.rm = TRUE)
+\method{var}{spherical}(x, na.rm = TRUE, ...)
 
 confidence_angle(x, w = NULL, alpha = 0.05, na.rm = TRUE)
 
@@ -37,11 +37,11 @@ estimate_k(x, w = NULL, na.rm = FALSE)
 \arguments{
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}.}
 
-\item{w}{numeric. Optional weights for each observation.}
-
 \item{na.rm}{logical. Whether \code{NA} values should be removed before the computation proceeds.}
 
 \item{...}{arguments passed to function call}
+
+\item{w}{numeric. Optional weights for each observation.}
 
 \item{alpha}{numeric. Significance level for the confidence angle (default is 0.05 for a 95\% confidence angle).}
 }

@@ -4,12 +4,12 @@
 \alias{summary.spherical}
 \title{Summary statistics}
 \usage{
-\method{summary}{spherical}(x, ...)
+\method{summary}{spherical}(object, ...)
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}.}
+\item{object}{object of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}.}
 
-\item{...}{parameters passed to \code{\link[=mean]{mean()}}, \code{\link[=sd]{sd()}},}
+\item{...}{parameters passed to \code{\link[=mean]{mean()}}, \code{\link[=var]{var()}}, \code{\link[=delta]{delta()}}, and \code{\link[=confidence_angle]{confidence_angle()}}}
 }
 \value{
 named vector
@@ -19,5 +19,5 @@ Calculates the mean, variance, 68\% cone, and the confidence cone around the mea
 }
 \examples{
 set.seed(20250411)
-summary.spherical(rvmf(100, mu = Line(90, 20), k = 20))
+summary(rvmf(100, mu = Line(90, 20), k = 20))
 }

@@ -345,7 +345,7 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #' @param kamb logical. Whether to use the von Mises-Fisher kernel density estimation (`FALSE`) or Kamb's method (`TRUE`, the default).
 #' @param FUN density estimation function if `kamb=TRUE`; one of [exponential_kamb()] (the default),
 #'  [kamb_count], and [schmidt_count()].
-#' @param ngrid integer. Gridzise. 128 by default.
+#' @param ngrid integer. Gridzise. `128` by default.
 #' @param sigma numeric. Radius for Kamb circle used for counting. 3 by default.
 #' @param vmf_hw numeric. Kernel bandwidth in degree.
 #' @param vmf_optimal character. Calculates an optimal kernel bandwidth

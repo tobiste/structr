@@ -34,7 +34,7 @@ Rphi <- function(Rs, Ri = 1, theta) {
 #' @param r numeric. Aspect ratio of deformed object (long axis / short axis)
 #' @param phi numeric. Orientation of long axis of deformed object (in degrees)
 #' @param boot logical. Whether a 95% confidence interval from on bootstrapping should be calculated. `TRUE` by default.
-#' @param iter integer. Number of bootstrap resamples (`1000` by default). Ignored when `boot = FALSE`.
+#' @param resamples integer. Number of bootstrap resamples (`1000` by default). Ignored when `boot = FALSE`.
 #' @param boot.values logical. Whether the bootstrapped R and phi values should be added to the output. `FALSE` by default.
 #'
 #' @returns list. `R` gives the mean aspect ratio of the strain ellipse,
@@ -399,8 +399,8 @@ gridHyper <- function(rphi, rmax, kappa, nnodes, normalize = TRUE, proj = "eqd")
 #' @param n integer. Grid resolution or number of fille dcontours
 #' @param contour.lines logical. Whether contour lines should be added.
 #' @param contour.lines.params list of plotting arguments passed to [graphics::contour()]
-#' @param col.palette function to produce color palette used for contouring
-#' @param col.params list of plotting arguments passed `col.palette`
+#' @param contour.col function to produce color palette used for contouring
+#' @param contour.col.params list of plotting arguments passed `col.palette`
 #' @param mean.ellipse logical. Whether the mean ellipse should be plotted
 #' @param mean.ellipse.params list of plotting arguments passed to [ellipse()]
 #' @param point.params list of plotting arguments passed to [graphics::points()]

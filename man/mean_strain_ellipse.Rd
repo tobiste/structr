@@ -13,9 +13,9 @@ mean_strain_ellipse(r, phi, boot = TRUE, resamples = 1000, boot.values = FALSE)
 
 \item{boot}{logical. Whether a 95\% confidence interval from on bootstrapping should be calculated. \code{TRUE} by default.}
 
-\item{boot.values}{logical. Whether the bootstrapped R and phi values should be added to the output. \code{FALSE} by default.}
+\item{resamples}{integer. Number of bootstrap resamples (\code{1000} by default). Ignored when \code{boot = FALSE}.}
 
-\item{iter}{integer. Number of bootstrap resamples (\code{1000} by default). Ignored when \code{boot = FALSE}.}
+\item{boot.values}{logical. Whether the bootstrapped R and phi values should be added to the output. \code{FALSE} by default.}
 }
 \value{
 list. \code{R} gives the mean aspect ratio of the strain ellipse,

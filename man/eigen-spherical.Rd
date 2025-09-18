@@ -7,15 +7,12 @@
 \alias{eigen.spherical}
 \title{Eigenvalues and Eigenvectors of a Set of Vectors}
 \usage{
-\method{eigen}{spherical}(x, scaled = FALSE)
+\method{eigen}{spherical}(x, ...)
 
 eigen(x, ...)
 }
 \arguments{
 \item{x}{Object of class \code{"Vec3"}, \code{"Line"} or \code{"Plane"}}
-
-\item{scaled}{logical. Whether the Eigenvectors should be scaled by the
-Eigenvalues (only effective if \code{x} is in Cartesian coordinates).}
 
 \item{...}{arguments passed from other functions}
 }

@@ -114,8 +114,6 @@ inertia_tensor.default <- function(x, w = NULL) {
 #' Decomposition of Orientation Tensor Eigenvectors and Eigenvalues
 #'
 #' @inheritParams ortensor
-#' @param scaled logical. Whether the Eigenvectors should be scaled by the
-#' Eigenvalues (only effective if `x` is in Cartesian coordinates).
 #' @param ... arguments passed from other functions
 #'
 #' @returns list containing
@@ -141,11 +139,11 @@ NULL
 
 #' @export
 #' @rdname eigen-spherical
-eigen.spherical <- function(x, scaled = FALSE) {
+eigen.spherical <- function(x, ...) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   xeig <- Vec3(x) |>
     unclass() |>
-    or_eigen(scaled)
+    or_eigen(...)
 
   xeig$vectors <- Vec3(xeig$vectors)
 
@@ -166,8 +164,12 @@ eigen.default <- function(x, ...) base::eigen(x, ...)
 #' @export
 eigen.matrix <- function(x, ...) base::eigen(x, ...)
 
-
+#' Helper function for Eigenvalues and Eigenvectors of a Set of Vectors
+#' 
 #' @keywords internal
+#' @inheritParams ortensor
+#' @param scaled logical. Whether the Eigenvectors should be scaled by the
+#' Eigenvalues (only effective if `x` is in Cartesian coordinates).
 or_eigen <- function(x, scaled = FALSE) {
   x_or <- ortensor.default(x, norm = FALSE)
   x_eigen <- eigen(x_or, symmetric = TRUE)

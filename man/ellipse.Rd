@@ -46,6 +46,6 @@ The function invisibly returns a list of the calculated coordinates for all shap
 Add an Ellipse to existing plot
 }
 \examples{
-plot(c(0, 1), c(0, 1), type = 'n')
-ellipse(.5, .5, radius.x = 0.5, radius.y = .25, col = 'darkgreen', border = 'red')
+plot(c(0, 1), c(0, 1), type = "n")
+ellipse(.5, .5, radius.x = 0.5, radius.y = .25, col = "darkgreen", border = "red")
 }

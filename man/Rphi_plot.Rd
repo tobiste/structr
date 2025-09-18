@@ -39,6 +39,10 @@ drawn as density grid. Ignored when \code{contour=FALSE}}
 
 \item{contour.lines.params}{list of plotting arguments passed to \code{\link[graphics:contour]{graphics::contour()}}}
 
+\item{contour.col}{function to produce color palette used for contouring}
+
+\item{contour.col.params}{list of plotting arguments passed \code{col.palette}}
+
 \item{mean.ellipse}{logical. Whether the mean ellipse should be plotted}
 
 \item{mean.ellipse.params}{list of plotting arguments passed to \code{\link[=ellipse]{ellipse()}}}
@@ -51,10 +55,6 @@ drawn as density grid. Ignored when \code{contour=FALSE}}
 axes are to be drawn.}
 
 \item{...}{optional arguments passed to \code{\link[=hypercontour]{hypercontour()}}}
-
-\item{col.palette}{function to produce color palette used for contouring}
-
-\item{col.params}{list of plotting arguments passed \code{col.palette}}
 }
 \value{
 plot

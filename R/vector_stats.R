@@ -166,12 +166,12 @@ NULL
 
 #' @rdname stats
 #' @exportS3Method base::mean
-mean.spherical <- function(x, w = NULL, na.rm = TRUE) {
+mean.spherical <- function(x, na.rm = TRUE, ...) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
 
   x_mean <- Vec3(x) |>
     unclass() |>
-    v_mean(w, na.rm) |>
+    v_mean(na.rm = na.rm, ...) |>
     vec2mat() |>
     Vec3()
 
@@ -202,11 +202,11 @@ sd.default <- function(x, na.rm = TRUE, ...) stats::sd(x, na.rm = na.rm)
 
 #' @rdname stats
 #' @export
-sd.spherical <- function(x, w = NULL, na.rm = TRUE) {
+sd.spherical <- function(x, na.rm = TRUE, ...) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   x_sd <- Vec3(x) |>
     unclass() |>
-    v_sd(w, na.rm)
+    v_sd(na.rm = na.rm, ...)
   if (is.Line(x) | is.Plane(x)) {
     x_sd * 180 / pi
   } else {
@@ -229,11 +229,11 @@ var.default <- function(x, na.rm = TRUE, ...) stats::var(x, na.rm = na.rm, ...)
 
 #' @rdname stats
 #' @export
-var.spherical <- function(x, w = NULL, na.rm = TRUE) {
+var.spherical <- function(x, na.rm = TRUE, ...) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   Vec3(x) |>
     unclass() |>
-    v_var(w, na.rm)
+    v_var(na.rm = na.rm, ...)
 }
 
 #' @rdname stats
@@ -636,20 +636,20 @@ dist.default <- function(x, ...) stats::dist(x, ...)
 #'
 #' Calculates the mean, variance, 68% cone, and the confidence cone around the mean.
 #'
-#' @inheritParams mean.spherical
-#' @param ... parameters passed to [mean()], [sd()],
+#' @param object object of class `"Vec3"`, `"Line"`, or `"Plane"`.
+#' @param ... parameters passed to [mean()], [var()], [delta()], and [confidence_angle()]
 #'
 #' @returns named vector
-#' @export
+#' @exportS3Method base::summary
 #'
 #' @examples
 #' set.seed(20250411)
-#' summary.spherical(rvmf(100, mu = Line(90, 20), k = 20))
-summary.spherical <- function(x, ...) {
-  m <- mean(x, ...)
-  v <- var(x, ...)
-  d <- delta(x, ...)
-  ca <- confidence_angle(x, ...)
+#' summary(rvmf(100, mu = Line(90, 20), k = 20))
+summary.spherical <- function(object, ...) {
+  m <- mean(object, ...)
+  v <- var(object, ...)
+  d <- delta(object, ...)
+  ca <- confidence_angle(object, ...)
   c(m, v, d, ca) |>
     unname() |>
     setNames(c(colnames(m), "variance", "68% cone", "confidence cone"))
