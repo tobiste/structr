@@ -15,7 +15,7 @@ azimuthal or cylindrical (cartesian, RfPhi-type) plots."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9006</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9007</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -127,6 +127,7 @@ https://doi.org/10.1016/j.cageo.2018.03.006</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="stereo_contour.html">image</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">x</span>, <span class="va">out</span><span class="op">$</span><span class="va">y</span>, <span class="va">out</span><span class="op">$</span><span class="va">z</span>,</span></span>
 <span class="r-in"><span>  asp <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="va">out</span><span class="op">$</span><span class="va">proj</span> <span class="op">!=</span> <span class="st">"rfp"</span>, <span class="fl">1</span>, <span class="cn">NA</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">90</span>, <span class="fl">90</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="va">out</span><span class="op">$</span><span class="va">rmax</span><span class="op">)</span>,</span></span>
 <span class="r-in"><span>  xlab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/bquote.html" class="external-link">bquote</a></span><span class="op">(</span><span class="va">varphi</span> <span class="op">~</span> <span class="st">"("</span> <span class="op">*</span> <span class="va">degree</span> <span class="op">*</span> <span class="st">")"</span><span class="op">)</span>, ylab <span class="op">=</span> <span class="st">"R"</span>,</span></span>
 <span class="r-in"><span>  main <span class="op">=</span> <span class="va">out</span><span class="op">$</span><span class="va">proj</span>,</span></span>
