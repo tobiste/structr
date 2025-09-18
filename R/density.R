@@ -342,21 +342,22 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #' Spherical density estimation
 #'
 #' @param x object of class `"Vec3()"`, `"Line()"`, or `"Plane()"`.
-#' @param kamb logical. Whether to use the von Mises-Fisher kernel density estimation (`FALSE`) or Kamb's method (`TRUE`, the default).
+# #' @param kamb logical. Whether to use the von Mises-Fisher kernel density estimation (`FALSE`) or Kamb's method (`TRUE`, the default).
 #' @param FUN density estimation function if `kamb=TRUE`; one of [exponential_kamb()] (the default),
 #'  [kamb_count], and [schmidt_count()].
-#' @param ngrid integer. Gridzise. `128` by default.
+#' @param n integer. Gridzise. `128` by default.
 #' @param sigma numeric. Radius for Kamb circle used for counting. 3 by default.
-#' @param vmf_hw numeric. Kernel bandwidth in degree.
-#' @param vmf_optimal character. Calculates an optimal kernel bandwidth
-#' using the cross-validation algorithm (`'cross'`) or the rule-of-thumb (`'rot'`)
-#' suggested by Garcia-Portugues (2013). Ignored when `vmf_hw` is specified.
-#' @param weights (optional) numeric vector of length of `azi`.
+# #' @param vmf_hw numeric. Kernel bandwidth in degree.
+# #' @param vmf_optimal character. Calculates an optimal kernel bandwidth
+# #' using the cross-validation algorithm (`'cross'`) or the rule-of-thumb (`'rot'`)
+# #' suggested by Garcia-Portugues (2013). Ignored when `vmf_hw` is specified.
+#' @param weights (optional) numeric vector of length of `nrow(x)`.
 #' The relative weight to be applied to each input measurement. The array
 #' will be normalized to sum to 1, so absolute value of the `weights` do not
 #' affect the result. Defaults to `NULL`
 #' @inheritParams plot.spherical
 #' @param r numeric. radius of stereonet circle
+#' @param ... arguments passed to [density_calc()]
 #'
 #' @name density
 #' @aliases density.spherical density_spherical
@@ -364,31 +365,39 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #' @examples
 #' set.seed(20250411)
 #' test <- rfb(100, mu = Line(120, 10), k = 5, A = diag(c(-1, 0, 1)))
-#' density(x = test, ngrid = 100, sigma = 3, weights = runif(100))
+#' density(x = test, n = 100, sigma = 3, weights = runif(100))
 NULL
 
 #' @rdname density
 #' @export
-density <- function(x, ...) UseMethod("density")
+density <- function(x, n , weights = NULL, ...) UseMethod("density")
 
 
 #' @rdname density
 #' @exportS3Method stats::density
-density.spherical <- function(x,
-                              kamb = TRUE, FUN = exponential_kamb,
-                              ngrid = 128L, sigma = 3,
-                              vmf_hw = NULL, vmf_optimal = c("cross", "rot"),
+density.spherical <- function(x, n = 128L, weights = NULL, ...) density_calc(x, n = n, weights = weights, ...)
+
+
+#' @name density  
+#' @export
+density_calc <- function(x,
+                              #kamb = TRUE, 
+                              FUN = exponential_kamb,
+                              n = 128L, sigma = 3,
+                              #vmf_hw = NULL, vmf_optimal = c("cross", "rot"),
                               weights = NULL, upper.hem = FALSE, r = 1) {
-  x_grid <- y_grid <- seq(-1, 1, length.out = ngrid)
+  x_grid <- y_grid <- seq(-1, 1, length.out = n)
 
   grid <- expand.grid(x_grid, y_grid) |> as.matrix()
 
-  dg <- if (kamb) {
-    density_grid(x, weights = weights, upper.hem = upper.hem, kamb = TRUE, FUN = FUN, sigma = sigma, ngrid = ngrid, r = r)
-  } else {
-    stop("vmf not supported at the moment")
-    # density_grid(x, weights = NULL, upper.hem = upper.hem, kamb = FALSE, ngrid = ngrid, hw = vmf_hw, kernel_method = vmf_optimal)
-  }
+  dg <- density_grid(x, weights = weights, upper.hem = upper.hem, kamb = TRUE, FUN = FUN, sigma = sigma, ngrid = n, r = r)
+  
+  # dg <- if (kamb) {
+  #   density_grid(x, weights = weights, upper.hem = upper.hem, kamb = TRUE, FUN = FUN, sigma = sigma, ngrid = ngrid, r = r)
+  # } else {
+  #   stop("vmf not supported at the moment")
+  #   # density_grid(x, weights = NULL, upper.hem = upper.hem, kamb = FALSE, ngrid = ngrid, hw = vmf_hw, kernel_method = vmf_optimal)
+  # }
 
 
   # if(!kamb){
@@ -403,7 +412,7 @@ density.spherical <- function(x,
   #   density_matrix <- matrix(grid[, 3], nrow = ngrid, byrow = FALSE)
   #
   # } else{
-  density_matrix <- matrix(dg$density, nrow = ngrid, byrow = FALSE)
+  density_matrix <- matrix(dg$density, nrow = n, byrow = FALSE)
   # }
 
   dist_matrix <- grid[, 1]^2 + grid[, 2]^2
@@ -425,4 +434,4 @@ density.spherical <- function(x,
 #' @export
 #' @noRd
 #' @importFrom stats density
-density.default <- function(x, ...) stats::density(x, ...)
+density.default <- function(x, n, weights, ...) stats::density(x, n , weights, ...)

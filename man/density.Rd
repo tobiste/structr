@@ -4,18 +4,18 @@
 \alias{density}
 \alias{density.spherical}
 \alias{density_spherical}
+\alias{density_calc}
 \title{Spherical density estimation}
 \usage{
-density(x, ...)
+density(x, n, weights = NULL, ...)
 
-\method{density}{spherical}(
+\method{density}{spherical}(x, n = 128L, weights = NULL, ...)
+
+density_calc(
   x,
-  kamb = TRUE,
   FUN = exponential_kamb,
-  ngrid = 128L,
+  n = 128L,
   sigma = 3,
-  vmf_hw = NULL,
-  vmf_optimal = c("cross", "rot"),
   weights = NULL,
   upper.hem = FALSE,
   r = 1
@@ -24,27 +24,19 @@ density(x, ...)
 \arguments{
 \item{x}{object of class \code{"Vec3()"}, \code{"Line()"}, or \code{"Plane()"}.}
 
-\item{...}{parameters passed to \code{\link[=stereo_point]{stereo_point()}}, \code{\link[=stereo_smallcircle]{stereo_smallcircle()}}, \code{\link[=stereo_greatcircle]{stereo_greatcircle()}}, or \code{\link[=fault_plot]{fault_plot()}}}
+\item{n}{integer. Gridzise. \code{128} by default.}
 
-\item{kamb}{logical. Whether to use the von Mises-Fisher kernel density estimation (\code{FALSE}) or Kamb's method (\code{TRUE}, the default).}
+\item{weights}{(optional) numeric vector of length of \code{nrow(x)}.
+The relative weight to be applied to each input measurement. The array
+will be normalized to sum to 1, so absolute value of the \code{weights} do not
+affect the result. Defaults to \code{NULL}}
+
+\item{...}{arguments passed to \code{\link[=density_calc]{density_calc()}}}
 
 \item{FUN}{density estimation function if \code{kamb=TRUE}; one of \code{\link[=exponential_kamb]{exponential_kamb()}} (the default),
 \link{kamb_count}, and \code{\link[=schmidt_count]{schmidt_count()}}.}
 
-\item{ngrid}{integer. Gridzise. 128 by default.}
-
 \item{sigma}{numeric. Radius for Kamb circle used for counting. 3 by default.}
-
-\item{vmf_hw}{numeric. Kernel bandwidth in degree.}
-
-\item{vmf_optimal}{character. Calculates an optimal kernel bandwidth
-using the cross-validation algorithm (\code{'cross'}) or the rule-of-thumb (\code{'rot'})
-suggested by Garcia-Portugues (2013). Ignored when \code{vmf_hw} is specified.}
-
-\item{weights}{(optional) numeric vector of length of \code{azi}.
-The relative weight to be applied to each input measurement. The array
-will be normalized to sum to 1, so absolute value of the \code{weights} do not
-affect the result. Defaults to \code{NULL}}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
 hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
@@ -57,5 +49,5 @@ Spherical density estimation
 \examples{
 set.seed(20250411)
 test <- rfb(100, mu = Line(120, 10), k = 5, A = diag(c(-1, 0, 1)))
-density(x = test, ngrid = 100, sigma = 3, weights = runif(100))
+density(x = test, n = 100, sigma = 3, weights = runif(100))
 }
