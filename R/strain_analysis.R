@@ -1,28 +1,47 @@
-#' \deqn{R_f/\phi}
-#'
-#' @param Rs numeric.
-#' @param Ri numeric. Initial or pre-deformation aspect ratio of an elliptical object
-#' @param theta numeric. Fluctuation angle of undeformed marker w.r.t. computed principal direction of strain (in degrees)
-#'
-#' @returns list. `phi`: the final angle (in degrees) between long axis and principal strain direction, `Rf`: final axial ratio
-#' @export
-#'
-#' @examples
-#' #' data(ramsay)
-#' Rphi(ramsay[, "R"], theta = ramsay[, "phi"])
-Rphi <- function(Rs, Ri = 1, theta) {
-  theta <- theta * pi / 180
-  a <- 2 * Rs * (Ri^2 - 1) * sin(2 * theta)
-  b <- (Ri^2 + 1) * (Rs - 1) + (Ri^2 - 1) * (Rs^2 + 1) * cos(2 * theta)
-  tan_2phi <- a / b
-  phi <- atan(tan_2phi) / 2
+# #' \deqn{R_f/\phi}
+# #'
+# #' @inheritParams mean_strain_ellipse
+# #' @param Rf numeric. Finite or post-deformation aspect ratio of an elliptical object
+# #' @param Ri numeric. Initial or pre-deformation aspect ratio of an elliptical object
+# #' @param theta numeric. Fluctuation angle of undeformed marker w.r.t. computed principal direction of strain (in degrees)
+# #'
+# #' @returns list. `phi`: the final angle (in degrees) between long axis and principal strain direction, `Rf`: final axial ratio
+# #' @export
+# #'
+# #' @examples
+# #' #' data(ramsay)
+# #' Rphi(ramsay[, "R"], phi = ramsay[, "phi"])
+# Rphi <- function(r, phi = NULL) {
+#   # if(is.null(theta)) theta = tectonicr::confidence_angle(phi) * 2
+#   # theta <- theta * pi / 180
+#   # a <- 2 * Rs * (Ri^2 - 1) * sin(2 * theta)
+#   # b <- (Ri^2 + 1) * (Rs - 1) + (Ri^2 - 1) * (Rs^2 + 1) * cos(2 * theta)
+#   # tan_2phi <- a / b
+#   # phi <- atan(tan_2phi) / 2
+#   #
+#   # c <- tan(phi)^2 * (1 + Ri^2 * tan(theta)^2) - Rs^2 * (tan(theta)^2 + Ri^2)
+#   # d <- Rs^2 * tan(phi)^2 * (tan(theta)^2 + Ri^2) - (1 + Ri^2 * tan(theta)^2)
+#   # Rf <- sqrt(c / d)
+# 
+#   Rf_min <- min(r)
+#   Rf_max <- max(r)
+# 
+#   Rs <- sqrt(Rf_max/Rf_min)
+#   Ri <- sqrt(Rf_max*Rf_min)
+# 
+#   phi_mean <- tectonicr::circular_mean(phi)
+# 
+#   phi_sd <- tectonicr::circular_sd(phi) * 2
+# 
+#   Rf_mean <- harmonic_mean(r)
+# 
+#   return(list("phi_mean" = phi_mean, "Rf_hmean" = Rf_mean, 'Rs' = Rs, "Ri" = Ri, "Flct" = phi_sd))
+# }
 
-  c <- tan(phi)^2 * (1 + Ri^2 * tan(theta)^2) - Rs^2 * (tan(theta)^2 + Ri^2)
-  d <- Rs^2 * tan(phi)^2 * (tan(theta)^2 + Ri^2) - (1 + Ri^2 * tan(theta)^2)
-  Rf <- sqrt(c / d)
-
-  return(list("phi" = phi * pi / 180, "Rf" = Rf))
-}
+# harmonic_mean <- function(x, na.rm = FALSE){
+#   n <- length(x)
+#   n/sum(1/x)
+# }
 
 
 #' Mean strain ellipse
@@ -109,8 +128,8 @@ mean_strain_ellipse0 <- function(r, phi) {
 
 #' Calculates densities for fabric and strain data
 #'
-#' Densities in hyperbaloidal projections of geological fabric and
-#' finite strain data density calculations done on the unit hyperbaloid
+#' Densities in hyperboloidal projections of geological fabric and
+#' finite strain data density calculations done on the unit hyperboloid
 #' (Vollmer, 2018). Options are given for equidistant (Elliott), equal-area,
 #' stereographic, orthographic, exponential, and radial projections, as polar
 #' azimuthal or cylindrical (cartesian, RfPhi-type) plots.
@@ -507,7 +526,7 @@ Rphi_plot <- function(r, phi,
 
     do.call(ellipse, mean.ellipse.params)
 
-    graphics::title(sub = bquote("R" == .(round(rphi_mean$R, 2)) ~ "|" ~ phi == .(round(rphi_mean$phi, 2)) * degree))
+    graphics::title(sub = bquote("R"["s"] == .(round(rphi_mean$R, 2)) ~ "|" ~ bar(varphi) == .(round(rphi_mean$phi, 2)) * degree))
   }
 }
 
@@ -542,7 +561,7 @@ Rphi_polar_plot <- function(r, phi,
                             mean.ellipse = TRUE,
                             mean.ellipse.params = list(col = "red", lwd = 2),
                             point.params = list(col = "grey", pch = 16, cex = .5),
-                            main = "Polar R/phi plot",
+                            main = "Polar Rf/phi plot",
                             ...) {
   proj <- match.arg(proj)
   cols <- NULL
@@ -594,7 +613,7 @@ Rphi_polar_plot <- function(r, phi,
     )
 
     do.call(graphics::points, mean.ellipse.params)
-    graphics::title(sub = bquote("R" == .(round(rphi_mean$R, 2)) ~ "|" ~ phi == .(round(rphi_mean$phi, 2)) * degree))
+    graphics::title(sub = bquote("R"["s"] == .(round(rphi_mean$R, 2)) ~ "|" ~ bar(varphi) == .(round(rphi_mean$phi, 2)) * degree))
   }
   graphics::lines(out$frame, lwd = 2)
 

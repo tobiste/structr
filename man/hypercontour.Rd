@@ -42,8 +42,8 @@ list with:
 }
 }
 \description{
-Densities in hyperbaloidal projections of geological fabric and
-finite strain data density calculations done on the unit hyperbaloid
+Densities in hyperboloidal projections of geological fabric and
+finite strain data density calculations done on the unit hyperboloid
 (Vollmer, 2018). Options are given for equidistant (Elliott), equal-area,
 stereographic, orthographic, exponential, and radial projections, as polar
 azimuthal or cylindrical (cartesian, RfPhi-type) plots.
