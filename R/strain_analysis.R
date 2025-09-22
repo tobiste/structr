@@ -22,19 +22,19 @@
 #   # c <- tan(phi)^2 * (1 + Ri^2 * tan(theta)^2) - Rs^2 * (tan(theta)^2 + Ri^2)
 #   # d <- Rs^2 * tan(phi)^2 * (tan(theta)^2 + Ri^2) - (1 + Ri^2 * tan(theta)^2)
 #   # Rf <- sqrt(c / d)
-# 
+#
 #   Rf_min <- min(r)
 #   Rf_max <- max(r)
-# 
+#
 #   Rs <- sqrt(Rf_max/Rf_min)
 #   Ri <- sqrt(Rf_max*Rf_min)
-# 
+#
 #   phi_mean <- tectonicr::circular_mean(phi)
-# 
+#
 #   phi_sd <- tectonicr::circular_sd(phi) * 2
-# 
+#
 #   Rf_mean <- harmonic_mean(r)
-# 
+#
 #   return(list("phi_mean" = phi_mean, "Rf_hmean" = Rf_mean, 'Rs' = Rs, "Ri" = Ri, "Flct" = phi_sd))
 # }
 
@@ -617,8 +617,6 @@ Rphi_polar_plot <- function(r, phi,
   }
   graphics::lines(out$frame, lwd = 2)
 
-
-
   proj.pretty <- c(
     "eqd" = "Equidistant",
     "eqa" = "Equal-area",
@@ -745,19 +743,16 @@ RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.972, grid
   B_val <- (R_val^2 - 1) / (R_val^2 + 1)
   # e_val = log(R_val) / 2
 
-
   crit_angleB <- crit_angle(B_val)
   infinite_rot_pos <- theta - angle_error > crit_angleB
   infinite_rot_neg <- theta + angle_error < crit_angleB
   crit <- abs(theta) - angle_error > crit_angleB
-
 
   bmax_r <- vorticity_boot(B_val[crit], R = boot, probs = probs)
   bmax_log <- log(bmax_r)
 
   bmax_geomean <- exp(mean(bmax_log, na.rm = TRUE))
   bmax_geosd <- exp(sd(bmax_log, na.rm = TRUE))
-
 
   R_test <- 10000
   t_score <- stats::qt(p = 0.05 / 2, df = R_test - 1, lower.tail = FALSE)
@@ -784,7 +779,6 @@ RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.972, grid
   graphics::axis(2, at = seq(-90, 90, 30), gap.axis = 0)
   graphics::axis(1, at = seq(0, max(hyp$crit$b), .1), gap.axis = 0)
 
-
   # add hyperbola net
   lapply(hyperbola, function(h) {
     graphics::lines(h$b, h$theta, col = "grey85")
@@ -798,10 +792,8 @@ RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.972, grid
 
   graphics::points(B_val, theta, ...)
 
-
   graphics::mtext(paste0("Rc = ", round(bmax_geomean, 2), " \u00B1 ", round(geo.margin_error, 2)))
   graphics::title(sub = paste0("(n: ", length(r), ")"))
-
 
   invisible(
     list(
