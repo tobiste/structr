@@ -55,7 +55,7 @@ drawn as density grid. Ignored when \code{contour=FALSE}}
 \item{at.x, at.y}{the points at which tick-marks and labels for the x and y
 axes are to be drawn.}
 
-\item{main}{character. The title}
+\item{main}{character. The main title (on top).}
 
 \item{...}{optional arguments passed to \code{\link[=hypercontour]{hypercontour()}}}
 }

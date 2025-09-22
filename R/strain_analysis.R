@@ -428,7 +428,7 @@ gridHyper <- function(rphi, rmax, kappa, nnodes, normalize = TRUE, proj = "eqd")
 #' @param point.params list of plotting arguments passed to [graphics::points()]
 #' @param at.x,at.y the points at which tick-marks and labels for the x and y
 #' axes are to be drawn.
-#' @param main character. The title
+#' @param main character. The main title (on top).
 #'
 #' @returns plot
 #'
@@ -710,6 +710,7 @@ vorticity_boot <- function(B, R = 100, probs = 0.975) {
 #' of critical hyperbole.
 #' @param boot integer. Number of bootstrap resamples
 #' @param grid numeric. Spacing of hyperboles.
+#' @inheritParams Rphi_plot
 #' @param ... plotting arguments passed to [graphics::points()]
 #'
 #' @returns a plot or a list of the calculated `B` (shape factor) and `theta` values,
@@ -735,7 +736,7 @@ vorticity_boot <- function(B, R = 100, probs = 0.975) {
 #' theta <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2]
 #'
 #' RGN_plot(ramsay[, "R"], theta, col = "darkred")
-RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.972, grid = 0.05, ...) {
+RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.972, grid = 0.05, main = "Rigid-Grain-Net", ...) {
   R_val <- r
   theta <- theta %% 180
   theta <- ifelse(theta > 90, theta - 180, theta)
@@ -770,7 +771,8 @@ RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.972, grid
     # xgap.axis = 0, ygap.axis = 0,
     ylim = c(-90, 90),
     xlab = "Shape factor, B*",
-    ylab = expression("Angle between clast long axis and foliation," ~ theta ~ "(" * degree * ")")
+    ylab = expression("Angle between clast long axis and foliation," ~ theta ~ "(" * degree * ")"),
+    main = main
   )
 
   # CI of critical B

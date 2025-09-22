@@ -50,7 +50,7 @@ drawn as density grid. Ignored when \code{contour=FALSE}}
 
 \item{point.params}{list of plotting arguments passed to \code{\link[graphics:points]{graphics::points()}}}
 
-\item{main}{character. The title}
+\item{main}{character. The main title (on top).}
 
 \item{...}{optional arguments passed to \code{\link[=hypercontour]{hypercontour()}}}
 }

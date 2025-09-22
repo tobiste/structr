@@ -11,6 +11,7 @@ RGN_plot(
   boot = 100L,
   probs = 0.972,
   grid = 0.05,
+  main = "Rigid-Grain-Net",
   ...
 )
 }
@@ -28,6 +29,8 @@ critical shape factor, i.e. the largest shape factor of measurements outside
 of critical hyperbole.}
 
 \item{grid}{numeric. Spacing of hyperboles.}
+
+\item{main}{character. The main title (on top).}
 
 \item{...}{plotting arguments passed to \code{\link[graphics:points]{graphics::points()}}}
 }
