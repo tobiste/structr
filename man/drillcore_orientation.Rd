@@ -17,10 +17,10 @@ drillcore_orientation(azi, inc, alpha, beta, gamma = NULL)
 
 \item{beta}{numeric vector. Beta angle in degrees}
 
-\item{gamma}{numeric. (optional). Gamma angle in degrees}
+\item{gamma}{numeric. (optional) Gamma angle in degrees}
 }
 \value{
-object of class \code{"plane"}. If gamma is specified, \code{"line"} object is
+object of class \code{"Plane"}. If gamma is specified, \code{"Line"} object is
 returned.
 }
 \description{
@@ -28,15 +28,29 @@ Calculates the orientation of a plane or line from internal core angles (
 alpha, beta, and gamma) of oriented drill cores
 }
 \examples{
+# examples from Roger Marjoribanks (2016); 
+# http://rogermarjoribanks.info/wp-content/uploads/2016/03/Plotting-alpha-to-locate-P.jpg
 azi <- 225
 inc <- -45
+
+# single alpha-beta measurement
 drillcore_orientation(azi, inc, 60, 320)
 drillcore_orientation(azi, inc, 45, 220)
 
 # multiple alpha-beta measurements
-plot(Line(azi, -inc), lab = "core-axis")
+my_alphas <- c(60, 45)
+my_betas <- c(320, 220)
+res <- drillcore_orientation(azi, inc, alpha = my_alphas, beta = my_betas)
 
-res <- drillcore_orientation(azi, inc, alpha = c(60, 45), beta = c(320, 220))
+
+# Plot core-axis, and planes in stereonet
+plot(Line(azi, -inc), lab = "core-axis")
 points(res, col = 2:3)
+lines(res, col = 2:3)
 text(res, labels = c("A", "B"), col = 2:3, pos = 4)
+
+# gamma measurements
+my_gammas <- c(0, -10)
+res2 <- drillcore_orientation(azi, inc, alpha = my_alphas, beta = my_betas, gamma = my_gammas)
+points(res2, col = 2:3)
 }
