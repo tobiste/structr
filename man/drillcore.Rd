@@ -30,7 +30,8 @@ looking in the direction of the borehole trajectory and can hence be between
 0° and 360°.}
 
 \item{gamma}{(optional) numeric. Linear feature on a plane measured in
-clockwise direction from ellipse long axis at DOWN hole end.}
+\strong{clockwise} direction from ellipse long axis at \strong{DOWN hole end} (positive angle).
+If measured clockwise on a plane facing UP hole, the angle is negative.}
 }
 \value{
 object of class \code{"Plane"}. If gamma is specified, \code{"Line"} object is

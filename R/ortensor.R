@@ -380,11 +380,13 @@ or_shape_params <- function(x) {
 #' mu <- Line(120, 50)
 #' x <- rvmf(100, mu = mu, k = 20)
 #' x_centered <- center(x)
+#'
+#' # plot results
 #' plot(x, col = "grey")
-#' # points(mu, col = "red")
 #' points(x_centered, col = "black")
-#' points(Line(c(0, 90, 180), c(0, 0, 90)), col = 2:4)
-#' text(Line(c(0, 90, 180), c(0, 0, 90)), col = 2:4, labels = c("E3", "E2", "E1"), pos = 3)
+# #' points(Line(c(0, 90, 180), c(0, 0, 90)), col = 2:4, pch = 16, cex = 1.5)
+# #' text(Line(c(0, 90, 180), c(0, 0, 90)), col = 2:4, labels = c("E3", "E2", "E1"), pos = 3)
+#' legend("topright", legend = c("original", "centered"), col = c("grey", "black"), pch = 16)
 center <- function(x, max_vertical = FALSE) {
   x_cart <- Vec3(x)
   x_eigen <- eigen.spherical(x_cart)

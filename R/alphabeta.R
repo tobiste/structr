@@ -20,7 +20,8 @@
 #' looking in the direction of the borehole trajectory and can hence be between
 #' 0° and 360°.
 #' @param gamma (optional) numeric. Linear feature on a plane measured in
-#' clockwise direction from ellipse long axis at DOWN hole end.
+#' **clockwise** direction from ellipse long axis at **DOWN hole end** (positive angle). 
+#' If measured clockwise on a plane facing UP hole, the angle is negative.
 #'
 #' @name drillcore
 #' @encoding UTF-8
