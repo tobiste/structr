@@ -13,7 +13,7 @@
 #' \describe{
 #' \item{`vector_length`}{the length of a vector}
 #' \item{`crossprod`}{the cross-product of two vectors, i.e. the vector perpendicular to the 2 vectors. If `y = NULL` is taken to be the sam,e vector as `x`.}
-#' \item{`%*%`}{the dot product of two vectors}
+#' \item{`dotprod`}{the dot product of two vectors}
 #' \item{`rotate`}{rotation of a vector about a specified vector by a specified angle}
 #' \item{`angle`}{angle between two vectors}
 #' \item{`project`}{projection of one vector onto the other (changes the vector
@@ -32,7 +32,7 @@
 #'
 #' vector_length(vec1) # lenght of a vector
 #' crossprod(vec1, vec2) # cross product
-#' vec1 %*% vec2 # dot product
+#' dotprod(vec1, vec2) # dot product
 #' rotate(vec1, vec2, pi / 2) # rotation
 #' angle(vec1, vec2) # angle between vectors
 #' project(vec1, vec2) # projection of a vector
@@ -109,15 +109,23 @@ vdot <- function(x, y) {
   unname(res)
 }
 
+# #' @export
+# #' @rdname vecmath
+# `%*%.spherical` <- function(x, y) {
+#   dotprod(e1, e2)
+# }
+
 #' @export
 #' @rdname vecmath
-`%*%.spherical` <- function(x, y) {
+dotprod <- function(x, y){
   e1 <- Vec3(x) |> unclass()
   e2 <- Vec3(y) |> unclass()
-
+  
   vdot(e1, e2)
 }
 
+# `%*%` <- function(x, y) UseMethod("`%*%`")
+# `%*%.default` <- function(x, y) x %*% y
 
 #' @keywords internal
 vrotate <- function(x, rotaxis, rotangle) {
@@ -337,8 +345,20 @@ v_antipode <- function(x) {
 #' segment in the plane; a great circle is a spherical geodesic.
 #'
 #' @export
+#' 
+#' @examples 
+#' t <- seq(0, 1, .05)
+#' res <- sapply(t, function(i){
+#' vslerp(Line(120, 55), Line(0, 90), t = i) |> unclass()
+#' }) |> t() |> rbind() |> as.Line()
+#' 
+#' plot(res, col = assign_col(t))
+#' points(rbind(Line(120, 55),  Line(10, 80)))
 vslerp <- function(x, y, t, na.rm = TRUE) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  stopifnot(
+    t>=0 | t<=1
+  )
   
   if (isTRUE(na.rm)) {
     x <- x[!rowSums(!is.finite(x)), ]

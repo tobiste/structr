@@ -129,7 +129,7 @@ angle(line1, line2)
 The **dot product** (or scalar product) of two  vectors
 
 ```{r math_dot}
-line1 %*% line2
+dotprod(line1, line2)
 ```
 
 Intuitively, the dot product tells us how much two vectors point in the same direction.

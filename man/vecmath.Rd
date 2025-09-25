@@ -5,7 +5,7 @@
 \alias{vector_length}
 \alias{crossprod}
 \alias{crossprod.spherical}
-\alias{\%*\%.spherical}
+\alias{dotprod}
 \alias{rotate}
 \alias{rotate.spherical}
 \alias{angle}
@@ -23,7 +23,7 @@ crossprod(x, y, ...)
 
 \method{crossprod}{spherical}(x, y = NULL, ...)
 
-`\%*\%.spherical`(x, y)
+dotprod(x, y)
 
 rotate(x, rotaxis, rotangle)
 
@@ -68,7 +68,7 @@ Vector math operations
 \describe{
 \item{\code{vector_length}}{the length of a vector}
 \item{\code{crossprod}}{the cross-product of two vectors, i.e. the vector perpendicular to the 2 vectors. If \code{y = NULL} is taken to be the sam,e vector as \code{x}.}
-\item{\code{\%*\%}}{the dot product of two vectors}
+\item{\code{dotprod}}{the dot product of two vectors}
 \item{\code{rotate}}{rotation of a vector about a specified vector by a specified angle}
 \item{\code{angle}}{angle between two vectors}
 \item{\code{project}}{projection of one vector onto the other (changes the vector
@@ -82,7 +82,7 @@ vec2 <- Vec3(0, 0, 1)
 
 vector_length(vec1) # lenght of a vector
 crossprod(vec1, vec2) # cross product
-vec1 \%*\% vec2 # dot product
+dotprod(vec1, vec2) # dot product
 rotate(vec1, vec2, pi / 2) # rotation
 angle(vec1, vec2) # angle between vectors
 project(vec1, vec2) # projection of a vector

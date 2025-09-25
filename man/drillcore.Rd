@@ -28,7 +28,7 @@ tangent of the fracture trace. The angle is measured clockwise
 looking in the direction of the borehole trajectory and can hence be between
 0° and 360°.}
 
-\item{gamma}{(optional) numeric. Linear feature on a plane. Measured in
+\item{gamma}{(optional) numeric. Linear feature on a plane measured in
 clockwise direction from ellipse long axis at DOWN hole end.}
 }
 \value{
@@ -43,7 +43,7 @@ Calculates the orientation of a plane or line from internal core angles
 # examples from Roger Marjoribanks (2016);
 # http://rogermarjoribanks.info/wp-content/uploads/2016/03/Plotting-alpha-to-locate-P.jpg
 azi <- 225
-inc <- -45
+inc <- 45
 
 # single alpha-beta measurement
 drillcore_transformation(azi, inc, 60, 320)

@@ -75,7 +75,7 @@ or the **Hsü diagram** using the natural octahedral unit strain $\bar{\epsilon}
 ```{r hsu}
 #| fig.alt: >
 #|   Hsu diagram
-hsu_plot(R_XY, R_YZ, log = TRUE, col = '#B63679', pch = 16)
+hsu_plot(R_XY, R_YZ, col = '#B63679', pch = 16)
 ```
 
 ## Vorticity analysis

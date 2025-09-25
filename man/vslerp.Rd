@@ -23,3 +23,12 @@ segment in the plane; a great circle is a spherical geodesic.
 \note{
 For non-unit vectors the interpolation is not uniform.
 }
+\examples{
+t <- seq(0, 1, .05)
+res <- sapply(t, function(i){
+vslerp(Line(120, 55), Line(0, 90), t = i) |> unclass()
+}) |> t() |> rbind() |> as.Line()
+
+plot(res, col = assign_col(t))
+points(rbind(Line(120, 55),  Line(10, 80)))
+}

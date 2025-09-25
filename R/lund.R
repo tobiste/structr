@@ -43,9 +43,9 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 0.005) 
 
   # Check orthogonality
   ortho.tol <- deg2rad(ortho.tol)
-  if ((S1 %*% S2) > ortho.tol) stop("S1 and S2 are not orthogonal.")
-  if ((S1 %*% S3) > ortho.tol) stop("S1 and S3 are not orthogonal.")
-  if ((S2 %*% S3) > ortho.tol) stop("S2 and S3 are not orthogonal.")
+  if (dotprod(S1, S2) > ortho.tol) stop("S1 and S2 are not orthogonal.")
+  if (dotprod(S1, S3) > ortho.tol) stop("S1 and S3 are not orthogonal.")
+  if (dotprod(S2, S3) > ortho.tol) stop("S2 and S3 are not orthogonal.")
 
   # Check R validity
   if (length(R) == 1 & n > 1) {
