@@ -13,25 +13,25 @@
 for structural geology. You can
 
 - analyze and visualize orientation data of structural geology
-  (including, stereographic projections, contouring, fabric plots, and
-  statistics),
+  (including, **stereographic projections**, contouring, fabric plots,
+  and statistics),
 
 - do a cluster analysis of orientation data,
 
 - analyze stress (including visualization of the magnitudes of stress in
-  the **Mohr circle** and extracting the maximum horizontal stress of a
-  3D stress tensor),
+  the **Mohr circle** and extracting the **maximum horizontal stress**
+  of a 3D stress tensor),
 
-- reconstruct the orientation of structures in oriented drill cores
-  using the alpha, beta, and gamma angles,
+- reconstruct the orientation of structures in **oriented drillcores**
+  by transforming the $\alpha$, $\beta$, and $\gamma$ angles,
 
 - calculate fault displacement components,
 
 - reconstruct orientation and magnitudes using fault-slip inversion
   (**Paleostress analysis**),
 
-- contour geologic fabric and finite strain data (**R**<sub>f</sub>/ϕ)
-  on the unit hyperboloid,
+- strain analysis (**R**<sub>f</sub>/ϕ), contouring on the unit
+  hyperboloid, **Fry plots** and **Hsu plots**
 
 - perform vorticity analysis using the **Rigid Grain Net** method, and
 

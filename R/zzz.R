@@ -1,3 +1,7 @@
+if (requireNamespace("rgl", quietly = TRUE)) {
+  options(rgl.useNULL = TRUE)
+}
+
 # # nocov start
 # #' @importFrom vctrs s3_register
 # register_all_s3_methods <- function() {
