@@ -85,7 +85,7 @@ degrees, measured clockwise from North), and <code>inc</code> is the
 inclination of drill core axis (in degrees).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">azi</span> <span class="op">&lt;-</span> <span class="fl">225</span></span>
-<span><span class="va">inc</span> <span class="op">&lt;-</span> <span class="op">-</span><span class="fl">45</span></span></code></pre></div>
+<span><span class="va">inc</span> <span class="op">&lt;-</span> <span class="fl">45</span></span></code></pre></div>
 <blockquote>
 <p>Note that egative values for the inclination indicate downward
 direction</p>
@@ -96,7 +96,7 @@ alpha and beta, respectively, measured in degrees.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/drillcore.html">drillcore_transformation</a></span><span class="op">(</span><span class="va">azi</span>, <span class="va">inc</span>, alpha <span class="op">=</span> <span class="fl">60</span>, beta <span class="op">=</span> <span class="fl">320</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Plane object (n = 1):</span></span>
 <span><span class="co">#&gt; dip_direction           dip </span></span>
-<span><span class="co">#&gt;      1.740218    152.032047</span></span></code></pre></div>
+<span><span class="co">#&gt;      25.00392      70.02959</span></span></code></pre></div>
 <p>The function returns a spherical objects. Since only alpha and beta
 angles are specified, the output is a <code>"plane"</code> object.</p>
 <p>For several alpha and beta angles:</p>
