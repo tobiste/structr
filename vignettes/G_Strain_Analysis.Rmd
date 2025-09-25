@@ -55,9 +55,32 @@ or in an **Equidistant polar plot**:
 Rphi_polar_plot(ramsay[, 1], ramsay[, 2], proj = "eqd")
 ```
 
+## 3D Strain
+
+Three-dimensional strain data are expressed by the ratio of the magnitudes of the 3 principal strain axes of the strain ellipsoid, $X \geq Y \geq Z$. 
+They can be represented in the **Flinn diagram** (linear of logarithmic axes)...
+
+```{r flinn}
+#| fig.alt: >
+#|   Flinn diagram
+data("holst")
+R_XY <- holst[, 'R_XY']
+R_YZ <- holst[, 'R_YZ']
+
+flinn_plot(R_XY, R_YZ, log = TRUE, col = '#B63679', pch = 16)
+```
+
+or the **Hsü diagram** using the natural octahedral unit strain $\bar{\epsilon}_s$ and the Lode parameter $\nu$ 
+
+```{r hsu}
+#| fig.alt: >
+#|   Hsu diagram
+hsu_plot(R_XY, R_YZ, log = TRUE, col = '#B63679', pch = 16)
+```
+
 ## Vorticity analysis
 
-The rigid grain net after (Jessup et al. 2007) plots the distribution the 
+The **rigid grain net** after (Jessup et al. 2007) plots the distribution the 
 strain ratio (`R`) of orientation (`phi`) of 
 porphyroclast over the theoretical distribution of tailless clasts. The plot estimates 
 the critical threshold `Rc` marking the transition between the stable-sink 

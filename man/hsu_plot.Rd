@@ -24,5 +24,5 @@ plot
 \examples{
 R_XY <- holst[, 'R_XY']
 R_YZ <- holst[, 'R_YZ']
-hsu_plot(R_XY, R_YZ)
+hsu_plot(R_XY, R_YZ, col = '#B63679', pch = 16)
 }

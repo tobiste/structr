@@ -822,7 +822,7 @@ RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.972, grid
 #' @examples
 #' R_XY <- holst[, 'R_XY']
 #' R_YZ <- holst[, 'R_YZ']
-#' hsu_plot(R_XY, R_YZ)
+#' hsu_plot(R_XY, R_YZ, col = '#B63679', pch = 16)
 hsu_plot <- function(R_XY, R_YZ, main = "Hsü diagram", es.max = NULL, ...) {
   R_XZ <-  R_XY *  R_YZ
   R <- es <- 1/sqrt(3) *sqrt(log(R_XY)^2 +log(R_YZ)^2 + log(1/R_XZ)^2) # Nadai, 1963
@@ -913,8 +913,8 @@ hsu_plot <- function(R_XY, R_YZ, main = "Hsü diagram", es.max = NULL, ...) {
 #' @examples
 #' R_XY <- holst[, 'R_XY']
 #' R_YZ <- holst[, 'R_YZ']
-#' flinn_plot(R_XY, R_YZ, log = FALSE)
-#' flinn_plot(R_XY, R_YZ, log = TRUE)
+#' flinn_plot(R_XY, R_YZ, log = FALSE, col = '#B63679', pch = 16)
+#' flinn_plot(R_XY, R_YZ, log = TRUE, col = '#B63679', pch = 16)
 flinn_plot <- function(R_XY, R_YZ, main = "Flinn diagram", R.max = NULL, log = FALSE, ...) {
   if(log){
     xlab <- "ln(Y/Z)"
