@@ -23,7 +23,7 @@ crossprod(x, y, ...)
 
 \method{crossprod}{spherical}(x, y = NULL, ...)
 
-\method{\%*\%}{spherical}(x, y)
+`\%*\%.spherical`(x, y)
 
 rotate(x, rotaxis, rotangle)
 

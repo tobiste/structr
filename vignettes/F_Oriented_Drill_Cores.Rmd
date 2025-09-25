@@ -36,13 +36,13 @@ inc <- -45
 `alpha` and `beta` are the internal core angles alpha and beta, respectively, measured in degrees.
 
 ```{r alphabeta}
-drillcore_orientation(azi, inc, alpha = 60, beta = 320)
+drillcore_transformation(azi, inc, alpha = 60, beta = 320)
 ```
 The function returns a spherical objects. Since only alpha and beta angles are specified, the output is a `"plane"` object.
 
 For several alpha and beta angles:
 ```{r alphabeta2}
-planes_AB <- drillcore_orientation(azi, inc, alpha = c(60, 45), beta = c(320, 220))
+planes_AB <- drillcore_transformation(azi, inc, alpha = c(60, 45), beta = c(320, 220))
 ```
 
 The orientations can be plotted in a equal area (lower hemisphere) projection:
