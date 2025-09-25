@@ -139,60 +139,35 @@ drillcore_transformation_single <- function(azi, inc, alpha, beta, gamma = NULL)
     sind(alpha)
   )
   
-  if (!is.null(gamma)){
-    stopifnot(length(gamma) == 1)
-    
-    l_BH <- n_BH |>
-      t() |>
-      Vec3() |>
-      Line() |>
-      Plane() |> 
-      Vec3() |>
-      unclass() |>
-      c()
-  }
+  
   
 
-  rot_Y <- matrix(
-    c(cosd(90 - inc), 0, -sind(90 - inc), 0, 1, 0, sind(90 - inc), 0, cosd(90 - inc)),
-    3
-  )
-
-  rot_Z <- matrix(
-    c(cosd(90 - azi), sind(90 - azi), 0, -sind(90 - azi), cosd(90 - azi), 0, 0, 0, 1),
-    3
-  )
-
-
-  n_G <- crossprod(rot_Z, crossprod(rot_Y, n_BH)) |> t()
-
-  temp <- n_G[1, 1] / sqrt(n_G[1, 1]^2 + n_G[1, 2]^2)
-
-  trend <-
-    if (n_G[1, 2] <= 0) {
-      90 + acosd(temp)
-    } else {
-      90 - acosd(temp)
-    }
-
-  plunge <- asind(-n_G[1, 3])
-  Plane_normal <- Line(trend+90, plunge)
+  res <- .drillcore_helper(n_BH, azi, inc)
+  
+  Plane_normal <- Line(res['trend']+90, res['plunge'])
   plane <- Plane(Plane_normal)
 
   if (is.null(gamma)) {
     return(plane)
   } else {
-    # plane_normal <- Line(trend, plunge) |> Vec3()
-    #
-    # # vector in direction of plane dip and and dir
-    # plane_vec <- Vec3(plane)
-    #
-    # # gamma vector
-    # gamma_vec <- rotate(plane_vec, plane_normal, deg2rad(gamma))
-    # return(Line(gamma_vec))
-
-    # Fault_from_rake(plane, rake = 90 - gamma) |> Fault_slip()
-    rotate(l_g, plane, gamma)
+    if (!is.null(gamma)){
+      stopifnot(length(gamma) == 1)
+      
+      l_BH <- n_BH |>
+        t() |>
+        Vec3() |>
+        Line() |>
+        Plane() |> 
+        Vec3() |>
+        unclass() |>
+        c()
+      
+      l_G <- .drillcore_helper(l_BH, azi, inc)
+    }
+    
+    line <- Line(l_G['trend']+90+180, 90-l_G['plunge'])
+    
+    rotate(line, plane, gamma)
   }
 }
 
@@ -210,4 +185,31 @@ drillcore_transformation <- function(azi, inc, alpha, beta, gamma = NULL) {
   }) |> t()
 
   if (is.null(gamma)) as.Plane(res) else as.Line(res)
+}
+
+.drillcore_helper <- function(n_BH, azi, inc){
+  rot_Y <- matrix(
+    c(cosd(90 - inc), 0, -sind(90 - inc), 0, 1, 0, sind(90 - inc), 0, cosd(90 - inc)),
+    3
+  )
+  
+  rot_Z <- matrix(
+    c(cosd(90 - azi), sind(90 - azi), 0, -sind(90 - azi), cosd(90 - azi), 0, 0, 0, 1),
+    3
+  )
+  
+  n_G <- crossprod(rot_Z, crossprod(rot_Y, n_BH)) |> t()
+  
+  temp <- n_G[1, 1] / sqrt(n_G[1, 1]^2 + n_G[1, 2]^2)
+  
+  trend <-
+    if (n_G[1, 2] <= 0) {
+      90 + acosd(temp)
+    } else {
+      90 - acosd(temp)
+    }
+  
+  plunge <- asind(-n_G[1, 3])
+  
+  c(trend=trend, plunge=plunge)
 }
