@@ -103,6 +103,8 @@ crossprod.spherical <- function(x, y = NULL, ...) {
   }
 }
 
+`%x%.spherical` <- function(x, y) crossprod.spherical(x, y)
+
 vdot <- function(x, y) {
   # equivalent to: x %*% t(y)
   res <- x[, 1] * y[, 1] + x[, 2] * y[, 2] + x[, 3] * y[, 3]
@@ -111,9 +113,9 @@ vdot <- function(x, y) {
 
 # #' @export
 # #' @rdname vecmath
-# `%*%.spherical` <- function(x, y) {
-#   dotprod(e1, e2)
-# }
+`%*%.spherical` <- function(x, y) {
+  dotprod(e1, e2)
+}
 
 #' @export
 #' @rdname vecmath
