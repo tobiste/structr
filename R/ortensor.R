@@ -389,7 +389,12 @@ center <- function(x, max_vertical = FALSE) {
   x_cart <- Vec3(x)
   x_eigen <- eigen.spherical(x_cart)
 
-  x_trans <- t(apply(x_cart, 1, vtransform, A = x_eigen$vectors, norm = TRUE)) |>
+  # x_trans <- t(apply(x_cart, 1, vtransform, A = x_eigen$vectors, norm = TRUE)) |>
+  #   Vec3()
+  x_trans <- sapply(seq_len(nrow(x_cart)), function(i){
+    vtransform(x_cart[i, ], A = x_eigen$vectors, norm = TRUE)
+  }) |> 
+    t() |> 
     Vec3()
 
   if (!max_vertical) x_trans <- rotate(x_trans, Vec3(0, -1, 0), pi / 2)

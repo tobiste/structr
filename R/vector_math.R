@@ -114,7 +114,7 @@ vdot <- function(x, y) {
 # #' @export
 # #' @rdname vecmath
 `%*%.spherical` <- function(x, y) {
-  dotprod(e1, e2)
+  dotprod(x, y)
 }
 
 #' @export

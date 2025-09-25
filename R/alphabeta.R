@@ -9,9 +9,9 @@
 #' @param inc numeric. Acute angle between the horizontal plane and the
 #' trajectory of the borehole. The value of the inclination can be between
 #' −90° and 90°, where **`inc`>0° corresponds to a borehole pointing downwards**.
-#' @param alpha numeric. Acute dihedral angle between the fracture plane and
+#' @param alpha numeric. Acute dihedral angle between the geological plane and
 #' the trajectory of the borehole. The angle is restricted to be between 0° and
-#' 90°, where 90° corresponds to a fracture perpendicular to the borehole, i.e.
+#' 90°, where 90° corresponds to a plane perpendicular to the borehole, i.e.
 #' the trajectory of the borehole is parallel to the normal vector of the plane.
 #' @param beta numeric. Angle from a reference line (line of the top of the
 #' roof of the borehole profile) to the lower inflexion point of the fracture
@@ -23,6 +23,7 @@
 #' clockwise direction from ellipse long axis at DOWN hole end.
 #'
 #' @name drillcore
+#' @encoding UTF-8
 #'
 #' @references Stigsson, M., & Munier, R. (2013). Orientation uncertainty goes
 #' bananas: An algorithm to visualise the uncertainty sample space on stereonets
@@ -131,13 +132,28 @@ drillcore_transformation_single <- function(azi, inc, alpha, beta, gamma = NULL)
     )
   )
 
-  if (!is.null(gamma)) stopifnot(length(gamma) == 1)
 
   n_BH <- c(
     cosd(beta) * cosd(alpha),
     sind(beta) * cosd(alpha),
     sind(alpha)
   )
+  
+  if (!is.null(gamma)){
+    stopifnot(length(gamma) == 1)
+    
+    # n_BH <- n_BH |>
+    #   t() |>
+    #   Vec3() |>
+    #   Line() |>
+    #   as.Plane() |> 
+    #   Fault_from_rake(rake = 90+gamma) |>
+    #   Fault_slip() |>
+    #   Vec3() |>
+    #   unclass() |>
+    #   c()
+  }
+  
 
   rot_Y <- matrix(
     c(cosd(90 - inc), 0, -sind(90 - inc), 0, 1, 0, sind(90 - inc), 0, cosd(90 - inc)),
@@ -178,6 +194,7 @@ drillcore_transformation_single <- function(azi, inc, alpha, beta, gamma = NULL)
     # return(Line(gamma_vec))
 
     Fault_from_rake(plane, rake = 90 - gamma) |> Fault_slip()
+    # Line(trend, plunge)
   }
 }
 

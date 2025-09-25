@@ -13,9 +13,9 @@ flinn_plot(R_XY, R_YZ, main = "Flinn diagram", R.max = NULL, log = FALSE, ...)
 
 \item{main}{character. The main title (on top).}
 
-\item{R.max}{numeric}
+\item{R.max}{numeric. Maximum aspect ratio for scaling.}
 
-\item{log}{logical}
+\item{log}{logical. Whether the axes should be in logarithmic scale.}
 
 \item{...}{plotting arguments passed to \code{\link[graphics:points]{graphics::points()}}}
 }

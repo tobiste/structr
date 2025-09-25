@@ -591,22 +591,21 @@ v_dist <- function(x, ...) {
 #' @inheritParams stats
 #' @param ... optional parameters passed to [stats::as.dist()]
 #' @returns distance matrix
-#' @name dist-sphere
+# #' @name dist-sphere
+#' @exportS3Method stats::dist
 #'
 #' @examples
 #' set.seed(20250411)
 #' dist(rvmf(100, mu = Line(90, 0), k = 20))
-NULL
-
-#' @exportS3Method stats::dist
 dist.spherical <- function(x, ...) v_dist(x, ...)
 
-#' @rdname dist-sphere
-#' @export
-dist <- function(x, ...) UseMethod("dist")
+# #' @rdname dist-sphere
+# #' @export
+#dist <- function(x, ...) UseMethod("dist")
 
-#' @export
-dist.default <- function(x, ...) stats::dist(x, ...)
+# #' @rdname dist-sphere
+# #' @export
+#dist.default <- function(x, ...) stats::dist(x, ...)
 
 
 

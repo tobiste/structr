@@ -71,8 +71,8 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
   }
 
   # Separate linear and planar data.tables
-  data_lines <- data[!is.na(Linear.Orientation.Trend), .SD, .SDcols = patterns("^Linear")]
-  data_planes <- data[!is.na(Planar.Orientation.Dipdirection), .SD, .SDcols = patterns("^Planar")]
+  data_lines <- data[!is.na(Linear.Orientation.Trend), .SD, .SDcols = data.table::patterns("^Linear")]
+  data_planes <- data[!is.na(Planar.Orientation.Dipdirection), .SD, .SDcols = data.table::patterns("^Planar")]
 
   # Data without planar or linear cols
   cols_to_exclude <- grep("^(Planar|Linear)", names(data), value = TRUE)

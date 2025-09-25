@@ -418,7 +418,7 @@ gridHyper <- function(rphi, rmax, kappa, nnodes, normalize = TRUE, proj = "eqd")
 #' @param contour logical. Whether a grid of densities should be drawn in the background.
 #' @param image logical. Whether a raster image or filled contour lines should be
 #' drawn as density grid. Ignored when `contour=FALSE`
-#' @param n integer. Grid resolution or number of fille dcontours
+#' @param n integer. Grid resolution or number of filled contours
 #' @param contour.lines logical. Whether contour lines should be added.
 #' @param contour.lines.params list of plotting arguments passed to [graphics::contour()]
 #' @param contour.col function to produce color palette used for contouring
@@ -815,7 +815,9 @@ RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.972, grid
 #' @param R_YZ ratio of intermediate strain and minimum strain
 #' @inheritParams Rphi_plot
 #' @param ... plotting arguments passed to [graphics::points()]
+#' @param es.max maximum strain for scaling.
 #'
+#' @encoding UTF-8
 #' @returns plot
 #' @export
 #'
@@ -823,7 +825,7 @@ RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.972, grid
 #' R_XY <- holst[, 'R_XY']
 #' R_YZ <- holst[, 'R_YZ']
 #' hsu_plot(R_XY, R_YZ, col = '#B63679', pch = 16)
-hsu_plot <- function(R_XY, R_YZ, main = "Hsü diagram", es.max = NULL, ...) {
+hsu_plot <- function(R_XY, R_YZ, main = "Hs\u00fc diagram", es.max = NULL, ...) {
   R_XZ <-  R_XY *  R_YZ
   R <- es <- 1/sqrt(3) *sqrt(log(R_XY)^2 +log(R_YZ)^2 + log(1/R_XZ)^2) # Nadai, 1963
   
@@ -904,8 +906,8 @@ hsu_plot <- function(R_XY, R_YZ, main = "Hsü diagram", es.max = NULL, ...) {
 #' Flinn diagram
 #'
 #' @inheritParams hsu_plot
-#' @param R.max numeric
-#' @param log logical
+#' @param R.max numeric. Maximum aspect ratio for scaling.
+#' @param log logical. Whether the axes should be in logarithmic scale.
 #'
 #' @returns plot
 #' @export

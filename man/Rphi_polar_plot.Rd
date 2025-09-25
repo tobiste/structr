@@ -34,7 +34,7 @@ Rphi_polar_plot(
 \item{image}{logical. Whether a raster image or filled contour lines should be
 drawn as density grid. Ignored when \code{contour=FALSE}}
 
-\item{n}{integer. Grid resolution or number of fille dcontours}
+\item{n}{integer. Grid resolution or number of filled contours}
 
 \item{contour.lines}{logical. Whether contour lines should be added.}
 
