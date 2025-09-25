@@ -752,8 +752,8 @@ RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.972, grid
   bmax_r <- vorticity_boot(B_val[crit], R = boot, probs = probs)
   bmax_log <- log(bmax_r)
   
-  bmax_geomean <- exp(mean(bmax_log, na.rm = TRUE))
-  bmax_geosd <- exp(sd(bmax_log, na.rm = TRUE))
+  bmax_geomean <- exp(base::mean(bmax_log, na.rm = TRUE))
+  bmax_geosd <- exp(stats::sd(bmax_log, na.rm = TRUE))
   
   R_test <- 10000
   t_score <- stats::qt(p = 0.05 / 2, df = R_test - 1, lower.tail = FALSE)

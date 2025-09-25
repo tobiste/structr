@@ -315,7 +315,6 @@ ignore_unused_imports <- function() {
 #' Electronic Journal of Statistics, 7, 1655-1685.
 #'
 #' @import ggplot2
-#' @importFrom Directional vmf.kerncontour euclid vmfkde.tune
 #' @name ggstereocontour
 #' @examples
 #' if (require("mapproj")) {

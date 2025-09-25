@@ -623,8 +623,8 @@ dist.spherical <- function(x, ...) v_dist(x, ...)
 #' set.seed(20250411)
 #' summary(rvmf(100, mu = Line(90, 20), k = 20))
 summary.spherical <- function(object, ...) {
-  m <- mean(object, ...)
-  v <- var(object, ...)
+  m <- mean.spherical(object, ...)
+  v <- var.spherical(object, ...)
   d <- delta(object, ...)
   ca <- confidence_angle(object, ...)
   c(m, v, d, ca) |>
