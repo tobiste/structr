@@ -321,3 +321,41 @@ transform_linear <- function(x, A, norm = FALSE) {
 v_antipode <- function(x) {
   -x
 }
+
+
+#' Spherical Linear Interpolation (Slerp)
+#'
+#' Returns the spherical linear interpolation of points between two vectors
+#'
+#' @inheritParams fisher_ftest
+#' @param t numeric. interpolation factor (`t = [0, 1]`).
+#'
+#' @note For non-unit vectors the interpolation is not uniform.
+#'
+#' @details
+#' A Slerp path is the spherical geometry equivalent of a path along a line
+#' segment in the plane; a great circle is a spherical geodesic.
+#'
+#' @export
+vslerp <- function(x, y, t, na.rm = TRUE) {
+  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  
+  if (isTRUE(na.rm)) {
+    x <- x[!rowSums(!is.finite(x)), ]
+    y <- y[!rowSums(!is.finite(y)), ]
+  }
+  
+  vx <- Vec3(x)
+  vy <- Vec3(y)
+  
+  theta <- angle(x, y)
+  slerp <- (x * sin((1 - t) * theta) + y * sin(t * theta)) / sin(theta)
+  
+  if (is.Line(x)) {
+    Line(slerp)
+  } else if (is.Plane(x)) {
+    Plane(slerp)
+  } else {
+    slerp
+  }
+}

@@ -28,6 +28,14 @@ vresultant <- function(x, w = NULL, mean = FALSE, na.rm = TRUE) {
 }
 
 #' @keywords internal
+mrl <- function(x, w = NULL, na.rm = TRUE, length = TRUE){
+  if (isTRUE(na.rm)) x <- x[!rowSums(!is.finite(x)), ]
+  x_norm <- vnorm(x) 
+  Rbar <- vresultant(x_norm, w = w, mean = TRUE, na.rm = FALSE) 
+  if(length) vlength(Rbar) else Rbar
+}
+
+#' @keywords internal
 v_mean <- function(x, w = NULL, na.rm = TRUE) {
   if (isTRUE(na.rm)) x <- x[!rowSums(!is.finite(x)), ]
 
@@ -45,17 +53,13 @@ v_mean <- function(x, w = NULL, na.rm = TRUE) {
 
 #' @keywords internal
 v_var <- function(x, w = NULL, na.rm = TRUE) {
-  if (isTRUE(na.rm)) x <- x[!rowSums(!is.finite(x)), ]
-
-  Rbar <- vresultant(vnorm(x), w, mean = TRUE, na.rm = FALSE) |>
-    vlength()
+  Rbar <- mrl(x, w, na.rm = na.rm)
   1 - Rbar
 }
 
 #' @keywords internal
 v_sd <- function(x, w = NULL, na.rm = TRUE) {
-  Rbar <- vresultant(x, w, mean = TRUE, na.rm = na.rm) |>
-    vlength()
+  Rbar <- mrl(x, w, na.rm = na.rm)
 
   d <- sqrt(log(1 / Rbar^2))
   return(d)
@@ -63,7 +67,7 @@ v_sd <- function(x, w = NULL, na.rm = TRUE) {
 
 #' @keywords internal
 v_delta <- function(x, w = NULL, na.rm = TRUE) {
-  Rbar <- vresultant(x, w, mean = TRUE, na.rm = na.rm) |> vlength()
+  Rbar <- mrl(x, w, na.rm = na.rm)
   acos(Rbar)
 }
 
@@ -74,8 +78,8 @@ v_rdegree <- function(x, w = NULL, na.rm = FALSE) {
   w <- if (is.null(w)) rep(1, times = nrow(x)) else as.numeric(w)
 
   N <- sum(w)
-  Rbar <- vresultant(vnorm(x), w, mean = FALSE, na.rm = FALSE) |> vlength()
-
+  Rbar <- mrl(x, w, na.rm = na.rm)
+  
   (2 * Rbar - N) / N
 }
 
@@ -299,7 +303,17 @@ estimate_k <- function(x, w = NULL, na.rm = FALSE) {
   p <- 3
 
   (Rbar * (p - Rbar^2)) / (1 - Rbar^2)
+  
+  
 }
+
+# estimate_k2 <- function(x, w = NULL, na.rm = FALSE) {
+#   Rbar <- vresultant(Vec3(x), w = w, mean = TRUE, na.rm = na.rm) |>
+#     vlength()
+#   
+#   1 / (1-Rbar) # Cheeney 1983
+# }
+
 
 
 #' Fisher's statistics
@@ -488,42 +502,6 @@ fisher_ftest <- function(x, y, alpha = 0.05, na.rm = TRUE) {
   c("F stat" = stat, "p-value" = crit)
 }
 
-#' Spherical Linear Interpolation (Slerp)
-#'
-#' Returns the spherical linear interpolation of points between two vectors
-#'
-#' @inheritParams fisher_ftest
-#' @param t numeric. interpolation factor (`t = [0, 1]`).
-#'
-#' @note For non-unit vectors the interpolation is not uniform.
-#'
-#' @details
-#' A Slerp path is the spherical geometry equivalent of a path along a line
-#' segment in the plane; a great circle is a spherical geodesic.
-#'
-#' @export
-vslerp <- function(x, y, t, na.rm = TRUE) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
-
-  if (isTRUE(na.rm)) {
-    x <- x[!rowSums(!is.finite(x)), ]
-    y <- y[!rowSums(!is.finite(y)), ]
-  }
-
-  vx <- Vec3(x)
-  vy <- Vec3(y)
-
-  theta <- angle(x, y)
-  slerp <- (x * sin((1 - t) * theta) + y * sin(t * theta)) / sin(theta)
-
-  if (is.Line(x)) {
-    Line(slerp)
-  } else if (is.Plane(x)) {
-    Plane(slerp)
-  } else {
-    slerp
-  }
-}
 
 
 

@@ -11,7 +11,7 @@ An object of class \code{matrix}
 data('ramsay')
 }
 \description{
-example data set from Ramsay and Huber 1983
+Example strain data from Ramsay and Huber 1983
 }
 \examples{
 data("ramsay")

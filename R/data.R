@@ -62,7 +62,7 @@
 
 #' R/phi data
 #'
-#' example data set from Ramsay and Huber 1983
+#' Example strain data from Ramsay and Huber 1983
 #'
 #' @docType data
 #'
@@ -74,3 +74,19 @@
 #' data("ramsay")
 #' head(ramsay)
 "ramsay"
+
+
+#' 3D strain data
+#' 
+#' Example data from Holst and Fossen (1987) containing 3D strain data from 17 localities in the West Norwegian Caledonides.
+#' The data gives the  difference of the  \eqn{\epsilon_1} and \eqn{\epsilon_2} (`e1e2`) and \eqn{\epsilon_2} and \eqn{\epsilon_3} (`e2e3`)
+#' @docType data
+#'
+#' @usage data('holst')
+#'
+#' @format An object of class `matrix`
+#' @keywords datasets
+#' @examples
+#' data("holst")
+#' head(holst)
+"holst"

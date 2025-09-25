@@ -74,22 +74,22 @@
 #' mean_strain_ellipse(ramsay[, "R"], ramsay[, "phi"])
 mean_strain_ellipse <- function(r, phi, boot = TRUE, resamples = 1000, boot.values = FALSE) {
   res <- mean_strain_ellipse0(r, phi)
-
+  
   if (boot) {
     n <- length(r)
     boot_mat <- matrix(NA_real_, nrow = resamples, ncol = 2)
-
+    
     for (i in seq_len(resamples)) {
       idx <- sample.int(n, n, replace = TRUE)
       boot_mat[i, ] <- unlist(mean_strain_ellipse0(r[idx], phi[idx]))
     }
-
+    
     res$R_CI <- unname(stats::quantile(boot_mat[, 1], probs = c(0.025, 0.975)))
     res$phi_CI <- unname(stats::quantile(boot_mat[, 2], probs = c(0.025, 0.975)))
-
+    
     if (boot.values) res$boot <- boot_mat
   }
-
+  
   res
 }
 
@@ -102,21 +102,21 @@ mean_strain_ellipse0 <- function(r, phi) {
   f <- cosp2 / r + r * sinp2
   g <- sinp2 / r + r * cosp2
   h <- ((1 / r) - r) * sin(phi) * cos(phi)
-
+  
   if (n > 1) {
     f <- mean(f)
     g <- mean(g)
     h <- mean(h)
   }
-
+  
   sm <- matrix(c(f, h, h, g), nrow = 2, ncol = 2)
-
-
+  
+  
   theta <- (atan((2 * h / (f - g))) / 2) * 180 / pi
-
+  
   sm_eig <- eigen(sm, symmetric = TRUE, only.values = TRUE)
   pa <- sqrt(sm_eig$values)
-
+  
   list(
     R = pa[1] / pa[2],
     phi = theta
@@ -177,14 +177,14 @@ hypercontour <- function(r, phi,
                          rmax = NULL, kappa = 40, nnodes = 50L) {
   # angfmt <- match.arg(angfmt)
   proj <- match.arg(proj)
-
-
+  
+  
   frame <- .drawFrame(TRUE, proj)
-
+  
   if (is.null(rmax)) {
     rmax <- ceiling(max(r)) + 1
   }
-
+  
   # convert angles
   # f <- switch(angfmt,
   #   "deg" = pi / 180, # degrees
@@ -193,14 +193,14 @@ hypercontour <- function(r, phi,
   # ) # radians
   f <- pi / 180
   phi <- phi * f
-
+  
   points <- .Rphi2xy(r, phi, rmax = rmax, proj = proj)
   grd <- gridHyper(cbind(R = r, phi = phi), rmax = rmax, kappa = kappa, nnodes = nnodes, normalize = normalize, proj = proj)
-
+  
   x <- seq(-1, 1, length.out = nnodes)
   y <- seq(-1, 1, length.out = nnodes)
   z <- grd
-
+  
   if (proj == "rfp") {
     # xy <- .xy2Rphi(x, y, rmax=rmax, proj = 'rfp')
     x <- (x * pi / 2) / f
@@ -210,7 +210,7 @@ hypercontour <- function(r, phi,
     frame[, "y"] <- .scale(frame[, "y"], to = c(0, rmax))
     #
     # points <- .xy2Rphi(points[, 1], points[, 2], rmax, proj='rfp')
-
+    
     points <- cbind(x = phi / f, y = r)
     # points[, 'phi'] <- points[, 'phi'] / f
   } else {
@@ -220,7 +220,7 @@ hypercontour <- function(r, phi,
     mask <- xy[, 1]^2 + xy[, 2]^2 > r2
     z[mask] <- NA
   }
-
+  
   return(list(
     x = x,
     y = y,
@@ -234,50 +234,50 @@ hypercontour <- function(r, phi,
 
 .R2zeta <- function(r, proj) {
   switch(as.character(proj),
-    "eqd" = log(r),
-    "eqa" = sqrt(r) - 1 / sqrt(r),
-    "stg" = {
-      t <- sqrt(r)
-      s <- 1 / t
-      2 * (t - s) / (t + s)
-    },
-    "ort" = 0.5 * (r - 1 / r),
-    "gno" = {
-      t <- r * r
-      (t - 1) / (t + 1)
-    },
-    "lin" = r - 1,
-    "rdl" = 0.5 * (r + 1 / r) - 1,
-    "rfp" = r,
-    stop("Unknown proj in rToZeta")
+         "eqd" = log(r),
+         "eqa" = sqrt(r) - 1 / sqrt(r),
+         "stg" = {
+           t <- sqrt(r)
+           s <- 1 / t
+           2 * (t - s) / (t + s)
+         },
+         "ort" = 0.5 * (r - 1 / r),
+         "gno" = {
+           t <- r * r
+           (t - 1) / (t + 1)
+         },
+         "lin" = r - 1,
+         "rdl" = 0.5 * (r + 1 / r) - 1,
+         "rfp" = r,
+         stop("Unknown proj in rToZeta")
   )
 }
 
 
 .zeta2R <- function(z, proj) {
   switch(as.character(proj),
-    "eqd" = exp(z),
-    "eqa" = {
-      t <- z + sqrt(z^2 + 4)
-      (t^2) / 4
-    },
-    "stg" = {
-      t <- z / 2
-      (1 + t) / (1 - t)
-    },
-    "ort" = z + sqrt(z^2 + 1),
-    "gno" = {
-      t <- 0
-      if (z < 0.99) t <- sqrt((1 + z) / (1 - z))
-      if (t < 50.001) t else 0
-    },
-    "lin" = z + 1,
-    "rdl" = {
-      t <- z + 1
-      t + sqrt(t^2 - 1)
-    },
-    "rfp" = z,
-    stop("Unknown proj in zetaToR")
+         "eqd" = exp(z),
+         "eqa" = {
+           t <- z + sqrt(z^2 + 4)
+           (t^2) / 4
+         },
+         "stg" = {
+           t <- z / 2
+           (1 + t) / (1 - t)
+         },
+         "ort" = z + sqrt(z^2 + 1),
+         "gno" = {
+           t <- 0
+           if (z < 0.99) t <- sqrt((1 + z) / (1 - z))
+           if (t < 50.001) t else 0
+         },
+         "lin" = z + 1,
+         "rdl" = {
+           t <- z + 1
+           t + sqrt(t^2 - 1)
+         },
+         "rfp" = z,
+         stop("Unknown proj in zetaToR")
   )
 }
 
@@ -298,7 +298,7 @@ hypercontour <- function(r, phi,
     x <- s * cos(2 * phi)
     y <- s * sin(2 * phi)
   }
-
+  
   cbind(x = x, y = y)
 }
 
@@ -335,7 +335,7 @@ hypercontour <- function(r, phi,
 #  converts R, phi to hyperbaloidal point.
 .Rphi2H <- function(r, phi) {
   rho <- ifelse(r < 1, 0, log(r))
-
+  
   psi <- 2 * phi
   .rhopsi2H(rho, psi)
 }
@@ -360,18 +360,18 @@ gridHyper <- function(rphi, rmax, kappa, nnodes, normalize = TRUE, proj = "eqd")
   stopifnot(n >= 2L)
   # Pre-allocate matrix (fixes subscript OOB)
   z <- matrix(0, nrow = nnodes, ncol = nnodes)
-
+  
   s <- .R2zeta(rmax, proj)
   dx <- (2 * s) / (nnodes - 1)
   dy <- dx
   f <- if (normalize) kappa / (n^(1 / 3)) else kappa
-
+  
   H <- .Rphi2H(rphi[, 1], rphi[, 2])
-
+  
   # Precompute grid coordinates (x_i, y_j)
   xs <- seq(-s, s, length.out = nnodes)
   ys <- seq(-s, s, length.out = nnodes)
-
+  
   # vectorized across data points using matrix operations for inner product
   for (i in seq_len(nnodes)) {
     xi <- xs[i]
@@ -458,7 +458,7 @@ Rphi_plot <- function(r, phi,
   if (is.null(rmax)) {
     rmax <- ceiling(max(r)) + 1
   }
-
+  
   plot(
     x = c(-90, 90),
     y = c(1, rmax),
@@ -470,51 +470,51 @@ Rphi_plot <- function(r, phi,
     ylab = bquote("Strain ratio," ~ R[f]),
     main = main
   )
-
+  
   if (contour | contour.lines) {
     out <- hypercontour(r = r, phi = phi, proj = "rfp", rmax = rmax, ...)
   }
-
-
+  
+  
   if (contour) {
     if (image) {
       contour.col.params <- append(list(n = n), contour.col.params)
       colpal <- do.call(contour.col, contour.col.params)
-
+      
       graphics::image(out$x, out$y, out$z,
-        col = colpal,
-        add = TRUE
+                      col = colpal,
+                      add = TRUE
       )
     } else {
       levels <- pretty(range(out$z, na.rm = TRUE), n)
       contour.col.params <- append(list(n = length(levels) - 1), contour.col.params)
       colpal <- do.call(contour.col, contour.col.params)
-
+      
       graphics::.filled.contour(out$x, out$y, out$z, levels = levels, col = colpal)
     }
   }
-
+  
   if (is.null(at.y)) at.y <- pretty(c(1, rmax))
-
+  
   graphics::axis(1, at = at.x)
   graphics::axis(2, at = at.y)
-
+  
   if (contour.lines) {
     contour.lines.params <- append(list(
       out$x, out$y, out$z,
       add = TRUE
     ), contour.lines.params)
-
+    
     do.call(graphics::contour, contour.lines.params)
   }
-
+  
   point.params <- append(list(x = out$points[, 1], y = out$points[, 2]), point.params)
   do.call(graphics::points, point.params)
-
+  
   # add mean strain ellipse and its #95% confidence interval
   if (mean.ellipse) {
     rphi_mean <- mean_strain_ellipse(r, phi)
-
+    
     mean.ellipse.params <- append(
       list(
         x = rphi_mean$phi, y = rphi_mean$R,
@@ -523,9 +523,9 @@ Rphi_plot <- function(r, phi,
       ),
       mean.ellipse.params
     )
-
+    
     do.call(ellipse, mean.ellipse.params)
-
+    
     graphics::title(sub = bquote("R"["s"] == .(round(rphi_mean$R, 2)) ~ "|" ~ bar(varphi) == .(round(rphi_mean$phi, 2)) * degree))
   }
 }
@@ -565,19 +565,19 @@ Rphi_polar_plot <- function(r, phi,
                             ...) {
   proj <- match.arg(proj)
   cols <- NULL
-
+  
   out <- hypercontour(r, phi, proj = proj, ...)
   rmax <- max(out$rmax)
-
+  
   plot(out$x, y = out$y, "n", xlab = NULL, ylab = NULL, asp = 1, axes = FALSE, ann = FALSE)
-
+  
   if (contour) {
     if (image) {
       contour.col.params <- append(list(n = n), contour.col.params)
       colpal <- do.call(contour.col, contour.col.params)
       graphics::image(out$x, out$y, out$z,
-        col = cols,
-        add = TRUE
+                      col = cols,
+                      add = TRUE
       )
     } else {
       levels <- pretty(range(out$z, na.rm = TRUE), n)
@@ -586,24 +586,24 @@ Rphi_polar_plot <- function(r, phi,
       graphics::.filled.contour(out$x, out$y, out$z, levels = levels, col = colpal)
     }
   }
-
+  
   if (contour.lines) {
     contour.lines.params <- append(list(
       out$x, out$y, out$z,
       add = TRUE
     ), contour.lines.params)
-
+    
     do.call(graphics::contour, contour.lines.params)
   }
-
+  
   point.params <- append(list(x = out$points[, 1], y = out$points[, 2]), point.params)
   do.call(graphics::points, point.params)
-
+  
   if (mean.ellipse) {
     rphi_mean <- mean_strain_ellipse(r, phi)
-
+    
     rphi_mean_xy <- .Rphi2xy(rphi_mean$R, deg2rad(rphi_mean$phi), rmax = rmax, proj = proj)
-
+    
     mean.ellipse.params <- append(
       list(
         x = rphi_mean_xy[, 1],
@@ -611,12 +611,12 @@ Rphi_polar_plot <- function(r, phi,
       ),
       mean.ellipse.params
     )
-
+    
     do.call(graphics::points, mean.ellipse.params)
     graphics::title(sub = bquote("R"["s"] == .(round(rphi_mean$R, 2)) ~ "|" ~ bar(varphi) == .(round(rphi_mean$phi, 2)) * degree))
   }
   graphics::lines(out$frame, lwd = 2)
-
+  
   proj.pretty <- c(
     "eqd" = "Equidistant",
     "eqa" = "Equal-area",
@@ -656,31 +656,31 @@ shape_factor <- function(r) {
 
 RGN_hyperbola <- function(steps = 0.05, w = seq(0.1, 1, steps / 100)) {
   b <- theta <- NULL
-
+  
   hyperbola_crit <- data.frame(
     b = w,
     theta = crit_angle(w),
     r = .b2r(w)
   )
-
+  
   hyperbola_in <- expand.grid(w = w, b = w)
   hyperbola_in$theta <- crit_angle(hyperbola_in$w, hyperbola_in$b)
   hyperbola_in$r <- .b2r(hyperbola_in$b)
-
+  
   hyperbola_in <- subset(hyperbola_in, !is.nan(hyperbola_in$theta) &
-    (.near(hyperbola_in$w %% steps, 0) | .near(hyperbola_in$w %% steps, steps)))
-
+                           (.near(hyperbola_in$w %% steps, 0) | .near(hyperbola_in$w %% steps, steps)))
+  
   res <- split(hyperbola_in, hyperbola_in$w) |>
     lapply(function(h) {
       hs <- subset(h, theta == max(theta) &
-        b == min(b))
+                     b == min(b))
       hs$theta <- 90
       hs
     })
-
+  
   res2 <- rbind(hyperbola_in, do.call(rbind, res))
   hyperbola <- res2[order(res2$w, res2$b, -res2$theta), ]
-
+  
   list(hyperbola = hyperbola, crit = hyperbola_crit)
 }
 
@@ -740,47 +740,47 @@ RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.972, grid
   R_val <- r
   theta <- theta %% 180
   theta <- ifelse(theta > 90, theta - 180, theta)
-
+  
   B_val <- (R_val^2 - 1) / (R_val^2 + 1)
   # e_val = log(R_val) / 2
-
+  
   crit_angleB <- crit_angle(B_val)
   infinite_rot_pos <- theta - angle_error > crit_angleB
   infinite_rot_neg <- theta + angle_error < crit_angleB
   crit <- abs(theta) - angle_error > crit_angleB
-
+  
   bmax_r <- vorticity_boot(B_val[crit], R = boot, probs = probs)
   bmax_log <- log(bmax_r)
-
+  
   bmax_geomean <- exp(mean(bmax_log, na.rm = TRUE))
   bmax_geosd <- exp(sd(bmax_log, na.rm = TRUE))
-
+  
   R_test <- 10000
   t_score <- stats::qt(p = 0.05 / 2, df = R_test - 1, lower.tail = FALSE)
   geo.sde <- bmax_geosd / sqrt(R_test)
   geo.margin_error <- t_score * geo.sde
   geo.lowerCI <- bmax_geomean - geo.margin_error
   geo.upperCI <- bmax_geomean + geo.margin_error
-
+  
   hyp <- RGN_hyperbola(steps = grid)
   hyperbola <- split(hyp$hyperbola, hyp$hyperbola$w)
-
+  
   plot(c(0, max(hyp$crit$b)), c(-90, 90),
-    type = "n",
-    axes = FALSE, frame.plot = FALSE,
-    # xgap.axis = 0, ygap.axis = 0,
-    ylim = c(-90, 90),
-    xlab = "Shape factor, B*",
-    ylab = expression("Angle between clast long axis and foliation," ~ theta ~ "(" * degree * ")"),
-    main = main
+       type = "n",
+       axes = FALSE, frame.plot = FALSE,
+       # xgap.axis = 0, ygap.axis = 0,
+       ylim = c(-90, 90),
+       xlab = "Shape factor, B*",
+       ylab = expression("Angle between clast long axis and foliation," ~ theta ~ "(" * degree * ")"),
+       main = main
   )
-
+  
   # CI of critical B
   graphics::rect(geo.lowerCI, -100, geo.upperCI, 100, col = "grey80", border = NA)
-
+  
   graphics::axis(2, at = seq(-90, 90, 30), gap.axis = 0)
   graphics::axis(1, at = seq(0, max(hyp$crit$b), .1), gap.axis = 0)
-
+  
   # add hyperbola net
   lapply(hyperbola, function(h) {
     graphics::lines(h$b, h$theta, col = "grey85")
@@ -788,19 +788,186 @@ RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.972, grid
   })
   graphics::lines(hyp$crit$b, hyp$crit$theta, col = "grey30")
   graphics::lines(hyp$crit$b, -hyp$crit$theta, col = "grey30")
-
+  
   graphics::abline(v = cosd(45), col = "grey10", lty = 3, lwd = .1) # pure-shear simple shear separation
   graphics::abline(v = c(geo.lowerCI, geo.upperCI), col = "black", lty = 2, lwd = .5) # CI interval of bootstrapped B
-
+  
   graphics::points(B_val, theta, ...)
-
+  
   graphics::mtext(paste0("Rc = ", round(bmax_geomean, 2), " \u00B1 ", round(geo.margin_error, 2)))
   graphics::title(sub = paste0("(n: ", length(r), ")"))
-
+  
   invisible(
     list(
       values = cbind(B = B_val, theta = theta),
       Rc_CI = c(geo.lowerCI, geo.upperCI)
     )
   )
+}
+
+
+
+#' Hsü plot
+#' 
+#' 3D strain diagram using the Hsü (1965) method to display the natural octahedral strain and the Lode parameter.
+#'
+#' @param R_XY ratio of maximum strain and intermediate strain
+#' @param R_YZ ratio of intermediate strain and minimum strain
+#' @inheritParams Rphi_plot
+#' @param ... plotting arguments passed to [graphics::points()]
+#'
+#' @returns plot
+#' @export
+#'
+#' @examples
+#' R_XY <- holst[, 'R_XY']
+#' R_YZ <- holst[, 'R_YZ']
+#' hsu_plot(R_XY, R_YZ)
+hsu_plot <- function(R_XY, R_YZ, main = "Hsü diagram", es.max = NULL, ...) {
+  R_XZ <-  R_XY *  R_YZ
+  R <- es <- 1/sqrt(3) *sqrt(log(R_XY)^2 +log(R_YZ)^2 + log(1/R_XZ)^2) # Nadai, 1963
+  
+  K <- log(R_XY) / log(R_YZ) # Hossack 1968
+  lode <- (1 - K)/(1 + K)
+  
+  # Set plot limits
+  
+  rmax <- if(is.null(es.max)) max(R) * 1.1 else es.max
+  rseq <- pretty(c(0, rmax))
+  rmax2 <- max(rseq)
+  
+  plot(0, 0, type = "n", asp = 1,
+       xlim = c(-1, 1) * rmax2*cos(pi/2 + pi/6), 
+       ylim = c(0, rmax2*1.1),
+       axes = FALSE, xlab = "", ylab = "", main = main)
+  
+  # Draw wedge boundaries (±30°)
+  graphics::segments(0, 0, rmax2 * cos(pi/2 + pi/6), rmax2 * sin(pi/2 + pi/6),
+                     lty = 1, col = "black")
+  graphics::segments(0, 0, rmax2 * cos(pi/2 - pi/6), rmax2 * sin(pi/2 - pi/6),
+                     lty = 1, col = "black")
+  
+  
+  graphics::segments(0, 0, rmax2 * cos(pi/2 - pi/6/2), rmax2 * sin(pi/2 - pi/6/2),
+                     lty = 1, col = "grey80")
+  
+  graphics::segments(0, 0, rmax2 * cos(pi/2 + pi/6/2), rmax2 * sin(pi/2 + pi/6/2),
+                     lty = 1, col = "grey80")
+  
+  # Draw vertical plane strain line
+  graphics::segments(0, 0, 0, rmax2, lty = 1, col = "grey80")
+  
+  
+  # Draw cropped concentric arcs (strain magnitude ticks)
+  arc_theta <- seq(pi/2 - pi/6, pi/2 + pi/6, length.out = 200)
+  for (rr in rseq) {
+    col_grd <- if(rr == rmax2) "black" else "grey80"
+    lwd_grd <- if(rr == rmax2) 1 else 0.5
+    
+    graphics::lines(rr * cos(arc_theta), rr * sin(arc_theta), col = col_grd, lwd = lwd_grd)
+    #text(rr, 0, labels = format(rr, digits = 2), pos = 4, col = "grey40", cex = 0.8)
+  }
+  
+  # Lode parameters labels 
+  for (rr in rseq[-1]) {
+    graphics::text(cos(pi/2 - pi/6*1.05) * rr, sin(pi/2 - pi/6*1.05) * rr, rr, adj = 1)
+  }
+  
+  # Strain magnitude labels
+  for(vr in seq(-1, 1, by = 0.5)) {
+    graphics::text(rmax2*cos(pi/2 + pi/6*vr) * 1.05,  rmax2*sin(pi/2 - pi/6*vr) * 1.05, vr, adj = 0.5)
+  }
+  
+  
+  graphics::text(0, rmax2 * 1.1, expression(bold(nu)),  adj = 0.5, col = "black", font = 2)
+  graphics::text(rmax2*cos(pi/2 - pi/6*1.3)/2, rmax2*sin(pi/2 - pi/6*1.3)/2, expression(bold(bar(epsilon[s]))),  adj = .5, col = "black", font = 2)
+  
+  # Labels
+  graphics::text(0, rmax2 * 0.8, "Plane strain", adj = 0.5, col = "grey70", srt = 90)
+  graphics::text(rmax2*cos(pi/2 + pi/6*0.9) * 0.8, rmax2*sin(pi/2 + pi/6*0.9)* 0.8, "Flattening",  adj = 0.5, col = "grey70", srt = 60)
+  graphics::text(rmax2*cos(pi/2 - pi/6*0.9) * 0.8, rmax2*sin(pi/2 - pi/6*0.9)* 0.8, "Constriction", adj = 0.5, col = "grey70", srt = -60)
+  
+  # Data points
+  
+  # Map Lode parameter (-1..1) to angle in radians (-30°..+30° around vertical)
+  theta <- lode * (pi/6)   # -1 -> -30°, 0 -> 0° (vertical), +1 -> +30°
+  
+  # Shift so plane strain = vertical (pi/2)
+  theta_shift <- theta + pi/2
+  
+  # Cartesian coordinates
+  x <- R * cos(theta_shift)
+  y <- R * sin(theta_shift)
+  graphics::points(x, y, ...)
+}
+
+#' Flinn diagram
+#'
+#' @inheritParams hsu_plot
+#' @param R.max numeric
+#' @param log logical
+#'
+#' @returns plot
+#' @export
+#'
+#' @examples
+#' R_XY <- holst[, 'R_XY']
+#' R_YZ <- holst[, 'R_YZ']
+#' flinn_plot(R_XY, R_YZ, log = FALSE)
+#' flinn_plot(R_XY, R_YZ, log = TRUE)
+flinn_plot <- function(R_XY, R_YZ, main = "Flinn diagram", R.max = NULL, log = FALSE, ...) {
+  if(log){
+    xlab <- "ln(Y/Z)"
+    ylab <- "ln(X/Y)"
+    R_XY <- log(R_XY)
+    R_YZ <- log(R_YZ)
+  } else {
+    xlab <- "Y/Z"
+    ylab <- "X/Y"
+  }
+  
+  if(is.null(R.max)){
+    R.max <- max(c(R_XY, R_YZ)) * 1.05
+  }
+  
+  plot(0, 0, 
+       type = "n", 
+       asp = 1,
+       xlim = c(0, R.max),
+       ylim = c(0, R.max),
+       # log = log,
+       axes = FALSE, 
+       xaxs = "i", yaxs = "i",
+       xlab = xlab, 
+       ylab = ylab, 
+       main = main
+  )
+  
+  graphics::abline(0, b = 1, col = 'grey30', lwd = .75)
+  
+  rbreaks <- pretty(c(0, R.max))
+  
+  
+  if(log){
+    arc_theta <- seq(0, pi/2, length.out = 200)
+    for (rr in rbreaks) {
+      graphics::lines(rr * cos(arc_theta), rr * sin(arc_theta), col = "grey80", lwd = .5, lty = 2)
+    }
+  } else {
+    for(rr in rbreaks){
+      #graphics::abline(a = rr, b = -1, col = "grey80", lwd = .5, lty = 2)
+      graphics::lines(c(rr, 0), c(0, rr), col = "grey80", lwd = .5, lty = 2)
+      
+    }
+  }
+  
+  graphics::axis(side = 1, at = rbreaks, labels = rbreaks)
+  graphics::axis(side = 2, at = rbreaks, labels = rbreaks)
+  
+  graphics::text(R.max/2, R.max/2, "Plane strain", adj = 0.5, col = "grey70", srt = 45)
+  graphics::text(R.max * .75, R.max * .25, "Flattening",  adj = 0.5, col = "grey70")
+  graphics::text(R.max * .25, R.max * .75, "Constriction", adj = 0.5, col = "grey70")
+  
+  graphics::points(R_YZ, R_XY, ...)
+  
 }
