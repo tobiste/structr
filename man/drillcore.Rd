@@ -47,7 +47,7 @@ azi <- 225
 inc <- 45
 
 # single alpha-beta measurement
-drillcore_transformation(azi, inc, 60, 320)
+drillcore_transformation(azi, inc, alpha = 60, beta = 320)
 drillcore_transformation(azi, inc, 45, 220)
 
 # example from Stigsson and Munier:
@@ -68,7 +68,7 @@ text(res, labels = c("A", "B"), col = 2:3, pos = 4)
 my_gammas <- c(20, -10)
 res2 <- drillcore_transformation(azi, inc, my_alphas, my_betas, my_gammas)
 points(res2, col = 2:3)
-text(res2, labels = c("gA", "gB"), col = 2:3, pos = 4)
+text(res2, labels = c("lA", "lB"), col = 2:3, pos = 4)
 }
 \references{
 Stigsson, M., & Munier, R. (2013). Orientation uncertainty goes

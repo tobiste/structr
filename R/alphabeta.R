@@ -40,7 +40,7 @@
 #' inc <- 45
 #'
 #' # single alpha-beta measurement
-#' drillcore_transformation(azi, inc, 60, 320)
+#' drillcore_transformation(azi, inc, alpha = 60, beta = 320)
 #' drillcore_transformation(azi, inc, 45, 220)
 #'
 #' # example from Stigsson and Munier:
@@ -61,7 +61,7 @@
 #' my_gammas <- c(20, -10)
 #' res2 <- drillcore_transformation(azi, inc, my_alphas, my_betas, my_gammas)
 #' points(res2, col = 2:3)
-#' text(res2, labels = c("gA", "gB"), col = 2:3, pos = 4)
+#' text(res2, labels = c("lA", "lB"), col = 2:3, pos = 4)
 NULL
 
 # drillcore_orientation <- function(azi, inc, alpha, beta, gamma = NULL) {
@@ -142,16 +142,14 @@ drillcore_transformation_single <- function(azi, inc, alpha, beta, gamma = NULL)
   if (!is.null(gamma)){
     stopifnot(length(gamma) == 1)
     
-    # n_BH <- n_BH |>
-    #   t() |>
-    #   Vec3() |>
-    #   Line() |>
-    #   as.Plane() |> 
-    #   Fault_from_rake(rake = 90+gamma) |>
-    #   Fault_slip() |>
-    #   Vec3() |>
-    #   unclass() |>
-    #   c()
+    l_BH <- n_BH |>
+      t() |>
+      Vec3() |>
+      Line() |>
+      Plane() |> 
+      Vec3() |>
+      unclass() |>
+      c()
   }
   
 
@@ -178,7 +176,7 @@ drillcore_transformation_single <- function(azi, inc, alpha, beta, gamma = NULL)
     }
 
   plunge <- asind(-n_G[1, 3])
-  Plane_normal <- Line(trend + 90, plunge)
+  Plane_normal <- Line(trend+90, plunge)
   plane <- Plane(Plane_normal)
 
   if (is.null(gamma)) {
@@ -193,8 +191,8 @@ drillcore_transformation_single <- function(azi, inc, alpha, beta, gamma = NULL)
     # gamma_vec <- rotate(plane_vec, plane_normal, deg2rad(gamma))
     # return(Line(gamma_vec))
 
-    Fault_from_rake(plane, rake = 90 - gamma) |> Fault_slip()
-    # Line(trend, plunge)
+    # Fault_from_rake(plane, rake = 90 - gamma) |> Fault_slip()
+    rotate(l_g, plane, gamma)
   }
 }
 
