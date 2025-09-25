@@ -103,7 +103,7 @@ crossprod.spherical <- function(x, y = NULL, ...) {
   }
 }
 
-`%x%.spherical` <- function(x, y) crossprod.spherical(x, y)
+# `%x%.spherical` <- function(x, y) crossprod.spherical(x, y)
 
 vdot <- function(x, y) {
   # equivalent to: x %*% t(y)
@@ -111,11 +111,11 @@ vdot <- function(x, y) {
   unname(res)
 }
 
-# #' @export
+# #' @exportS3Method base::`%*%`
 # #' @rdname vecmath
-`%*%.spherical` <- function(x, y) {
-  dotprod(x, y)
-}
+# `%*%.spherical` <- function(x, y) {
+#   dotprod(x, y)
+# }
 
 #' @export
 #' @rdname vecmath

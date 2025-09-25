@@ -393,8 +393,8 @@ center <- function(x, max_vertical = FALSE) {
   #   Vec3()
   x_trans <- sapply(seq_len(nrow(x_cart)), function(i){
     vtransform(x_cart[i, ], A = x_eigen$vectors, norm = TRUE)
-  }) |> 
-    t() |> 
+  }) |>
+    t() |>
     Vec3()
 
   if (!max_vertical) x_trans <- rotate(x_trans, Vec3(0, -1, 0), pi / 2)
