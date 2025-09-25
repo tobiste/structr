@@ -56,8 +56,7 @@
 <span><span class="co"># S3 method for class 'spherical'</span></span>
 <span><span class="fu">crossprod</span><span class="op">(</span><span class="va">x</span>, y <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># S3 method for class 'spherical'</span></span>
-<span><span class="va">x</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">y</span></span>
+<span><span class="fu">dotprod</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">rotate</span><span class="op">(</span><span class="va">x</span>, <span class="va">rotaxis</span>, <span class="va">rotangle</span><span class="op">)</span></span>
 <span></span>
@@ -125,7 +124,7 @@ returns a numeric angle (in degrees, unless <code>x</code> is class <code>"Vec3"
 <dt><code>crossprod</code></dt>
 <dd><p>the cross-product of two vectors, i.e. the vector perpendicular to the 2 vectors. If <code>y = NULL</code> is taken to be the sam,e vector as <code>x</code>.</p></dd>
 
-<dt><code>%*%</code></dt>
+<dt><code>dotprod</code></dt>
 <dd><p>the dot product of two vectors</p></dd>
 
 <dt><code>rotate</code></dt>
@@ -155,7 +154,7 @@ length of second vector, unless their are unit vectors)</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Vector (Vec3) object (n = 1):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  x  y  z </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  0 -1  0 </span>
-<span class="r-in"><span><span class="va">vec1</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">vec2</span> <span class="co"># dot product</span></span></span>
+<span class="r-in"><span><span class="fu">dotprod</span><span class="op">(</span><span class="va">vec1</span>, <span class="va">vec2</span><span class="op">)</span> <span class="co"># dot product</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0</span>
 <span class="r-in"><span><span class="fu">rotate</span><span class="op">(</span><span class="va">vec1</span>, <span class="va">vec2</span>, <span class="va">pi</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span> <span class="co"># rotation</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Vector (Vec3) object (n = 1):</span>

@@ -76,7 +76,7 @@ Stephan</h4>
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tobiste.github.io/structr/">structr</a></span><span class="op">)</span></span></code></pre></div>
-<p>The function <code><a href="../reference/drillcore_orientation.html">drillcore_orientation()</a></code> calculates the
+<p>The function <code>drillcore_orientation()</code> calculates the
 orientation of a plane or line from internal core angles
 (<strong>alpha</strong>, <strong>beta</strong>, and
 <strong>gamma</strong>) of oriented drill cores.</p>
@@ -93,15 +93,15 @@ direction</p>
 <p><code>alpha</code> and <code>beta</code> are the internal core angles
 alpha and beta, respectively, measured in degrees.</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/drillcore_orientation.html">drillcore_orientation</a></span><span class="op">(</span><span class="va">azi</span>, <span class="va">inc</span>, alpha <span class="op">=</span> <span class="fl">60</span>, beta <span class="op">=</span> <span class="fl">320</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/drillcore.html">drillcore_transformation</a></span><span class="op">(</span><span class="va">azi</span>, <span class="va">inc</span>, alpha <span class="op">=</span> <span class="fl">60</span>, beta <span class="op">=</span> <span class="fl">320</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Plane object (n = 1):</span></span>
 <span><span class="co">#&gt; dip_direction           dip </span></span>
-<span><span class="co">#&gt;      25.00392      70.02959</span></span></code></pre></div>
+<span><span class="co">#&gt;      1.740218    152.032047</span></span></code></pre></div>
 <p>The function returns a spherical objects. Since only alpha and beta
 angles are specified, the output is a <code>"plane"</code> object.</p>
 <p>For several alpha and beta angles:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">planes_AB</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drillcore_orientation.html">drillcore_orientation</a></span><span class="op">(</span><span class="va">azi</span>, <span class="va">inc</span>, alpha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">45</span><span class="op">)</span>, beta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">320</span>, <span class="fl">220</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">planes_AB</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drillcore.html">drillcore_transformation</a></span><span class="op">(</span><span class="va">azi</span>, <span class="va">inc</span>, alpha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">45</span><span class="op">)</span>, beta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">320</span>, <span class="fl">220</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p>The orientations can be plotted in a equal area (lower hemisphere)
 projection:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
