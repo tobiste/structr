@@ -29,7 +29,7 @@ The function `drillcore_orientation()` calculates the orientation of a plane or 
 
 ```{r data}
 azi <- 225
-inc <- -45
+inc <- 45
 ```
 > Note that egative values for the inclination indicate downward direction
 
