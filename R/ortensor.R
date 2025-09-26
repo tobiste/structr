@@ -262,19 +262,19 @@ principal_strain <- function(x) {
 or_shape_params <- function(x) {
   # eig <- ortensor(x, norm = TRUE) |> ot_eigen()
   eig <- ot_eigen(x)
-  s <- principal_stretch(x)
-  e <- principal_strain(x)
+  s <- principal_stretch(x) |> unname()
+  e <- principal_strain(x) |> unname()
   # names(s) <- names(e) <- NULL
 
   Rxy <- s[1] / s[2]
-  Ryz <- s[2] / s[3]
-  Rxz <- s[1] / s[3]
-  stretch_ratios <- c(Rxy = Rxy, Ryz = Ryz, Rxz = Rxz)
+  Ryz <- s[2] / s[3] 
+  Rxz <- s[1] / s[3] 
+  stretch_ratios <- c(Rxy, Ryz, Rxz) |> setNames(c("Rxy", "Ryz", "Rxz"))
 
-  e12 <- e[1] - e[2]
+  e12 <- e[1] - e[2] 
   e13 <- e[1] - e[3]
-  e23 <- e[2] - e[3]
-  strain_ratios <- c(e12 = e12, e13 = e13, e23 = e23)
+  e23 <- e[2] - e[3] 
+  strain_ratios <- c(e12, e13, e23) |> setNames(c("e12", "e13", "e23"))
 
   shape <- K <- e12 / e23 # strain symmetry (Ramsay, 1983) / Woodcock shape
 
@@ -304,9 +304,9 @@ or_shape_params <- function(x) {
 
   Lisle_intensity <- 7.5 * sum((eig$values - 1 / 3)^2)
 
-  aMAD_l <- atand(sqrt((1 - eig$values[1]) / (eig$values[1]))) # approximate angular deviation from the major axis along E1
-  aMAD_p <- atand(sqrt((eig$values[3]) / (1 - eig$values[3]))) # approximate deviation from the plane normal to E3
-  aMAD <- ifelse(shape > 1, aMAD_l, aMAD_p)
+  # aMAD_l <- atand(sqrt((1 - eig$values[1]) / (eig$values[1]))) # approximate angular deviation from the major axis along E1
+  # aMAD_p <- atand(sqrt((eig$values[3]) / (1 - eig$values[3]))) # approximate deviation from the plane normal to E3
+  # aMAD <- ifelse(shape > 1, aMAD_l, aMAD_p)
 
   MAD_l <- atand(sqrt((eig$values[2] + eig$values[3]) / (eig$values[1]))) # Return maximum angular deviation (MAD) of linearly distributed vectors (Kirschvink 1980)
   MAD_p <- atand(sqrt(eig$values[3] / eig$values[2] + eig$values[3] / eig$values[1])) # maximum angular deviation (MAD) of planarly distributed vectors (Kirschvink 1980).
@@ -340,7 +340,7 @@ or_shape_params <- function(x) {
     Nadai = Nadai,
     Lode = lode, # Lode parameter (Lode, 1926),
     kind = kind, # descriptive type of ellipsoid
-    MAD_approx = as.numeric(aMAD), # approximate deviation according to shape
+    # MAD_approx = as.numeric(aMAD), # approximate deviation according to shape
     MAD = as.numeric(MAD), #  maximum angular deviation (MAD)
     US = us
   )

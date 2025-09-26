@@ -411,7 +411,7 @@ stereoplot_frame <- function(ndiv = 144, radius = 1, ...) {
 #' @export
 #' @examples
 #' stereoplot(ticks = 30, title = "title", sub = "subtitle", border.col = "purple", labels = TRUE)
-stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = grDevices::gray(0.9),
+stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = "lightgray",
                        lwd = 1, lty = 1, border.col = "black", title = NULL,
                        sub = NULL, origin.text = "N", labels = FALSE, ladj = 0.04, centercross = TRUE, ticks = NULL, radius = 1) {
   plot(radius * c(-1, 1), radius * c(-1, 1),

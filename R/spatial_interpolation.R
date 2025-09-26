@@ -7,7 +7,7 @@
 #' measurements
 #' @param grid (optional) Point object of class `"sf"`.
 #' @param gridsize 	Numeric. Target spacing of the regular grid in decimal
-#'  degree. Default is `2.5`. (is ignored if grid is specified)
+#'  degree. Default is `2.5`. Iignored if grid is specified.
 #' @param min_data Integer. Minimum number of data per kernel. Default is `3`
 #' @param threshold Numeric. Threshold for deviation of direction. Default is `25`
 #' @param arte_thres Numeric. Maximum distance (in km) of the grid point to the
@@ -20,7 +20,7 @@
 #'  nearby (0 to 1). Default is `0.1`
 #' @param R_range Numeric value or vector specifying the kernel half-width, i.e.
 #'  the search radius (in km). Default is `1`
-#' @param .compact logical.
+#' @param .compact logical. Run [compact_grid()] at the end
 #' @param lon_range,lat_range two column vector specifying the coordinate range. 
 #' Ignored when grid is specified.
 #'

@@ -11,7 +11,7 @@ stereoplot(
   earea = TRUE,
   guides = TRUE,
   d = 10,
-  col = grDevices::gray(0.9),
+  col = "lightgray",
   lwd = 1,
   lty = 1,
   border.col = "black",

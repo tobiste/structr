@@ -19,7 +19,7 @@ hsu_plot(R_XY, R_YZ, main = "Hsü diagram", es.max = NULL, ...)
 \item{...}{plotting arguments passed to \code{\link[graphics:points]{graphics::points()}}}
 }
 \value{
-plot
+plot and when stored as an object, the Lode parameter \code{Lode} and the natural octahedral strain \code{es}.
 }
 \description{
 3D strain diagram using the Hsü (1965) method to display the natural octahedral strain and the Lode parameter.

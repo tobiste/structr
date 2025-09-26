@@ -783,8 +783,8 @@ RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.972, grid
   
   # add hyperbola net
   lapply(hyperbola, function(h) {
-    graphics::lines(h$b, h$theta, col = "grey85")
-    graphics::lines(h$b, -h$theta, col = "grey85")
+    graphics::lines(h$b, h$theta, col = "lightgray")
+    graphics::lines(h$b, -h$theta, col = "lightgray")
   })
   graphics::lines(hyp$crit$b, hyp$crit$theta, col = "grey30")
   graphics::lines(hyp$crit$b, -hyp$crit$theta, col = "grey30")
@@ -818,7 +818,7 @@ RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.972, grid
 #' @param es.max maximum strain for scaling.
 #'
 #' @encoding UTF-8
-#' @returns plot
+#' @returns plot and when stored as an object, the Lode parameter `Lode` and the natural octahedral strain `es`.
 #' @export
 #'
 #' @examples
@@ -851,19 +851,19 @@ hsu_plot <- function(R_XY, R_YZ, main = "Hs\u00fc diagram", es.max = NULL, ...) 
   
   
   graphics::segments(0, 0, rmax2 * cos(pi/2 - pi/6/2), rmax2 * sin(pi/2 - pi/6/2),
-                     lty = 1, col = "grey80")
+                     lty = 1, col = "lightgray")
   
   graphics::segments(0, 0, rmax2 * cos(pi/2 + pi/6/2), rmax2 * sin(pi/2 + pi/6/2),
-                     lty = 1, col = "grey80")
+                     lty = 1, col = "lightgray")
   
   # Draw vertical plane strain line
-  graphics::segments(0, 0, 0, rmax2, lty = 1, col = "grey80")
+  graphics::segments(0, 0, 0, rmax2, lty = 1, col = "lightgray")
   
   
   # Draw cropped concentric arcs (strain magnitude ticks)
   arc_theta <- seq(pi/2 - pi/6, pi/2 + pi/6, length.out = 200)
   for (rr in rseq) {
-    col_grd <- if(rr == rmax2) "black" else "grey80"
+    col_grd <- if(rr == rmax2) "black" else "lightgray"
     lwd_grd <- if(rr == rmax2) 1 else 0.5
     
     graphics::lines(rr * cos(arc_theta), rr * sin(arc_theta), col = col_grd, lwd = lwd_grd)
@@ -901,6 +901,8 @@ hsu_plot <- function(R_XY, R_YZ, main = "Hs\u00fc diagram", es.max = NULL, ...) 
   x <- R * cos(theta_shift)
   y <- R * sin(theta_shift)
   graphics::points(x, y, ...)
+  
+  invisible(list(lode = lode, es = R))
 }
 
 #' Flinn diagram
@@ -909,10 +911,11 @@ hsu_plot <- function(R_XY, R_YZ, main = "Hs\u00fc diagram", es.max = NULL, ...) 
 #' @param R.max numeric. Maximum aspect ratio for scaling.
 #' @param log logical. Whether the axes should be in logarithmic scale.
 #'
-#' @returns plot
+#' @returns plot and when stored as an object, the multiplication factors for X, Y and Z.
 #' @export
 #'
 #' @examples
+#' data(holst)
 #' R_XY <- holst[, 'R_XY']
 #' R_YZ <- holst[, 'R_YZ']
 #' flinn_plot(R_XY, R_YZ, log = FALSE, col = '#B63679', pch = 16)
@@ -923,20 +926,22 @@ flinn_plot <- function(R_XY, R_YZ, main = "Flinn diagram", R.max = NULL, log = F
     ylab <- "ln(X/Y)"
     R_XY <- log(R_XY)
     R_YZ <- log(R_YZ)
+    R.min <- 0
   } else {
     xlab <- "Y/Z"
     ylab <- "X/Y"
+    R.min <- 1
   }
   
   if(is.null(R.max)){
     R.max <- max(c(R_XY, R_YZ)) * 1.05
   }
   
-  plot(0, 0, 
+  plot(R.min, R.min, 
        type = "n", 
        asp = 1,
-       xlim = c(0, R.max),
-       ylim = c(0, R.max),
+       xlim = c(R.min, R.max),
+       ylim = c(R.min, R.max),
        # log = log,
        axes = FALSE, 
        xaxs = "i", yaxs = "i",
@@ -947,18 +952,23 @@ flinn_plot <- function(R_XY, R_YZ, main = "Flinn diagram", R.max = NULL, log = F
   
   graphics::abline(0, b = 1, col = 'grey30', lwd = .75)
   
-  rbreaks <- pretty(c(0, R.max))
+  rbreaks <- pretty(c(R.min, R.max))
+  
+  
+  for (i in c(.2, .5, 2, 5)) {
+    graphics::abline(a = 0, b = i, col = "lightgray", lwd = .5, lty = 2)
+  }
   
   
   if(log){
     arc_theta <- seq(0, pi/2, length.out = 200)
     for (rr in rbreaks) {
-      graphics::lines(rr * cos(arc_theta), rr * sin(arc_theta), col = "grey80", lwd = .5, lty = 2)
+      graphics::lines(rr * cos(arc_theta), rr * sin(arc_theta), col = "lightgray", lwd = .5, lty = 2)
     }
   } else {
     for(rr in rbreaks){
       #graphics::abline(a = rr, b = -1, col = "grey80", lwd = .5, lty = 2)
-      graphics::lines(c(rr, 0), c(0, rr), col = "grey80", lwd = .5, lty = 2)
+      graphics::lines(c(rr, R.min), c(R.min, rr), col = "lightgray", lwd = .5, lty = 2)
       
     }
   }
@@ -971,5 +981,13 @@ flinn_plot <- function(R_XY, R_YZ, main = "Flinn diagram", R.max = NULL, log = F
   graphics::text(R.max * .25, R.max * .75, "Constriction", adj = 0.5, col = "grey70")
   
   graphics::points(R_YZ, R_XY, ...)
+  
+  invisible(
+    list(
+      X = R_XY * R_YZ,
+      Y = R_YZ,
+      Z = 1
+    )
+  )
   
 }

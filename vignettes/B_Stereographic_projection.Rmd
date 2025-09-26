@@ -154,8 +154,8 @@ Two different diagram are provided by {structr}, namely the triangular *Vollmer 
 #|   Diagram showing eigen-vector analysis of some example data plotted in an
 #|   triangular plot after Vollmer 1990
 
-VollmerPlot(planes, col = "#000004", pch = 1, cex = 2)
-VollmerPlot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
+vollmer_plot(planes, col = "#000004", pch = 1, cex = 2)
+vollmer_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```
 
@@ -166,8 +166,20 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 #|   Diagram showing eigen-vector analysis of some example data plotted in an
 #|   biplot plot after Woodcok 1977
 
-WoodcockPlot(planes, col = "#000004", pch = 1, cex = 2)
-WoodcockPlot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
+woodcock_plot(planes, col = "#000004", pch = 1, cex = 2)
+woodcock_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
+legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
+```
+
+#### Hsü plot
+
+```{r woodcock, message=FALSE,warning=FALSE}
+#| fig.alt: >
+#|   Diagram showing eigen-vector analysis of some example data plotted in a
+#|   Hsü plot
+
+hsu_fabric_plot(planes, col = "#000004", pch = 1, cex = 2)
+hsu_fabric_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```
 
