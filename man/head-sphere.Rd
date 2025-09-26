@@ -20,7 +20,8 @@ tail(x, n = 6L, ...)
 \item{x}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Plane"}, \code{"Pair"}, or \verb{"Fault}}
 
 \item{n}{an integer vector of length up to \code{dim(x)} (or 1,
-    for non-dimensioned objects). Values specify the indices to be
+    for non-dimensioned objects).  A \code{logical} is silently coerced to
+    integer.  Values specify the indices to be
     selected in the corresponding dimension (or along the length) of the
     object. A positive value of \code{n[i]} includes the first/last
     \code{n[i]} indices in that dimension, while a negative value
