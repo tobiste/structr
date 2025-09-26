@@ -3,6 +3,7 @@
 #' Calculates some stress components
 #'
 #' @param sigma1,sigma3 numeric. Magnitudes of maximum and minimum principal stress (\eqn{\sigma_1} and \eqn{\sigma_3}), respectively.
+#' @param sigma_s,sigma_n numeric. Magnitudes of shear and normal stress (\eqn{\sigma_s} and \eqn{\sigma_n}), respectively.
 #' @param theta numeric. Angle \eqn{\theta} between fracture and \eqn{\sigma_1}.
 #' @param mu numeric. Coefficient of internal friction \eqn{\mu}.
 #'
@@ -15,9 +16,12 @@
 #'
 #' diff_stress(s1, s3)
 #' mean_stress(s1, s3)
-#' shear_stress(s1, s3, theta = 35)
-#' normal_stress(s1, s3, theta = 35)
+#' ss <- shear_stress(s1, s3, theta = 35); print(ss)
+#' sn <- normal_stress(s1, s3, theta = 35); print(sn)
 #' fracture_angle(mu = 0.6)
+#' 
+#' slip_tendency(ss, sn)
+#' dilatation_tendency(s1, s3, sn)
 NULL
 
 #' @rdname stress-comp
@@ -30,21 +34,21 @@ diff_stress <- function(sigma1, sigma3) {
 #' @rdname stress-comp
 #' @export
 mean_stress <- function(sigma1, sigma3) {
-  stopifnot(sigma1 >= sigma3)
+  # stopifnot(sigma1 >= sigma3)
   (sigma1 + sigma3) / 2
 }
 
 #' @rdname stress-comp
 #' @export
 shear_stress <- function(sigma1, sigma3, theta) {
-  stopifnot(sigma1 >= sigma3)
+  # stopifnot(sigma1 >= sigma3)
   diff_stress(sigma1, sigma3) / 2 * sind(2 * theta)
 }
 
 #' @rdname stress-comp
 #' @export
 normal_stress <- function(sigma1, sigma3, theta) {
-  stopifnot(sigma1 >= sigma3)
+  # stopifnot(sigma1 >= sigma3)
   mean_stress(sigma1, sigma3) - diff_stress(sigma1, sigma3) / 2 * cosd(2 * theta)
 }
 
@@ -54,6 +58,18 @@ fracture_angle <- function(mu) {
   (90 + atand(mu)) / 2
 }
 
+#' @rdname stress-comp
+#' @export
+slip_tendency <- function(sigma_s, sigma_n) {
+  sigma_s / sigma_n
+}
+
+#' @rdname stress-comp
+#' @export
+dilatation_tendency <- function(sigma1, sigma3, sigma_n) {
+  stopifnot(sigma1 >= sigma3)
+  (sigma1 - sigma_n) / (sigma1 - sigma3)
+}
 
 #' Principal stresses from 2D stress components
 #'
@@ -309,7 +325,7 @@ tau_max <- function(sigma_x, sigma_z, tau_xz) {
 #'
 #' @param coulomb numeric 2 element vector. Coulomb criterion containing the cohesion and the coefficient of sliding: (`c(70, 0.6)`)
 #' @param sliding Sliding criteria (`0.81` by default)
-#' @param units units of `sigma1`, `sigma2`, and `sigma3` (`"MPa"` by default)
+#' @param units units of `sigma1`, `sigma2`, `sigma3` and cohesion (`"MPa"` by default)
 #' @param sigma1,sigma2,sigma3 numeric. Magnitudes of major, intermediate, and
 #' minor principal stresses. If only two principal stresses are given, only
 #' one Mohr Circle will be drawn, otherwise three.

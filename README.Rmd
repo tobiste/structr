@@ -29,7 +29,7 @@ knitr::opts_chunk$set(
 
 -   analyze stress (including visualization of the magnitudes of stress in the **Mohr circle** and extracting the **maximum horizontal stress** of a 3D stress tensor),
 
--   reconstruct the orientation of structures in **oriented drillcores** by transforming the $\alpha$, $\beta$, and $\gamma$ angles,
+-   reconstruct the orientation of structures in **oriented drillcores** by transforming the &alpha;, &beta;, and &gamma; angles,
 
 -   calculate fault displacement components,
 

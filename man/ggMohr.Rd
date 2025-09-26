@@ -25,7 +25,7 @@ one Mohr Circle will be drawn, otherwise three.}
 
 \item{sliding}{Sliding criteria (\code{0.81} by default)}
 
-\item{units}{units of \code{sigma1}, \code{sigma2}, and \code{sigma3} (\code{"MPa"} by default)}
+\item{units}{units of \code{sigma1}, \code{sigma2}, \code{sigma3} and cohesion (\code{"MPa"} by default)}
 
 \item{fill}{fill color of Mohr circle spanned by sigma1 and sigma3}
 

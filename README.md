@@ -23,7 +23,7 @@ for structural geology. You can
   of a 3D stress tensor),
 
 - reconstruct the orientation of structures in **oriented drillcores**
-  by transforming the $\alpha$, $\beta$, and $\gamma$ angles,
+  by transforming the α, β, and γ angles,
 
 - calculate fault displacement components,
 

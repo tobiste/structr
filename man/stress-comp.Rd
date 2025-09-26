@@ -7,6 +7,8 @@
 \alias{shear_stress}
 \alias{normal_stress}
 \alias{fracture_angle}
+\alias{slip_tendency}
+\alias{dilatation_tendency}
 \title{Stress components}
 \usage{
 diff_stress(sigma1, sigma3)
@@ -18,6 +20,10 @@ shear_stress(sigma1, sigma3, theta)
 normal_stress(sigma1, sigma3, theta)
 
 fracture_angle(mu)
+
+slip_tendency(sigma_s, sigma_n)
+
+dilatation_tendency(sigma1, sigma3, sigma_n)
 }
 \arguments{
 \item{sigma1, sigma3}{numeric. Magnitudes of maximum and minimum principal stress (\eqn{\sigma_1} and \eqn{\sigma_3}), respectively.}
@@ -25,6 +31,8 @@ fracture_angle(mu)
 \item{theta}{numeric. Angle \eqn{\theta} between fracture and \eqn{\sigma_1}.}
 
 \item{mu}{numeric. Coefficient of internal friction \eqn{\mu}.}
+
+\item{sigma_s, sigma_n}{numeric. Magnitudes of shear and normal stress (\eqn{\sigma_s} and \eqn{\sigma_n}), respectively.}
 }
 \value{
 numeric
@@ -38,7 +46,10 @@ s3 <- 250
 
 diff_stress(s1, s3)
 mean_stress(s1, s3)
-shear_stress(s1, s3, theta = 35)
-normal_stress(s1, s3, theta = 35)
+ss <- shear_stress(s1, s3, theta = 35); print(ss)
+sn <- normal_stress(s1, s3, theta = 35); print(sn)
 fracture_angle(mu = 0.6)
+
+slip_tendency(ss, sn)
+dilatation_tendency(s1, s3, sn)
 }
