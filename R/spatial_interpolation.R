@@ -5,7 +5,7 @@
 #' @param x numeric vector, array, or object of class `"line"` or `"plane"`
 #' @param coords a `"sf"` object containing the geographic coordinates of `x`
 #' measurements
-#' @param grid (optional) Point object of class `"sf"`.`
+#' @param grid (optional) Point object of class `"sf"`.
 #' @param gridsize 	Numeric. Target spacing of the regular grid in decimal
 #'  degree. Default is `2.5`. (is ignored if grid is specified)
 #' @param min_data Integer. Minimum number of data per kernel. Default is `3`
@@ -21,8 +21,8 @@
 #' @param R_range Numeric value or vector specifying the kernel half-width, i.e.
 #'  the search radius (in km). Default is `1`
 #' @param .compact logical.
-#' @param lon_range,lat_range two column vector. coordinate range. ignored when
-#'  grid is specified.
+#' @param lon_range,lat_range two column vector specifying the coordinate range. 
+#' Ignored when grid is specified.
 #'
 #' @returns list
 #' @importFrom tectonicr dist_greatcircle
@@ -36,7 +36,7 @@
 #' ps_vec <- rvmf() |> Line()
 #' ps <- data.frame(x = runif(100, 50, 60), y = runif(100, 40, 45)) |> st_as_sf(coords = c("x", "y"))
 #'
-#' spatial_interpolation(x = ps_vec, coords = ps, gridsize = .5, compact = FALSE)
+#' spatial_interpolation(x = ps_vec, coords = ps, gridsize = .5, .compact = FALSE)
 spatial_interpolation <- function(x,
                                   coords,
                                   grid = NULL,
@@ -148,7 +148,7 @@ spatial_interpolation <- function(x,
 
           # mean vector and spherical standard deviation
           vecs <- datas[ids_R, 3:4] |> as.Line()
-          mean_vec <- sph_(vecs, w) |> unclass()
+          mean_vec <- sph_mean(vecs, w) |> unclass()
           sd_vec <- delta(vecs, w)
         }
         c(
@@ -201,7 +201,6 @@ spatial_interpolation <- function(x,
 #' @returns \code{sf} object
 #'
 #' @importFrom stats aggregate
-# #' @seealso [spatial_interpolation()], [mean.spherical()], [delta()]
 #'
 #' @noRd
 compact_grid <- function(grid) {
