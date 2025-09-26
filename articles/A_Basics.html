@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9009</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -95,7 +95,7 @@ orientation measurements in the list elements <code>lines</code> and
 dip direction (or strike) and the dip angle of a measured plane…</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/head-sphere.html">head</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
 <span><span class="co">#&gt;   dipdir   dip quality feature_type</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
@@ -109,7 +109,7 @@ dip direction (or strike) and the dip angle of a measured plane…</p>
 line…</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/head-sphere.html">head</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
 <span><span class="co">#&gt;   trend plunge quality feature_type</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
@@ -138,7 +138,7 @@ coordinate vectors using the functions <code>line2vec()</code> or
 <code>plane2vec()</code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lines_vector</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Vec3</a></span><span class="op">(</span><span class="va">lines</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/head-sphere.html">head</a></span><span class="op">(</span><span class="va">lines_vector</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">lines_vector</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Vector (Vec3) object (n = 6):</span></span>
 <span><span class="co">#&gt;              x         y         z</span></span>
 <span><span class="co">#&gt; [1,] 0.5727204 0.7882819 0.2249511</span></span>
@@ -149,7 +149,7 @@ coordinate vectors using the functions <code>line2vec()</code> or
 <span><span class="co">#&gt; [6,] 0.2382466 0.9555548 0.1736482</span></span></code></pre></div>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">planes_as_line</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Vec3</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/head-sphere.html">head</a></span><span class="op">(</span><span class="va">planes_as_line</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">planes_as_line</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Vector (Vec3) object (n = 6):</span></span>
 <span><span class="co">#&gt;              x          y         z</span></span>
 <span><span class="co">#&gt; [1,] 0.6209609 -0.4851479 0.6156615</span></span>
@@ -160,7 +160,7 @@ coordinate vectors using the functions <code>line2vec()</code> or
 <span><span class="co">#&gt; [6,] 0.7205572 -0.2911240 0.6293204</span></span></code></pre></div>
 <p>which produces the same output as</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/head-sphere.html">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/classes.html">Vec3</a></span><span class="op">(</span><span class="va">planes_as_line</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/classes.html">Vec3</a></span><span class="op">(</span><span class="va">planes_as_line</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Vector (Vec3) object (n = 6):</span></span>
 <span><span class="co">#&gt;              x          y         z</span></span>
 <span><span class="co">#&gt; [1,] 0.6209609 -0.4851479 0.6156615</span></span>
@@ -257,7 +257,7 @@ transformation matrix (second-order tensor).</p>
 <span><span class="va">x123</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span><span class="va">x1</span>, <span class="va">x2</span>, <span class="va">x3</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># cluster the vectors:</span></span>
-<span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/v_cluster.html">v_cluster</a></span><span class="op">(</span><span class="va">x123</span>, k <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="va">cl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sph_cluster.html">sph_cluster</a></span><span class="op">(</span><span class="va">x123</span>, k <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># visualize the result:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x123</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/colorize.html">assign_col_d</a></span><span class="op">(</span><span class="va">cl</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span><span class="op">)</span></span>

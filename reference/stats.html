@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9009</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -49,20 +49,13 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="co"># S3 method for class 'spherical'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">sph_mean</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">sd</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">sph_sd</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># S3 method for class 'spherical'</span></span>
-<span><span class="fu">sd</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">sph_var</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">var</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># S3 method for class 'spherical'</span></span>
-<span><span class="fu">var</span><span class="op">(</span><span class="va">x</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">confidence_angle</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span>, alpha <span class="op">=</span> <span class="fl">0.05</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu">sph_confidence_angle</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span>, alpha <span class="op">=</span> <span class="fl">0.05</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">rdegree</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="cn">NULL</span>, na.rm <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
@@ -99,19 +92,23 @@
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><code>mean</code> returns the spherical mean of a set of vectors
+    <p><code>sph_mean</code> returns the spherical mean of a set of vectors
 (object of class of <code>x</code>).</p>
-<p><code>var</code> returns the spherical variance (numeric), based on resultant length
+<p><code>sph_var</code> returns the spherical variance (numeric), based on resultant length
 (Mardia 1972).</p>
-<p><code>delta</code> returns the cone angle containing ~63% of the data (in degree if <code>x</code> is a <code>"Plane"</code> or <code>"Line"</code>, or in radians
+<p><code>sph_sd</code> returns the spherical standard deviation (numeric) given as the half
+apical angle of a cone about the mean vector. In degrees if <code>x</code> is a
+<code>"Plane"</code> or <code>"Line"</code>, or in radians if otherwise.</p>
+<p><code>delta</code> returns the half apical angle of the cone containing ~63% of the data
+(in degrees if <code>x</code> is a <code>"Plane"</code> or <code>"Line"</code>, or in radians
 if otherwise). For enough large sample it approaches the angular standard
 deviation (<code>"csd"</code>) of the Fisher statistics.</p>
 <p><code>rdegree</code> returns the degree of preferred orientation of vectors, range: (0, 1).</p>
 <p><code>sd_error</code> returns the spherical standard error (numeric). If the number of
 data is less than 25, if will print a additional message, that the output
 value might not be a good estimator.</p>
-<p><code>confidence_angle</code> returns the semi-vertical angle \(q\) about the
-mean \(\mu\) (in degree if <code>x</code> is a <code>"Plane"</code> or <code>"Line"</code>, or in radians
+<p><code>sph_confidence_angle</code> returns the half-apical angle \(q\) of a cone about the
+mean \(\mu\) (in degrees if <code>x</code> is a <code>"Plane"</code> or <code>"Line"</code>, or in radians
 if otherwise). The \(100(1-\alpha)\%\) confidence interval is than given by \(\mu \pm q\).</p>
 <p><code>estimate_k</code> returns the estimated concentration of the von Mises-Fisher distribution \(\kappa\) (after Sra, 2011).</p>
     </div>
@@ -120,11 +117,13 @@ if otherwise). The \(100(1-\alpha)\%\) confidence interval is than given by \(\m
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20250411</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">100</span>, mu <span class="op">=</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">50</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">sph_mean</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Line object (n = 1):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   azimuth    plunge </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 115.21007  52.67744 </span>
-<span class="r-in"><span><span class="fu">var</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">sph_sd</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 40.82336</span>
+<span class="r-in"><span><span class="fu">sph_var</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.224176</span>
 <span class="r-in"><span><span class="fu">delta</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 39.1202</span>
@@ -132,24 +131,24 @@ if otherwise). The \(100(1-\alpha)\%\) confidence interval is than given by \(\m
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.9844835</span>
 <span class="r-in"><span><span class="fu">sd_error</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.01451</span>
-<span class="r-in"><span><span class="fu">confidence_angle</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">sph_confidence_angle</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6.965534</span>
 <span class="r-in"><span><span class="fu">estimate_k</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.673486</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#' weights:</span></span></span>
 <span class="r-in"><span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">sph_mean</span><span class="op">(</span><span class="va">x2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Line object (n = 1):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> azimuth  plunge </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       0      45 </span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">x2</span>, w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">sph_mean</span><span class="op">(</span><span class="va">x2</span>, w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Line object (n = 1):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  azimuth   plunge </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  0.00000 63.43495 </span>
-<span class="r-in"><span><span class="fu">var</span><span class="op">(</span><span class="va">x2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">sph_var</span><span class="op">(</span><span class="va">x2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.2928932</span>
-<span class="r-in"><span><span class="fu">var</span><span class="op">(</span><span class="va">x2</span>, w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">sph_var</span><span class="op">(</span><span class="va">x2</span>, w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.254644</span>
 </code></pre></div>
     </div>

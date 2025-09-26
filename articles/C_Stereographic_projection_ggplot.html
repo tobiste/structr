@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9009</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -106,7 +106,7 @@ Stephan</h4>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">quality</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">lines</span><span class="op">)</span>, min <span class="op">=</span> <span class="fl">1</span>, max <span class="op">=</span> <span class="fl">45</span><span class="op">)</span> <span class="co"># assigning a random quality score to the data (can be replaced with real data)</span></span>
 <span></span>
-<span><span class="va">lines_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">lines</span>, w <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">quality</span><span class="op">)</span></span>
+<span><span class="va">lines_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stats.html">sph_mean</a></span><span class="op">(</span><span class="va">lines</span>, w <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">quality</span><span class="op">)</span></span>
 <span><span class="va">lines_delta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stats.html">delta</a></span><span class="op">(</span><span class="va">lines</span>, w <span class="op">=</span> <span class="fl">1</span> <span class="op">/</span> <span class="va">quality</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/ggstereo.html">ggstereo</a></span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>

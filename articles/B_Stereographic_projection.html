@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.1.9009</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -119,15 +119,15 @@ projection</p>
 <span><span class="va">line_weightings</span> <span class="op">&lt;-</span> <span class="fl">6</span> <span class="op">/</span> <span class="va">example_lines</span><span class="op">$</span><span class="va">quality</span></span></code></pre></div>
 <p>The (weighted) mean orientation</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">lines_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/mean.html" class="external-link">mean</a></span><span class="op">(</span><span class="va">lines</span>, w <span class="op">=</span> <span class="va">line_weightings</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">lines_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stats.html">sph_mean</a></span><span class="op">(</span><span class="va">lines</span>, w <span class="op">=</span> <span class="va">line_weightings</span><span class="op">)</span></span></code></pre></div>
 <p>The (weighted) variance</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">lines_variance</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stats.html">var</a></span><span class="op">(</span><span class="va">lines</span>, w <span class="op">=</span> <span class="va">line_weightings</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">lines_variance</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stats.html">sph_var</a></span><span class="op">(</span><span class="va">lines</span>, w <span class="op">=</span> <span class="va">line_weightings</span><span class="op">)</span></span></code></pre></div>
 <p>the (weighted) standard deviation (i.e. the 63% cone around the mean)
 and the 95% confidence cone around the mean:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lines_delta</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stats.html">delta</a></span><span class="op">(</span><span class="va">lines</span>, w <span class="op">=</span> <span class="va">line_weightings</span><span class="op">)</span></span>
-<span><span class="va">lines_confangle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stats.html">confidence_angle</a></span><span class="op">(</span><span class="va">lines</span>, w <span class="op">=</span> <span class="va">line_weightings</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">lines_confangle</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stats.html">sph_confidence_angle</a></span><span class="op">(</span><span class="va">lines</span>, w <span class="op">=</span> <span class="va">line_weightings</span><span class="op">)</span></span></code></pre></div>
 <p>Taken together, this prints as</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span></span>
@@ -165,7 +165,7 @@ the orientation of the most dense, intermediate and least dense
 orientation, and thus, are used to determine the orientation of
 girdle-distributed vectors (e.g. folded planes).</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">planes_eigen</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/eigen-spherical.html">eigen</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">planes_eigen</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ot_eigen.html">ot_eigen</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"lightgrey"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
@@ -210,6 +210,8 @@ Woodcock (1977).</p>
 the orientation tensor:</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/strain_shape.html">or_shape_params</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in sqrt((1 - eig$values[1])/(eig$values[1])): NaNs produced</span></span>
+<span><span class="co">#&gt; Warning in sqrt((eig$values[3])/(1 - eig$values[3])): NaNs produced</span></span>
 <span><span class="co">#&gt; $stretch_ratios</span></span>
 <span><span class="co">#&gt;   Rxy.S1   Ryz.S2   Rxz.S1 </span></span>
 <span><span class="co">#&gt; 1.478428 1.873104 2.769250 </span></span>
@@ -219,8 +221,8 @@ the orientation tensor:</p>
 <span><span class="co">#&gt; 0.3909795 1.0185765 0.6275970 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $Vollmer</span></span>
-<span><span class="co">#&gt;         P         G         R         B         C         I         D </span></span>
-<span><span class="co">#&gt; 0.3416388 0.4120004 0.2463608 0.7536392 2.0371530 2.4750912 0.4790938 </span></span>
+<span><span class="co">#&gt;          P          G          R          B          C          I          D </span></span>
+<span><span class="co">#&gt;  68.327769  82.400078  49.272153 150.727847   2.037153   1.147654 170.240224 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $Flinn</span></span>
 <span><span class="co">#&gt; intensity.S1  symmetry.S1 </span></span>
@@ -239,7 +241,7 @@ the orientation tensor:</p>
 <span><span class="co">#&gt; 2.351532 </span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $Lisle_intensity</span></span>
-<span><span class="co">#&gt; [1] 1.147654</span></span>
+<span><span class="co">#&gt; [1] 144908.7</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $Nadai</span></span>
 <span><span class="co">#&gt;   goct.e1   eoct.e1 </span></span>
@@ -253,13 +255,13 @@ the orientation tensor:</p>
 <span><span class="co">#&gt; [1] "SSL"</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $MAD_approx</span></span>
-<span><span class="co">#&gt; [1] 16.6525</span></span>
+<span><span class="co">#&gt; [1] NaN</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $MAD</span></span>
 <span><span class="co">#&gt; [1] 32.80303</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; $US</span></span>
-<span><span class="co">#&gt; [1] 229.5308</span></span></code></pre></div>
+<span><span class="co">#&gt; [1] 28981734</span></span></code></pre></div>
 </div>
 </div>
 </div>
