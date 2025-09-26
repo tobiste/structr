@@ -173,7 +173,7 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 
 #### Hsü plot
 
-```{r woodcock, message=FALSE,warning=FALSE}
+```{r hsu, message=FALSE,warning=FALSE}
 #| fig.alt: >
 #|   Diagram showing eigen-vector analysis of some example data plotted in a
 #|   Hsü plot
