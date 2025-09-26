@@ -146,7 +146,7 @@ VollmerPlot <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...) 
 #' @param ... optional graphical parameters
 #' @references Woodcock, N. H. (1977). Specification of fabric shapes using an eigenvalue method. Geological Society of America Bulletin88, 1231<U+2013>1236. http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf
 #'
-#' @seealso [VollmerPlot()], [fabric_indexes()]
+#' @seealso [VollmerPlot()], [fabric_indexes()], [ot_eigen()]
 #'
 #' @export
 #'
@@ -176,7 +176,7 @@ WoodcockPlot <- function(x, labels = NULL, add = FALSE, ...) {
     }
     graphics::abline(a = 0, b = 1, col = "grey", lty = 1, lwd = 1.5)
   }
-  x_eigen <- eigen(x, scaled = TRUE)
+  x_eigen <- ot_eigen(x, scaled = TRUE)
   if (!is.null(labels)) {
     graphics::text(log(x_eigen$values[2] / x_eigen$values[3]), log(x_eigen$values[1] / x_eigen$values[2]), label = labels, ...)
   } else {

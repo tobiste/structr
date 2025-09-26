@@ -2,16 +2,10 @@
 % Please edit documentation in R/classes-S3.R
 \name{head-sphere}
 \alias{head-sphere}
-\alias{head}
-\alias{tail}
 \alias{head.spherical}
 \alias{tail.spherical}
 \title{Return the First or Last Parts of an Object}
 \usage{
-head(x, n = 6L, ...)
-
-tail(x, n = 6L, ...)
-
 \method{head}{spherical}(x, n = 6L, ...)
 
 \method{tail}{spherical}(x, n = 6L, ...)
@@ -40,4 +34,3 @@ x <- rvmf(n = 10)
 head(x)
 tail(x)
 }
-\keyword{internal}

@@ -14,7 +14,7 @@
 #'
 #' @name ortensor
 #'
-#' @seealso [eigen.spherical()], [inertia_tensor.spherical()]
+#' @seealso [ot_eigen()], [inertia_tensor()]
 #'
 #' @examples
 #' set.seed(20250411)
@@ -114,36 +114,34 @@ inertia_tensor.default <- function(x, w = NULL) {
 #' Decomposition of Orientation Tensor Eigenvectors and Eigenvalues
 #'
 #' @inheritParams ortensor
-#' @param ... arguments passed from other functions
+#' @param scaled logical. Whether the Eigenvectors should be scaled by the
+#' Eigenvalues (only effective if `x` is in Cartesian coordinates).
 #'
 #' @returns list containing
 #' \describe{
 #' \item{`values`}{Eigenvalues}
 #' \item{`vectors`}{Eigenvectors in coordinate system of `x`}
 #' }
+#' @export
 #'
-#' @seealso [ortensor()], [eigen()]
-#' @name eigen-spherical
-#' @aliases eigen eigen_spherical
+#' @seealso [ortensor()]
 #'
 #' @examples
 #' set.seed(20250411)
 #' mu <- rvmf(n = 1)
 #' x <- rfb(100, mu = mu, k = 1, A = diag(c(10, 0, 0)))
-#' x_eigen <- eigen(x)
+#' x_eigen <- ot_eigen(x)
 #' x_eigen
 #' plot(x, col = "grey")
-#' points(mu, labels = "mu", col = 4)
-#' points(x_eigen$vectors, col = c(1, 2, 3), labels = c("E1", "E2", "E3"))
-NULL
-
-#' @export
-#' @rdname eigen-spherical
-eigen.spherical <- function(x, ...) {
+#' points(mu, col = 4)
+#' text(mu, labels = "Mean", col = 4, pos = 4)
+#' points(x_eigen$vectors, col = c(1, 2, 3))
+#' text(x_eigen$vectors, col = c(1, 2, 3), labels = c("E1", "E2", "E3"), pos = 4)
+ot_eigen <- function(x, scaled = FALSE) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   xeig <- Vec3(x) |>
     unclass() |>
-    or_eigen(...)
+    .or_eigen_helper(scaled = scaled)
 
   xeig$vectors <- Vec3(xeig$vectors)
 
@@ -154,23 +152,12 @@ eigen.spherical <- function(x, ...) {
   xeig
 }
 
-#' @export
-#' @rdname eigen-spherical
-eigen <- function(x, ...) UseMethod("eigen")
-
-#' @export
-eigen.default <- function(x, ...) base::eigen(x, ...)
-
-#' @export
-eigen.matrix <- function(x, ...) base::eigen(x, ...)
 
 #' Helper function for Eigenvalues and Eigenvectors of a Set of Vectors
 #'
 #' @keywords internal
-#' @inheritParams ortensor
-#' @param scaled logical. Whether the Eigenvectors should be scaled by the
-#' Eigenvalues (only effective if `x` is in Cartesian coordinates).
-or_eigen <- function(x, scaled = FALSE) {
+#' @inheritParams ot_eigen
+.or_eigen_helper <- function(x, scaled = FALSE) {
   x_or <- ortensor.default(x, norm = FALSE)
   x_eigen <- eigen(x_or, symmetric = TRUE)
   x_eigen$vectors <- t(x_eigen$vectors)
@@ -206,7 +193,7 @@ or_eigen <- function(x, scaled = FALSE) {
 #' \item{`US`}{Uniformity statistic of Mardia (1972)}
 #' }
 #'
-#' @seealso [ortensor()], [eigen.spherical()], [fabric_indexes()]
+#' @seealso [ortensor()], [ot_eigen()], [fabric_indexes()]
 #'
 #' @returns list
 #'
@@ -246,7 +233,7 @@ NULL
 #' @rdname strain_shape
 #' @export
 principal_stretch <- function(x) {
-  x_eigen <- eigen(x)
+  x_eigen <- ot_eigen(x)
   s <- sqrt(x_eigen$values)
   names(s) <- c("S1", "S2", "S3")
   return(s)
@@ -273,7 +260,8 @@ principal_strain <- function(x) {
 #' @rdname strain_shape
 #' @export
 or_shape_params <- function(x) {
-  eig <- ortensor(x, norm = TRUE) |> eigen()
+  # eig <- ortensor(x, norm = TRUE) |> ot_eigen()
+  eig <- ot_eigen(x)
   s <- principal_stretch(x)
   e <- principal_strain(x)
   # names(s) <- names(e) <- NULL
@@ -373,7 +361,7 @@ or_shape_params <- function(x) {
 #'
 #' @export
 #'
-#' @seealso [eigen.spherical()]
+#' @seealso [ot_eigen()]
 #'
 #' @examples
 #' set.seed(1)
@@ -389,7 +377,7 @@ or_shape_params <- function(x) {
 #' legend("topright", legend = c("original", "centered"), col = c("grey", "black"), pch = 16)
 center <- function(x, max_vertical = FALSE) {
   x_cart <- Vec3(x)
-  x_eigen <- eigen.spherical(x_cart)
+  x_eigen <- ot_eigen(x_cart)
 
   # x_trans <- t(apply(x_cart, 1, vtransform, A = x_eigen$vectors, norm = TRUE)) |>
   #   Vec3()

@@ -2,29 +2,23 @@
 % Please edit documentation in R/vector_stats.R
 \name{stats}
 \alias{stats}
-\alias{mean.spherical}
-\alias{sd}
-\alias{sd.spherical}
-\alias{var}
-\alias{var.spherical}
-\alias{confidence_angle}
+\alias{sph_mean}
+\alias{sph_sd}
+\alias{sph_var}
+\alias{sph_confidence_angle}
 \alias{rdegree}
 \alias{sd_error}
 \alias{delta}
 \alias{estimate_k}
 \title{Statistical estimators of the distribution of a set of vectors}
 \usage{
-\method{mean}{spherical}(x, na.rm = TRUE, ...)
+sph_mean(x, na.rm = TRUE, ...)
 
-sd(x, na.rm = TRUE, ...)
+sph_sd(x, ...)
 
-\method{sd}{spherical}(x, na.rm = TRUE, ...)
+sph_var(x, ...)
 
-var(x, na.rm = TRUE, ...)
-
-\method{var}{spherical}(x, na.rm = TRUE, ...)
-
-confidence_angle(x, w = NULL, alpha = 0.05, na.rm = TRUE)
+sph_confidence_angle(x, w = NULL, alpha = 0.05, na.rm = TRUE)
 
 rdegree(x, w = NULL, na.rm = FALSE)
 
@@ -49,13 +43,18 @@ estimate_k(x, w = NULL, na.rm = FALSE)
 Statistical estimators of the distribution of a set of vectors
 }
 \details{
-\code{mean} returns the spherical mean of a set of vectors
+\code{sph_mean} returns the spherical mean of a set of vectors
 (object of class of \code{x}).
 
-\code{var} returns the spherical variance (numeric), based on resultant length
+\code{sph_var} returns the spherical variance (numeric), based on resultant length
 (Mardia 1972).
 
-\code{delta} returns the cone angle containing ~63\% of the data (in degree if \code{x} is a \code{"Plane"} or \code{"Line"}, or in radians
+\code{sph_sd} returns the spherical standard deviation (numeric) given as the half
+apical angle of a cone about the mean vector. In degrees if \code{x} is a
+\code{"Plane"} or \code{"Line"}, or in radians if otherwise.
+
+\code{delta} returns the half apical angle of the cone containing ~63\% of the data
+(in degrees if \code{x} is a \code{"Plane"} or \code{"Line"}, or in radians
 if otherwise). For enough large sample it approaches the angular standard
 deviation (\code{"csd"}) of the Fisher statistics.
 
@@ -65,8 +64,8 @@ deviation (\code{"csd"}) of the Fisher statistics.
 data is less than 25, if will print a additional message, that the output
 value might not be a good estimator.
 
-\code{confidence_angle} returns the semi-vertical angle \eqn{q} about the
-mean \eqn{\mu} (in degree if \code{x} is a \code{"Plane"} or \code{"Line"}, or in radians
+\code{sph_confidence_angle} returns the half-apical angle \eqn{q} of a cone about the
+mean \eqn{\mu} (in degrees if \code{x} is a \code{"Plane"} or \code{"Line"}, or in radians
 if otherwise). The \eqn{100(1-\alpha)\%} confidence interval is than given by \eqn{\mu \pm q}.
 
 \code{estimate_k} returns the estimated concentration of the von Mises-Fisher distribution \eqn{\kappa} (after Sra, 2011).
@@ -74,18 +73,19 @@ if otherwise). The \eqn{100(1-\alpha)\%} confidence interval is than given by \e
 \examples{
 set.seed(20250411)
 x <- rvmf(100, mu = Line(120, 50), k = 5)
-mean(x)
-var(x)
+sph_mean(x)
+sph_sd(x)
+sph_var(x)
 delta(x)
 rdegree(x)
 sd_error(x)
-confidence_angle(x)
+sph_confidence_angle(x)
 estimate_k(x)
 
 #' weights:
 x2 <- Line(c(0, 0), c(0, 90))
-mean(x2)
-mean(x2, w = c(1, 2))
-var(x2)
-var(x2, w = c(1, 2))
+sph_mean(x2)
+sph_mean(x2, w = c(1, 2))
+sph_var(x2)
+sph_var(x2, w = c(1, 2))
 }

@@ -7,9 +7,7 @@
 \alias{density_calc}
 \title{Spherical density estimation}
 \usage{
-density(x, n, weights = NULL, ...)
-
-\method{density}{spherical}(x, n = 128L, weights = NULL, ...)
+\method{density}{spherical}(x, ...)
 
 density_calc(
   x,
@@ -24,19 +22,19 @@ density_calc(
 \arguments{
 \item{x}{object of class \code{"Vec3()"}, \code{"Line()"}, or \code{"Plane()"}.}
 
-\item{n}{integer. Gridzise. \code{128} by default.}
-
-\item{weights}{(optional) numeric vector of length of \code{nrow(x)}.
-The relative weight to be applied to each input measurement. The array
-will be normalized to sum to 1, so absolute value of the \code{weights} do not
-affect the result. Defaults to \code{NULL}}
-
 \item{...}{arguments passed to \code{\link[=density_calc]{density_calc()}}}
 
 \item{FUN}{density estimation function if \code{kamb=TRUE}; one of \code{\link[=exponential_kamb]{exponential_kamb()}} (the default),
 \link{kamb_count}, and \code{\link[=schmidt_count]{schmidt_count()}}.}
 
+\item{n}{integer. Gridzise. \code{128} by default.}
+
 \item{sigma}{numeric. Radius for Kamb circle used for counting. 3 by default.}
+
+\item{weights}{(optional) numeric vector of length of \code{nrow(x)}.
+The relative weight to be applied to each input measurement. The array
+will be normalized to sum to 1, so absolute value of the \code{weights} do not
+affect the result. Defaults to \code{NULL}}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
 hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}

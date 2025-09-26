@@ -127,13 +127,18 @@ v_confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = FALSE) {
 #'
 #' @name stats
 #' @details
-#' `mean` returns the spherical mean of a set of vectors
+#' `sph_mean` returns the spherical mean of a set of vectors
 #' (object of class of `x`).
 #'
-#' `var` returns the spherical variance (numeric), based on resultant length
+#' `sph_var` returns the spherical variance (numeric), based on resultant length
 #' (Mardia 1972).
+#' 
+#' `sph_sd` returns the spherical standard deviation (numeric) given as the half 
+#' apical angle of a cone about the mean vector. In degrees if `x` is a 
+#' `"Plane"` or `"Line"`, or in radians if otherwise.
 #'
-#' `delta` returns the cone angle containing ~63% of the data (in degree if `x` is a `"Plane"` or `"Line"`, or in radians
+#' `delta` returns the half apical angle of the cone containing ~63% of the data 
+#' (in degrees if `x` is a `"Plane"` or `"Line"`, or in radians
 #' if otherwise). For enough large sample it approaches the angular standard
 #' deviation (`"csd"`) of the Fisher statistics.
 #'
@@ -143,8 +148,8 @@ v_confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = FALSE) {
 #' data is less than 25, if will print a additional message, that the output
 #' value might not be a good estimator.
 #'
-#' `confidence_angle` returns the semi-vertical angle \eqn{q} about the
-#' mean \eqn{\mu} (in degree if `x` is a `"Plane"` or `"Line"`, or in radians
+#' `sph_confidence_angle` returns the half-apical angle \eqn{q} of a cone about the
+#' mean \eqn{\mu} (in degrees if `x` is a `"Plane"` or `"Line"`, or in radians
 #' if otherwise). The \eqn{100(1-\alpha)\%} confidence interval is than given by \eqn{\mu \pm q}.
 #'
 #' `estimate_k` returns the estimated concentration of the von Mises-Fisher distribution \eqn{\kappa} (after Sra, 2011).
@@ -152,25 +157,26 @@ v_confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = FALSE) {
 #' @examples
 #' set.seed(20250411)
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)
-#' mean(x)
-#' var(x)
+#' sph_mean(x)
+#' sph_sd(x)
+#' sph_var(x)
 #' delta(x)
 #' rdegree(x)
 #' sd_error(x)
-#' confidence_angle(x)
+#' sph_confidence_angle(x)
 #' estimate_k(x)
 #'
 #' #' weights:
 #' x2 <- Line(c(0, 0), c(0, 90))
-#' mean(x2)
-#' mean(x2, w = c(1, 2))
-#' var(x2)
-#' var(x2, w = c(1, 2))
+#' sph_mean(x2)
+#' sph_mean(x2, w = c(1, 2))
+#' sph_var(x2)
+#' sph_var(x2, w = c(1, 2))
 NULL
 
 #' @rdname stats
-#' @exportS3Method base::mean
-mean.spherical <- function(x, na.rm = TRUE, ...) {
+#' @export
+sph_mean <- function(x, na.rm = TRUE, ...) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
 
   x_mean <- Vec3(x) |>
@@ -189,28 +195,14 @@ mean.spherical <- function(x, na.rm = TRUE, ...) {
   x_mean
 }
 
-# #' @rdname stats
-# #' @export
-# mean <- function(x, ...) UseMethod("mean")
-
-# #' @export
-# mean.default <- function(x, ...) base::mean(x, ...)
 
 #' @rdname stats
 #' @export
-# #' @keywords internal
-sd <- function(x, na.rm = TRUE, ...) UseMethod("sd")
-
-#' @export
-sd.default <- function(x, na.rm = TRUE, ...) stats::sd(x, na.rm = na.rm)
-
-#' @rdname stats
-#' @export
-sd.spherical <- function(x, na.rm = TRUE, ...) {
+sph_sd <- function(x, ...) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   x_sd <- Vec3(x) |>
     unclass() |>
-    v_sd(na.rm = na.rm, ...)
+    v_sd(...)
   if (is.Line(x) | is.Plane(x)) {
     x_sd * 180 / pi
   } else {
@@ -218,31 +210,18 @@ sd.spherical <- function(x, na.rm = TRUE, ...) {
   }
 }
 
-#' @export
-#' @rdname stats
-var <- function(x, na.rm = TRUE, ...) UseMethod("var")
-
-#' @export
-# #' @exportS3Method stats::var
-var.default <- function(x, na.rm = TRUE, ...) stats::var(x, na.rm = na.rm, ...)
-
-# #' @export
-# var.data.frame <- function(x, ...) {
-#   sapply(x, var, ...)
-# }
-
 #' @rdname stats
 #' @export
-var.spherical <- function(x, na.rm = TRUE, ...) {
+sph_var <- function(x, ...) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   Vec3(x) |>
     unclass() |>
-    v_var(na.rm = na.rm, ...)
+    v_var(...)
 }
 
 #' @rdname stats
 #' @export
-confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = TRUE) {
+sph_confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = TRUE) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   ca <- Vec3(x) |>
     unclass() |>
@@ -321,7 +300,7 @@ estimate_k <- function(x, w = NULL, na.rm = FALSE) {
 #' Estimates concentration parameter, angular standard deviation, and
 #' confidence limit.
 #'
-#' @inheritParams mean.spherical
+#' @inheritParams sph_mean
 #' @param conf.level numeric. Level of confidence.
 #'
 #' @returns list, with
@@ -383,7 +362,7 @@ fisher_statistics <- function(x, w = NULL, conf.level = 0.95, na.rm = TRUE) {
 
 #' Elliptical concentration and confidence cone estimation
 #'
-#' @inheritParams mean.spherical
+#' @inheritParams sph_mean
 #'
 #' @return list
 #' \describe{
@@ -452,7 +431,7 @@ bingham_statistics <- function(x, w = NULL, na.rm = TRUE) {
 #' Test against the null-hypothesis that the samples are drawn from the same Fisher population.
 #'
 #' @param x,y  objects of class `"Vec3"`, `"Line"`, or `"Plane"`.
-#' @inheritParams mean.spherical
+#' @inheritParams sph_mean
 #'
 #' @returns list indicating the F-statistic and the p-value.
 #'
@@ -509,7 +488,7 @@ fisher_ftest <- function(x, y, alpha = 0.05, na.rm = TRUE) {
 #'
 #' Finds k groups of clusters using the angular distance matrix
 #'
-#' @inheritParams mean.spherical
+#' @inheritParams sph_mean
 #' @param k integer. Number of desired clusters.
 #' @param method character. Clustering method to be applied. Currently implemented are
 #' \describe{
@@ -537,9 +516,9 @@ fisher_ftest <- function(x, y, alpha = 0.05, na.rm = TRUE) {
 #' x2 <- rvmf(100, mu = Line(0, 0), k = 20)
 #' x3 <- rvmf(100, mu = Line(0, 90), k = 20)
 #' x123 <- rbind(x1, x2, x3)
-#' cl <- v_cluster(x123, k = 3)
+#' cl <- sph_cluster(x123, k = 3)
 #' plot(x123, col = cl$cluster)
-v_cluster <- function(x, k, method = c("hclust", "kmeans", "diana", "agnes", "pam", "clara", "fanny"), ...) {
+sph_cluster <- function(x, k, method = c("hclust", "kmeans", "diana", "agnes", "pam", "clara", "fanny"), ...) {
   method <- match.arg(method)
   dmat <- v_dist(x)
 
@@ -591,21 +570,12 @@ v_dist <- function(x, ...) {
 #' @inheritParams stats
 #' @param ... optional parameters passed to [stats::as.dist()]
 #' @returns distance matrix
-# #' @name dist-sphere
-#' @exportS3Method stats::dist
+#' @exportS3Method stats::dist 
 #'
 #' @examples
 #' set.seed(20250411)
 #' dist(rvmf(100, mu = Line(90, 0), k = 20))
 dist.spherical <- function(x, ...) v_dist(x, ...)
-
-# #' @rdname dist-sphere
-# #' @export
-#dist <- function(x, ...) UseMethod("dist")
-
-# #' @rdname dist-sphere
-# #' @export
-#dist.default <- function(x, ...) stats::dist(x, ...)
 
 
 
@@ -614,19 +584,20 @@ dist.spherical <- function(x, ...) v_dist(x, ...)
 #' Calculates the mean, variance, 68% cone, and the confidence cone around the mean.
 #'
 #' @param object object of class `"Vec3"`, `"Line"`, or `"Plane"`.
-#' @param ... parameters passed to [mean()], [var()], [delta()], and [confidence_angle()]
+#' @param ... parameters passed to [sph_mean()], [sph_var()], [delta()], and [confidence_angle()]
 #'
 #' @returns named vector
 #' @exportS3Method base::summary
+#' @importFrom stats setNames
 #'
 #' @examples
 #' set.seed(20250411)
 #' summary(rvmf(100, mu = Line(90, 20), k = 20))
 summary.spherical <- function(object, ...) {
-  m <- mean.spherical(object, ...)
-  v <- var.spherical(object, ...)
+  m <- sph_mean(object, ...)
+  v <- sph_var(object, ...)
   d <- delta(object, ...)
-  ca <- confidence_angle(object, ...)
+  ca <- sph_confidence_angle(object, ...)
   c(m, v, d, ca) |>
     unname() |>
     stats::setNames(c(colnames(m), "variance", "68% cone", "confidence cone"))

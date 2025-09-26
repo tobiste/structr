@@ -90,10 +90,10 @@ crossprod.default <- function(x, y, ...) base::crossprod(x, y, ...)
 crossprod.spherical <- function(x, y = NULL, ...) {
   xv <- Vec3(x) |> unclass()
   if (is.null(y)) yv <- xv else yv <- Vec3(y) |> unclass()
-
+  
   xy <- vcross(xv, yv) |>
     as.Vec3()
-
+  
   if (is.Line(x)) {
     Line(xy)
   } else if (is.Plane(x)) {
@@ -149,14 +149,14 @@ rotate.default <- function(x, rotaxis, rotangle) vrotate(x, rotaxis, rotangle)
 rotate.spherical <- function(x, rotaxis, rotangle) {
   x3 <- Vec3(x) |> unclass()
   rotaxis3 <- Vec3(rotaxis) |> unclass()
-
+  
   if (is.Line(x) | is.Plane(x)) {
     rotangle <- deg2rad(rotangle)
   }
-
+  
   x_rot <- vrotate(x3, rotaxis3, rotangle) |>
     Vec3()
-
+  
   if (is.Line(x)) {
     x_rot <- Line(x_rot)
   } else if (is.Plane(x)) {
@@ -189,7 +189,7 @@ angle.spherical <- function(x, y) {
   vy <- Vec3(y) |> unclass()
   res <- vangle(vx, vy)
   res <- unname(res)
-
+  
   if (is.Line(x) | is.Plane(x)) {
     rad2deg(res)
   } else {
@@ -224,7 +224,7 @@ project.spherical <- function(x, y) {
   xv <- Vec3(x) |> unclass()
   yv <- Vec3(y) |> unclass()
   xy <- vproject(xv, yv) |> Vec3()
-
+  
   if (is.Line(x)) {
     Line(xy)
   } else if (is.Plane(x)) {
@@ -258,7 +258,7 @@ reject.spherical <- function(x, y) {
   yv <- Vec3(y) |> unclass()
   xy <- vproject(xv, yv) |> Vec3()
   rej <- xv - xy
-
+  
   if (is.Line(x)) {
     Line(rej)
   } else if (is.Plane(x)) {
@@ -274,28 +274,28 @@ v_orthogonalize <- function(x, y) {
   if (abs(vdot(x, y)) < 1e-4) {
     return(list(x, y))
   }
-
+  
   # Compute orthogonalization:
   r <- vnorm(vcross(x, y)) # rotation axis
   a <- vnorm(x) # first basis
   b <- vcross(r, a) # second basis
-
+  
   # Project x and y into the rotation coordinate system:
   rv1 <- c(vdot(r, x), vdot(a, x), vdot(b, x))
   rv2 <- c(vdot(r, y), vdot(a, y), vdot(b, y))
-
+  
   # Compute the correction angle:
   ang <- acos(vdot(rv1, rv2))
   ang_correction <- (pi / 2 - ang) / 2
-
+  
   # Rotate in opposite directions around r:
   rw1 <- vrotate(rv1, r, -ang_correction)
   rw2 <- vrotate(rv2, r, ang_correction)
-
+  
   # Transform back to NED:
   w1 <- r * rw1[1] + a * rw1[2] + b * rw1[3]
   w2 <- r * rw2[1] + a * rw2[2] + b * rw2[3]
-
+  
   list(w1, w2)
 }
 
@@ -304,7 +304,7 @@ v_orthogonalize <- function(x, y) {
 #' @keywords internal
 vtransform <- function(x, A, norm = FALSE) {
   stopifnot(is.matrix(A) & dim(A) == c(3, 3))
-
+  
   xt <- t(A %*% t(x))
   # xt <- t(vdot(A, x))
   if (norm) xt <- vnorm(xt)
@@ -317,7 +317,7 @@ transform_linear <- function(x, A, norm = FALSE) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   x <- Vec3(x) |> unclass()
   xt <- vtransform(x, A, norm) |> Vec3()
-
+  
   if (is.Line(x)) {
     Line(xt)
   } else if (is.Plane(x)) {
@@ -337,8 +337,9 @@ v_antipode <- function(x) {
 #'
 #' Returns the spherical linear interpolation of points between two vectors
 #'
-#' @inheritParams fisher_ftest
-#' @param t numeric. interpolation factor (`t = [0, 1]`).
+#' @param x0,x1 objects of class `"Vec3"`, `"Line"`, or `"Plane"` of the first 
+#' and the last points of the to be interpolated arc.
+#' @param t numeric. Interpolation factor(s) (`t = [0, 1]`).
 #'
 #' @note For non-unit vectors the interpolation is not uniform.
 #'
@@ -349,35 +350,52 @@ v_antipode <- function(x) {
 #' @export
 #' 
 #' @examples 
+#' x0 <- Line(120, 7)
+#' x1 <-  Line(10, 13)
 #' t <- seq(0, 1, .05)
-#' res <- sapply(t, function(i){
-#' vslerp(Line(120, 55), Line(0, 90), t = i) |> unclass()
-#' }) |> t() |> rbind() |> as.Line()
+#' xslerp <- slerp(x0, x1, t)
 #' 
-#' plot(res, col = assign_col(t))
-#' points(rbind(Line(120, 55),  Line(10, 80)))
-vslerp <- function(x, y, t, na.rm = TRUE) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+#' plot(xslerp, col = assign_col(t))
+#' points(rbind(x0,  x1))
+slerp <- function(x0, x1, t) {
+  vslerp <- sapply(t, function(i){
+    slerp1(x0, x1, t = i) |> unclass()
+  }) |> 
+    t() |> 
+    rbind() |> 
+    as.Vec3()
+
+ if (is.Line(x0)) {
+    Line(vslerp)
+  } else if (is.Plane(x0)) {
+    Plane(vslerp)
+  } else {
+    vslerp
+  }
+}
+
+
+slerp1 <- function(x0, x1, t) {
+  stopifnot(is.Vec3(x0) | is.Line(x0) | is.Plane(x0))
+  stopifnot(is.Vec3(x1) | is.Line(x1) | is.Plane(x1))
   stopifnot(
     t>=0 | t<=1
   )
   
-  if (isTRUE(na.rm)) {
-    x <- x[!rowSums(!is.finite(x)), ]
-    y <- y[!rowSums(!is.finite(y)), ]
-  }
+  # if (isTRUE(na.rm)) {
+  #   x0 <- x0[!rowSums(!is.finite(x0)), ]
+  #   x1 <- x1[!rowSums(!is.finite(x1)), ]
+  # }
   
-  vx <- Vec3(x)
-  vy <- Vec3(y)
+  vx0 <- Vec3(x0)
+  vx1 <- Vec3(x1)
   
-  theta <- angle(x, y)
-  slerp <- (x * sin((1 - t) * theta) + y * sin(t * theta)) / sin(theta)
+  theta <- dotprod(vx0,vx1)
+  sin.theta <- sin(theta)
   
-  if (is.Line(x)) {
-    Line(slerp)
-  } else if (is.Plane(x)) {
-    Plane(slerp)
-  } else {
-    slerp
-  }
+  a <- sin(((1 - t) * theta)) / sin.theta * vx0 
+  b <- sin(t * theta) / sin.theta * vx1
+  
+  # return as Vec3
+  return(a + b)
 }

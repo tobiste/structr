@@ -1,23 +1,25 @@
 #' von Mises-Fisher Distribution
 #'
 #' Density and random generation for the spherical normal distribution with mean
-#' and kappa.
+#' and concentration parameter (\eqn{\kappa}) .
 #'
 #' @param n integer. number of random samples to be generated
 #' @param x,mu object of class `"Vec3"`, `"Line"` or `"Plane"`
-#' @param k numeric. The concentration parameter (\eqn{\kappa}) of the the von
+#' @param k numeric. The concentration parameter (\eqn{\kappa}) of the von
 #' Mises-Fisher distribution
 #' @seealso [runif.spherical()] for alternative algorithms to generate uniform
 #' distributed samples on a sphere, [rkent()] for Kent distribution,
 #' [rfb()] for Fisher-Bingham distribution.
 #' @source Adapted fom [rotasym::r_vMF()] and [rotasym::d_vMF()]
 #' @importFrom rotasym r_vMF d_vMF
+# #' @importFrom Directional rvmf dvmf
 #' @name vonmises-fisher
 #' @examples
 #' set.seed(20250411)
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)
-#' dvmf(x, mu = Line(120, 50))
-#' plot(x)
+#' dx <- dvmf(x, mu = Line(120, 50)); head(dx)
+#' 
+#' plot(x, col = assign_col(dx))
 NULL
 
 #' @rdname vonmises-fisher
@@ -28,6 +30,7 @@ rvmf <- function(n = 100, mu = Vec3(1, 0, 0), k = 5) {
     unclass() |>
     c()
   res <- rotasym::r_vMF(n, muv, k)
+  # res <- Directional::rvmf(n, muv, k)
   colnames(res) <- c("x", "y", "z")
   res <- Vec3(res)
 
@@ -49,6 +52,7 @@ dvmf <- function(x, mu, k = 5) {
     unclass() |>
     c()
   rotasym::d_vMF(xv, muv, k)
+  # Directional::dvmf(xv, muv, k) |> as.numeric()
 }
 
 

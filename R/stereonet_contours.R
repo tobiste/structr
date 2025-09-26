@@ -44,7 +44,7 @@
 #' wp <- 6 / ifelse(is.na(example_planes$quality), 6, example_planes$quality)
 #' my_planes <- Plane(example_planes$dipdir, example_planes$dip)
 #' fabric_p <- or_shape_params(my_planes)$Vollmer["D"]
-#' my_planes_eig <- eigen(my_planes)
+#' my_planes_eig <- ot_eigen(my_planes)
 #'
 #' stereoplot(guides = TRUE, col = "grey96")
 #' points(my_planes, col = "grey", pch = 16, cex = .5)
@@ -66,7 +66,7 @@
 #' stereoplot(guides = TRUE, col = "grey96")
 #' points(my_lines, col = "grey", pch = 16, cex = .5)
 #' contour(my_lines, add = TRUE, weights = wl)
-#' points(mean(my_lines, w = wl), col = "black", pch = 16)
+#' points(sph_mean(my_lines, w = wl), col = "black", pch = 16)
 #' title(
 #'   main = "Lines",
 #'   sub = paste0(
@@ -257,18 +257,6 @@ contour.spherical <- function(x, add = FALSE, density.params = list(),
   )
 }
 
-# #' @export
-# #' @keywords internal
-# contour <- function(x, ...) UseMethod("contour", x, ...)
-
-# #' @export
-# #' @keywords internal
-# #' @rdname stereo_contour
-# filled.contour <- function(x, ...) UseMethod("filled.contour")
-
-# #' @export
-# filled.contour.default <- function(x, ...) graphics::filled.contour(x, ...)
-
 #' @rdname stereo_contour
 #' @export
 contourf <- function(x, add = FALSE, density.params = list(),
@@ -283,14 +271,6 @@ contourf <- function(x, add = FALSE, density.params = list(),
     col.params = col.params
   )
 }
-
-
-# #' @rdname stereo_contour
-# #' @exportS3Method stats::filled.contour
-# #' @export
-# filled.contour.spherical <- function(x, ...) {
-#   contourf(x, ...)
-# }
 
 #' @rdname stereo_contour
 #' @exportS3Method stats::image
@@ -308,6 +288,3 @@ image.spherical <- function(x, add = FALSE, density.params = list(),
   )
 }
 
-# #' @export
-# #' @keywords internal
-# image <- function(x, ...) UseMethod("image", x, ...)

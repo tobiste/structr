@@ -30,7 +30,7 @@
 #' @importFrom sf st_transform st_coordinates st_is st_as_sf st_make_grid st_crs st_bbox
 #' @details Based on [tectonicr::stress2grid()]
 #'
-#' @seealso [tectonicr::stress2grid()], [mean.spherical()], [delta()]
+#' @seealso [tectonicr::stress2grid()], [sph_mean()], [delta()]
 #' @noRd
 #' @examples
 #' ps_vec <- rvmf() |> Line()
@@ -148,7 +148,7 @@ spatial_interpolation <- function(x,
 
           # mean vector and spherical standard deviation
           vecs <- datas[ids_R, 3:4] |> as.Line()
-          mean_vec <- mean.spherical(vecs, w) |> unclass()
+          mean_vec <- sph_(vecs, w) |> unclass()
           sd_vec <- delta(vecs, w)
         }
         c(

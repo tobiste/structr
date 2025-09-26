@@ -32,5 +32,5 @@ points(x_centered, col = "black")
 legend("topright", legend = c("original", "centered"), col = c("grey", "black"), pch = 16)
 }
 \seealso{
-\code{\link[=eigen.spherical]{eigen.spherical()}}
+\code{\link[=ot_eigen]{ot_eigen()}}
 }

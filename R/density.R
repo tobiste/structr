@@ -368,14 +368,14 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #' density(x = test, n = 100, sigma = 3, weights = runif(100))
 NULL
 
-#' @rdname density
-#' @export
-density <- function(x, n, weights = NULL, ...) UseMethod("density")
+# #' @rdname density
+# #' @export
+# density <- function(x, n, weights = NULL, ...) UseMethod("density")
 
 
 #' @rdname density
 #' @exportS3Method stats::density
-density.spherical <- function(x, n = 128L, weights = NULL, ...) density_calc(x, n = n, weights = weights, ...)
+density.spherical <- function(x, ...) density_calc(x, ...)
 
 
 #' @name density
@@ -431,7 +431,7 @@ density_calc <- function(x,
   return(res)
 }
 
-#' @export
-#' @noRd
-#' @importFrom stats density
-density.default <- function(x, n, weights, ...) stats::density(x, n, weights, ...)
+# #' @export
+# #' @noRd
+# #' @importFrom stats density
+# density.default <- function(x, n, weights, ...) stats::density(x, n, weights, ...)

@@ -30,5 +30,5 @@ WoodcockPlot(y, lab = "y", add = TRUE, col = "red")
 Woodcock, N. H. (1977). Specification of fabric shapes using an eigenvalue method. Geological Society of America Bulletin88, 1231<U+2013>1236. http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf
 }
 \seealso{
-\code{\link[=VollmerPlot]{VollmerPlot()}}, \code{\link[=fabric_indexes]{fabric_indexes()}}
+\code{\link[=VollmerPlot]{VollmerPlot()}}, \code{\link[=fabric_indexes]{fabric_indexes()}}, \code{\link[=ot_eigen]{ot_eigen()}}
 }

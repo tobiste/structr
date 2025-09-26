@@ -72,5 +72,5 @@ Watterson, Juan. (1968): "Homogeneous deformation of the gneisses of Vesterland,
 Woodcock, N. H.  (1977): "Specification of fabric shapes using an eigenvalue method." Geological Society of America Bulletin 88.9: 1231-1236.
 }
 \seealso{
-\code{\link[=ortensor]{ortensor()}}, \code{\link[=eigen.spherical]{eigen.spherical()}}, \code{\link[=fabric_indexes]{fabric_indexes()}}
+\code{\link[=ortensor]{ortensor()}}, \code{\link[=ot_eigen]{ot_eigen()}}, \code{\link[=fabric_indexes]{fabric_indexes()}}
 }

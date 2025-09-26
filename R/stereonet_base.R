@@ -619,9 +619,6 @@ plot.spherical <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = lis
   }
 }
 
-# #' @export
-# #' @keywords internal
-# plot <- function(x, ...) UseMethod("plot", x, ...)
 
 #' Add Points to a Plot
 #'
@@ -654,10 +651,6 @@ points.spherical <- function(x, upper.hem = FALSE, earea = TRUE, ...) {
   graphics::points(crds[, "x"], crds[, "y"], ...)
 }
 
-# #' @export
-# #' @keywords internal
-# points <- function(x, ...) UseMethod("points", x, ...)
-
 
 #' Add Lines to a Plot
 #'
@@ -675,10 +668,6 @@ points.spherical <- function(x, upper.hem = FALSE, earea = TRUE, ...) {
 lines.spherical <- function(x, ang = 90, ...) {
   if (is.Plane(x)) stereo_greatcircle(x, ...) else stereo_smallcircle(x, d = ang, ...)
 }
-
-# #' @export
-# #' @keywords internal
-# lines <- function(x, ...) UseMethod("lines", x, ...)
 
 
 #' Add Points to a Plot
@@ -711,10 +700,6 @@ text.spherical <- function(x, labels = seq_along(x[, 1]), upper.hem = FALSE, ear
 
   graphics::text(crds[, "x"], crds[, "y"], labels = labels, ...)
 }
-
-# #' @export
-# #' @keywords internal
-# text <- function(x, ...) UseMethod("text", x, ...)
 
 
 hypot <- function(x, y) {

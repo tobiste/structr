@@ -16,20 +16,21 @@ dvmf(x, mu, k = 5)
 \arguments{
 \item{n}{integer. number of random samples to be generated}
 
-\item{k}{numeric. The concentration parameter (\eqn{\kappa}) of the the von
+\item{k}{numeric. The concentration parameter (\eqn{\kappa}) of the von
 Mises-Fisher distribution}
 
 \item{x, mu}{object of class \code{"Vec3"}, \code{"Line"} or \code{"Plane"}}
 }
 \description{
 Density and random generation for the spherical normal distribution with mean
-and kappa.
+and concentration parameter (\eqn{\kappa}) .
 }
 \examples{
 set.seed(20250411)
 x <- rvmf(100, mu = Line(120, 50), k = 5)
-dvmf(x, mu = Line(120, 50))
-plot(x)
+dx <- dvmf(x, mu = Line(120, 50)); head(dx)
+
+plot(x, col = assign_col(dx))
 }
 \seealso{
 \code{\link[=runif.spherical]{runif.spherical()}} for alternative algorithms to generate uniform

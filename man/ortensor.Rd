@@ -33,5 +33,5 @@ x <- rfb(100, mu = Line(120, 50), k = 1, A = diag(c(10, 0, 0)))
 ortensor(x)
 }
 \seealso{
-\code{\link[=eigen.spherical]{eigen.spherical()}}, \code{\link[=inertia_tensor.spherical]{inertia_tensor.spherical()}}
+\code{\link[=ot_eigen]{ot_eigen()}}, \code{\link[=inertia_tensor]{inertia_tensor()}}
 }

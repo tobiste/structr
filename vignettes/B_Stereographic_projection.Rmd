@@ -78,20 +78,20 @@ line_weightings <- 6 / example_lines$quality
 The (weighted) mean orientation
 
 ```{r stat_mean}
-lines_mean <- mean(lines, w = line_weightings)
+lines_mean <- sph_mean(lines, w = line_weightings)
 ```
 
 The (weighted) variance
 
 ```{r stat_var}
-lines_variance <- var(lines, w = line_weightings)
+lines_variance <- sph_var(lines, w = line_weightings)
 ```
 
 the (weighted) standard deviation (i.e. the 63% cone around the mean) and the 95% confidence cone around the mean:
 
 ```{r stat_delta}
 lines_delta <- delta(lines, w = line_weightings)
-lines_confangle <- confidence_angle(lines, w = line_weightings)
+lines_confangle <- sph_confidence_angle(lines, w = line_weightings)
 ```
 
 Taken together, this prints as
@@ -131,7 +131,7 @@ The orientation tensor (Scheidegger 1965) is a matrix comprised of all direction
 #| fig.alt: >
 #|   Diagram showing eigen-vector analysis of some example data plotted in an
 #|   equal-area projection
-planes_eigen <- eigen(planes)
+planes_eigen <- ot_eigen(planes)
 
 stereoplot(guides = FALSE)
 points(planes, col = "lightgrey", pch = 1, cex = .5)
