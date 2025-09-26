@@ -57,7 +57,11 @@
 <span></span>
 <span><span class="fu">normal_stress</span><span class="op">(</span><span class="va">sigma1</span>, <span class="va">sigma3</span>, <span class="va">theta</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">fracture_angle</span><span class="op">(</span><span class="va">mu</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">fracture_angle</span><span class="op">(</span><span class="va">mu</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">slip_tendency</span><span class="op">(</span><span class="va">sigma_s</span>, <span class="va">sigma_n</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">dilatation_tendency</span><span class="op">(</span><span class="va">sigma1</span>, <span class="va">sigma3</span>, <span class="va">sigma_n</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -75,6 +79,10 @@
 <dt id="arg-mu">mu<a class="anchor" aria-label="anchor" href="#arg-mu"></a></dt>
 <dd><p>numeric. Coefficient of internal friction \(\mu\).</p></dd>
 
+
+<dt id="arg-sigma-s-sigma-n">sigma_s, sigma_n<a class="anchor" aria-label="anchor" href="#arg-sigma-s-sigma-n"></a></dt>
+<dd><p>numeric. Magnitudes of shear and normal stress (\(\sigma_s\) and \(\sigma_n\)), respectively.</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -90,12 +98,17 @@
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 775</span>
 <span class="r-in"><span><span class="fu">mean_stress</span><span class="op">(</span><span class="va">s1</span>, <span class="va">s3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 637.5</span>
-<span class="r-in"><span><span class="fu">shear_stress</span><span class="op">(</span><span class="va">s1</span>, <span class="va">s3</span>, theta <span class="op">=</span> <span class="fl">35</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">ss</span> <span class="op">&lt;-</span> <span class="fu">shear_stress</span><span class="op">(</span><span class="va">s1</span>, <span class="va">s3</span>, theta <span class="op">=</span> <span class="fl">35</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ss</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 364.1309</span>
-<span class="r-in"><span><span class="fu">normal_stress</span><span class="op">(</span><span class="va">s1</span>, <span class="va">s3</span>, theta <span class="op">=</span> <span class="fl">35</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">sn</span> <span class="op">&lt;-</span> <span class="fu">normal_stress</span><span class="op">(</span><span class="va">s1</span>, <span class="va">s3</span>, theta <span class="op">=</span> <span class="fl">35</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">sn</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 504.9672</span>
 <span class="r-in"><span><span class="fu">fracture_angle</span><span class="op">(</span>mu <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 60.48188</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">slip_tendency</span><span class="op">(</span><span class="va">ss</span>, <span class="va">sn</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.7210981</span>
+<span class="r-in"><span><span class="fu">dilatation_tendency</span><span class="op">(</span><span class="va">s1</span>, <span class="va">s3</span>, <span class="va">sn</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.6710101</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
