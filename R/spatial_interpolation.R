@@ -21,7 +21,7 @@
 #' @param R_range Numeric value or vector specifying the kernel half-width, i.e.
 #'  the search radius (in km). Default is `1`
 #' @param .compact logical. Run [compact_grid()] at the end
-#' @param lon_range,lat_range two column vector specifying the coordinate range. 
+#' @param lon_range,lat_range two column vector specifying the coordinate range.
 #' Ignored when grid is specified.
 #'
 #' @returns list

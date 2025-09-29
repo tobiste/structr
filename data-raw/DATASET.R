@@ -41,27 +41,27 @@ holst <- tibble::tribble(
   6, 0.75, 2.2,
   7, 0.96, 1.61,
   8, 1.64, 1.25,
-  9, 0.56, 2.08, 
-  10, 1.45, 1.39, 
-  11, 1.95, 1.1, 
-  12, 2.03, 0.92, 
+  9, 0.56, 2.08,
+  10, 1.45, 1.39,
+  11, 1.95, 1.1,
+  12, 2.03, 0.92,
   13, 2.69, 0.83,
   14, 2.2, 1.38,
-  15, 1.76, 1.13, 
+  15, 1.76, 1.13,
   16, 0.13, 2.64,
   17, 0.05, 2.89
-) |> 
-  # mutate(locality = as.integer(locality)) |> 
+) |>
+  # mutate(locality = as.integer(locality)) |>
   mutate(
     R_XY = exp(e1e2),
     R_YZ = exp(e2e3),
     R_XZ = R_XY * R_YZ,
     K = e1e2 / e2e3, # Hossack 1968
-    v = (1 - K)/(1 + K),
-    es = 1/sqrt(3) *sqrt(log(R_XY)^2 +log(R_YZ)^2 + log(1/R_XZ)^2), # Nadai, 1963
+    v = (1 - K) / (1 + K),
+    es = 1 / sqrt(3) * sqrt(log(R_XY)^2 + log(R_YZ)^2 + log(1 / R_XZ)^2), # Nadai, 1963
     r = R_XY + R_YZ - 1 # Wattersion 1968
-  ) |> 
-  select(R_XY, R_YZ) |> 
+  ) |>
+  select(R_XY, R_YZ) |>
   as.matrix()
 # holst
 usethis::use_data(holst, overwrite = TRUE)

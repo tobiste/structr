@@ -64,10 +64,10 @@ They can be represented in the **Flinn diagram** (linear of logarithmic axes)...
 #| fig.alt: >
 #|   Flinn diagram
 data("holst")
-R_XY <- holst[, 'R_XY']
-R_YZ <- holst[, 'R_YZ']
+R_XY <- holst[, "R_XY"]
+R_YZ <- holst[, "R_YZ"]
 
-flinn_plot(R_XY, R_YZ, log = TRUE, col = '#B63679', pch = 16)
+flinn_plot(R_XY, R_YZ, log = TRUE, col = "#B63679", pch = 16)
 ```
 
 or the **Hsü diagram** using the natural octahedral unit strain $\bar{\epsilon}_s$ and the Lode parameter $\nu$ 
@@ -75,7 +75,7 @@ or the **Hsü diagram** using the natural octahedral unit strain $\bar{\epsilon}
 ```{r hsu}
 #| fig.alt: >
 #|   Hsu diagram
-hsu_plot(R_XY, R_YZ, col = '#B63679', pch = 16)
+hsu_plot(R_XY, R_YZ, col = "#B63679", pch = 16)
 ```
 
 ## Vorticity analysis

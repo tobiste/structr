@@ -30,7 +30,7 @@
 #' vec1 <- Vec3(1, 0, 0)
 #' vec2 <- Vec3(0, 0, 1)
 #'
-#' vector_length(vec1) # lenght of a vector
+#' vector_length(vec1) # length of a vector
 #' crossprod(vec1, vec2) # cross product
 #' dotprod(vec1, vec2) # dot product
 #' rotate(vec1, vec2, pi / 2) # rotation
@@ -77,23 +77,23 @@ vcross <- function(x, y) {
   )
 }
 
-#' @rdname vecmath
-#' @export
+# #' @rdname vecmath
+# #' @export
 # #' @keywords internal
-crossprod <- function(x, y, ...) UseMethod("crossprod")
+# crossprod <- function(x, y, ...) UseMethod("crossprod")
 
-#' @export
-crossprod.default <- function(x, y, ...) base::crossprod(x, y, ...)
+# #' @export
+# crossprod.default <- function(x, y, ...) base::crossprod(x, y, ...)
 
 #' @rdname vecmath
-#' @export
+#' @exportS3Method base::crossprod
 crossprod.spherical <- function(x, y = NULL, ...) {
   xv <- Vec3(x) |> unclass()
   if (is.null(y)) yv <- xv else yv <- Vec3(y) |> unclass()
-  
+
   xy <- vcross(xv, yv) |>
     as.Vec3()
-  
+
   if (is.Line(x)) {
     Line(xy)
   } else if (is.Plane(x)) {
@@ -119,10 +119,10 @@ vdot <- function(x, y) {
 
 #' @export
 #' @rdname vecmath
-dotprod <- function(x, y){
+dotprod <- function(x, y) {
   e1 <- Vec3(x) |> unclass()
   e2 <- Vec3(y) |> unclass()
-  
+
   vdot(e1, e2)
 }
 
@@ -149,14 +149,14 @@ rotate.default <- function(x, rotaxis, rotangle) vrotate(x, rotaxis, rotangle)
 rotate.spherical <- function(x, rotaxis, rotangle) {
   x3 <- Vec3(x) |> unclass()
   rotaxis3 <- Vec3(rotaxis) |> unclass()
-  
+
   if (is.Line(x) | is.Plane(x)) {
     rotangle <- deg2rad(rotangle)
   }
-  
+
   x_rot <- vrotate(x3, rotaxis3, rotangle) |>
     Vec3()
-  
+
   if (is.Line(x)) {
     x_rot <- Line(x_rot)
   } else if (is.Plane(x)) {
@@ -189,7 +189,7 @@ angle.spherical <- function(x, y) {
   vy <- Vec3(y) |> unclass()
   res <- vangle(vx, vy)
   res <- unname(res)
-  
+
   if (is.Line(x) | is.Plane(x)) {
     rad2deg(res)
   } else {
@@ -224,7 +224,7 @@ project.spherical <- function(x, y) {
   xv <- Vec3(x) |> unclass()
   yv <- Vec3(y) |> unclass()
   xy <- vproject(xv, yv) |> Vec3()
-  
+
   if (is.Line(x)) {
     Line(xy)
   } else if (is.Plane(x)) {
@@ -258,7 +258,7 @@ reject.spherical <- function(x, y) {
   yv <- Vec3(y) |> unclass()
   xy <- vproject(xv, yv) |> Vec3()
   rej <- xv - xy
-  
+
   if (is.Line(x)) {
     Line(rej)
   } else if (is.Plane(x)) {
@@ -274,28 +274,28 @@ v_orthogonalize <- function(x, y) {
   if (abs(vdot(x, y)) < 1e-4) {
     return(list(x, y))
   }
-  
+
   # Compute orthogonalization:
   r <- vnorm(vcross(x, y)) # rotation axis
   a <- vnorm(x) # first basis
   b <- vcross(r, a) # second basis
-  
+
   # Project x and y into the rotation coordinate system:
   rv1 <- c(vdot(r, x), vdot(a, x), vdot(b, x))
   rv2 <- c(vdot(r, y), vdot(a, y), vdot(b, y))
-  
+
   # Compute the correction angle:
   ang <- acos(vdot(rv1, rv2))
   ang_correction <- (pi / 2 - ang) / 2
-  
+
   # Rotate in opposite directions around r:
   rw1 <- vrotate(rv1, r, -ang_correction)
   rw2 <- vrotate(rv2, r, ang_correction)
-  
+
   # Transform back to NED:
   w1 <- r * rw1[1] + a * rw1[2] + b * rw1[3]
   w2 <- r * rw2[1] + a * rw2[2] + b * rw2[3]
-  
+
   list(w1, w2)
 }
 
@@ -304,7 +304,7 @@ v_orthogonalize <- function(x, y) {
 #' @keywords internal
 vtransform <- function(x, A, norm = FALSE) {
   stopifnot(is.matrix(A) & dim(A) == c(3, 3))
-  
+
   xt <- t(A %*% t(x))
   # xt <- t(vdot(A, x))
   if (norm) xt <- vnorm(xt)
@@ -317,7 +317,7 @@ transform_linear <- function(x, A, norm = FALSE) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   x <- Vec3(x) |> unclass()
   xt <- vtransform(x, A, norm) |> Vec3()
-  
+
   if (is.Line(x)) {
     Line(xt)
   } else if (is.Plane(x)) {
@@ -337,7 +337,7 @@ v_antipode <- function(x) {
 #'
 #' Returns the spherical linear interpolation of points between two vectors
 #'
-#' @param x0,x1 objects of class `"Vec3"`, `"Line"`, or `"Plane"` of the first 
+#' @param x0,x1 objects of class `"Vec3"`, `"Line"`, or `"Plane"` of the first
 #' and the last points of the to be interpolated arc.
 #' @param t numeric. Interpolation factor(s) (`t = [0, 1]`).
 #'
@@ -348,24 +348,24 @@ v_antipode <- function(x) {
 #' segment in the plane; a great circle is a spherical geodesic.
 #'
 #' @export
-#' 
-#' @examples 
+#'
+#' @examples
 #' x0 <- Line(120, 7)
-#' x1 <-  Line(10, 13)
+#' x1 <- Line(10, 13)
 #' t <- seq(0, 1, .05)
 #' xslerp <- slerp(x0, x1, t)
-#' 
+#'
 #' plot(xslerp, col = assign_col(t))
-#' points(rbind(x0,  x1))
+#' points(rbind(x0, x1))
 slerp <- function(x0, x1, t) {
-  vslerp <- sapply(t, function(i){
+  vslerp <- sapply(t, function(i) {
     slerp1(x0, x1, t = i) |> unclass()
-  }) |> 
-    t() |> 
-    rbind() |> 
+  }) |>
+    t() |>
+    rbind() |>
     as.Vec3()
 
- if (is.Line(x0)) {
+  if (is.Line(x0)) {
     Line(vslerp)
   } else if (is.Plane(x0)) {
     Plane(vslerp)
@@ -379,23 +379,23 @@ slerp1 <- function(x0, x1, t) {
   stopifnot(is.Vec3(x0) | is.Line(x0) | is.Plane(x0))
   stopifnot(is.Vec3(x1) | is.Line(x1) | is.Plane(x1))
   stopifnot(
-    t>=0 | t<=1
+    t >= 0 | t <= 1
   )
-  
+
   # if (isTRUE(na.rm)) {
   #   x0 <- x0[!rowSums(!is.finite(x0)), ]
   #   x1 <- x1[!rowSums(!is.finite(x1)), ]
   # }
-  
+
   vx0 <- Vec3(x0)
   vx1 <- Vec3(x1)
-  
-  theta <- dotprod(vx0,vx1)
+
+  theta <- dotprod(vx0, vx1)
   sin.theta <- sin(theta)
-  
-  a <- sin(((1 - t) * theta)) / sin.theta * vx0 
+
+  a <- sin(((1 - t) * theta)) / sin.theta * vx0
   b <- sin(t * theta) / sin.theta * vx1
-  
+
   # return as Vec3
   return(a + b)
 }

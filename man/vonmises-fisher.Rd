@@ -28,7 +28,8 @@ and concentration parameter (\eqn{\kappa}) .
 \examples{
 set.seed(20250411)
 x <- rvmf(100, mu = Line(120, 50), k = 5)
-dx <- dvmf(x, mu = Line(120, 50)); head(dx)
+dx <- dvmf(x, mu = Line(120, 50))
+head(dx)
 
 plot(x, col = assign_col(dx))
 }

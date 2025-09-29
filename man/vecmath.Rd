@@ -3,7 +3,6 @@
 \name{vecmath}
 \alias{vecmath}
 \alias{vector_length}
-\alias{crossprod}
 \alias{crossprod.spherical}
 \alias{dotprod}
 \alias{rotate}
@@ -18,8 +17,6 @@
 \title{Vector math operations}
 \usage{
 vector_length(x)
-
-crossprod(x, y, ...)
 
 \method{crossprod}{spherical}(x, y = NULL, ...)
 
@@ -80,7 +77,7 @@ length of second vector, unless their are unit vectors)}
 vec1 <- Vec3(1, 0, 0)
 vec2 <- Vec3(0, 0, 1)
 
-vector_length(vec1) # lenght of a vector
+vector_length(vec1) # length of a vector
 crossprod(vec1, vec2) # cross product
 dotprod(vec1, vec2) # dot product
 rotate(vec1, vec2, pi / 2) # rotation

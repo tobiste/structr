@@ -29,6 +29,6 @@ if (requireNamespace("rgl", quietly = TRUE)) {
 # }
 
 .onLoad <- function(libname, pkgname) {
-  # if (!interactive()) 
-    options(rgl.useNULL = TRUE)
+  # if (!interactive())
+  options(rgl.useNULL = TRUE)
 }

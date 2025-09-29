@@ -157,7 +157,7 @@ Vec3 <- function(x, y, z) {
     y <- as.double(y)
     z <- as.double(z)
   }
-  
+
   res <- cbind(x, y, z)
   rownames(res) <- rn
   as.Vec3(res)
@@ -188,7 +188,7 @@ Line <- function(x, plunge) {
     azimuth <- as.double(x)
     plunge <- as.double(plunge)
   }
-  
+
   res <- cbind(azimuth %% 360, plunge)
   rownames(res) <- rn
   as.Line(res)
@@ -220,7 +220,7 @@ Plane <- function(x, dip) {
     dip_direction <- as.double(x)
     dip <- as.double(dip)
   }
-  
+
   res <- cbind(dip_direction %% 360, dip)
   rownames(res) <- rn
   as.Plane(res)
@@ -230,7 +230,7 @@ Plane <- function(x, dip) {
 #' @export
 Pair <- function(x, y, azimuth, plunge, correction = FALSE) {
   # p <- Fault(x, y, azimuth, plunge, sense = NA, correction = correction)
-  
+
   if (is.Plane(x) & is.Line(y)) {
     dip_direction <- x[, "dip_direction"]
     dip <- x[, "dip"]
@@ -244,7 +244,7 @@ Pair <- function(x, y, azimuth, plunge, correction = FALSE) {
     plunge <- as.double(plunge)
     rn <- names(x)
   }
-  
+
   res <- cbind(dip_direction %% 360, dip, azimuth %% 360, plunge)
   rownames(res) <- rn
   p <- as.Pair(res)
@@ -256,7 +256,7 @@ Pair <- function(x, y, azimuth, plunge, correction = FALSE) {
 Fault <- function(x, y, azimuth, plunge, sense, correction = FALSE) {
   stopifnot(is.logical(correction))
   rn <- rownames(x)
-  
+
   if (is.Pair(x)) {
     dip_direction <- x[, "dip_direction"]
     dip <- x[, "dip"]
@@ -281,7 +281,7 @@ Fault <- function(x, y, azimuth, plunge, sense, correction = FALSE) {
   # if(is.null(sense) & length(sense == length(dip_direction))) {
   #   sense <- rep(NA, length(dip_direction))
   # }
-  
+
   res <- cbind(dip_direction %% 360, dip, azimuth %% 360, plunge, sense)
   rownames(res) <- rn
   f <- as.Fault(res)
@@ -293,24 +293,24 @@ Fault <- function(x, y, azimuth, plunge, sense, correction = FALSE) {
 #' @export
 Spherical <- function(x, .class) {
   switch(.class,
-         Vec3 = Vec3(x),
-         Line = Line(x),
-         Plane = Plane(x)
+    Vec3 = Vec3(x),
+    Line = Line(x),
+    Plane = Plane(x)
   )
 }
 
 #' @exportS3Method base::print
 print.spherical <- function(x, ...) {
   n <- nrow(x)
-  
+
   if (is.Vec3(x)) cat(paste0("Vector (Vec3) object (n = ", n, "):\n"))
   if (is.Line(x)) cat(paste0("Line object (n = ", n, "):\n"))
   if (is.Plane(x)) cat(paste0("Plane object (n = ", n, "):\n"))
   if (is.Pair(x) & !is.Fault(x)) cat(paste0("Pair object (n = ", n, "):\n"))
   if (is.Fault(x)) cat(paste0("Fault object (n = ", n, "):\n"))
-  
+
   print(unclass(x)[seq_len(n), ]) # avoids printing all the attributes of x
-  
+
   return(invisible(x))
 }
 
@@ -406,15 +406,15 @@ print.spherical <- function(x, ...) {
 rbind.spherical <- function(..., .class = NULL) {
   allargs <- list(...)
   allargs <- allargs[lengths(allargs) > 0L]
-  
+
   if (is.null(.class)) {
     .class <- class(allargs[[1]])[1]
   }
-  
+
   allargs_class <- lapply(allargs, function(i) {
     Spherical(i, .class = .class) |> unclass()
   })
-  
+
   do.call(rbind, allargs_class) |>
     Spherical(.class)
 }

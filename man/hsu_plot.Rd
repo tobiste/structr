@@ -25,7 +25,7 @@ plot and when stored as an object, the Lode parameter \code{Lode} and the natura
 3D strain diagram using the Hsü (1965) method to display the natural octahedral strain and the Lode parameter.
 }
 \examples{
-R_XY <- holst[, 'R_XY']
-R_YZ <- holst[, 'R_YZ']
-hsu_plot(R_XY, R_YZ, col = '#B63679', pch = 16)
+R_XY <- holst[, "R_XY"]
+R_YZ <- holst[, "R_YZ"]
+hsu_plot(R_XY, R_YZ, col = "#B63679", pch = 16)
 }

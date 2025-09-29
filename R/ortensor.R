@@ -188,7 +188,7 @@ ot_eigen <- function(x, scaled = FALSE) {
 #' \item{`Lisle_intensity`}{Intensity index (Lisle, 1985)}
 #' \item{`Waterson_intensity`}{strain intensity (Watterson, 1968)}
 #' \item{`lode`}{Lode parameter (Lode, 1926)}
-#' \item{`kind`}{Descriptive type of ellipsoid}
+#' \item{`kind`}{Descriptive type of ellipsoid: `"O"` - isotrope, `"L"` - L-tectonite, `"LLS"` - oblate L-tectonite, `"S"` - S-tectonite, `"SSL"` - prolate S-tectonite}
 #' \item{`MAD`}{maximum angular deviation (Kirschvink, 1980)}
 #' \item{`US`}{Uniformity statistic of Mardia (1972)}
 #' }
@@ -199,6 +199,8 @@ ot_eigen <- function(x, scaled = FALSE) {
 #'
 #' @references
 #' Flinn, Derek.(1963): "On the statistical analysis of fabric diagrams." Geological Journal 3.2: 247-253.
+#'
+#' Jelinek, Vit. "Characterization of the magnetic fabric of rocks." Tectonophysics 79.3-4 (1981): T63-T67.
 #'
 #' Kirschvink, J. (1980): The least-squares line and plane and the analysis of palaeomagnetic data. Geophysical Journal International, 62(3), 699-718.
 #'
@@ -221,6 +223,10 @@ ot_eigen <- function(x, scaled = FALSE) {
 #'
 #' Woodcock, N. H.  (1977): "Specification of fabric shapes using an eigenvalue method." Geological Society of America Bulletin 88.9: 1231-1236.
 #'
+#' @seealso More details on shape parameters: [ell_lode()], [ell_nadai()],
+#' [ell_jelinek()], [ell_flinn()]. Details on eigenvecors from orientation
+#' tensors: [ot_eigen()].
+#'
 #' @examples
 #' set.seed(1)
 #' mu <- Line(120, 50)
@@ -242,7 +248,7 @@ principal_stretch <- function(x) {
 #' @rdname strain_shape
 #' @export
 principal_strain <- function(x) {
-  e <- principal_stretch(x) |> log()
+  e <- log(principal_stretch(x))
   names(e) <- c("e1", "e2", "e3")
   return(e)
 }
@@ -260,20 +266,18 @@ principal_strain <- function(x) {
 #' @rdname strain_shape
 #' @export
 or_shape_params <- function(x) {
-  # eig <- ortensor(x, norm = TRUE) |> ot_eigen()
   eig <- ot_eigen(x)
   s <- principal_stretch(x) |> unname()
   e <- principal_strain(x) |> unname()
-  # names(s) <- names(e) <- NULL
 
   Rxy <- s[1] / s[2]
-  Ryz <- s[2] / s[3] 
-  Rxz <- s[1] / s[3] 
+  Ryz <- s[2] / s[3]
+  Rxz <- s[1] / s[3]
   stretch_ratios <- c(Rxy, Ryz, Rxz) |> setNames(c("Rxy", "Ryz", "Rxz"))
 
-  e12 <- e[1] - e[2] 
+  e12 <- e[1] - e[2]
   e13 <- e[1] - e[3]
-  e23 <- e[2] - e[3] 
+  e23 <- e[2] - e[3]
   strain_ratios <- c(e12, e13, e23) |> setNames(c("e12", "e13", "e23"))
 
   shape <- K <- e12 / e23 # strain symmetry (Ramsay, 1983) / Woodcock shape
@@ -281,8 +285,10 @@ or_shape_params <- function(x) {
   goct <- 2 * sqrt(e12^2 + e23^2 + e13^2) / 3 # natural octahedral unit shear (Nadai, 1963)
   eoct <- sqrt(3) * goct / 2 # natural octahedral unit strain (Nadai, 1963)
   Nadai <- c(goct = goct, eoct = eoct)
+  # es <- ell_nadai(s)
 
-  lode <- ifelse((e[1] - e[3]) > 0, (2 * e[2] - e[1] - e[3]) / (e[1] - e[3]), 0)
+  lode <- ell_lode(s)
+  # lode <- ifelse((e[1] - e[3]) > 0, (2 * e[2] - e[1] - e[3]) / (e[1] - e[3]), 0)
 
   kind <- .get_kind(eoct, lode)
 
@@ -293,10 +299,8 @@ or_shape_params <- function(x) {
   R <- 3 * eig$values[3] # Random index (Vollmer, 1990)
   B <- P + G #  Cylindricity index (Vollmer, 1990)
   C <- log(eig$values[1] / eig$values[3])
-  # I <- 7.5 * ((eig$values[1] / N - (1 / 3))^2 + (eig$values[2] / N - (1 / 3))^2 + (eig$values[3] / N - (1 / 3))^2)
   I <- 7.5 * sum((eig$values / N - 1 / 3)^2)
 
-  # us <- (15 * N / 2) * sum((eig$values[1] - 1 / 3)^2, (eig$values[2] - 1 / 3)^2, (eig$values[3] - 1 / 3)^2) # Uniformity statistic of Mardia
   us <- (15 * N / 2) * sum((eig$values - 1 / 3)^2) # Mardia uniformity statistic
   D <- sqrt(us / (5 * N)) # D of Vollmer 2020
 
@@ -312,14 +316,14 @@ or_shape_params <- function(x) {
   MAD_p <- atand(sqrt(eig$values[3] / eig$values[2] + eig$values[3] / eig$values[1])) # maximum angular deviation (MAD) of planarly distributed vectors (Kirschvink 1980).
   MAD <- ifelse(shape > 1, MAD_l, MAD_p) #  maximum angular deviation (MAD)
 
-  k <- (Rxy - 1) / (Ryz - 1) #  strain symmetry
-  d <- sqrt((Rxy - 1)^2 + (Ryz - 1)^2) # strain intensity
-  Flinn <- c(intensity = d, symmetry = k)
 
   D <- e12^2 + e23^2 # strain intensity
   Ramsay <- c(intensity = D, symmetry = K)
   Woodcock <- c(strength = e13, shape = K)
   Watterson_intensity <- Rxy + Ryz - 1
+
+  Flinn <- ell_flinn(s)
+  pj <- ell_jelinek(s) # Jellinek 1981
 
   # JPF
   # hom.dens <- projection(hom.cpo, upper.proj(hom.cpo), stereonet)
@@ -327,6 +331,7 @@ or_shape_params <- function(x) {
   # hom.kde <- kde2d(unlist(hom.dens[[1]]), unlist(hom.dens[[2]]), h = bw / 100 * 2, lims = kde.lims)$z
   # hom.norm <- norm(hom.kde, type = "2")
   # dens.norm <- norm(kde, type = "2")
+
 
   list(
     stretch_ratios = stretch_ratios,
@@ -342,10 +347,161 @@ or_shape_params <- function(x) {
     kind = kind, # descriptive type of ellipsoid
     # MAD_approx = as.numeric(aMAD), # approximate deviation according to shape
     MAD = as.numeric(MAD), #  maximum angular deviation (MAD)
-    US = us
+    US = us,
+    Jellinek = pj # Jellinek 1981
   )
 }
 
+#' Ellipsoid shape parameters
+#'
+#' @param s numeric. 3-element vector giving the ellipsoid's semi-axis
+#' lengths, in any order (can be the square-roots of eigenvalues).
+#'
+#' @returns positive numeric
+#' @name ellipsoid-params
+#'
+#' @details
+#'
+#' \deqn{e_i = \log s_i} with \eqn{s1 \geq s2 \geq s3} the semi-axis lengths of the ellipsoid.
+#'
+#' Lode's shape parameter:
+#' \deqn{\nu = \frac{2 e_2 - e_1 - e_3}{e_1-e_3}}
+#' with \eqn{e_1 \geq e_2 \geq e_3}. Note that \eqn{\nu}  is undefined for spheres,
+#' but we arbitrarily declare \eqn{\nu=0} for them.
+#' Otherwise \eqn{-1 \geq \nu \geq 1}. \eqn{\nu=-1} for prolate spheroids and \eqn{\nu=1} for oblate spheroids.
+#'
+#' Octahedral shear strain \eqn{e_s} (Nadai 1963):
+#' \deqn{e_s = \sqrt{\frac{(e_1 - e_2)^2 + (e_2 - e_3)^2 + (e_1 - e_3)^2 }{3}}}
+#'
+#' Strain symmetry (Flinn 1963):
+#' \deqn{k = \frac{s_1/s_2 - 1}{s_2/s_3 - 1}}
+#'
+#' and strain intensity (Flinn 1963):
+#' \deqn{d = \sqrt{(s_1/s_2 - 1)^2 + (s_2/s_3 - 1)^2}}
+#'
+#'
+#' Jelinek (1981)'s \eqn{P_j} parameter:
+#' \deqn{P_j = e^{\sqrt{2 \vec{v}\cdot \vec{v}}}}
+#' with \eqn{\vec{v} = e_i - \frac{\sum e_i}{3}}
+#'
+#' @references
+#' Flinn, Derek.(1963): "On the statistical analysis of fabric diagrams." Geological Journal 3.2: 247-253.
+#'
+#' Lode, Walter (1926): "Versuche über den Einfluß der mittleren Hauptspannung auf das Fließen der Metalle Eisen, Kupfer und Nickel“
+#'  (*"Experiments on the influence of the mean principal stress on the flow of the metals iron, copper and nickel"*], Zeitschrift für Physik, vol. 36 (November), pp. 913–939, DOI: 10.1007/BF01400222
+#'
+#' Nadai, A., and Hodge, P. G., Jr. (1963): "Theory of Flow and Fracture of Solids, vol. II." ASME. J. Appl. Mech. December 1963; 30(4): 640. https://doi.org/10.1115/1.3636654
+#'
+#' Jelinek, Vit. "Characterization of the magnetic fabric of rocks." Tectonophysics 79.3-4 (1981): T63-T67.
+#'
+#' @seealso [or_shape_params()], [ot_eigen()]
+#' @examples
+#' # Generate some random data
+#' set.seed(1)
+#' dat <- rvmf(100, k = 20)
+#' s <- principal_stretch(dat)
+#'
+#' # Volume of ellipsoid
+#' ell_volume(s)
+#'
+#' #  Size-related tensor invariant of ellipsoids
+#' ell_size_invariant(s)
+#'
+#' # Strain-related tensor invariant of ellipsoids
+#' ell_strain_invariant(s)
+#'
+#' # Shape-related tensor invariant of ellipsoids
+#' ell_shape_invariant(s)
+#'
+#' # Lode's shape parameter
+#' ell_lode(s)
+#'
+#' # Nadai's octahedral shear strain
+#' ell_nadai(s)
+#'
+#' # Jelinek Pj parameter
+#' ell_jelinek(s)
+#'
+#' # Flinn's intensity and symmetry parameters
+#' ell_flinn(s)
+NULL
+
+
+#' @rdname ellipsoid-params
+#' @export
+ell_volume <- function(s) {
+  logs <- log(s) |> unname()
+  exp(sum(logs)) * 4 * pi / 3
+}
+
+#' @rdname ellipsoid-params
+#' @export
+ell_lode <- function(s) {
+  logs <- sort(log(s), TRUE) |> unname()
+  if (logs[1] == logs[3]) {
+    0
+  } else {
+    (2 * logs[2] - logs[1] - logs[3]) / (logs[1] - logs[3])
+  }
+}
+
+#' @rdname ellipsoid-params
+#' @export
+ell_nadai <- function(s) {
+  e <- log(s) |> unname()
+
+  exy <- e[1] - e[2]
+  eyz <- e[2] - e[3]
+  exz <- e[1] - e[3]
+
+  temp <- exy^2 + eyz^2 + exz^2
+  sqrt(temp / 3)
+}
+
+#' @rdname ellipsoid-params
+#' @export
+ell_jelinek <- function(s) {
+  logs <- log(s) |> unname()
+  v <- logs - sum(logs) / 3
+  v_dot <- sum(v^2)
+  exp(sqrt(2 * v_dot))
+}
+
+#' @rdname ellipsoid-params
+#' @export
+ell_flinn <- function(s) {
+  a <- sort(s, TRUE) |> unname()
+
+  R_xy <- a[1] / a[2]
+  R_yz <- a[2] / a[3]
+
+  k <- (R_xy - 1) / (R_yz - 1)
+
+  d <- sqrt((R_xy - 1)^2 + (R_yz - 1)^2)
+
+  list(k = k, d = d)
+}
+
+#' @rdname ellipsoid-params
+#' @export
+ell_size_invariant <- function(s) {
+  logs <- log(s) |> unname()
+  sum(logs)
+}
+
+#' @rdname ellipsoid-params
+#' @export
+ell_strain_invariant <- function(s) {
+  logs <- log(s) |> unname()
+  logs[[1]] * logs[[2]] + logs[[2]] * logs[[3]] + logs[[3]] * logs[[1]]
+}
+
+#' @rdname ellipsoid-params
+#' @export
+ell_shape_invariant <- function(s) {
+  logs <- log(s) |> unname()
+  logs[[1]] * logs[[2]] * logs[[3]]
+}
 
 #' Centering vectors
 #'
@@ -381,7 +537,7 @@ center <- function(x, max_vertical = FALSE) {
 
   # x_trans <- t(apply(x_cart, 1, vtransform, A = x_eigen$vectors, norm = TRUE)) |>
   #   Vec3()
-  x_trans <- sapply(seq_len(nrow(x_cart)), function(i){
+  x_trans <- sapply(seq_len(nrow(x_cart)), function(i) {
     vtransform(x_cart[i, ], A = x_eigen$vectors, norm = TRUE)
   }) |>
     t() |>

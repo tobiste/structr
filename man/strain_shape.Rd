@@ -34,7 +34,7 @@ Principal Stretches, Strain and Shape Parameters based on the Orientation Tensor
 \item{\code{Lisle_intensity}}{Intensity index (Lisle, 1985)}
 \item{\code{Waterson_intensity}}{strain intensity (Watterson, 1968)}
 \item{\code{lode}}{Lode parameter (Lode, 1926)}
-\item{\code{kind}}{Descriptive type of ellipsoid}
+\item{\code{kind}}{Descriptive type of ellipsoid: \code{"O"} - isotrope, \code{"L"} - L-tectonite, \code{"LLS"} - oblate L-tectonite, \code{"S"} - S-tectonite, \code{"SSL"} - prolate S-tectonite}
 \item{\code{MAD}}{maximum angular deviation (Kirschvink, 1980)}
 \item{\code{US}}{Uniformity statistic of Mardia (1972)}
 }
@@ -49,6 +49,8 @@ or_shape_params(x)
 }
 \references{
 Flinn, Derek.(1963): "On the statistical analysis of fabric diagrams." Geological Journal 3.2: 247-253.
+
+Jelinek, Vit. "Characterization of the magnetic fabric of rocks." Tectonophysics 79.3-4 (1981): T63-T67.
 
 Kirschvink, J. (1980): The least-squares line and plane and the analysis of palaeomagnetic data. Geophysical Journal International, 62(3), 699-718.
 
@@ -73,4 +75,8 @@ Woodcock, N. H.  (1977): "Specification of fabric shapes using an eigenvalue met
 }
 \seealso{
 \code{\link[=ortensor]{ortensor()}}, \code{\link[=ot_eigen]{ot_eigen()}}, \code{\link[=fabric_indexes]{fabric_indexes()}}
+
+More details on shape parameters: \code{\link[=ell_lode]{ell_lode()}}, \code{\link[=ell_nadai]{ell_nadai()}},
+\code{\link[=ell_jelinek]{ell_jelinek()}}, \code{\link[=ell_flinn]{ell_flinn()}}. Details on eigenvecors from orientation
+tensors: \code{\link[=ot_eigen]{ot_eigen()}}.
 }

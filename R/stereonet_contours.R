@@ -287,4 +287,3 @@ image.spherical <- function(x, add = FALSE, density.params = list(),
     ...
   )
 }
-

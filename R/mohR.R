@@ -16,10 +16,12 @@
 #'
 #' diff_stress(s1, s3)
 #' mean_stress(s1, s3)
-#' ss <- shear_stress(s1, s3, theta = 35); print(ss)
-#' sn <- normal_stress(s1, s3, theta = 35); print(sn)
+#' ss <- shear_stress(s1, s3, theta = 35)
+#' print(ss)
+#' sn <- normal_stress(s1, s3, theta = 35)
+#' print(sn)
 #' fracture_angle(mu = 0.6)
-#' 
+#'
 #' slip_tendency(ss, sn)
 #' dilatation_tendency(s1, s3, sn)
 NULL

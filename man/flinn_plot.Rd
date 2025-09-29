@@ -27,8 +27,8 @@ Flinn diagram
 }
 \examples{
 data(holst)
-R_XY <- holst[, 'R_XY']
-R_YZ <- holst[, 'R_YZ']
-flinn_plot(R_XY, R_YZ, log = FALSE, col = '#B63679', pch = 16)
-flinn_plot(R_XY, R_YZ, log = TRUE, col = '#B63679', pch = 16)
+R_XY <- holst[, "R_XY"]
+R_YZ <- holst[, "R_YZ"]
+flinn_plot(R_XY, R_YZ, log = FALSE, col = "#B63679", pch = 16)
+flinn_plot(R_XY, R_YZ, log = TRUE, col = "#B63679", pch = 16)
 }

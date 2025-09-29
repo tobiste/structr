@@ -28,11 +28,11 @@ vresultant <- function(x, w = NULL, mean = FALSE, na.rm = TRUE) {
 }
 
 #' @keywords internal
-mrl <- function(x, w = NULL, na.rm = TRUE, length = TRUE){
+mrl <- function(x, w = NULL, na.rm = TRUE, length = TRUE) {
   if (isTRUE(na.rm)) x <- x[!rowSums(!is.finite(x)), ]
-  x_norm <- vnorm(x) 
-  Rbar <- vresultant(x_norm, w = w, mean = TRUE, na.rm = FALSE) 
-  if(length) vlength(Rbar) else Rbar
+  x_norm <- vnorm(x)
+  Rbar <- vresultant(x_norm, w = w, mean = TRUE, na.rm = FALSE)
+  if (length) vlength(Rbar) else Rbar
 }
 
 #' @keywords internal
@@ -79,7 +79,7 @@ v_rdegree <- function(x, w = NULL, na.rm = FALSE) {
 
   N <- sum(w)
   Rbar <- mrl(x, w, na.rm = na.rm)
-  
+
   (2 * Rbar - N) / N
 }
 
@@ -132,12 +132,12 @@ v_confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = FALSE) {
 #'
 #' `sph_var` returns the spherical variance (numeric), based on resultant length
 #' (Mardia 1972).
-#' 
-#' `sph_sd` returns the spherical standard deviation (numeric) given as the half 
-#' apical angle of a cone about the mean vector. In degrees if `x` is a 
+#'
+#' `sph_sd` returns the spherical standard deviation (numeric) given as the half
+#' apical angle of a cone about the mean vector. In degrees if `x` is a
 #' `"Plane"` or `"Line"`, or in radians if otherwise.
 #'
-#' `delta` returns the half apical angle of the cone containing ~63% of the data 
+#' `delta` returns the half apical angle of the cone containing ~63% of the data
 #' (in degrees if `x` is a `"Plane"` or `"Line"`, or in radians
 #' if otherwise). For enough large sample it approaches the angular standard
 #' deviation (`"csd"`) of the Fisher statistics.
@@ -282,14 +282,12 @@ estimate_k <- function(x, w = NULL, na.rm = FALSE) {
   p <- 3
 
   (Rbar * (p - Rbar^2)) / (1 - Rbar^2)
-  
-  
 }
 
 # estimate_k2 <- function(x, w = NULL, na.rm = FALSE) {
 #   Rbar <- vresultant(Vec3(x), w = w, mean = TRUE, na.rm = na.rm) |>
 #     vlength()
-#   
+#
 #   1 / (1-Rbar) # Cheeney 1983
 # }
 
@@ -570,7 +568,7 @@ v_dist <- function(x, ...) {
 #' @inheritParams stats
 #' @param ... optional parameters passed to [stats::as.dist()]
 #' @returns distance matrix
-#' @exportS3Method stats::dist 
+#' @exportS3Method stats::dist
 #'
 #' @examples
 #' set.seed(20250411)

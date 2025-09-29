@@ -77,7 +77,7 @@
 
 
 #' 3D strain data
-#' 
+#'
 #' Example data from Holst and Fossen (1987) containing 3D strain data from 17 localities in the West Norwegian Caledonides.
 #' The data gives the  difference of the  \eqn{\epsilon_1} and \eqn{\epsilon_2} (`e1e2`) and \eqn{\epsilon_2} and \eqn{\epsilon_3} (`e2e3`)
 #' @docType data

@@ -205,9 +205,9 @@ read_strabo_JSON <- function(file, sf = TRUE) {
     by.x = "tag_id", by.y = "tag_id",
     all.x = TRUE
   )
-  
+
   spot_tags_dt[, tag_col := paste0("tag:", tag_name)]
-  
+
   # spot_tags_wide <- dcast(spot_tags_dt[, .(spot_id, tag_name = paste0("tag:", tag_name), value = TRUE)],
   #   spot_id ~ tag_name,
   #   fill = FALSE

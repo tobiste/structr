@@ -24,10 +24,10 @@ For non-unit vectors the interpolation is not uniform.
 }
 \examples{
 x0 <- Line(120, 7)
-x1 <-  Line(10, 13)
+x1 <- Line(10, 13)
 t <- seq(0, 1, .05)
 xslerp <- slerp(x0, x1, t)
 
 plot(xslerp, col = assign_col(t))
-points(rbind(x0,  x1))
+points(rbind(x0, x1))
 }
