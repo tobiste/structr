@@ -41,6 +41,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/dot-or_eigen_helper.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/drillcore.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ellipse.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/ellipsoid-params.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/example_lines.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/example_planes.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/fabric_indexes.html</loc></url>
@@ -66,9 +67,16 @@
 <url><loc>https://tobiste.github.io/structr/reference/index.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/inertia.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/lines.spherical.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/mean-pair.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/mean_strain_ellipse.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/oriHexagonalTrapezohedralGroup.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/oriLineInPlaneGroup.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/oriRayInPlaneGroup.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/oriTrigonalTrapezohedralGroup.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/oriTrivialGroup.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ortensor.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ot_eigen.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/pair2rot.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/pair_correct.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/plot.spherical.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/points.spherical.html</loc></url>

@@ -51,10 +51,8 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">vector_length</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">crossprod</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, <span class="va">...</span><span class="op">)</span></span>
-<span></span>
 <span><span class="co"># S3 method for class 'spherical'</span></span>
-<span><span class="fu">crossprod</span><span class="op">(</span><span class="va">x</span>, y <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x</span>, y <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">dotprod</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span>
 <span></span>
@@ -148,9 +146,9 @@ length of second vector, unless their are unit vectors)</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">vec1</span> <span class="op">&lt;-</span> <span class="fu"><a href="classes.html">Vec3</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">vec2</span> <span class="op">&lt;-</span> <span class="fu"><a href="classes.html">Vec3</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">vector_length</span><span class="op">(</span><span class="va">vec1</span><span class="op">)</span> <span class="co"># lenght of a vector</span></span></span>
+<span class="r-in"><span><span class="fu">vector_length</span><span class="op">(</span><span class="va">vec1</span><span class="op">)</span> <span class="co"># length of a vector</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
-<span class="r-in"><span><span class="fu">crossprod</span><span class="op">(</span><span class="va">vec1</span>, <span class="va">vec2</span><span class="op">)</span> <span class="co"># cross product</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">vec1</span>, <span class="va">vec2</span><span class="op">)</span> <span class="co"># cross product</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Vector (Vec3) object (n = 1):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  x  y  z </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  0 -1  0 </span>

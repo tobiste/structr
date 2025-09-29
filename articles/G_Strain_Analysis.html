@@ -66,7 +66,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-09-26</h4>
+            <h4 data-toc-skip class="date">2025-09-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/G_Strain_Analysis.Rmd" class="external-link"><code>vignettes/G_Strain_Analysis.Rmd</code></a></small>
       <div class="d-none name"><code>G_Strain_Analysis.Rmd</code></div>
@@ -130,10 +130,10 @@ They can be represented in the <strong>Flinn diagram</strong> (linear of
 logarithmic axes)…</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"holst"</span><span class="op">)</span></span>
-<span><span class="va">R_XY</span> <span class="op">&lt;-</span> <span class="va">holst</span><span class="op">[</span>, <span class="st">'R_XY'</span><span class="op">]</span></span>
-<span><span class="va">R_YZ</span> <span class="op">&lt;-</span> <span class="va">holst</span><span class="op">[</span>, <span class="st">'R_YZ'</span><span class="op">]</span></span>
+<span><span class="va">R_XY</span> <span class="op">&lt;-</span> <span class="va">holst</span><span class="op">[</span>, <span class="st">"R_XY"</span><span class="op">]</span></span>
+<span><span class="va">R_YZ</span> <span class="op">&lt;-</span> <span class="va">holst</span><span class="op">[</span>, <span class="st">"R_YZ"</span><span class="op">]</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/flinn_plot.html">flinn_plot</a></span><span class="op">(</span><span class="va">R_XY</span>, <span class="va">R_YZ</span>, log <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">'#B63679'</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/flinn_plot.html">flinn_plot</a></span><span class="op">(</span><span class="va">R_XY</span>, <span class="va">R_YZ</span>, log <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
 <p><img src="G_Strain_Analysis_files/figure-html/flinn-1.png" alt="Flinn diagram" width="700"></p>
 <p>or the <strong>Hsü diagram</strong> using the natural octahedral unit
 strain
@@ -141,7 +141,7 @@ strain
 and the Lode parameter
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ν</mi><annotation encoding="application/x-tex">\nu</annotation></semantics></math></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">R_XY</span>, <span class="va">R_YZ</span>, col <span class="op">=</span> <span class="st">'#B63679'</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">R_XY</span>, <span class="va">R_YZ</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
 <p><img src="G_Strain_Analysis_files/figure-html/hsu-1.png" alt="Hsu diagram" width="700"></p>
 </div>
 <div class="section level2">
