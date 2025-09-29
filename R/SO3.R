@@ -18,7 +18,13 @@
 #' @name mean-pair
 #'
 #' @examples
-#' my_fault <- Fault(c("a" = 120, "b" = 120, "c" = 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
+#' my_fault <- Fault(
+#' c("a" = 120, "b" = 120, "c" = 100), 
+#' c(60, 60, 50), 
+#' c(110, 25, 30), 
+#' c(58, 9, 23), 
+#' c(1, -1, 1)
+#' )
 #' sph_mean_pair(my_fault)
 #' sph_var_pair(my_fault)
 NULL
@@ -64,7 +70,13 @@ sph_var_pair <- function(x, group = NULL) {
 #' @returns list of rotation matrices
 #'
 #' @examples
-#' my_fault <- Fault(c("a" = 120, "b" = 120, "c" = 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
+#' my_fault <- Fault(
+#' c("a" = 120, "b" = 120, "c" = 100), 
+#' c(60, 60, 50), 
+#' c(110, 25, 30), 
+#' c(58, 9, 23), 
+#' c(1, -1, 1)
+#' )
 #' pair2rot(my_fault)
 pair2rot <- function(x) {
   stopifnot(is.Pair(x))
@@ -141,7 +153,13 @@ oriVariance <- function(rs, center, group) {
 #' @source geologyGeometry
 #'
 #' @examples
-#' my_fault <- Fault(c("a" = 120, "b" = 120, "c" = 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
+#' my_fault <- Fault(
+#' c("a" = 120, "b" = 120, "c" = 100), 
+#' c(60, 60, 50), 
+#' c(110, 25, 30), 
+#' c(58, 9, 23), 
+#' c(1, -1, 1)
+#' )
 #' my_fault_vec <- pair2rot(my_fault)
 #' res1 <- ori_mean_variance(my_fault_vec, group = oriLineInPlaneGroup())
 #' rot2pair(res1$mean, fault = TRUE)

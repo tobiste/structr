@@ -16,6 +16,12 @@ list of rotation matrices
 Converts a set of planes and lines into a list of rotation matrices.
 }
 \examples{
-my_fault <- Fault(c("a" = 120, "b" = 120, "c" = 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
+my_fault <- Fault(
+c("a" = 120, "b" = 120, "c" = 100), 
+c(60, 60, 50), 
+c(110, 25, 30), 
+c(58, 9, 23), 
+c(1, -1, 1)
+)
 pair2rot(my_fault)
 }

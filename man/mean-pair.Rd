@@ -31,7 +31,13 @@ object of class \code{"Pair"} or \code{"Fault"}, respectively
 The Frechet (geodesic \eqn{L^2}) mean and variance of a pair of foliations and lineations
 }
 \examples{
-my_fault <- Fault(c("a" = 120, "b" = 120, "c" = 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
+my_fault <- Fault(
+c("a" = 120, "b" = 120, "c" = 100), 
+c(60, 60, 50), 
+c(110, 25, 30), 
+c(58, 9, 23), 
+c(1, -1, 1)
+)
 sph_mean_pair(my_fault)
 sph_var_pair(my_fault)
 }
