@@ -66,7 +66,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-09-29</h4>
+            <h4 data-toc-skip class="date">2025-09-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/F_Oriented_Drill_Cores.Rmd" class="external-link"><code>vignettes/F_Oriented_Drill_Cores.Rmd</code></a></small>
       <div class="d-none name"><code>F_Oriented_Drill_Cores.Rmd</code></div>
@@ -76,10 +76,10 @@ Stephan</h4>
     
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tobiste.github.io/structr/">structr</a></span><span class="op">)</span></span></code></pre></div>
-<p>The function <code>drillcore_orientation()</code> calculates the
+<p>The function <code><a href="../reference/drillcore.html">drillcore_transformation()</a></code> calculates the
 orientation of a plane or line from internal core angles
-(<strong>alpha</strong>, <strong>beta</strong>, and
-<strong>gamma</strong>) of oriented drill cores.</p>
+(<strong>α</strong>, <strong>β</strong>, and <strong>γ</strong>) of
+oriented drill cores.</p>
 <p><code>azi</code> is the azimuth of drill core axis orientation (in
 degrees, measured clockwise from North), and <code>inc</code> is the
 inclination of drill core axis (in degrees).</p>
@@ -108,7 +108,7 @@ projection:</p>
 <code class="sourceCode R"><span><span class="co"># initialize stereonet:</span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># plot the core axis *azi and inc angles)</span></span>
+<span><span class="co"># plot the core axis' azimuth and inclination)</span></span>
 <span><span class="fu"><a href="../reference/stereo_point.html">stereo_point</a></span><span class="op">(</span><span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="va">azi</span>, <span class="va">inc</span><span class="op">)</span>, lab <span class="op">=</span> <span class="st">"core-axis"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># plot the plane orientations as poles...</span></span>
