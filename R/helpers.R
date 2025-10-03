@@ -420,7 +420,7 @@ modes <- function(kde) {
 #' List of vectors
 #' 
 #' Creates a list of Cartesian vectors  from an spherical objects. This is a convenience 
-#' function to link with the package {geologyGeometry}
+#' function to link with the package `geologyGeometry` by J. R. Davis
 #' 
 #' @inheritParams sph_mean
 #' 

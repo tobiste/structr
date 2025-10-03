@@ -14,7 +14,7 @@ list
 }
 \description{
 Creates a list of Cartesian vectors  from an spherical objects. This is a convenience
-function to link with the package {geologyGeometry}
+function to link with the package \code{geologyGeometry} by J. R. Davis
 }
 \examples{
 data(example_lines)
