@@ -60,6 +60,7 @@
 <span>  contour.col <span class="op">=</span> <span class="va">viridis</span>,</span>
 <span>  contour.col.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  mean.ellipse <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  mean.ellipse.method <span class="op">=</span> <span class="st">"eigen"</span>,</span>
 <span>  mean.ellipse.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>border <span class="op">=</span> <span class="st">"red"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span>,</span>
 <span>  point.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">"grey"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span>,</span>
 <span>  rmax <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -113,6 +114,13 @@ drawn as density grid. Ignored when <code>contour=FALSE</code></p></dd>
 
 <dt id="arg-mean-ellipse">mean.ellipse<a class="anchor" aria-label="anchor" href="#arg-mean-ellipse"></a></dt>
 <dd><p>logical. Whether the mean ellipse should be plotted</p></dd>
+
+
+<dt id="arg-mean-ellipse-method">mean.ellipse.method<a class="anchor" aria-label="anchor" href="#arg-mean-ellipse-method"></a></dt>
+<dd><p>character. Whether the mean ellipse should be
+determined using the eigenvector method after Shimamoto and Ikeda, 1976
+(<code>"eigen"</code>, the default), or Ramsay's method using the geometric mean of min
+and max Rf values (<code>"ramsay"</code>).</p></dd>
 
 
 <dt id="arg-mean-ellipse-params">mean.ellipse.params<a class="anchor" aria-label="anchor" href="#arg-mean-ellipse-params"></a></dt>
