@@ -51,6 +51,10 @@ v_mean <- function(x, w = NULL, na.rm = TRUE) {
   xbar / Rbar
 }
 
+
+
+
+
 #' @keywords internal
 v_var <- function(x, w = NULL, na.rm = TRUE) {
   Rbar <- mrl(x, w, na.rm = na.rm)

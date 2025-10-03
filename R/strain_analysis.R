@@ -1,47 +1,52 @@
-# #' \deqn{R_f/\phi}
-# #'
-# #' @inheritParams mean_strain_ellipse
-# #' @param Rf numeric. Finite or post-deformation aspect ratio of an elliptical object
-# #' @param Ri numeric. Initial or pre-deformation aspect ratio of an elliptical object
-# #' @param theta numeric. Fluctuation angle of undeformed marker w.r.t. computed principal direction of strain (in degrees)
-# #'
-# #' @returns list. `phi`: the final angle (in degrees) between long axis and principal strain direction, `Rf`: final axial ratio
-# #' @export
-# #'
-# #' @examples
-# #' #' data(ramsay)
-# #' Rphi(ramsay[, "R"], phi = ramsay[, "phi"])
-# Rphi <- function(r, phi = NULL) {
-#   # if(is.null(theta)) theta = tectonicr::confidence_angle(phi) * 2
-#   # theta <- theta * pi / 180
-#   # a <- 2 * Rs * (Ri^2 - 1) * sin(2 * theta)
-#   # b <- (Ri^2 + 1) * (Rs - 1) + (Ri^2 - 1) * (Rs^2 + 1) * cos(2 * theta)
-#   # tan_2phi <- a / b
-#   # phi <- atan(tan_2phi) / 2
-#   #
-#   # c <- tan(phi)^2 * (1 + Ri^2 * tan(theta)^2) - Rs^2 * (tan(theta)^2 + Ri^2)
-#   # d <- Rs^2 * tan(phi)^2 * (tan(theta)^2 + Ri^2) - (1 + Ri^2 * tan(theta)^2)
-#   # Rf <- sqrt(c / d)
-#
-#   Rf_min <- min(r)
-#   Rf_max <- max(r)
-#
-#   Rs <- sqrt(Rf_max/Rf_min)
-#   Ri <- sqrt(Rf_max*Rf_min)
-#
-#   phi_mean <- tectonicr::circular_mean(phi)
-#
-#   phi_sd <- tectonicr::circular_sd(phi) * 2
-#
-#   Rf_mean <- harmonic_mean(r)
-#
-#   return(list("phi_mean" = phi_mean, "Rf_hmean" = Rf_mean, 'Rs' = Rs, "Ri" = Ri, "Flct" = phi_sd))
-# }
 
-# harmonic_mean <- function(x, na.rm = FALSE){
-#   n <- length(x)
-#   n/sum(1/x)
-# }
+.fluction <- function(Rs, Ri){
+  a <-  Rs * (Ri^2 - 1)
+  b <- sqrt((Rs^2*Ri^2 - 1) * (Rs^2 - Ri^2))
+  
+  atan2(a, b) * 180 / pi
+}
+
+#' Mean strain ellipse after Ramsay (1967)
+#' 
+#' @inheritParams mean_strain_ellipse
+#' @param alpha numeric. alpha value to remove outliers
+#'
+#' @returns list. `Rs` aspect ratio of strian ellipse, `Ri` initial aspect ratio,
+#'  `Fluctuation` angle (Ramsay 1967), and `phi` the mean orientation of the 
+#'  strain ellipse long axis.
+#' @export
+#'
+#' @examples
+#' data(ramsay)
+#' mean_strain_ellipse_ramsay(ramsay[, "R"], ramsay[, "phi"])
+mean_strain_ellipse_ramsay <- function(r, phi = NULL, alpha = .05){
+  outlier <- quantile(log(r), probs = c(alpha, 1-alpha))
+  cond <- (log(r) >= outlier[1]) & (log(r) <= outlier[2])
+  R_filt <- r[cond]
+  Rmax <- max(R_filt)
+  Rmin <- min(R_filt)
+  
+  a <- sqrt(Rmax * Rmin)
+  b <- sqrt(Rmax / Rmin)
+  
+  Fl <- .fluction(a, b)
+  
+  if(Fl>90){
+    Ri <- a
+    Rs <- b
+  } else {
+    Ri <- b
+    Rs <- a
+  }
+  
+  if(is.null(phi)) {
+    list(Rs=Rs, Ri=Ri, Fluctuation = Fl)
+  } else {
+    phi_avg <- tectonicr::circular_mean(phi[cond])
+    if(phi_avg> 90) phi_avg <- phi_avg - 180
+    list(Rs=Rs, Ri=Ri, Fluctuation = Fl, phi = phi_avg)
+  }
+}
 
 
 #' Mean strain ellipse
@@ -111,8 +116,21 @@ mean_strain_ellipse0 <- function(r, phi) {
 
   sm <- matrix(c(f, h, h, g), nrow = 2, ncol = 2)
 
-  theta <- (atan((2 * h / (f - g))) / 2) * 180 / pi
-
+  
+  # tan (2 theta) = 2h / (f-g)
+  
+  a <-  2*h 
+  b <- f-g
+  # theta_rad <- (atan((2 * h / (f - g))) / 2) 
+  # 
+  theta_rad <- pi/2 + atan2(a, b)/2
+  # temp <-  a / b
+  # theta <- atan(a/b)/2 
+  
+  theta <- theta_rad * 180 / pi
+  theta <- theta %% 180
+  if(theta > 90) theta <- theta - 180
+  
   sm_eig <- eigen(sm, symmetric = TRUE, only.values = TRUE)
   pa <- sqrt(sm_eig$values)
 

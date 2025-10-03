@@ -414,3 +414,24 @@ modes <- function(kde) {
   # combine
   as.data.frame(cbind(x, do.call(cbind, dots)), check.names = FALSE)
 }
+
+
+
+#' List of vectors
+#' 
+#' Creates a list of Cartesian vectors  from an spherical objects. This is a convenience 
+#' function to link with the package {geologyGeometry}
+#' 
+#' @inheritParams sph_mean
+#' 
+#' @returns list
+#' @export
+#' 
+#' @examples
+#' data(example_lines)
+#' l <- Line(example_lines$trend, example_lines$plunge)
+#' vec_list(l) 
+vec_list <- function(x){
+  Vec3(x) |> 
+    asplit(MARGIN = 1)
+}
