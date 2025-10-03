@@ -9,22 +9,51 @@
 #' Mean strain ellipse after Ramsay (1967)
 #' 
 #' @inheritParams mean_strain_ellipse
-#' @param alpha numeric. alpha value to remove outliers
 #'
-#' @returns list. `Rs` aspect ratio of strian ellipse, `Ri` initial aspect ratio,
-#'  `Fluctuation` angle (Ramsay 1967), and `phi` the mean orientation of the 
-#'  strain ellipse long axis.
+#' @returns list. `R` aspect ratio of strain ellipse, `Ri` initial aspect ratio,
+#'  `Fl` the fluctuation angle (after Ramsay 1967), and `phi` the mean orientation of the 
+#'  strain ellipse long axis. If `boot=TRUE`, then
+#' the bootstrapped 95% confidence interval for the values are added. If `boot.values=TRUE`, a matrix
+#' containing the bootstrapped R and phi values are added.
 #' @export
+#' 
+#' @references Ramsay (1976), Folding and Fracturing of Rocks, McGraw-Hill Book COmpany.
+#' 
+#' @seealso [mean_strain_ellipse()] 
 #'
 #' @examples
 #' data(ramsay)
 #' mean_strain_ellipse_ramsay(ramsay[, "R"], ramsay[, "phi"])
-mean_strain_ellipse_ramsay <- function(r, phi = NULL, alpha = .05){
-  outlier <- quantile(log(r), probs = c(alpha, 1-alpha))
-  cond <- (log(r) >= outlier[1]) & (log(r) <= outlier[2])
-  R_filt <- r[cond]
-  Rmax <- max(R_filt)
-  Rmin <- min(R_filt)
+mean_strain_ellipse_ramsay <- function(r, phi = NULL, boot = TRUE, resamples = 1000, boot.values = FALSE){
+  res <- mean_strain_ellipse_ramsay0(r, phi)
+
+  if (boot) {
+    n <- length(r)
+    boot_mat <- matrix(NA_real_, nrow = resamples, ncol = 4)
+    
+    for (i in seq_len(resamples)) {
+      idx <- sample.int(n, n, replace = TRUE)
+      boot_mat[i, ] <- unlist(mean_strain_ellipse_ramsay0(r[idx], phi[idx]))
+    }
+    
+    res$R_CI <- unname(stats::quantile(boot_mat[, 1], probs = c(0.025, 0.975)))
+    res$Ri_CI <- unname(stats::quantile(boot_mat[, 2], probs = c(0.025, 0.975)))
+    res$Fl_CI <- unname(stats::quantile(boot_mat[, 3], probs = c(0.025, 0.975)))
+    res$phi_CI <- unname(stats::quantile(boot_mat[, 4], probs = c(0.025, 0.975)))
+    
+    if (boot.values) res$boot <- boot_mat
+  }
+  
+  res
+}
+
+
+mean_strain_ellipse_ramsay0 <- function(r, phi = NULL){
+  # outlier <- quantile(log(r), probs = c(alpha, 1-alpha))
+  # cond <- (log(r) >= outlier[1]) & (log(r) <= outlier[2])
+  # R_filt <- r[cond]
+  Rmax <- max(r)
+  Rmin <- min(r)
   
   a <- sqrt(Rmax * Rmin)
   b <- sqrt(Rmax / Rmin)
@@ -42,9 +71,9 @@ mean_strain_ellipse_ramsay <- function(r, phi = NULL, alpha = .05){
   if(is.null(phi)) {
     list(Rs=Rs, Ri=Ri, Fluctuation = Fl)
   } else {
-    phi_avg <- tectonicr::circular_mean(phi[cond])
+    phi_avg <- tectonicr::circular_mean(phi)
     if(phi_avg> 90) phi_avg <- phi_avg - 180
-    list(Rs=Rs, Ri=Ri, Fluctuation = Fl, phi = phi_avg)
+    list(R=Rs, Ri=Ri, Fl = Fl, phi = phi_avg)
   }
 }
 
@@ -68,6 +97,8 @@ mean_strain_ellipse_ramsay <- function(r, phi = NULL, alpha = .05){
 #' containing the bootstrapped R and phi values are added.
 #'
 #' @export
+#' 
+#' @seealso [mean_strain_ellipse_ramsay()] 
 #'
 #' @references Shimamoto, T., Ikeda, Y., 1976. A simple algebraic method for
 #' strain estimation from ellipsoidal objects. Tectonophysics 36, 315–337.
@@ -441,6 +472,10 @@ gridHyper <- function(rphi, rmax, kappa, nnodes, normalize = TRUE, proj = "eqd")
 #' @param contour.col function to produce color palette used for contouring
 #' @param contour.col.params list of plotting arguments passed `col.palette`
 #' @param mean.ellipse logical. Whether the mean ellipse should be plotted
+#' @param mean.ellipse.method character. Whether the mean ellipse should be 
+#' determined using the eigenvector method after Shimamoto and Ikeda, 1976 
+#' (`"eigen"`, the default), or Ramsay's method using the geometric mean of min 
+#' and max Rf values (`"ramsay"`).
 #' @param mean.ellipse.params list of plotting arguments passed to [ellipse()]
 #' @param point.params list of plotting arguments passed to [graphics::points()]
 #' @param at.x,at.y the points at which tick-marks and labels for the x and y
@@ -465,6 +500,7 @@ Rphi_plot <- function(r, phi,
                       contour.col = viridis,
                       contour.col.params = list(),
                       mean.ellipse = TRUE,
+                      mean.ellipse.method = "eigen",
                       mean.ellipse.params = list(border = "red", lwd = 2),
                       point.params = list(col = "grey", pch = 16, cex = .5),
                       rmax = NULL,
@@ -530,7 +566,7 @@ Rphi_plot <- function(r, phi,
 
   # add mean strain ellipse and its #95% confidence interval
   if (mean.ellipse) {
-    rphi_mean <- mean_strain_ellipse(r, phi)
+    rphi_mean <- if(mean.ellipse.method == "eigen") mean_strain_ellipse(r, phi) else mean_strain_ellipse_ramsay(r, phi)
 
     mean.ellipse.params <- append(
       list(

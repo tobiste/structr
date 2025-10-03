@@ -39,3 +39,6 @@ Shimamoto, T., Ikeda, Y., 1976. A simple algebraic method for
 strain estimation from ellipsoidal objects. Tectonophysics 36, 315–337.
 doi: 10.1016/0040-1951(76)90107-4
 }
+\seealso{
+\code{\link[=mean_strain_ellipse_ramsay]{mean_strain_ellipse_ramsay()}}
+}

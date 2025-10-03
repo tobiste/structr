@@ -15,6 +15,7 @@ Rphi_plot(
   contour.col = viridis,
   contour.col.params = list(),
   mean.ellipse = TRUE,
+  mean.ellipse.method = "eigen",
   mean.ellipse.params = list(border = "red", lwd = 2),
   point.params = list(col = "grey", pch = 16, cex = 0.5),
   rmax = NULL,
@@ -45,6 +46,11 @@ drawn as density grid. Ignored when \code{contour=FALSE}}
 \item{contour.col.params}{list of plotting arguments passed \code{col.palette}}
 
 \item{mean.ellipse}{logical. Whether the mean ellipse should be plotted}
+
+\item{mean.ellipse.method}{character. Whether the mean ellipse should be
+determined using the eigenvector method after Shimamoto and Ikeda, 1976
+(\code{"eigen"}, the default), or Ramsay's method using the geometric mean of min
+and max Rf values (\code{"ramsay"}).}
 
 \item{mean.ellipse.params}{list of plotting arguments passed to \code{\link[=ellipse]{ellipse()}}}
 

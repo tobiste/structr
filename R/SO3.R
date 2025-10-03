@@ -1,6 +1,7 @@
 #' Mean orientation of a set of pairs or faults
 #'
-#' The Frechet (geodesic \eqn{L^2}) mean and variance of a pair of foliations and lineations
+#' The Frechet (geodesic \eqn{L^2}) mean and variance of a pair of foliations 
+#' and lineations
 #'
 #' @param x object of class `"Pair"` or `"Fault"`
 #' @param group character. Symmetry group of `x`. One of
@@ -16,6 +17,12 @@
 #'
 #' @returns object of class `"Pair"` or `"Fault"`, respectively
 #' @name mean-pair
+#' 
+#' @references Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis 
+#' for three-dimensional orientational data. Journal of Structural Geology, 
+#' 96, 65–89. https://doi.org/10.1016/j.jsg.2017.01.002
+#' 
+#' @source R package geologyGeometry by J. R. Davies
 #'
 #' @examples
 #' my_fault <- Fault(
@@ -65,8 +72,7 @@ sph_var_pair <- function(x, group = NULL) {
 #' Converts a set of planes and lines into a list of rotation matrices.
 #'
 #' @param x object of class `"Pair"` or `"Fault"`
-#' @export
-#'
+#' @noRd
 #' @returns list of rotation matrices
 #'
 #' @examples

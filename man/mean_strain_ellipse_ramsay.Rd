@@ -4,19 +4,31 @@
 \alias{mean_strain_ellipse_ramsay}
 \title{Mean strain ellipse after Ramsay (1967)}
 \usage{
-mean_strain_ellipse_ramsay(r, phi = NULL, alpha = 0.05)
+mean_strain_ellipse_ramsay(
+  r,
+  phi = NULL,
+  boot = TRUE,
+  resamples = 1000,
+  boot.values = FALSE
+)
 }
 \arguments{
 \item{r}{numeric. Aspect ratio of deformed object (long axis / short axis)}
 
 \item{phi}{numeric. Orientation of long axis of deformed object (in degrees)}
 
-\item{alpha}{numeric. alpha value to remove outliers}
+\item{boot}{logical. Whether a 95\% confidence interval from on bootstrapping should be calculated. \code{TRUE} by default.}
+
+\item{resamples}{integer. Number of bootstrap resamples (\code{1000} by default). Ignored when \code{boot = FALSE}.}
+
+\item{boot.values}{logical. Whether the bootstrapped R and phi values should be added to the output. \code{FALSE} by default.}
 }
 \value{
-list. \code{Rs} aspect ratio of strian ellipse, \code{Ri} initial aspect ratio,
-\code{Fluctuation} angle (Ramsay 1967), and \code{phi} the mean orientation of the
-strain ellipse long axis.
+list. \code{R} aspect ratio of strain ellipse, \code{Ri} initial aspect ratio,
+\code{Fl} the fluctuation angle (after Ramsay 1967), and \code{phi} the mean orientation of the
+strain ellipse long axis. If \code{boot=TRUE}, then
+the bootstrapped 95\% confidence interval for the values are added. If \code{boot.values=TRUE}, a matrix
+containing the bootstrapped R and phi values are added.
 }
 \description{
 Mean strain ellipse after Ramsay (1967)
@@ -24,4 +36,10 @@ Mean strain ellipse after Ramsay (1967)
 \examples{
 data(ramsay)
 mean_strain_ellipse_ramsay(ramsay[, "R"], ramsay[, "phi"])
+}
+\references{
+Ramsay (1976), Folding and Fracturing of Rocks, McGraw-Hill Book COmpany.
+}
+\seealso{
+\code{\link[=mean_strain_ellipse]{mean_strain_ellipse()}}
 }

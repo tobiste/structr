@@ -5,6 +5,9 @@
 \alias{sph_mean_pair}
 \alias{sph_var_pair}
 \title{Mean orientation of a set of pairs or faults}
+\source{
+R package geologyGeometry by J. R. Davies
+}
 \usage{
 sph_mean_pair(x, group = NULL)
 
@@ -28,7 +31,8 @@ automatically picked based on the class of \code{x}.}
 object of class \code{"Pair"} or \code{"Fault"}, respectively
 }
 \description{
-The Frechet (geodesic \eqn{L^2}) mean and variance of a pair of foliations and lineations
+The Frechet (geodesic \eqn{L^2}) mean and variance of a pair of foliations
+and lineations
 }
 \examples{
 my_fault <- Fault(
@@ -40,4 +44,9 @@ c(1, -1, 1)
 )
 sph_mean_pair(my_fault)
 sph_var_pair(my_fault)
+}
+\references{
+Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis
+for three-dimensional orientational data. Journal of Structural Geology,
+96, 65–89. https://doi.org/10.1016/j.jsg.2017.01.002
 }
