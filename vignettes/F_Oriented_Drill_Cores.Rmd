@@ -23,7 +23,7 @@ knitr::opts_chunk$set(
 library(structr)
 ```
 
-The function `drillcore_orientation()` calculates the orientation of a plane or line from internal core angles (**alpha**, **beta**, and **gamma**) of oriented drill cores.
+The function `drillcore_transformation()` calculates the orientation of a plane or line from internal core angles (**&alpha;**, **&beta;**, and **&gamma;**) of oriented drill cores.
 
 `azi` is the azimuth of drill core axis orientation (in degrees, measured clockwise from North), and `inc` is the inclination of drill core axis (in degrees). 
 
@@ -53,7 +53,7 @@ The orientations can be plotted in a equal area (lower hemisphere) projection:
 # initialize stereonet:
 stereoplot()
 
-# plot the core axis *azi and inc angles)
+# plot the core axis' azimuth and inclination)
 stereo_point(Line(azi, inc), lab = "core-axis")
 
 # plot the plane orientations as poles...
