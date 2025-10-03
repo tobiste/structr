@@ -69,6 +69,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/lines.spherical.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/mean-pair.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/mean_strain_ellipse.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/mean_strain_ellipse_ramsay.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/oriHexagonalTrapezohedralGroup.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/oriLineInPlaneGroup.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/oriRayInPlaneGroup.html</loc></url>
@@ -110,6 +111,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/summary.spherical.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/tau_max.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/text.spherical.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/vec_list.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/vecmath.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/vel_rate.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/vollmer_plot.html</loc></url>
