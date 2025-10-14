@@ -62,8 +62,11 @@ rotz3 <- function(deg) {
 #' @param r numeric. Radius of circle. Default is `1` for unit circle.
 #' @param earea logical `TRUE` for Lambert equal-area projection (also "Schmidt net"; the default), or
 #' `FALSE` for meridional stereographic projection (also "Wulff net" or "Stereonet").
+#' 
 #' @returns two-column vector with the transformed coordinates
+#' 
 #' @export
+#' 
 #' @examples
 #' stereo_coords(90, 10)
 #' stereo_coords(90, 10, earea = TRUE, upper.hem = TRUE)
@@ -357,6 +360,82 @@ stereo_greatcircle <- function(x, ...) {
   stopifnot(is.spherical(x))
   x[, 2] <- 90 + x[, 2]
   stereo_smallcircle(x, d = 90, ...) # add circle
+}
+
+
+#' Great-circle segment between two vectors
+#' 
+#' Plots the great-circle segment between two vectors
+#'
+#' @param x,y objects of class `"Vec3"`, `"Line"`, or `"Plane"`
+#' @inheritParams stereo_smallcircle
+#' @param n integer. number of points along greatcircle (100 by default)
+#' @param ... graphical parameters passed to [graphics::lines()]
+#'
+#' @returns NULL
+#' @export
+#' 
+#' @seealso [slerp()], [stereo_greatcircle]
+#'
+#' @examples
+#' x <- Line(120, 7); y <- Line(10, 13)
+#' plot(rbind(x, y))
+#' stereo_segment(x, y, col = 'red')
+#' 
+#' 
+#' # Repeat for multiple segments using lapply():
+#' set.seed(20250411)
+#' mu <- Vec3(1, 1, .2) |> vnorm()
+#' x <- rvmf(100, mu = mu)
+#' plot(x)
+#' lapply(seq_len(nrow(x)), FUN = function(i){
+#'   stereo_segment(x[i, ], mu, col = i)
+#'   })
+#' points(mu, pch = 16, col = 'white')
+stereo_segment <- function(x, y, upper.hem = FALSE, earea = TRUE, n = 100L, BALL.radius = 1, ...){
+  stopifnot(nrow(x) == 1, nrow(y) == 1)
+  vang <- angle(x, y)
+  if(is.Vec3(x)) vang <- rad2deg(vang)
+
+  if(vang <= 90){
+    .draw_lines(x, y, n, upper.hem, earea, ...)
+  } else {
+
+  xy <- crossprod(x, y) |> Line()
+  strike1 <- Line(xy[1, 1] + 90, 0)
+  strike2 <- Line(xy[1, 1] - 90, 0)
+  
+  if(angle(x, strike1) <= angle(x, strike2)){
+    line1 <- strike1
+    line2 <- strike2
+  } else {
+    line1 <- strike2
+    line2 <- strike1
+  }
+  
+  n_part <- (180 - vang)/180
+
+  n1 <- ceiling(n*n_part)
+  n2 <- ceiling(n*(1-n_part))
+  
+  .draw_lines(x, line1, 100, upper.hem, earea, ...)
+  .draw_lines(line2, y, 100, upper.hem, earea, ...)
+  }
+}
+
+.draw_lines <- function(x, y, n = 100L, upper.hem, earea, ...){
+  t <- seq(0, 1, length.out = n)
+  D <- slerp(x, y, t) |> Line() |> unclass()
+  
+  Sc <- stereo_coords(D[, 1], D[, 2], upper.hem, earea)
+  
+  diss <- sqrt((Sc[1:(n - 1), "x"] - Sc[2:(n), "x"])^2 + (Sc[1:(n - 1), "y"] - Sc[2:(n), "y"])^2)
+  ww <- which(diss > 0.9 * BALL.radius)
+  if (length(ww) > 0) {
+    Sc[ww, "x"] <- NA
+    Sc[ww, "y"] <- NA
+  }
+  graphics::lines(Sc[, "x"], Sc[, "y"], ...)
 }
 
 
@@ -823,4 +902,58 @@ angelier <- function(x, pch = 1, lwd = 1, lty = 1, col = "black", cex = 1, point
   lines(Fault_plane(x), lwd = lwd, lty = lty, col = col)
   stereo_arrows(Fault_slip(x), sense = x[, "sense"], col = col, ...)
   if (isTRUE(points)) points(Fault_slip(x), pch = pch, col = col, cex = cex, bg = bg)
+}
+
+
+
+
+
+
+
+#' Variance visualization
+#' 
+#' Shows the greatcircle of the shortest distance between a set of vectors to a 
+#' specified vector in a stereoplot. 
+#' The greatcircles are color-coded by the angular distance.
+#'
+#' @param x set of vectors. Object of class `"Vec3"`, `"Line"`, `"Plane"`, `"Pair"`, or `"Fault"`.
+#' @param y The vector from which the variance should be visualized (only one vector allowed). 
+#' When `NULL`, then the mean vector of `x` is used (the default).
+#' @param .mean character. The type of mean to be used if `y` is `NULL`. 
+#' One of `"geodesic"` (the default), `"arithmetic"` or `"eigen"`.
+#' @param ... optional arguments passed to [assign_col()]
+#'
+#' @returns `NULL` or when called the angles between all vectors in `x` and `y`.
+#' @export
+#' 
+#' @seealso [stereo_segment()], [sph_mean()], [geodesic_mean()], [ot_eigen()]
+#'
+#' @examples
+#' variance_plot(example_lines)
+#' variance_plot(example_planes, example_planes[1,])
+variance_plot <- function(x, y = NULL, .mean = c('geodesic', 'arithmetic', "eigen"), ...){
+  if(is.null(y)){
+    .mean <- match.arg(.mean)
+    y <- if(.mean == "geodesic") geodesic_mean(x) else if(.mean == "arithmetic") sph_mean(x) else ot_eigen(x)$vectors[1, ] 
+  }
+  x <- Line(x); y <- Line(y)
+  
+  ang <- angle(x, y)
+  ang <- ifelse(is.nan(ang), 0, ang)
+  ang <- ifelse(ang>90, 180-ang, ang)
+  
+  x <- x[ang!=0, ]
+  
+  ang_col <- assign_col(ang, ...)
+  stereoplot(guides = FALSE)
+  
+  lapply(seq_len(nrow(x)), function(i){
+    stereo_segment(x[i, ], y, col = ang_col[i])
+  })
+  points(x, col = 'black', pch = 16, cex = .66)
+  
+  title(main = 'Variance plot', sub = paste("Distances from vector:", round(y[1,1]), "/", round(y[1, 2])))
+  
+  
+  invisible(ang) 
 }

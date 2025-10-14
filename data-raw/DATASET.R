@@ -17,12 +17,18 @@
 #   dplyr::filter(cluster == "Huronian Lk.") |>
 #   select(trend, plunge, quality, feature_type) |>
 #   write_csv("C:/Users/tstephan/Documents/GitHub/structr/inst/example_lines.csv")
-example_planes <- readr::read_csv("inst/example_planes.csv")
+example_planes_df <- readr::read_csv("inst/example_planes.csv")
+usethis::use_data(example_planes_df, overwrite = TRUE)
+
+example_planes <- Plane(example_planes_df$dipdir, example_planes_df$dip)
 usethis::use_data(example_planes, overwrite = TRUE)
 
-example_lines <- readr::read_csv("inst/example_lines.csv")
-usethis::use_data(example_lines, overwrite = TRUE)
 
+example_lines_df <- readr::read_csv("inst/example_lines.csv")
+usethis::use_data(example_lines_df, overwrite = TRUE)
+
+example_lines <- Line(example_lines_df$trend, example_lines_df$plunge)
+usethis::use_data(example_lines, overwrite = TRUE)
 
 ramsay <- read.csv("inst/RamsayHuber1983.csv", header = FALSE)
 colnames(ramsay) <- c("R", "phi")

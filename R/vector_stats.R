@@ -128,10 +128,13 @@ v_confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = FALSE) {
 #' @param ... arguments passed to function call
 #'
 #' @importFrom stats sd var
+#' 
+#' @seealso [geodesic_mean_line()] and [geodesic_mean_pair()] for the geodesic mean of lines and pairs, respectively.
+#' or [geodesic_mean()] and [geodesic_var()] as a convenience wrapper for all spherical data types.
 #'
 #' @name stats
 #' @details
-#' `sph_mean` returns the spherical mean of a set of vectors
+#' `sph_mean` returns the spherical arithmetic mean of a set of vectors
 #' (object of class of `x`).
 #'
 #' `sph_var` returns the spherical variance (numeric), based on resultant length

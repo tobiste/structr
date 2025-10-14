@@ -428,9 +428,7 @@ modes <- function(kde) {
 #' @export
 #' 
 #' @examples
-#' data(example_lines)
-#' l <- Line(example_lines$trend, example_lines$plunge)
-#' vec_list(l) 
+#' vec_list(example_lines) 
 vec_list <- function(x){
   Vec3(x) |> 
     asplit(MARGIN = 1)

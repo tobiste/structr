@@ -19,9 +19,24 @@
 #'
 #' @docType data
 #'
-#' @usage data('example_lines')
+#' @usage data('example_lines_df')
 #'
 #' @format An object of class `data.frame`
+#' @keywords datasets
+#' @examples
+#' data("example_lines_df")
+#' head(example_lines_df)
+"example_lines_df"
+
+#' Example lines
+#'
+#' example data set
+#'
+#' @docType data
+#'
+#' @usage data('example_lines')
+#'
+#' @format An object of class `Line`
 #' @keywords datasets
 #' @examples
 #' data("example_lines")
@@ -34,15 +49,29 @@
 #'
 #' @docType data
 #'
-#' @usage data('example_planes')
+#' @usage data('example_planes_df')
 #'
 #' @format An object of class `data.frame`
+#' @keywords datasets
+#' @examples
+#' data("example_planes_df")
+#' head(example_planes_df)
+"example_planes_df"
+
+#' Example planes
+#'
+#' example data set
+#'
+#' @docType data
+#'
+#' @usage data('example_planes')
+#'
+#' @format An object of class `Plane`
 #' @keywords datasets
 #' @examples
 #' data("example_planes")
 #' head(example_planes)
 "example_planes"
-
 #' Example data set
 #'
 #' example data set

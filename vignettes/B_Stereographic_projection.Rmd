@@ -26,11 +26,11 @@ library(structr)
 
 Import and convert to spherical objects:
 ```{r example}
-data(example_planes)
-data(example_lines)
+data(example_planes_df)
+data(example_lines_df)
 
-planes <- Plane(example_planes$dipdir, example_planes$dip)
-lines <- Line(example_lines$trend, example_lines$plunge)
+planes <- Plane(example_planes_df$dipdir, example_planes_df$dip)
+lines <- Line(example_lines_df$trend, example_lines_df$plunge)
 ```
 
 ## Stereographic projection
@@ -75,13 +75,13 @@ line_weightings <- 6 / example_lines$quality
 ```
 
 
-The (weighted) mean orientation
+The (weighted) arithmetic mean orientation
 
 ```{r stat_mean}
 lines_mean <- sph_mean(lines, w = line_weightings)
 ```
 
-The (weighted) variance
+The (weighted) arithmetic variance
 
 ```{r stat_var}
 lines_variance <- sph_var(lines, w = line_weightings)
@@ -121,6 +121,20 @@ lines(lines_mean, ang = lines_delta, col = "#FB8861FF")
 legend("topright", legend = c("Mean line", "95% confidence cone", "63% data cone"), col = c("#B63679", "#E65164FF", "#FB8861FF"), pch = c(19, NA, NA), lty = c(NA, 1, 1), cex = .75)
 ```
 
+## Variance plot
+
+```{r variance}
+#| fig.alt: >
+#|   Diagram showing the distances of a set of vectors to a specified vector
+variance_plot(lines, y = lines[1, ])
+```
+
+## Geodesic mean
+The Frechet (geodesic \eqn{L^2}) mean finds iteratively the vector that minimizes the distances to all other points.
+
+```{r geodesic}
+geodesic_mean(lines)
+```
 
 ## Orientation tensor 
 ### Eigenvectors
@@ -267,3 +281,6 @@ The **Hoeppner plot** shows all planes as *poles* while lineations are not shown
 stereoplot(title = "Hoeppner plot")
 hoeppner(f, col = viridis::magma(nrow(f), end = .9))
 ```
+
+
+

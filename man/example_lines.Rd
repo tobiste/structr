@@ -5,7 +5,7 @@
 \alias{example_lines}
 \title{Example lines}
 \format{
-An object of class \code{data.frame}
+An object of class \code{Line}
 }
 \usage{
 data('example_lines')

@@ -43,7 +43,7 @@ estimate_k(x, w = NULL, na.rm = FALSE)
 Statistical estimators of the distribution of a set of vectors
 }
 \details{
-\code{sph_mean} returns the spherical mean of a set of vectors
+\code{sph_mean} returns the spherical arithmetic mean of a set of vectors
 (object of class of \code{x}).
 
 \code{sph_var} returns the spherical variance (numeric), based on resultant length
@@ -88,4 +88,8 @@ sph_mean(x2)
 sph_mean(x2, w = c(1, 2))
 sph_var(x2)
 sph_var(x2, w = c(1, 2))
+}
+\seealso{
+\code{\link[=geodesic_mean_line]{geodesic_mean_line()}} and \code{\link[=geodesic_mean_pair]{geodesic_mean_pair()}} for the geodesic mean of lines and pairs, respectively.
+or \code{\link[=geodesic_mean]{geodesic_mean()}} and \code{\link[=geodesic_var]{geodesic_var()}} as a convenience wrapper for all spherical data types.
 }

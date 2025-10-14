@@ -332,6 +332,23 @@ v_antipode <- function(x) {
   -x
 }
 
+#' Antipodal map sending upper-hemisphere rays to the lower hemisphere.
+#'
+#' Negates any vector with positive `z`-component. Used in lower-hemisphere plots.
+#'
+#' @param v object of class `'Vec3'`
+#' @return object of class `'Vec3'`
+#' @export
+#' @keywords internal
+#' @examples
+#' v <- rbind(Vec3(1, 0, -1), Vec3(1, 0, 1))
+#' v_lower(v)
+v_lower <- function(v) {
+  stopifnot(is.Vec3(v))
+  f <- ifelse(v[, 3] <=0, 1 , -1) 
+  f*v
+}
+
 
 #' Spherical Linear Interpolation (Slerp)
 #'
@@ -348,6 +365,8 @@ v_antipode <- function(x) {
 #' segment in the plane; a great circle is a spherical geodesic.
 #'
 #' @export
+#' 
+#' @seealso [stereo_segment()] for plotting the Slerp path as a line
 #'
 #' @examples
 #' x0 <- Line(120, 7)
@@ -375,6 +394,7 @@ slerp <- function(x0, x1, t) {
 }
 
 
+#' @keywords internal
 slerp1 <- function(x0, x1, t) {
   stopifnot(is.Vec3(x0) | is.Line(x0) | is.Plane(x0))
   stopifnot(is.Vec3(x1) | is.Line(x1) | is.Plane(x1))

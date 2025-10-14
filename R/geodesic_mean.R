@@ -1,3 +1,163 @@
+#' The Frechet (geodesic \eqn{L^2}) mean
+#' 
+#' An iterative algorithm for computing the Frechet mean, i.e. the vector that 
+#' minimizes the Frechet variance.
+#'
+#' @param x object of class `"Vec3"`, `"Line"`, `"Plane"`, `"Pair"`, or `"Fault"`.
+#' @param ... parameters passed to [geodesic_meanvariance_line()] (if `x` is a Vec3, Line or Plane) 
+#' or [geodesic_mean_pair()] (if `x` is a Pair or a Fault).
+#' 
+#' @name geodesic-mean
+#' 
+#' @returns `geodesic_mean` returns the mean vector as an object of class `x`. `geodesic_var` returns the variance as a numeric number.
+#' 
+#' @references Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis 
+#' for three-dimensional orientational data. Journal of Structural Geology, 
+#' 96, 65–89. https://doi.org/10.1016/j.jsg.2017.01.002
+#' @source geologyGeometry (J.R. Davis)
+#' 
+#' @seealso [sph_mean()] for the arithmetic mean
+#' 
+#' @examples
+#' geodesic_mean(example_planes)
+#' geodesic_var(example_planes)
+NULL
+
+#' @rdname geodesic-mean
+#' @export
+geodesic_mean <- function(x, ...){
+  if(is.Pair(x)) geodesic_mean_pair(x, ...) else geodesic_mean_line(x, ...)
+}
+
+#' @rdname geodesic-mean
+#' @export
+geodesic_var <- function(x, ...){
+  if(is.Pair(x)) geodesic_var_pair(x, ...) else geodesic_var_line(x, ...)
+}
+
+
+#' The Frechet (geodesic \eqn{L^2}) mean of a set of lines
+#' 
+#' An iterative algorithm for computing the Frechet mean — the line that 
+#' minimizes the Frechet variance. The iterations continue until error squared of 
+#' epsilon is achieved or `steps` iterations have been used. Try multiple 
+#' seeds, to improve your chances of finding the global optimum.
+#'
+#' @param x object of class `"Vec3"`, `"Line"`, or `"Plane"`
+#' @param seeds positive integer. How many `x` to try as seeds
+#' @param steps positive integer. Bound on how many iterations to use.
+#'
+#' @returns `geodesic_meanvariance_line` returns a `list` consisting of 
+#' `$variance` (numeric), `$mean` (a line), 
+#' `$error` (an integer) and `$min.eigenvalue` (numeric). 
+#' `geodesic_mean_line` and `geodesic_var_line` are convenience wrapper and only 
+#' return the mean and the variance, respectively.
+#' 
+#' @details Error should be `0` and `min.eigenvalue` should be positive. 
+#' Otherwise there was some problem in the optimization. If error is non-zero, then try increasing `steps`.
+#' @name geodesic-line
+#' 
+#' @references Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis 
+#' for three-dimensional orientational data. Journal of Structural Geology, 
+#' 96, 65–89. https://doi.org/10.1016/j.jsg.2017.01.002
+#' @source lineMeanVariance from geologyGeometry (J.R. Davis)
+#' @seealso [sph_mean()] for arithmetic mean and [geodesic_mean_pair()] for geodesic mean of pairs.
+#'
+#' @examples
+#' geodesic_meanvariance_line(example_lines)
+#' geodesic_mean_line(example_lines)
+#' geodesic_var_line(example_lines)
+NULL
+
+#' @rdname geodesic-line
+#' @export
+geodesic_mean_line <- function(x, ...) geodesic_meanvariance_line(x, ...)$mean
+
+#' @rdname geodesic-line
+#' @export
+geodesic_var_line <- function(x, ...) geodesic_meanvariance_line(x, ...)$variance
+
+#' @rdname geodesic-line
+#' @export
+geodesic_meanvariance_line <- function(x, seeds = 5L, steps = 100L){
+  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  res <- lineMeanVariance(vec_list(x), numSeeds = seeds, numSteps = steps)
+  m <- res$mean |> as.Vec3()
+  
+  names(res) <- c('variance', "mean", "error", "min.eigenvalue")
+  
+  res$mean <- Spherical(m, class(x)[1])
+  return(res)
+}
+
+
+
+
+lineMeanVariance <- function (us, numSeeds = 5L, numSteps = 100L) 
+{
+  f <- function(phiTheta) {
+    lineVariance(us, cartesianFromSpherical(c(1, phiTheta)))
+  }
+  seeds <- sample(us, numSeeds)
+  best <- list(variance = (pi^2))
+  for (seed in seeds) {
+    sol <- optim(sphericalFromCartesian(seed), f, hessian = TRUE, 
+                 control = list(maxit = numSteps))
+    if (sol$value < best$variance) {
+      eigvals <- eigen(sol$hessian, symmetric = TRUE, 
+                       only.values = TRUE)$values
+      best <- list(variance = sol$value, mean = cartesianFromSpherical(c(1, 
+                                                                         sol$par)), error = sol$convergence, minEigenvalue = min(eigvals))
+    }
+  }
+  best
+}
+
+lineVariance <- function (us, center) 
+{
+  sum(sapply(us, function(u) lineDistance(u, center)^2))/(2 * length(us))
+}
+
+lineDistance <- function (u, v) 
+{
+  arcCos(abs(dot(u, v)))
+}
+
+cartesianFromSpherical <- function (rpt) 
+{
+  sinPhi <- sin(rpt[[2]])
+  x <- rpt[[1]] * sinPhi * cos(rpt[[3]])
+  y <- rpt[[1]] * sinPhi * sin(rpt[[3]])
+  z <- rpt[[1]] * cos(rpt[[2]])
+  c(x, y, z)
+}
+
+sphericalFromCartesian <- function (xyz) 
+{
+  rho <- sqrt(dot(xyz, xyz))
+  if (rho == 0) {
+    c(0, 0, 0)
+  }
+  else {
+    phi <- acos(xyz[[3]]/rho)
+    rhoSinPhi <- rho * sin(phi)
+    if (rhoSinPhi == 0) {
+      if (xyz[[3]] >= 0) {
+        c(xyz[[3]], 0, 0)
+      }
+      else {
+        c(-xyz[[3]], pi, 0)
+      }
+    }
+    else {
+      c(rho, phi, atan2(xyz[[2]], xyz[[1]]))
+    }
+  }
+}
+
+
+
+
 #' Mean orientation of a set of pairs or faults
 #'
 #' The Frechet (geodesic \eqn{L^2}) mean and variance of a pair of foliations 
@@ -17,12 +177,13 @@
 #'
 #' @returns object of class `"Pair"` or `"Fault"`, respectively
 #' @name mean-pair
+#' @seealso [sph_mean()] for arithmetic mean, and [geodesic_mean_line()] for geodesic mean of lines.
 #' 
 #' @references Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis 
 #' for three-dimensional orientational data. Journal of Structural Geology, 
 #' 96, 65–89. https://doi.org/10.1016/j.jsg.2017.01.002
 #' 
-#' @source R package geologyGeometry by J. R. Davies
+#' @source oriMeanVariance from geologyGeometry (J.R. Davis)
 #'
 #' @examples
 #' my_fault <- Fault(
@@ -32,36 +193,36 @@
 #' c(58, 9, 23), 
 #' c(1, -1, 1)
 #' )
-#' sph_mean_pair(my_fault)
-#' sph_var_pair(my_fault)
+#' geodesic_mean_pair(my_fault)
+#' geodesic_var_pair(my_fault)
 NULL
 
 #' @rdname mean-pair
 #' @export
-sph_mean_pair <- function(x, group = NULL) {
+geodesic_mean_pair <- function(x, group = NULL) {
   res <- .sph_meanvar_pair(x, group)
   rot2pair(res$mean, fault = inherits(x, "Fault"))
 }
 
 #' @rdname mean-pair
 #' @export
-sph_var_pair <- function(x, group = NULL) {
+geodesic_var_pair <- function(x, group = NULL) {
   .sph_meanvar_pair(x, group)$variance
 }
 
 .sph_meanvar_pair <- function(x, group) {
   xvec <- pair2rot(x)
-
+  
   if (is.null(group)) {
     group <- if (inherits(x, "Fault")) "triclinic" else "orthorhombic"
   }
-
+  
   group_mat <- switch(group,
-    "orthorhombic" = oriLineInPlaneGroup(),
-    "triclinic" = oriRayInPlaneGroup(),
-    "trivial" = oriTrivialGroup(),
-    "trigonal" = oriTrigonalTrapezohedralGroup(),
-    "hexagonal" = oriHexagonalTrapezohedralGroup()
+                      "orthorhombic" = oriLineInPlaneGroup(),
+                      "triclinic" = oriRayInPlaneGroup(),
+                      "trivial" = oriTrivialGroup(),
+                      "trigonal" = oriTrigonalTrapezohedralGroup(),
+                      "hexagonal" = oriHexagonalTrapezohedralGroup()
   )
   ori_mean_variance(xvec, group = group_mat)
 }
@@ -88,12 +249,12 @@ pair2rot <- function(x) {
   stopifnot(is.Pair(x))
   p <- Fault_plane(x) |> Vec3()
   l <- Fault_slip(x) |> Vec3()
-
+  
   if (inherits(x, "Fault")) {
     l <- x[, 5] * l
   }
   cross <- crossprod(p, l)
-
+  
   rotm <- rot_projected_matrix(list(pole = p, direction = l, cross = cross))
   class(rotm) <- append(class(rotm), "Rotation")
   return(rotm)
@@ -107,7 +268,7 @@ rot2pair <- function(x, fault = FALSE) {
   stopifnot(is.Rotation(x))
   mp <- as.Vec3(x[1, ])
   ml <- as.Vec3(x[2, ])
-
+  
   if (fault) {
     Fault(Plane(mp), Line(ml), sense = as.integer(sign(ml[, 3])))
   } else {
@@ -119,10 +280,10 @@ rot2pair <- function(x, fault = FALSE) {
 rot_projected_matrix <- function(x) {
   stopifnot(is.list(x))
   n <- nrow(x$pole)
-
+  
   lapply(seq_len(n), function(i) {
     m <- rbind(pole = x$pole[i, ], direction = x$direction[i, ], x$cross[i, ]) |> unclass()
-
+    
     valsvecs <- eigen(crossprod(m, m), symmetric = TRUE)
     q <- valsvecs$vectors
     dSqrtInv <- valsvecs$values^(-1 / 2)
@@ -175,22 +336,22 @@ oriVariance <- function(rs, center, group) {
 ori_mean_variance <- function(rs, group, numSeeds = 5, numSteps = 1000, eps = sqrt(.Machine$double.eps)) {
   n <- length(rs)
   g_len <- length(group)
-
+  
   # random seeds
   seeds <- if (n >= numSeeds) sample(rs, numSeeds) else sample(rs, numSeeds, replace = TRUE)
-
+  
   # upper bound for variance
   best_var <- 5
   best <- vector("list", 4)
-
+  
   for (seed in seeds) {
     rBar <- seed
     changeSquared <- eps + 1.0
     k <- 0
-
+    
     while (changeSquared >= eps && k < numSteps) {
       w <- matrix(0, 3, 3)
-
+      
       for (r in rs) {
         # compute all crossproducts in one pass
         scores <- numeric(g_len)
@@ -203,23 +364,23 @@ ori_mean_variance <- function(rs, group, numSeeds = 5, numSteps = 1000, eps = sq
         i <- which.max(scores)
         w <- w + rotLog(mats[[i]])
       }
-
+      
       w <- w / n
       rBar <- rBar %*% rotExp(w)
       changeSquared <- tr(crossprod(w, w))
       k <- k + 1
     }
-
+    
     var <- oriVariance(rs, rBar, group)
     if (var < best_var) {
       best_var <- var
       best <- list(rBar = rBar, changeSquared = changeSquared, k = k)
     }
   }
-
+  
   # assign class once
   class(best$rBar) <- c("Rotation", class(best$rBar))
-
+  
   list(
     variance = best_var,
     mean = best$rBar,

@@ -31,3 +31,6 @@ xslerp <- slerp(x0, x1, t)
 plot(xslerp, col = assign_col(t))
 points(rbind(x0, x1))
 }
+\seealso{
+\code{\link[=stereo_segment]{stereo_segment()}} for plotting the Slerp path as a line
+}
