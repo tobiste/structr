@@ -19,6 +19,8 @@ geodesic_meanvariance_line(x, seeds = 5L, steps = 100L)
 \arguments{
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}}
 
+\item{...}{parameters passed to \code{\link[=geodesic_meanvariance_line]{geodesic_meanvariance_line()}}}
+
 \item{seeds}{positive integer. How many \code{x} to try as seeds}
 
 \item{steps}{positive integer. Bound on how many iterations to use.}

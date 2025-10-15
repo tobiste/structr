@@ -38,10 +38,9 @@ y <- Line(10, 13)
 plot(rbind(x, y))
 stereo_segment(x, y, col = "red")
 
-
-# Repeat for multiple segments using lapply():
+# For multiple segments use lapply():
 set.seed(20250411)
-mu <- Vec3(1, 1, .2) |> vnorm()
+mu <- Line(45, 10)
 x <- rvmf(100, mu = mu)
 plot(x)
 lapply(seq_len(nrow(x)), FUN = function(i) {

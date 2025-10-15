@@ -383,10 +383,9 @@ stereo_greatcircle <- function(x, ...) {
 #' plot(rbind(x, y))
 #' stereo_segment(x, y, col = "red")
 #'
-#'
-#' # Repeat for multiple segments using lapply():
+#' # For multiple segments use lapply():
 #' set.seed(20250411)
-#' mu <- Vec3(1, 1, .2) |> vnorm()
+#' mu <- Line(45, 10)
 #' x <- rvmf(100, mu = mu)
 #' plot(x)
 #' lapply(seq_len(nrow(x)), FUN = function(i) {
@@ -399,27 +398,34 @@ stereo_segment <- function(x, y, upper.hem = FALSE, earea = TRUE, n = 100L, BALL
   if (is.Vec3(x)) vang <- rad2deg(vang)
 
   if (vang <= 90) {
-    .draw_lines(x, y, n, upper.hem, earea, ...)
+    n_part <- vang / 90
+    n <- ceiling(n * n_part)
+    
+    .draw_lines(x, y, n, upper.hem, earea, BALL.radius, ...)
   } else {
     xy <- crossprod(x, y) |> Line()
     strike1 <- Line(xy[1, 1] + 90, 0)
     strike2 <- Line(xy[1, 1] - 90, 0)
 
+    n_part <- (180 - vang) / 180
+    
+    na <- ceiling(n * n_part)
+    nb <- ceiling(n * (1 - n_part))
+    
     if (angle(x, strike1) <= angle(x, strike2)) {
       line1 <- strike1
       line2 <- strike2
+      n1 <- nb
+      n2 <- na
     } else {
       line1 <- strike2
       line2 <- strike1
+      n1 <- na
+      n2 <- nb
     }
 
-    n_part <- (180 - vang) / 180
-
-    n1 <- ceiling(n * n_part)
-    n2 <- ceiling(n * (1 - n_part))
-
-    .draw_lines(x, line1, 100, upper.hem, earea, ...)
-    .draw_lines(line2, y, 100, upper.hem, earea, ...)
+    .draw_lines(x, line1, n1, upper.hem, earea, BALL.radius, ...)
+    .draw_lines(line2, y, n2, upper.hem, earea, BALL.radius, ...)
   }
 }
 

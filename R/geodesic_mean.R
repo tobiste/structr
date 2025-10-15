@@ -46,6 +46,7 @@ geodesic_var <- function(x, ...) {
 #' @param x object of class `"Vec3"`, `"Line"`, or `"Plane"`
 #' @param seeds positive integer. How many `x` to try as seeds
 #' @param steps positive integer. Bound on how many iterations to use.
+#' @param ... parameters passed to [geodesic_meanvariance_line()]
 #'
 #' @returns `geodesic_meanvariance_line` returns a `list` consisting of
 #' `$variance` (numeric), `$mean` (a line),
