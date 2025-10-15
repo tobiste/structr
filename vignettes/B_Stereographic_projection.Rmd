@@ -143,12 +143,15 @@ geodesic_var(lines)
 ```
 
 ### Hypothesis testing
-To test if a line (here `line_NULL`) is the population mean of a given set of lineations, we need to calculate the confidence area of our population (here `lines`).
+To test if a line represents the population mean of a given set of lineations, we need to calculate the confidence area of our population.
+
+Let's test the hypothesis that a horizontal lineation trending towards 70 &deg; is the mean for our lineations.
+
 ```{r test0}
 line_NULL <- Line(70, 0)
 ```
 
-The 95% confidence interval:
+The bootstrapped 95% confidence interval:
 ```{r test1}
 ce <- confidence_ellipse(lines, n = 10000, alpha = 0.05)
 ```
@@ -164,7 +167,7 @@ The p-value for our hypothesis line:
 ce$pvalue.line.FUN(line_NULL)
 ```
 
-We rejected the Null Hypothesis that the given line represents the population mean if the p-value is smaller than 5% for 95% confidence.
+With (95% confidence) we rejected the Null Hypothesis that the given line represents the population mean as the p-value is smaller than 5%.
 
 
 ## Orientation tensor 
