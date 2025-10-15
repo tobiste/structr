@@ -36,5 +36,5 @@ for three-dimensional orientational data. Journal of Structural Geology,
 96, 65–89. https://doi.org/10.1016/j.jsg.2017.01.002
 }
 \seealso{
-\code{\link[=sph_mean]{sph_mean()}} for the arithmetic mean
+\code{\link[=sph_mean]{sph_mean()}} for the arithmetic mean, \code{\link[=projected_mean]{projected_mean()}} for projected mean
 }

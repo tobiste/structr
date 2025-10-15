@@ -15,7 +15,7 @@
 named vector
 }
 \description{
-Calculates the mean, variance, 68\% cone, and the confidence cone around the mean.
+Calculates the arithmetic mean, variance, 68\% cone, and the confidence cone around the mean.
 }
 \examples{
 set.seed(20250411)

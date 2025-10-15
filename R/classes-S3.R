@@ -473,7 +473,7 @@ tail.spherical <- function(x, n = 6L, ...) {
 #' Random Samples and Permutations
 #'
 #' @param x object of class `"Vec3"`, `"Line"`, `"Plane"`, `"Pair"`, or `"Fault"`.
-#' @inheritParams base::sample 
+#' @inheritParams base::sample
 #'
 #' @returns object of class `x`
 #' @exportS3Method base::sample
@@ -483,7 +483,7 @@ tail.spherical <- function(x, n = 6L, ...) {
 #' set.seed(20250411)
 #' x <- rvmf(n = 100, mu = Line(90, 45))
 #' sample(test, size = 5)
-sample.spherical <- function(x, size, replace = FALSE, prob = NULL){
+sample.spherical <- function(x, size, replace = FALSE, prob = NULL) {
   rnd <- sample.int(nrow(x), size, replace, prob)
   return(x[rnd, ])
 }

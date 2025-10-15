@@ -34,9 +34,6 @@ angelier(
 
 \item{lty, lwd, cex, pch, col, bg}{plotting parameters}
 }
-\value{
-Plot
-}
 \description{
 Add fault data to existing plot
 }

@@ -69,9 +69,11 @@ points(planes, col = "#000004", pch = 1, cex = .5)
 ```
 
 ## Statistics
+
+Define some weights for our lines based on the quality reported for the measurements:
 ```{r stat0}    
-example_lines$quality <- ifelse(is.na(example_lines$quality), 6, example_lines$quality) # replacing NA values with 6
-line_weightings <- 6 / example_lines$quality
+example_lines_df$quality <- ifelse(is.na(example_lines_df$quality), 6, example_lines_df$quality) # replacing NA values with 6
+line_weightings <- 6 / example_lines_df$quality
 ```
 
 
@@ -121,7 +123,7 @@ lines(lines_mean, ang = lines_delta, col = "#FB8861FF")
 legend("topright", legend = c("Mean line", "95% confidence cone", "63% data cone"), col = c("#B63679", "#E65164FF", "#FB8861FF"), pch = c(19, NA, NA), lty = c(NA, 1, 1), cex = .75)
 ```
 
-## Variance plot
+### Variance plot
 
 ```{r variance}
 #| fig.alt: >
@@ -129,12 +131,41 @@ legend("topright", legend = c("Mean line", "95% confidence cone", "63% data cone
 variance_plot(lines, y = lines[1, ])
 ```
 
-## Geodesic mean
+### Geodesic mean and variance
 The Frechet (geodesic \eqn{L^2}) mean finds iteratively the vector that minimizes the distances to all other points.
 
 ```{r geodesic}
+# Mean
 geodesic_mean(lines)
+
+# Variance
+geodesic_var(lines)
 ```
+
+### Hypothesis testing
+To test if a line (here `line_NULL`) is the population mean of a given set of lineations, we need to calculate the confidence area of our population (here `lines`).
+```{r test0}
+line_NULL <- Line(70, 0)
+```
+
+The 95% confidence interval:
+```{r test1}
+ce <- confidence_ellipse(lines, n = 10000, alpha = 0.05)
+```
+
+To visualize the confidence area of our lines:
+```{r test2}
+plot(lines, col = 'grey')
+stereo_confidence(ce, col = "#B63679FF")
+points(line_NULL, col = "#000004", pch = 16)
+```
+The p-value for our hypothesis line:
+```{r test3}
+ce$pvalue.line.FUN(line_NULL)
+```
+
+We rejected the Null Hypothesis that the given line represents the population mean if the p-value is smaller than 5% for 95% confidence.
+
 
 ## Orientation tensor 
 ### Eigenvectors

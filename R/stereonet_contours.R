@@ -41,8 +41,8 @@
 #'
 #' # complete example:
 #' par(mfrow = c(1, 2))
-#' wp <- 6 / ifelse(is.na(example_planes$quality), 6, example_planes$quality)
-#' my_planes <- Plane(example_planes$dipdir, example_planes$dip)
+#' wp <- 6 / ifelse(is.na(example_planes_df$quality), 6, example_planes_df$quality)
+#' my_planes <- Plane(example_planes_df$dipdir, example_planes_df$dip)
 #' fabric_p <- or_shape_params(my_planes)$Vollmer["D"]
 #' my_planes_eig <- ot_eigen(my_planes)
 #'
@@ -59,8 +59,8 @@
 #'   )
 #' )
 #'
-#' my_lines <- Line(example_lines$trend, example_lines$plunge)
-#' wl <- 6 / ifelse(is.na(example_lines$quality), 6, example_lines$quality)
+#' my_lines <- Line(example_lines_df$trend, example_lines_df$plunge)
+#' wl <- 6 / ifelse(is.na(example_lines_df$quality), 6, example_lines_df$quality)
 #' fabric_l <- or_shape_params(my_lines)$Vollmer["D"]
 #'
 #' stereoplot(guides = TRUE, col = "grey96")

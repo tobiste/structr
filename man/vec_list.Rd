@@ -17,5 +17,5 @@ Creates a list of Cartesian vectors  from an spherical objects. This is a conven
 function to link with the package \code{geologyGeometry} by J. R. Davis
 }
 \examples{
-vec_list(example_lines) 
+vec_list(example_lines)
 }

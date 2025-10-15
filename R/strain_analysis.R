@@ -1,79 +1,78 @@
+.fluction <- function(Rs, Ri) {
+  a <- Rs * (Ri^2 - 1)
+  b <- sqrt((Rs^2 * Ri^2 - 1) * (Rs^2 - Ri^2))
 
-.fluction <- function(Rs, Ri){
-  a <-  Rs * (Ri^2 - 1)
-  b <- sqrt((Rs^2*Ri^2 - 1) * (Rs^2 - Ri^2))
-  
   atan2(a, b) * 180 / pi
 }
 
 #' Mean strain ellipse after Ramsay (1967)
-#' 
+#'
 #' @inheritParams mean_strain_ellipse
 #'
 #' @returns list. `R` aspect ratio of strain ellipse, `Ri` initial aspect ratio,
-#'  `Fl` the fluctuation angle (after Ramsay 1967), and `phi` the mean orientation of the 
+#'  `Fl` the fluctuation angle (after Ramsay 1967), and `phi` the mean orientation of the
 #'  strain ellipse long axis. If `boot=TRUE`, then
 #' the bootstrapped 95% confidence interval for the values are added. If `boot.values=TRUE`, a matrix
 #' containing the bootstrapped R and phi values are added.
 #' @export
-#' 
+#'
 #' @references Ramsay (1976), Folding and Fracturing of Rocks, McGraw-Hill Book COmpany.
-#' 
-#' @seealso [mean_strain_ellipse()] 
+#'
+#' @seealso [mean_strain_ellipse()]
 #'
 #' @examples
 #' data(ramsay)
 #' mean_strain_ellipse_ramsay(ramsay[, "R"], ramsay[, "phi"])
-mean_strain_ellipse_ramsay <- function(r, phi = NULL, boot = TRUE, resamples = 1000, boot.values = FALSE){
+mean_strain_ellipse_ramsay <- function(r, phi = NULL, boot = TRUE, resamples = 1000, boot.values = FALSE) {
   res <- mean_strain_ellipse_ramsay0(r, phi)
 
   if (boot) {
     n <- length(r)
     boot_mat <- matrix(NA_real_, nrow = resamples, ncol = 4)
-    
+
     for (i in seq_len(resamples)) {
       idx <- sample.int(n, n, replace = TRUE)
       boot_mat[i, ] <- unlist(mean_strain_ellipse_ramsay0(r[idx], phi[idx]))
     }
-    
+
     res$R_CI <- unname(stats::quantile(boot_mat[, 1], probs = c(0.025, 0.975)))
     res$Ri_CI <- unname(stats::quantile(boot_mat[, 2], probs = c(0.025, 0.975)))
     res$Fl_CI <- unname(stats::quantile(boot_mat[, 3], probs = c(0.025, 0.975)))
     res$phi_CI <- unname(stats::quantile(boot_mat[, 4], probs = c(0.025, 0.975)))
-    
+
     if (boot.values) res$boot <- boot_mat
   }
-  
+
   res
 }
 
 
-mean_strain_ellipse_ramsay0 <- function(r, phi = NULL){
+mean_strain_ellipse_ramsay0 <- function(r, phi = NULL) {
   # outlier <- quantile(log(r), probs = c(alpha, 1-alpha))
   # cond <- (log(r) >= outlier[1]) & (log(r) <= outlier[2])
   # R_filt <- r[cond]
   Rmax <- max(r)
   Rmin <- min(r)
-  
+
   a <- sqrt(Rmax * Rmin)
   b <- sqrt(Rmax / Rmin)
-  
+
   Fl <- .fluction(a, b)
-  
-  if(Fl>90){
+
+  if (Fl > 90) {
     Ri <- a
     Rs <- b
   } else {
     Ri <- b
     Rs <- a
   }
-  
-  if(is.null(phi)) {
-    list(Rs=Rs, Ri=Ri, Fluctuation = Fl)
+
+  if (is.null(phi)) {
+    list(Rs = Rs, Ri = Ri, Fluctuation = Fl)
   } else {
     phi_avg <- tectonicr::circular_mean(phi)
-    if(phi_avg> 90) phi_avg <- phi_avg - 180
-    list(R=Rs, Ri=Ri, Fl = Fl, phi = phi_avg)
+    if (phi_avg > 90) phi_avg <- phi_avg - 180
+    list(R = Rs, Ri = Ri, Fl = Fl, phi = phi_avg)
   }
 }
 
@@ -97,8 +96,8 @@ mean_strain_ellipse_ramsay0 <- function(r, phi = NULL){
 #' containing the bootstrapped R and phi values are added.
 #'
 #' @export
-#' 
-#' @seealso [mean_strain_ellipse_ramsay()] 
+#'
+#' @seealso [mean_strain_ellipse_ramsay()]
 #'
 #' @references Shimamoto, T., Ikeda, Y., 1976. A simple algebraic method for
 #' strain estimation from ellipsoidal objects. Tectonophysics 36, 315–337.
@@ -147,21 +146,21 @@ mean_strain_ellipse0 <- function(r, phi) {
 
   sm <- matrix(c(f, h, h, g), nrow = 2, ncol = 2)
 
-  
+
   # tan (2 theta) = 2h / (f-g)
-  
-  a <-  2*h 
-  b <- f-g
-  # theta_rad <- (atan((2 * h / (f - g))) / 2) 
-  # 
-  theta_rad <- pi/2 + atan2(a, b)/2
+
+  a <- 2 * h
+  b <- f - g
+  # theta_rad <- (atan((2 * h / (f - g))) / 2)
+  #
+  theta_rad <- pi / 2 + atan2(a, b) / 2
   # temp <-  a / b
-  # theta <- atan(a/b)/2 
-  
+  # theta <- atan(a/b)/2
+
   theta <- theta_rad * 180 / pi
   theta <- theta %% 180
-  if(theta > 90) theta <- theta - 180
-  
+  if (theta > 90) theta <- theta - 180
+
   sm_eig <- eigen(sm, symmetric = TRUE, only.values = TRUE)
   pa <- sqrt(sm_eig$values)
 
@@ -472,9 +471,9 @@ gridHyper <- function(rphi, rmax, kappa, nnodes, normalize = TRUE, proj = "eqd")
 #' @param contour.col function to produce color palette used for contouring
 #' @param contour.col.params list of plotting arguments passed `col.palette`
 #' @param mean.ellipse logical. Whether the mean ellipse should be plotted
-#' @param mean.ellipse.method character. Whether the mean ellipse should be 
-#' determined using the eigenvector method after Shimamoto and Ikeda, 1976 
-#' (`"eigen"`, the default), or Ramsay's method using the geometric mean of min 
+#' @param mean.ellipse.method character. Whether the mean ellipse should be
+#' determined using the eigenvector method after Shimamoto and Ikeda, 1976
+#' (`"eigen"`, the default), or Ramsay's method using the geometric mean of min
 #' and max Rf values (`"ramsay"`).
 #' @param mean.ellipse.params list of plotting arguments passed to [ellipse()]
 #' @param point.params list of plotting arguments passed to [graphics::points()]
@@ -566,7 +565,7 @@ Rphi_plot <- function(r, phi,
 
   # add mean strain ellipse and its #95% confidence interval
   if (mean.ellipse) {
-    rphi_mean <- if(mean.ellipse.method == "eigen") mean_strain_ellipse(r, phi) else mean_strain_ellipse_ramsay(r, phi)
+    rphi_mean <- if (mean.ellipse.method == "eigen") mean_strain_ellipse(r, phi) else mean_strain_ellipse_ramsay(r, phi)
 
     mean.ellipse.params <- append(
       list(

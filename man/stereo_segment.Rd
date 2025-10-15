@@ -33,9 +33,10 @@ hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
 Plots the great-circle segment between two vectors
 }
 \examples{
-x <- Line(120, 7); y <- Line(10, 13)
+x <- Line(120, 7)
+y <- Line(10, 13)
 plot(rbind(x, y))
-stereo_segment(x, y, col = 'red')
+stereo_segment(x, y, col = "red")
 
 
 # Repeat for multiple segments using lapply():
@@ -43,10 +44,10 @@ set.seed(20250411)
 mu <- Vec3(1, 1, .2) |> vnorm()
 x <- rvmf(100, mu = mu)
 plot(x)
-lapply(seq_len(nrow(x)), FUN = function(i){
+lapply(seq_len(nrow(x)), FUN = function(i) {
   stereo_segment(x[i, ], mu, col = i)
-  })
-points(mu, pch = 16, col = 'white')
+})
+points(mu, pch = 16, col = "white")
 }
 \seealso{
 \code{\link[=slerp]{slerp()}}, \link{stereo_greatcircle}

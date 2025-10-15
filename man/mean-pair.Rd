@@ -36,11 +36,11 @@ and lineations
 }
 \examples{
 my_fault <- Fault(
-c("a" = 120, "b" = 120, "c" = 100), 
-c(60, 60, 50), 
-c(110, 25, 30), 
-c(58, 9, 23), 
-c(1, -1, 1)
+  c("a" = 120, "b" = 120, "c" = 100),
+  c(60, 60, 50),
+  c(110, 25, 30),
+  c(58, 9, 23),
+  c(1, -1, 1)
 )
 geodesic_mean_pair(my_fault)
 geodesic_var_pair(my_fault)

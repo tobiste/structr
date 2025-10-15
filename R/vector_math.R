@@ -345,8 +345,8 @@ v_antipode <- function(x) {
 #' v_lower(v)
 v_lower <- function(v) {
   stopifnot(is.Vec3(v))
-  f <- ifelse(v[, 3] <=0, 1 , -1) 
-  f*v
+  f <- ifelse(v[, 3] <= 0, 1, -1)
+  f * v
 }
 
 
@@ -365,7 +365,7 @@ v_lower <- function(v) {
 #' segment in the plane; a great circle is a spherical geodesic.
 #'
 #' @export
-#' 
+#'
 #' @seealso [stereo_segment()] for plotting the Slerp path as a line
 #'
 #' @examples

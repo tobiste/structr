@@ -62,11 +62,11 @@ rotz3 <- function(deg) {
 #' @param r numeric. Radius of circle. Default is `1` for unit circle.
 #' @param earea logical `TRUE` for Lambert equal-area projection (also "Schmidt net"; the default), or
 #' `FALSE` for meridional stereographic projection (also "Wulff net" or "Stereonet").
-#' 
+#'
 #' @returns two-column vector with the transformed coordinates
-#' 
+#'
 #' @export
-#' 
+#'
 #' @examples
 #' stereo_coords(90, 10)
 #' stereo_coords(90, 10, earea = TRUE, upper.hem = TRUE)
@@ -364,7 +364,7 @@ stereo_greatcircle <- function(x, ...) {
 
 
 #' Great-circle segment between two vectors
-#' 
+#'
 #' Plots the great-circle segment between two vectors
 #'
 #' @param x,y objects of class `"Vec3"`, `"Line"`, or `"Plane"`
@@ -374,61 +374,63 @@ stereo_greatcircle <- function(x, ...) {
 #'
 #' @returns NULL
 #' @export
-#' 
+#'
 #' @seealso [slerp()], [stereo_greatcircle]
 #'
 #' @examples
-#' x <- Line(120, 7); y <- Line(10, 13)
+#' x <- Line(120, 7)
+#' y <- Line(10, 13)
 #' plot(rbind(x, y))
-#' stereo_segment(x, y, col = 'red')
-#' 
-#' 
+#' stereo_segment(x, y, col = "red")
+#'
+#'
 #' # Repeat for multiple segments using lapply():
 #' set.seed(20250411)
 #' mu <- Vec3(1, 1, .2) |> vnorm()
 #' x <- rvmf(100, mu = mu)
 #' plot(x)
-#' lapply(seq_len(nrow(x)), FUN = function(i){
+#' lapply(seq_len(nrow(x)), FUN = function(i) {
 #'   stereo_segment(x[i, ], mu, col = i)
-#'   })
-#' points(mu, pch = 16, col = 'white')
-stereo_segment <- function(x, y, upper.hem = FALSE, earea = TRUE, n = 100L, BALL.radius = 1, ...){
+#' })
+#' points(mu, pch = 16, col = "white")
+stereo_segment <- function(x, y, upper.hem = FALSE, earea = TRUE, n = 100L, BALL.radius = 1, ...) {
   stopifnot(nrow(x) == 1, nrow(y) == 1)
   vang <- angle(x, y)
-  if(is.Vec3(x)) vang <- rad2deg(vang)
+  if (is.Vec3(x)) vang <- rad2deg(vang)
 
-  if(vang <= 90){
+  if (vang <= 90) {
     .draw_lines(x, y, n, upper.hem, earea, ...)
   } else {
+    xy <- crossprod(x, y) |> Line()
+    strike1 <- Line(xy[1, 1] + 90, 0)
+    strike2 <- Line(xy[1, 1] - 90, 0)
 
-  xy <- crossprod(x, y) |> Line()
-  strike1 <- Line(xy[1, 1] + 90, 0)
-  strike2 <- Line(xy[1, 1] - 90, 0)
-  
-  if(angle(x, strike1) <= angle(x, strike2)){
-    line1 <- strike1
-    line2 <- strike2
-  } else {
-    line1 <- strike2
-    line2 <- strike1
-  }
-  
-  n_part <- (180 - vang)/180
+    if (angle(x, strike1) <= angle(x, strike2)) {
+      line1 <- strike1
+      line2 <- strike2
+    } else {
+      line1 <- strike2
+      line2 <- strike1
+    }
 
-  n1 <- ceiling(n*n_part)
-  n2 <- ceiling(n*(1-n_part))
-  
-  .draw_lines(x, line1, 100, upper.hem, earea, ...)
-  .draw_lines(line2, y, 100, upper.hem, earea, ...)
+    n_part <- (180 - vang) / 180
+
+    n1 <- ceiling(n * n_part)
+    n2 <- ceiling(n * (1 - n_part))
+
+    .draw_lines(x, line1, 100, upper.hem, earea, ...)
+    .draw_lines(line2, y, 100, upper.hem, earea, ...)
   }
 }
 
-.draw_lines <- function(x, y, n = 100L, upper.hem, earea, ...){
+.draw_lines <- function(x, y, n = 100L, upper.hem, earea, ...) {
   t <- seq(0, 1, length.out = n)
-  D <- slerp(x, y, t) |> Line() |> unclass()
-  
+  D <- slerp(x, y, t) |>
+    Line() |>
+    unclass()
+
   Sc <- stereo_coords(D[, 1], D[, 2], upper.hem, earea)
-  
+
   diss <- sqrt((Sc[1:(n - 1), "x"] - Sc[2:(n), "x"])^2 + (Sc[1:(n - 1), "y"] - Sc[2:(n), "y"])^2)
   ww <- which(diss > 0.9 * BALL.radius)
   if (length(ww) > 0) {
@@ -847,7 +849,7 @@ stereo_arrows <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.
 #' @param points logical. Whether the lineation points (Angelier plot) or poles (Hoeppner plot) should be added to the plot
 #' @param ... arguments passed to [stereo_arrows()]
 #'
-#' @returns Plot
+#' @returns NULL
 #' @name fault-plot
 #'
 #' @seealso [stereo_arrows()]
@@ -911,49 +913,102 @@ angelier <- function(x, pch = 1, lwd = 1, lty = 1, col = "black", cex = 1, point
 
 
 #' Variance visualization
-#' 
-#' Shows the greatcircle of the shortest distance between a set of vectors to a 
-#' specified vector in a stereoplot. 
+#'
+#' Shows the greatcircle of the shortest distance between a set of vectors to a
+#' specified vector in a stereoplot.
 #' The greatcircles are color-coded by the angular distance.
 #'
 #' @param x set of vectors. Object of class `"Vec3"`, `"Line"`, `"Plane"`, `"Pair"`, or `"Fault"`.
-#' @param y The vector from which the variance should be visualized (only one vector allowed). 
+#' @param y The vector from which the variance should be visualized (only one vector allowed).
 #' When `NULL`, then the mean vector of `x` is used (the default).
-#' @param .mean character. The type of mean to be used if `y` is `NULL`. 
-#' One of `"geodesic"` (the default), `"arithmetic"` or `"eigen"`.
+#' @param .mean character. The type of mean to be used if `y` is `NULL`.
+#' One of `"geodesic"` (the default), `"arithmetic"` or `"projected"`.
 #' @param ... optional arguments passed to [assign_col()]
+#' @param segments logical. Whether the segments should be shown or only the points?
 #'
-#' @returns `NULL` or when called the angles between all vectors in `x` and `y`.
+#' @returns angles between all vectors in `x` and `y`.
 #' @export
-#' 
-#' @seealso [stereo_segment()], [sph_mean()], [geodesic_mean()], [ot_eigen()]
+#'
+#' @seealso [stereo_segment()], [sph_mean()], [geodesic_mean()], [projected_mean()]
 #'
 #' @examples
 #' variance_plot(example_lines)
-#' variance_plot(example_planes, example_planes[1,])
-variance_plot <- function(x, y = NULL, .mean = c('geodesic', 'arithmetic', "eigen"), ...){
-  if(is.null(y)){
+#' variance_plot(example_planes, example_planes[1, ], segments = FALSE)
+variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "projected"), segments = TRUE, ...) {
+  if (is.null(y)) {
     .mean <- match.arg(.mean)
-    y <- if(.mean == "geodesic") geodesic_mean(x) else if(.mean == "arithmetic") sph_mean(x) else ot_eigen(x)$vectors[1, ] 
+    y <- if (.mean == "geodesic") geodesic_mean(x) else if (.mean == "arithmetic") sph_mean(x) else ot_eigen(x)$vectors[1, ]
   }
-  x <- Line(x); y <- Line(y)
-  
-  ang <- angle(x, y)
-  ang <- ifelse(is.nan(ang), 0, ang)
-  ang <- ifelse(ang>90, 180-ang, ang)
-  
-  x <- x[ang!=0, ]
-  
-  ang_col <- assign_col(ang, ...)
+  xl <- Line(x)
+  yl <- Line(y)
+
+  suppressWarnings(
+    ang <- abs(angle(xl, yl))
+  )
+  ang <- ifelse(ang > 90, 180 - ang, ang)
+  cond <- is.nan(ang) | is.na(ang)
+  x2 <- xl[!cond, ]
+
   stereoplot(guides = FALSE)
-  
-  lapply(seq_len(nrow(x)), function(i){
-    stereo_segment(x[i, ], y, col = ang_col[i])
-  })
-  points(x, col = 'black', pch = 16, cex = .66)
-  
-  title(main = 'Variance plot', sub = paste("Distances from vector:", round(y[1,1]), "/", round(y[1, 2])))
-  
-  
-  invisible(ang) 
+
+  if (segments) {
+    ang_col <- assign_col(ang[!cond], ...)
+    lapply(seq_len(nrow(x2)), function(i) {
+      stereo_segment(x2[i, ], yl, col = ang_col[i])
+    })
+    points(xl, col = "black", pch = 16, cex = .66)
+  } else {
+    ang_col <- assign_col(ang, ...)
+    points(xl, col = ang_col, pch = 16, cex = .66)
+  }
+
+  title(main = "Variance plot", sub = paste("Distances from vector:", round(y[1, 1]), "/", round(y[1, 2])))
+
+  invisible(ang)
+}
+
+
+#' Plot the bootstrapped confidence ellipse
+#'
+#' Adds an ellipse marking the bootstrapped confidence interval of the arithmetic mean to an existing plot
+#'
+#' @param x Spherical object or a list containing the output of an earlier call of [confidence_ellipse()]
+#' @param center logical. Whether the ellipse's center should be plotted?
+#' @param col Color of the ellipse and its center
+#' @param pch,cex Plotting symbol and size of the ellipse center. Ignored if `center` is `FALSE`.
+#' @param ... graphical parameters passed to [graphics::lines()]
+#' @param params list. Parameters passed to [confidence_ellipse()]
+#'
+#' @returns output of [confidence_ellipse()]
+#' @seealso [confidence_ellipse()]
+#' @export
+#'
+#' @examples
+#' set.seed(20250411)
+#' plot(example_lines, col = "grey")
+#' stereo_confidence(example_lines, params = list(n = 100, res = 100), col = "red")
+stereo_confidence <- function(x, params = list(), col = par("col"), cex = par("cex"), pch = 16, center = TRUE, ...) {
+  if (is.spherical(x)) {
+    ce <- do.call(confidence_ellipse, append(list(x = x), params))
+  } else if (is.list(x)) {
+    ce <- x
+  }
+
+  if (center) {
+    center <- ce$center
+    points(center, pch = 16, col = col, cex = cex)
+  }
+
+  D <- Line(ce$ellipse)
+  Sc <- stereo_coords(D[, 1], D[, 2], upper.hem, earea)
+
+  diss <- sqrt((Sc[1:(n - 1), "x"] - Sc[2:(n), "x"])^2 + (Sc[1:(n - 1), "y"] - Sc[2:(n), "y"])^2)
+  ww <- which(diss > 0.9 * BALL.radius)
+  if (length(ww) > 0) {
+    Sc[ww, "x"] <- NA
+    Sc[ww, "y"] <- NA
+  }
+  graphics::lines(Sc[, "x"], Sc[, "y"], col = col, ...)
+
+  invisible(ce)
 }

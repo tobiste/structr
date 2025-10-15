@@ -30,8 +30,8 @@ Import and convert to spherical objects:
 ```{r example}
 data(example_planes)
 
-planes <- Plane(example_planes$dipdir, example_planes$dip)
-lines <- Line(example_lines$trend, example_lines$plunge)
+planes <- Plane(example_planes_df$dipdir, example_planes_df$dip)
+lines <- Line(example_lines_df$trend, example_lines_df$plunge)
 ```
 
 ## Stereographic projection

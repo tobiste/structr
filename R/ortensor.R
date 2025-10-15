@@ -152,6 +152,25 @@ ot_eigen <- function(x, scaled = FALSE) {
   xeig
 }
 
+#' Projected Mean
+#'
+#' Eigenvector with largest eigenvalue of the orientation tensor
+#'
+#' @inheritParams ot_eigen
+#'
+#' @returns Vector in coordinate system of `x`
+#'
+#' @seealso [ot_eigen()] for eigenvalues of orientation tensor,
+#'  [sph_mean()] for arithmetic mean, [geodesic_mean()] for geodesic mean.
+#'
+#' @export
+#'
+#' @examples
+#' projected_mean(example_lines)
+projected_mean <- function(x) {
+  ot_eigen(x)$vectors[1, ]
+}
+
 
 #' Helper function for Eigenvalues and Eigenvectors of a Set of Vectors
 #'

@@ -128,8 +128,8 @@ v_confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = FALSE) {
 #' @param ... arguments passed to function call
 #'
 #' @importFrom stats sd var
-#' 
-#' @seealso [geodesic_mean_line()] and [geodesic_mean_pair()] for the geodesic mean of lines and pairs, respectively.
+#'
+#' @seealso [projected_mean()] for projected mean, [geodesic_mean_line()] and [geodesic_mean_pair()] for the geodesic mean of lines and pairs, respectively.
 #' or [geodesic_mean()] and [geodesic_var()] as a convenience wrapper for all spherical data types.
 #'
 #' @name stats
@@ -586,7 +586,7 @@ dist.spherical <- function(x, ...) v_dist(x, ...)
 
 #' Summary statistics
 #'
-#' Calculates the mean, variance, 68% cone, and the confidence cone around the mean.
+#' Calculates the arithmetic mean, variance, 68% cone, and the confidence cone around the mean.
 #'
 #' @param object object of class `"Vec3"`, `"Line"`, or `"Plane"`.
 #' @param ... parameters passed to [sph_mean()], [sph_var()], [delta()], and [confidence_angle()]

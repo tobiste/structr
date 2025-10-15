@@ -90,6 +90,6 @@ sph_var(x2)
 sph_var(x2, w = c(1, 2))
 }
 \seealso{
-\code{\link[=geodesic_mean_line]{geodesic_mean_line()}} and \code{\link[=geodesic_mean_pair]{geodesic_mean_pair()}} for the geodesic mean of lines and pairs, respectively.
+\code{\link[=projected_mean]{projected_mean()}} for projected mean, \code{\link[=geodesic_mean_line]{geodesic_mean_line()}} and \code{\link[=geodesic_mean_pair]{geodesic_mean_pair()}} for the geodesic mean of lines and pairs, respectively.
 or \code{\link[=geodesic_mean]{geodesic_mean()}} and \code{\link[=geodesic_var]{geodesic_var()}} as a convenience wrapper for all spherical data types.
 }

@@ -61,8 +61,8 @@ library(structr)
 library(ggplot2)
 library(mapproj)
 
-data(example_planes)
-planes <- Plane(example_planes$dipdir, example_planes$dip)
+data(example_planes_df)
+planes <- Plane(example_planes_df$dipdir, example_planes_df$dip)
 
 fabric <- or_shape_params(planes)$Vollmer["D"]
 

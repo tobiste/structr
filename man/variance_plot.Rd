@@ -4,7 +4,13 @@
 \alias{variance_plot}
 \title{Variance visualization}
 \usage{
-variance_plot(x, y = NULL, .mean = c("geodesic", "arithmetic", "eigen"), ...)
+variance_plot(
+  x,
+  y = NULL,
+  .mean = c("geodesic", "arithmetic", "projected"),
+  segments = TRUE,
+  ...
+)
 }
 \arguments{
 \item{x}{set of vectors. Object of class \code{"Vec3"}, \code{"Line"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"}.}
@@ -13,12 +19,14 @@ variance_plot(x, y = NULL, .mean = c("geodesic", "arithmetic", "eigen"), ...)
 When \code{NULL}, then the mean vector of \code{x} is used (the default).}
 
 \item{.mean}{character. The type of mean to be used if \code{y} is \code{NULL}.
-One of \code{"geodesic"} (the default), \code{"arithmetic"} or \code{"eigen"}.}
+One of \code{"geodesic"} (the default), \code{"arithmetic"} or \code{"projected"}.}
+
+\item{segments}{logical. Whether the segments should be shown or only the points?}
 
 \item{...}{optional arguments passed to \code{\link[=assign_col]{assign_col()}}}
 }
 \value{
-\code{NULL} or when called the angles between all vectors in \code{x} and \code{y}.
+angles between all vectors in \code{x} and \code{y}.
 }
 \description{
 Shows the greatcircle of the shortest distance between a set of vectors to a
@@ -27,8 +35,8 @@ The greatcircles are color-coded by the angular distance.
 }
 \examples{
 variance_plot(example_lines)
-variance_plot(example_planes, example_planes[1,])
+variance_plot(example_planes, example_planes[1, ], segments = FALSE)
 }
 \seealso{
-\code{\link[=stereo_segment]{stereo_segment()}}, \code{\link[=sph_mean]{sph_mean()}}, \code{\link[=geodesic_mean]{geodesic_mean()}}, \code{\link[=ot_eigen]{ot_eigen()}}
+\code{\link[=stereo_segment]{stereo_segment()}}, \code{\link[=sph_mean]{sph_mean()}}, \code{\link[=geodesic_mean]{geodesic_mean()}}, \code{\link[=projected_mean]{projected_mean()}}
 }
