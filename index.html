@@ -96,8 +96,8 @@
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://ggplot2.tidyverse.org" class="external-link">ggplot2</a></span><span class="op">)</span></span>
 <span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va">mapproj</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">)</span></span>
-<span><span class="va">planes</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/classes.html">Plane</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">$</span><span class="va">dipdir</span>, <span class="va">example_planes</span><span class="op">$</span><span class="va">dip</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_planes_df</span><span class="op">)</span></span>
+<span><span class="va">planes</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/classes.html">Plane</a></span><span class="op">(</span><span class="va">example_planes_df</span><span class="op">$</span><span class="va">dipdir</span>, <span class="va">example_planes_df</span><span class="op">$</span><span class="va">dip</span><span class="op">)</span></span>
 <span></span>
 <span><span class="va">fabric</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/strain_shape.html">or_shape_params</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span><span class="op">$</span><span class="va">Vollmer</span><span class="op">[</span><span class="st">"D"</span><span class="op">]</span></span>
 <span></span>

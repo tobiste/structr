@@ -92,7 +92,7 @@
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><code>sph_mean</code> returns the spherical mean of a set of vectors
+    <p><code>sph_mean</code> returns the spherical arithmetic mean of a set of vectors
 (object of class of <code>x</code>).</p>
 <p><code>sph_var</code> returns the spherical variance (numeric), based on resultant length
 (Mardia 1972).</p>
@@ -111,6 +111,11 @@ value might not be a good estimator.</p>
 mean \(\mu\) (in degrees if <code>x</code> is a <code>"Plane"</code> or <code>"Line"</code>, or in radians
 if otherwise). The \(100(1-\alpha)\%\) confidence interval is than given by \(\mu \pm q\).</p>
 <p><code>estimate_k</code> returns the estimated concentration of the von Mises-Fisher distribution \(\kappa\) (after Sra, 2011).</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="projected_mean.html">projected_mean()</a></code> for projected mean, <code><a href="geodesic-line.html">geodesic_mean_line()</a></code> and <code><a href="mean-pair.html">geodesic_mean_pair()</a></code> for the geodesic mean of lines and pairs, respectively.
+or <code><a href="geodesic-mean.html">geodesic_mean()</a></code> and <code><a href="geodesic-mean.html">geodesic_var()</a></code> as a convenience wrapper for all spherical data types.</p></div>
     </div>
 
     <div class="section level2">

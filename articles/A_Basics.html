@@ -66,7 +66,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-10-03</h4>
+            <h4 data-toc-skip class="date">2025-10-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/A_Basics.Rmd" class="external-link"><code>vignettes/A_Basics.Rmd</code></a></small>
       <div class="d-none name"><code>A_Basics.Rmd</code></div>
@@ -94,8 +94,8 @@ orientation measurements in the list elements <code>lines</code> and
 <p>Usually orientation data is stored in a table containing the column
 dip direction (or strike) and the dip angle of a measured plane…</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_planes_df</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">example_planes_df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
 <span><span class="co">#&gt;   dipdir   dip quality feature_type</span></span>
 <span><span class="co">#&gt;    <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
@@ -108,8 +108,8 @@ dip direction (or strike) and the dip angle of a measured plane…</p>
 <p>or the trend (azimuth) and plunge (inclination) of a measured
 line…</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_lines_df</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">example_lines_df</span><span class="op">)</span></span>
 <span><span class="co">#&gt; <span style="color: #949494;"># A tibble: 6 × 4</span></span></span>
 <span><span class="co">#&gt;   trend plunge quality feature_type</span></span>
 <span><span class="co">#&gt;   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>  <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span>   <span style="color: #949494; font-style: italic;">&lt;dbl&gt;</span> <span style="color: #949494; font-style: italic;">&lt;chr&gt;</span>       </span></span>
@@ -126,16 +126,15 @@ dip angle for planes, and the trend and plunge for lines as
 arguments.</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">)</span></span>
-<span><span class="va">planes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Plane</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">$</span><span class="va">dipdir</span>, <span class="va">example_planes</span><span class="op">$</span><span class="va">dip</span><span class="op">)</span></span>
-<span><span class="va">lines</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">$</span><span class="va">trend</span>, <span class="va">example_lines</span><span class="op">$</span><span class="va">plunge</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">planes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Plane</a></span><span class="op">(</span><span class="va">example_planes_df</span><span class="op">$</span><span class="va">dipdir</span>, <span class="va">example_planes_df</span><span class="op">$</span><span class="va">dip</span><span class="op">)</span></span>
+<span><span class="va">lines</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="va">example_lines_df</span><span class="op">$</span><span class="va">trend</span>, <span class="va">example_lines_df</span><span class="op">$</span><span class="va">plunge</span><span class="op">)</span></span></code></pre></div>
 <blockquote>
 <p>If the raw data was imported using <code><a href="../reference/strabo.html">read_strabo_JSON()</a></code>
 this step is not necessary as the data will come already in the correct
 format.</p>
 </blockquote>
 <p>The spherical objects can be easily converted into Cartesian
-coordinate vectors using the functions <code>line2vec()</code> or
-<code>plane2vec()</code>:</p>
+coordinate vectors using the function <code><a href="../reference/classes.html">Vec3()</a></code>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lines_vector</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Vec3</a></span><span class="op">(</span><span class="va">lines</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">lines_vector</span><span class="op">)</span></span>
@@ -147,34 +146,24 @@ coordinate vectors using the functions <code>line2vec()</code> or
 <span><span class="co">#&gt; [4,] 0.1641876 0.9311540 0.3255682</span></span>
 <span><span class="co">#&gt; [5,] 0.4341533 0.8520738 0.2923717</span></span>
 <span><span class="co">#&gt; [6,] 0.2382466 0.9555548 0.1736482</span></span></code></pre></div>
+<p>Convert a pole to a plane to a Line:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">planes_as_line</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Vec3</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">planes_as_line</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">planes_as_line</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Vector (Vec3) object (n = 6):</span></span>
-<span><span class="co">#&gt;              x          y         z</span></span>
-<span><span class="co">#&gt; [1,] 0.6209609 -0.4851479 0.6156615</span></span>
-<span><span class="co">#&gt; [2,] 0.4822457 -0.4822457 0.7313537</span></span>
-<span><span class="co">#&gt; [3,] 0.5674549 -0.3545852 0.7431448</span></span>
-<span><span class="co">#&gt; [4,] 0.6229665 -0.3596699 0.6946584</span></span>
-<span><span class="co">#&gt; [5,] 0.5865195 -0.5098536 0.6293204</span></span>
-<span><span class="co">#&gt; [6,] 0.7205572 -0.2911240 0.6293204</span></span></code></pre></div>
-<p>which produces the same output as</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="fu"><a href="../reference/classes.html">Vec3</a></span><span class="op">(</span><span class="va">planes_as_line</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Vector (Vec3) object (n = 6):</span></span>
-<span><span class="co">#&gt;              x          y         z</span></span>
-<span><span class="co">#&gt; [1,] 0.6209609 -0.4851479 0.6156615</span></span>
-<span><span class="co">#&gt; [2,] 0.4822457 -0.4822457 0.7313537</span></span>
-<span><span class="co">#&gt; [3,] 0.5674549 -0.3545852 0.7431448</span></span>
-<span><span class="co">#&gt; [4,] 0.6229665 -0.3596699 0.6946584</span></span>
-<span><span class="co">#&gt; [5,] 0.5865195 -0.5098536 0.6293204</span></span>
-<span><span class="co">#&gt; [6,] 0.7205572 -0.2911240 0.6293204</span></span></code></pre></div>
+<span><span class="co">#&gt; Line object (n = 6):</span></span>
+<span><span class="co">#&gt;      azimuth plunge</span></span>
+<span><span class="co">#&gt; [1,]     322     38</span></span>
+<span><span class="co">#&gt; [2,]     315     47</span></span>
+<span><span class="co">#&gt; [3,]     328     48</span></span>
+<span><span class="co">#&gt; [4,]     330     44</span></span>
+<span><span class="co">#&gt; [5,]     319     39</span></span>
+<span><span class="co">#&gt; [6,]     338     39</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="some-helpers">Some helpers<a class="anchor" aria-label="anchor" href="#some-helpers"></a>
 </h2>
 <p>Converts strike into dip direction using right-hand rule</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/rhr.html">rhr2dd</a></span><span class="op">(</span><span class="fl">271</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1</span></span>
 <span><span class="fu"><a href="../reference/rhr.html">dd2rhr</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span>
@@ -188,11 +177,11 @@ can be used for all sort of vector operations, such as the magnitude (or
 length), the angle between vectors, dot product, cross product,
 projection and rotation.</p>
 <p>Define some example vectors:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">line1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">50</span><span class="op">)</span></span>
 <span><span class="va">line2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">30</span><span class="op">)</span></span></code></pre></div>
 <p>The <strong>vector length</strong> (or magnitude):</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/vecmath.html">vector_length</a></span><span class="op">(</span><span class="va">line1</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 1</span></span></code></pre></div>
 <blockquote>
@@ -200,18 +189,18 @@ projection and rotation.</p>
 is equal to 1.</p>
 </blockquote>
 <p>The <strong>angle</strong> between two vectors</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/vecmath.html">angle</a></span><span class="op">(</span><span class="va">line1</span>, <span class="va">line2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 78.89371</span></span></code></pre></div>
 <p>The <strong>dot product</strong> (or scalar product) of two
 vectors</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/vecmath.html">dotprod</a></span><span class="op">(</span><span class="va">line1</span>, <span class="va">line2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0.1926297</span></span></code></pre></div>
 <p>Intuitively, the dot product tells us how much two vectors point in
 the same direction.</p>
 <p>The <strong>cross product</strong> of two vectors:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">line1</span>, <span class="va">line2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Line object (n = 1):</span></span>
 <span><span class="co">#&gt;   azimuth    plunge </span></span>
@@ -219,7 +208,7 @@ the same direction.</p>
 <p>This gives the vector that is perpendicular to the plane spanned by
 the two vectors.</p>
 <p>The <strong>projection</strong> of a vector on another vector:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/vecmath.html">project</a></span><span class="op">(</span><span class="va">line1</span>, <span class="va">line2</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Line object (n = 1):</span></span>
 <span><span class="co">#&gt; azimuth  plunge </span></span>
@@ -230,14 +219,14 @@ the second vector.</p>
 </blockquote>
 <p>The <strong>rotation</strong> of a vector about another vector
 (rotation axis) by a specified rotation angle:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/vecmath.html">rotate</a></span><span class="op">(</span><span class="va">line1</span>, rotaxis <span class="op">=</span> <span class="va">line2</span>, rotangle <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Line object (n = 1):</span></span>
 <span><span class="co">#&gt;   azimuth    plunge </span></span>
 <span><span class="co">#&gt; 210.50391  70.01332</span></span></code></pre></div>
 <p><strong>Linear transformation</strong> transforms vectors using a
 transformation matrix (second-order tensor).</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">trans_mat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html" class="external-link">matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">9</span><span class="op">)</span>, <span class="fl">3</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/vecmath.html">transform_linear</a></span><span class="op">(</span><span class="va">line1</span>, <span class="va">trans_mat</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Vector (Vec3) object (n = 1):</span></span>
@@ -248,7 +237,7 @@ transformation matrix (second-order tensor).</p>
 <h2 id="cluster-vectors">Cluster vectors<a class="anchor" aria-label="anchor" href="#cluster-vectors"></a>
 </h2>
 <p>To find k clusters of orientation vectors:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># generate some random vectors:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20250411</span><span class="op">)</span></span>
 <span><span class="va">x1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">100</span>, mu <span class="op">=</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">90</span>, <span class="fl">0</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
