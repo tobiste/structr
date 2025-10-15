@@ -9,6 +9,8 @@ variance_plot(
   y = NULL,
   .mean = c("geodesic", "arithmetic", "projected"),
   segments = TRUE,
+  upper.hem = FALSE,
+  earea = TRUE,
   ...
 )
 }
@@ -22,6 +24,12 @@ When \code{NULL}, then the mean vector of \code{x} is used (the default).}
 One of \code{"geodesic"} (the default), \code{"arithmetic"} or \code{"projected"}.}
 
 \item{segments}{logical. Whether the segments should be shown or only the points?}
+
+\item{upper.hem}{logical. Whether the projection is shown for upper
+hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
+
+\item{earea}{logical \code{TRUE} for Lambert equal-area projection (also "Schmidt net"; the default), or
+\code{FALSE} for meridional stereographic projection (also "Wulff net" or "Stereonet").}
 
 \item{...}{optional arguments passed to \code{\link[=assign_col]{assign_col()}}}
 }

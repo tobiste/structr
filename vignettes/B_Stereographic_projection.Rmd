@@ -132,7 +132,7 @@ variance_plot(lines, y = lines[1, ])
 ```
 
 ### Geodesic mean and variance
-The Frechet (geodesic \eqn{L^2}) mean finds iteratively the vector that minimizes the distances to all other points.
+The Frechet (geodesic L<sup>2</sub>) mean iteratively finds the vector that minimizes the distances to all other points.
 
 ```{r geodesic}
 # Mean
@@ -143,25 +143,27 @@ geodesic_var(lines)
 ```
 
 ### Hypothesis testing
-To test if a line represents the population mean of a given set of lineations, we need to calculate the confidence area of our population.
+To test if a line represents the population mean of a given set of lineations, we need to calculate the confidence region of our population.
 
-Let's test the hypothesis that a horizontal lineation trending towards 70 &deg; is the mean for our lineations.
+Let's test the hypothesis that a horizontal lineation trending towards 70&deg; is the mean for our lineations.
 
 ```{r test0}
 line_NULL <- Line(70, 0)
 ```
 
-The bootstrapped 95% confidence interval:
+The 95% confidence interval (from 10,000 bootstrap samples):
 ```{r test1}
 ce <- confidence_ellipse(lines, n = 10000, alpha = 0.05)
 ```
 
-To visualize the confidence area of our lines:
+To visualize the confidence region of our lines:
 ```{r test2}
+#| fig.alt: Diagram showing the confidence region of a mean
 plot(lines, col = 'grey')
 stereo_confidence(ce, col = "#B63679FF")
 points(line_NULL, col = "#000004", pch = 16)
 ```
+
 The p-value for our hypothesis line:
 ```{r test3}
 ce$pvalue.line.FUN(line_NULL)
@@ -173,7 +175,7 @@ With (95% confidence) we rejected the Null Hypothesis that the given line repres
 ## Orientation tensor 
 ### Eigenvectors
 
-The orientation tensor (Scheidegger 1965) is a matrix comprised of all direction cosines of the orientation vectors. In case of a Bingham distribution, the **eigenvectors** of this tensor describe the orientation of the most dense, intermediate and least dense orientation, and thus, are used to determine the orientation of girdle-distributed vectors (e.g. folded planes).
+The orientation tensor (Scheidegger 1965) is a matrix comprising the mean direction cosines of the orientation vectors. In case of a Bingham distribution, the **Eigenvectors** of this tensor describe the orientation of the most dense, intermediate and least dense orientation, and thus, are used to determine the orientation of girdle-distributed vectors (e.g. folded planes).
 
 ```{r eigen}
 #| fig.alt: >
@@ -188,8 +190,16 @@ points(planes_eigen$vectors, col = viridis::magma(3), pch = 19, cex = 1)
 legend("topright", legend = c("Eigenvectors 1", "Eigenvectors 2", "Eigenvectors 3"), col = viridis::magma(3), pch = 19, cex = .75)
 ```
 
+### Projected mean
+
+The Eigenvector with the largest Eigenvalue represents a vector parallel to the highest concentration of a population. This vector can also be described as the **projected mean**. A shortcut function for this is:
+
+```{r projected}
+projected_mean(example_lines)
+```
+
 ### Eigenvalues
-The **eigenvalues** of the orientation tensor. describe the shape of the distribution of these vectors, that is who clustered, cylindrical or random these vectors are distributed.
+The **Eigenvalues** of the orientation tensor describe the shape of the distribution of these vectors, that is who clustered, cylindrical or random these vectors are distributed.
 
 A Fabric plot visualizes the shape of the distribution by plotting the eigenvalues of the orientation tensor.
 Two different diagram are provided by {structr}, namely the triangular *Vollmer plot* after Vollmer (1990) and the logarithmic biplot (*Woodcock plot*) after Woodcock (1977).
@@ -247,8 +257,8 @@ Weighted densities can be controlled by the `weights` argument and are useful wh
 #| fig.alt: >
 #|   Diagram showing the density distribution some example data plotted in an
 #|   equal-area projection
-example_planes$quality <- ifelse(is.na(example_planes$quality), 6, example_planes$quality) # replacing NA values with 6
-plane_weightings <- 6 / example_planes$quality
+example_planes_df$quality <- ifelse(is.na(example_planes_df$quality), 6, example_planes_df$quality) # replacing NA values with 6
+plane_weightings <- 6 / example_planes_df$quality
 
 fabric_p <- or_shape_params(planes)$Vollmer["D"]
 fabric_l <- or_shape_params(lines)$Vollmer["D"]
@@ -286,7 +296,7 @@ title(
 Fault objects consist of planes (fault plane), lines (e.g. striae), and the sense of movement. There are two ways how these combined features can be visualized, namely the Angelier and the Hoeppner plot.
 
 ### Angelier plot
-The **Angelier plot** shows all planes as *great circles* and lineations as points (after Angelier , 1984). Fault striae are plotted as vectors on top of the lineation pointing in the movement direction of the hangingwall. Easy to read in case of homogeneous or small datasets. 
+The **Angelier plot** shows all planes as *great circles* and lineations as points (after Angelier , 1984). Fault striae are plotted as vectors on top of the lineation pointing in the movement direction of the hanging wall. Easy to read in case of homogeneous or small datasets. 
 
 ```{r faults1}
 #| fig.alt: >
@@ -306,7 +316,7 @@ angelier(f, col = viridis::magma(nrow(f), end = .9))
 
 ### Hoeppner plot
 
-The **Hoeppner plot** shows all planes as *poles* while lineations are not shown (after Hoeppner, 1955). Fault striae are plotted as vectors on top of poles pointing in the movement direction of the hangingwall. Useful in case of large or heterogeneous datasets.
+The **Hoeppner plot** shows all planes as *poles* while lineations are not shown (after Hoeppner, 1955). Instead, fault striae are plotted as vectors on top of poles pointing in the movement direction of the hanging wall. Useful in case of large or heterogeneous datasets.
 
 ```{r faults2}
 #| fig.alt: >

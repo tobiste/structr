@@ -47,46 +47,40 @@ Usually orientation data is stored in a table containing the column dip directio
 
  
 ```{r data_p}
-data(example_planes)
-head(example_planes)
+data(example_planes_df)
+head(example_planes_df)
 ```
 
  
 or the trend (azimuth) and plunge (inclination) of a measured line...
 
 ```{r data_l}
-data(example_lines)
-head(example_lines)
+data(example_lines_df)
+head(example_lines_df)
 ```
 
 To convert these data frames to spherical objects, use the `Plane()` and `Line()` functions from the `structr` package. These functions take the dip direction and dip angle for planes, and the trend and plunge for lines as arguments.
 
 ```{r data_conversion}
 data(example_planes)
-planes <- Plane(example_planes$dipdir, example_planes$dip)
-lines <- Line(example_lines$trend, example_lines$plunge)
+planes <- Plane(example_planes_df$dipdir, example_planes_df$dip)
+lines <- Line(example_lines_df$trend, example_lines_df$plunge)
 ```
  > If the raw data was imported using `read_strabo_JSON()` this step is not necessary as the data will come already in the correct format.
 
-The spherical objects can be easily converted into Cartesian coordinate vectors using the functions `line2vec()` or `plane2vec()`:
+The spherical objects can be easily converted into Cartesian coordinate vectors using the function `Vec3()`:
 
 ```{r data_transformation}
 lines_vector <- Vec3(lines)
 head(lines_vector)
 ```
 
- 
+ Convert a pole to a plane to a Line:
 ```{r data_transformation2}
-planes_as_line <- Vec3(planes)
+planes_as_line <- Line(planes)
 head(planes_as_line)
 ```
 
-which produces the same output as
-
- 
-```{r data_transformation3}
-head(Vec3(planes_as_line))
-```
 
  
 ## Some helpers

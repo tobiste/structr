@@ -423,7 +423,7 @@ stereo_segment <- function(x, y, upper.hem = FALSE, earea = TRUE, n = 100L, BALL
   }
 }
 
-.draw_lines <- function(x, y, n = 100L, upper.hem, earea, ...) {
+.draw_lines <- function(x, y, n = 100L, upper.hem, earea, BALL.radius = 1, ...) {
   t <- seq(0, 1, length.out = n)
   D <- slerp(x, y, t) |>
     Line() |>
@@ -908,10 +908,6 @@ angelier <- function(x, pch = 1, lwd = 1, lty = 1, col = "black", cex = 1, point
 
 
 
-
-
-
-
 #' Variance visualization
 #'
 #' Shows the greatcircle of the shortest distance between a set of vectors to a
@@ -925,6 +921,7 @@ angelier <- function(x, pch = 1, lwd = 1, lty = 1, col = "black", cex = 1, point
 #' One of `"geodesic"` (the default), `"arithmetic"` or `"projected"`.
 #' @param ... optional arguments passed to [assign_col()]
 #' @param segments logical. Whether the segments should be shown or only the points?
+#' @inheritParams stereo_point
 #'
 #' @returns angles between all vectors in `x` and `y`.
 #' @export
@@ -934,7 +931,7 @@ angelier <- function(x, pch = 1, lwd = 1, lty = 1, col = "black", cex = 1, point
 #' @examples
 #' variance_plot(example_lines)
 #' variance_plot(example_planes, example_planes[1, ], segments = FALSE)
-variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "projected"), segments = TRUE, ...) {
+variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "projected"), segments = TRUE, upper.hem = FALSE, earea = TRUE, ...) {
   if (is.null(y)) {
     .mean <- match.arg(.mean)
     y <- if (.mean == "geodesic") geodesic_mean(x) else if (.mean == "arithmetic") sph_mean(x) else ot_eigen(x)$vectors[1, ]
@@ -949,17 +946,17 @@ variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "proj
   cond <- is.nan(ang) | is.na(ang)
   x2 <- xl[!cond, ]
 
-  stereoplot(guides = FALSE)
+  stereoplot(guides = FALSE, earea = earea)
 
   if (segments) {
     ang_col <- assign_col(ang[!cond], ...)
     lapply(seq_len(nrow(x2)), function(i) {
-      stereo_segment(x2[i, ], yl, col = ang_col[i])
+      stereo_segment(x2[i, ], yl, col = ang_col[i], upper.hem = upper.hem, earea = earea)
     })
-    points(xl, col = "black", pch = 16, cex = .66)
+    points(xl, col = "black", pch = 16, cex = .66, upper.hem = upper.hem, earea = earea)
   } else {
     ang_col <- assign_col(ang, ...)
-    points(xl, col = ang_col, pch = 16, cex = .66)
+    points(xl, col = ang_col, pch = 16, cex = .66, upper.hem = upper.hem, earea = earea)
   }
 
   title(main = "Variance plot", sub = paste("Distances from vector:", round(y[1, 1]), "/", round(y[1, 2])))
@@ -978,6 +975,7 @@ variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "proj
 #' @param pch,cex Plotting symbol and size of the ellipse center. Ignored if `center` is `FALSE`.
 #' @param ... graphical parameters passed to [graphics::lines()]
 #' @param params list. Parameters passed to [confidence_ellipse()]
+#' @inheritParams stereo_smallcircle
 #'
 #' @returns output of [confidence_ellipse()]
 #' @seealso [confidence_ellipse()]
@@ -987,7 +985,7 @@ variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "proj
 #' set.seed(20250411)
 #' plot(example_lines, col = "grey")
 #' stereo_confidence(example_lines, params = list(n = 100, res = 100), col = "red")
-stereo_confidence <- function(x, params = list(), col = par("col"), cex = par("cex"), pch = 16, center = TRUE, ...) {
+stereo_confidence <- function(x, params = list(), col = par("col"), cex = par("cex"), pch = 16, center = TRUE, upper.hem = FALSE, earea = TRUE, BALL.radius = 1, ...) {
   if (is.spherical(x)) {
     ce <- do.call(confidence_ellipse, append(list(x = x), params))
   } else if (is.list(x)) {
@@ -996,12 +994,14 @@ stereo_confidence <- function(x, params = list(), col = par("col"), cex = par("c
 
   if (center) {
     center <- ce$center
-    points(center, pch = 16, col = col, cex = cex)
+    points(center, pch = 16, col = col, cex = cex, upper.hem = upper.hem, earea = earea)
   }
 
   D <- Line(ce$ellipse)
-  Sc <- stereo_coords(D[, 1], D[, 2], upper.hem, earea)
+  Sc <- stereo_coords(D[, 1], D[, 2], upper.hem = upper.hem, earea = earea)
 
+  n <- nrow(D)
+  
   diss <- sqrt((Sc[1:(n - 1), "x"] - Sc[2:(n), "x"])^2 + (Sc[1:(n - 1), "y"] - Sc[2:(n), "y"])^2)
   ww <- which(diss > 0.9 * BALL.radius)
   if (length(ww) > 0) {

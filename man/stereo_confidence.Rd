@@ -11,6 +11,9 @@ stereo_confidence(
   cex = par("cex"),
   pch = 16,
   center = TRUE,
+  upper.hem = FALSE,
+  earea = TRUE,
+  BALL.radius = 1,
   ...
 )
 }
@@ -24,6 +27,14 @@ stereo_confidence(
 \item{pch, cex}{Plotting symbol and size of the ellipse center. Ignored if \code{center} is \code{FALSE}.}
 
 \item{center}{logical. Whether the ellipse's center should be plotted?}
+
+\item{upper.hem}{logical. Whether the projection is shown for upper
+hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
+
+\item{earea}{logical \code{TRUE} for Lambert equal-area projection (also "Schmidt net"; the default), or
+\code{FALSE} for meridional stereographic projection (also "Wulff net" or "Stereonet").}
+
+\item{BALL.radius}{numeric size of sphere}
 
 \item{...}{graphical parameters passed to \code{\link[graphics:lines]{graphics::lines()}}}
 }
