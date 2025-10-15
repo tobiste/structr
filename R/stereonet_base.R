@@ -451,7 +451,7 @@ stereo_segment <- function(x, y, upper.hem = FALSE, earea = TRUE, n = 100L, BALL
 #'
 #' Adds a (primitive) circle with given radius to an existing plot
 #'
-#' @param ndiv integer. Resolution of circle's line
+#' @param n integer. Resolution of circle's line
 #' @inheritParams stereoplot
 #' @param ... optional arguments passed to [graphics::lines()]
 #'
@@ -461,8 +461,8 @@ stereo_segment <- function(x, y, upper.hem = FALSE, earea = TRUE, n = 100L, BALL
 #' @examples
 #' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
 #' stereoplot_frame(col = "red", lwd = 3)
-stereoplot_frame <- function(ndiv = 144, radius = 1, ...) {
-  phi <- seq(0, 2 * pi, by = 2 * pi / ndiv)
+stereoplot_frame <- function(n = 512L, radius = 1, ...) {
+  phi <- seq(0, 2 * pi, by = 2 * pi / n)
   x <- cos(phi) * radius
   y <- sin(phi) * radius
   graphics::lines(x, y, ...)
@@ -515,7 +515,7 @@ stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = "lightgray",
 
   if (centercross) points(0, 0, pch = 3, col = border.col)
 
-  stereoplot_frame(col = border.col, ndiv = 100, radius = radius)
+  stereoplot_frame(col = border.col, radius = radius)
 }
 
 #' Stereoplot tickmarks
@@ -976,9 +976,9 @@ variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "proj
 #' Adds an ellipse marking the bootstrapped confidence interval of the arithmetic mean to an existing plot
 #'
 #' @param x Spherical object or a list containing the output of an earlier call of [confidence_ellipse()]
-#' @param center logical. Whether the ellipse's center should be plotted?
+#' @param .center logical. Whether the ellipse's center should be plotted?
 #' @param col Color of the ellipse and its center
-#' @param pch,cex Plotting symbol and size of the ellipse center. Ignored if `center` is `FALSE`.
+#' @param pch,cex Plotting symbol and size of the ellipse center. Ignored if `.center` is `FALSE`.
 #' @param ... graphical parameters passed to [graphics::lines()]
 #' @param params list. Parameters passed to [confidence_ellipse()]
 #' @inheritParams stereo_smallcircle
@@ -991,16 +991,16 @@ variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "proj
 #' set.seed(20250411)
 #' plot(example_lines, col = "grey")
 #' stereo_confidence(example_lines, params = list(n = 100, res = 100), col = "red")
-stereo_confidence <- function(x, params = list(), col = par("col"), cex = par("cex"), pch = 16, center = TRUE, upper.hem = FALSE, earea = TRUE, BALL.radius = 1, ...) {
+stereo_confidence <- function(x, params = list(), .center = TRUE, col = par("col"), cex = par("cex"), pch = 16, upper.hem = FALSE, earea = TRUE, BALL.radius = 1, ...) {
   if (is.spherical(x)) {
     ce <- do.call(confidence_ellipse, append(list(x = x), params))
   } else if (is.list(x)) {
     ce <- x
   }
 
-  if (center) {
-    center <- ce$center
-    points(center, pch = 16, col = col, cex = cex, upper.hem = upper.hem, earea = earea)
+  if (.center) {
+    e.center <- ce$center
+    points(e.center, pch = 16, col = col, cex = cex, upper.hem = upper.hem, earea = earea)
   }
 
   D <- Line(ce$ellipse)

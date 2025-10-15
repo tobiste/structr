@@ -4,10 +4,10 @@
 \alias{stereoplot_frame}
 \title{Stereoplot frame}
 \usage{
-stereoplot_frame(ndiv = 144, radius = 1, ...)
+stereoplot_frame(n = 512L, radius = 1, ...)
 }
 \arguments{
-\item{ndiv}{integer. Resolution of circle's line}
+\item{n}{integer. Resolution of circle's line}
 
 \item{radius}{numeric. Radius of circle}
 
