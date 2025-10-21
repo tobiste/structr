@@ -394,20 +394,54 @@ Spherical <- function(x, .class) {
 }
 
 #' @exportS3Method base::print
-print.spherical <- function(x, ...) {
+print.Vec3 <- function(x, ...) {
   n <- nrow(x)
-
-  if (is.Vec3(x)) cat(paste0("Vector (Vec3) object (n = ", n, "):\n"))
-  if (is.Line(x)) cat(paste0("Line object (n = ", n, "):\n"))
-  if (is.Ray(x)) cat(paste0("Ray object (n = ", n, "):\n"))
-  if (is.Plane(x)) cat(paste0("Plane object (n = ", n, "):\n"))
-  if (is.Pair(x) & !is.Fault(x)) cat(paste0("Pair object (n = ", n, "):\n"))
-  if (is.Fault(x)) cat(paste0("Fault object (n = ", n, "):\n"))
-
+  cat(paste0("Vector (Vec3) object (n = ", n, "):\n"))
   print(unclass(x)[seq_len(n), ]) # avoids printing all the attributes of x
-
+  
   return(invisible(x))
 }
+
+#' @exportS3Method base::print
+print.Line <- function(x, ...) {
+  n <- nrow(x)
+  cat(paste0("Line object (n = ", n, "):\n"))
+  print(unclass(x)[seq_len(n), ]) # avoids printing all the attributes of x
+  return(invisible(x))
+}
+
+#' @exportS3Method base::print
+print.Ray <- function(x, ...) {
+  n <- nrow(x)
+  cat(paste0("Ray object (n = ", n, "):\n"))
+  print(unclass(x)[seq_len(n), ]) # avoids printing all the attributes of x
+  return(invisible(x))
+}
+
+#' @exportS3Method base::print
+print.Plane <- function(x, ...) {
+  n <- nrow(x)
+  cat(paste0("Plane object (n = ", n, "):\n"))
+  print(unclass(x)[seq_len(n), ]) # avoids printing all the attributes of x
+  return(invisible(x))
+}
+
+#' @exportS3Method base::print
+print.Pair <- function(x, ...) {
+  n <- nrow(x)
+  cat(paste0("Pair object (n = ", n, "):\n"))
+  print(unclass(x)[seq_len(n), ]) # avoids printing all the attributes of x
+  return(invisible(x))
+}
+
+#' @exportS3Method base::print
+print.Fault <- function(x, ...) {
+  n <- nrow(x)
+  cat(paste0("Fault object (n = ", n, "):\n"))
+  print(unclass(x)[seq_len(n), ]) # avoids printing all the attributes of x
+  return(invisible(x))
+}
+
 
 
 # Indexing
@@ -490,7 +524,7 @@ print.spherical <- function(x, ...) {
 
 #' Combine R Objects by Rows or Columns
 #'
-#' @param ... objects  to bind; note that all objects have to be class `"Vec3"`, `"Line"`, or `"Plane"`.
+#' @param ... objects  to bind; note that all objects have to be class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`.
 #' @param .class character. The output class. If `NULL`, all combined objects
 #' will be coerced to the first element's class
 #'
@@ -576,7 +610,7 @@ tail.spherical <- function(x, n = 6L, ...) {
 
 #' Random Samples and Permutations
 #'
-#' @param x object of class `"Vec3"`, `"Line"`, `"Plane"`, `"Pair"`, or `"Fault"`.
+#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`.
 #' @inheritParams base::sample
 #'
 #' @returns object of class `x`
