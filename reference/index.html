@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -54,7 +54,7 @@
 
       <dl><dt>
 
-          <code><a href="Fault_components.html">Fault_rake()</a></code> <code><a href="Fault_components.html">Fault_slip()</a></code> <code><a href="Fault_components.html">Fault_plane()</a></code>
+          <code><a href="Fault_components.html">Fault_rake()</a></code> <code><a href="Fault_components.html">Pair_plane()</a></code> <code><a href="Fault_components.html">Fault_slip()</a></code> <code><a href="Fault_components.html">Fault_plane()</a></code>
 
         </dt>
         <dd>Extract components of fault object</dd>
@@ -120,6 +120,12 @@
         <dd>Direction of maximum horizontal stress from the stress tensor (full knowledge)</dd>
       </dl><dl><dt>
 
+          <code><a href="antipode.html">antipode()</a></code>
+
+        </dt>
+        <dd>Antipode vector</dd>
+      </dl><dl><dt>
+
           <code><a href="apparent_dip_direction.html">apparent_dip_direction()</a></code>
 
         </dt>
@@ -156,7 +162,7 @@
         <dd>Centering vectors</dd>
       </dl><dl><dt>
 
-          <code><a href="classes.html">is.spherical()</a></code> <code><a href="classes.html">is.Vec3()</a></code> <code><a href="classes.html">is.Line()</a></code> <code><a href="classes.html">is.Plane()</a></code> <code><a href="classes.html">is.Pair()</a></code> <code><a href="classes.html">is.Fault()</a></code> <code><a href="classes.html">as.spherical()</a></code> <code><a href="classes.html">as.Vec3()</a></code> <code><a href="classes.html">as.Line()</a></code> <code><a href="classes.html">as.Plane()</a></code> <code><a href="classes.html">as.Pair()</a></code> <code><a href="classes.html">as.Fault()</a></code> <code><a href="classes.html">Vec3()</a></code> <code><a href="classes.html">Line()</a></code> <code><a href="classes.html">Plane()</a></code> <code><a href="classes.html">Pair()</a></code> <code><a href="classes.html">Fault()</a></code> <code><a href="classes.html">Spherical()</a></code>
+          <code><a href="classes.html">is.spherical()</a></code> <code><a href="classes.html">is.Vec3()</a></code> <code><a href="classes.html">is.Line()</a></code> <code><a href="classes.html">is.Ray()</a></code> <code><a href="classes.html">is.Plane()</a></code> <code><a href="classes.html">is.Pair()</a></code> <code><a href="classes.html">is.Fault()</a></code> <code><a href="classes.html">as.spherical()</a></code> <code><a href="classes.html">as.Vec3()</a></code> <code><a href="classes.html">as.Line()</a></code> <code><a href="classes.html">as.Ray()</a></code> <code><a href="classes.html">as.Plane()</a></code> <code><a href="classes.html">as.Pair()</a></code> <code><a href="classes.html">as.Fault()</a></code> <code><a href="classes.html">Vec3()</a></code> <code><a href="classes.html">Line()</a></code> <code><a href="classes.html">Ray()</a></code> <code><a href="classes.html">Plane()</a></code> <code><a href="classes.html">Pair()</a></code> <code><a href="classes.html">Fault()</a></code> <code><a href="classes.html">Spherical()</a></code>
 
         </dt>
         <dd>Structure classes</dd>
@@ -306,10 +312,10 @@
         <dd>Flinn diagram</dd>
       </dl><dl><dt>
 
-          <code><a href="geodesic-line.html">geodesic_mean_line()</a></code> <code><a href="geodesic-line.html">geodesic_var_line()</a></code> <code><a href="geodesic-line.html">geodesic_meanvariance_line()</a></code>
+          <code><a href="geodesic-line.html">geodesic_mean_line()</a></code> <code><a href="geodesic-line.html">geodesic_mean_ray()</a></code> <code><a href="geodesic-line.html">geodesic_var_line()</a></code> <code><a href="geodesic-line.html">geodesic_var_ray()</a></code> <code><a href="geodesic-line.html">geodesic_meanvariance_line()</a></code> <code><a href="geodesic-line.html">geodesic_meanvariance_ray()</a></code>
 
         </dt>
-        <dd>The Frechet (geodesic \(L^2\)) mean of a set of lines</dd>
+        <dd>The Frechet (geodesic \(L^2\)) mean of a set of lines or rays</dd>
       </dl><dl><dt>
 
           <code><a href="geodesic-mean.html">geodesic_mean()</a></code> <code><a href="geodesic-mean.html">geodesic_var()</a></code>
@@ -462,7 +468,7 @@
         <dd>Orthogonalization of plane and line measurement</dd>
       </dl><dl><dt>
 
-          <code><a href="plot.spherical.html">plot(<i>&lt;spherical&gt;</i>)</a></code>
+          <code><a href="plot-spherical.html">plot(<i>&lt;Line&gt;</i>)</a></code> <code><a href="plot-spherical.html">plot(<i>&lt;Vec3&gt;</i>)</a></code> <code><a href="plot-spherical.html">plot(<i>&lt;Ray&gt;</i>)</a></code> <code><a href="plot-spherical.html">plot(<i>&lt;Plane&gt;</i>)</a></code> <code><a href="plot-spherical.html">plot(<i>&lt;Pair&gt;</i>)</a></code> <code><a href="plot-spherical.html">plot(<i>&lt;Fault&gt;</i>)</a></code>
 
         </dt>
         <dd>Plot spherical objects</dd>

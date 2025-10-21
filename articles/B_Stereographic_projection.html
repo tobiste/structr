@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -66,7 +66,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-10-15</h4>
+            <h4 data-toc-skip class="date">2025-10-21</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/B_Stereographic_projection.Rmd" class="external-link"><code>vignettes/B_Stereographic_projection.Rmd</code></a></small>
       <div class="d-none name"><code>B_Stereographic_projection.Rmd</code></div>
@@ -197,7 +197,7 @@ towards 70° is the mean for our lineations.</p>
 <p><img src="B_Stereographic_projection_files/figure-html/test2-1.png" alt="Diagram showing the confidence region of a mean" width="700"></p>
 <p>The p-value for our hypothesis line:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">ce</span><span class="op">$</span><span class="fu">pvalue.line.FUN</span><span class="op">(</span><span class="va">line_NULL</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">ce</span><span class="op">$</span><span class="fu">pvalue.FUN</span><span class="op">(</span><span class="va">line_NULL</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0</span></span></code></pre></div>
 <p>With (95% confidence) we rejected the Null Hypothesis that the given
 line represents the population mean as the p-value is smaller than

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -52,10 +52,10 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">stereo_confidence</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  .center <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"col"</span><span class="op">)</span>,</span>
 <span>  cex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"cex"</span><span class="op">)</span>,</span>
 <span>  pch <span class="op">=</span> <span class="fl">16</span>,</span>
-<span>  center <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  upper.hem <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  earea <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  BALL.radius <span class="op">=</span> <span class="fl">1</span>,</span>
@@ -75,16 +75,16 @@
 <dd><p>list. Parameters passed to <code><a href="confidence_ellipse.html">confidence_ellipse()</a></code></p></dd>
 
 
+<dt id="arg--center">.center<a class="anchor" aria-label="anchor" href="#arg--center"></a></dt>
+<dd><p>logical. Whether the ellipse's center should be plotted?</p></dd>
+
+
 <dt id="arg-col">col<a class="anchor" aria-label="anchor" href="#arg-col"></a></dt>
 <dd><p>Color of the ellipse and its center</p></dd>
 
 
 <dt id="arg-pch-cex">pch, cex<a class="anchor" aria-label="anchor" href="#arg-pch-cex"></a></dt>
-<dd><p>Plotting symbol and size of the ellipse center. Ignored if <code>center</code> is <code>FALSE</code>.</p></dd>
-
-
-<dt id="arg-center">center<a class="anchor" aria-label="anchor" href="#arg-center"></a></dt>
-<dd><p>logical. Whether the ellipse's center should be plotted?</p></dd>
+<dd><p>Plotting symbol and size of the ellipse center. Ignored if <code>.center</code> is <code>FALSE</code>.</p></dd>
 
 
 <dt id="arg-upper-hem">upper.hem<a class="anchor" aria-label="anchor" href="#arg-upper-hem"></a></dt>

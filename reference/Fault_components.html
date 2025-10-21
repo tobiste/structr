@@ -13,7 +13,7 @@ slip vector and fault strike."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9000</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -60,6 +60,8 @@ slip vector and fault strike.</p>
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">Fault_rake</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">Pair_plane</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">Fault_slip</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">Fault_plane</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
@@ -75,7 +77,7 @@ slip vector and fault strike.</p>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>numeric. plane, line or angle in degrees, respectively</p>
+    <p>numeric. <code>"Plane"</code>, <code>"Ray"</code> or angle in degrees, respectively</p>
     </div>
 
     <div class="section level2">
@@ -88,10 +90,10 @@ slip vector and fault strike.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]           120  60</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,]           100  50</span>
 <span class="r-in"><span><span class="fu">Fault_slip</span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Line object (n = 3):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ray object (n = 3):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      azimuth plunge</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]     110     58</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]      25      9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]     205     -9</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,]      30     23</span>
 <span class="r-in"><span><span class="fu">Fault_rake</span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1]  84.72020 -10.28562  30.11825</span>
