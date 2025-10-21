@@ -26,7 +26,7 @@
 #' \item{`ellipse`}{Confidence ellipse given as `"Vec3"` object with `res` vectors}
 #' }
 #' @export
-#' 
+#'
 #' @references Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis
 #' for three-dimensional orientational data. Journal of Structural Geology,
 #' 96, 65–89. https://doi.org/10.1016/j.jsg.2017.01.002
@@ -35,38 +35,38 @@
 #' @examples
 #' set.seed(20250411)
 #' ce <- confidence_ellipse(example_lines, n = 1000, res = 10)
-#' #print(ce)
-#' 
+#' # print(ce)
+#'
 #' # Check how many vectors lie outside quantiles:
-#' stats::quantile(ce$pvalue, probs=c(0.00, 0.05, 0.25, 0.50, 0.75, 1.00))
-#' 
+#' stats::quantile(ce$pvalue, probs = c(0.00, 0.05, 0.25, 0.50, 0.75, 1.00))
+#'
 #' # Hypothesis testing (reject if p-value < alpha):
 #' ce$pvalue.FUN((Line(90, 0)))
 confidence_ellipse <- function(x, n = 10000L, alpha = 0.05, res = 512L, isotropic = FALSE) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Ray(x) | is.Plane(x))
-  
+
   xl <- vec_list(x)
-  
-  if(is.Ray(x)){
+
+  if (is.Ray(x)) {
     ce <- rayBootstrapInference(xl, numBoots = n, alpha = alpha, numPoints = res, doIsotropic = isotropic)
-    pvalues <-  sapply(ce$us, ce$pvalue)
-    pvalue.FUN = ce$pvalue
+    pvalues <- sapply(ce$us, ce$pvalue)
+    pvalue.FUN <- ce$pvalue
   } else {
     ce <- lineBootstrapInference(xl, numBoots = n, alpha = alpha, numPoints = res, doIsotropic = isotropic)
-    pvalues = sapply(ce$us, ce$pvalueLine)
-    pvalue.FUN = ce$pvalueLine
+    pvalues <- sapply(ce$us, ce$pvalueLine)
+    pvalue.FUN <- ce$pvalueLine
   }
-  
+
   names_res <- names(ce)
   res_quantiles <- names_res[grepl("q", names_res)]
-  
+
   angles <- if (is.Vec3(x)) {
     ce$angles
   } else {
     rad2deg(ce$angles)
   }
   ellipse <- if (res > 0) as.Vec3(do.call(rbind, ce$points)) else NULL
-  
+
   list(
     center = as.Vec3(ce$center) |> Spherical(class(x)[1]),
     cov = ce$covarInv,
@@ -83,8 +83,8 @@ confidence_ellipse <- function(x, n = 10000L, alpha = 0.05, res = 512L, isotropi
 
 lineBootstrapInference <- function(ls, numBoots, ...) {
   boots <- replicate(numBoots, lineProjectedMean(sample(ls,
-                                                        length(ls),
-                                                        replace = TRUE
+    length(ls),
+    replace = TRUE
   )), simplify = FALSE)
   bootMean <- lineProjectedMean(boots)
   boots <- lapply(boots, function(u) {
@@ -95,9 +95,9 @@ lineBootstrapInference <- function(ls, numBoots, ...) {
     }
   })
   inf <- rayMahalanobisPercentiles(boots, center = bootMean, ...)
-  
+
   inf$pvalueLine <- function(l) {
-    if(is.spherical(l)) l <- unclass(Vec3(l))
+    if (is.spherical(l)) l <- unclass(Vec3(l))
     if (dot(l, inf$center) < 0) {
       inf$pvalue(-l)
     } else {
@@ -107,9 +107,11 @@ lineBootstrapInference <- function(ls, numBoots, ...) {
   inf
 }
 
-rayBootstrapInference <- function (ls, numBoots, ...) {
-  boots <- replicate(numBoots, rayProjectedMean(sample(ls, 
-                                                       length(ls), replace = TRUE)), simplify = FALSE)
+rayBootstrapInference <- function(ls, numBoots, ...) {
+  boots <- replicate(numBoots, rayProjectedMean(sample(ls,
+    length(ls),
+    replace = TRUE
+  )), simplify = FALSE)
   bootMean <- rayProjectedMean(boots)
   rayMahalanobisPercentiles(boots, bootMean, ...)
 }
@@ -121,10 +123,7 @@ lineProjectedMean <- function(us) {
 }
 
 
-rayProjectedMean <- function (us) 
-{
-  rayNormalized(arithmeticMean(us))
-}
+rayProjectedMean <- function(us) rayNormalized(arithmeticMean(us))
 
 
 lineMeanScatter <- function(us) {
@@ -163,7 +162,7 @@ rayMahalanobisPercentiles <- function(us, center, alpha = 0.05, numPoints = 0, d
   })
   empiricalCDF <- stats::ecdf(norms)
   f <- function(u) {
-    if(is.spherical(u)) u <- unclass(Vec3(u))
+    if (is.spherical(u)) u <- unclass(Vec3(u))
     v <- rayTangentVectorFromPoint(u, rot)
     1 - empiricalCDF(sqrt(v %*% covarInv %*% v))
   }
@@ -190,11 +189,11 @@ rayMahalanobisPercentiles <- function(us, center, alpha = 0.05, numPoints = 0, d
   if (numPoints > 0) {
     circle <- lapply(0:numPoints, function(s) {
       c(cos(s *
-              2 * pi / numPoints), sin(s * 2 * pi / numPoints))
+        2 * pi / numPoints), sin(s * 2 * pi / numPoints))
     })
     vs <- lapply(circle, function(v) {
       as.numeric(eig$vectors %*%
-                   (radii * v))
+        (radii * v))
     })
     result$points <- lapply(
       vs, rayPointFromTangentVector,

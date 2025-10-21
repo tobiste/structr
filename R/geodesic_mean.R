@@ -25,15 +25,52 @@ NULL
 
 #' @rdname geodesic-mean
 #' @export
-geodesic_mean <- function(x, ...) {
-  if (is.Pair(x)) geodesic_mean_pair(x, ...) else if (is.Ray(x)) geodesic_mean_ray(x, ...) else geodesic_mean_line(x, ...)
-}
+geodesic_mean <- function(x, ...) UseMethod("geodesic_mean")
 
 #' @rdname geodesic-mean
 #' @export
-geodesic_var <- function(x, ...) {
-  if (is.Pair(x)) geodesic_var_pair(x, ...) else if (is.Ray(x)) geodesic_var_ray(x, ...) else geodesic_var_line(x, ...)
-}
+geodesic_mean.Pair <- function(x, ...) geodesic_mean_pair(x, ...)
+
+#' @rdname geodesic-mean
+#' @export
+geodesic_mean.Ray <- function(x, ...) geodesic_mean_ray(x, ...)
+
+#' @rdname geodesic-mean
+#' @export
+geodesic_mean.Line <- function(x, ...) geodesic_mean_line(x, ...)
+
+#' @rdname geodesic-mean
+#' @export
+geodesic_mean.Vec3 <- function(x, ...) geodesic_mean_line(x, ...)
+
+#' @rdname geodesic-mean
+#' @export
+geodesic_mean.Plane <- function(x, ...) geodesic_mean_line(x, ...)
+
+
+#' @rdname geodesic-mean
+#' @export
+geodesic_var <- function(x, ...) UseMethod("geodesic_var")
+
+#' @rdname geodesic-mean
+#' @export
+geodesic_var.Vec3 <- function(x, ...) geodesic_var_line(x, ...)
+
+#' @rdname geodesic-mean
+#' @export
+geodesic_var.Line <- function(x, ...) geodesic_var_line(x, ...)
+
+#' @rdname geodesic-mean
+#' @export
+geodesic_var.Plane <- function(x, ...) geodesic_var_line(x, ...)
+
+#' @rdname geodesic-mean
+#' @export
+geodesic_var.Ray <- function(x, ...) geodesic_var_ray(x, ...)
+
+#' @rdname geodesic-mean
+#' @export
+geodesic_var.Pair <- function(x, ...) geodesic_var_pair(x, ...)
 
 
 #' The Frechet (geodesic \eqn{L^2}) mean of a set of lines or rays
@@ -107,9 +144,9 @@ geodesic_meanvariance_ray <- function(x, seeds = 5L, steps = 100L) {
   stopifnot(is.Vec3(x) | is.Ray(x) | is.Plane(x))
   res <- rayMeanVariance(vec_list(x), numSeeds = seeds, numSteps = steps)
   m <- res$mean |> as.Vec3()
-  
+
   names(res) <- c("variance", "mean", "error", "min.eigenvalue")
-  
+
   res$mean <- Spherical(m, class(x)[1])
   return(res)
 }
@@ -144,20 +181,26 @@ lineMeanVariance <- function(us, numSeeds = 5L, numSteps = 100L) {
   best
 }
 
-rayMeanVariance <- function (us, numSeeds = 5, numSteps = 100) {
+rayMeanVariance <- function(us, numSeeds = 5, numSteps = 100) {
   f <- function(phiTheta) {
     rayVariance(us, cartesianFromSpherical(c(1, phiTheta)))
   }
   seeds <- sample(us, numSeeds)
   best <- list(variance = (pi^2))
   for (seed in seeds) {
-    sol <- stats::optim(sphericalFromCartesian(seed), f, hessian = TRUE, 
-                 control = list(maxit = numSteps))
+    sol <- stats::optim(sphericalFromCartesian(seed), f,
+      hessian = TRUE,
+      control = list(maxit = numSteps)
+    )
     if (sol$value < best$variance) {
-      eigvals <- eigen(sol$hessian, symmetric = TRUE, 
-                       only.values = TRUE)$values
-      best <- list(variance = sol$value, mean = cartesianFromSpherical(c(1, 
-                                                                         sol$par)), error = sol$convergence, minEigenvalue = min(eigvals))
+      eigvals <- eigen(sol$hessian,
+        symmetric = TRUE,
+        only.values = TRUE
+      )$values
+      best <- list(variance = sol$value, mean = cartesianFromSpherical(c(
+        1,
+        sol$par
+      )), error = sol$convergence, minEigenvalue = min(eigvals))
     }
   }
   best
@@ -168,14 +211,14 @@ lineVariance <- function(us, center) {
   sum(sapply(us, function(u) lineDistance(u, center)^2)) / (2 * length(us))
 }
 
-rayVariance <- function (us, center) {
-  sum(sapply(us, function(u) rayDistance(u, center)^2))/(2 * length(us))
+rayVariance <- function(us, center) {
+  sum(sapply(us, function(u) rayDistance(u, center)^2)) / (2 * length(us))
 }
 
 
 lineDistance <- function(u, v) arcCos(abs(dot(u, v)))
 
-rayDistance <- function (u, v) arcCos(dot(u, v))
+rayDistance <- function(u, v) arcCos(dot(u, v))
 
 
 cartesianFromSpherical <- function(rpt) {

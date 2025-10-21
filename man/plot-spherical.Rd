@@ -43,7 +43,7 @@ If \code{x} is a Ray, than solid symbols show rays pointing in the lower hemisph
 and open symbols point into the upper hemisphere
 }
 \examples{
-plot(rvmf(10, mu = Vec3(1, 0, 0))) # Vec 
+plot(rvmf(10, mu = Vec3(1, 0, 0))) # Vec
 plot(Line(c(90, 80), c(10, 75)), lab = c("L1", "L2"))
 plot(Ray(c(90, 80), c(10, 75), sense = c(1, -1)), lab = c("L1", "L2"))
 plot(Plane(120, 30), col = "red")

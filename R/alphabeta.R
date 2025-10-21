@@ -31,7 +31,7 @@
 #' for oriented objects measured in boreholes. Computers and Geosciences, 56,
 #' 56–61. https://doi.org/10.1016/j.cageo.2013.03.001
 #'
-#' @return object of class `"Plane"`. If gamma is specified, `"Pair"` object is
+#' @return object of class `"Plane"`. If `gamma` is specified, `"Pair"` object is
 #' returned.
 #'
 #' @examples
@@ -139,8 +139,6 @@ drillcore_transformation_single <- function(azi, inc, alpha, beta, gamma = NULL)
     sind(beta) * cosd(alpha),
     sind(alpha)
   )
-
-
 
 
   res <- .drillcore_helper(n_BH, azi, inc)

@@ -4,10 +4,10 @@
 #' `Vec3`, `Line`, `Ray`, `Plane`, `"Pair"` and `Fault` create or convert a `"Vec3"`, `"Line"`,  `"Ray"`, `"Plane"`, `"Pair"`, and `"Fault"`
 #' S3 class object, respectively, from the given set of values.
 #'
-#' `as.Vec3`, `as.Line`, `as.Ray`, `as.Plane`, `as.Pair`, and `as.Fault` attempt to coerce its argument into a 
+#' `as.Vec3`, `as.Line`, `as.Ray`, `as.Plane`, `as.Pair`, and `as.Fault` attempt to coerce its argument into a
 #' `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, and  `"Pair"`, and `"Fault"` S3 class object, respectively.
 #'
-#' `is.Vec3`, `is.Line`, `is.Ray`, `is.Plane`, `is.Pair`, and `is.Fault` test if its argument is a 
+#' `is.Vec3`, `is.Line`, `is.Ray`, `is.Plane`, `is.Pair`, and `is.Fault` test if its argument is a
 #' `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, and  `"Pair"`, and `"Fault"` S3 class object, respectively.
 #'
 #' @param x,y object of class `"Line"`, `"Ray"`, `"Plane"`, and  `"Pair"`, and `"Fault"`  or
@@ -28,12 +28,12 @@
 #' `"Plane"`, `"Pair"`, or `"Fault"` and `FALSE` otherwise
 #'
 #' `as.Vec3()`, `as.Line`, `as.Ray`, `as.Plane`, `as.Pair`, and `as.Fault` are is generic functions.
-#' 
+#'
 #' @details
 #' A `Line` extends infinitely in both directions (equivalent to an axis in 2D), for example: principal stress directions, strain ellipsoid directions (e.g. stretching lineation), intersection, fault striae, crystallographic axes.
-#' 
+#'
 #' A `Ray` is a line with a single start point and extends indefinitely in only one direction (equivalent to a direction in 2D): e.g. slip direction, paleomagnetic direction (unless reversals are involved).
-#' 
+#'
 #'
 #' @name classes
 #' @examples
@@ -198,10 +198,10 @@ Line <- function(x, plunge) {
   } else if (is.Line(x) | is.Pair(x)) {
     azimuth <- x[, "azimuth"]
     plunge <- x[, "plunge"]
-  } else if(is.Ray(x)){
+  } else if (is.Ray(x)) {
     azimuth <- x[, "azimuth"]
     plunge <- x[, "plunge"]
-    azimuth <- ifelse(plunge<0, azimuth + 180, azimuth)
+    azimuth <- ifelse(plunge < 0, azimuth + 180, azimuth)
     plunge <- abs(plunge)
   } else {
     if (missing(plunge)) {
@@ -222,63 +222,63 @@ Line <- function(x, plunge) {
 
 #' @rdname classes
 #' @export
-Ray <- function(x, plunge, sense=NULL){
-  if(!is.null(sense)){
-    stopifnot(abs(sense)==1)
+Ray <- function(x, plunge, sense = NULL) {
+  if (!is.null(sense)) {
+    stopifnot(abs(sense) == 1)
   } else {
     sense <- 1
-  } 
+  }
   azi_corr <- ifelse(sense == 1, 0, 180)
-  
-  if(is.Vec3(x)){
+
+  if (is.Vec3(x)) {
     l <- Line(x)
     azi_corr <- 0
-    sense  <- 1
+    sense <- 1
     azimuth <- l[, 1]
     plunge <- l[, 2]
-  } else if (is.Line(x)){
+  } else if (is.Line(x)) {
     l <- x
     azimuth <- l[, 1]
     plunge <- l[, 2]
-  } else if(is.Plane(x)){
+  } else if (is.Plane(x)) {
     l <- Line(x)
     azimuth <- l[, 1]
     plunge <- l[, 2]
-  } else if(is.Pair(x) & !is.Fault(x)){
+  } else if (is.Pair(x) & !is.Fault(x)) {
     azimuth <- x[, "azimuth"]
     plunge <- x[, "plunge"]
-  } else if(is.Fault(x)){
+  } else if (is.Fault(x)) {
     azimuth <- x[, "azimuth"]
     plunge <- x[, "plunge"]
     sense <- x[, "sense"]
     azi_corr <- ifelse(sense == 1, 0, 180)
-  } else if(is.Ray(x)) {
+  } else if (is.Ray(x)) {
     azimuth <- x[, "azimuth"]
     plunge <- x[, "plunge"]
     azi_corr <- 0
-    sense  <- 1
+    sense <- 1
   } else {
     azimuth <- x
   }
-  
-  Line(azimuth + azi_corr,  sense * plunge) |> 
+
+  Line(azimuth + azi_corr, sense * plunge) |>
     as.Ray()
 }
 
 
-is_lower_Ray <- function(x){
+is_lower_Ray <- function(x) {
   stopifnot(is.Ray(x))
   sign(x[, 2]) == 1
 }
 
-to_lower <- function(x){
-  for(i in seq_along(x[, 1])){
-    if(sign(x[i, 3]) == -1){
+to_lower <- function(x) {
+  for (i in seq_along(x[, 1])) {
+    if (sign(x[i, 3]) == -1) {
       x[i, 1] <- x[i, 1] + 180
-      x[i, 2] <- -x[i, 2] 
+      x[i, 2] <- -x[i, 2]
     }
   }
-x
+  x
 }
 
 #' @rdname classes
@@ -320,7 +320,7 @@ Pair <- function(x, y, azimuth, plunge, correction = FALSE) {
   if (is.Plane(x) & (is.Line(y) | is.Ray(y))) {
     dip_direction <- x[, "dip_direction"]
     dip <- x[, "dip"]
-    if(is.Ray(x)) y <- to_lower(x)
+    if (is.Ray(x)) y <- to_lower(x)
     azimuth <- y[, "azimuth"]
     plunge <- y[, "plunge"]
     rn <- rownames(x)
@@ -357,8 +357,8 @@ Fault <- function(x, y, azimuth, plunge, sense, correction = FALSE) {
     dip <- x[, "dip"]
     azimuth <- y[, "azimuth"]
     plunge <- y[, "plunge"]
-  } else if (is.Plane(x) & is.Ray(y)){
-    sense <- sign(y, 2)
+  } else if (is.Plane(x) & is.Ray(y)) {
+    sense <- sign(y[, "plunge"])
     dip_direction <- x[, "dip_direction"]
     dip <- x[, "dip"]
     y <- to_lower(x)

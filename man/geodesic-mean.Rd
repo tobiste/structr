@@ -3,7 +3,17 @@
 \name{geodesic-mean}
 \alias{geodesic-mean}
 \alias{geodesic_mean}
+\alias{geodesic_mean.Pair}
+\alias{geodesic_mean.Ray}
+\alias{geodesic_mean.Line}
+\alias{geodesic_mean.Vec3}
+\alias{geodesic_mean.Plane}
 \alias{geodesic_var}
+\alias{geodesic_var.Vec3}
+\alias{geodesic_var.Line}
+\alias{geodesic_var.Plane}
+\alias{geodesic_var.Ray}
+\alias{geodesic_var.Pair}
 \title{The Frechet (geodesic \eqn{L^2}) mean}
 \source{
 geologyGeometry (J.R. Davis)
@@ -11,7 +21,27 @@ geologyGeometry (J.R. Davis)
 \usage{
 geodesic_mean(x, ...)
 
+\method{geodesic_mean}{Pair}(x, ...)
+
+\method{geodesic_mean}{Ray}(x, ...)
+
+\method{geodesic_mean}{Line}(x, ...)
+
+\method{geodesic_mean}{Vec3}(x, ...)
+
+\method{geodesic_mean}{Plane}(x, ...)
+
 geodesic_var(x, ...)
+
+\method{geodesic_var}{Vec3}(x, ...)
+
+\method{geodesic_var}{Line}(x, ...)
+
+\method{geodesic_var}{Plane}(x, ...)
+
+\method{geodesic_var}{Ray}(x, ...)
+
+\method{geodesic_var}{Pair}(x, ...)
 }
 \arguments{
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"}.}

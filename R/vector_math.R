@@ -333,9 +333,9 @@ v_antipode <- function(x) {
 }
 
 #' Antipode vector
-#' 
-#' Returns the opposite vector 
-#' 
+#'
+#' Returns the opposite vector
+#'
 #' @param x a spherical object
 #' @param ... arguments passed to function call
 #' @name antipode
@@ -359,35 +359,37 @@ antipode.Vec3 <- function(x, ...) v_antipode(x)
 
 #' @rdname antipode
 #' @export
-antipode.Line <- function(x, ...){
-  #Line(x[, 1] + 180, -x[, 2])
+antipode.Line <- function(x, ...) {
+  # Line(x[, 1] + 180, -x[, 2])
   x
 }
 
 #' @rdname antipode
 #' @export
-antipode.Ray <- function(x, ...){
+antipode.Ray <- function(x, ...) {
   Ray(x[, 1] + 180, -x[, 2])
 }
 
 #' @rdname antipode
 #' @export
-antipode.Plane <- function(x, ...){
+antipode.Plane <- function(x, ...) {
   Plane(x[, 1] + 180, -x[, 2])
 }
 
 #' @rdname antipode
 #' @export
-antipode.Pair <- function(x, ...){
+antipode.Pair <- function(x, ...) {
   x
 }
 
 #' @rdname antipode
 #' @export
-antipode.Fault <- function(x, ...){
-  Fault(x[, 1] + 180, -x[, 2],
-        x[, 3] + 180, -x[, 4],
-        -x[, 5])
+antipode.Fault <- function(x, ...) {
+  Fault(
+    x[, 1] + 180, -x[, 2],
+    x[, 3] + 180, -x[, 4],
+    -x[, 5]
+  )
 }
 
 

@@ -2,7 +2,7 @@
 #'
 #' Finds the best small and great circles using the algorithm by Gray et al. (1980)
 #'
-#' @param x object of class `"Vec3"`, `"Line"`, or `"Plane"`.
+#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`.
 #'
 #' @returns list
 #' @references Gray, N.H., Geiser, P.A., Geiser, J.R. (1980). On the
@@ -12,14 +12,14 @@
 #'
 #' @examples
 #' data("gray_example")
-#' gray_example1 <- gray_example |>
-#'   dplyr::mutate(
-#'     dipdir = Strike + 90,
-#'     dip = Dip,
-#'     id = seq_along(dip)
-#'   )
-#' gray_cleavage <- dplyr::filter(gray_example1, Type == "Cleavage")
-#' gray_bedding <- dplyr::filter(gray_example1, Type == "Bedding")
+#' 
+#' gray_example1 <- gray_example
+#' gray_example1$dipdir = gray_example1$Strike + 90
+#' gray_example1$dip = gray_example1$Dip
+#' gray_example1$id = seq_along(gray_example1$dip)
+#'  
+#' gray_cleavage <- subset(gray_example1, Type == "Cleavage")
+#' gray_bedding <- subset(gray_example1, Type == "Bedding")
 #' test_clea <- Plane(gray_cleavage$dipdir, gray_cleavage$dip)
 #' test_bedd <- Plane(gray_bedding$dipdir, gray_bedding$dip)
 #' best_clea <- best_fit_plane(test_clea)

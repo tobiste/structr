@@ -34,7 +34,7 @@ looking in the direction of the borehole trajectory and can hence be between
 If measured clockwise on a plane facing UP hole, the angle is negative.}
 }
 \value{
-object of class \code{"Plane"}. If gamma is specified, \code{"Pair"} object is
+object of class \code{"Plane"}. If \code{gamma} is specified, \code{"Pair"} object is
 returned.
 }
 \description{

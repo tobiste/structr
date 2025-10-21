@@ -159,7 +159,7 @@ ce <- confidence_ellipse(lines, n = 10000, alpha = 0.05)
 To visualize the confidence region of our lines:
 ```{r test2}
 #| fig.alt: Diagram showing the confidence region of a mean
-plot(lines, col = 'grey')
+plot(lines, col = "grey")
 stereo_confidence(ce, col = "#B63679FF")
 points(line_NULL, col = "#000004", pch = 16)
 ```

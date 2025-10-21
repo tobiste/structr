@@ -7,7 +7,7 @@
 vollmer_plot(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...)
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}.}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}.}
 
 \item{labels}{character. text labels}
 

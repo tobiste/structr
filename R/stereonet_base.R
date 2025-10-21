@@ -400,7 +400,7 @@ stereo_segment <- function(x, y, upper.hem = FALSE, earea = TRUE, n = 100L, BALL
   if (vang <= 90) {
     n_part <- vang / 90
     n <- ceiling(n * n_part)
-    
+
     .draw_lines(x, y, n, upper.hem, earea, BALL.radius, ...)
   } else {
     xy <- crossprod(x, y) |> Line()
@@ -408,10 +408,10 @@ stereo_segment <- function(x, y, upper.hem = FALSE, earea = TRUE, n = 100L, BALL
     strike2 <- Line(xy[1, 1] - 90, 0)
 
     n_part <- (180 - vang) / 180
-    
+
     na <- ceiling(n * n_part)
     nb <- ceiling(n * (1 - n_part))
-    
+
     if (angle(x, strike1) <= angle(x, strike2)) {
       line1 <- strike1
       line2 <- strike2
@@ -686,15 +686,15 @@ stereoplot_guides <- function(d = 10, earea = TRUE, radius = 1, ...) {
 #' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
 #' @param grid.params list.
 #' @param ... parameters passed to [stereo_point()], [stereo_smallcircle()], [stereo_greatcircle()], or [fault_plot()]
-#' 
+#'
 #' @details
-#' If `x` is a Ray, than solid symbols show rays pointing in the lower hemisphere, 
+#' If `x` is a Ray, than solid symbols show rays pointing in the lower hemisphere,
 #' and open symbols point into the upper hemisphere
-#' 
+#'
 #' @name plot-spherical
 #'
 #' @examples
-#' plot(rvmf(10, mu = Vec3(1, 0, 0))) # Vec 
+#' plot(rvmf(10, mu = Vec3(1, 0, 0))) # Vec
 #' plot(Line(c(90, 80), c(10, 75)), lab = c("L1", "L2"))
 #' plot(Ray(c(90, 80), c(10, 75), sense = c(1, -1)), lab = c("L1", "L2"))
 #' plot(Plane(120, 30), col = "red")
@@ -704,41 +704,43 @@ NULL
 
 #' @rdname plot-spherical
 #' @exportS3Method graphics::plot
-plot.Line <-  function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
-    do.call(stereoplot, append(grid.params, earea))
-  stereo_point(x, upper.hem = upper.hem, earea = earea, ...)
-}
-
-#' @rdname plot-spherical
-#' @exportS3Method graphics::plot
-plot.Vec3 <-  function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
+plot.Line <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
   do.call(stereoplot, append(grid.params, earea))
   stereo_point(x, upper.hem = upper.hem, earea = earea, ...)
 }
 
 #' @rdname plot-spherical
 #' @exportS3Method graphics::plot
-plot.Ray <-  function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
+plot.Vec3 <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
   do.call(stereoplot, append(grid.params, earea))
-    if(is.Ray(x)){
-      # different symbols for upper and lower hemisphere rays
-      pch_upp <- if(upper.hem) c(1, 16) else c(16, 1)
-      stereo_point(x, upper.hem = upper.hem, earea = earea,
-                   pch = ifelse(x[, 2] > 1, pch_upp[1], pch_upp[2]),
-                   ...)
-    }
+  stereo_point(x, upper.hem = upper.hem, earea = earea, ...)
 }
 
 #' @rdname plot-spherical
 #' @exportS3Method graphics::plot
-plot.Plane <-  function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
+plot.Ray <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
+  do.call(stereoplot, append(grid.params, earea))
+  if (is.Ray(x)) {
+    # different symbols for upper and lower hemisphere rays
+    pch_upp <- if (upper.hem) c(1, 16) else c(16, 1)
+    stereo_point(x,
+      upper.hem = upper.hem, earea = earea,
+      pch = ifelse(x[, 2] > 1, pch_upp[1], pch_upp[2]),
+      ...
+    )
+  }
+}
+
+#' @rdname plot-spherical
+#' @exportS3Method graphics::plot
+plot.Plane <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
   do.call(stereoplot, append(grid.params, earea))
   stereo_greatcircle(x, upper.hem = upper.hem, earea = earea, ...)
 }
 
 #' @rdname plot-spherical
 #' @exportS3Method graphics::plot
-plot.Pair <-  function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
+plot.Pair <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
   do.call(stereoplot, append(grid.params, earea))
   stereo_greatcircle(Plane(x), upper.hem = upper.hem, earea = earea, ...)
   stereo_point(Line(x), upper.hem = upper.hem, earea = earea, ...)
@@ -746,7 +748,7 @@ plot.Pair <-  function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(),
 
 #' @rdname plot-spherical
 #' @exportS3Method graphics::plot
-plot.Fault <-  function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
+plot.Fault <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
   do.call(stereoplot, append(grid.params, earea))
   fault_plot(x, upper.hem = upper.hem, earea = earea, ...)
 }
@@ -754,12 +756,12 @@ plot.Fault <-  function(x, upper.hem = FALSE, earea = TRUE, grid.params = list()
 
 # plot.spherical <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
 #   do.call(stereoplot, append(grid.params, earea))
-# 
+#
 #   if (is.Line(x) | is.Vec3(x)) stereo_point(x, upper.hem = upper.hem, earea = earea, ...)
 #   if(is.Ray(x)){
 #     # different symbols for upper and lower hemisphere rays
 #     pch_upp <- if(upper.hem) c(1, 16) else c(16, 1)
-#     stereo_point(x, upper.hem = upper.hem, earea = earea, 
+#     stereo_point(x, upper.hem = upper.hem, earea = earea,
 #                  pch = ifelse(x[, 2] > 1, pch_upp[1], pch_upp[2]),
 #                  ...)
 #   }
@@ -770,7 +772,7 @@ plot.Fault <-  function(x, upper.hem = FALSE, earea = TRUE, grid.params = list()
 #     stereo_point(Fault_slip(x), upper.hem = upper.hem, earea = earea, ...)
 #   }
 # }
-# 
+#
 
 #' Add Points to a Plot
 #'
@@ -1072,7 +1074,7 @@ stereo_confidence <- function(x, params = list(), .center = TRUE, col = par("col
   Sc <- stereo_coords(D[, 1], D[, 2], upper.hem = upper.hem, earea = earea)
 
   n <- nrow(D)
-  
+
   diss <- sqrt((Sc[1:(n - 1), "x"] - Sc[2:(n), "x"])^2 + (Sc[1:(n - 1), "y"] - Sc[2:(n), "y"])^2)
   ww <- which(diss > 0.9 * BALL.radius)
   if (length(ww) > 0) {
