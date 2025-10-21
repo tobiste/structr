@@ -38,7 +38,7 @@
 #' #print(ce)
 #' 
 #' # Check how many vectors lie outside quantiles:
-#' quantile(ce$pvalue, probs=c(0.00, 0.05, 0.25, 0.50, 0.75, 1.00))
+#' stats::quantile(ce$pvalue, probs=c(0.00, 0.05, 0.25, 0.50, 0.75, 1.00))
 #' 
 #' # Hypothesis testing (reject if p-value < alpha):
 #' ce$pvalue.FUN((Line(90, 0)))
@@ -161,13 +161,13 @@ rayMahalanobisPercentiles <- function(us, center, alpha = 0.05, numPoints = 0, d
   norms <- sapply(vs, function(v) {
     sqrt(v %*% covarInv %*% v)
   })
-  empiricalCDF <- ecdf(norms)
+  empiricalCDF <- stats::ecdf(norms)
   f <- function(u) {
     if(is.spherical(u)) u <- unclass(Vec3(u))
     v <- rayTangentVectorFromPoint(u, rot)
     1 - empiricalCDF(sqrt(v %*% covarInv %*% v))
   }
-  qs <- quantile(norms, probs = c(
+  qs <- stats::quantile(norms, probs = c(
     0, 0.25, 0.5, 0.75, 0.95,
     0.99, 1
   ), names = FALSE)
@@ -231,7 +231,7 @@ rayOrthogonalProjection <- function(pole, v) rayNormalized(v - pole * dot(v, pol
 
 rayUniform <- function(n = NULL) {
   if (is.null(n)) {
-    cartesianFromHorizontal(c(runif(1, 0, 2 * pi), runif(
+    cartesianFromHorizontal(c(stats::runif(1, 0, 2 * pi), stats::runif(
       1,
       -1, 1
     )))

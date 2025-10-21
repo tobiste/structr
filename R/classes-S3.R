@@ -275,7 +275,7 @@ to_lower <- function(x){
   for(i in seq_along(x[, 1])){
     if(sign(x[i, 3]) == -1){
       x[i, 1] <- x[i, 1] + 180
-      -x[i, 2] <- -x[i, 2]
+      x[i, 2] <- -x[i, 2] 
     }
   }
 x

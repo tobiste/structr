@@ -1,10 +1,10 @@
 ---
-title: "6. Oriented drill cores"
+title: "7. Oriented drill cores"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{6. Oriented drill cores}
+  %\VignetteIndexEntry{7. Oriented drill cores}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 editor_options: 

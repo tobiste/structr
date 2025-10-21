@@ -1030,7 +1030,7 @@ variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "proj
     points(xl, col = ang_col, pch = 16, cex = .66, upper.hem = upper.hem, earea = earea)
   }
 
-  title(main = "Variance plot", sub = paste("Distances from vector:", round(y[1, 1]), "/", round(y[1, 2])))
+  graphics::title(main = "Variance plot", sub = paste("Distances from vector:", round(y[1, 1]), "/", round(y[1, 2])))
 
   invisible(ang)
 }

@@ -49,7 +49,7 @@ ce <- confidence_ellipse(example_lines, n = 1000, res = 10)
 #print(ce)
 
 # Check how many vectors lie outside quantiles:
-quantile(ce$pvalue, probs=c(0.00, 0.05, 0.25, 0.50, 0.75, 1.00))
+stats::quantile(ce$pvalue, probs=c(0.00, 0.05, 0.25, 0.50, 0.75, 1.00))
 
 # Hypothesis testing (reject if p-value < alpha):
 ce$pvalue.FUN((Line(90, 0)))

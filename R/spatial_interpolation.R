@@ -34,7 +34,8 @@
 #' @noRd
 #' @examples
 #' ps_vec <- rvmf() |> Line()
-#' ps <- data.frame(x = runif(100, 50, 60), y = runif(100, 40, 45)) |> st_as_sf(coords = c("x", "y"))
+#' ps <- data.frame(x = stats::runif(100, 50, 60), y = stats::runif(100, 40, 45)) |> 
+#'   st_as_sf(coords = c("x", "y"))
 #'
 #' spatial_interpolation(x = ps_vec, coords = ps, gridsize = .5, .compact = FALSE)
 spatial_interpolation <- function(x,

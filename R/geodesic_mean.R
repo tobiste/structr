@@ -126,7 +126,7 @@ lineMeanVariance <- function(us, numSeeds = 5L, numSteps = 100L) {
   seeds <- sample(us, numSeeds)
   best <- list(variance = (pi^2))
   for (seed in seeds) {
-    sol <- optim(sphericalFromCartesian(seed), f,
+    sol <- stats::optim(sphericalFromCartesian(seed), f,
       hessian = TRUE,
       control = list(maxit = numSteps)
     )
@@ -151,7 +151,7 @@ rayMeanVariance <- function (us, numSeeds = 5, numSteps = 100) {
   seeds <- sample(us, numSeeds)
   best <- list(variance = (pi^2))
   for (seed in seeds) {
-    sol <- optim(sphericalFromCartesian(seed), f, hessian = TRUE, 
+    sol <- stats::optim(sphericalFromCartesian(seed), f, hessian = TRUE, 
                  control = list(maxit = numSteps))
     if (sol$value < best$variance) {
       eigvals <- eigen(sol$hessian, symmetric = TRUE, 

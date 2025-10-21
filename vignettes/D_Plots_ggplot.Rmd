@@ -1,10 +1,10 @@
 ---
-title: "3. Stereographic projections with ggplot"
+title: "4. Orientation plots with ggplot"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{3. Stereographic projections with ggplot}
+  %\VignetteIndexEntry{4. Orientation plots with ggplot}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 editor_options: 

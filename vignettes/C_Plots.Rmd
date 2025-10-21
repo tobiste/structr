@@ -1,10 +1,10 @@
 ---
-title: "2. Stereographic projections"
+title: "3. Orientation plots"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{2. Stereographic projections}
+  %\VignetteIndexEntry{3. Orientation plots}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 editor_options: 
