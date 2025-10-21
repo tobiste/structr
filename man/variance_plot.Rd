@@ -15,7 +15,7 @@ variance_plot(
 )
 }
 \arguments{
-\item{x}{set of vectors. Object of class \code{"Vec3"}, \code{"Line"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"}.}
+\item{x}{set of vectors. Object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"}.}
 
 \item{y}{The vector from which the variance should be visualized (only one vector allowed).
 When \code{NULL}, then the mean vector of \code{x} is used (the default).}

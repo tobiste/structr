@@ -1,7 +1,7 @@
 #' Orientation of structures from drill core orientation angles
 #'
 #' Calculates the orientation of a plane or line from internal core angles
-#' (alpha, beta, and gamma) of oriented drill cores
+#' (\eqn{\alpha}, \eqn{\beta}, and \eqn{\gamma}) of oriented drill cores
 #'
 #' @param azi numeric. Angle between North and the borehole trajectory projected
 #' to the horizontal. The angle is measured clockwise from north and has a value
@@ -31,7 +31,7 @@
 #' for oriented objects measured in boreholes. Computers and Geosciences, 56,
 #' 56–61. https://doi.org/10.1016/j.cageo.2013.03.001
 #'
-#' @return object of class `"Plane"`. If gamma is specified, `"Line"` object is
+#' @return object of class `"Plane"`. If gamma is specified, `"Pair"` object is
 #' returned.
 #'
 #' @examples
@@ -61,8 +61,8 @@
 #' # gamma measurements
 #' my_gammas <- c(20, -10)
 #' res2 <- drillcore_transformation(azi, inc, my_alphas, my_betas, my_gammas)
-#' points(res2, col = 2:3)
-#' text(res2, labels = c("lA", "lB"), col = 2:3, pos = 4)
+#' plot(res2, col = 2:3)
+#' text(Line(res2), labels = c("lA", "lB"), col = 2:3, pos = 4)
 NULL
 
 # drillcore_orientation <- function(azi, inc, alpha, beta, gamma = NULL) {
@@ -168,7 +168,8 @@ drillcore_transformation_single <- function(azi, inc, alpha, beta, gamma = NULL)
 
     line <- Line(l_G["trend"] + 90 + 180, 90 - l_G["plunge"])
 
-    rotate(line, plane, gamma)
+    line_rot <- rotate(line, plane, gamma)
+    Pair(plane, line_rot)
   }
 }
 
@@ -185,7 +186,7 @@ drillcore_transformation <- function(azi, inc, alpha, beta, gamma = NULL) {
     drillcore_transformation_single(azi[i], inc[i], alpha[i], beta[i], gamma[i]) |> unclass()
   }) |> t()
 
-  if (is.null(gamma)) as.Plane(res) else as.Line(res)
+  if (is.null(gamma)) as.Plane(res) else as.Pair(res)
 }
 
 .drillcore_helper <- function(n_BH, azi, inc) {

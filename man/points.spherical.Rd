@@ -7,7 +7,7 @@
 \method{points}{spherical}(x, upper.hem = FALSE, earea = TRUE, ...)
 }
 \arguments{
-\item{x}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"}.}
+\item{x}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"}.}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
 hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}

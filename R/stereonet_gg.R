@@ -1,6 +1,6 @@
 #' Prepare points and lines for ggplot
 #'
-#' @inheritParams plot.spherical
+#' @inheritParams plot.Line
 #' @param ... [`<data-masking>`][rlang::args_data_masking()] Name-value pairs. The name gives the name of the column in the output.
 #' The value can be:
 #' \itemize{

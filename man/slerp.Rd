@@ -7,7 +7,7 @@
 slerp(x0, x1, t)
 }
 \arguments{
-\item{x0, x1}{objects of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"} of the first
+\item{x0, x1}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"} of the first
 and the last points of the to be interpolated arc.}
 
 \item{t}{numeric. Interpolation factor(s) (\verb{t = [0, 1]}).}

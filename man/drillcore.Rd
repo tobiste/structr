@@ -34,12 +34,12 @@ looking in the direction of the borehole trajectory and can hence be between
 If measured clockwise on a plane facing UP hole, the angle is negative.}
 }
 \value{
-object of class \code{"Plane"}. If gamma is specified, \code{"Line"} object is
+object of class \code{"Plane"}. If gamma is specified, \code{"Pair"} object is
 returned.
 }
 \description{
 Calculates the orientation of a plane or line from internal core angles
-(alpha, beta, and gamma) of oriented drill cores
+(\eqn{\alpha}, \eqn{\beta}, and \eqn{\gamma}) of oriented drill cores
 }
 \examples{
 # examples from Roger Marjoribanks (2016);
@@ -68,8 +68,8 @@ text(res, labels = c("A", "B"), col = 2:3, pos = 4)
 # gamma measurements
 my_gammas <- c(20, -10)
 res2 <- drillcore_transformation(azi, inc, my_alphas, my_betas, my_gammas)
-points(res2, col = 2:3)
-text(res2, labels = c("lA", "lB"), col = 2:3, pos = 4)
+plot(res2, col = 2:3)
+text(Line(res2), labels = c("lA", "lB"), col = 2:3, pos = 4)
 }
 \references{
 Stigsson, M., & Munier, R. (2013). Orientation uncertainty goes

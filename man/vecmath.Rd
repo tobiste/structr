@@ -41,20 +41,20 @@ reject(x, y)
 transform_linear(x, A, norm = FALSE)
 }
 \arguments{
-\item{x, y}{objects of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}.}
+\item{x, y}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}.}
 
 \item{...}{arguments passed to function call}
 
-\item{rotaxis}{Axis of rotation given as object of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}.}
+\item{rotaxis}{Axis of rotation given as object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}.}
 
-\item{rotangle}{Angle of rotation in radians for \code{"Vec3"} objects and in degrees for \code{"Line"} and \code{"Plane"} objects.}
+\item{rotangle}{Angle of rotation in radians for \code{"Vec3"} objects and in degrees for \code{"Line"}, \code{"Ray"} and \code{"Plane"} objects.}
 
 \item{A}{numeric 3x3 matrix. Transformation matrix.}
 
 \item{norm}{logical. If \code{TRUE}, the transformed vectors are normalized to unit length.}
 }
 \value{
-objects of same class as \code{x}, i.e. one of \code{"Vec3"}, \code{"Line"}, or
+objects of same class as \code{x}, i.e. one of \code{"Vec3"}, \code{"Line"}, \code{"Ray"} or
 \code{"Plane"}. \code{vector_length()} and \code{\%*\%} return a real number. \code{angle()}
 returns a numeric angle (in degrees, unless \code{x} is class \code{"Vec3"}).
 }

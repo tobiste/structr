@@ -1,39 +1,46 @@
 #' Structure classes
 #'
 #' @description
-#' `Vec3`, `Line`, `Plane`, `"Pair"` and `Fault` create or convert a `"Vec3"`, `"Line"`, `"Plane"`, `"Pair"`, and `"Fault"`
+#' `Vec3`, `Line`, `Ray`, `Plane`, `"Pair"` and `Fault` create or convert a `"Vec3"`, `"Line"`,  `"Ray"`, `"Plane"`, `"Pair"`, and `"Fault"`
 #' S3 class object, respectively, from the given set of values.
 #'
-#' `as.Vec3`, `as.Line`, `as.Plane`, `as.Pair`, and `as.Fault` attempt to coearce its argument into a
-#' `"Vec3"`, `"Line"`, `"Plane"`, and  `"Pair"`, and `"Fault"` S3 class object, respectively.
+#' `as.Vec3`, `as.Line`, `as.Ray`, `as.Plane`, `as.Pair`, and `as.Fault` attempt to coerce its argument into a 
+#' `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, and  `"Pair"`, and `"Fault"` S3 class object, respectively.
 #'
-#' `is.Line`, `is.Plane`, `is.Pair`, and `is.Fault` test if its argument is a
-#' `"Line"`, `"Plane"`, and  `"Pair"`, and `"Fault"` S3 class object, respectively.
+#' `is.Vec3`, `is.Line`, `is.Ray`, `is.Plane`, `is.Pair`, and `is.Fault` test if its argument is a 
+#' `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, and  `"Pair"`, and `"Fault"` S3 class object, respectively.
 #'
-#' @param x,y object of class `"Line"`, `"Plane"`, and  `"Pair"`, and `"Fault"`  or
+#' @param x,y object of class `"Line"`, `"Ray"`, `"Plane"`, and  `"Pair"`, and `"Fault"`  or
 #' numeric vector or array containing the spherical coordinates
 #' @param azimuth,plunge,z,dip numeric vectors of the spherical coordinates
-#' @param sense (optional) integer. Sense of the line on a fault plane. Either
-#' `1`or `-1` for normal or thrust offset, respectively. The "sense" is the sign
+#' @param sense (optional) integer. Sense of the line (e.g.on a fault plane). Either
+#' `1`or `-1` for down (normal offset) or up (reverse offset), respectively. The "sense" is the sign
 #' of the fault's rake (see [Fault_from_rake()] for details).
 #' @param correction logical. If `TRUE` (default), both the fault plane and slip
 #' vector will be rotated so that the slip vector lies on the fault plane by
 #' minimizing the angle between the slip and the plane normal vector. See [correct_pair()] for details.
 #' @details
-#' `is.Vec3`, `is.Line`, `is.Plane`, `is.Pair`, and `is.Fault` return `TRUE` if its arguments
-#' are an object of class  `"Vec3"`, `"Line"`, `"Plane"`, `"Pair"` or `"Fault"`, respectively, and
+#' `is.Vec3`, `is.Line`, `is.Plane`, `"is.Ray"`, `is.Pair`, and `is.Fault` return `TRUE` if its arguments
+#' are an object of class  `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"` or `"Fault"`, respectively, and
 #' `FALSE` otherwise.
 #'
-#' `is.spherical` returns `TRUE` if the argument's class is one of `"Vec3()"`, `"Line"`,
+#' `is.spherical` returns `TRUE` if the argument's class is one of `"Vec3()"`, `"Line"`, `"Ray"`,
 #' `"Plane"`, `"Pair"`, or `"Fault"` and `FALSE` otherwise
 #'
-#' `as.Vec3()`, `as.Line`, `as.Plane`, `as.Pair`, and `as.Fault` are is generic functions.
+#' `as.Vec3()`, `as.Line`, `as.Ray`, `as.Plane`, `as.Pair`, and `as.Fault` are is generic functions.
+#' 
+#' @details
+#' A `Line` extends infinitely in both directions (equivalent to an axis in 2D), for example: principal stress directions, strain ellipsoid directions (e.g. stretching lineation), intersection, fault striae, crystallographic axes.
+#' 
+#' A `Ray` is a line with a single start point and extends indefinitely in only one direction (equivalent to a direction in 2D): e.g. slip direction, paleomagnetic direction (unless reversals are involved).
+#' 
 #'
 #' @name classes
 #' @examples
 #' x <- Line(120, 50) # create line
 #' is.Line(x) # test if line
 #' Plane(x) # convert to plane
+#' as.Plane(x) # assign as plane (note the difference to Pane(x))
 #'
 #' Pair(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23))
 #' Fault(c("a" = 120, "b" = 120, "c" = 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
@@ -50,6 +57,10 @@ is.Vec3 <- function(x) inherits(x, "Vec3")
 #' @rdname classes
 #' @export
 is.Line <- function(x) inherits(x, "Line")
+
+#' @rdname classes
+#' @export
+is.Ray <- function(x) inherits(x, "Ray")
 
 #' @rdname classes
 #' @export
@@ -95,6 +106,16 @@ as.Line <- function(x) {
 
 #' @rdname classes
 #' @export
+as.Ray <- function(x) {
+  structure(
+    vec2mat(x),
+    class = c("Ray", "spherical", "matrix", "array"),
+    dimnames = list(rownames(x), c("azimuth", "plunge"))
+  )
+}
+
+#' @rdname classes
+#' @export
 as.Plane <- function(x) {
   structure(
     vec2mat(x),
@@ -133,7 +154,7 @@ Vec3 <- function(x, y, z) {
     z <- v[, 3]
     y <- v[, 2]
     x <- v[, 1]
-  } else if (is.Line(x)) {
+  } else if (is.Line(x) | is.Ray(x)) {
     x <- unclass(x)
     v <- lin2vec(x[, "azimuth"], x[, "plunge"])
     x <- v[, 1]
@@ -177,6 +198,11 @@ Line <- function(x, plunge) {
   } else if (is.Line(x) | is.Pair(x)) {
     azimuth <- x[, "azimuth"]
     plunge <- x[, "plunge"]
+  } else if(is.Ray(x)){
+    azimuth <- x[, "azimuth"]
+    plunge <- x[, "plunge"]
+    azimuth <- ifelse(plunge<0, azimuth + 180, azimuth)
+    plunge <- abs(plunge)
   } else {
     if (missing(plunge)) {
       xm <- vec2mat(x)
@@ -194,6 +220,66 @@ Line <- function(x, plunge) {
   as.Line(res)
 }
 
+#' @rdname classes
+#' @export
+Ray <- function(x, plunge, sense=NULL){
+  if(!is.null(sense)){
+    stopifnot(abs(sense)==1)
+  } else {
+    sense <- 1
+  } 
+  azi_corr <- ifelse(sense == 1, 0, 180)
+  
+  if(is.Vec3(x)){
+    l <- Line(x)
+    azi_corr <- 0
+    sense  <- 1
+    azimuth <- l[, 1]
+    plunge <- l[, 2]
+  } else if (is.Line(x)){
+    l <- x
+    azimuth <- l[, 1]
+    plunge <- l[, 2]
+  } else if(is.Plane(x)){
+    l <- Line(x)
+    azimuth <- l[, 1]
+    plunge <- l[, 2]
+  } else if(is.Pair(x) & !is.Fault(x)){
+    azimuth <- x[, "azimuth"]
+    plunge <- x[, "plunge"]
+  } else if(is.Fault(x)){
+    azimuth <- x[, "azimuth"]
+    plunge <- x[, "plunge"]
+    sense <- x[, "sense"]
+    azi_corr <- ifelse(sense == 1, 0, 180)
+  } else if(is.Ray(x)) {
+    azimuth <- x[, "azimuth"]
+    plunge <- x[, "plunge"]
+    azi_corr <- 0
+    sense  <- 1
+  } else {
+    azimuth <- x
+  }
+  
+  Line(azimuth + azi_corr,  sense * plunge) |> 
+    as.Ray()
+}
+
+
+is_lower_Ray <- function(x){
+  stopifnot(is.Ray(x))
+  sign(x[, 2]) == 1
+}
+
+to_lower <- function(x){
+  for(i in seq_along(x[, 1])){
+    if(sign(x[i, 3]) == -1){
+      x[i, 1] <- x[i, 1] + 180
+      -x[i, 2] <- -x[i, 2]
+    }
+  }
+x
+}
 
 #' @rdname classes
 #' @export
@@ -203,7 +289,7 @@ Plane <- function(x, dip) {
     v <- vec2fol(x[, 1], x[, 2], x[, 3])
     dip_direction <- v[, "dip_direction"]
     dip <- v[, "dip"]
-  } else if (is.Line(x)) {
+  } else if (is.Line(x) | is.Ray(x)) {
     dip_direction <- x[, "azimuth"] + 180
     dip <- 90 - x[, "plunge"]
   } else if (is.Plane(x) | is.Pair(x)) {
@@ -231,9 +317,10 @@ Plane <- function(x, dip) {
 Pair <- function(x, y, azimuth, plunge, correction = FALSE) {
   # p <- Fault(x, y, azimuth, plunge, sense = NA, correction = correction)
 
-  if (is.Plane(x) & is.Line(y)) {
+  if (is.Plane(x) & (is.Line(y) | is.Ray(y))) {
     dip_direction <- x[, "dip_direction"]
     dip <- x[, "dip"]
+    if(is.Ray(x)) y <- to_lower(x)
     azimuth <- y[, "azimuth"]
     plunge <- y[, "plunge"]
     rn <- rownames(x)
@@ -264,10 +351,17 @@ Fault <- function(x, y, azimuth, plunge, sense, correction = FALSE) {
     plunge <- x[, "plunge"]
   } else if (is.Plane(x) & is.Line(y)) {
     if (missing(sense)) {
-      sense <- azimuth
+      sense <- 1
     }
     dip_direction <- x[, "dip_direction"]
     dip <- x[, "dip"]
+    azimuth <- y[, "azimuth"]
+    plunge <- y[, "plunge"]
+  } else if (is.Plane(x) & is.Ray(y)){
+    sense <- sign(y, 2)
+    dip_direction <- x[, "dip_direction"]
+    dip <- x[, "dip"]
+    y <- to_lower(x)
     azimuth <- y[, "azimuth"]
     plunge <- y[, "plunge"]
   } else {
@@ -305,6 +399,7 @@ print.spherical <- function(x, ...) {
 
   if (is.Vec3(x)) cat(paste0("Vector (Vec3) object (n = ", n, "):\n"))
   if (is.Line(x)) cat(paste0("Line object (n = ", n, "):\n"))
+  if (is.Ray(x)) cat(paste0("Ray object (n = ", n, "):\n"))
   if (is.Plane(x)) cat(paste0("Plane object (n = ", n, "):\n"))
   if (is.Pair(x) & !is.Fault(x)) cat(paste0("Pair object (n = ", n, "):\n"))
   if (is.Fault(x)) cat(paste0("Fault object (n = ", n, "):\n"))
@@ -343,6 +438,15 @@ print.spherical <- function(x, ...) {
   # invisible(y)
   res <- NextMethod("`[`")
   if (isTRUE(j)) as.Line(res) else as.numeric(res)
+}
+
+#' @export
+`[.Ray` <- function(x, i, j) {
+  if (missing(j)) {
+    j <- TRUE
+  }
+  res <- NextMethod("`[`")
+  if (isTRUE(j)) as.Ray(res) else as.numeric(res)
 }
 
 #' @export

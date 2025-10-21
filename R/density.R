@@ -341,7 +341,7 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 
 #' Spherical density estimation
 #'
-#' @param x object of class `"Vec3()"`, `"Line()"`, or `"Plane()"`.
+#' @param x object of class `"Vec3()"`, `"Line()"`, `"Ray"`, or `"Plane()"`.
 # #' @param kamb logical. Whether to use the von Mises-Fisher kernel density estimation (`FALSE`) or Kamb's method (`TRUE`, the default).
 #' @param FUN density estimation function if `kamb=TRUE`; one of [exponential_kamb()] (the default),
 #'  [kamb_count], and [schmidt_count()].
@@ -355,7 +355,7 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #' The relative weight to be applied to each input measurement. The array
 #' will be normalized to sum to 1, so absolute value of the `weights` do not
 #' affect the result. Defaults to `NULL`
-#' @inheritParams plot.spherical
+#' @inheritParams plot.Line
 #' @param r numeric. radius of stereonet circle
 #' @param ... arguments passed to [density_calc()]
 #'

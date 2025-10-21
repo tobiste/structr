@@ -3,11 +3,14 @@
 \name{Fault_components}
 \alias{Fault_components}
 \alias{Fault_rake}
+\alias{Pair_plane}
 \alias{Fault_slip}
 \alias{Fault_plane}
 \title{Extract components of fault object}
 \usage{
 Fault_rake(x)
+
+Pair_plane(x)
 
 Fault_slip(x)
 
@@ -17,7 +20,7 @@ Fault_plane(x)
 \item{x}{object of class \code{"Fault"}}
 }
 \value{
-numeric. plane, line or angle in degrees, respectively
+numeric. \code{"Plane"}, \code{"Ray"} or angle in degrees, respectively
 }
 \description{
 \code{\link[=Fault_plane]{Fault_plane()}} extracts the orientation of the fault plane,

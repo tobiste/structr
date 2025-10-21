@@ -11,7 +11,7 @@ Earth Science Data. Springer, Berlin, Heidelberg. https://doi.org/10.1007/978-3-
 bingham_statistics(x, w = NULL, na.rm = TRUE)
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}.}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}.}
 
 \item{w}{numeric. Optional weights for each observation.}
 

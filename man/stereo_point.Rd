@@ -17,7 +17,7 @@ stereo_point(
 )
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Plane"}. \code{"Pair"}, or \code{"Fault"}}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}. \code{"Pair"}, or \code{"Fault"}}
 
 \item{col}{color}
 

@@ -121,7 +121,7 @@ v_confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = FALSE) {
 
 #' Statistical estimators of the distribution of a set of vectors
 #'
-#' @param x object of class `"Vec3"`, `"Line"`, or `"Plane"`.
+#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`.
 #' @param w numeric. Optional weights for each observation.
 #' @param alpha numeric. Significance level for the confidence angle (default is 0.05 for a 95% confidence angle).
 #' @param na.rm logical. Whether `NA` values should be removed before the computation proceeds.

@@ -7,7 +7,7 @@
 \method{lines}{spherical}(x, ang = 90, ...)
 }
 \arguments{
-\item{x}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"}.}
+\item{x}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"}.}
 
 \item{ang}{numeric. Conical angle in degrees.}
 

@@ -3,37 +3,46 @@
 \name{geodesic-line}
 \alias{geodesic-line}
 \alias{geodesic_mean_line}
+\alias{geodesic_mean_ray}
 \alias{geodesic_var_line}
+\alias{geodesic_var_ray}
 \alias{geodesic_meanvariance_line}
-\title{The Frechet (geodesic \eqn{L^2}) mean of a set of lines}
+\alias{geodesic_meanvariance_ray}
+\title{The Frechet (geodesic \eqn{L^2}) mean of a set of lines or rays}
 \source{
 lineMeanVariance from geologyGeometry (J.R. Davis)
 }
 \usage{
 geodesic_mean_line(x, ...)
 
+geodesic_mean_ray(x, ...)
+
 geodesic_var_line(x, ...)
 
+geodesic_var_ray(x, ...)
+
 geodesic_meanvariance_line(x, seeds = 5L, steps = 100L)
+
+geodesic_meanvariance_ray(x, seeds = 5L, steps = 100L)
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"} or \code{"Plane"}}
 
-\item{...}{parameters passed to \code{\link[=geodesic_meanvariance_line]{geodesic_meanvariance_line()}}}
+\item{...}{parameters passed to \code{\link[=geodesic_meanvariance_line]{geodesic_meanvariance_line()}} or \code{\link[=geodesic_meanvariance_ray]{geodesic_meanvariance_ray()}}}
 
 \item{seeds}{positive integer. How many \code{x} to try as seeds}
 
 \item{steps}{positive integer. Bound on how many iterations to use.}
 }
 \value{
-\code{geodesic_meanvariance_line} returns a \code{list} consisting of
+\verb{geodesic_meanvariance_*} (* either line or ray) returns a \code{list} consisting of
 \verb{$variance} (numeric), \verb{$mean} (a line),
 \verb{$error} (an integer) and \verb{$min.eigenvalue} (numeric).
-\code{geodesic_mean_line} and \code{geodesic_var_line} are convenience wrapper and only
+\verb{geodesic_mean_*} and \verb{geodesic_var_*} are convenience wrapper and only
 return the mean and the variance, respectively.
 }
 \description{
-An iterative algorithm for computing the Frechet mean — the line that
+An iterative algorithm for computing the Frechet mean — the line or ray that
 minimizes the Frechet variance. The iterations continue until error squared of
 epsilon is achieved or \code{steps} iterations have been used. Try multiple
 seeds, to improve your chances of finding the global optimum.

@@ -7,10 +7,10 @@
 stereo_confidence(
   x,
   params = list(),
+  .center = TRUE,
   col = par("col"),
   cex = par("cex"),
   pch = 16,
-  center = TRUE,
   upper.hem = FALSE,
   earea = TRUE,
   BALL.radius = 1,
@@ -22,11 +22,11 @@ stereo_confidence(
 
 \item{params}{list. Parameters passed to \code{\link[=confidence_ellipse]{confidence_ellipse()}}}
 
+\item{.center}{logical. Whether the ellipse's center should be plotted?}
+
 \item{col}{Color of the ellipse and its center}
 
-\item{pch, cex}{Plotting symbol and size of the ellipse center. Ignored if \code{center} is \code{FALSE}.}
-
-\item{center}{logical. Whether the ellipse's center should be plotted?}
+\item{pch, cex}{Plotting symbol and size of the ellipse center. Ignored if \code{.center} is \code{FALSE}.}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
 hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}

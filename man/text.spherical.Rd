@@ -7,7 +7,7 @@
 \method{text}{spherical}(x, labels = seq_along(x[, 1]), upper.hem = FALSE, earea = TRUE, ...)
 }
 \arguments{
-\item{x}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"}.}
+\item{x}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"}.}
 
 \item{labels}{a character vector or \link{expression} specifying
     the \emph{text} to be written.  An attempt is made to coerce other

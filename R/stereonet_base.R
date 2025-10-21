@@ -111,7 +111,7 @@ stereo_coords <- function(az, inc, upper.hem = FALSE, earea = TRUE, r = 1) {
 #'
 #' Visualization of lines, planes in a stereographic projection.
 #'
-#' @param x object of class `"Vec3"`, `"Line"`, `"Plane"`. `"Pair"`, or `"Fault"`
+#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`. `"Pair"`, or `"Fault"`
 #' @param upper.hem logical. Whether the projection is shown for upper
 #' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
 #' @param earea logical `TRUE` for Lambert equal-area projection (also "Schmidt net"; the default), or
@@ -271,7 +271,7 @@ stereo_pair <- function(x, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex 
 #'
 #' Visualization of smallcircles and greatcircles in a stereographic projection.
 #'
-#' @param x object of class `"Vec3"`, `"Line"`, `"Plane"`, `"Pair"`, or `"Fault"`.
+#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`.
 #' @param d numeric. conical angle in degrees.
 #' @param col,lty,lwd color, line type, and line width parameters
 #' @param N integer. number of points to calculate
@@ -367,7 +367,7 @@ stereo_greatcircle <- function(x, ...) {
 #'
 #' Plots the great-circle segment between two vectors
 #'
-#' @param x,y objects of class `"Vec3"`, `"Line"`, or `"Plane"`
+#' @param x,y objects of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`
 #' @inheritParams stereo_smallcircle
 #' @param n integer. number of points along greatcircle (100 by default)
 #' @param ... graphical parameters passed to [graphics::lines()]
@@ -680,37 +680,102 @@ stereoplot_guides <- function(d = 10, earea = TRUE, radius = 1, ...) {
 
 #' Plot spherical objects
 #'
-#' @param x objects of class `"Vec3"`, `"Line"`, `"Plane"`, `"Pair"`, or `"Fault"`.
+#' @param x objects of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`.
 #' @inheritParams stereoplot
 #' @param upper.hem logical. Whether the projection is shown for upper
 #' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
 #' @param grid.params list.
 #' @param ... parameters passed to [stereo_point()], [stereo_smallcircle()], [stereo_greatcircle()], or [fault_plot()]
-#'
-#' @exportS3Method graphics::plot
+#' 
+#' @details
+#' If `x` is a Ray, than solid symbols show rays pointing in the lower hemisphere, 
+#' and open symbols point into the upper hemisphere
+#' 
+#' @name plot-spherical
 #'
 #' @examples
+#' plot(rvmf(10, mu = Vec3(1, 0, 0))) # Vec 
 #' plot(Line(c(90, 80), c(10, 75)), lab = c("L1", "L2"))
+#' plot(Ray(c(90, 80), c(10, 75), sense = c(1, -1)), lab = c("L1", "L2"))
 #' plot(Plane(120, 30), col = "red")
 #' plot(Pair(120, 50, 36, 8))
 #' plot(Fault(120, 50, 36, 8, -1))
-plot.spherical <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
-  do.call(stereoplot, append(grid.params, earea))
+NULL
 
-  if (is.Line(x) | is.Vec3(x)) stereo_point(x, upper.hem = upper.hem, earea = earea, ...)
-  if (is.Plane(x) & !is.Pair(x)) stereo_greatcircle(x, upper.hem = upper.hem, earea = earea, ...)
-  if (is.Fault(x)) fault_plot(x, upper.hem = upper.hem, earea = earea, ...)
-  if (is.Pair(x) & !is.Fault(x)) {
-    stereo_greatcircle(Fault_plane(x), upper.hem = upper.hem, earea = earea, ...)
-    stereo_point(Fault_slip(x), upper.hem = upper.hem, earea = earea, ...)
-  }
+#' @rdname plot-spherical
+#' @exportS3Method graphics::plot
+plot.Line <-  function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
+    do.call(stereoplot, append(grid.params, earea))
+  stereo_point(x, upper.hem = upper.hem, earea = earea, ...)
 }
 
+#' @rdname plot-spherical
+#' @exportS3Method graphics::plot
+plot.Vec3 <-  function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
+  do.call(stereoplot, append(grid.params, earea))
+  stereo_point(x, upper.hem = upper.hem, earea = earea, ...)
+}
+
+#' @rdname plot-spherical
+#' @exportS3Method graphics::plot
+plot.Ray <-  function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
+  do.call(stereoplot, append(grid.params, earea))
+    if(is.Ray(x)){
+      # different symbols for upper and lower hemisphere rays
+      pch_upp <- if(upper.hem) c(1, 16) else c(16, 1)
+      stereo_point(x, upper.hem = upper.hem, earea = earea,
+                   pch = ifelse(x[, 2] > 1, pch_upp[1], pch_upp[2]),
+                   ...)
+    }
+}
+
+#' @rdname plot-spherical
+#' @exportS3Method graphics::plot
+plot.Plane <-  function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
+  do.call(stereoplot, append(grid.params, earea))
+  stereo_greatcircle(x, upper.hem = upper.hem, earea = earea, ...)
+}
+
+#' @rdname plot-spherical
+#' @exportS3Method graphics::plot
+plot.Pair <-  function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
+  do.call(stereoplot, append(grid.params, earea))
+  stereo_greatcircle(Plane(x), upper.hem = upper.hem, earea = earea, ...)
+  stereo_point(Line(x), upper.hem = upper.hem, earea = earea, ...)
+}
+
+#' @rdname plot-spherical
+#' @exportS3Method graphics::plot
+plot.Fault <-  function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
+  do.call(stereoplot, append(grid.params, earea))
+  fault_plot(x, upper.hem = upper.hem, earea = earea, ...)
+}
+
+
+# plot.spherical <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
+#   do.call(stereoplot, append(grid.params, earea))
+# 
+#   if (is.Line(x) | is.Vec3(x)) stereo_point(x, upper.hem = upper.hem, earea = earea, ...)
+#   if(is.Ray(x)){
+#     # different symbols for upper and lower hemisphere rays
+#     pch_upp <- if(upper.hem) c(1, 16) else c(16, 1)
+#     stereo_point(x, upper.hem = upper.hem, earea = earea, 
+#                  pch = ifelse(x[, 2] > 1, pch_upp[1], pch_upp[2]),
+#                  ...)
+#   }
+#   if (is.Plane(x) & !is.Pair(x)) stereo_greatcircle(x, upper.hem = upper.hem, earea = earea, ...)
+#   if (is.Fault(x)) fault_plot(x, upper.hem = upper.hem, earea = earea, ...)
+#   if (is.Pair(x) & !is.Fault(x)) {
+#     stereo_greatcircle(Fault_plane(x), upper.hem = upper.hem, earea = earea, ...)
+#     stereo_point(Fault_slip(x), upper.hem = upper.hem, earea = earea, ...)
+#   }
+# }
+# 
 
 #' Add Points to a Plot
 #'
 #' @param ... arguments passed to [graphics::points()]
-#' @inheritParams plot.spherical
+#' @inheritParams plot.Vec3
 #' @inheritParams graphics::text
 #' @importFrom graphics points
 #'
@@ -741,7 +806,7 @@ points.spherical <- function(x, upper.hem = FALSE, earea = TRUE, ...) {
 
 #' Add Lines to a Plot
 #'
-#' @inheritParams plot.spherical
+#' @inheritParams plot.Vec3
 #' @inheritParams graphics::text
 #' @param ang numeric. Conical angle in degrees.
 #' @param ... arguments passed to [graphics::lines()]
@@ -760,7 +825,7 @@ lines.spherical <- function(x, ang = 90, ...) {
 #' Add Points to a Plot
 #'
 #' @param ... arguments passed to [graphics::text()]
-#' @inheritParams plot.spherical
+#' @inheritParams plot.Vec3
 #' @inheritParams graphics::text
 #' @importFrom graphics text
 #'
@@ -797,12 +862,12 @@ hypot <- function(x, y) {
 #'
 #' A quiver plot displays displacement vectors into pointing into the direction of movement.
 #'
-#' @param x object of class `"Vec3"`, `"Line"`, or `"Plane"`.
+#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`.
 #' @param sense numeric. Sense of the line on a fault plane. Either
 #' `1`or `-1` for normal or thrust offset, respectively. The "sense" is the sign
 #' of the fault's rake (see [Fault_from_rake()] for details).
 #' @param ... arguments passed to [graphics::arrows()]
-#' @inheritParams plot.spherical
+#' @inheritParams plot.Vec3
 #' @param length numeric. Length of the edges of the arrow head (in inches).
 #' @param angle numeric. Angle from the shaft of the arrow to the edge of the arrow head.
 #' @param scale numeric. Scales the length of the vector. `0.1` by default
@@ -819,7 +884,7 @@ hypot <- function(x, y) {
 #' points(p, pch = 16, cex = .5)
 #' stereo_arrows(p, sense = 1, col = "red")
 stereo_arrows <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.hem = FALSE, earea = TRUE, ...) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  stopifnot(is.Vec3(x) | is.Line(x) | is.Ray(x) | is.Plane(x))
 
   if (nrow(x) > 1 & length(sense) == 1) sense <- rep(sense, nrow(x))
 
@@ -898,8 +963,8 @@ fault_plot <- function(x, type = c("angelier", "hoeppner"), ...) {
 hoeppner <- function(x, pch = 1, col = "black", cex = 1, bg = NULL, points = TRUE, ...) {
   stopifnot(is.Fault(x))
 
-  stereo_arrows(Fault_plane(x), sense = x[, "sense"], col = col, ...)
-  if (isTRUE(points)) points(Fault_plane(x), pch = pch, col = col, cex = cex, bg = bg)
+  stereo_arrows(Plane(x), sense = x[, "sense"], col = col, ...)
+  if (isTRUE(points)) points(Plane(x), pch = pch, col = col, cex = cex, bg = bg)
 }
 
 #' @rdname fault-plot
@@ -920,7 +985,7 @@ angelier <- function(x, pch = 1, lwd = 1, lty = 1, col = "black", cex = 1, point
 #' specified vector in a stereoplot.
 #' The greatcircles are color-coded by the angular distance.
 #'
-#' @param x set of vectors. Object of class `"Vec3"`, `"Line"`, `"Plane"`, `"Pair"`, or `"Fault"`.
+#' @param x set of vectors. Object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`.
 #' @param y The vector from which the variance should be visualized (only one vector allowed).
 #' When `NULL`, then the mean vector of `x` is used (the default).
 #' @param .mean character. The type of mean to be used if `y` is `NULL`.

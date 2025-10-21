@@ -5,17 +5,20 @@
 \alias{is.spherical}
 \alias{is.Vec3}
 \alias{is.Line}
+\alias{is.Ray}
 \alias{is.Plane}
 \alias{is.Pair}
 \alias{is.Fault}
 \alias{as.spherical}
 \alias{as.Vec3}
 \alias{as.Line}
+\alias{as.Ray}
 \alias{as.Plane}
 \alias{as.Pair}
 \alias{as.Fault}
 \alias{Vec3}
 \alias{Line}
+\alias{Ray}
 \alias{Plane}
 \alias{Pair}
 \alias{Fault}
@@ -27,6 +30,8 @@ is.spherical(x)
 is.Vec3(x)
 
 is.Line(x)
+
+is.Ray(x)
 
 is.Plane(x)
 
@@ -40,6 +45,8 @@ as.Vec3(x)
 
 as.Line(x)
 
+as.Ray(x)
+
 as.Plane(x)
 
 as.Pair(x)
@@ -50,6 +57,8 @@ Vec3(x, y, z)
 
 Line(x, plunge)
 
+Ray(x, plunge, sense = NULL)
+
 Plane(x, dip)
 
 Pair(x, y, azimuth, plunge, correction = FALSE)
@@ -59,8 +68,12 @@ Fault(x, y, azimuth, plunge, sense, correction = FALSE)
 Spherical(x, .class)
 }
 \arguments{
-\item{x, y}{object of class \code{"Line"}, \code{"Plane"}, and  \code{"Pair"}, and \code{"Fault"}  or
+\item{x, y}{object of class \code{"Line"}, \code{"Ray"}, \code{"Plane"}, and  \code{"Pair"}, and \code{"Fault"}  or
 numeric vector or array containing the spherical coordinates}
+
+\item{sense}{(optional) integer. Sense of the line (e.g.on a fault plane). Either
+\code{1}or \code{-1} for down (normal offset) or up (reverse offset), respectively. The "sense" is the sign
+of the fault's rake (see \code{\link[=Fault_from_rake]{Fault_from_rake()}} for details).}
 
 \item{azimuth, plunge, z, dip}{numeric vectors of the spherical coordinates}
 
@@ -68,36 +81,37 @@ numeric vector or array containing the spherical coordinates}
 vector will be rotated so that the slip vector lies on the fault plane by
 minimizing the angle between the slip and the plane normal vector. See \code{\link[=correct_pair]{correct_pair()}} for details.}
 
-\item{sense}{(optional) integer. Sense of the line on a fault plane. Either
-\code{1}or \code{-1} for normal or thrust offset, respectively. The "sense" is the sign
-of the fault's rake (see \code{\link[=Fault_from_rake]{Fault_from_rake()}} for details).}
-
 \item{.class}{character. Spherical class the object should be coerced to.}
 }
 \description{
-\code{Vec3}, \code{Line}, \code{Plane}, \code{"Pair"} and \code{Fault} create or convert a \code{"Vec3"}, \code{"Line"}, \code{"Plane"}, \code{"Pair"}, and \code{"Fault"}
+\code{Vec3}, \code{Line}, \code{Ray}, \code{Plane}, \code{"Pair"} and \code{Fault} create or convert a \code{"Vec3"}, \code{"Line"},  \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, and \code{"Fault"}
 S3 class object, respectively, from the given set of values.
 
-\code{as.Vec3}, \code{as.Line}, \code{as.Plane}, \code{as.Pair}, and \code{as.Fault} attempt to coearce its argument into a
-\code{"Vec3"}, \code{"Line"}, \code{"Plane"}, and  \code{"Pair"}, and \code{"Fault"} S3 class object, respectively.
+\code{as.Vec3}, \code{as.Line}, \code{as.Ray}, \code{as.Plane}, \code{as.Pair}, and \code{as.Fault} attempt to coerce its argument into a
+\code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, and  \code{"Pair"}, and \code{"Fault"} S3 class object, respectively.
 
-\code{is.Line}, \code{is.Plane}, \code{is.Pair}, and \code{is.Fault} test if its argument is a
-\code{"Line"}, \code{"Plane"}, and  \code{"Pair"}, and \code{"Fault"} S3 class object, respectively.
+\code{is.Vec3}, \code{is.Line}, \code{is.Ray}, \code{is.Plane}, \code{is.Pair}, and \code{is.Fault} test if its argument is a
+\code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, and  \code{"Pair"}, and \code{"Fault"} S3 class object, respectively.
 }
 \details{
-\code{is.Vec3}, \code{is.Line}, \code{is.Plane}, \code{is.Pair}, and \code{is.Fault} return \code{TRUE} if its arguments
-are an object of class  \code{"Vec3"}, \code{"Line"}, \code{"Plane"}, \code{"Pair"} or \code{"Fault"}, respectively, and
+\code{is.Vec3}, \code{is.Line}, \code{is.Plane}, \code{"is.Ray"}, \code{is.Pair}, and \code{is.Fault} return \code{TRUE} if its arguments
+are an object of class  \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"} or \code{"Fault"}, respectively, and
 \code{FALSE} otherwise.
 
-\code{is.spherical} returns \code{TRUE} if the argument's class is one of \code{"Vec3()"}, \code{"Line"},
+\code{is.spherical} returns \code{TRUE} if the argument's class is one of \code{"Vec3()"}, \code{"Line"}, \code{"Ray"},
 \code{"Plane"}, \code{"Pair"}, or \code{"Fault"} and \code{FALSE} otherwise
 
-\code{as.Vec3()}, \code{as.Line}, \code{as.Plane}, \code{as.Pair}, and \code{as.Fault} are is generic functions.
+\code{as.Vec3()}, \code{as.Line}, \code{as.Ray}, \code{as.Plane}, \code{as.Pair}, and \code{as.Fault} are is generic functions.
+
+A \code{Line} extends infinitely in both directions (equivalent to an axis in 2D), for example: principal stress directions, strain ellipsoid directions (e.g. stretching lineation), intersection, fault striae, crystallographic axes.
+
+A \code{Ray} is a line with a single start point and extends indefinitely in only one direction (equivalent to a direction in 2D): e.g. slip direction, paleomagnetic direction (unless reversals are involved).
 }
 \examples{
 x <- Line(120, 50) # create line
 is.Line(x) # test if line
 Plane(x) # convert to plane
+as.Plane(x) # assign as plane (note the difference to Pane(x))
 
 Pair(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23))
 Fault(c("a" = 120, "b" = 120, "c" = 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))

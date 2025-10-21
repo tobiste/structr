@@ -16,7 +16,7 @@ stereo_arrows(
 )
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}.}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}.}
 
 \item{sense}{numeric. Sense of the line on a fault plane. Either
 \code{1}or \code{-1} for normal or thrust offset, respectively. The "sense" is the sign

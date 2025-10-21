@@ -42,7 +42,7 @@ contourf(
 )
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Plane"} or \code{'spherical.density'} (for plotting only).}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"} or \code{'spherical.density'} (for plotting only).}
 
 \item{add}{logical. Whether the contours should be added to an existing plot.}
 

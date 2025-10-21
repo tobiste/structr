@@ -2,9 +2,9 @@
 
 #' Vector math operations
 #'
-#' @param x,y objects of class `"Vec3"`, `"Line"`, or `"Plane"`.
-#' @param rotaxis Axis of rotation given as object of class `"Vec3"`, `"Line"`, or `"Plane"`.
-#' @param rotangle Angle of rotation in radians for `"Vec3"` objects and in degrees for `"Line"` and `"Plane"` objects.
+#' @param x,y objects of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`.
+#' @param rotaxis Axis of rotation given as object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`.
+#' @param rotangle Angle of rotation in radians for `"Vec3"` objects and in degrees for `"Line"`, `"Ray"` and `"Plane"` objects.
 #' @param A numeric 3x3 matrix. Transformation matrix.
 #' @param norm logical. If `TRUE`, the transformed vectors are normalized to unit length.
 #' @param ... arguments passed to function call
@@ -21,7 +21,7 @@
 #' \item{`transform_linear`}{Linear transformation of a vector by a 3x3 matrix}
 #' }
 #'
-#' @returns objects of same class as `x`, i.e. one of `"Vec3"`, `"Line"`, or
+#' @returns objects of same class as `x`, i.e. one of `"Vec3"`, `"Line"`, `"Ray"` or
 #' `"Plane"`. `vector_length()` and `%*%` return a real number. `angle()`
 #' returns a numeric angle (in degrees, unless `x` is class `"Vec3"`).
 #' @name vecmath
@@ -332,6 +332,65 @@ v_antipode <- function(x) {
   -x
 }
 
+#' Antipode vector
+#' 
+#' Returns the opposite vector 
+#' 
+#' @param x a spherical object
+#' @param ... arguments passed to function call
+#' @name antipode
+#' @examples
+#' Line(120, 55) |> antipode()
+#' Ray(120, 55) |> antipode()
+NULL
+
+#' @rdname antipode
+#' @export
+antipode <- function(x, ...) UseMethod("antipode")
+
+#' @rdname antipode
+#' @export
+antipode.default <- function(x, ...) v_antipode(x)
+
+#' @rdname antipode
+#' @export
+antipode.Vec3 <- function(x, ...) v_antipode(x)
+
+
+#' @rdname antipode
+#' @export
+antipode.Line <- function(x, ...){
+  #Line(x[, 1] + 180, -x[, 2])
+  x
+}
+
+#' @rdname antipode
+#' @export
+antipode.Ray <- function(x, ...){
+  Ray(x[, 1] + 180, -x[, 2])
+}
+
+#' @rdname antipode
+#' @export
+antipode.Plane <- function(x, ...){
+  Plane(x[, 1] + 180, -x[, 2])
+}
+
+#' @rdname antipode
+#' @export
+antipode.Pair <- function(x, ...){
+  x
+}
+
+#' @rdname antipode
+#' @export
+antipode.Fault <- function(x, ...){
+  Fault(x[, 1] + 180, -x[, 2],
+        x[, 3] + 180, -x[, 4],
+        -x[, 5])
+}
+
+
 #' Antipodal map sending upper-hemisphere rays to the lower hemisphere.
 #'
 #' Negates any vector with positive `z`-component. Used in lower-hemisphere plots.
@@ -354,7 +413,7 @@ v_lower <- function(v) {
 #'
 #' Returns the spherical linear interpolation of points between two vectors
 #'
-#' @param x0,x1 objects of class `"Vec3"`, `"Line"`, or `"Plane"` of the first
+#' @param x0,x1 objects of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"` of the first
 #' and the last points of the to be interpolated arc.
 #' @param t numeric. Interpolation factor(s) (`t = [0, 1]`).
 #'

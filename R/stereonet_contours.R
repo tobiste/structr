@@ -4,7 +4,7 @@
 #' `contourf` displays a contour plot with the areas between the contours filled,
 #' and `image` creates a dense grid of colored rectangles.
 #'
-#' @param x object of class `"Vec3"`, `"Line"`, `"Plane"` or `'spherical.density'` (for plotting only).
+#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"` or `'spherical.density'` (for plotting only).
 #' @param density.params list of parameters passed to [density.spherical]
 #' @param nlevels integer. Number of contour levels for plotting
 # #' @param type character. Type of plot: `'contour'` for contour lines,

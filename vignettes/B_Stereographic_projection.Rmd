@@ -166,7 +166,7 @@ points(line_NULL, col = "#000004", pch = 16)
 
 The p-value for our hypothesis line:
 ```{r test3}
-ce$pvalue.line.FUN(line_NULL)
+ce$pvalue.FUN(line_NULL)
 ```
 
 With (95% confidence) we rejected the Null Hypothesis that the given line represents the population mean as the p-value is smaller than 5%.

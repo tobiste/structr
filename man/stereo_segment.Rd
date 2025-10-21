@@ -15,7 +15,7 @@ stereo_segment(
 )
 }
 \arguments{
-\item{x, y}{objects of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}}
+\item{x, y}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
 hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}

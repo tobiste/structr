@@ -110,7 +110,7 @@ correct_pair <- function(x) {
 #'
 #' @inheritParams fault_analysis
 #'
-#' @returns numeric. plane, line or angle in degrees, respectively
+#' @returns numeric. `"Plane"`, `"Ray"` or angle in degrees, respectively
 #' @name Fault_components
 #'
 #' @examples
@@ -131,20 +131,34 @@ Fault_rake <- function(x) {
 
 #' @rdname Fault_components
 #' @export
-Fault_slip <- function(x) {
+Pair_plane <- function(x) {
   stopifnot(is.Pair(x))
-  azi <- x[, 3]
-  inc <- x[, 4]
+  # azi <- x[, 3]
+  # inc <- x[, 4]
   # sense <- x[, 5]
-  # azi_cor <- ifelse(sense>1, azi + 180, azi)
-  Line(azi, inc)
+  # # azi_cor <- ifelse(sense>1, azi + 180, azi)
+  # Ray(azi, inc, sense = sense)
+  Line(x)
 }
 
 #' @rdname Fault_components
 #' @export
-Fault_plane <- function(x) {
+Fault_slip <- Pair_plane <- function(x) {
+  stopifnot(is.Fault(x))
+  # azi <- x[, 3]
+  # inc <- x[, 4]
+  # sense <- x[, 5]
+  # # azi_cor <- ifelse(sense>1, azi + 180, azi)
+  # Ray(azi, inc, sense = sense)
+  Ray(x)
+}
+
+
+#' @rdname Fault_components
+#' @export
+Fault_plane <- Pair_plane <- function(x) {
   stopifnot(is.Pair(x))
-  Plane(x[, 1], x[, 2])
+  Plane(x)
 }
 
 

@@ -7,7 +7,7 @@
 fisher_statistics(x, w = NULL, conf.level = 0.95, na.rm = TRUE)
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}.}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}.}
 
 \item{w}{numeric. Optional weights for each observation.}
 
