@@ -66,7 +66,8 @@
 
 <dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
 <dd><p>an integer vector of length up to <code>dim(x)</code> (or 1,
-    for non-dimensioned objects). Values specify the indices to be
+    for non-dimensioned objects).  A <code>logical</code> is silently coerced to
+    integer.  Values specify the indices to be
     selected in the corresponding dimension (or along the length) of the
     object. A positive value of <code>n[i]</code> includes the first/last
     <code>n[i]</code> indices in that dimension, while a negative value
@@ -86,22 +87,22 @@
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="vonmises-fisher.html">rvmf</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Vector (Vec3) object (n = 6):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              x         y          z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.9016009 0.3974547 -0.1707209</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.7732423 0.4680730 -0.4277897</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.8273097 0.3650897  0.4269287</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.8536098 0.4788177  0.2051438</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.1528231 0.4973021 -0.8540115</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.8680537 0.2950271 -0.3993016</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              x           y            z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.8226075  0.53060197  0.204397668</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.8297550  0.45054829 -0.329412817</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.6553978  0.65633603  0.373733541</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.9265451  0.33978189 -0.161438835</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.9969122 -0.07836393  0.005014657</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.8577971  0.06298978  0.510114090</span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">tail</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Vector (Vec3) object (n = 6):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              x           y          z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.1528231  0.49730213 -0.8540115</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.8680537  0.29502706 -0.3993016</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.9325515  0.16204763  0.3226271</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.7800932  0.03814777  0.6244993</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.4910608 -0.82311239  0.2852109</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.7289309 -0.52076667  0.4443667</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              x           y            z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.9969122 -0.07836393  0.005014657</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.8577971  0.06298978  0.510114090</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.9606112 -0.18398767  0.208265752</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.4934052 -0.02480132 -0.869445930</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.5872673  0.01569155  0.809240910</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.4810132  0.65593763 -0.581697627</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
