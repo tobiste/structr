@@ -3,11 +3,11 @@
 \name{geodesic-mean}
 \alias{geodesic-mean}
 \alias{geodesic_mean}
-\alias{geodesic_mean.Pair}
-\alias{geodesic_mean.Ray}
-\alias{geodesic_mean.Line}
 \alias{geodesic_mean.Vec3}
+\alias{geodesic_mean.Line}
+\alias{geodesic_mean.Ray}
 \alias{geodesic_mean.Plane}
+\alias{geodesic_mean.Pair}
 \alias{geodesic_var}
 \alias{geodesic_var.Vec3}
 \alias{geodesic_var.Line}
@@ -21,15 +21,15 @@ geologyGeometry (J.R. Davis)
 \usage{
 geodesic_mean(x, ...)
 
-\method{geodesic_mean}{Pair}(x, ...)
-
-\method{geodesic_mean}{Ray}(x, ...)
+\method{geodesic_mean}{Vec3}(x, ...)
 
 \method{geodesic_mean}{Line}(x, ...)
 
-\method{geodesic_mean}{Vec3}(x, ...)
+\method{geodesic_mean}{Ray}(x, ...)
 
 \method{geodesic_mean}{Plane}(x, ...)
+
+\method{geodesic_mean}{Pair}(x, ...)
 
 geodesic_var(x, ...)
 
@@ -57,6 +57,7 @@ An iterative algorithm for computing the Frechet mean, i.e. the vector that
 minimizes the Frechet variance.
 }
 \examples{
+set.seed(20250411)
 geodesic_mean(example_planes)
 geodesic_var(example_planes)
 }

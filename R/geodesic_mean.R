@@ -19,6 +19,7 @@
 #' @seealso [sph_mean()] for the arithmetic mean, [projected_mean()] for projected mean
 #'
 #' @examples
+#' set.seed(20250411)
 #' geodesic_mean(example_planes)
 #' geodesic_var(example_planes)
 NULL
@@ -29,11 +30,7 @@ geodesic_mean <- function(x, ...) UseMethod("geodesic_mean")
 
 #' @rdname geodesic-mean
 #' @export
-geodesic_mean.Pair <- function(x, ...) geodesic_mean_pair(x, ...)
-
-#' @rdname geodesic-mean
-#' @export
-geodesic_mean.Ray <- function(x, ...) geodesic_mean_ray(x, ...)
+geodesic_mean.Vec3 <- function(x, ...) geodesic_mean_line(x, ...)
 
 #' @rdname geodesic-mean
 #' @export
@@ -41,11 +38,15 @@ geodesic_mean.Line <- function(x, ...) geodesic_mean_line(x, ...)
 
 #' @rdname geodesic-mean
 #' @export
-geodesic_mean.Vec3 <- function(x, ...) geodesic_mean_line(x, ...)
+geodesic_mean.Ray <- function(x, ...) geodesic_mean_ray(x, ...)
 
 #' @rdname geodesic-mean
 #' @export
 geodesic_mean.Plane <- function(x, ...) geodesic_mean_line(x, ...)
+
+#' @rdname geodesic-mean
+#' @export
+geodesic_mean.Pair <- function(x, ...) geodesic_mean_pair(x, ...)
 
 
 #' @rdname geodesic-mean
@@ -123,7 +124,6 @@ geodesic_var_line <- function(x, ...) geodesic_meanvariance_line(x, ...)$varianc
 #' @rdname geodesic-line
 #' @export
 geodesic_var_ray <- function(x, ...) geodesic_meanvariance_ray(x, ...)$variance
-
 
 #' @rdname geodesic-line
 #' @export

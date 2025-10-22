@@ -951,6 +951,10 @@ stereo_arrows <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.
 #'
 #' stereoplot(title = "Hoeppner plot")
 #' hoeppner(f, col = 1:nrow(f), cex = 1, scale = 0.1, points = FALSE)
+#' 
+#' # or
+#' stereoplot()
+#' fault_plot(f, type = "hoeppner", col = 1:nrow(f), cex = 1, scale = 0.1, points = FALSE)
 NULL
 
 #' @rdname fault-plot

@@ -56,6 +56,10 @@ angelier(f, col = 1:nrow(f), pch = 16, scale = 0.1)
 
 stereoplot(title = "Hoeppner plot")
 hoeppner(f, col = 1:nrow(f), cex = 1, scale = 0.1, points = FALSE)
+
+# or
+stereoplot()
+fault_plot(f, type = "hoeppner", col = 1:nrow(f), cex = 1, scale = 0.1, points = FALSE)
 }
 \references{
 Angelier, J. Tectonic analysis of fault slip data sets, J. Geophys. Res. 89 (B7), 5835-5848 (1984)

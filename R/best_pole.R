@@ -33,21 +33,30 @@
 #' lines(best_bedd$axis_c, best_bedd$cone_angle, col = "sienna")
 #' lines(best_bedd$axis_g, 90, lty = 2, col = "red")
 best_fit_plane <- function(x) {
-  xv <- Vec3(x) |> unclass()
+  xv <- Vec3(x) #|> unclass()
 
   p <- nrow(xv)
   s_res <- gray_algorithm(xv, sm = TRUE)
   g_res <- gray_algorithm(xv, sm = FALSE)
-  K_s <- acos(s_res$cos_K) |> as.numeric()
+  
+  # angle between eigenvector and mean plane/cone
+  K_s <- acos(s_res$cos_K) 
   K_g <- pi / 2 # == acos(g_res$cos_K) |> as.numeric()
 
 
+  # Angle between eigenvector (pole of plane/cone) and data:
+  a_s <- angle(s_res$eig3, xv)
+  a_g <- angle(g_res$eig3, xv)
   # R <- K - acos(A_eigen3[1] * t(a1) + A_eigen3[2] * t(a2) + A_eigen3[3] * t(a3))
-  R_s <- K_s - acos(s_res$eig3 %*% t(xv)) # residual
-  r_s <- sum(R_s^2) # sum of squares of residuals
-
-  R_g <- K_g - acos(g_res$eig3 %*% t(xv)) # residual
-  r_g <- sum(R_g^2) # sum of squares of residuals
+  # R_s <- K_s - acos(s_res$eig3 %*% t(xv)) 
+  
+  # residual
+  R_s <- K_s - a_s
+  R_g <- K_g - a_g # residual
+  
+  # sum of squares of residuals
+  r_s <- sum(R_s^2) 
+  r_g <- sum(R_g^2) 
 
   E_s <- (p - 2) * r_s^2
   E_g <- (p - 3) * r_g^2
@@ -118,10 +127,14 @@ gray_algorithm <- function(x, sm = TRUE) {
   )
   A <- cbind(A1, A2, A3)
 
-  eig3 <- -eigen(A)$vectors[, 3]
-
+  eig3 <- as.Vec3(-eigen(A)$vectors[, 3])
+  
+  # dot product between eigenvector and mean vector
   # cos_K <- eig3[1] * a1_bar + eig3[2] * a2_bar + eig3[3] * a3_bar
-  cos_K <- eig3 %*% t(cbind(a1_bar, a2_bar, a3_bar))
+  #cos_K <- eig3 %*% t(cbind(a1_bar, a2_bar, a3_bar))
+  cos_K <- vdot(eig3, Vec3(a1_bar, a2_bar, a3_bar)) 
+  
+  return(list(eig3 = eig3, cos_K = cos_K))
 
   return(list(eig3 = eig3, cos_K = cos_K))
 }
