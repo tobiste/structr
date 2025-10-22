@@ -66,7 +66,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-10-21</h4>
+            <h4 data-toc-skip class="date">2025-10-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/G_Oriented_Drill_Cores.Rmd" class="external-link"><code>vignettes/G_Oriented_Drill_Cores.Rmd</code></a></small>
       <div class="d-none name"><code>G_Oriented_Drill_Cores.Rmd</code></div>
@@ -87,7 +87,7 @@ inclination of drill core axis (in degrees).</p>
 <code class="sourceCode R"><span><span class="va">azi</span> <span class="op">&lt;-</span> <span class="fl">225</span></span>
 <span><span class="va">inc</span> <span class="op">&lt;-</span> <span class="fl">45</span></span></code></pre></div>
 <blockquote>
-<p>Note that egative values for the inclination indicate downward
+<p>Note that negative values for the inclination indicate downward
 direction</p>
 </blockquote>
 <p><code>alpha</code> and <code>beta</code> are the internal core angles
@@ -102,10 +102,10 @@ angles are specified, the output is a <code>"plane"</code> object.</p>
 <p>For several alpha and beta angles:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">planes_AB</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/drillcore.html">drillcore_transformation</a></span><span class="op">(</span><span class="va">azi</span>, <span class="va">inc</span>, alpha <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">45</span><span class="op">)</span>, beta <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">320</span>, <span class="fl">220</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p>The orientations can be plotted in a equal area (lower hemisphere)
+<p>The orientations can be plotted in a equal-area (lower hemisphere)
 projection:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># initialize stereonet:</span></span>
+<code class="sourceCode R"><span><span class="co"># initialize plot:</span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># plot the core axis' azimuth and inclination)</span></span>

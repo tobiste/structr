@@ -66,7 +66,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-10-21</h4>
+            <h4 data-toc-skip class="date">2025-10-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/C_Plots.Rmd" class="external-link"><code>vignettes/C_Plots.Rmd</code></a></small>
       <div class="d-none name"><code>C_Plots.Rmd</code></div>
@@ -84,7 +84,7 @@ Stephan</h4>
 <span><span class="va">planes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Plane</a></span><span class="op">(</span><span class="va">example_planes_df</span><span class="op">$</span><span class="va">dipdir</span>, <span class="va">example_planes_df</span><span class="op">$</span><span class="va">dip</span><span class="op">)</span></span>
 <span><span class="va">lines</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="va">example_lines_df</span><span class="op">$</span><span class="va">trend</span>, <span class="va">example_lines_df</span><span class="op">$</span><span class="va">plunge</span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
-<h2 id="stereographic-projection">Stereographic projection<a class="anchor" aria-label="anchor" href="#stereographic-projection"></a>
+<h2 id="equal-area-projection">Equal-area projection<a class="anchor" aria-label="anchor" href="#equal-area-projection"></a>
 </h2>
 <p>Lambert equal area, lower hemisphere projection is the default
 plotting setting.</p>
@@ -95,6 +95,10 @@ plotting setting.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Lines"</span>, <span class="st">"Planes"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679"</span>, <span class="st">"#000004"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="fl">1</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Example data"</span>, sub <span class="op">=</span> <span class="st">"Lambert equal area, lower hemisphere projection"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="C_Plots_files/figure-html/stereo_earea-1.png" alt="Diagram showing the equal-area Lambert projection of some example data" width="700"></p>
+</div>
+<div class="section level2">
+<h2 id="stereographic-projection">Stereographic projection<a class="anchor" aria-label="anchor" href="#stereographic-projection"></a>
+</h2>
 <p>To change to equal angle stereographic, upper hemisphere
 projection</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
@@ -163,8 +167,8 @@ and the 95% confidence cone around the mean:</p>
 <div class="section level3">
 <h3 id="geodesic-mean-and-variance">Geodesic mean and variance<a class="anchor" aria-label="anchor" href="#geodesic-mean-and-variance"></a>
 </h3>
-<p>The Frechet (geodesic L<sup>2) mean iteratively finds the
-vector that minimizes the distances to all other points.</sup></p>
+<p>The Frechet (geodesic L<sup>2</sup>) mean iteratively finds the
+vector that minimizes the distances to all other points.</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Mean</span></span>
 <span><span class="fu"><a href="../reference/geodesic-mean.html">geodesic_mean</a></span><span class="op">(</span><span class="va">lines</span><span class="op">)</span></span>
