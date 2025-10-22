@@ -2,13 +2,13 @@
 % Please edit documentation in R/best_pole.R
 \name{best_pole}
 \alias{best_pole}
-\alias{best_cone_ramsay}
-\alias{best_cone_ramsay2}
+\alias{regression_cone_ramsay}
+\alias{regression_cone_ramsay2}
 \title{The cone or plane best fit of conically or cylindrical disposed s-plane poles}
 \usage{
-best_cone_ramsay(x)
+regression_cone_ramsay(x)
 
-best_cone_ramsay2(x)
+regression_cone_ramsay2(x)
 }
 \arguments{
 \item{x}{matrix. Cartesian coordinates of points}
@@ -37,8 +37,8 @@ x <- rbind(
   c(90, 14, -75),
   c(80, 10, 90)
 ) |> acoscartesian_to_cartesian()
-best_cone_ramsay(x) # expect: c(0.856, -0.157, -0.492, NA, 1.56207)
-best_plane_ramsay(x) # expect: c(0.852, -0.154, -0.502, 1-1.002)
+regression_cone_ramsay(x) # expect: c(0.856, -0.157, -0.492, NA, 1.56207)
+regression_plane_ramsay(x) # expect: c(0.852, -0.154, -0.502, 1-1.002)
 }
 }
 \references{

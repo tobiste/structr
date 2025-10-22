@@ -74,3 +74,34 @@ usethis::use_data(holst, overwrite = TRUE)
 
 # Compare with Holst and Fossen (1987), Fig. 5:
 # plot(log(holst[, 'R_YZ']), log(holst[, 'R_XY']), asp = 1, xlim = c(0, 4), ylim = c(0, 4))
+# 
+# 
+# 
+# 
+gr <- tibble::tribble(
+  ~strike, ~dip, ~dipdir_quadrant, ~facing, ~type,
+  142, 58, "W", "L", "Cleavage",
+  155, 63, "W", "L", "Cleavage",
+  166, 82, "W", "L", "Cleavage",
+  177+180, 83, "E", "U", "Cleavage",
+  9, 68, "E", "U", "Cleavage",
+  11, 60, "E", "U", "Cleavage",
+  17, 48, "E", "U", "Cleavage",
+  150, 65, "W", "L", "Cleavage",
+  156, 50, "W", "U", "Bedding",
+  146, 45, "W", "U", "Bedding",
+  138, 34, "W", "U", "Bedding",
+  98, 33, "W", "U", "Bedding",
+  62, 36, "E", "U", "Bedding",
+  43, 48, "E", "U", "Bedding",
+  34, 48, "E", "U", "Bedding",
+  29, 61, "E", "U", "Bedding"
+) |>
+  mutate(dipdir = rhr2dd(strike), .after = dip) |> 
+  # mutate(dipdir_quadrant2 = azimuth_to_cardinal(dipdir), .after = dipdir_quadrant) |> 
+  mutate(sense = ifelse(facing=="L", 1, -1))
+
+# gray_example <- Ray(gr$dipdir, gr$dip, sense = gr$sense) |> Line() |> as.Plane()
+gray_example <- Plane(gr$dipdir, gr$dip, sense = gr$sense)
+rownames(gray_example) <- gr$type
+usethis::use_data(gray_example, overwrite = TRUE)

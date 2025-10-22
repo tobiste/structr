@@ -31,7 +31,7 @@ The function `drillcore_transformation()` calculates the orientation of a plane 
 azi <- 225
 inc <- 45
 ```
-> Note that egative values for the inclination indicate downward direction
+> Note that negative values for the inclination indicate downward direction
 
 `alpha` and `beta` are the internal core angles alpha and beta, respectively, measured in degrees.
 
@@ -45,12 +45,12 @@ For several alpha and beta angles:
 planes_AB <- drillcore_transformation(azi, inc, alpha = c(60, 45), beta = c(320, 220))
 ```
 
-The orientations can be plotted in a equal area (lower hemisphere) projection:
+The orientations can be plotted in a equal-area (lower hemisphere) projection:
 ```{r stereonet}
 #| fig.alt: >
 #|   Diagram showing the orientation of the drillcore in a equal-area projection
 
-# initialize stereonet:
+# initialize plot:
 stereoplot()
 
 # plot the core axis' azimuth and inclination)

@@ -2,7 +2,7 @@
 
 #' Fabric intensity and shape indices
 #'
-#' @inheritParams best_fit_plane
+#' @inheritParams regression_greatcircle
 #' @returns numeric vector containing the fabric shape and intensity indices:
 #' \describe{
 #' \item{`P`}{Point (Vollmer 1990). Range: (0, 1)}
@@ -148,7 +148,7 @@ vollmer_plot <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...)
 #'
 #' Creates a fabric plot using the eigenvalue method
 #'
-#' @inheritParams best_fit_plane
+#' @inheritParams regression_greatcircle
 #' @param labels character. text labels
 #' @param add logical. Should data be plotted to an existing plot?
 #' @param max numeric. Maximum value for x and y axes. If `NULL`, it is calculated from the data.

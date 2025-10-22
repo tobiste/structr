@@ -4,89 +4,89 @@
 #'
 #' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`.
 #'
-#' @returns list
 #' @references Gray, N.H., Geiser, P.A., Geiser, J.R. (1980). On the
 #' least-square fit of small and great circles to spherically projected data.
 #' Mathematical Geology, Vol. 12, No. 3, 1980.
-#' @export
+#' @noRd
+#' 
+#' @seealso [regression_smallcircle()], [regression_greatcircle()]
+#'
+#' @returns list. `axis_c` is the axis of the small-circle cone, `axis_g` is the axis of the great-circle,
+#' `cone_angle` is the half-apical angle of the cone, `r_*` is the residual (in the angle between pole and great/small circle), `E_*` are the errors, and `Vr` is the variance ratio.
 #'
 #' @examples
 #' data("gray_example")
-#' 
-#' gray_example1 <- gray_example
-#' gray_example1$dipdir = gray_example1$Strike + 90
-#' gray_example1$dip = gray_example1$Dip
-#' gray_example1$id = seq_along(gray_example1$dip)
-#'  
-#' gray_cleavage <- subset(gray_example1, Type == "Cleavage")
-#' gray_bedding <- subset(gray_example1, Type == "Bedding")
-#' test_clea <- Plane(gray_cleavage$dipdir, gray_cleavage$dip)
-#' test_bedd <- Plane(gray_bedding$dipdir, gray_bedding$dip)
-#' best_clea <- best_fit_plane(test_clea)
-#' best_bedd <- best_fit_plane(test_bedd)
+#' best_clea <- regression_gray(gray_example[1:8, ])
+#' best_bedd <- regression_gray(gray_example[9:16, ])
+#' best_all <- regression_gray(gray_example)
 #'
 #' stereoplot()
-#' points(test_clea, col = "blue")
-#' points(test_bedd, col = "red")
+#' points(gray_example[1:8, ], col = "blue")
+#' points(gray_example[9:16, ], col = "red", pch = "x")
+#'
+#' # best for cleavage
 #' lines(best_clea$axis_c, best_clea$cone_angle, col = "lightblue")
 #' lines(best_clea$axis_g, 90, lty = 2, col = "blue")
+#'
+#' # best for bedding
 #' lines(best_bedd$axis_c, best_bedd$cone_angle, col = "sienna")
 #' lines(best_bedd$axis_g, 90, lty = 2, col = "red")
-best_fit_plane <- function(x) {
+#'
+#' # best for all
+#' lines(best_all$axis_c, best_bedd$cone_angle, col = "gray70")
+#' lines(best_all$axis_g, 90, lty = 2, col = "gray60")
+regression_gray <- function(x) {
+  # convert from spherical to cartesian coordinates:
   xv <- Vec3(x) #|> unclass()
 
   p <- nrow(xv)
-  s_res <- gray_algorithm(xv, sm = TRUE)
   g_res <- gray_algorithm(xv, sm = FALSE)
-  
+  c_res <- gray_algorithm(xv, sm = TRUE)
+
   # angle between eigenvector and mean plane/cone
-  K_s <- acos(s_res$cos_K) 
-  K_g <- pi / 2 # == acos(g_res$cos_K) |> as.numeric()
+  K_g <- pi / 2 # == acos(g_res$cos_K)
+  K_c <- acos(c_res$cos_K)
 
 
   # Angle between eigenvector (pole of plane/cone) and data:
-  a_s <- angle(s_res$eig3, xv)
   a_g <- angle(g_res$eig3, xv)
+  a_c <- angle(c_res$eig3, xv)
   # R <- K - acos(A_eigen3[1] * t(a1) + A_eigen3[2] * t(a2) + A_eigen3[3] * t(a3))
-  # R_s <- K_s - acos(s_res$eig3 %*% t(xv)) 
-  
-  # residual
-  R_s <- K_s - a_s
-  R_g <- K_g - a_g # residual
-  
+  # R_s <- K_s - acos(c_res$eig3 %*% t(xv))
+
+  # residuals
+  R_g <- K_g - a_g
+  R_c <- K_c - a_c
+
   # sum of squares of residuals
-  r_s <- sum(R_s^2) 
-  r_g <- sum(R_g^2) 
+  r_g <- sum(R_g^2)
+  r_c <- sum(R_c^2)
 
-  E_s <- (p - 2) * r_s^2
-  E_g <- (p - 3) * r_g^2
+  E_c <- (p - 2) * r_c
+  E_g <- (p - 3) * r_g
 
-  Vr <- (p - 3) * ((r_g - r_s) / r_s)
+  Vr <- (p - 3) * ((r_g - r_c) / r_c)
 
-  axis_s <- as.Vec3(s_res$eig3)
+  axis_c <- as.Vec3(c_res$eig3)
   axis_g <- as.Vec3(g_res$eig3)
 
-  if (is.Line(x) | is.Plane(x)) {
-    # if (is.Line(x)) {
-    axis_s <- Line(axis_s)
+  if (is.Line(x) | is.Ray(x) | is.Plane(x)) {
+    axis_s <- Line(axis_c)
     axis_g <- Line(axis_g)
-    # } else if (is.Plane(x)) {
-    #  axis_s <- Plane(axis_s)
-    #  axis_g <- Plane(axis_g)
-    # }
-    K_s <- rad2deg(K_s)
+
+    K_c <- rad2deg(K_c)
   }
 
   return(
     list(
-      axis_c = axis_s,
+      axis_c = axis_c,
       axis_g = axis_g,
-      cone_angle = K_s,
-      r_s = r_s,
+      cone_angle = K_c,
+      r_c = r_c,
       r_g = r_g,
-      E_s = E_s,
-      E_g = E_g,
-      Vr = Vr
+      error_c = E_c,
+      error_g = E_g,
+      variance_ratio = Vr
     )
   )
 }
@@ -127,16 +127,14 @@ gray_algorithm <- function(x, sm = TRUE) {
   )
   A <- cbind(A1, A2, A3)
 
-  eig3 <- as.Vec3(-eigen(A)$vectors[, 3])
-  
-  # dot product between eigenvector and mean vector
-  # cos_K <- eig3[1] * a1_bar + eig3[2] * a2_bar + eig3[3] * a3_bar
-  #cos_K <- eig3 %*% t(cbind(a1_bar, a2_bar, a3_bar))
-  cos_K <- vdot(eig3, Vec3(a1_bar, a2_bar, a3_bar)) 
-  
-  return(list(eig3 = eig3, cos_K = cos_K))
+  eig3 <- eigen(A, symmetric = TRUE)$vectors[, 3]
 
-  return(list(eig3 = eig3, cos_K = cos_K))
+  # dot product between eigenvector and mean vector
+  cos_K <- eig3[1] * a1_bar + eig3[2] * a2_bar + eig3[3] * a3_bar
+  # cos_K <- eig3 %*% t(cbind(a1_bar, a2_bar, a3_bar))
+  # cos_K <- vdot(eig3, Vec3(a1_bar, a2_bar, a3_bar))
+
+  return(list(eig3 = as.Vec3(eig3), cos_K = cos_K))
 }
 
 
@@ -170,8 +168,8 @@ gray_algorithm <- function(x, sm = TRUE) {
 #'   c(90, 14, -75),
 #'   c(80, 10, 90)
 #' ) |> acoscartesian_to_cartesian()
-#' best_cone_ramsay(x) # expect: c(0.856, -0.157, -0.492, NA, 1.56207)
-#' best_plane_ramsay(x) # expect: c(0.852, -0.154, -0.502, 1-1.002)
+#' regression_cone_ramsay(x) # expect: c(0.856, -0.157, -0.492, NA, 1.56207)
+#' regression_plane_ramsay(x) # expect: c(0.852, -0.154, -0.502, 1-1.002)
 #' }
 NULL
 
@@ -267,7 +265,7 @@ NULL
 #
 #   return(c(cart[, 1], cart[, 2], cart[, 3], "e" = 1 - e, "K" = K))
 # }
-best_cone_ramsay <- function(x) {
+regression_cone_ramsay <- function(x) {
   # ensure x is a matrix
   x <- as.matrix(x)
   l <- x[, 1]
@@ -333,7 +331,7 @@ best_cone_ramsay <- function(x) {
 
 
 #' @rdname best_pole
-best_cone_ramsay2 <- function(x) {
+regression_cone_ramsay2 <- function(x) {
   # ensure matrix
   x <- as.matrix(x)
   l <- x[, 1]
@@ -363,3 +361,326 @@ best_cone_ramsay2 <- function(x) {
 
   c(cart, e = 1 - e)
 }
+
+
+#' Least-square fit of small and great circles to spherically projected data
+#'
+#' Fits a great circle arc to a set of lines, based on an independent scalar variable.
+#' 
+#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`.
+#' @param val A vector of real numbers. Values of independent scalar variables. Same length as `x`.
+#' @param iterations A real number (positive integer). A bound on the number of numerical optimization iterations allowed.
+#' @param n_points A real number (positive integer). The number of points along the regression curve requested.
+#' @param num_seeds A real number (positive integer)
+#'
+#' @returns list. \describe{
+#' \item{`vec`}{axis of best-fit great- or small-circle. Class as `x`}
+#' \item{`cone`}{half-apical angle of the best-fit small-circle (in radians if `x` is of class `"Vec3"`, degrees otherwise)}
+#' \item{`convergence`}{An integer code. `0` indicates successful completion.}
+#' \item{`min_eigenvalue`}{Positive if successful completion}
+#' \item{`r_squared`}{\eqn{R^2} value of the regression}
+#' \item{`points`}{A set of Vec3 points for the regression line}
+#' \item{`range`}{Range of the regression line (in radians if `x` is of class `"Vec3"`, degrees otherwise)}
+#' }
+#' @name best_fit
+#' 
+#' @examples
+#' data("gray_example")
+#' bestgc_clea <- regression_greatcircle(gray_example[1:8, ])
+#' bestgc_bedd <- regression_greatcircle(gray_example[9:16, ])
+#' bestgc_all <- regression_greatcircle(gray_example)
+#'
+#' bestsc_clea <- regression_smallcircle(gray_example[1:8, ])
+#' bestsc_bedd <- regression_smallcircle(gray_example[9:16, ])
+#' bestsc_all <- regression_smallcircle(gray_example)
+#'
+#' stereoplot()
+#' points(gray_example[1:8, ], col = "blue")
+#' points(gray_example[9:16, ], col = "red", pch = "x")
+#'
+#' # best for cleavage
+#' lines(bestsc_clea$vec, bestsc_clea$cone, col = "lightblue")
+#' points(bestsc_clea$vec, col = "lightblue", pch = 16)
+#' lines(bestgc_clea$vec, lty = 2, col = "blue")
+#' points(bestgc_clea$vec, col = "blue", pch = 17)
+#' 
+#' # best for bedding
+#' lines(bestsc_bedd$vec, bestsc_bedd$cone, col = "sienna")
+#' points(bestsc_bedd$vec, col = "sienna", pch = 16)
+#' lines(bestgc_bedd$vec, lty = 2, col = "red")
+#' points(bestgc_bedd$vec, col = "red", pch = 17)
+#'
+#' # best for all
+#' lines(bestsc_all$vec, bestsc_all$cone, col = "gray80")
+#' points(bestsc_all$vec, col = "gray80", pch = 16)
+#' lines(bestgc_all$vec, lty = 2, col = "gray50")
+#' points(bestgc_all$vec, col = "gray50", pch = 17)
+NULL
+
+#' @rdname best_fit
+#' @export
+regression_greatcircle <- function(x, val = seq_len(nrow(x)), iterations = 1000L, n_points = 100L) {
+  ls <- vec_list(x)
+
+  # Let l0 be the l whose x is closest to zero.
+  l0 <- ls[[which.min(as.numeric(val)^2)]]
+  # Define the function to be minimized.
+  n <- length(ls)
+  e <- function(wb) {
+    a <- rotExp(rotAntisymmetricFromVector(wb[1:3]))
+    f <- function(i) {
+      u <- c(cos(wb[[4]] * val[[i]]), sin(wb[[4]] * val[[i]]), 0)
+      lineDistance(ls[[i]], as.numeric(a %*% u))^2
+    }
+    sum(sapply(1:n, f)) / (2 * n)
+  }
+  # Find the minimum, using the constant geodesic l0 as the seed.
+  seed <- c(0, 0, 0, 0)
+  solution <- stats::optim(seed, e, hessian = TRUE, control = list(maxit = iterations))
+  # Report diagnostic information.
+  eigvals <- eigen(solution$hessian, symmetric = TRUE, only.values = TRUE)$values
+  rot <- rotExp(rotAntisymmetricFromVector(solution$par[1:3]))
+  a <- solution$par[[4]]
+
+  if (is.Line(x) | is.Plane(x)) {
+    rSq <- 1 - solution$value / lineVariance(ls, lineProjectedMean(ls))
+  } else if (is.Ray(x)) {
+    rSq <- 1 - solution$value / rayVariance(ls, rayProjectedMean(ls))
+  }
+
+  rot_vec <- as.Vec3(rot[, 3])
+
+
+  result <- list(
+    vec = Spherical(rot_vec, class(x)[1]),
+    range = a,
+    # rotation = rot,
+    convergence = solution$convergence,
+    min_eigenvalue = min(eigvals),
+    r_squared = rSq
+  )
+
+  if (!is.Vec3(x)) result$range <- rad2deg(result$range)
+
+
+  result$prediction <- function(x) {
+    as.numeric(rot %*% c(cos(a * x), sin(a * x), 0))
+  }
+
+  if (n_points >= 1) {
+    result$points <- do.call(rbind, lapply(
+      seq(from = min(val), to = max(val), length.out = (n_points + 1)),
+      result$prediction
+    ))
+  }
+
+  return(result)
+}
+
+#' @rdname best_fit
+#' @export
+regression_smallcircle <- function(x, val = seq_len(nrow(x)), num_seeds = 5L, iterations = 1000L, n_points = 100L) {
+  xv <- vec_list(x)
+ 
+  if(is.Ray(x)){
+    res <- rayRegressionSmallCircleRescaled(val, xv, numSeeds = num_seeds, numSteps = iterations, numPoints = n_points)
+  } else {
+    res <- lineRegressionSmallCircleRescaled(val, xv, numSeeds = num_seeds, numSteps = iterations, numPoints = n_points)
+  }
+
+  vec <- as.Vec3(res$pole)
+  points <- as.Vec3(do.call(rbind, res$points))
+  cone <- angle(points,vec)[1]
+  
+  if (!is.Vec3(x)) cone <- rad2deg(cone)
+  if (!is.Vec3(x)) res$angle <- rad2deg(res$angle)
+  
+  list(
+    vec = Spherical(vec, class(x)[1]),
+    cone = cone,
+    convergence = res$error,
+    min_eigenvalue = res$minEigenvalue,
+    r_squared = res$rSquared,
+    points = points,
+    range = res$angle
+  )
+}
+
+rotMatrixFromAxisAngle <- function(ua) {
+  m <- rotAntisymmetricFromVector(ua[1:3])
+  diag(c(1, 1, 1)) + sin(ua[[4]]) * m + (1 - cos(ua[[4]])) * (m %*% m)
+}
+
+rotAntisymmetricFromVector <- function(v) {
+  matrix(c(0, v[3], -v[2], -v[3], 0, v[1], v[2], -v[1], 0), 3, 3)
+}
+
+lineUniform <- function(n = NULL) {
+  if (is.null(n)) {
+    lower(rayUniform())
+  } else {
+    lapply(rayUniform(n), lower)
+  }
+}
+
+rayRegressionSmallCircle <- function(xs, us, numSeeds = 5, numSteps = 1000, numPoints = 0, angleBound = Inf) {
+  f <- function(phiThetaAlphaTauSigma) {
+    pole <- cartesianFromSpherical(c(1, phiThetaAlphaTauSigma[1:2]))
+    uOf0 <- cartesianFromSpherical(c(1, phiThetaAlphaTauSigma[4:5]))
+    pred <- function(x) {
+      r <- rotMatrixFromAxisAngle(c(pole, x * phiThetaAlphaTauSigma[[3]]))
+      as.numeric(r %*% uOf0)
+    }
+    preds <- lapply(xs, pred)
+    dists <- mapply(rayDistance, preds, us)
+    dot(dists, dists) / (2 * length(us))
+  }
+  # Find the minimum, starting from a few seeds.
+  best <- list(value = (2 * pi^2))
+  for (i in 1:numSeeds) {
+    seed <- c(
+      sphericalFromCartesian(rayUniform())[2:3],
+      runif(1, -pi, pi),
+      sphericalFromCartesian(rayUniform())[2:3]
+    )
+    if (angleBound == Inf) {
+      solution <- optim(
+        seed, f,
+        hessian = TRUE, control = list(maxit = numSteps), method = "L-BFGS-B"
+      )
+    } else {
+      solution <- optim(
+        seed, f,
+        hessian = TRUE, control = list(maxit = numSteps), method = "L-BFGS-B",
+        lower = c(-Inf, -Inf, -angleBound, -Inf, -Inf),
+        upper = c(Inf, Inf, angleBound, Inf, Inf)
+      )
+    }
+    if (solution$value <= best$value) {
+      best <- solution
+    }
+  }
+  # Report results.
+  eigvals <- eigen(best$hessian, symmetric = TRUE, only.values = TRUE)$values
+  pole <- cartesianFromSpherical(c(1, best$par[1:2]))
+  angle <- best$par[[3]]
+  uOf0 <- cartesianFromSpherical(c(1, best$par[4:5]))
+  var <- rayVariance(us, rayProjectedMean(us))
+  rSquared <- 1 - best$value / var
+  pred <- function(x) {
+    as.numeric(rotMatrixFromAxisAngle(c(pole, x * angle)) %*% uOf0)
+  }
+  results <- list(
+    error = best$convergence, minEigenvalue = min(eigvals), pole = pole, angle = angle,
+    rSquared = rSquared, prediction = pred
+  )
+  if (numPoints >= 1) {
+    ys <- seq(from = min(xs), to = max(xs), length.out = numPoints)
+    results$points <- lapply(ys, pred)
+  }
+  results
+}
+
+# Warning: Not well tested. angleBound > 0 is a bound on the amount of rotation (either positive or negative) per unit of x.
+rayRegressionSmallCircleRescaled <- function(xs, ls, angleBound = Inf, ...) {
+  # Perform regression in scaled coordinates.
+  x0 <- min(xs)
+  x1 <- max(xs)
+  results <- rayRegressionSmallCircle(
+    scales(xs), ls,
+    angleBound = (angleBound * (x1 - x0)), ...
+  )
+  # Scale the results back into the original coordinates.
+  results$rescaledPrediction <- results$prediction
+  results$prediction <- function(x) {
+    results$rescaledPrediction((x - x0) / (x1 - x0))
+  }
+  results$angle <- results$angle / (x1 - x0)
+  results
+}
+
+lineRegressionSmallCircle <- function(xs, us, numSeeds = 5, numSteps = 1000, numPoints = 0, angleBound = Inf) {
+  f <- function(phiThetaAlphaTauSigma) {
+    pole <- cartesianFromSpherical(c(1, phiThetaAlphaTauSigma[1:2]))
+    uOf0 <- cartesianFromSpherical(c(1, phiThetaAlphaTauSigma[4:5]))
+    pred <- function(x) {
+      angle <- x * phiThetaAlphaTauSigma[[3]]
+      as.numeric(rotMatrixFromAxisAngle(c(pole, angle)) %*% uOf0)
+    }
+    preds <- lapply(xs, pred)
+    dists <- mapply(lineDistance, preds, us)
+    dot(dists, dists) / (2 * length(us))
+  }
+  # Find the minimum, starting from a few seeds.
+  best <- list(value = (2 * pi^2))
+  for (i in 1:numSeeds) {
+    seed <- c(
+      sphericalFromCartesian(lineUniform())[2:3],
+      runif(1, -pi, pi),
+      sphericalFromCartesian(lineUniform())[2:3]
+    )
+    if (angleBound == Inf) {
+      solution <- optim(
+        seed, f,
+        hessian = TRUE, control = list(maxit = numSteps), method = "L-BFGS-B"
+      )
+    } else {
+      solution <- optim(
+        seed, f,
+        hessian = TRUE, control = list(maxit = numSteps), method = "L-BFGS-B",
+        lower = c(-Inf, -Inf, -angleBound, -Inf, -Inf),
+        upper = c(Inf, Inf, angleBound, Inf, Inf)
+      )
+    }
+    if (solution$value <= best$value) {
+      best <- solution
+    }
+  }
+  # Report results.
+  eigvals <- eigen(best$hessian, symmetric = TRUE, only.values = TRUE)$values
+  pole <- cartesianFromSpherical(c(1, best$par[1:2]))
+  angle <- best$par[[3]]
+  uOf0 <- cartesianFromSpherical(c(1, best$par[4:5]))
+  var <- lineVariance(us, lineProjectedMean(us))
+  rSquared <- 1 - best$value / var
+  pred <- function(x) {
+    as.numeric(rotMatrixFromAxisAngle(c(pole, x * angle)) %*% uOf0)
+  }
+  results <- list(
+    error = best$convergence, minEigenvalue = min(eigvals), pole = pole, angle = angle,
+    rSquared = rSquared, prediction = pred
+  )
+  if (numPoints >= 1) {
+    ys <- seq(from = min(xs), to = max(xs), length.out = numPoints)
+    results$points <- lapply(ys, pred)
+  }
+  results
+}
+
+# Not well tested. angleBound > 0 is a bound on the amount of rotation (either positive or negative) per unit of x.
+lineRegressionSmallCircleRescaled <- function(xs, us, angleBound = Inf, ...) {
+  # Perform regression in scaled coordinates.
+  x0 <- min(xs)
+  x1 <- max(xs)
+  results <- lineRegressionSmallCircle(
+    xs = scales(xs), us = us, angleBound = (angleBound * (x1 - x0)), ...
+  )
+  # Scale the results back into the original coordinates.
+  results$rescaledPrediction <- results$prediction
+  results$prediction <- function(x) {
+    results$rescaledPrediction((x - x0) / (x1 - x0))
+  }
+  results$angle <- results$angle / (x1 - x0)
+  results
+}
+
+# The number interval [a, b] is mapped to the interval [0, 1]. Inputs outside [a, b] are clamped to [a, b].
+scale <- function(y, a = 0, b = 1) {
+  (y - a) / (b - a)
+}
+
+# The number interval range(ys) is mapped to the interval [0, 1].
+scales <- function(ys) {
+  sapply(ys, scale, min(ys), max(ys))
+}
+
