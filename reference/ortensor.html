@@ -9,7 +9,7 @@ eigenvalue method. See (Watson 1966, Scheidegger 1965)."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9000</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9001</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -28,6 +28,7 @@ eigenvalue method. See (Watson 1966, Scheidegger 1965)."></head><body>
     <li><a class="dropdown-item" href="../articles/F_Mohr_Circle.html">6. Mohr Circle</a></li>
     <li><a class="dropdown-item" href="../articles/G_Oriented_Drill_Cores.html">7. Oriented drill cores</a></li>
     <li><a class="dropdown-item" href="../articles/H_Strain_Analysis.html">8. Strain and Vorticity Analysis</a></li>
+    <li><a class="dropdown-item" href="../articles/I_Regression.html">9. Regression</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -94,9 +95,9 @@ n = 1</p>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfb.html">rfb</a></span><span class="op">(</span><span class="fl">100</span>, mu <span class="op">=</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">50</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">1</span>, A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ortensor</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>             [,1]        [,2]        [,3]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.09760069 -0.10988690 -0.05908520</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] -0.10988690  0.37501010 -0.01780312</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.05908520 -0.01780312  0.52738921</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.09752281 -0.10962904 -0.07272123</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] -0.10962904  0.38148203  0.02295725</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.07272123  0.02295725  0.52099516</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
