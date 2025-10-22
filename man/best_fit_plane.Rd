@@ -11,6 +11,9 @@ best_fit_plane(x)
 }
 \value{
 list
+
+list. \code{axis_c} is the axis of the small-circle cone, \code{axis_g} is the axis of the great-circle,
+\code{cone_angle} is the halfapical angle of the cone, \verb{r_*} is the residual
 }
 \description{
 Finds the best small and great circles using the algorithm by Gray et al. (1980)

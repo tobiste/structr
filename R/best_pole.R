@@ -9,6 +9,9 @@
 #' least-square fit of small and great circles to spherically projected data.
 #' Mathematical Geology, Vol. 12, No. 3, 1980.
 #' @export
+#' 
+#' @returns list. `axis_c` is the axis of the small-circle cone, `axis_g` is the axis of the great-circle, 
+#' `cone_angle` is the halfapical angle of the cone, `r_*` is the residual 
 #'
 #' @examples
 #' data("gray_example")
@@ -33,6 +36,7 @@
 #' lines(best_bedd$axis_c, best_bedd$cone_angle, col = "sienna")
 #' lines(best_bedd$axis_g, 90, lty = 2, col = "red")
 best_fit_plane <- function(x) {
+  # convert from spherical to cartesian coordinates:
   xv <- Vec3(x) |> unclass()
 
   p <- nrow(xv)
@@ -57,14 +61,10 @@ best_fit_plane <- function(x) {
   axis_s <- as.Vec3(s_res$eig3)
   axis_g <- as.Vec3(g_res$eig3)
 
-  if (is.Line(x) | is.Plane(x)) {
-    # if (is.Line(x)) {
+  if (is.Line(x) | is.Ray(x) | is.Plane(x)) {
     axis_s <- Line(axis_s)
     axis_g <- Line(axis_g)
-    # } else if (is.Plane(x)) {
-    #  axis_s <- Plane(axis_s)
-    #  axis_g <- Plane(axis_g)
-    # }
+
     K_s <- rad2deg(K_s)
   }
 
@@ -121,7 +121,7 @@ gray_algorithm <- function(x, sm = TRUE) {
   eig3 <- -eigen(A)$vectors[, 3]
 
   # cos_K <- eig3[1] * a1_bar + eig3[2] * a2_bar + eig3[3] * a3_bar
-  cos_K <- eig3 %*% t(cbind(a1_bar, a2_bar, a3_bar))
+  cos_K <- eig3 %*% rbind(a1_bar, a2_bar, a3_bar)
 
   return(list(eig3 = eig3, cos_K = cos_K))
 }

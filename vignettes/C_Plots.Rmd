@@ -33,7 +33,7 @@ planes <- Plane(example_planes_df$dipdir, example_planes_df$dip)
 lines <- Line(example_lines_df$trend, example_lines_df$plunge)
 ```
 
-## Stereographic projection
+## Equal-area projection
 Lambert equal area, lower hemisphere projection is the default plotting setting.
 
 ```{r stereo_earea}
@@ -45,6 +45,8 @@ points(planes, col = "#000004", pch = 1, cex = .5)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 title(main = "Example data", sub = "Lambert equal area, lower hemisphere projection")
 ```
+
+## Stereographic projection
 
 To change to equal angle stereographic, upper hemisphere projection
 
@@ -132,7 +134,7 @@ variance_plot(lines, y = lines[1, ])
 ```
 
 ### Geodesic mean and variance
-The Frechet (geodesic L<sup>2</sub>) mean iteratively finds the vector that minimizes the distances to all other points.
+The Frechet (geodesic L<sup>2</sup>) mean iteratively finds the vector that minimizes the distances to all other points.
 
 ```{r geodesic}
 # Mean
