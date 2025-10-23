@@ -5,6 +5,7 @@
 <url><loc>https://tobiste.github.io/structr/articles/A_Basics.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/articles/B_Import.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/articles/C_Plots.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/articles/C_Statistics.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/articles/D_Plots_ggplot.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/articles/E_Faults.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/articles/F_Mohr_Circle.html</loc></url>
@@ -60,6 +61,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/flinn_plot.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/geodesic-line.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/geodesic-mean.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/geodesic-var.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ggMohr.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ggframe.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ggstereo.html</loc></url>
