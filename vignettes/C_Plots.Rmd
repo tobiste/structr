@@ -242,15 +242,18 @@ angelier(f, col = viridis::magma(nrow(f), end = .9))
 
 ### Hoeppner plot
 
-The **Hoeppner plot** shows all planes as *poles* while lineations are not shown (after Hoeppner, 1955). Instead, fault striae are plotted as vectors on top of poles pointing in the movement direction of the hanging wall. Useful in case of large or heterogeneous datasets.
+The **Hoeppner plot** shows all planes as *poles* while lineations are not shown (after Hoeppner, 1955). Instead, fault striae are plotted as vectors on top of poles pointing in the movement direction of the hanging wall. Useful in case of large or heterogeneous datasets. 
 
 ```{r faults2}
 #| fig.alt: >
 #|   Diagram showing example fault data plotted in an
 #|   equal-area projection
 stereoplot(title = "Hoeppner plot")
-hoeppner(f, col = viridis::magma(nrow(f), end = .9))
+hoeppner(f, col = viridis::magma(nrow(f), end = .9), points = FALSE)
 ```
+
+The `points` argument disables plotting the points at the start of the arrows.
+
 
 > `fault_plot()` is a wrapper function that allows to switch between Angelier and Hoeppner plot using the `type` argument. See `?fault_plot` for details.
 
