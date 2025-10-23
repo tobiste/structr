@@ -1,10 +1,10 @@
 ---
-title: "3. Orientation plots"
+title: "4. Orientation plots"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{3. Orientation plots}
+  %\VignetteIndexEntry{4. Orientation plots}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 editor_options: 
@@ -134,7 +134,8 @@ variance_plot(lines, y = lines[1, ])
 ```
 
 ### Geodesic mean and variance
-The Frechet (geodesic L<sup>2</sup>) mean iteratively finds the vector that minimizes the distances to all other points.
+The Fréchet (geodesic L<sup>2</sup>) uses general numerical optimization methods to iteratively find the vector 
+that minimizes the distances to all other points.
 
 ```{r geodesic}
 # Mean

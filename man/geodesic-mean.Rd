@@ -8,13 +8,7 @@
 \alias{geodesic_mean.Ray}
 \alias{geodesic_mean.Plane}
 \alias{geodesic_mean.Pair}
-\alias{geodesic_var}
-\alias{geodesic_var.Vec3}
-\alias{geodesic_var.Line}
-\alias{geodesic_var.Plane}
-\alias{geodesic_var.Ray}
-\alias{geodesic_var.Pair}
-\title{The Frechet (geodesic \eqn{L^2}) mean}
+\title{The Fréchet (geodesic \eqn{L^2}) mean}
 \source{
 geologyGeometry (J.R. Davis)
 }
@@ -30,18 +24,6 @@ geodesic_mean(x, ...)
 \method{geodesic_mean}{Plane}(x, ...)
 
 \method{geodesic_mean}{Pair}(x, ...)
-
-geodesic_var(x, ...)
-
-\method{geodesic_var}{Vec3}(x, ...)
-
-\method{geodesic_var}{Line}(x, ...)
-
-\method{geodesic_var}{Plane}(x, ...)
-
-\method{geodesic_var}{Ray}(x, ...)
-
-\method{geodesic_var}{Pair}(x, ...)
 }
 \arguments{
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"}.}
@@ -50,16 +32,15 @@ geodesic_var(x, ...)
 or \code{\link[=geodesic_mean_pair]{geodesic_mean_pair()}} (if \code{x} is a Pair or a Fault).}
 }
 \value{
-\code{geodesic_mean} returns the mean vector as an object of class \code{x}. \code{geodesic_var} returns the variance as a numeric number.
+the Fréchet mean vector as an object of class \code{x}.
 }
 \description{
-An iterative algorithm for computing the Frechet mean, i.e. the vector that
-minimizes the Frechet variance.
+An iterative algorithm for computing the Fréchet mean, i.e. the vector that
+minimizes the Fréchet variance.
 }
 \examples{
 set.seed(20250411)
 geodesic_mean(example_planes)
-geodesic_var(example_planes)
 }
 \references{
 Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis
@@ -67,5 +48,5 @@ for three-dimensional orientational data. Journal of Structural Geology,
 96, 65–89. https://doi.org/10.1016/j.jsg.2017.01.002
 }
 \seealso{
-\code{\link[=sph_mean]{sph_mean()}} for the arithmetic mean, \code{\link[=projected_mean]{projected_mean()}} for projected mean
+\code{\link[=geodesic_var]{geodesic_var()}} for Fréchet variance, \code{\link[=sph_mean]{sph_mean()}} for the arithmetic mean, \code{\link[=projected_mean]{projected_mean()}} for projected mean
 }

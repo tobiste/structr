@@ -78,3 +78,8 @@ points(bestsc_all$vec, col = "gray80", pch = 16)
 lines(bestgc_all$vec, lty = 2, col = "gray50")
 points(bestgc_all$vec, col = "gray50", pch = 17)
 }
+\references{
+Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis
+for three-dimensional orientational data. Journal of Structural Geology, 96,
+65–89. https://doi.org/10.1016/j.jsg.2017.01.002
+}

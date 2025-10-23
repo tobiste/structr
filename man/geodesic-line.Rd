@@ -8,7 +8,7 @@
 \alias{geodesic_var_ray}
 \alias{geodesic_meanvariance_line}
 \alias{geodesic_meanvariance_ray}
-\title{The Frechet (geodesic \eqn{L^2}) mean of a set of lines or rays}
+\title{The Fréchet (geodesic \eqn{L^2}) mean of a set of lines or rays}
 \source{
 lineMeanVariance from geologyGeometry (J.R. Davis)
 }
@@ -42,8 +42,8 @@ geodesic_meanvariance_ray(x, seeds = 5L, steps = 100L)
 return the mean and the variance, respectively.
 }
 \description{
-An iterative algorithm for computing the Frechet mean — the line or ray that
-minimizes the Frechet variance. The iterations continue until error squared of
+An iterative algorithm for computing the Fréchet mean — the line or ray that
+minimizes the Fréchet variance. The iterations continue until error squared of
 epsilon is achieved or \code{steps} iterations have been used. Try multiple
 seeds, to improve your chances of finding the global optimum.
 }

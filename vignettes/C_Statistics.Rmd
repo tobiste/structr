@@ -1,0 +1,196 @@
+---
+title: "3. Statistics of orientation data"
+author: "Tobias Stephan"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{3. Statistics}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+This tutorial describes how to calculate basic statistics for spherical orientation data using the `{structr}` package. It covers the calculation of mean orientations, dispersion measures, hypothesis testing, orientation tensors, and clustering of orientation data.
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+Load the package:
+```{r setup, warning=FALSE, message=FALSE}
+library(structr)
+```
+
+To start, we import some example planes and lines, and convert them to spherical objects:
+```{r example}
+data(example_planes_df)
+data(example_lines_df)
+
+planes <- Plane(example_planes_df$dipdir, example_planes_df$dip)
+lines <- Line(example_lines_df$trend, example_lines_df$plunge)
+```
+
+## Mean and dispersion
+Arithmetic mean, geodesic mean, and projected mean
+
+### Arithmetic mean and variance
+
+The arithmetic mean orientation of spherical data is calculated by summing up all orientation vectors and normalizing the resulting vector. 
+
+In geology, the statistical estimators are useful for **vectorial data** (`"Line"` objects) such as lineations (e.g. mineral lineations, stretching lineations) or plunge directions of fold axes, but less for axial data (`"Ray"` objects) such as paleomagnetic directions or orientations of fold axes, where the direction is not relevant.
+
+These estimators are good descriptors of the concentration of the data around the mean direction, assuming a unimodal, isotropic distributions such as the *von Mises-Fisher distribution*.
+
+Define some weights for our lines based on the quality reported for the measurements:
+```{r stat0}    
+example_lines_df$quality <- ifelse(is.na(example_lines_df$quality), 6, example_lines_df$quality) # replacing NA values with 6
+line_weightings <- 6 / example_lines_df$quality
+```
+
+
+The (weighted) arithmetic mean orientation of spherical data is:
+
+```{r stat_mean}
+lines_mean <- sph_mean(lines, w = line_weightings)
+```
+
+... and the (weighted) arithmetic variance
+
+```{r stat_var}
+lines_variance <- sph_var(lines, w = line_weightings)
+```
+
+the (weighted) standard deviation (i.e. the 63% cone around the mean) and the 95% confidence cone around the mean:
+
+```{r stat_delta}
+lines_delta <- delta(lines, w = line_weightings)
+lines_confangle <- sph_confidence_angle(lines, w = line_weightings)
+```
+
+Taken together, this prints as
+```{r stat}
+c(
+  "Variance" = lines_variance,
+  "63% cone" = lines_delta,
+  "Confidence angle" = lines_confangle
+)
+```
+
+Summary stats can also be retrieved through
+```{r summary}
+summary(lines)
+```
+
+
+### Geodesic mean and variance
+Another measure of mean and dispersion is the  *Fréchet (geodesic L<sup>2</sup>) mean* and *variance* which is based on the angles between all data vectors.  
+This can be visualized using the `variance_plot()`; here showing the (geodesic) angle distances between all lines and the first line in the same data set:
+
+```{r variance}
+#| fig.alt: >
+#|   Diagram showing the distances of a set of vectors to a specified vector
+variance_plot(lines, y = lines[1, ])
+```
+
+> The Fréchet mean is the vector that minimizes the sum of the squared angle distances to all data vectors.
+> The Fréchet variance about this mean is the sum of the squared angle distances between all data vectors and the Fréchet mean.
+
+To find the Fréchet mean vector , the algorithm iteratively searches for the vector by using a numerical optimization method.
+that minimizes the distances to all other points. 
+
+```{r geodesic}
+# Mean
+geodesic_mean(lines)
+
+# Variance
+geodesic_var(lines)
+```
+
+These estimators are good descriptors of the concentration of the data around the mean direction, when data follows a unimodal, anisotropic distributions such as the *Kent* or *Bingham distributions*.
+
+### Projected mean
+
+The Eigenvector with the largest Eigenvalue represents a vector parallel to the highest concentration of a population. This vector can also be described as the **projected mean**. A shortcut function for this is:
+
+```{r projected}
+projected_mean(example_lines)
+```
+
+These estimators are good descriptors of the concentration of the data around the mean direction, when data follows a unimodal, anisotropic distributions such as the *Kent* or *Bingham distributions*.
+
+### Hypothesis testing
+To test if a line represents the population mean of a given set of lineations, we need to calculate the confidence region of our population.
+
+Let's test the hypothesis that a horizontal lineation trending towards 70&deg; is the mean for our lineations.
+
+```{r test0}
+line_NULL <- Line(70, 0)
+```
+
+The 95% confidence interval (from 10,000 bootstrap samples):
+```{r test1}
+ce <- confidence_ellipse(lines, n = 10000, alpha = 0.05)
+```
+
+To visualize the confidence region of our lines:
+```{r test2}
+#| fig.alt: Diagram showing the confidence region of a mean
+plot(lines, col = "grey")
+stereo_confidence(ce, col = "#B63679FF")
+points(line_NULL, col = "#000004", pch = 16)
+```
+
+The p-value for our hypothesis line:
+```{r test3}
+ce$pvalue.FUN(line_NULL)
+```
+
+With (95% confidence) we rejected the Null Hypothesis that the given line represents the population mean as the p-value is smaller than 5%.
+
+
+## Orientation tensor 
+### Eigenvectors
+
+The orientation tensor (Scheidegger 1965) is a matrix comprising the mean direction cosines of the orientation vectors. In case of a Bingham distribution, the **Eigenvectors** of this tensor describe the orientation of the most dense, intermediate and least dense orientation, and thus, are used to determine the orientation of girdle-distributed vectors (e.g. folded planes).
+
+#### Shape parameters
+There are more shape parameters using different algorithms based on the orientation tensor:
+
+```{r shapes}
+or_shape_params(planes)
+```
+
+
+## Cluster vectors
+
+To find k clusters of orientational data, the `sph_cluster()` function can be used:
+
+```{r cluster}
+#| fig.alt: >
+#|   Stereoplot showing the the cluster result of an example dataset
+
+# generate some random vectors:
+set.seed(20250411)
+x1 <- rvmf(100, mu = Line(90, 0), k = 20)
+x2 <- rvmf(100, mu = Line(0, 0), k = 20)
+x3 <- rvmf(100, mu = Line(0, 90), k = 20)
+x123 <- rbind(x1, x2, x3)
+
+# cluster the vectors:
+cl <- sph_cluster(x123, k = 3)
+
+# visualize the result:
+plot(x123, col = assign_col_d(cl$cluster))
+
+legend_d(assign_col_d(unique(cl$cluster)), title = "Cluster")
+```
+
+## References
+Bachmann, F., Hielscher, R., Jupp, P. E., Pantleon, W., Schaeben, H., & Wegert, E. (2010). Inferential statistics of electron backscatter diffraction data from within individual crystalline grains. Journal of Applied Crystallography, 43(6), 1338–1355. https://doi.org/10.1107/S002188981003027X
+
+Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis for three-dimensional orientational data. Journal of Structural Geology, 96, 65–89. https://doi.org/10.1016/j.jsg.2017.01.002

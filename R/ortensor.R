@@ -162,6 +162,11 @@ ot_eigen <- function(x, scaled = FALSE) {
 #'
 #' @seealso [ot_eigen()] for eigenvalues of orientation tensor,
 #'  [sph_mean()] for arithmetic mean, [geodesic_mean()] for geodesic mean.
+#'  
+#' @references 
+#' Bachmann, F., Hielscher, R., Jupp, P. E., Pantleon, W., Schaeben, H., & 
+#' Wegert, E. (2010). Inferential statistics of electron backscatter diffraction 
+#' data from within individual crystalline grains. Journal of Applied Crystallography, 43(6), 1338–1355. https://doi.org/10.1107/S002188981003027X
 #'
 #' @export
 #'

@@ -23,7 +23,7 @@ numeric vector with
 }
 \description{
 Finding the best fit pole of rotation for a given set of points that are
-assumed to lie on a mutual small or great circle circle
+assumed to lie on a mutual small or great circle circle using Ramsay 1967 algorithm
 }
 \examples{
 \dontrun{
@@ -43,4 +43,6 @@ regression_plane_ramsay(x) # expect: c(0.852, -0.154, -0.502, 1-1.002)
 }
 \references{
 Ramsay, 1967, p. 18-21
+
+Ramsay, J. G. (1967). Folding and Fracturing of Rocks. McGraw-Hill.
 }

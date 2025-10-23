@@ -144,7 +144,7 @@ gray_algorithm <- function(x, sm = TRUE) {
 #' The cone or plane best fit of conically or cylindrical disposed s-plane poles
 #'
 #' Finding the best fit pole of rotation for a given set of points that are
-#' assumed to lie on a mutual small or great circle circle
+#' assumed to lie on a mutual small or great circle circle using Ramsay 1967 algorithm
 #'
 #' @param x matrix. Cartesian coordinates of points
 #' @importFrom dplyr mutate summarise
@@ -156,6 +156,9 @@ gray_algorithm <- function(x, sm = TRUE) {
 #' \item{`K`}{(only for cones) half apical angle of best fit cone (in radians).}
 #' }
 #' @name best_pole
+#' 
+#' @references Ramsay, J. G. (1967). Folding and Fracturing of Rocks. McGraw-Hill.
+#' 
 #' @examples
 #' \dontrun{
 #' # example from Ramsay, 1967, p. 20
@@ -383,6 +386,10 @@ regression_cone_ramsay2 <- function(x) {
 #' \item{`range`}{Range of the regression line (in radians if `x` is of class `"Vec3"`, degrees otherwise)}
 #' }
 #' @name best_fit
+#' 
+#' @references Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis 
+#' for three-dimensional orientational data. Journal of Structural Geology, 96, 
+#' 65–89. https://doi.org/10.1016/j.jsg.2017.01.002
 #' 
 #' @examples
 #' data("gray_example")

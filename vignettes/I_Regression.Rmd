@@ -1,10 +1,10 @@
 ---
-title: "9. Regression"
+title: "10. Regression"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{9. Regression}
+  %\VignetteIndexEntry{10. Regression}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 editor_options: 
@@ -125,4 +125,10 @@ legend("bottomright", col = c("#000004FF", "#B63679"), lty =c(1, 1), legend = c(
 The regression was successful. The R<sup>2</sup> values indicate a better fit for the cleavage planes, but a slightly poorer fit for the bedding planes. Hence, the poles to the bedding planes seem to be aligned along a great-circle, while the cleavage planes better fit a small-circle arrangement.
 
 # References
+Bachmann, F., Jupp, P. E., & Schaeben, H. (2014). Estimating the number and locations of Euler poles. International Journal on Geomathematics, 5(2), 289–301. https://doi.org/10.1007/s13137-014-0064-2
+
+Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis for three-dimensional orientational data. Journal of Structural Geology, 96, 65–89. https://doi.org/10.1016/j.jsg.2017.01.002
+
 Gray, N. H., Geiser, P. A., & Geiser, J. R. (1980). On the least-squares fit of small and great circles to spherically projected orientation data. Journal of the International Association for Mathematical Geology, 12(3), 173–184. https://doi.org/10.1007/BF01091203
+
+Ramsay, J. G. (1967). Folding and Fracturing of Rocks. McGraw-Hill.
