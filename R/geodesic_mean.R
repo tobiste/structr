@@ -28,7 +28,7 @@
 #'
 #' @examples
 #' set.seed(20250411)
-#' geodesic_mean(example_planes)
+#' geodesic_var(example_planes, example_planes[1,])
 #' geodesic_var(example_planes)
 NULL
 
@@ -42,8 +42,8 @@ geodesic_var.Vec3 <- function(x, y = NULL, ...) {
   if(is.null(y)) {
     geodesic_var_line(x, ...)
   } else {
-    stopifnot(is.spherical(y))
-    lineVariance(vec_list(x), vec_list(y))
+    stopifnot(is.spherical(y) & nrow(y) == 1)
+    lineVariance(vec_list(x), as.vector(unclass(Vec3(y))))
   }
 }
 
@@ -53,8 +53,8 @@ geodesic_var.Line <- function(x, y = NULL, ...) {
   if(is.null(y)) {
     geodesic_var_line(x, ...)
   } else {
-    stopifnot(is.spherical(y))
-    lineVariance(vec_list(x), vec_list(y))
+    stopifnot(is.spherical(y) & nrow(y) == 1)
+    lineVariance(vec_list(x), as.vector(unclass(Vec3(y))))
   }
 }
 
@@ -64,8 +64,8 @@ geodesic_var.Plane <- function(x, y = NULL, ...) {
   if(is.null(y)) {
     geodesic_var_line(x, ...)
   } else {
-    stopifnot(is.spherical(y))
-    lineVariance(vec_list(x), vec_list(y))
+    stopifnot(is.spherical(y) & nrow(y) == 1)
+    lineVariance(vec_list(x), as.vector(unclass(Vec3(y))))
   }
 }
 
@@ -75,8 +75,8 @@ geodesic_var.Ray <- function(x, y = NULL, ...) {
   if(is.null(y)) {
     geodesic_var_ray(x, ...)
   } else {
-    stopifnot(is.spherical(y))
-    rayVariance(vec_list(x), vec_list(y))
+    stopifnot(is.spherical(y) & nrow(y) == 1)
+    rayVariance(vec_list(x), as.vector(unclass(Vec3(y))))
   }
 }
 
@@ -86,12 +86,12 @@ geodesic_var.Pair <- function(x, y = NULL, group = NULL, ...) {
   if(is.null(y)) {
     geodesic_var_pair(x, ...)
   } else {
-    stopifnot(is.spherical(y))
-    
+    stopifnot(is.spherical(y) & nrow(y) == 1)
+
     if (is.null(group)) {
-      group <- if (inherits(x, "Fault")) "triclinic" else "orthorhombic"
+      group <- if (inherits(y, "Fault")) "triclinic" else "orthorhombic"
     }
-    
+
     group_mat <- switch(group,
                         "orthorhombic" = oriLineInPlaneGroup(),
                         "triclinic" = oriRayInPlaneGroup(),
@@ -99,9 +99,9 @@ geodesic_var.Pair <- function(x, y = NULL, group = NULL, ...) {
                         "trigonal" = oriTrigonalTrapezohedralGroup(),
                         "hexagonal" = oriHexagonalTrapezohedralGroup()
     )
-    
-    oriVariance(vec_list(x), vec_list(y), group = group_mat)
-    
+
+    oriVariance(vec_list(x), pair2rot(y), group = group_mat)
+
   }
 }
 

@@ -8,6 +8,7 @@ variance_plot(
   x,
   y = NULL,
   .mean = c("geodesic", "arithmetic", "projected"),
+  show.center = TRUE,
   segments = TRUE,
   upper.hem = FALSE,
   earea = TRUE,
@@ -23,6 +24,8 @@ When \code{NULL}, then the mean vector of \code{x} is used (the default).}
 \item{.mean}{character. The type of mean to be used if \code{y} is \code{NULL}.
 One of \code{"geodesic"} (the default), \code{"arithmetic"} or \code{"projected"}.}
 
+\item{show.center}{logical. Whether the center point \code{y} of the mean should be highlighted in the plot.}
+
 \item{segments}{logical. Whether the segments should be shown or only the points?}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
@@ -34,7 +37,8 @@ hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
 \item{...}{optional arguments passed to \code{\link[=assign_col]{assign_col()}}}
 }
 \value{
-angles between all vectors in \code{x} and \code{y}.
+list. \code{angles} is a vector of the geodesic angles (in degrees)
+between all vectors in \code{x} and \code{y} (or the mean), and \code{var} is a scalar giving the Fréchet variance.
 }
 \description{
 Shows the greatcircle of the shortest distance between a set of vectors to a
@@ -46,5 +50,5 @@ variance_plot(example_lines)
 variance_plot(example_planes, example_planes[1, ], segments = FALSE)
 }
 \seealso{
-\code{\link[=stereo_segment]{stereo_segment()}}, \code{\link[=sph_mean]{sph_mean()}}, \code{\link[=geodesic_mean]{geodesic_mean()}}, \code{\link[=projected_mean]{projected_mean()}}
+\code{\link[=stereo_segment]{stereo_segment()}}, \code{\link[=sph_mean]{sph_mean()}}, \code{\link[=geodesic_mean]{geodesic_mean()}}, \code{\link[=projected_mean]{projected_mean()}}, \code{\link[=geodesic_var]{geodesic_var()}}
 }

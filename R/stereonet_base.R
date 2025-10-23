@@ -998,17 +998,19 @@ angelier <- function(x, pch = 1, lwd = 1, lty = 1, col = "black", cex = 1, point
 #' One of `"geodesic"` (the default), `"arithmetic"` or `"projected"`.
 #' @param ... optional arguments passed to [assign_col()]
 #' @param segments logical. Whether the segments should be shown or only the points?
+#' @param show.center logical. Whether the center point `y` of the mean should be highlighted in the plot.
 #' @inheritParams stereo_point
 #'
-#' @returns angles between all vectors in `x` and `y`.
+#' @returns list. `angles` is a vector of the geodesic angles (in degrees) 
+#' between all vectors in `x` and `y` (or the mean), and `var` is a scalar giving the Fréchet variance. 
 #' @export
 #'
-#' @seealso [stereo_segment()], [sph_mean()], [geodesic_mean()], [projected_mean()]
+#' @seealso [stereo_segment()], [sph_mean()], [geodesic_mean()], [projected_mean()], [geodesic_var()]
 #'
 #' @examples
 #' variance_plot(example_lines)
 #' variance_plot(example_planes, example_planes[1, ], segments = FALSE)
-variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "projected"), segments = TRUE, upper.hem = FALSE, earea = TRUE, ...) {
+variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "projected"), show.center = TRUE, segments = TRUE, upper.hem = FALSE, earea = TRUE, ...) {
   if (is.null(y)) {
     .mean <- match.arg(.mean)
     y <- if (.mean == "geodesic") geodesic_mean(x) else if (.mean == "arithmetic") sph_mean(x) else ot_eigen(x)$vectors[1, ]
@@ -1035,10 +1037,22 @@ variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "proj
     ang_col <- assign_col(ang, ...)
     points(xl, col = ang_col, pch = 16, cex = .66, upper.hem = upper.hem, earea = earea)
   }
+  
+  if (isTRUE(show.center)) {
+    points(yl, pch = 1, cex = 1, lwd = 2, col = "red", upper.hem = upper.hem, earea = earea)
+  }
 
-  graphics::title(main = "Variance plot", sub = paste("Distances from vector:", round(y[1, 1]), "/", round(y[1, 2])))
+  var_frechet <- geodesic_var(x, y)
+  
+  graphics::title(
+    main = "Variance plot", 
+    sub = paste(
+      "Center vector:", round(y[1, 1]), "/", round(y[1, 2]),
+      "\nFréchet variance:", round(var_frechet, 2)
+      )
+    )
 
-  invisible(ang)
+  invisible(list(angles = ang, var = var_frechet))
 }
 
 
