@@ -12,6 +12,8 @@ editor_options:
     wrap: 72
 ---
 
+This tutorial shows how to create various orientation plots using the {structr} package, including stereographic and equal-area projections, fabric plots, density plots, and fault plots.
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -42,13 +44,17 @@ Lambert equal area, lower hemisphere projection is the default plotting setting.
 stereoplot()
 points(lines, col = "#B63679", pch = 19, cex = .5)
 points(planes, col = "#000004", pch = 1, cex = .5)
+
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 title(main = "Example data", sub = "Lambert equal area, lower hemisphere projection")
 ```
 
+> Points can be added using the `points()` function.
+
+
 ## Stereographic projection
 
-To change to equal angle stereographic, upper hemisphere projection
+To change to equal angle stereographic, upper hemisphere projection, just set the `earea` argument to `FALSE`, and the `upper.hem` argument to `TRUE`:
 
 ```{r stereo_eangle}
 #| fig.alt: >
@@ -56,159 +62,41 @@ To change to equal angle stereographic, upper hemisphere projection
 stereoplot(earea = FALSE)
 points(lines, col = "#B63679", pch = 19, cex = .5, earea = FALSE, upper.hem = TRUE)
 points(planes, col = "#000004", pch = 1, cex = .5, earea = FALSE, upper.hem = TRUE)
+
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 title(main = "Example data", sub = "Equal angle stereographic, upper hemisphere projection")
 ```
 
+### Great and small circles
+Great and small circles can be added using the `lines()` function.
 
 Adding great circles:
 ```{r stereo_greatcircle}
 #| fig.alt: >
 #|   Diagram showing greatcircles
-stereoplot(guides = FALSE)
+stereoplot(guides = FALSE) # turn of guides for better visibility
 lines(planes, col = "lightgrey", lty = 1)
 points(planes, col = "#000004", pch = 1, cex = .5)
 ```
 
-## Statistics
-
-Define some weights for our lines based on the quality reported for the measurements:
-```{r stat0}    
-example_lines_df$quality <- ifelse(is.na(example_lines_df$quality), 6, example_lines_df$quality) # replacing NA values with 6
-line_weightings <- 6 / example_lines_df$quality
-```
-
-
-The (weighted) arithmetic mean orientation
-
-```{r stat_mean}
-lines_mean <- sph_mean(lines, w = line_weightings)
-```
-
-The (weighted) arithmetic variance
-
-```{r stat_var}
-lines_variance <- sph_var(lines, w = line_weightings)
-```
-
-the (weighted) standard deviation (i.e. the 63% cone around the mean) and the 95% confidence cone around the mean:
-
-```{r stat_delta}
-lines_delta <- delta(lines, w = line_weightings)
-lines_confangle <- sph_confidence_angle(lines, w = line_weightings)
-```
-
-Taken together, this prints as
-```{r stat}
-c(
-  "Variance" = lines_variance,
-  "63% cone" = lines_delta,
-  "Confidence angle" = lines_confangle
-)
-```
-
-Summary stats can also be retrieved through
-```{r summary}
-summary(lines)
-```
-
-Plotting a summary of the stats on a equal-area projection:
-```{r stat_plot, message=FALSE,warning=FALSE}
+To plota small circle with, e.g., a 10° radius, you need to specify the `ang` argument in `lines()`:
+```{r stereo_smallcircle}
 #| fig.alt: >
-#|   Diagram showing statistical results of some example data plotted in an
-#|   equal-area projection
+#|   Diagram showing smallcircles
 stereoplot(guides = FALSE)
-points(lines, col = "lightgrey", pch = 1, cex = .5)
-points(lines_mean, col = "#B63679", pch = 19, cex = 1)
-lines(lines_mean, ang = lines_confangle, col = "#E65164FF")
-lines(lines_mean, ang = lines_delta, col = "#FB8861FF")
-legend("topright", legend = c("Mean line", "95% confidence cone", "63% data cone"), col = c("#B63679", "#E65164FF", "#FB8861FF"), pch = c(19, NA, NA), lty = c(NA, 1, 1), cex = .75)
+lines(lines[1, ], ang = 10, col = "#B63679", pch = 19, cex = .5)
 ```
 
-### Variance plot
 
-```{r variance}
-#| fig.alt: >
-#|   Diagram showing the distances of a set of vectors to a specified vector
-variance_plot(lines, y = lines[1, ])
-```
-
-### Geodesic mean and variance
-The Fréchet (geodesic L<sup>2</sup>) uses general numerical optimization methods to iteratively find the vector 
-that minimizes the distances to all other points.
-
-```{r geodesic}
-# Mean
-geodesic_mean(lines)
-
-# Variance
-geodesic_var(lines)
-```
-
-### Hypothesis testing
-To test if a line represents the population mean of a given set of lineations, we need to calculate the confidence region of our population.
-
-Let's test the hypothesis that a horizontal lineation trending towards 70&deg; is the mean for our lineations.
-
-```{r test0}
-line_NULL <- Line(70, 0)
-```
-
-The 95% confidence interval (from 10,000 bootstrap samples):
-```{r test1}
-ce <- confidence_ellipse(lines, n = 10000, alpha = 0.05)
-```
-
-To visualize the confidence region of our lines:
-```{r test2}
-#| fig.alt: Diagram showing the confidence region of a mean
-plot(lines, col = "grey")
-stereo_confidence(ce, col = "#B63679FF")
-points(line_NULL, col = "#000004", pch = 16)
-```
-
-The p-value for our hypothesis line:
-```{r test3}
-ce$pvalue.FUN(line_NULL)
-```
-
-With (95% confidence) we rejected the Null Hypothesis that the given line represents the population mean as the p-value is smaller than 5%.
-
-
-## Orientation tensor 
-### Eigenvectors
-
-The orientation tensor (Scheidegger 1965) is a matrix comprising the mean direction cosines of the orientation vectors. In case of a Bingham distribution, the **Eigenvectors** of this tensor describe the orientation of the most dense, intermediate and least dense orientation, and thus, are used to determine the orientation of girdle-distributed vectors (e.g. folded planes).
-
-```{r eigen}
-#| fig.alt: >
-#|   Diagram showing eigen-vector analysis of some example data plotted in an
-#|   equal-area projection
-planes_eigen <- ot_eigen(planes)
-
-stereoplot(guides = FALSE)
-points(planes, col = "lightgrey", pch = 1, cex = .5)
-lines(planes_eigen$vectors, col = viridis::magma(3), lty = 1)
-points(planes_eigen$vectors, col = viridis::magma(3), pch = 19, cex = 1)
-legend("topright", legend = c("Eigenvectors 1", "Eigenvectors 2", "Eigenvectors 3"), col = viridis::magma(3), pch = 19, cex = .75)
-```
-
-### Projected mean
-
-The Eigenvector with the largest Eigenvalue represents a vector parallel to the highest concentration of a population. This vector can also be described as the **projected mean**. A shortcut function for this is:
-
-```{r projected}
-projected_mean(example_lines)
-```
-
-### Eigenvalues
+## Fabric plots
 The **Eigenvalues** of the orientation tensor describe the shape of the distribution of these vectors, that is who clustered, cylindrical or random these vectors are distributed.
 
 A Fabric plot visualizes the shape of the distribution by plotting the eigenvalues of the orientation tensor.
-Two different diagram are provided by {structr}, namely the triangular *Vollmer plot* after Vollmer (1990) and the logarithmic biplot (*Woodcock plot*) after Woodcock (1977).
+Three different diagram are provided by {structr}, namely the triangular *Vollmer plot* after Vollmer (1990), the logarithmic biplot (*Woodcock plot*) after Woodcock (1977), and the  Lode parameter vs. natural octahedral strain  diagram (*Hsü plot*) after Hsü (1965).
 
 
-#### Vollmer plot
+### Vollmer plot
+`vollmer_plot()` creates a triangular plot showing the shape of the orientation distribution (after Vollmer, 1990).
 
 ```{r vollmer, message=FALSE,warning=FALSE}
 #| fig.alt: >
@@ -220,7 +108,8 @@ vollmer_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```
 
-#### Woodcock plot 
+### Woodcock plot 
+`woodcock_plot()` creates a logarithmic biplot showing the shape of the orientation distribution (after Woodcock, 1977).
 
 ```{r woodcock, message=FALSE,warning=FALSE}
 #| fig.alt: >
@@ -232,7 +121,8 @@ woodcock_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```
 
-#### Hsü plot
+### Hsü plot
+`hsu_fabric_plot()` creates a Lode parameter vs. natural octahedral strain diagram showing the shape of the orientation distribution (after Hsü, 1965).
 
 ```{r hsu, message=FALSE,warning=FALSE}
 #| fig.alt: >
@@ -244,16 +134,10 @@ hsu_fabric_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```
 
-#### Shape parameters
-There are more shape parameters using different algorithms based on the orientation tensor:
-
-```{r shapes}
-or_shape_params(planes)
-```
-
 ## Density plots
 
-Densities are estimated using **Kamb** contouring (after Kamb, 1959) and exponential (the default), linear, square-inverse or no smoothing. 
+
+**Kamb** contours and densities can be added to an existing projection plot using the `contour` functions. 
 Weighted densities can be controlled by the `weights` argument and are useful when the orientation measurements have different accuracies.
 
 ```{r density, message=FALSE,warning=FALSE}
@@ -293,6 +177,7 @@ title(
 )
 ```
 
+> `contour()` adds contour lines, while `contourf()` adds filled contours and `image()` adds a density image (i.e. a dense grid of colored rectangles). See `?contour`, `?contourf`, and `?image` for more information.
 
 ## Fault plots
 
@@ -329,5 +214,5 @@ stereoplot(title = "Hoeppner plot")
 hoeppner(f, col = viridis::magma(nrow(f), end = .9))
 ```
 
-
+> `fault_plot()` is a wrapper function that allows to switch between Angelier and Hoeppner plot using the `type` argument. See `?fault_plot` for details.
 

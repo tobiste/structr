@@ -12,6 +12,8 @@ editor_options:
     wrap: 72
 ---
 
+This tutorial introduces the basic data types and mathematical operations of the `{structr}` package for analyzing orientation data in structural geology.
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,

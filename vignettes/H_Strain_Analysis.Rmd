@@ -12,6 +12,8 @@ editor_options:
     wrap: 72
 ---
 
+This turorial demonstrates how to perform strain and vorticity analysis using the {structr} package in R.
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,

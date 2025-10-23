@@ -12,6 +12,8 @@ editor_options:
     wrap: 72
 ---
 
+This tutorial demonstrates how to use the {structr} package to perform basic stress calculations and visualize the stress state using a Mohr circle.
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,

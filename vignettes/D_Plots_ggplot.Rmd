@@ -12,6 +12,8 @@ editor_options:
     wrap: 72
 ---
 
+This tutorial shows how to create orientation plots using ggplot2 in R with the help of the `{structr}` package.
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
@@ -23,7 +25,6 @@ knitr::opts_chunk$set(
 library(structr)
 library(ggplot2)
 ```
-
 
 
 Import and convert to spherical objects:

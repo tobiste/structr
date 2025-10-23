@@ -12,6 +12,9 @@ editor_options:
     wrap: 72
 ---
 
+This vignette describes how convert alpha-beta (and gamma) measurements from oriented drill cores into geological planes and lines using the
+`drillcore_transformation()` function of the {structr} package.
+
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
