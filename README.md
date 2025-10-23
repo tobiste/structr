@@ -30,8 +30,8 @@ for structural geology. The toolset includes
 
 - calculation fault displacement components,
 
-- reconstruction of orientation and magnitudes using fault-slip
-  inversion (**Paleostress analysis**),
+- **Paleostress analysis**: reconstruction of stress orientation and
+  magnitudes using fault-slip inversion,
 
 - strain analysis (**R**<sub>f</sub>/ϕ), contouring on the unit
   hyperboloid, **Fry plots** and **Hsu plots**
