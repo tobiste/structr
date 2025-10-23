@@ -503,8 +503,8 @@ slerp.Ray <- function(x0, x1, t){
 
 #' @rdname slerp
 #' @export
-slerp.Ray <- function(x0, x1, t){
-  slerpPlane(Vec3(x0), Vec3(x1, t)) |> Plane()
+slerp.Plane <- function(x0, x1, t){
+  slerp.Vec3(Vec3(x0), Vec3(x1, t)) |> Plane()
 }
 
 #' @rdname slerp

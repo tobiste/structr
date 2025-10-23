@@ -6,6 +6,7 @@
 \alias{slerp.Vec3}
 \alias{slerp.Line}
 \alias{slerp.Ray}
+\alias{slerp.Plane}
 \alias{slerp.Pair}
 \title{Spherical Linear Interpolation (Slerp)}
 \usage{
@@ -19,7 +20,7 @@ slerp(x0, x1, t)
 
 \method{slerp}{Ray}(x0, x1, t)
 
-\method{slerp}{Ray}(x0, x1, t)
+\method{slerp}{Plane}(x0, x1, t)
 
 \method{slerp}{Pair}(x0, x1, t)
 }

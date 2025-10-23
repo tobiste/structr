@@ -547,16 +547,16 @@ rayRegressionSmallCircle <- function(xs, us, numSeeds = 5, numSteps = 1000, numP
   for (i in 1:numSeeds) {
     seed <- c(
       sphericalFromCartesian(rayUniform())[2:3],
-      runif(1, -pi, pi),
+      stats::runif(1, -pi, pi),
       sphericalFromCartesian(rayUniform())[2:3]
     )
     if (angleBound == Inf) {
-      solution <- optim(
+      solution <- stats::optim(
         seed, f,
         hessian = TRUE, control = list(maxit = numSteps), method = "L-BFGS-B"
       )
     } else {
-      solution <- optim(
+      solution <- stats::optim(
         seed, f,
         hessian = TRUE, control = list(maxit = numSteps), method = "L-BFGS-B",
         lower = c(-Inf, -Inf, -angleBound, -Inf, -Inf),
@@ -623,16 +623,16 @@ lineRegressionSmallCircle <- function(xs, us, numSeeds = 5, numSteps = 1000, num
   for (i in 1:numSeeds) {
     seed <- c(
       sphericalFromCartesian(lineUniform())[2:3],
-      runif(1, -pi, pi),
+      stats::runif(1, -pi, pi),
       sphericalFromCartesian(lineUniform())[2:3]
     )
     if (angleBound == Inf) {
-      solution <- optim(
+      solution <- stats::optim(
         seed, f,
         hessian = TRUE, control = list(maxit = numSteps), method = "L-BFGS-B"
       )
     } else {
-      solution <- optim(
+      solution <- stats::optim(
         seed, f,
         hessian = TRUE, control = list(maxit = numSteps), method = "L-BFGS-B",
         lower = c(-Inf, -Inf, -angleBound, -Inf, -Inf),
