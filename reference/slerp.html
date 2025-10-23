@@ -51,7 +51,25 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">slerp</span><span class="op">(</span><span class="va">x0</span>, <span class="va">x1</span>, <span class="va">t</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">slerp</span><span class="op">(</span><span class="va">x0</span>, <span class="va">x1</span>, <span class="va">t</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Default S3 method</span></span>
+<span><span class="fu">slerp</span><span class="op">(</span><span class="va">x0</span>, <span class="va">x1</span>, <span class="va">t</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'Vec3'</span></span>
+<span><span class="fu">slerp</span><span class="op">(</span><span class="va">x0</span>, <span class="va">x1</span>, <span class="va">t</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'Line'</span></span>
+<span><span class="fu">slerp</span><span class="op">(</span><span class="va">x0</span>, <span class="va">x1</span>, <span class="va">t</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'Ray'</span></span>
+<span><span class="fu">slerp</span><span class="op">(</span><span class="va">x0</span>, <span class="va">x1</span>, <span class="va">t</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'Ray'</span></span>
+<span><span class="fu">slerp</span><span class="op">(</span><span class="va">x0</span>, <span class="va">x1</span>, <span class="va">t</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'Pair'</span></span>
+<span><span class="fu">slerp</span><span class="op">(</span><span class="va">x0</span>, <span class="va">x1</span>, <span class="va">t</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -59,7 +77,7 @@
 
 
 <dl><dt id="arg-x-x-">x0, x1<a class="anchor" aria-label="anchor" href="#arg-x-x-"></a></dt>
-<dd><p>objects of class <code>"Vec3"</code>, <code>"Line"</code>, <code>"Ray"</code>, or <code>"Plane"</code> of the first
+<dd><p>objects of class <code>"Vec3"</code>, <code>"Line"</code>, <code>"Ray"</code>, or <code>"Plane"</code> for the first
 and the last points of the to be interpolated arc.</p></dd>
 
 
@@ -68,9 +86,19 @@ and the last points of the to be interpolated arc.</p></dd>
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>object of class <code>x0</code></p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>A Slerp path is the spherical geometry equivalent of a path along a line
-segment in the plane; a great circle is a spherical geodesic.</p>
+segment in the plane; a great circle is a spherical geodesic. The Slerp
+formula is derived from the spherical law of sines. The formula for Slerp between
+two unit vectors <code>x0</code> and <code>x1</code> is:
+$$\text{Slerp}(x_0, x_1; t) = \frac{sin((1 - t) \theta)}{sin(\theta)} x_0 + \frac{sin(t \theta)}{sin(\theta)} x_1$$
+where the angle \(\theta\) is the angle between <code>x0</code> and <code>x1</code>, and <code>t</code> is
+the interpolation factor (ranging from 0 to 1), i.e. the fraction along the
+geodesic path between <code>x0</code> and <code>x1</code> for which interpolated vector will be calculated.</p>
     </div>
     <div class="section level2">
     <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>

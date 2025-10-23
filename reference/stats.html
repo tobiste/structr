@@ -94,25 +94,42 @@
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p><code>sph_mean</code> returns the spherical arithmetic mean of a set of vectors
-(object of class of <code>x</code>).</p>
-<p><code>sph_var</code> returns the spherical variance (numeric), based on resultant length
-(Mardia 1972).</p>
+    <p>These statistical estimators are based on the resultant vector of a set of \(n\) vectors \(x_1, \ldots, x_n\) (Mardia 1972). The resultant vector is given by
+$$\bar{\mathbf{x}} = \sum_{i=1}^{n} \mathbf{x}_i$$</p>
+<p>The mean resultant is defined as
+$$\bar{\mathbf{R}} = ||\bar{\mathbf{x}}|| = \sqrt{x_x^2 + x_y^2 + x_z^2}$$</p>
+<p><code>sph_mean</code> returns the spherical mean of a set of vectors
+(object of class of <code>x</code>), that is the maximum likelihood estimate of the mean direction given by the arithmetic mean of the vector components normalized by the mean resultant vector:
+$$\mu = \frac{\bar{\mathbf{x}}}{\bar{\mathbf{R}}}$$</p>
+<p><code>sph_var</code> returns the spherical variance (numeric).
+$$S = 1 - \bar{\mathbf{R}}$$</p>
 <p><code>sph_sd</code> returns the spherical standard deviation (numeric) given as the half
 apical angle of a cone about the mean vector. In degrees if <code>x</code> is a
-<code>"Plane"</code> or <code>"Line"</code>, or in radians if otherwise.</p>
+<code>"Plane"</code> or <code>"Line"</code>, or in radians if otherwise.
+$$s = \sqrt{\log(1 / \bar{\mathbf{R}}^2))}$$</p>
 <p><code>delta</code> returns the half apical angle of the cone containing ~63% of the data
 (in degrees if <code>x</code> is a <code>"Plane"</code> or <code>"Line"</code>, or in radians
 if otherwise). For enough large sample it approaches the angular standard
-deviation (<code>"csd"</code>) of the Fisher statistics.</p>
-<p><code>rdegree</code> returns the degree of preferred orientation of vectors, range: (0, 1).</p>
+deviation (<code>"csd"</code>) of the Fisher statistics.
+$$\delta = \arccos(\bar{\mathbf{R}})$$</p>
+<p><code>rdegree</code> returns the degree of preferred orientation of vectors, range: (0, 1).
+$$r = \frac{2 \bar{\mathbf{R}} - n}{n}$$</p>
 <p><code>sd_error</code> returns the spherical standard error (numeric). If the number of
 data is less than 25, if will print a additional message, that the output
-value might not be a good estimator.</p>
+value might not be a good estimator.
+$$\text{SDE} = \sqrt{\frac{1 - \frac{1}{n} \sum_{i=1}^{n} (\mu \cdot x_i)^2}{n \bar{\mathbf{R}}^2}}$$</p>
 <p><code>sph_confidence_angle</code> returns the half-apical angle \(q\) of a cone about the
 mean \(\mu\) (in degrees if <code>x</code> is a <code>"Plane"</code> or <code>"Line"</code>, or in radians
-if otherwise). The \(100(1-\alpha)\%\) confidence interval is than given by \(\mu \pm q\).</p>
-<p><code>estimate_k</code> returns the estimated concentration of the von Mises-Fisher distribution \(\kappa\) (after Sra, 2011).</p>
+if otherwise). The \(100(1-\alpha)\%\) confidence interval is than given by \(\mu \pm q\).
+$$q = \arcsin(\sqrt{-\log(\alpha)} \cdot \text{SDE})$$</p>
+<p><code>estimate_k</code> returns the estimated concentration of the von Mises-Fisher distribution \(\hat{\kappa}\) (after Sra, 2011).
+$$\hat{\kappa} = \frac{\bar{R}(p - \bar{R}^2)}{1 - \bar{R}^2}$$
+where \(p\) is the dimension of the data (3 for spherical data).</p>
+    </div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    <p>Mardia, Kanti; Jupp, P. E. (1999). Directional Statistics. John Wiley &amp; Sons Ltd. ISBN 978-0-471-95333-3.</p>
+<p>Sra, S. A short note on parameter approximation for von Mises-Fisher distributions: and a fast implementation of I s (x). Comput Stat 27, 177–190 (2012). https://doi.org/10.1007/s00180-011-0232-x</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

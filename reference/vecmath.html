@@ -53,6 +53,8 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">vector_length</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">vector_norm</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># S3 method for class 'spherical'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">x</span>, y <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
@@ -118,27 +120,27 @@ returns a numeric angle (in degrees, unless <code>x</code> is class <code>"Vec3"
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
 
-<dl><dt><code>vector_length</code></dt>
-<dd><p>the length of a vector</p></dd>
+<dl><dt><code>vector_length()</code></dt>
+<dd><p>the length of a vector: \(||x|| = \sqrt{x_1^2 + x_2^2 + x_3^2}\)</p></dd>
 
-<dt><code>crossprod</code></dt>
-<dd><p>the cross-product of two vectors, i.e. the vector perpendicular to the 2 vectors. If <code>y = NULL</code> is taken to be the sam,e vector as <code>x</code>.</p></dd>
+<dt><code>vector_norm()</code></dt>
+<dd><p>the normalized vector: \(\hat{x} = \frac{x}{||x||}\)</p></dd>
 
-<dt><code>dotprod</code></dt>
-<dd><p>the dot product of two vectors</p></dd>
+<dt><code><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod()</a></code></dt>
+<dd><p>the cross-product of two vectors, i.e. the vector perpendicular to the 2 vectors. If <code>y = NULL</code> is taken to be the sam,e vector as <code>x</code>: $$x \times y = (x_2 y_3 - x_3 y_2, x_3 y_1 - x_1 y_3, x_1 y_2 - x_2 y_1)$$</p></dd>
+.
+<dt><code>dotprod()</code></dt>
+<dd><p>the dot product of two vectors: \(x \cdot y = x_1 y_1 + x_2 y_2 + x_3 y_3\)</p></dd>
 
-<dt><code>rotate</code></dt>
-<dd><p>rotation of a vector about a specified vector by a specified angle</p></dd>
+<dt><code>angle()</code></dt>
+<dd><p>angle between two vectors:  \(\theta = \arccos{\frac{x \cdot y}{||x|| \, ||y||}}\)</p></dd>
 
-<dt><code>angle</code></dt>
-<dd><p>angle between two vectors</p></dd>
+<dt><code>project()</code></dt>
+<dd><p>projection of one vector onto the other (changes the vector length of second vector, unless their are unit vectors):
+$$proj_y(x) = \frac{x \cdot y}{||y||^2} y$$</p></dd>
 
-<dt><code>project</code></dt>
-<dd><p>projection of one vector onto the other (changes the vector
-length of second vector, unless their are unit vectors)</p></dd>
-
-<dt><code>transform_linear</code></dt>
-<dd><p>Linear transformation of a vector by a 3x3 matrix</p></dd>
+<dt><code>transform_linear()</code></dt>
+<dd><p>Linear transformation of a vector by a 3x3 matrix: \(x' = A x\)</p></dd>
 
 
 </dl></div>

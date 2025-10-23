@@ -141,6 +141,15 @@ and the 95% confidence cone around the mean:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lines</span><span class="op">)</span></span>
 <span><span class="co">#&gt;         azimuth          plunge        variance        68% cone confidence cone </span></span>
 <span><span class="co">#&gt;      68.5127690      20.4958671       0.2168518      38.4502642       4.7492331</span></span></code></pre></div>
+<p>Plotting a summary of the stats on a equal-area projection:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">lines</span>, col <span class="op">=</span> <span class="st">"lightgrey"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">lines_mean</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">lines_mean</span>, ang <span class="op">=</span> <span class="va">lines_confangle</span>, col <span class="op">=</span> <span class="st">"#E65164FF"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">lines_mean</span>, ang <span class="op">=</span> <span class="va">lines_delta</span>, col <span class="op">=</span> <span class="st">"#FB8861FF"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Mean line"</span>, <span class="st">"95% confidence cone"</span>, <span class="st">"63% data cone"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679"</span>, <span class="st">"#E65164FF"</span>, <span class="st">"#FB8861FF"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">.75</span><span class="op">)</span></span></code></pre></div>
+<p><img src="C_Statistics_files/figure-html/stat_plot-1.png" alt="Diagram showing statistical results of some example data plotted in an equal-area projection" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="geodesic-mean-and-variance">Geodesic mean and variance<a class="anchor" aria-label="anchor" href="#geodesic-mean-and-variance"></a>
@@ -151,7 +160,7 @@ angles between all data vectors.<br>
 This can be visualized using the <code><a href="../reference/variance_plot.html">variance_plot()</a></code>; here
 showing the (geodesic) angle distances between all lines and the first
 line in the same data set:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/variance_plot.html">variance_plot</a></span><span class="op">(</span><span class="va">lines</span>, y <span class="op">=</span> <span class="va">lines</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p><img src="C_Statistics_files/figure-html/variance-1.png" alt="Diagram showing the distances of a set of vectors to a specified vector" width="700"></p>
 <blockquote>
@@ -163,7 +172,7 @@ and the Fréchet mean.</p>
 <p>To find the Fréchet mean vector, the algorithm iteratively searches
 for the vector by using a numerical optimization method to minimize the
 distances to all other vectors</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Mean</span></span>
 <span><span class="fu"><a href="../reference/geodesic-mean.html">geodesic_mean</a></span><span class="op">(</span><span class="va">lines</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Line object (n = 1):</span></span>
@@ -185,7 +194,7 @@ distributions</em>.</p>
 parallel to the highest concentration of a population. This vector can
 also be described as the <strong>projected mean</strong>. A shortcut
 function for this is:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/projected_mean.html">projected_mean</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Line object (n = 1):</span></span>
 <span><span class="co">#&gt;  azimuth   plunge </span></span>
@@ -194,7 +203,7 @@ function for this is:</p>
 data around the mean direction, when data follows a unimodal,
 anisotropic distributions such as the <em>Kent</em> or <em>Bingham
 distributions</em>.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">example_lines</span>, col <span class="op">=</span> <span class="st">"grey"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span></span>
@@ -225,19 +234,19 @@ lineations, we need to calculate the confidence region of our
 population.</p>
 <p>Let’s test the hypothesis that a horizontal lineation trending
 towards 70° is the mean for our lineations.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">line_NULL</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">70</span>, <span class="fl">0</span><span class="op">)</span></span></code></pre></div>
 <p>The 95% confidence interval (from 10,000 bootstrap samples):</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ce</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/confidence_ellipse.html">confidence_ellipse</a></span><span class="op">(</span><span class="va">lines</span>, n <span class="op">=</span> <span class="fl">10000</span>, alpha <span class="op">=</span> <span class="fl">0.05</span><span class="op">)</span></span></code></pre></div>
 <p>To visualize the confidence region of our lines:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lines</span>, col <span class="op">=</span> <span class="st">"grey"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">ce</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">line_NULL</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
 <p><img src="C_Statistics_files/figure-html/test2-1.png" alt="Diagram showing the confidence region of a mean" width="700"></p>
 <p>The p-value for our hypothesis line:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ce</span><span class="op">$</span><span class="fu">pvalue.FUN</span><span class="op">(</span><span class="va">line_NULL</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 0</span></span></code></pre></div>
 <p>With (95% confidence) we rejected the Null Hypothesis that the given
@@ -262,7 +271,7 @@ girdle-distributed vectors (e.g. folded planes).</p>
 </h4>
 <p>There are more shape parameters using different algorithms based on
 the orientation tensor:</p>
-<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/strain_shape.html">or_shape_params</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $stretch_ratios</span></span>
 <span><span class="co">#&gt;      Rxy      Ryz      Rxz </span></span>
@@ -324,7 +333,7 @@ the orientation tensor:</p>
 </h2>
 <p>To find k clusters of orientational data, the
 <code><a href="../reference/sph_cluster.html">sph_cluster()</a></code> function can be used:</p>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># generate some random vectors:</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20250411</span><span class="op">)</span></span>
 <span><span class="va">x1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">100</span>, mu <span class="op">=</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">90</span>, <span class="fl">0</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
