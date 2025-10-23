@@ -41,7 +41,7 @@ stereoplot()
 points(cleavage, col = "#1D1147")
 points(bedding, col = "#E65164", pch = 4)
 
-legend("topright", col = c("#1D1147", "#E65164"), pch = c(1, 4), legend = c("Poles to cleavage", "Poles to bedding"))
+legend("topright", col = c("#1D1147", "#E65164"), pch = c(1, 4), legend = c("Poles to cleavage", "Poles to bedding"), bg = 'white')
 ``` 
 
 The diagram suggests that both the cleavage and the bedding poles are oriented along great-circles or small-circles. To find out the orientation of these axes and decide whether the orientation better fit a great- or small-circle solution, we'll perform a (geodesic) regression.
@@ -81,7 +81,7 @@ lines(bedding_gc$vec, col = "#B63679")
 points(cleavage, col = "#1D1147")
 points(bedding, col = "#E65164", pch = 4)
 
-legend("bottomright", col = c("#000004FF", "#B63679"), lty =c(1, 1), legend = c("Cleavage best greatcircle", "Bedding best greatcircle"))
+legend("bottomright", col = c("#000004FF", "#B63679"), lty =c(1, 1), legend = c("Cleavage best greatcircle", "Bedding best greatcircle"), bg = 'white')
 ``` 
 
 ### Summary
@@ -117,7 +117,7 @@ lines(bedding_sc$vec, bedding_sc$cone, col = "#B63679")
 points(cleavage, col = "#1D1147")
 points(bedding, col = "#E65164", pch = 4)
 
-legend("bottomright", col = c("#000004FF", "#B63679"), lty =c(1, 1), legend = c("Cleavage best smallcircle", "Bedding best smallcircle"))
+legend("bottomright", col = c("#000004FF", "#B63679"), lty =c(1, 1), legend = c("Cleavage best smallcircle", "Bedding best smallcircle"), bg = 'white')
 ```
 
 ### Summary
