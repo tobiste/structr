@@ -43,6 +43,8 @@ This returns a list which contains all the information and metadata (including c
 
 
 ## Data types
+Depending on the symmetry of the orientation data, different data types are used to represent orientations in 3D space.
+The main data types used in structural geology are Rays, Lines, Planes, Pairs, and Faults.
 
 ### Rays (vectorial data)
 A ray is a line with a preferred direction along that line, i.e. a line with a single start point extending indefinitely in only one direction (equivalent to a direction in 2D).

@@ -2,22 +2,48 @@
 % Please edit documentation in R/vector_math.R
 \name{slerp}
 \alias{slerp}
+\alias{slerp.default}
+\alias{slerp.Vec3}
+\alias{slerp.Line}
+\alias{slerp.Ray}
+\alias{slerp.Pair}
 \title{Spherical Linear Interpolation (Slerp)}
 \usage{
 slerp(x0, x1, t)
+
+\method{slerp}{default}(x0, x1, t)
+
+\method{slerp}{Vec3}(x0, x1, t)
+
+\method{slerp}{Line}(x0, x1, t)
+
+\method{slerp}{Ray}(x0, x1, t)
+
+\method{slerp}{Ray}(x0, x1, t)
+
+\method{slerp}{Pair}(x0, x1, t)
 }
 \arguments{
-\item{x0, x1}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"} of the first
+\item{x0, x1}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"} for the first
 and the last points of the to be interpolated arc.}
 
 \item{t}{numeric. Interpolation factor(s) (\verb{t = [0, 1]}).}
+}
+\value{
+object of class \code{x0}
 }
 \description{
 Returns the spherical linear interpolation of points between two vectors
 }
 \details{
 A Slerp path is the spherical geometry equivalent of a path along a line
-segment in the plane; a great circle is a spherical geodesic.
+segment in the plane; a great circle is a spherical geodesic. The Slerp
+formula is derived from the spherical law of sines. The formula for Slerp between
+two unit vectors \code{x0} and \code{x1} is:
+\deqn{\text{Slerp}(x_0, x_1; t) = \frac{sin((1 - t) \theta)}{sin(\theta)} x_0 + \frac{sin(t \theta)}{sin(\theta)} x_1}
+where the angle \eqn{\theta} is the angle between \code{x0} and \code{x1}, and \code{t} is
+the interpolation factor (ranging from 0 to 1), i.e. the fraction along the
+geodesic path between \code{x0} and \code{x1} for which interpolated vector will be calculated.
 }
 \note{
 For non-unit vectors the interpolation is not uniform.
@@ -34,3 +60,4 @@ points(rbind(x0, x1))
 \seealso{
 \code{\link[=stereo_segment]{stereo_segment()}} for plotting the Slerp path as a line
 }
+\keyword{internal}

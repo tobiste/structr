@@ -54,7 +54,7 @@ Dispersion  measured using the Fréchet variance, i.e the sum of the squared
 geodesic distances between all vectors and a specified vector.
 }
 \details{
-The Variance of a dataset \eqn{{x_1, \ldots, x_n}} about a vector \eqn{y} is defined as
+The variance of a dataset \eqn{{x_1, \ldots, x_n}} about a vector \eqn{y} is defined as
 \deqn{ \Psi(x) = \frac{1}{2n} \sum_{i=1}^n d_G(y, x_i)^2}
 where \eqn{d_G(x, y)} is the geodesic distance between vectors \eqn{x} and \eqn{y} (see \code{\link[=angle]{angle()}}).
 }

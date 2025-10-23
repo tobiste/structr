@@ -3,6 +3,7 @@
 \name{vecmath}
 \alias{vecmath}
 \alias{vector_length}
+\alias{vector_norm}
 \alias{crossprod.spherical}
 \alias{dotprod}
 \alias{rotate}
@@ -17,6 +18,8 @@
 \title{Vector math operations}
 \usage{
 vector_length(x)
+
+vector_norm(x)
 
 \method{crossprod}{spherical}(x, y = NULL, ...)
 
@@ -63,14 +66,14 @@ Vector math operations
 }
 \details{
 \describe{
-\item{\code{vector_length}}{the length of a vector}
-\item{\code{crossprod}}{the cross-product of two vectors, i.e. the vector perpendicular to the 2 vectors. If \code{y = NULL} is taken to be the sam,e vector as \code{x}.}
-\item{\code{dotprod}}{the dot product of two vectors}
-\item{\code{rotate}}{rotation of a vector about a specified vector by a specified angle}
-\item{\code{angle}}{angle between two vectors}
-\item{\code{project}}{projection of one vector onto the other (changes the vector
-length of second vector, unless their are unit vectors)}
-\item{\code{transform_linear}}{Linear transformation of a vector by a 3x3 matrix}
+\item{\code{vector_length()}}{the length of a vector: \eqn{||x|| = \sqrt{x_1^2 + x_2^2 + x_3^2}}}
+\item{\code{vector_norm()}}{the normalized vector: \eqn{\hat{x} = \frac{x}{||x||}}}
+\item{\code{crossprod()}}{the cross-product of two vectors, i.e. the vector perpendicular to the 2 vectors. If \code{y = NULL} is taken to be the sam,e vector as \code{x}: \deqn{x \times y = (x_2 y_3 - x_3 y_2, x_3 y_1 - x_1 y_3, x_1 y_2 - x_2 y_1)}}.
+\item{\code{dotprod()}}{the dot product of two vectors: \eqn{x \cdot y = x_1 y_1 + x_2 y_2 + x_3 y_3}}
+\item{\code{angle()}}{angle between two vectors:  \eqn{\theta = \arccos{\frac{x \cdot y}{||x|| \, ||y||}}}}
+\item{\code{project()}}{projection of one vector onto the other (changes the vector length of second vector, unless their are unit vectors):
+\deqn{proj_y(x) = \frac{x \cdot y}{||y||^2} y}}
+\item{\code{transform_linear()}}{Linear transformation of a vector by a 3x3 matrix: \eqn{x' = A x}}
 }
 }
 \examples{

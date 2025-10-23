@@ -43,32 +43,46 @@ estimate_k(x, w = NULL, na.rm = FALSE)
 Statistical estimators of the distribution of a set of vectors
 }
 \details{
-\code{sph_mean} returns the spherical arithmetic mean of a set of vectors
-(object of class of \code{x}).
+These statistical estimators are based on the resultant vector of a set of \eqn{n} vectors \eqn{x_1, \ldots, x_n} (Mardia 1972). The resultant vector is given by
+\deqn{\bar{\mathbf{x}} = \sum_{i=1}^{n} \mathbf{x}_i}
 
-\code{sph_var} returns the spherical variance (numeric), based on resultant length
-(Mardia 1972).
+The mean resultant is defined as
+\deqn{\bar{\mathbf{R}} = ||\bar{\mathbf{x}}|| = \sqrt{x_x^2 + x_y^2 + x_z^2}}
+
+\code{sph_mean} returns the spherical mean of a set of vectors
+(object of class of \code{x}), that is the maximum likelihood estimate of the mean direction given by the arithmetic mean of the vector components normalized by the mean resultant vector:
+\deqn{\mu = \frac{\bar{\mathbf{x}}}{\bar{\mathbf{R}}}}
+
+\code{sph_var} returns the spherical variance (numeric).
+\deqn{S = 1 - \bar{\mathbf{R}}}
 
 \code{sph_sd} returns the spherical standard deviation (numeric) given as the half
 apical angle of a cone about the mean vector. In degrees if \code{x} is a
 \code{"Plane"} or \code{"Line"}, or in radians if otherwise.
+\deqn{s = \sqrt{\log(1 / \bar{\mathbf{R}}^2))}}
 
 \code{delta} returns the half apical angle of the cone containing ~63\% of the data
 (in degrees if \code{x} is a \code{"Plane"} or \code{"Line"}, or in radians
 if otherwise). For enough large sample it approaches the angular standard
 deviation (\code{"csd"}) of the Fisher statistics.
+\deqn{\delta = \arccos(\bar{\mathbf{R}})}
 
 \code{rdegree} returns the degree of preferred orientation of vectors, range: (0, 1).
+\deqn{r = \frac{2 \bar{\mathbf{R}} - n}{n}}
 
 \code{sd_error} returns the spherical standard error (numeric). If the number of
 data is less than 25, if will print a additional message, that the output
 value might not be a good estimator.
+\deqn{\text{SDE} = \sqrt{\frac{1 - \frac{1}{n} \sum_{i=1}^{n} (\mu \cdot x_i)^2}{n \bar{\mathbf{R}}^2}}}
 
 \code{sph_confidence_angle} returns the half-apical angle \eqn{q} of a cone about the
 mean \eqn{\mu} (in degrees if \code{x} is a \code{"Plane"} or \code{"Line"}, or in radians
 if otherwise). The \eqn{100(1-\alpha)\%} confidence interval is than given by \eqn{\mu \pm q}.
+\deqn{q = \arcsin(\sqrt{-\log(\alpha)} \cdot \text{SDE})}
 
-\code{estimate_k} returns the estimated concentration of the von Mises-Fisher distribution \eqn{\kappa} (after Sra, 2011).
+\code{estimate_k} returns the estimated concentration of the von Mises-Fisher distribution \eqn{\hat{\kappa}} (after Sra, 2011).
+\deqn{\hat{\kappa} = \frac{\bar{R}(p - \bar{R}^2)}{1 - \bar{R}^2}}
+where \eqn{p} is the dimension of the data (3 for spherical data).
 }
 \examples{
 set.seed(20250411)
@@ -88,6 +102,11 @@ sph_mean(x2)
 sph_mean(x2, w = c(1, 2))
 sph_var(x2)
 sph_var(x2, w = c(1, 2))
+}
+\references{
+Mardia, Kanti; Jupp, P. E. (1999). Directional Statistics. John Wiley & Sons Ltd. ISBN 978-0-471-95333-3.
+
+Sra, S. A short note on parameter approximation for von Mises-Fisher distributions: and a fast implementation of I s (x). Comput Stat 27, 177–190 (2012). https://doi.org/10.1007/s00180-011-0232-x
 }
 \seealso{
 \code{\link[=projected_mean]{projected_mean()}} for projected mean, \code{\link[=geodesic_mean_line]{geodesic_mean_line()}} and \code{\link[=geodesic_mean_pair]{geodesic_mean_pair()}} for the geodesic mean of lines and pairs, respectively.

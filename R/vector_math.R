@@ -11,14 +11,14 @@
 #'
 #' @details
 #' \describe{
-#' \item{`vector_length`}{the length of a vector}
-#' \item{`crossprod`}{the cross-product of two vectors, i.e. the vector perpendicular to the 2 vectors. If `y = NULL` is taken to be the sam,e vector as `x`.}
-#' \item{`dotprod`}{the dot product of two vectors}
-#' \item{`rotate`}{rotation of a vector about a specified vector by a specified angle}
-#' \item{`angle`}{angle between two vectors}
-#' \item{`project`}{projection of one vector onto the other (changes the vector
-#' length of second vector, unless their are unit vectors)}
-#' \item{`transform_linear`}{Linear transformation of a vector by a 3x3 matrix}
+#' \item{`vector_length()`}{the length of a vector: \eqn{||x|| = \sqrt{x_1^2 + x_2^2 + x_3^2}}}
+#' \item{`vector_norm()`}{the normalized vector: \eqn{\hat{x} = \frac{x}{||x||}}}
+#' \item{`crossprod()`}{the cross-product of two vectors, i.e. the vector perpendicular to the 2 vectors. If `y = NULL` is taken to be the sam,e vector as `x`: \deqn{x \times y = (x_2 y_3 - x_3 y_2, x_3 y_1 - x_1 y_3, x_1 y_2 - x_2 y_1)}}.
+#' \item{`dotprod()`}{the dot product of two vectors: \eqn{x \cdot y = x_1 y_1 + x_2 y_2 + x_3 y_3}}
+#' \item{`angle()`}{angle between two vectors:  \eqn{\theta = \arccos{\frac{x \cdot y}{||x|| \, ||y||}}}}
+#' \item{`project()`}{projection of one vector onto the other (changes the vector length of second vector, unless their are unit vectors): 
+#' \deqn{proj_y(x) = \frac{x \cdot y}{||y||^2} y}}
+#' \item{`transform_linear()`}{Linear transformation of a vector by a 3x3 matrix: \eqn{x' = A x}}
 #' }
 #'
 #' @returns objects of same class as `x`, i.e. one of `"Vec3"`, `"Line"`, `"Ray"` or
@@ -61,6 +61,13 @@ vsum <- function(x) {
 vnorm <- function(x) {
   x / vlength(x)
 }
+
+#' @export
+#' @rdname vecmath
+vector_norm <- function(x) {
+  Vec3(x) |> vnorm()
+}
+
 
 #' @keywords internal
 vscale <- function(x, l) {
@@ -415,17 +422,25 @@ v_lower <- function(v) {
 #'
 #' Returns the spherical linear interpolation of points between two vectors
 #'
-#' @param x0,x1 objects of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"` of the first
+#' @param x0,x1 objects of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"` for the first
 #' and the last points of the to be interpolated arc.
 #' @param t numeric. Interpolation factor(s) (`t = [0, 1]`).
 #'
 #' @note For non-unit vectors the interpolation is not uniform.
+#' 
+#' @name slerp
+#' 
+#' @returns object of class `x0`
 #'
 #' @details
 #' A Slerp path is the spherical geometry equivalent of a path along a line
-#' segment in the plane; a great circle is a spherical geodesic.
-#'
-#' @export
+#' segment in the plane; a great circle is a spherical geodesic. The Slerp
+#' formula is derived from the spherical law of sines. The formula for Slerp between
+#' two unit vectors `x0` and `x1` is:
+#' \deqn{\text{Slerp}(x_0, x_1; t) = \frac{sin((1 - t) \theta)}{sin(\theta)} x_0 + \frac{sin(t \theta)}{sin(\theta)} x_1}
+#' where the angle \eqn{\theta} is the angle between `x0` and `x1`, and `t` is
+#' the interpolation factor (ranging from 0 to 1), i.e. the fraction along the 
+#' geodesic path between `x0` and `x1` for which interpolated vector will be calculated.
 #'
 #' @seealso [stereo_segment()] for plotting the Slerp path as a line
 #'
@@ -437,46 +452,64 @@ v_lower <- function(v) {
 #'
 #' plot(xslerp, col = assign_col(t))
 #' points(rbind(x0, x1))
-slerp <- function(x0, x1, t) {
-  vslerp <- sapply(t, function(i) {
-    slerp1(x0, x1, t = i) |> unclass()
+NULL
+
+#' @rdname slerp
+#' @export
+slerp <- function(x0, x1, t) UseMethod("slerp")
+
+#' @rdname slerp
+#' @keywords internal
+slerp.default <- function(x0, x1, t) {
+  stopifnot(
+    t >= 0 | t <= 1
+  )
+  
+  theta <- vdot(x0, x1)
+  sin.theta <- sin(theta)
+  
+  a <- sin(((1 - t) * theta)) / sin.theta * x0
+  b <- sin(t * theta) / sin.theta * x1
+  
+  return(a + b)
+}
+
+#' @rdname slerp
+#' @export
+slerp.Vec3 <- function(x0, x1, t){
+  stopifnot(is.Vec3(x1) | is.Line(x1) | is.Ray(x) | is.Plane(x1))
+  
+  vx0 <- x0 |> unclass()
+  vx1 <- Vec3(x1) |> unclass()
+  
+  sapply(t, function(i) {
+    slerp.default(vx0, vx1, t = i)
   }) |>
     t() |>
     rbind() |>
     as.Vec3()
-
-  if (is.Line(x0)) {
-    Line(vslerp)
-  } else if (is.Plane(x0)) {
-    Plane(vslerp)
-  } else {
-    vslerp
-  }
 }
 
+#' @rdname slerp
+#' @export
+slerp.Line <- function(x0, x1, t){
+  slerp.Vec3(Vec3(x0), x1, t) |> Line()
+}
 
-#' @keywords internal
-slerp1 <- function(x0, x1, t) {
-  stopifnot(is.Vec3(x0) | is.Line(x0) | is.Plane(x0))
-  stopifnot(is.Vec3(x1) | is.Line(x1) | is.Plane(x1))
-  stopifnot(
-    t >= 0 | t <= 1
-  )
+#' @rdname slerp
+#' @export
+slerp.Ray <- function(x0, x1, t){
+  slerp.Vec3(Vec3(x0), x1, t) |> Ray()
+}
 
-  # if (isTRUE(na.rm)) {
-  #   x0 <- x0[!rowSums(!is.finite(x0)), ]
-  #   x1 <- x1[!rowSums(!is.finite(x1)), ]
-  # }
+#' @rdname slerp
+#' @export
+slerp.Ray <- function(x0, x1, t){
+  slerpPlane(Vec3(x0), x1, t) |> Plane()
+}
 
-  vx0 <- Vec3(x0)
-  vx1 <- Vec3(x1)
-
-  theta <- dotprod(vx0, vx1)
-  sin.theta <- sin(theta)
-
-  a <- sin(((1 - t) * theta)) / sin.theta * vx0
-  b <- sin(t * theta) / sin.theta * vx1
-
-  # return as Vec3
-  return(a + b)
+#' @rdname slerp
+#' @export
+slerp.Pair <- function(x0, x1, t){
+  stop("Not implemented for Pair objects.")
 }
