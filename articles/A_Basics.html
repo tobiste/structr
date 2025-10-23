@@ -84,11 +84,11 @@ Stephan</h4>
 <p>From a Strabospot project, download the json file and import it using
 the <code><a href="../reference/strabo.html">read_strabo_JSON()</a></code> function.</p>
 <p>This returns a list which contains all the information and metadata
-(including coordinates, descriptions etc) extracted from the Strabospot
-project in the list element <code>data</code>, the tags used for the
-project in the list element <code>tags</code>, and the linear and planar
-orientation measurements in the list elements <code>lines</code> and
-<code>planes</code>, respectively.</p>
+(including coordinates, descriptions etc) extracted from the
+<em>StraboSpot</em> project in the list element <code>data</code>, the
+tags used for the project in the list element <code>tags</code>, and the
+linear and planar orientation measurements in the list elements
+<code>lines</code> and <code>planes</code>, respectively.</p>
 </div>
 <div class="section level2">
 <h2 id="data-types">Data types<a class="anchor" aria-label="anchor" href="#data-types"></a>
@@ -96,7 +96,7 @@ orientation measurements in the list elements <code>lines</code> and
 <div class="section level3">
 <h3 id="rays-vectorial-data">Rays (vectorial data)<a class="anchor" aria-label="anchor" href="#rays-vectorial-data"></a>
 </h3>
-<p>A ray is a line with a preferred direction along that line, i.e.  a
+<p>A ray is a line with a preferred direction along that line, i.e. a
 line with a single start point extending indefinitely in only one
 direction (equivalent to a direction in 2D). Examples of ray-like data
 include a slip direction, paleomagnetic direction (unless magnetic
@@ -324,8 +324,8 @@ the two vectors.</p>
 <span><span class="co">#&gt; azimuth  plunge </span></span>
 <span><span class="co">#&gt;      10      30</span></span></code></pre></div>
 <blockquote>
-<p>Because of vectors a unit vectors, the projected vector is equal to
-the second vector.</p>
+<p>Because the vectors are both unit vectors, the projected vector is
+equal to the second vector.</p>
 </blockquote>
 <p>The <strong>rotation</strong> of a vector about another vector
 (rotation axis) by a specified rotation angle:</p>
