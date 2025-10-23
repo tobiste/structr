@@ -7,7 +7,7 @@
 #' @references Gray, N.H., Geiser, P.A., Geiser, J.R. (1980). On the
 #' least-square fit of small and great circles to spherically projected data.
 #' Mathematical Geology, Vol. 12, No. 3, 1980.
-#' @noRd
+#' @export
 #' 
 #' @seealso [regression_smallcircle()], [regression_greatcircle()]
 #'
@@ -451,7 +451,7 @@ regression_greatcircle <- function(x, val = seq_len(nrow(x)), iterations = 1000L
 
   if (is.Line(x) | is.Plane(x)) {
     rSq <- 1 - solution$value / lineVariance(ls, lineProjectedMean(ls))
-  } else if (is.Ray(x)) {
+  } else if (is.Ray(x) | is.Vec3(x)) {
     rSq <- 1 - solution$value / rayVariance(ls, rayProjectedMean(ls))
   }
 
@@ -489,7 +489,7 @@ regression_greatcircle <- function(x, val = seq_len(nrow(x)), iterations = 1000L
 regression_smallcircle <- function(x, val = seq_len(nrow(x)), num_seeds = 5L, iterations = 1000L, n_points = 100L) {
   xv <- vec_list(x)
  
-  if(is.Ray(x)){
+  if(is.Ray(x) | is.Vec3(x)) {
     res <- rayRegressionSmallCircleRescaled(val, xv, numSeeds = num_seeds, numSteps = iterations, numPoints = n_points)
   } else {
     res <- lineRegressionSmallCircleRescaled(val, xv, numSeeds = num_seeds, numSteps = iterations, numPoints = n_points)

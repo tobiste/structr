@@ -459,7 +459,7 @@ NULL
 slerp <- function(x0, x1, t) UseMethod("slerp")
 
 #' @rdname slerp
-#' @keywords internal
+#' @export
 slerp.default <- function(x0, x1, t) {
   stopifnot(
     t >= 0 | t <= 1
