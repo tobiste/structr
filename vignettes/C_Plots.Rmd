@@ -136,26 +136,64 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 
 ## Density plots
 
-
 **Kamb** contours and densities can be added to an existing projection plot using the `contour` functions. 
 Weighted densities can be controlled by the `weights` argument and are useful when the orientation measurements have different accuracies.
 
-```{r density, message=FALSE,warning=FALSE}
+```{r dens_contour, message=FALSE,warning=FALSE}
 #| fig.alt: >
 #|   Diagram showing the density distribution some example data plotted in an
 #|   equal-area projection
 example_planes_df$quality <- ifelse(is.na(example_planes_df$quality), 6, example_planes_df$quality) # replacing NA values with 6
 plane_weightings <- 6 / example_planes_df$quality
 
+stereoplot(guides = FALSE)
+points(planes, col = "grey", pch = 16, cex = .5)
+contour(planes, add = TRUE, density.params	= list(weights = plane_weightings))
+```
+
+`contour()` adds contour lines, while `contourf()` adds filled contours and `image()` adds a density image (i.e. a dense grid of colored rectangles). See `?contour`, `?contourf`, and `?image` for more information.
+
+```{r dens_filled, message=FALSE,warning=FALSE}
+#| fig.alt: >
+#|   Diagram showing the density distribution some example data plotted in an
+#|   equal-area projection
+stereoplot(guides = FALSE)
+points(planes, col = "grey", pch = 16, cex = .5)
+contourf(planes, add = TRUE, density.params	= list(weights = plane_weightings))
+```
+
+## Synopsis
+
+Let's create a publication ready synoptical plot for the line and plane orientation data, showing the density distribution, eigenvectors/mean values, and fabric strength.
+
+```{r synops1}
+# Minimum eigenvector of plane's orientation tensor:
+planes_eigen <- ot_eigen(planes)$vectors
+planes_eigen3 <- planes_eigen[3, ]
+
+# Mean and SD of lines
+lines_mean <- sph_mean(lines)
+lines_sd <- sph_sd(lines)
+
+# Fabric strength
 fabric_p <- or_shape_params(planes)$Vollmer["D"]
 fabric_l <- or_shape_params(lines)$Vollmer["D"]
+```
 
+The final plot:
+```{r synops, message=FALSE,warning=FALSE}
+#| fig.alt: >
+#|   Diagram showing the density distribution, eigenvectors and mean values
+
+# two plots side by side
 par(mfrow = c(1, 2))
+
+# Planes
 stereoplot(guides = TRUE, col = "grey96")
 points(planes, col = "grey", pch = 16, cex = .5)
 contour(planes, add = TRUE, weights = plane_weightings)
-points(planes_eigen$vectors[3, ], col = "black", pch = 16)
-lines(planes_eigen$vectors[3, ], col = "black", pch = 16)
+points(planes_eigen3, col = "black", pch = 16)
+lines(planes_eigen3, col = "black", pch = 16)
 title(
   main = "Planes",
   sub = paste0(
@@ -164,10 +202,12 @@ title(
   )
 )
 
+# Lines
 stereoplot(guides = TRUE, col = "grey96")
 points(lines, col = "grey", pch = 16, cex = .5)
 contour(lines, add = TRUE, weights = line_weightings)
 points(lines_mean, col = "black", pch = 16)
+lines(lines_mean, ang = lines_sd,  col = "black")
 title(
   main = "Lines",
   sub = paste0(
@@ -176,8 +216,6 @@ title(
   )
 )
 ```
-
-> `contour()` adds contour lines, while `contourf()` adds filled contours and `image()` adds a density image (i.e. a dense grid of colored rectangles). See `?contour`, `?contourf`, and `?image` for more information.
 
 ## Fault plots
 

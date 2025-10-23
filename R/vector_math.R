@@ -477,10 +477,9 @@ slerp.default <- function(x0, x1, t) {
 #' @rdname slerp
 #' @export
 slerp.Vec3 <- function(x0, x1, t){
-  stopifnot(is.Vec3(x1) | is.Line(x1) | is.Ray(x) | is.Plane(x1))
-  
-  vx0 <- x0 |> unclass()
-  vx1 <- Vec3(x1) |> unclass()
+  stopifnot(is.numeric(t), all(t >= 0), all(t <= 1))
+  vx0 <- unclass(x0)
+  vx1 <- unclass(x1)
   
   sapply(t, function(i) {
     slerp.default(vx0, vx1, t = i)
@@ -493,19 +492,19 @@ slerp.Vec3 <- function(x0, x1, t){
 #' @rdname slerp
 #' @export
 slerp.Line <- function(x0, x1, t){
-  slerp.Vec3(Vec3(x0), x1, t) |> Line()
+  slerp.Vec3(Vec3(x0), Vec3(x1), t) |> Line()
 }
 
 #' @rdname slerp
 #' @export
 slerp.Ray <- function(x0, x1, t){
-  slerp.Vec3(Vec3(x0), x1, t) |> Ray()
+  slerp.Vec3(Vec3(x0), Vec3(x1), t) |> Ray()
 }
 
 #' @rdname slerp
 #' @export
 slerp.Ray <- function(x0, x1, t){
-  slerpPlane(Vec3(x0), x1, t) |> Plane()
+  slerpPlane(Vec3(x0), Vec3(x1, t)) |> Plane()
 }
 
 #' @rdname slerp
