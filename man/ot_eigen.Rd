@@ -4,13 +4,15 @@
 \alias{ot_eigen}
 \title{Eigenvalues and Eigenvectors of a Set of Vectors}
 \usage{
-ot_eigen(x, scaled = FALSE)
+ot_eigen(x, scaled = FALSE, ...)
 }
 \arguments{
 \item{x}{Object of class \code{"Vec3"}, \code{"Line"} or \code{"Plane"}}
 
 \item{scaled}{logical. Whether the Eigenvectors should be scaled by the
 Eigenvalues (only effective if \code{x} is in Cartesian coordinates).}
+
+\item{...}{additional arguments passed to \code{\link[=ortensor]{ortensor()}}.}
 }
 \value{
 list containing

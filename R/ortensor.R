@@ -19,13 +19,12 @@
 #' @examples
 #' set.seed(20250411)
 #' x <- rfb(100, mu = Line(120, 50), k = 1, A = diag(c(10, 0, 0)))
-#' ortensor(x)
+#' ortensor(x, w = runif(nrow(x)))
 NULL
 
 #' @rdname ortensor
 #' @export
 ortensor.spherical <- function(x, norm = TRUE, w = NULL) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   Vec3(x) |>
     unclass() |>
     ortensor.default(norm, w)
@@ -84,7 +83,6 @@ ortensor.default <- function(x, norm = TRUE, w = NULL) {
 #' @rdname inertia
 #' @export
 inertia_tensor.spherical <- function(x, w = NULL) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   Vec3(x) |>
     unclass() |>
     inertia_tensor.default(w)
@@ -116,6 +114,7 @@ inertia_tensor.default <- function(x, w = NULL) {
 #' @inheritParams ortensor
 #' @param scaled logical. Whether the Eigenvectors should be scaled by the
 #' Eigenvalues (only effective if `x` is in Cartesian coordinates).
+#' @param ... additional arguments passed to [ortensor()].
 #'
 #' @returns list containing
 #' \describe{
@@ -137,11 +136,11 @@ inertia_tensor.default <- function(x, w = NULL) {
 #' text(mu, labels = "Mean", col = 4, pos = 4)
 #' points(x_eigen$vectors, col = c(1, 2, 3))
 #' text(x_eigen$vectors, col = c(1, 2, 3), labels = c("E1", "E2", "E3"), pos = 4)
-ot_eigen <- function(x, scaled = FALSE) {
+ot_eigen <- function(x, scaled = FALSE, ...) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   xeig <- Vec3(x) |>
     unclass() |>
-    .or_eigen_helper(scaled = scaled)
+    .or_eigen_helper(scaled = scaled, ...)
 
   xeig$vectors <- Vec3(xeig$vectors)
 
@@ -171,9 +170,10 @@ ot_eigen <- function(x, scaled = FALSE) {
 #' @export
 #'
 #' @examples
-#' projected_mean(example_lines)
-projected_mean <- function(x) {
-  ot_eigen(x)$vectors[1, ]
+#' example_lines_df$quality
+#' projected_mean(example_lines, w =  runif(nrow(example_lines)))
+projected_mean <- function(x, ...) {
+  ot_eigen(x, ...)$vectors[1, ]
 }
 
 
@@ -181,8 +181,8 @@ projected_mean <- function(x) {
 #'
 #' @keywords internal
 #' @inheritParams ot_eigen
-.or_eigen_helper <- function(x, scaled = FALSE) {
-  x_or <- ortensor.default(x, norm = FALSE)
+.or_eigen_helper <- function(x, scaled = FALSE, ...) {
+  x_or <- ortensor.default(x, ...)
   x_eigen <- eigen(x_or, symmetric = TRUE)
   x_eigen$vectors <- t(x_eigen$vectors)
 
@@ -529,9 +529,11 @@ ell_shape_invariant <- function(s) {
 
 #' Centering vectors
 #'
-#' Rotate vector object to position that eigenvectors are parallel to
+#' Rotate vector object to position that ortensor eigenvectors are parallel to
 #' axes of coordinate system: E3||X (north-south), E2||X(east-west),
-#' E1||X(vertical)
+#' E1||X(vertical). 
+#' Useful when one wants to inspect the distribution of vectors, especially when vectors plot 
+#' near the perimeter of the stereonet.
 #'
 #' @inheritParams ortensor
 #' @param max_vertical Whether the maximum of the von Mises-Fisher distribution
@@ -545,16 +547,14 @@ ell_shape_invariant <- function(s) {
 #'
 #' @examples
 #' set.seed(1)
-#' mu <- Line(120, 50)
-#' x <- rvmf(100, mu = mu, k = 20)
+#' mu <- Line(120, 10)
+#' x <- rkent(100, mu = mu, k = 20, b = 5)
 #' x_centered <- center(x)
 #'
 #' # plot results
 #' plot(x, col = "grey")
-#' points(x_centered, col = "black")
-# #' points(Line(c(0, 90, 180), c(0, 0, 90)), col = 2:4, pch = 16, cex = 1.5)
-# #' text(Line(c(0, 90, 180), c(0, 0, 90)), col = 2:4, labels = c("E3", "E2", "E1"), pos = 3)
-#' legend("topright", legend = c("original", "centered"), col = c("grey", "black"), pch = 16)
+#' points(x_centered, col = "#B63679", pch = 16)
+#' legend("topright", legend = c("original", "centered"), col = c("grey", "#B63679"), pch = 16)
 center <- function(x, max_vertical = FALSE) {
   x_cart <- Vec3(x)
   x_eigen <- ot_eigen(x_cart)

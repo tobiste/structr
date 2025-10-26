@@ -13,9 +13,9 @@
 #' @param x,y object of class `"Line"`, `"Ray"`, `"Plane"`, and  `"Pair"`, and `"Fault"`  or
 #' numeric vector or array containing the spherical coordinates
 #' @param azimuth,plunge,z,dip numeric vectors of the spherical coordinates
-#' @param sense (optional) integer. Sense of the line (e.g.on a fault plane). Either
+#' @param sense integer. Sense of the line (e.g.on a fault plane). Either
 #' `1`or `-1` for down (normal offset) or up (reverse offset), respectively. The "sense" is the sign
-#' of the fault's rake (see [Fault_from_rake()] for details).
+#' of the fault's rake (see [Fault_from_rake()] for details). Can also be a character with `"n"` (for normal) and `"r"` for "reverse".
 #' @param correction logical. If `TRUE` (default), both the fault plane and slip
 #' vector will be rotated so that the slip vector lies on the fault plane by
 #' minimizing the angle between the slip and the plane normal vector. See [correct_pair()] for details.
@@ -201,6 +201,8 @@ Line <- function(x, plunge) {
   } else if (is.Ray(x)) {
     azimuth <- x[, "azimuth"]
     plunge <- x[, "plunge"]
+    
+    # convert to lower hemisphere
     azimuth <- ifelse(plunge < 0, azimuth + 180, azimuth)
     plunge <- abs(plunge)
   } else {
@@ -343,6 +345,10 @@ Pair <- function(x, y, azimuth, plunge, correction = FALSE) {
 Fault <- function(x, y, azimuth, plunge, sense, correction = FALSE) {
   stopifnot(is.logical(correction))
   rn <- rownames(x)
+  
+  if(is.character(sense)) {
+    sense <- ifelse(tolower(sense) == "n", 1, -1)
+  }
 
   if (is.Pair(x)) {
     dip_direction <- x[, "dip_direction"]

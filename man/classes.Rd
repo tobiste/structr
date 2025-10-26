@@ -71,9 +71,9 @@ Spherical(x, .class)
 \item{x, y}{object of class \code{"Line"}, \code{"Ray"}, \code{"Plane"}, and  \code{"Pair"}, and \code{"Fault"}  or
 numeric vector or array containing the spherical coordinates}
 
-\item{sense}{(optional) integer. Sense of the line (e.g.on a fault plane). Either
+\item{sense}{integer. Sense of the line (e.g.on a fault plane). Either
 \code{1}or \code{-1} for down (normal offset) or up (reverse offset), respectively. The "sense" is the sign
-of the fault's rake (see \code{\link[=Fault_from_rake]{Fault_from_rake()}} for details).}
+of the fault's rake (see \code{\link[=Fault_from_rake]{Fault_from_rake()}} for details). Can also be a character with \code{"n"} (for normal) and \code{"r"} for "reverse".}
 
 \item{azimuth, plunge, z, dip}{numeric vectors of the spherical coordinates}
 

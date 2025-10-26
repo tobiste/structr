@@ -4,12 +4,17 @@
 \alias{Fault_from_rake}
 \title{Fault from plane and rake}
 \usage{
-Fault_from_rake(p, rake, ...)
+Fault_from_rake(p, rake, sense = NULL, ...)
 }
 \arguments{
 \item{p}{object of class \code{"Plane"}}
 
-\item{rake}{Angle in degrees in the range  −180° and 180°}
+\item{rake}{Angle (in degrees) between fault strike and lineation.
+Measured clockwise from the strike, i.e.
+down is positive; values between 0 and 360° (or −180° and 180°)}
+
+\item{sense}{Either 1 (for normal fault movement) or -1 (reverse fault movement).
+Use this only if \code{rake} values are in range of 0 and 180°.}
 
 \item{...}{optional arguments passed to \code{\link[=Fault]{Fault()}}}
 }
@@ -21,18 +26,22 @@ Fault from plane and rake
 }
 \details{
 Rake is used to describe the direction of fault motion with respect
-to the strike (measured anticlockwise from the horizontal, up is positive; values between −180° and 180°):
+to the strike.
+
+Measured clockwise from the strike, down is positive; values between 0 and 360° (or −180° and 180°):
 \itemize{
 \item left-lateral strike slip: rake near 0°
 \item right-lateral strike slip: rake near 180°
-\item normal: rake near −90°
-\item reverse/thrust: rake near +90°
+\item normal: rake near 90°
+\item reverse/thrust: rake near -90° (270°)
 }
 }
 \examples{
-fr <- Fault_from_rake(Plane(c(120, 120, 100), c(60, 60, 50)), c(84.7202, -10, 30))
-plot(fr, col = 1:3)
+fr <- Fault_from_rake(Plane(c(120, 120, 100, 0), c(60, 60, 50, 40)), rake = c(84.7202, -10, 30, 180))
+plot(fr, col = 1:4)
+legend("topleft", legend = Fault_sense(fr, 8), col = 1:4, pch = 16)
 
-fr2 <- Fault_from_rake(Plane(c(90, 90, 90), c(80, 40, 10)), c(10, 20, 90))
+fr2 <- Fault_from_rake(Plane(c(90, 90, 90), c(80, 40, 10)), rake = c(10, 20, 90), sense = c(1, 1, -1))
 plot(fr2, col = 1:3)
+legend("topleft", legend = Fault_sense(fr2, 8), col = 1:3, pch = 16)
 }

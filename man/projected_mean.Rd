@@ -4,10 +4,12 @@
 \alias{projected_mean}
 \title{Projected Mean}
 \usage{
-projected_mean(x)
+projected_mean(x, ...)
 }
 \arguments{
 \item{x}{Object of class \code{"Vec3"}, \code{"Line"} or \code{"Plane"}}
+
+\item{...}{additional arguments passed to \code{\link[=ortensor]{ortensor()}}.}
 }
 \value{
 Vector in coordinate system of \code{x}
@@ -16,7 +18,8 @@ Vector in coordinate system of \code{x}
 Eigenvector with largest eigenvalue of the orientation tensor
 }
 \examples{
-projected_mean(example_lines)
+example_lines_df$quality
+projected_mean(example_lines, w =  runif(nrow(example_lines)))
 }
 \references{
 Bachmann, F., Hielscher, R., Jupp, P. E., Pantleon, W., Schaeben, H., &

@@ -147,7 +147,7 @@ lines_vector <- Vec3(lines)
 head(lines_vector)
 ```
 
- Convert a pole to a plane to a Line:
+ Convert a Plane's pole to a Line:
 ```{r example_transformation2}
 planes_as_line <- Line(planes)
 head(planes_as_line)

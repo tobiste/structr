@@ -4,13 +4,15 @@
 \alias{.or_eigen_helper}
 \title{Helper function for Eigenvalues and Eigenvectors of a Set of Vectors}
 \usage{
-.or_eigen_helper(x, scaled = FALSE)
+.or_eigen_helper(x, scaled = FALSE, ...)
 }
 \arguments{
 \item{x}{Object of class \code{"Vec3"}, \code{"Line"} or \code{"Plane"}}
 
 \item{scaled}{logical. Whether the Eigenvectors should be scaled by the
 Eigenvalues (only effective if \code{x} is in Cartesian coordinates).}
+
+\item{...}{additional arguments passed to \code{\link[=ortensor]{ortensor()}}.}
 }
 \description{
 Helper function for Eigenvalues and Eigenvectors of a Set of Vectors

@@ -9,7 +9,7 @@ azimuth_to_cardinal(x, n_directions = 8)
 \arguments{
 \item{x}{angles in degree.}
 
-\item{n_directions}{either 8 for 8-point (N, NE, E, …) or 6 for 16-point (N, NNE, NE, …) cardinal version.}
+\item{n_directions}{either 4, for 4-points (N, E, S, W), 8 for 8-point (N, NE, E, …) or 6 for 16-point (N, NNE, NE, …) cardinal version.}
 }
 \value{
 character vector
@@ -18,6 +18,7 @@ character vector
 Converts azimuth angles into Cardinal directions
 }
 \examples{
-azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350)) # 8-point compass
+azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350), 4) # 8-point compass
+azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350), 8) # 8-point compass
 azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350), 16) # 16-point compass
 }

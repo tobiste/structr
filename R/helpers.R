@@ -110,19 +110,23 @@ quadrantletter_to_azimuth <- function(x) {
 #' Converts azimuth angles into Cardinal directions
 #'
 #' @param x angles in degree.
-#' @param n_directions either 8 for 8-point (N, NE, E, …) or 6 for 16-point (N, NNE, NE, …) cardinal version.
+#' @param n_directions either 4, for 4-points (N, E, S, W), 8 for 8-point (N, NE, E, …) or 6 for 16-point (N, NNE, NE, …) cardinal version.
 #'
 #' @returns character vector
 #' @export
 #'
 #' @examples
-#' azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350)) # 8-point compass
+#' azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350), 4) # 8-point compass
+#' azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350), 8) # 8-point compass
 #' azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350), 16) # 16-point compass
 azimuth_to_cardinal <- function(x, n_directions = 8) {
   # Normalize to 0–360
   azimuth <- x %% 360
 
-  if (n_directions == 8) {
+  
+  if (n_directions == 4) {
+  dirs <- c("N", "E", "S", "W")
+  } else if (n_directions == 8) {
     dirs <- c("N", "NE", "E", "SE", "S", "SW", "W", "NW")
   } else if (n_directions == 16) {
     dirs <- c(
@@ -130,7 +134,7 @@ azimuth_to_cardinal <- function(x, n_directions = 8) {
       "S", "SSW", "SW", "WSW", "W", "WNW", "NW", "NNW"
     )
   } else {
-    stop("n_directions must be 8 or 16")
+    stop("n_directions must be 4, 8 or 16")
   }
 
   step <- 360 / n_directions
@@ -142,13 +146,40 @@ azimuth_to_cardinal <- function(x, n_directions = 8) {
 }
 
 
+#' Converts strike and dip quadrant notation into into dip direction
+#'
+#' @param strike numeric. Strike in degree (left- or right-hand rule)
+#' @param dip_quadrant character. Quadrant of dip direction
+#' @param n_directions integer.
+#'
+#' @returns Dip direction in degrees
+#' @seealso [azimuth_to_cardinal()], [Fault_from_rake_quadrant()]
+#' @export
+#'
+#' @examples
+#' s <- c(270, 315, 0, 45, 90, 135, 180, 225, 270) # strike in left-hand-rule
+#' q <- c("N", 'E', 'E', 'S', 'S', 'W', 'W', 'N', "N") # dip quadrant
+#' quadrant2dd(s, q)
+quadrant2dd <- function(strike, dip_quadrant, n_directions = c(4L, 8L, 16L)){
+  # 1. try right-hand-rule
+  dd <- strike - 90
+  
+  # check if already correct
+  res1 <- azimuth_to_cardinal(dd, n_directions = min(2*n_directions, 16))
+  match <- sapply(seq_along(res1), function(i) grepl(dip_quadrant[i], res1[i])) 
+  # do left-handrule if not
+  ifelse(match, dd, strike + 90) %% 360
+}
+
+
+
 #' Quadrant measurement expressions to angles
 #'
 #' Interprets quadrant measurement expressions, such as "E30N" or "W10S" as azimuth angles
 #'
-#' @param x character.
+#' @param x character. Dip direction and quadrant conventions
 #'
-#' @return numeric
+#' @return numeric. Dip direction in degrees
 #' @noRd
 #' @keywords internal
 #'

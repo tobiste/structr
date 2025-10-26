@@ -6,6 +6,7 @@
 \alias{Pair_plane}
 \alias{Fault_slip}
 \alias{Fault_plane}
+\alias{Fault_sense}
 \title{Extract components of fault object}
 \usage{
 Fault_rake(x)
@@ -15,9 +16,13 @@ Pair_plane(x)
 Fault_slip(x)
 
 Fault_plane(x)
+
+Fault_sense(x, steps = 8)
 }
 \arguments{
 \item{x}{object of class \code{"Fault"}}
+
+\item{steps}{Integer. Either 2, 4, or 8 steps for parsing the fault sense}
 }
 \value{
 numeric. \code{"Plane"}, \code{"Ray"} or angle in degrees, respectively
@@ -26,11 +31,15 @@ numeric. \code{"Plane"}, \code{"Ray"} or angle in degrees, respectively
 \code{\link[=Fault_plane]{Fault_plane()}} extracts the orientation of the fault plane,
 \code{\link[=Fault_slip]{Fault_slip()}} extracts the orientation of the slip vector, and
 \code{\link[=Fault_rake]{Fault_rake()}} extracts the rake of the fault, i.e. the angle between fault
-slip vector and fault strike.
+slip vector and fault strike (measured clockwise from strike!)
+\code{\link[=Fault_sense]{Fault_sense()}} extracts the fault sense from the rake (1: normal, -1: reverse)
 }
 \examples{
 f <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
 Fault_plane(f)
 Fault_slip(f)
 Fault_rake(f)
+Fault_sense(f, 2)
+Fault_sense(f, 4)
+Fault_sense(f, 8)
 }

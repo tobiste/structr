@@ -30,7 +30,7 @@ n = 1
 \examples{
 set.seed(20250411)
 x <- rfb(100, mu = Line(120, 50), k = 1, A = diag(c(10, 0, 0)))
-ortensor(x)
+ortensor(x, w = runif(nrow(x)))
 }
 \seealso{
 \code{\link[=ot_eigen]{ot_eigen()}}, \code{\link[=inertia_tensor]{inertia_tensor()}}

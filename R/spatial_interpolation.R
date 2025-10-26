@@ -2,12 +2,12 @@
 #'
 #' Inverse distance weighted spatial interpolation of plane or line objects.
 #'
-#' @param x numeric vector, array, or object of class `"line"` or `"plane"`
+#' @param x numeric vector, array, or object of class `"Line"` or `"Plane"`
 #' @param coords a `"sf"` object containing the geographic coordinates of `x`
 #' measurements
 #' @param grid (optional) Point object of class `"sf"`.
 #' @param gridsize 	Numeric. Target spacing of the regular grid in decimal
-#'  degree. Default is `2.5`. Iignored if grid is specified.
+#'  degree. Default is `2.5`. Ignored if grid is specified.
 #' @param min_data Integer. Minimum number of data per kernel. Default is `3`
 #' @param threshold Numeric. Threshold for deviation of direction. Default is `25`
 #' @param arte_thres Numeric. Maximum distance (in km) of the grid point to the
@@ -68,6 +68,7 @@ spatial_interpolation <- function(x,
   )
 
   v <- Line(x) |> unclass()
+  xclass <- class(x)
 
   arte_thres <- min_dist_threshold
   threshold <- max_sd
@@ -148,9 +149,9 @@ spatial_interpolation <- function(x,
 
 
           # mean vector and spherical standard deviation
-          vecs <- datas[ids_R, 3:4] |> as.Line()
+          vecs <- datas[ids_R, 3:4] |>  as.Line() |> Spherical(xclass)
           mean_vec <- sph_mean(vecs, w) |> unclass()
-          sd_vec <- delta(vecs, w)
+          var_vec <- sph_var(vecs, w)
         }
         c(
           lon = G[i, 1],
@@ -158,7 +159,7 @@ spatial_interpolation <- function(x,
           azimuth = mean_vec[1, 1],
           plunge = mean_vec[1, 2],
           # z = mean_vec[1,3],
-          delta = sd_vec,
+          var = var_vec,
           R = R_search,
           md = md,
           N = N_in_R

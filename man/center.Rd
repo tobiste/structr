@@ -16,20 +16,22 @@ is already vertical or not.}
 Object of class of \code{x}
 }
 \description{
-Rotate vector object to position that eigenvectors are parallel to
+Rotate vector object to position that ortensor eigenvectors are parallel to
 axes of coordinate system: E3||X (north-south), E2||X(east-west),
-E1||X(vertical)
+E1||X(vertical).
+Useful when one wants to inspect the distribution of vectors, especially when vectors plot
+near the perimeter of the stereonet.
 }
 \examples{
 set.seed(1)
-mu <- Line(120, 50)
-x <- rvmf(100, mu = mu, k = 20)
+mu <- Line(120, 10)
+x <- rkent(100, mu = mu, k = 20, b = 5)
 x_centered <- center(x)
 
 # plot results
 plot(x, col = "grey")
-points(x_centered, col = "black")
-legend("topright", legend = c("original", "centered"), col = c("grey", "black"), pch = 16)
+points(x_centered, col = "#B63679", pch = 16)
+legend("topright", legend = c("original", "centered"), col = c("grey", "#B63679"), pch = 16)
 }
 \seealso{
 \code{\link[=ot_eigen]{ot_eigen()}}
