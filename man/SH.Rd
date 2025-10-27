@@ -13,7 +13,7 @@ coordinate system, e.g. \code{S1 = c(s1N,s1E,s1D)}. Given as object of class \co
 
 \item{R}{numeric. Relative magnitude of \code{S2} with respect to \code{S1} and \code{S3}:
 \eqn{R = \frac{S1 - S2}{S1 - S3}}. Values ranging from 0 to 1, with 0 being
-\code{S1==S2} and 1 being \code{S2==S3}.}
+\code{S1==S2} and 1 being \code{S2==S3}. Equivalent to the stress shape ratio of Gephart & Forsyth (1984).}
 
 \item{tol}{Tolerance of comparison.}
 
@@ -42,4 +42,7 @@ cbind(R, SH = SH(S1, S2, S3, R = R))
 Lund and Townend, (2007). Calculating horizontal stress
 orientations with full or partial knowledge of the tectonic stress tensor,
 Geophys. J. Int., doi:\doi{10.1111/j.1365-246X.2007.03468.x}.
+}
+\seealso{
+\code{\link[=stress_inversion]{stress_inversion()}} for stress inversion of fault slip data.
 }

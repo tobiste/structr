@@ -464,3 +464,9 @@ vec_list <- function(x) {
   Vec3(x) |>
     asplit(MARGIN = 1)
 }
+
+# Confidence margin for scalar values
+.confidence_margin_scalar <- function(x, alpha = 0.05){
+  p <- 1 - alpha/2
+  qt(p,df=n-1)*s/sqrt(n)
+}

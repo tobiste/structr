@@ -59,7 +59,9 @@ correct_pair(p)
 
 
 # Fault stress analysis
+{tectonicr} offers several techniques to calculate the orientation of principal stress axes
 
+## P-T method
 Calculates PT-axes, kinematic plane (M), and dihedra separation plane (d):
 
 ```{r faults_stress1}
@@ -70,6 +72,77 @@ print(my_fault2)
 ```{r faults_stress2}
 fault_analysis(my_fault2)
 ```
+
+
+
+
+## Fault slip inversion
+
+{tectonicr} provides a numerical solution to determine the orientation of the principal stresses from fault slip data using the Michael (1984) method. It uses bootstrapping for confidence intervals of the stress estimates.
+
+
+First we load some example data (here the data from Angelier, 1990)
+
+```{r slip_inversion1}
+data("angelier1990")
+test_data <- angelier1990$TYM
+
+stereoplot(title = "Test data", guides = FALSE)
+fault_plot(test_data, col = "grey30")
+```
+
+```{r slip_inversion2}
+test_res <- stress_inversion(angelier1990$TYM, boot = 10)
+
+# Average beta angle
+test_res$beta
+
+# Average resolved shear stress
+test_res$sigma_s
+```
+
+```{r slip_inversion3}
+cols <- c('#000004FF', "#B63679FF", "#FEC287FF")
+
+stereoplot(title = "Stress inversion", guides = FALSE)
+fault_plot(test_data, col = 'grey60')
+stereo_confidence(test_res$principal_axes_conf$sigma1, col = cols[1])
+stereo_confidence(test_res$principal_axes_conf$sigma2, col = cols[2])
+stereo_confidence(test_res$principal_axes_conf$sigma3, col = cols[3])
+text(test_res$principal_axes, label = rownames(test_res$principal_axes), col = cols, adj = -.25)
+legend("topleft", col = cols, legend = rownames(test_res$principal_axes), pch = 16)
+```
+
+The stress shape ratio &\Phi; 
+```{r slip_inversion4}
+test_res$phi
+
+# 95% confidence interval
+test_res$phi_conf
+```
+The angle  &beta; is the angle between the tangential traction predicted by the best stress tensor and the slip vector. This deviation can be visualized in the stereoplot:
+
+```{r slip_inversion3}
+beta <- test_res$fault_data$beta
+
+stereoplot(
+  title = "Deviation", 
+  sub = bquote(bar(beta) == .(round(test_res$beta)) * degree), 
+  guides = FALSE)
+
+fault_plot(test_data, col = assign_col(beta))
+legend_c(seq(min(beta), max(beta), 10), title = bquote("Deviation angle" ~ beta ~ "("*degree*")"))
+```
+
+
+```{r slip_inversion_mohr}
+sigmas <- test_res$principal_vals
+
+ggMohr(sigmas[1], sigmas[2], sigmas[3], coulomb = NULL, sliding = NULL) +
+  geom_point(data = test_res$fault_data, aes(sigma_n, sigma_s)) +
+  theme_void()
+```
+
 
 # Fault offsets {#sec.offset}
 
@@ -478,6 +551,12 @@ cbind(R, SH = SH(S1, S2, S3, R = R))
 ```
 
 
+For the stress inversion result from above:
+```{r lund2}
+SH(test_res$principal_axes[1, ], test_res$principal_axes[2, ], test_res$principal_axes[3, ], 
+   test_res$R)
+```
+
 
 # Mountain building and earthquakes: Some simple geometrical calculations
 
@@ -559,3 +638,11 @@ and an arrow ($\vec{.}$) denotes a unit vector.
 
 
 # References
+Angelier, J. (1979). Determination of the mean principal directions of stresses for a given fault population. Tectonophysics, 56(3–4), T17–T26. https://doi.org/10.1016/0040-1951(79)90081-7
+
+Angelier, J. (1990). Inversion of field data in fault tectonics to obtain the regional stress—III. A new rapid direct inversion method by analytical means. Ceophys. J. Int, 103, 363–376. https://doi.org/10.1111/j.1365-246X.1990.tb01777.x
+
+Lund, B., & Townend, J. (2007). Calculating horizontal stress orientations with full or partial knowledge of the tectonic stress tensor. Geophysical Journal International, 170(3), 1328–1335. https://doi.org/10.1111/j.1365-246X.2007.03468.x
+
+Michael, A. J. (1984). Determination of stress from slip data: Faults and folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526. https://doi.org/10.1029/JB089iB13p11517
+

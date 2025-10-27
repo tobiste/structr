@@ -2,25 +2,66 @@
 % Please edit documentation in R/stress_inversion.R
 \name{stress_inversion}
 \alias{stress_inversion}
-\title{Fault slip stress inversion}
+\title{Stress Inversion for Fault-Slip Data}
 \usage{
-stress_inversion(x, friction = 0.6)
+stress_inversion(x, boot = 10, conf.level = 0.95)
 }
 \arguments{
 \item{x}{\code{"Fault"} object}
 
-\item{friction}{numeric. Value(s) for coefficient of friction}
+\item{boot}{Number of bootstrap samples (10 by default)}
+
+\item{conf.level}{confidence level of the interval (0.95 by default)}
 }
 \value{
 list
+\describe{
+\item{\code{stress_tensor}}{matrix. Best-fit devitoric stress tensor}
+\item{\code{principal_axes}}{\code{"Line"} obects. Orientation of the principal stress axes}
+\item{\code{principal_axes_conf}}{list containg the confidence ellipses for the 3 principal stress vectors. See \code{\link[=confidence_ellipse]{confidence_ellipse()}} for details.}
+\item{\code{principal_vals}}{numeric. The proportional magnitudes of the principal stress axes given by the eigenvalues of the stress tensor: \eqn{\sigma_1}, \eqn{\sigma_2}, and \eqn{\sigma_3}}
+\item{\code{principal_vals_conf}}{3-colum vector containing the lower and upper margins of the confidence interval of the principal vals}
+\item{\code{R}}{numeric. Stress shape ratio after Gephart & Forsyth (1984): \eqn{R = (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3)}}
+\item{\code{R_conf}}{Confidence interval for \code{R}}
+\item{\code{phi}}{numeric. Stress shape ratio after Angelier (1979): \eqn{\Phi = (\sigma_2 - \sigma_3)/(\sigma_1 - \sigma_3)}. Values range between 0 (\eqn{\sigma_2 = \sigma_3}) and 1 (\eqn{\sigma_2 = \sigma_1}).}
+\item{\code{phi_conf}}{Confidence interval for \code{phi}}
+\item{\code{bott}}{numeric. Stress shape ratio after Bott (1959): \eqn{\R = (\sigma_3 - \sigma_1)/(\sigma_2 - \sigma_1)}. Values range between \eqn{-\infty} and \eqn{+\infty}.}
+\item{\code{bott_conf}}{Confidence interval for \code{bott}}
+\item{\code{beta}}{numeric. Average angle between the tangential traction predicted by the best stress tensor  and the slip vector on each plane. Should be close to 0.}
+\item{\code{sigma_s}}{numeric. Average resolved shear stress on each plane. Should be close to 1.}
+\item{\code{fault_data}}{\code{data.frame} containing the beta angles, the angles between sigma 1 and the plane normal,
+the resolved shear and normal stresses, and the slip and dilation tendency on each plane.}
+}
 }
 \description{
-Michael (1984) method
+Determines the orientation of the principal stresses from fault slip data using the Michael (1984) method.
+Confidence intervals are estimated by bootstrapping.
 }
 \examples{
-stress_inversion(angelier1990$TYM)
-stress_inversion(angelier1990$AVB)
+# Use Angelier examples:
+res_TYM <- stress_inversion(angelier1990$TYM, boot = 10)
+
+# Plot the faults (color-coded by beta angle) and show the principal stress axes
+stereoplot(title = "Tymbaki, Crete, Greece", guides = FALSE)
+fault_plot(angelier1990$TYM, col = assign_col(res_TYM$fault_data$beta))
+stereo_confidence(res_TYM$principal_axes_conf$sigma1, col = 2)
+stereo_confidence(res_TYM$principal_axes_conf$sigma2, col = 3)
+stereo_confidence(res_TYM$principal_axes_conf$sigma3, col = 4)
+text(res_AVB$principal_axes, label = rownames(res_TYM$principal_axes), col = 2:4, adj = -.25)
+legend("topleft", col = 2:4, legend = rownames(res_TYM$principal_axes), pch = 16)
+
+res_AVB <- stress_inversion(angelier1990$AVB)
+stereoplot(title = "Agia Varvara, Crete, Greece", guides = FALSE)
+fault_plot(angelier1990$AVB, col = assign_col(res_AVB$fault_data$beta))
+stereo_confidence(res_AVB$principal_axes_conf$sigma1, col = 2)
+stereo_confidence(res_AVB$principal_axes_conf$sigma2, col = 3)
+stereo_confidence(res_AVB$principal_axes_conf$sigma3, col = 4)
+text(res_AVB$principal_axes, label = rownames(res_AVB$principal_axes), col = 2:4, adj = -.25)
+legend("topleft", col = 2:4, legend = rownames(res_AVB$principal_axes), pch = 16)
 }
 \references{
 Michael, A. J. (1984). Determination of stress from slip data: Faults and folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526. https://doi.org/10.1029/JB089iB13p11517
+}
+\seealso{
+\code{\link[=SH]{SH()}} to calculate the azimuth of the maximum horizontal stress; \code{\link[=fault_analysis]{fault_analysis()}} for a simple P-T stress analysis.
 }

@@ -9,13 +9,15 @@
 #' coordinate system, e.g. `S1 = c(s1N,s1E,s1D)`. Given as object of class `"Vec3"` or `"Line"`
 #' @param R numeric. Relative magnitude of `S2` with respect to `S1` and `S3`:
 #' \eqn{R = \frac{S1 - S2}{S1 - S3}}. Values ranging from 0 to 1, with 0 being
-#' `S1==S2` and 1 being `S2==S3`.
+#' `S1==S2` and 1 being `S2==S3`. Equivalent to the stress shape ratio of Gephart & Forsyth (1984). 
 #' @param tol Tolerance of comparison.
 #' @param ortho.tol tolerance angle (in degree) for orthogonality check of the
 #' three principal stress vectors.
 #'
 #' @return The direction of SH from North as numeric angle in degrees (radians if all principal stress axes were given as `"Vec3"` objects).
 #' @export
+#' 
+#' @seealso [stress_inversion()] for stress inversion of fault slip data.
 #'
 #' @references Lund and Townend, (2007). Calculating horizontal stress
 #' orientations with full or partial knowledge of the tectonic stress tensor,
