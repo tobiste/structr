@@ -105,3 +105,25 @@ gr <- tibble::tribble(
 gray_example <- Plane(gr$dipdir, gr$dip, sense = gr$sense)
 rownames(gray_example) <- gr$type
 usethis::use_data(gray_example, overwrite = TRUE)
+
+
+
+# Angelier 1990 fault slip data
+angelier1990_df <- readxl::read_xlsx("inst/angelier_data.xlsx", sheet = 1) |>
+  dplyr::group_by(site) |>
+  dplyr::mutate(id = dplyr::row_number(), .before = "sense") |>
+  dplyr::mutate( # dipdir = structr::rhr2dd(strike),
+    sense = ifelse(sense == "N", 1, -1)
+  )
+angelier1990 <- angelier1990_df |> split(angelier1990_df$site) |> 
+  lapply(function(x){
+    Fault_from_rake_quadrant(
+      Plane(quadrant2dd(x$strike, x$dip_card), x$dip), 
+      rake = x$pitch, 
+      quadrant = x$pitch_card, 
+      type = "rake", 
+      sense = x$sense)
+})
+usethis::use_data(angelier1990, overwrite = TRUE)
+
+
