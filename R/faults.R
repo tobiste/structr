@@ -226,11 +226,13 @@ Fault_sense <- function(x, steps = 8){
 #' @export
 #'
 #' @examples
-#' fr <- Fault_from_rake(Plane(c(120, 120, 100, 0), c(60, 60, 50, 40)), rake = c(84.7202, -10, 30, 180))
+#' fr <- Fault_from_rake(Plane(c(120, 120, 100, 0), c(60, 60, 50, 40)), 
+#' rake = c(84.7202, -10, 30, 180))
 #' plot(fr, col = 1:4)
 #' legend("topleft", legend = Fault_sense(fr, 8), col = 1:4, pch = 16)
 #'
-#' fr2 <- Fault_from_rake(Plane(c(90, 90, 90), c(80, 40, 10)), rake = c(10, 20, 90), sense = c(1, 1, -1))
+#' fr2 <- Fault_from_rake(Plane(c(90, 90, 90), c(80, 40, 10)), 
+#' rake = c(10, 20, 90), sense = c(1, 1, -1))
 #' plot(fr2, col = 1:3)
 #' legend("topleft", legend = Fault_sense(fr2, 8), col = 1:3, pch = 16)
 Fault_from_rake <- function(p, rake, sense = NULL, ...) {
