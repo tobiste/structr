@@ -144,11 +144,11 @@ tensors: <code><a href="ot_eigen.html">ot_eigen()</a></code>.</p></div>
 <span class="r-in"><span><span class="va">mu</span> <span class="op">&lt;-</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">50</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">100</span>, mu <span class="op">=</span> <span class="va">mu</span>, k <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">principal_stretch</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       S1       S2       S3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 9.511749 2.220799 2.143520 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        S1        S2        S3 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.9511749 0.2220799 0.2143520 </span>
 <span class="r-in"><span><span class="fu">principal_strain</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        e1        e2        e3 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 2.2525278 0.7978670 0.7624492 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          e1          e2          e3 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -0.05005729 -1.50471812 -1.54013586 </span>
 <span class="r-in"><span><span class="fu">or_shape_params</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $stretch_ratios</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      Rxy      Ryz      Rxz </span>
@@ -160,7 +160,7 @@ tensors: <code><a href="ot_eigen.html">ot_eigen()</a></code>.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $Vollmer</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          P          G          R          B          C          I          D </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  85.541428   0.674541  13.784031  86.215969   2.980157   3.673150 110.665262 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.85541428 0.00674541 0.13784031 0.86215969 2.98015714 2.45061732 0.85710561 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $Flinn</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $Flinn$k</span>
@@ -182,7 +182,7 @@ tensors: <code><a href="ot_eigen.html">ot_eigen()</a></code>.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.319083</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $Lisle_intensity</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 61234</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.67315</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $Nadai</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>     goct     eoct </span>
@@ -198,7 +198,7 @@ tensors: <code><a href="ot_eigen.html">ot_eigen()</a></code>.</p></div>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 17.97803</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $US</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 6123400</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 367.315</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $Jellinek</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.476767</span>

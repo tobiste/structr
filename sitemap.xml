@@ -16,6 +16,7 @@
 <url><loc>https://tobiste.github.io/structr/authors.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/index.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/Fault_components.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/Fault_from_rake_quadrant.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/Mohr_calc.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/Mohr_plot.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/PR_stress.html</loc></url>
@@ -91,7 +92,9 @@
 <url><loc>https://tobiste.github.io/structr/reference/points.spherical.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/prepare-ggplot.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/projected_mean.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/quadrant2dd.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ramsay.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/regression_gray.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/rfb.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/rhr.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/rkent.html</loc></url>
