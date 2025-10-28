@@ -12,6 +12,8 @@ editor_options:
     wrap: 72
 ---
 
+This tutorial demonstrates the `"Fault"` object. It also shows how you can extract paleo-stress directions from fault slip data, and how you can derive displacement components from fault slip. 
+
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
@@ -286,7 +288,7 @@ by differentiating the last equation with respect to $\alpha$.
 \end{equation}
 
 | Condition | Interpretation |
-|----|----|
+|------------------------------------|------------------------------------|
 | $\sigma_{1N} = \pm \sigma_{1E}$ and $R = 1$ | $\mathbb{S}_H$ undefined if $\mathbf{\vec{\sigma_1}}$ vertical, else $\alpha_H = \alpha_1$ (45$^{\circ}$ or 135°) |
 | $\sigma_{1N} = \pm \sigma_{1E}$ and $\sigma_{2N} = \pm \sigma_{2E}$ | $\mathbb{S}_H$ undefined if $R = 0$, else $\alpha_H = \alpha_1$ (45$^{\circ}$ or 135°) |
 | $(\sigma_{1N}^2 - \sigma_{1E}^2) + (1 - R)(\sigma_{2N}^2 - \sigma_{2E}^2) = 0$ | $\mathbb{S}_H$ undefined if $R = 0$, else $\alpha_H = \alpha_1$ (45$^{\circ}$ or 135°) |
