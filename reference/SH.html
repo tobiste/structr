@@ -11,7 +11,7 @@ This function Equations 11 and 10 from Lund and Townend (2007)."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,7 +73,7 @@ coordinate system, e.g. <code>S1 = c(s1N,s1E,s1D)</code>. Given as object of cla
 <dt id="arg-r">R<a class="anchor" aria-label="anchor" href="#arg-r"></a></dt>
 <dd><p>numeric. Relative magnitude of <code>S2</code> with respect to <code>S1</code> and <code>S3</code>:
 \(R = \frac{S1 - S2}{S1 - S3}\). Values ranging from 0 to 1, with 0 being
-<code>S1==S2</code> and 1 being <code>S2==S3</code>.</p></dd>
+<code>S1==S2</code> and 1 being <code>S2==S3</code>. Equivalent to the stress shape ratio of Gephart &amp; Forsyth (1984).</p></dd>
 
 
 <dt id="arg-tol">tol<a class="anchor" aria-label="anchor" href="#arg-tol"></a></dt>
@@ -95,6 +95,10 @@ three principal stress vectors.</p></dd>
 orientations with full or partial knowledge of the tectonic stress tensor,
 Geophys. J. Int., doi:<a href="https://doi.org/10.1111/j.1365-246X.2007.03468.x" class="external-link">doi:10.1111/j.1365-246X.2007.03468.x</a>
 .</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="stress_inversion.html">stress_inversion()</a></code> for stress inversion of fault slip data.</p></div>
     </div>
 
     <div class="section level2">

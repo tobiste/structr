@@ -20,7 +20,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9001</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9002</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -68,7 +68,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-10-27</h4>
+            <h4 data-toc-skip class="date">2025-10-28</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/E_Faults.Rmd" class="external-link"><code>vignettes/E_Faults.Rmd</code></a></small>
       <div class="d-none name"><code>E_Faults.Rmd</code></div>
@@ -137,8 +137,13 @@ displacement.</p>
 <div class="section level2">
 <h2 id="fault-stress-analysis">Fault stress analysis<a class="anchor" aria-label="anchor" href="#fault-stress-analysis"></a>
 </h2>
-<p>Calculates PT-axes, kinematic plane (M), and dihedra separation plane
-(d):</p>
+<p>{tectonicr} offers several techniques to calculate the orientation of
+principal stress axes</p>
+<div class="section level3">
+<h3 id="p-t-method">P-T method<a class="anchor" aria-label="anchor" href="#p-t-method"></a>
+</h3>
+<p>This simple technique calculates PT-axes, kinematic plane (M), and
+dihedra separation plane (d):</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">my_fault2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Fault</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">120</span>, <span class="fl">100</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">60</span>, <span class="fl">50</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">110</span>, <span class="fl">25</span>, <span class="fl">30</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">58</span>, <span class="fl">9</span>, <span class="fl">23</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">my_fault2</span><span class="op">)</span></span></code></pre></div>
@@ -177,411 +182,96 @@ displacement.</p>
 <span><span class="co">## [2,]      208.8622 83.16168</span></span>
 <span><span class="co">## [3,]      210.2233 67.19865</span></span></code></pre>
 </div>
-<div class="section level2">
-<h2 id="sec-offset">Fault offsets<a class="anchor" aria-label="anchor" href="#sec-offset"></a>
-</h2>
-<p>The offset along a fault can be factorized into several
-components.</p>
-<div class="float" id="id">
-<img src="fault_displacements.png" class="class" style="width:75.0%;height:75.0%" alt="Fig. 1: Graphic illustration of displacement components along a fault. \mathbb{G} as the georeference frame with D = down, E = East, N = North."><div class="figcaption">Fig. 1: Graphic illustration of displacement
-components along a fault.
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝔾</mi><annotation encoding="application/x-tex">\mathbb{G}</annotation></semantics></math>
-as the georeference frame with D = down, E = East, N = North.</div>
-</div>
 <div class="section level3">
-<h3 id="get-different-components-with-trigonometry">Get different components with trigonometry<a class="anchor" aria-label="anchor" href="#get-different-components-with-trigonometry"></a>
+<h3 id="fault-slip-inversion">Fault slip inversion<a class="anchor" aria-label="anchor" href="#fault-slip-inversion"></a>
 </h3>
-<div class="section level4">
-<h4 id="sec-offset-1">1. Input: Fault orientation (dip angle, dip direction), shorteninig
-direction, and horizontal throw<a class="anchor" aria-label="anchor" href="#sec-offset-1"></a>
-</h4>
-<p>Knowing the horizontal throw (e.g. from plate motion parameters), the
-remaining components of the displacements along a given fault are as
-follows.</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>σ</mi><mtext mathvariant="normal">Hmax</mtext></msub><mo>−</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">dip direction</mtext><mo>+</mo><msup><mn>90</mn><mo>∘</mo></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">|</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}\delta = |\sigma_{\textrm{Hmax}} - (\textrm{dip direction}+90^{\circ})|\end{equation}</annotation></semantics></math></p>
-<p><em>Slip components in the horizontal plane:</em></p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>f</mi><mtext mathvariant="normal">strike slip</mtext></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mo stretchy="true" form="prefix">|</mo><mo>cos</mo><mi>δ</mi><mo>*</mo><msub><mi>f</mi><mtext mathvariant="normal">horizontal throw</mtext></msub><mo stretchy="true" form="postfix">|</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>f</mi><mtext mathvariant="normal">heave</mtext></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msqrt><mrow><msubsup><mi>f</mi><mtext mathvariant="normal">horizontal throw</mtext><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>f</mi><mtext mathvariant="normal">strike slip</mtext><mn>2</mn></msubsup></mrow></msqrt></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{equation}\begin{split}
-  f_\textrm{strike slip} &amp; = |\cos{\delta} * f_\textrm{horizontal throw}|\\
-  f_\textrm{heave} &amp; = \sqrt{f_\textrm{horizontal throw}^2 - f_\textrm{strike slip}^2}
-  \end{split}\end{equation}</annotation></semantics></math></p>
-<p><em>Slip components in the vertical plane perpendicular to the strike
-of the fault:</em></p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>f</mi><mtext mathvariant="normal">dip slip</mtext></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mfrac><msub><mi>f</mi><mtext mathvariant="normal">heave</mtext></msub><mrow><mi>c</mi><mi>o</mi><mi>s</mi><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">dip</mtext><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>f</mi><mtext mathvariant="normal">vertical throw</mtext></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msqrt><mrow><msubsup><mi>f</mi><mtext mathvariant="normal">dip slip</mtext><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>f</mi><mtext mathvariant="normal">heave</mtext><mn>2</mn></msubsup></mrow></msqrt></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{equation}\begin{split}
-  f_\textrm{dip slip} &amp;=  \frac{f_\textrm{heave}}{cos{(\textrm{dip})}}\\
-  f_\textrm{vertical throw} &amp;= \sqrt{f_\textrm{dip slip}^2 - f_\textrm{heave}^2}
-  \end{split}\end{equation}</annotation></semantics></math></p>
-<p><em>Slip components in the fault plane plane:</em></p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>f</mi><mtext mathvariant="normal">net slip</mtext></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msqrt><mrow><msubsup><mi>f</mi><mtext mathvariant="normal">strike slip</mtext><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>f</mi><mtext mathvariant="normal">dip slip</mtext><mn>2</mn></msubsup></mrow></msqrt></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mtext mathvariant="normal">rake</mtext></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mo>arctan</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msub><mi>f</mi><mtext mathvariant="normal">dip slip</mtext></msub><msub><mi>f</mi><mtext mathvariant="normal">strike slip</mtext></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{equation}\begin{split}
-  f_\textrm{net slip} &amp;= \sqrt{f_\textrm{strike slip}^2 + f_\textrm{dip slip}^2}\\
-  \textrm{rake} &amp;= \arctan{\left(\frac{f_\textrm{dip slip}}{f_\textrm{strike slip}}\right)}
-  \end{split}\end{equation}</annotation></semantics></math></p>
-<p>Thus, the rake angle describes the ratio between the dip slip and the
-strike slip component.</p>
-<p>Knowing the vertical throw (e.g. from thermochronology or petrology),
-the fault dip (?assumption), and the direction and amount of horizontal
-offset, the <strong>strike</strong> of the fault is as follows:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>f</mi><mtext mathvariant="normal">heave</mtext></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>f</mi><mtext mathvariant="normal">vertical throw</mtext></msub><mo>*</mo><mo>tan</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">dip</mtext><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mi>δ</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mo>arcsin</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msub><mi>f</mi><mtext mathvariant="normal">heave</mtext></msub><msub><mi>f</mi><mtext mathvariant="normal">horizontal throw</mtext></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mtext mathvariant="normal">strike</mtext></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>σ</mi><mtext mathvariant="normal">Hmax</mtext></msub><mo>−</mo><mi>δ</mi><mo stretchy="true" form="postfix">|</mo></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{equation}\begin{split}
-f_\textrm{heave} &amp;= f_\textrm{vertical throw} * \tan{(\textrm{dip})}\\
-\delta &amp;= \arcsin{\left(\frac{f_\textrm{heave}}{f_\textrm{horizontal throw}}\right)}\\
-\textrm{strike} &amp;= |\sigma_{\textrm{Hmax}} - \delta|
-\end{split}\end{equation}</annotation></semantics></math></p>
-<p>Knowing the vertical throw (e.g. from thermochronology or petrology),
-the fault strike (geomorphology), and the direction and amount of
-horizontal offset, the <strong>dip</strong> of the fault is as
-follows:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>δ</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>σ</mi><mtext mathvariant="normal">Hmax</mtext></msub><mo>−</mo><mtext mathvariant="normal">strike</mtext><mo stretchy="true" form="postfix">|</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>f</mi><mtext mathvariant="normal">heave</mtext></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>f</mi><mtext mathvariant="normal">horizontal throw</mtext></msub><mo>*</mo><mo>sin</mo><mi>δ</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mtext mathvariant="normal">dip</mtext></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mo>arctan</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msub><mi>f</mi><mtext mathvariant="normal">heave</mtext></msub><msub><mi>f</mi><mtext mathvariant="normal">vertical throw</mtext></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{equation}\begin{split}
-\delta &amp;= |\sigma_{\textrm{Hmax}} - \textrm{strike}|\\
-f_\textrm{heave} &amp;= f_\textrm{horizontal throw} * \sin{\delta} \\
-\textrm{dip} &amp;= \arctan{\left(\frac{f_\textrm{heave}}{f_\textrm{vertical throw}}\right)} 
-\end{split}\end{equation}</annotation></semantics></math></p>
-<p>Knowing the vertical throw (e.g. from thermochronology or petrology)
-and the fault’s dip and rake, the <em>horizontal offset</em>, the
-horizontal throw, and the net-slip are as follows:</p>
-</div>
-</div>
-</div>
-<div class="section level2">
-<h2 id="sec-tensors">Fault displacement tensors<a class="anchor" aria-label="anchor" href="#sec-tensors"></a>
-</h2>
-<p>Each fault component is a vector describing its direction and length.
-For instance, the vector of the strike slip is:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><msub><mi>f</mi><mtext mathvariant="normal">strike slip</mtext></msub><mo accent="true">→</mo></mover><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">strike-slip</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}
-  \vec{f_\text{strike slip}} = \begin{pmatrix} \lVert f_\textrm{strike-slip}\rVert \\ 0 \\ 0 \end{pmatrix}
-\end{equation}</annotation></semantics></math></p>
-<div class="section level3">
-<h3 id="sec-tensors-netslip">Net slip vector<a class="anchor" aria-label="anchor" href="#sec-tensors-netslip"></a>
-</h3>
-<p>Net slip vector</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><msub><mi>f</mi><mtext mathvariant="normal">net</mtext></msub><mo accent="true">→</mo></mover><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">strike-slip</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">heave</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">vertical throw</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}
-  \vec{f_\text{net}} = \begin{pmatrix} \lVert f_\textrm{strike-slip}\rVert \\ \lVert f_\textrm{heave}\rVert \\ \lVert f_\textrm{vertical throw}\rVert \end{pmatrix}
-\end{equation}</annotation></semantics></math></p>
+<p>{structr} provides a numerical solution to determine the orientation
+of the principal stresses from fault slip data using the Michael (1984)
+method<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Michael, A. J. (1984). Determination of stress from slip
+data: Faults and folds. Journal of Geophysical Research: Solid Earth,
+89(B13), 11517–11526. &lt;a href="https://doi.org/10.1029/JB089iB13p11517" class="external-link uri"&gt;https://doi.org/10.1029/JB089iB13p11517&lt;/a&gt;&lt;/p&gt;'><sup>1</sup></a>.
+It uses bootstrapping for confidence intervals of the stress
+estimates.</p>
+<p>First we load some example data (here the data from Angelier,
+1990)[~ref4]</p>
+<p>[~ref4]: Angelier, J. (1990). Inversion of field data in fault
+tectonics to obtain the regional stress—III. A new rapid direct
+inversion method by analytical means. Ceophys. J. Int, 103, 363–376. <a href="https://doi.org/10.1111/j.1365-246X.1990.tb01777.x" class="external-link uri">https://doi.org/10.1111/j.1365-246X.1990.tb01777.x</a></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/fault_displacements.html">fault_displacements</a></span><span class="op">(</span>strikeslip <span class="op">=</span> <span class="fl">2</span>, verticalthrow <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, heave <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
-</div>
-<div class="section level3">
-<h3 id="sec-tensors-principal">Principal displacement tensor<a class="anchor" aria-label="anchor" href="#sec-tensors-principal"></a>
-</h3>
-<p>The Eigen values of
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝖥</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\mathsf{F}_{ij}</annotation></semantics></math>;
-represented as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mover><msub><mi>f</mi><mn>1</mn></msub><mo accent="true">→</mo></mover><mo>,</mo><mover><msub><mi>f</mi><mn>2</mn></msub><mo accent="true">→</mo></mover><mo>,</mo><mover><msub><mi>f</mi><mn>3</mn></msub><mo accent="true">→</mo></mover><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{ \vec{f_1}, \vec{f_2}, \vec{f_3} \}</annotation></semantics></math>
-are referred to as the heave, strike slip, and vertical throw component,
-respectively. These orthonormal vectors define a orthogonal matrix,
-i.e. the <strong>principal displacement tensor</strong>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝖥</mi><mi>𝔽</mi></msub><annotation encoding="application/x-tex">\mathsf{F}_\mathbb{F}</annotation></semantics></math>:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝖥</mi><mi>𝔽</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">heave</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">strike-slip</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">vertical throw</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}\mathsf{F}_{\mathbb{F}} = {\begin{bmatrix} \lVert f_\textrm{heave}\rVert &amp; 0 &amp; 0\\ 0 &amp; \lVert f_\textrm{strike-slip}\rVert &amp; 0\\ 0 &amp; 0 &amp; \lVert f_\textrm{vertical throw}\rVert\end{bmatrix}}\end{equation}</annotation></semantics></math></p>
-<p>The tensor
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝖥</mi><annotation encoding="application/x-tex">\mathsf{F}</annotation></semantics></math>
-can also be defined by the magnitudes of the fault displacements:</p>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"angelier1990"</span><span class="op">)</span></span>
+<span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="va">angelier1990</span><span class="op">$</span><span class="va">TYM</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Test data"</span>, guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">test_data</span>, col <span class="op">=</span> <span class="st">"grey30"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="E_Faults_files/figure-html/slip_inversion1-1.png" width="700">
+To check the accuracy of the solution, you can use - the average angle β
+between the tangential traction predicted by the best stress tensor and
+the slip vector on each plane (ideally close to 0), and - the average
+resolved shear stress on each plane (should be close to 1).</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Fu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fault-tensor.html">fault_tensor</a></span><span class="op">(</span>s <span class="op">=</span> <span class="fl">2</span>, v <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, h <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">Fu</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##      [,1] [,2] [,3]</span></span>
-<span><span class="co">## [1,]    3    0    0</span></span>
-<span><span class="co">## [2,]    0    2    0</span></span>
-<span><span class="co">## [3,]    0    0   -5</span></span>
-<span><span class="co">## attr(,"class")</span></span>
-<span><span class="co">## [1] "matrix"  "array"   "ftensor"</span></span></code></pre>
-</div>
-<div class="section level3">
-<h3 id="sec-tensors-orientation">Orientation tensor<a class="anchor" aria-label="anchor" href="#sec-tensors-orientation"></a>
-</h3>
-<p>Fault orientation tensor is defined by the fault plane’s location,
-orientation (dip direction and dip angle), and the fault’s slip
-(direction and magnitude):</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝖥</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>13</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>22</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>23</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>31</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>32</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>33</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}\mathsf{F}_{ij} = {\begin{bmatrix}f_{11} &amp; f_{12} &amp; f_{13}\\ f_{21} &amp; f_{22} &amp; f_{23}\\ f_{31} &amp; f_{32} &amp; f_{33}\end{bmatrix}}\end{equation}</annotation></semantics></math></p>
+<code class="sourceCode R"><span><span class="va">test_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stress_inversion.html">stress_inversion</a></span><span class="op">(</span><span class="va">angelier1990</span><span class="op">$</span><span class="va">TYM</span>, boot <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Average beta angle</span></span>
+<span><span class="va">test_res</span><span class="op">$</span><span class="va">beta</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 15.13804</span></span></code></pre>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Fg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fault-tensor.html">fault_tensor</a></span><span class="op">(</span>s <span class="op">=</span> <span class="fl">2</span>, v <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, h <span class="op">=</span> <span class="fl">3</span>, dip_direction <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">Fg</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">##         [,1]      [,2] [,3]</span></span>
-<span><span class="co">## [1,] 2.12132  1.414214    0</span></span>
-<span><span class="co">## [2,] 2.12132 -1.414214    0</span></span>
-<span><span class="co">## [3,] 0.00000  0.000000   -5</span></span>
-<span><span class="co">## attr(,"class")</span></span>
-<span><span class="co">## [1] "matrix"  "array"   "ftensor"</span></span></code></pre>
-<div class="section level4">
-<h4 id="from-principal-displacement-tensor-to-orientation-tensor">From Principal displacement tensor to Orientation tensor<a class="anchor" aria-label="anchor" href="#from-principal-displacement-tensor-to-orientation-tensor"></a>
-</h4>
-<p>Translation point of origin in
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝖥</mi><mi>𝔽</mi></msub><annotation encoding="application/x-tex">\mathsf{F_\mathbb{F}}</annotation></semantics></math>
-into point of measurement and rotate into fault orientation
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝖥</mi><mrow><mi>𝔽</mi><mi>𝔾</mi></mrow></msub><annotation encoding="application/x-tex">\mathsf{F}_\mathbb{FG}</annotation></semantics></math></p>
+<code class="sourceCode R"><span><span class="co"># Average resolved shear stress</span></span>
+<span><span class="va">test_res</span><span class="op">$</span><span class="va">sigma_s</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.9289024</span></span></code></pre>
+<p>To visualizing the orientation of the principal stresses and the
+confidence region of the axes, you may use the stereoplot() functions
+from {structr}</p>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/fault-tensor.html">fault_tensor_decomposition</a></span><span class="op">(</span><span class="va">Fg</span>, dip_direction <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span></code></pre></div>
-<pre><code><span><span class="co">## $displacements</span></span>
-<span><span class="co">##           dip    delta     rake verticalthrow horizontalthrow heave  dipslip</span></span>
-<span><span class="co">## [1,] 300.9638 56.30993 71.06818            -5        3.605551     3 5.830952</span></span>
-<span><span class="co">##      strikeslip  netslip</span></span>
-<span><span class="co">## [1,]          2 6.164414</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $fault</span></span>
-<span><span class="co">## Fault object (n = 1):</span></span>
-<span><span class="co">## dip_direction           dip       azimuth        plunge         sense </span></span>
-<span><span class="co">##      45.00000     300.96376     258.69007      54.20424      -1.00000 </span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $strain_tensor</span></span>
-<span><span class="co">##      [,1] [,2] [,3]</span></span>
-<span><span class="co">## [1,]  3.0 -1.5 -1.5</span></span>
-<span><span class="co">## [2,] -1.0  1.0 -1.0</span></span>
-<span><span class="co">## [3,]  2.5  2.5 15.0</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $volumetric_strain</span></span>
-<span><span class="co">## [1] 19</span></span>
-<span><span class="co">## </span></span>
-<span><span class="co">## $shear_strain</span></span>
-<span><span class="co">## [1] 5.196152</span></span></code></pre>
-</div>
-</div>
-<div class="section level3">
-<h3 id="stress-tensor">Stress tensor<a class="anchor" aria-label="anchor" href="#stress-tensor"></a>
-</h3>
-<blockquote>
-<p>In continuum mechanics, the Cauchy stress tensor
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>σ</mi><annotation encoding="application/x-tex">\sigma</annotation></semantics></math>,
-true stress tensor, or simply called the <strong>stress tensor</strong>
-is a second order tensor named after Augustin-Louis Cauchy.</p>
-</blockquote>
-<p>The tensor consists of nine components
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\sigma_{ij}</annotation></semantics></math>
-that completely define the state of stress at a point inside a material
-in the deformed state, placement, or configuration. The tensor relates a
-unit-length direction vector n to the traction vector
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi>T</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><annotation encoding="application/x-tex">T^{(n)}</annotation></semantics></math>
-across an imaginary surface perpendicular to n:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>T</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mo>=</mo><mi>n</mi><mo>*</mo><mi>σ</mi></mrow><annotation encoding="application/x-tex">\begin{equation} T^{(n)} = n * \sigma \end{equation}</annotation></semantics></math>
-or
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mi>T</mi><mi>j</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow></msubsup><mo>=</mo><msub><mi>n</mi><mi>i</mi></msub><mo>*</mo><msub><mi>σ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\begin{equation} T^{(n)}_j = n_{i}*\sigma_{ij}\end{equation}</annotation></semantics></math></p>
-</div>
-</div>
-<div class="section level2">
-<h2 id="transformation-of-the-stress-tensor">Transformation of the stress tensor<a class="anchor" aria-label="anchor" href="#transformation-of-the-stress-tensor"></a>
-</h2>
-<p>It can be shown that the stress tensor is a contravariant second
-order tensor, which is a statement of how it transforms under a change
-of the coordinate system. From an
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mi>i</mi></msub><annotation encoding="application/x-tex">x_i</annotation></semantics></math>-system
-to an
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mi>i</mi></msub><mi>′</mi></mrow><annotation encoding="application/x-tex">x_i'</annotation></semantics></math>-system,
-the components
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\sigma_{ij}</annotation></semantics></math>
-in the initial system are transformed into the components
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mi>′</mi></mrow><annotation encoding="application/x-tex">\sigma_{ij}'</annotation></semantics></math>
-in the new system according to the tensor transformation rule (see
-Figure 2):</p>
-<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mo>=</mo><msub><mi>a</mi><mrow><mi>i</mi><mi>m</mi></mrow></msub><msub><mi>a</mi><mrow><mi>j</mi><mi>n</mi></mrow></msub><msub><mi>σ</mi><mrow><mi>m</mi><mi>n</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\sigma = a_{im} a_{jn} \sigma_{mn}</annotation></semantics></math>
-or
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>σ</mi><mi>′</mi><mo>=</mo><mi>𝖠</mi><mi>σ</mi><msup><mi>𝖠</mi><mi>T</mi></msup></mrow><annotation encoding="application/x-tex">\sigma' = \mathsf{A} \sigma \mathsf{A}^{T}</annotation></semantics></math>,</p>
-<p>where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝖠</mi><annotation encoding="application/x-tex">\mathsf{A}</annotation></semantics></math>
-is a rotation matrix with components
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">a_{ij}</annotation></semantics></math>.
-In matrix form this is
-<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>σ</mi><msub><mi>′</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>σ</mi><msub><mi>′</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>σ</mi><msub><mi>′</mi><mn>13</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>σ</mi><msub><mi>′</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>σ</mi><msub><mi>′</mi><mn>22</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>σ</mi><msub><mi>′</mi><mn>23</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mi>σ</mi><msub><mi>′</mi><mn>31</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>σ</mi><msub><mi>′</mi><mn>32</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mi>σ</mi><msub><mi>′</mi><mn>33</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>13</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>22</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>23</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>31</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>32</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>33</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>13</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>22</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>23</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>31</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>32</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>33</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>13</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>22</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>23</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>31</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>32</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>a</mi><mn>33</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}
-\begin{bmatrix} 
-\sigma'_{11} &amp; \sigma'_{12} &amp; \sigma'_{13} \\
-\sigma'_{21} &amp; \sigma'_{22} &amp; \sigma'_{23} \\
-\sigma'_{31} &amp; \sigma'_{32} &amp; \sigma'_{33}
-\end{bmatrix}
-=
-\begin{bmatrix} 
-a_{11} &amp; a_{12} &amp; a_{13} \\
-a_{21} &amp; a_{22} &amp; a_{23} \\
-a_{31} &amp; a_{32} &amp; a_{33}
-\end{bmatrix}
-\begin{bmatrix} 
-\sigma_{11} &amp; \sigma_{12} &amp; \sigma_{13} \\
-\sigma_{21} &amp; \sigma_{22} &amp; \sigma_{23} \\
-\sigma_{31} &amp; \sigma_{32} &amp; \sigma_{33}
-\end{bmatrix}
-\begin{bmatrix} 
-a_{11} &amp; a_{12} &amp; a_{13} \\
-a_{21} &amp; a_{22} &amp; a_{23} \\
-a_{31} &amp; a_{32} &amp; a_{33}
-\end{bmatrix}
-\end{equation}</annotation></semantics></math></p>
-<div class="float" id="id">
-<img src="cauchy.png" class="class" style="width:75.0%;height:75.0%" alt="Fig. 2: Components of stress in three dimensions amd transformation of the Cauchy tensor. Source: https://commons.wikimedia.org/wiki/File:Stress_transformation_3D.svg"><div class="figcaption">Fig. 2: Components of stress in three dimensions
-amd transformation of the Cauchy tensor. Source: <a href="https://commons.wikimedia.org/wiki/File:Stress_transformation_3D.svg" class="external-link uri">https://commons.wikimedia.org/wiki/File:Stress_transformation_3D.svg</a>
-</div>
-</div>
-<p>Expanding the matrix operation, and simplifying terms using the
-symmetry of the stress tensor, gives</p>
-<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mn>11</mn></msub><mi>′</mi><mo>=</mo><msubsup><mi>a</mi><mn>11</mn><mn>2</mn></msubsup><msub><mi>σ</mi><mn>11</mn></msub><mo>+</mo><msubsup><mi>a</mi><mn>12</mn><mn>2</mn></msubsup><msub><mi>σ</mi><mn>22</mn></msub><mo>+</mo><msubsup><mi>a</mi><mn>13</mn><mn>2</mn></msubsup><msub><mi>σ</mi><mn>33</mn></msub><mo>+</mo><mn>2</mn><msub><mi>a</mi><mn>11</mn></msub><msub><mi>a</mi><mn>12</mn></msub><msub><mi>σ</mi><mn>12</mn></msub><mo>+</mo><mn>2</mn><msub><mi>a</mi><mn>11</mn></msub><msub><mi>a</mi><mn>13</mn></msub><msub><mi>σ</mi><mn>13</mn></msub><mo>+</mo><mn>2</mn><msub><mi>a</mi><mn>12</mn></msub><msub><mi>a</mi><mn>13</mn></msub><msub><mi>σ</mi><mn>23</mn></msub></mrow><annotation encoding="application/x-tex">\sigma_{11}' = a_{11}^{2}\sigma_{11} + a_{12}^{2}\sigma_{22} + a_{13}^{2}\sigma_{33} + 2a_{11}a_{12}\sigma_{12} + 2a_{11}a_{13}\sigma_{13} + 2a_{12}a_{13}\sigma_{23}</annotation></semantics></math>,</p>
-<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mn>22</mn></msub><mi>′</mi><mo>=</mo><msubsup><mi>a</mi><mn>21</mn><mn>2</mn></msubsup><msub><mi>σ</mi><mn>11</mn></msub><mo>+</mo><msubsup><mi>a</mi><mn>22</mn><mn>2</mn></msubsup><msub><mi>σ</mi><mn>22</mn></msub><mo>+</mo><msubsup><mi>a</mi><mn>23</mn><mn>2</mn></msubsup><msub><mi>σ</mi><mn>33</mn></msub><mo>+</mo><mn>2</mn><msub><mi>a</mi><mn>21</mn></msub><msub><mi>a</mi><mn>22</mn></msub><msub><mi>σ</mi><mn>12</mn></msub><mo>+</mo><mn>2</mn><msub><mi>a</mi><mn>21</mn></msub><msub><mi>a</mi><mn>23</mn></msub><msub><mi>σ</mi><mn>13</mn></msub><mo>+</mo><mn>2</mn><msub><mi>a</mi><mn>22</mn></msub><msub><mi>a</mi><mn>23</mn></msub><msub><mi>σ</mi><mn>23</mn></msub></mrow><annotation encoding="application/x-tex">\sigma _{22}'=a_{21}^{2}\sigma _{11}+a_{22}^{2}\sigma _{22}+a_{23}^{2}\sigma _{33}+2a_{21}a_{22}\sigma _{12}+2a_{21}a_{23}\sigma _{13}+2a_{22}a_{23}\sigma _{23}</annotation></semantics></math>,</p>
-<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mn>33</mn></msub><mi>′</mi><mo>=</mo><msubsup><mi>a</mi><mn>31</mn><mn>2</mn></msubsup><msub><mi>σ</mi><mn>11</mn></msub><mo>+</mo><msubsup><mi>a</mi><mn>32</mn><mn>2</mn></msubsup><msub><mi>σ</mi><mn>22</mn></msub><mo>+</mo><msubsup><mi>a</mi><mn>33</mn><mn>2</mn></msubsup><msub><mi>σ</mi><mn>33</mn></msub><mo>+</mo><mn>2</mn><msub><mi>a</mi><mn>31</mn></msub><msub><mi>a</mi><mn>32</mn></msub><msub><mi>σ</mi><mn>12</mn></msub><mo>+</mo><mn>2</mn><msub><mi>a</mi><mn>31</mn></msub><msub><mi>a</mi><mn>33</mn></msub><msub><mi>σ</mi><mn>13</mn></msub><mo>+</mo><mn>2</mn><msub><mi>a</mi><mn>32</mn></msub><msub><mi>a</mi><mn>33</mn></msub><msub><mi>σ</mi><mn>23</mn></msub></mrow><annotation encoding="application/x-tex">\sigma _{33}'=a_{31}^{2}\sigma _{11}+a_{32}^{2}\sigma _{22}+a_{33}^{2}\sigma _{33}+2a_{31}a_{32}\sigma _{12}+2a_{31}a_{33}\sigma _{13}+2a_{32}a_{33}\sigma _{23}</annotation></semantics></math>,</p>
-<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mn>12</mn></msub><mi>′</mi><mo>=</mo><msub><mi>a</mi><mn>11</mn></msub><msub><mi>a</mi><mn>21</mn></msub><msub><mi>σ</mi><mn>11</mn></msub><mo>+</mo><msub><mi>a</mi><mn>12</mn></msub><msub><mi>a</mi><mn>22</mn></msub><msub><mi>σ</mi><mn>22</mn></msub><mo>+</mo><msub><mi>a</mi><mn>13</mn></msub><msub><mi>a</mi><mn>23</mn></msub><msub><mi>σ</mi><mn>33</mn></msub><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>a</mi><mn>11</mn></msub><msub><mi>a</mi><mn>22</mn></msub><mo>+</mo><msub><mi>a</mi><mn>12</mn></msub><msub><mi>a</mi><mn>21</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>σ</mi><mn>12</mn></msub><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>a</mi><mn>12</mn></msub><msub><mi>a</mi><mn>23</mn></msub><mo>+</mo><msub><mi>a</mi><mn>13</mn></msub><msub><mi>a</mi><mn>22</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>σ</mi><mn>23</mn></msub><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>a</mi><mn>11</mn></msub><msub><mi>a</mi><mn>23</mn></msub><mo>+</mo><msub><mi>a</mi><mn>13</mn></msub><msub><mi>a</mi><mn>21</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>σ</mi><mn>13</mn></msub></mrow><annotation encoding="application/x-tex">\sigma _{12}'=a_{11}a_{21}\sigma _{11}+a_{12}a_{22}\sigma _{22}+a_{13}a_{23}\sigma _{33}+(a_{11}a_{22}+a_{12}a_{21})\sigma _{12}+(a_{12}a_{23}+a_{13}a_{22})\sigma _{23}+(a_{11}a_{23}+a_{13}a_{21})\sigma _{13}</annotation></semantics></math>,</p>
-<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mn>23</mn></msub><mi>′</mi><mo>=</mo><msub><mi>a</mi><mn>21</mn></msub><msub><mi>a</mi><mn>31</mn></msub><msub><mi>σ</mi><mn>11</mn></msub><mo>+</mo><msub><mi>a</mi><mn>22</mn></msub><msub><mi>a</mi><mn>32</mn></msub><msub><mi>σ</mi><mn>22</mn></msub><mo>+</mo><msub><mi>a</mi><mn>23</mn></msub><msub><mi>a</mi><mn>33</mn></msub><msub><mi>σ</mi><mn>33</mn></msub><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>a</mi><mn>21</mn></msub><msub><mi>a</mi><mn>32</mn></msub><mo>+</mo><msub><mi>a</mi><mn>22</mn></msub><msub><mi>a</mi><mn>31</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>σ</mi><mn>12</mn></msub><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>a</mi><mn>22</mn></msub><msub><mi>a</mi><mn>33</mn></msub><mo>+</mo><msub><mi>a</mi><mn>23</mn></msub><msub><mi>a</mi><mn>32</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>σ</mi><mn>23</mn></msub><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>a</mi><mn>21</mn></msub><msub><mi>a</mi><mn>33</mn></msub><mo>+</mo><msub><mi>a</mi><mn>23</mn></msub><msub><mi>a</mi><mn>31</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>σ</mi><mn>13</mn></msub></mrow><annotation encoding="application/x-tex">\sigma _{23}'=a_{21}a_{31}\sigma _{11}+a_{22}a_{32}\sigma _{22}+a_{23}a_{33}\sigma _{33}+(a_{21}a_{32}+a_{22}a_{31})\sigma _{12}+(a_{22}a_{33}+a_{23}a_{32})\sigma _{23}+(a_{21}a_{33}+a_{23}a_{31})\sigma _{13}</annotation></semantics></math>,</p>
-<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mn>13</mn></msub><mi>′</mi><mo>=</mo><msub><mi>a</mi><mn>11</mn></msub><msub><mi>a</mi><mn>31</mn></msub><msub><mi>σ</mi><mn>11</mn></msub><mo>+</mo><msub><mi>a</mi><mn>12</mn></msub><msub><mi>a</mi><mn>32</mn></msub><msub><mi>σ</mi><mn>22</mn></msub><mo>+</mo><msub><mi>a</mi><mn>13</mn></msub><msub><mi>a</mi><mn>33</mn></msub><msub><mi>σ</mi><mn>33</mn></msub><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>a</mi><mn>11</mn></msub><msub><mi>a</mi><mn>32</mn></msub><mo>+</mo><msub><mi>a</mi><mn>12</mn></msub><msub><mi>a</mi><mn>31</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>σ</mi><mn>12</mn></msub><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>a</mi><mn>12</mn></msub><msub><mi>a</mi><mn>33</mn></msub><mo>+</mo><msub><mi>a</mi><mn>13</mn></msub><msub><mi>a</mi><mn>32</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>σ</mi><mn>23</mn></msub><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>a</mi><mn>11</mn></msub><msub><mi>a</mi><mn>33</mn></msub><mo>+</mo><msub><mi>a</mi><mn>13</mn></msub><msub><mi>a</mi><mn>31</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><msub><mi>σ</mi><mn>13</mn></msub></mrow><annotation encoding="application/x-tex">\sigma _{13}'=a_{11}a_{31}\sigma _{11}+a_{12}a_{32}\sigma _{22}+a_{13}a_{33}\sigma _{33}+(a_{11}a_{32}+a_{12}a_{31})\sigma _{12}+(a_{12}a_{33}+a_{13}a_{32})\sigma _{23}+(a_{11}a_{33}+a_{13}a_{31})\sigma _{13}</annotation></semantics></math>.</p>
-<p>The <em>Mohr circle</em> for stress is a graphical representation of
-this transformation of stresses.</p>
-<div class="section level3">
-<h3 id="normal-and-shear-stresses">Normal and shear stresses<a class="anchor" aria-label="anchor" href="#normal-and-shear-stresses"></a>
-</h3>
-<p>The magnitude of the normal stress component σn of any stress vector
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>T</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">T(n)</annotation></semantics></math>
-acting on an arbitrary plane with normal unit vector n at a given point,
-in terms of the components
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\sigma_{ij}</annotation></semantics></math>
-of the stress tensor
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>σ</mi><annotation encoding="application/x-tex">\sigma</annotation></semantics></math>,
-is the dot product of the stress vector and the normal unit vector:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>σ</mi><mover><mi>n</mi><mo accent="true">→</mo></mover></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msup><mi>𝐓</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mo>⋅</mo><mover><mi>n</mi><mo accent="true">→</mo></mover></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msubsup><mi>T</mi><mi>i</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow></msubsup><msub><mi>n</mi><mi>i</mi></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>σ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><msub><mi>n</mi><mi>i</mi></msub><msub><mi>n</mi><mi>j</mi></msub><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{equation}
-\begin{split}
-\sigma_\vec{n} &amp; = \mathbf{T}^{(n)}\cdot \vec{n} \\ 
-&amp; = T^{(n)}_i n_i \\ 
-&amp; =\sigma_{ij} n_i n_j.
-\end{split}
-\end{equation}</annotation></semantics></math></p>
-<p>The magnitude of the shear stress component
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mi>n</mi></msub><annotation encoding="application/x-tex">\tau_n</annotation></semantics></math>,
-acting orthogonal to the vector <strong>n</strong>, can then be found
-using the Pythagorean theorem:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>τ</mi><mi mathvariant="normal">n</mi></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msqrt><mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>T</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐧</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>−</mo><msubsup><mi>σ</mi><mi mathvariant="normal">n</mi><mn>2</mn></msubsup></mrow></msqrt></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msqrt><mrow><msubsup><mi>T</mi><mi>i</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐧</mi><mo stretchy="true" form="postfix">)</mo></mrow></msubsup><msubsup><mi>T</mi><mi>i</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐧</mi><mo stretchy="true" form="postfix">)</mo></mrow></msubsup><mo>−</mo><msubsup><mi>σ</mi><mi mathvariant="normal">n</mi><mn>2</mn></msubsup></mrow></msqrt><mo>,</mo></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{equation}
-\begin{split}
-\tau_{\mathrm {n} }&amp;={\sqrt{\left(T^{(\mathbf{n})}\right)^{2} - \sigma_{\mathrm{n}}^{2}}}\\
-&amp;={\sqrt{T_{i}^{(\mathbf{n})}T_{i}^{(\mathbf{n})} - \sigma_{\mathrm{n}}^{2}}},
-\end{split}
-\end{equation}</annotation></semantics></math></p>
-<p>where</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><msup><mi>T</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐧</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>=</mo><msubsup><mi>T</mi><mi>i</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐧</mi><mo stretchy="true" form="postfix">)</mo></mrow></msubsup><msubsup><mi>T</mi><mi>i</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>𝐧</mi><mo stretchy="true" form="postfix">)</mo></mrow></msubsup><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>σ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><msub><mi>n</mi><mi>j</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>σ</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><msub><mi>n</mi><mi>k</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><msub><mi>σ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><msub><mi>σ</mi><mrow><mi>i</mi><mi>k</mi></mrow></msub><msub><mi>n</mi><mi>j</mi></msub><msub><mi>n</mi><mi>k</mi></msub></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{equation}{\displaystyle \left(T^{(\mathbf {n} )}\right)^{2}=T_{i}^{(\mathbf {n} )}T_{i}^{(\mathbf {n} )}=\left(\sigma _{ij}n_{j}\right)\left(\sigma _{ik}n_{k}\right)=\sigma _{ij}\sigma _{ik}n_{j}n_{k}}.\end{equation}</annotation></semantics></math></p>
-</div>
-<div class="section level3">
-<h3 id="principal-stress">Principal stress<a class="anchor" aria-label="anchor" href="#principal-stress"></a>
-</h3>
-<p>At every point in a stressed body there are at least three planes,
-called principal planes, with normal vectors
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>n</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec{n}</annotation></semantics></math>,
-called principal directions, where the corresponding stress vector is
-perpendicular to the plane, i.e., parallel or in the same direction as
-the normal vector
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>n</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec{n}</annotation></semantics></math>,
-and where there are no normal shear
-stresses<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>τ</mi><mover><mi>n</mi><mo accent="true">→</mo></mover></msub><annotation encoding="application/x-tex">{\displaystyle \tau _{\vec{n}}}</annotation></semantics></math>.
-The three stresses normal to these principal planes are called principal
-stresses.</p>
-<p>The components
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\sigma _{ij}</annotation></semantics></math>
-of the stress tensor depend on the orientation of the coordinate system
-at the point under consideration. However, the stress tensor itself is a
-physical quantity and as such, it is independent of the coordinate
-system chosen to represent it. There are certain invariants associated
-with every tensor which are also independent of the coordinate system.
-For example, a vector is a simple tensor of rank one. In three
-dimensions, it has three components. The value of these components will
-depend on the coordinate system chosen to represent the vector, but the
-magnitude of the vector is a physical quantity (a scalar) and is
-independent of the Cartesian coordinate system chosen to represent the
-vector (so long as it is normal). Similarly, every second rank tensor
-(such as the stress and the strain tensors) has three independent
-invariant quantities associated with it. One set of such invariants are
-the principal stresses of the stress tensor, which are just the
-eigenvalues of the stress tensor. Their direction vectors are the
-principal directions or eigenvectors.</p>
-<p>A stress vector parallel to the normal unit vector
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>n</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec{n}</annotation></semantics></math>
-is given by:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msup><mi>𝐓</mi><mrow><mo stretchy="true" form="prefix">(</mo><mi>n</mi><mo stretchy="true" form="postfix">)</mo></mrow></msup><mo>=</mo><mi>λ</mi><mover><mi>n</mi><mo accent="true">→</mo></mover><mo>=</mo><msub><mi>𝛔</mi><mi>n</mi></msub><mover><mi>n</mi><mo accent="true">→</mo></mover></mrow><annotation encoding="application/x-tex">\begin{equation}
-  \mathbf{T}^{(n)} = \lambda \vec{n} = \mathbf{\sigma}_{n}\vec{n}
-\end{equation}</annotation></semantics></math></p>
-<p>where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>
-is a constant of proportionality, and in this particular case
-corresponds to the magnitudes
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mi>n</mi></msub><annotation encoding="application/x-tex">\sigma_{n}</annotation></semantics></math>
-of the normal stress vectors or principal stresses.</p>
-<p>A coordinate system with axes oriented to the principal directions
-implies that the normal stresses are the principal stresses and the
-stress tensor is represented by a diagonal matrix:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>2</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>3</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}
-  \sigma_{ij}={\begin{bmatrix}\sigma_{1}&amp;0&amp;0\\0&amp;\sigma_{2}&amp;0\\0&amp;0&amp;\sigma_{3}\end{bmatrix}}
-\end{equation}</annotation></semantics></math></p>
-<p>The principal stresses can be combined to form the stress invariants,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mn>1</mn></msub><annotation encoding="application/x-tex">I_{1}</annotation></semantics></math>,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mn>2</mn></msub><annotation encoding="application/x-tex">I_{2}</annotation></semantics></math>,
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>I</mi><mn>3</mn></msub><annotation encoding="application/x-tex">I_{3}</annotation></semantics></math>.
-The first and third invariant are the trace and determinant
-respectively, of the stress tensor. Thus,</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>I</mi><mn>1</mn></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>σ</mi><mn>1</mn></msub><mo>+</mo><msub><mi>σ</mi><mn>2</mn></msub><mo>+</mo><msub><mi>σ</mi><mn>3</mn></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>I</mi><mn>2</mn></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>σ</mi><mn>1</mn></msub><msub><mi>σ</mi><mn>2</mn></msub><mo>+</mo><msub><mi>σ</mi><mn>2</mn></msub><msub><mi>σ</mi><mn>3</mn></msub><mo>+</mo><msub><mi>σ</mi><mn>3</mn></msub><msub><mi>σ</mi><mn>1</mn></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>I</mi><mn>3</mn></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>σ</mi><mn>1</mn></msub><msub><mi>σ</mi><mn>2</mn></msub><msub><mi>σ</mi><mn>3</mn></msub></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{equation} 
-\begin{split}
-  I_{1} &amp; = \sigma_{1}+\sigma_{2}+\sigma_{3}\\
-  I_{2} &amp; = \sigma_{1}\sigma_{2}+\sigma_{2}\sigma_{3}+\sigma_{3}\sigma_{1}\\
-  I_{3} &amp; = \sigma_{1}\sigma_{2}\sigma_{3}
-  \end{split}
-\end{equation}</annotation></semantics></math></p>
-<p>Because of its simplicity, the principal coordinate system is often
-useful when considering the state of the elastic medium at a particular
-point. Principal stresses are often expressed in the following equation
-for evaluating stresses in the x and y directions or axial and bending
-stresses on a part. The principal normal stresses can then be used to
-calculate the von Mises stress and ultimately the safety factor and
-margin of safety.</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mn>1</mn></msub><mo>,</mo><msub><mi>σ</mi><mn>2</mn></msub><mo>=</mo><mfrac><mrow><msub><mi>σ</mi><mi>x</mi></msub><mo>+</mo><msub><mi>σ</mi><mi>y</mi></msub></mrow><mn>2</mn></mfrac><mo>±</mo><msqrt><mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><msub><mi>σ</mi><mi>x</mi></msub><mo>−</mo><msub><mi>σ</mi><mi>y</mi></msub></mrow><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><msubsup><mi>τ</mi><mrow><mi>x</mi><mi>y</mi></mrow><mn>2</mn></msubsup></mrow></msqrt></mrow><annotation encoding="application/x-tex">\begin{equation}
-  \sigma_{1},\sigma_{2}={\frac {\sigma_{x}+\sigma_{y}}{2}}\pm {\sqrt {\left({\frac {\sigma_{x}-\sigma_{y}}{2}}\right)^{2}+\tau_{xy}^{2}}}
-\end{equation}</annotation></semantics></math></p>
-<p>Using just the part of the equation under the square root is equal to
-the maximum and minimum shear stress for plus and minus. This is shown
-as:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>τ</mi><mo>max</mo></msub><mo>,</mo><msub><mi>τ</mi><mo>min</mo></msub><mo>=</mo><mo>±</mo><msqrt><mrow><msup><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><mrow><msub><mi>σ</mi><mi>x</mi></msub><mo>−</mo><msub><mi>σ</mi><mi>y</mi></msub></mrow><mn>2</mn></mfrac><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><msubsup><mi>τ</mi><mrow><mi>x</mi><mi>y</mi></mrow><mn>2</mn></msubsup></mrow></msqrt></mrow><annotation encoding="application/x-tex">\begin{equation}
-  \tau_{\max },\tau_{\min }=\pm {\sqrt {\left({\frac {\sigma_{x}-\sigma_{y}}{2}}\right)^{2}+\tau_{xy}^{2}}}
-\end{equation}</annotation></semantics></math></p>
-</div>
-<div class="section level3">
-<h3 id="stress-deviator-tensor">Stress deviator tensor<a class="anchor" aria-label="anchor" href="#stress-deviator-tensor"></a>
-</h3>
-<p>The stress tensor
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\sigma_{ij}</annotation></semantics></math>
-can be expressed as the sum of two other stress tensors:</p>
-<ul>
-<li>a mean <em>hydrostatic stress</em> tensor or volumetric stress
-tensor or mean normal stress tensor,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><msub><mi>δ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\pi \delta_{ij}</annotation></semantics></math>,
-which tends to change the volume of the stressed body; and</li>
-<li>a deviatoric component called the stress deviator tensor,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">s_{ij}</annotation></semantics></math>,
-which tends to distort it.</li>
-</ul>
-<p>So</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><msub><mi>s</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>+</mo><mi>π</mi><msub><mi>δ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">\begin{equation}   \sigma_{ij} = s_{ij} + \pi \delta_{ij}, \end{equation}</annotation></semantics></math></p>
-<p>where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>π</mi><annotation encoding="application/x-tex">\pi</annotation></semantics></math>
-is the mean stress given by</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>π</mi><mo>=</mo><mfrac><msub><mi>σ</mi><mrow><mi>k</mi><mi>k</mi></mrow></msub><mn>3</mn></mfrac><mo>=</mo><mfrac><mrow><msub><mi>σ</mi><mn>11</mn></msub><mo>+</mo><msub><mi>σ</mi><mn>22</mn></msub><mo>+</mo><msub><mi>σ</mi><mn>33</mn></msub></mrow><mn>3</mn></mfrac><mo>=</mo><mfrac><mn>1</mn><mn>3</mn></mfrac><msub><mi>I</mi><mn>1</mn></msub><mo>,</mo></mrow><annotation encoding="application/x-tex">\begin{equation} \pi ={\frac {\sigma_{kk}}{3}}={\frac{\sigma_{11}+\sigma _{22}+\sigma_{33}}{3}}={\frac {1}{3}}I_{1}, \end{equation}</annotation></semantics></math></p>
-<p>Pressure
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>)
-is generally defined as negative one-third the trace of the stress
-tensor minus any stress the divergence of the velocity contributes with,
-i.e.</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>p</mi><mo>=</mo><mi>λ</mi><mspace width="0.167em"></mspace><mi>∇</mi><mo>⋅</mo><mover><mi>u</mi><mo accent="true">→</mo></mover><mo>−</mo><mi>π</mi><mo>=</mo><mi>λ</mi><mspace width="0.167em"></mspace><mfrac><mrow><mi>∂</mi><msub><mi>u</mi><mi>k</mi></msub></mrow><mrow><mi>∂</mi><msub><mi>x</mi><mi>k</mi></msub></mrow></mfrac><mo>−</mo><mi>π</mi><mo>=</mo><munder><mo>∑</mo><mi>k</mi></munder><mi>λ</mi><mspace width="0.167em"></mspace><mfrac><mrow><mi>∂</mi><msub><mi>u</mi><mi>k</mi></msub></mrow><mrow><mi>∂</mi><msub><mi>x</mi><mi>k</mi></msub></mrow></mfrac><mo>−</mo><mi>π</mi><mo>,</mo></mrow><annotation encoding="application/x-tex">\begin{equation} p=\lambda \,\nabla \cdot {\vec {u}}-\pi =\lambda \,{\frac {\partial u_{k}}{\partial x_{k}}}-\pi =\sum_{k}\lambda \,{\frac {\partial u_{k}}{\partial x_{k}}}-\pi, \end{equation}</annotation></semantics></math></p>
-<p>where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>λ</mi><annotation encoding="application/x-tex">\lambda</annotation></semantics></math>
-is a proportionality constant,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>∇</mi><annotation encoding="application/x-tex">\nabla</annotation></semantics></math>
-is the divergence operator,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>x</mi><mi>k</mi></msub><annotation encoding="application/x-tex">x_{k}</annotation></semantics></math>
-is the k:th Cartesian coordinate,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>u</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec{u}</annotation></semantics></math>
-is the velocity and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>u</mi><mi>k</mi></msub><annotation encoding="application/x-tex">u_{k}</annotation></semantics></math>
-is the k:th Cartesian component of
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>u</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec{u}</annotation></semantics></math>.</p>
-<p>The deviatoric stress tensor can be obtained by subtracting the
-hydrostatic stress tensor from the Cauchy stress tensor:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>s</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>σ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>−</mo><mfrac><msub><mi>σ</mi><mrow><mi>k</mi><mi>k</mi></mrow></msub><mn>3</mn></mfrac><msub><mi>δ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>,</mo></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>s</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>s</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>s</mi><mn>13</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>s</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>s</mi><mn>22</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>s</mi><mn>23</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>s</mi><mn>31</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>s</mi><mn>32</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>s</mi><mn>33</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>13</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>22</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>23</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>31</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>32</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>33</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mo>−</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mi>π</mi></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>π</mi></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mi>π</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>11</mn></msub><mo>−</mo><mi>π</mi></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>13</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>22</mn></msub><mo>−</mo><mi>π</mi></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>23</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>31</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>32</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mn>33</mn></msub><mo>−</mo><mi>π</mi></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{equation}
-\begin{split}
-
-s_{ij} &amp; = \sigma_{ij} - {\frac {\sigma_{kk}}{3}}\delta_{ij},\\
-
-\begin{bmatrix}s_{11}&amp;s_{12}&amp;s_{13}\\s_{21}&amp;s_{22}&amp;s_{23}\\s_{31}&amp;s_{32}&amp;s_{33}\end{bmatrix} &amp; = \begin{bmatrix}\sigma_{11}&amp;\sigma_{12}&amp;\sigma_{13}\\\sigma_{21}&amp;\sigma_{22}&amp;\sigma_{23}\\\sigma_{31}&amp;\sigma_{32}&amp;\sigma_{33}\end{bmatrix} - \begin{bmatrix}\pi &amp;0&amp;0\\0&amp;\pi &amp;0\\0&amp;0&amp;\pi \end{bmatrix}\\
-&amp; = \begin{bmatrix}\sigma_{11}-\pi &amp;\sigma_{12}&amp;\sigma_{13}\\\sigma_{21}&amp;\sigma_{22}-\pi &amp;\sigma_{23}\\\sigma_{31}&amp;\sigma_{32}&amp;\sigma_{33}-\pi \end{bmatrix}.
-\end{split}
-\end{equation}</annotation></semantics></math></p>
+<code class="sourceCode R"><span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'#000004FF'</span>, <span class="st">"#B63679FF"</span>, <span class="st">"#FEC287FF"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Stress inversion"</span>, guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">test_data</span>, col <span class="op">=</span> <span class="st">'grey60'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes_conf</span><span class="op">$</span><span class="va">sigma1</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes_conf</span><span class="op">$</span><span class="va">sigma2</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes_conf</span><span class="op">$</span><span class="va">sigma3</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span>, label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">cols</span>, adj <span class="op">=</span> <span class="op">-</span><span class="fl">.25</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>, col <span class="op">=</span> <span class="va">cols</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
+<p><img src="E_Faults_files/figure-html/slip_inversion_plot-1.png" width="700"></p>
+<p>The stress shape ratio &amp;; (Angelier 1979)[~ref5]</p>
+<p>[~ref5]: Angelier, J. (1979). Determination of the mean principal
+directions of stresses for a given fault population. Tectonophysics,
+56(3–4), T17–T26. <a href="https://doi.org/10.1016/0040-1951(79)90081-7" class="external-link uri">https://doi.org/10.1016/0040-1951(79)90081-7</a></p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">test_res</span><span class="op">$</span><span class="va">phi</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.101247</span></span></code></pre>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># 95% confidence interval</span></span>
+<span><span class="va">test_res</span><span class="op">$</span><span class="va">phi_conf</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.07111952 0.12989809</span></span>
+<span><span class="co">## attr(,"conf.level")</span></span>
+<span><span class="co">## [1] 0.95</span></span></code></pre>
+<p>The angle β is the angle between the tangential traction predicted by
+the best stress tensor and the slip vector. This deviation can be
+visualized in the stereoplot:</p>
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">beta</span> <span class="op">&lt;-</span> <span class="va">test_res</span><span class="op">$</span><span class="va">fault_data</span><span class="op">$</span><span class="va">beta</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span></span>
+<span>  title <span class="op">=</span> <span class="st">"Deviation"</span>, </span>
+<span>  sub <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/bquote.html" class="external-link">bquote</a></span><span class="op">(</span><span class="fu">bar</span><span class="op">(</span><span class="va">beta</span><span class="op">)</span> <span class="op">==</span> <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">beta</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="va">degree</span><span class="op">)</span>, </span>
+<span>  guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="../reference/fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">test_data</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/colorize.html">assign_col</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/colorize.html">legend_c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span>, title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/bquote.html" class="external-link">bquote</a></span><span class="op">(</span><span class="st">"Deviation angle"</span> <span class="op">~</span> <span class="va">beta</span> <span class="op">~</span> <span class="st">"("</span><span class="op">*</span><span class="va">degree</span><span class="op">*</span><span class="st">")"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<p><img src="E_Faults_files/figure-html/slip_inversion_beta-1.png" width="700"></p>
+<!-- # ```{r slip_inversion_mohr} -->
+<!-- # sigmas <- test_res$principal_vals -->
+<!-- #  -->
+<!-- # ggMohr(sigmas[1], sigmas[2], sigmas[3], coulomb = NULL, sliding = NULL) + -->
+<!-- #   geom_point(data = test_res$fault_data, aes(sigma_n, sigma_s)) + -->
+<!-- #   theme_void() -->
+<!-- # ``` -->
 </div>
 <div class="section level3">
 <h3 id="maximum-horizontal-stressref2">Maximum horizontal stress<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Lund &amp;amp; Townend (2007): Calculating horizontal stress
 orientations with full or partial knowledge of the tectonic stress
 tensor. &lt;em&gt;Geophys. J. Int.&lt;/em&gt;, 170, 1328—1335. doi:
-10.1111/j.1365-246X.2007.03468.x&lt;/p&gt;"><sup>1</sup></a><a class="anchor" aria-label="anchor" href="#maximum-horizontal-stressref2"></a>
+10.1111/j.1365-246X.2007.03468.x&lt;/p&gt;"><sup>2</sup></a><a class="anchor" aria-label="anchor" href="#maximum-horizontal-stressref2"></a>
 </h3>
 <p>We de fine a vertical plane in the geographic coordinate system,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝔾</mi><annotation encoding="application/x-tex">\mathbb{G}</annotation></semantics></math>,
@@ -700,8 +390,7 @@ undefined if
 vertical, else
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mi>H</mi></msub><mo>=</mo><msub><mi>α</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\alpha_H = \alpha_1</annotation></semantics></math>
 (45<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi></mi><mo>∘</mo></msup><annotation encoding="application/x-tex">^{\circ}</annotation></semantics></math>
-or
-135<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi></mi><mo>∘</mo></msup><annotation encoding="application/x-tex">^{\circ}</annotation></semantics></math>)</td>
+or 135°)</td>
 </tr>
 <tr class="even">
 <td>
@@ -716,7 +405,7 @@ undefined if
 else
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mi>H</mi></msub><mo>=</mo><msub><mi>α</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\alpha_H = \alpha_1</annotation></semantics></math>
 (45<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi></mi><mo>∘</mo></msup><annotation encoding="application/x-tex">^{\circ}</annotation></semantics></math>
-or 135$^{})</td>
+or 135°)</td>
 </tr>
 <tr class="odd">
 <td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>σ</mi><mrow><mn>1</mn><mi>N</mi></mrow><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>σ</mi><mrow><mn>1</mn><mi>E</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>R</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>σ</mi><mrow><mn>2</mn><mi>N</mi></mrow><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>σ</mi><mrow><mn>2</mn><mi>E</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">(\sigma_{1N}^2 - \sigma_{1E}^2) + (1 - R)(\sigma_{2N}^2 - \sigma_{2E}^2) = 0</annotation></semantics></math></td>
@@ -727,7 +416,7 @@ undefined if
 else
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mi>H</mi></msub><mo>=</mo><msub><mi>α</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\alpha_H = \alpha_1</annotation></semantics></math>
 (45<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi></mi><mo>∘</mo></msup><annotation encoding="application/x-tex">^{\circ}</annotation></semantics></math>
-or 135$^{})</td>
+or 135°)</td>
 </tr>
 </tbody>
 </table>
@@ -765,19 +454,19 @@ accordingly:</p>
 <h4 id="code">Code<a class="anchor" aria-label="anchor" href="#code"></a>
 </h4>
 <p>Define the orientation of the principle stress axes:</p>
-<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">S1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">250.89</span>, <span class="fl">70.07</span><span class="op">)</span></span>
 <span><span class="va">S3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">103.01</span>, <span class="fl">17.07</span><span class="op">)</span></span></code></pre></div>
 <p>To get S2 - which is perpendicular to S1 and S3, we calculate the
 cross-product of the two vectors:</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">S2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">S3</span>, <span class="va">S1</span><span class="op">)</span></span></code></pre></div>
 <p>The azimuth of SHmax for a given stress ratio <code>R = 1</code>:</p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.html">SH</a></span><span class="op">(</span><span class="va">S1</span>, <span class="va">S2</span>, <span class="va">S3</span>, R <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># in degrees</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 70.89</span></span></code></pre>
 <p>For a several stress ratios:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">R</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">.1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">R</span>, SH <span class="op">=</span> <span class="fu"><a href="../reference/SH.html">SH</a></span><span class="op">(</span><span class="va">S1</span>, <span class="va">S2</span>, <span class="va">S3</span>, R <span class="op">=</span> <span class="va">R</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##         R       SH</span></span>
@@ -792,251 +481,348 @@ cross-product of the two vectors:</p>
 <span><span class="co">##  [9,] 0.8 28.23884</span></span>
 <span><span class="co">## [10,] 0.9 45.01043</span></span>
 <span><span class="co">## [11,] 1.0 70.89000</span></span></code></pre>
+<p>And for the stress inversion result from above:</p>
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.html">SH</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>, <span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span>, <span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">3</span>, <span class="op">]</span>, </span>
+<span>   <span class="va">test_res</span><span class="op">$</span><span class="va">R</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 60.80844</span></span></code></pre>
 </div>
 </div>
 </div>
 <div class="section level2">
-<h2 id="mountain-building-and-earthquakes-some-simple-geometrical-calculations">Mountain building and earthquakes: Some simple geometrical
-calculations<a class="anchor" aria-label="anchor" href="#mountain-building-and-earthquakes-some-simple-geometrical-calculations"></a>
+<h2 id="sec-offset">Fault offsets<a class="anchor" aria-label="anchor" href="#sec-offset"></a>
 </h2>
-<p>Suppose we wish to compute how long it will take for 3000 meters
-(roughly 10,000 feet) of uplift to occur. Clearly, the time it requires
-is equal to the uplift
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>v</mi><mo>=</mo><msub><mi>f</mi><mtext mathvariant="normal">vertical throw</mtext></msub></mrow><annotation encoding="application/x-tex">v=f_{\text{vertical throw}}</annotation></semantics></math>)
-divided by the rate at which uplift occurs
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>v</mi><mo accent="true">̇</mo></mover><mo>=</mo><mfrac><mrow><mi>δ</mi><msub><mi>f</mi><mrow><mtext mathvariant="normal">vertical throw</mtext><mo stretchy="false" form="postfix">)</mo></mrow></msub></mrow><mrow><mi>δ</mi><mi>t</mi></mrow></mfrac></mrow><annotation encoding="application/x-tex">\dot{v} = \frac{\delta f_{\text{vertical throw})}}{\delta t}</annotation></semantics></math>.</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mtext mathvariant="normal">v</mtext></msub><mo>=</mo><mfrac><mrow><mo stretchy="true" form="prefix">|</mo><mi>v</mi><mo stretchy="true" form="postfix">|</mo></mrow><mover><mi>v</mi><mo accent="true">̇</mo></mover></mfrac></mrow><annotation encoding="application/x-tex">\begin{equation} t_{\text{v}} = \frac{|v|}{\dot{v}} \end{equation}</annotation></semantics></math></p>
-<p>To compute how horizontal strain
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ε</mi><annotation encoding="application/x-tex">\varepsilon</annotation></semantics></math>
-that accumulates at a known rate
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>ε</mi><mo accent="true">̇</mo></mover><mo>=</mo><mn>5</mn><mspace width="0.167em"></mspace><mtext mathvariant="normal">m</mtext><mi>/</mi><mn>200</mn><mspace width="0.167em"></mspace><mtext mathvariant="normal">ys</mtext></mrow><annotation encoding="application/x-tex">\dot{\varepsilon} = 5\,\text{m} / 200\,\text{ys}</annotation></semantics></math>
-in this example) translates into vertical uplift rate
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>v</mi><mo accent="true">̇</mo></mover><annotation encoding="application/x-tex">\dot{v}</annotation></semantics></math>,
-we note that it is related to the tangent of the dip of the fault
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math>)
-as follows</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>v</mi><mo accent="true">̇</mo></mover><mo>=</mo><mover><mi>h</mi><mo accent="true">̇</mo></mover><mo>*</mo><mo>tan</mo><mi>β</mi></mrow><annotation encoding="application/x-tex">\begin{equation}
-  \dot{v} = \dot{h} * \tan{\beta}
-\end{equation}</annotation></semantics></math> where</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>h</mi><mo accent="true">̇</mo></mover><mo>=</mo><mfrac><msub><mi>d</mi><mtext mathvariant="normal">earthquake</mtext></msub><mrow><mi>Δ</mi><msub><mi>t</mi><mtext mathvariant="normal">earthquake</mtext></msub></mrow></mfrac></mrow><annotation encoding="application/x-tex">\begin{equation}
- \dot{h} = \frac{d_\text{earthquake}}{\Delta t_\text{earthquake}}
-\end{equation}</annotation></semantics></math></p>
-<p><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>d</mi><mtext mathvariant="normal">earthquake</mtext></msub><annotation encoding="application/x-tex">d_\text{earthquake}</annotation></semantics></math>
-is the slip during average earthquake;
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><msub><mi>t</mi><mtext mathvariant="normal">earthquake</mtext></msub></mrow><annotation encoding="application/x-tex">\Delta t_\text{earthquake}</annotation></semantics></math>
-is the earthquake recurrence interval.</p>
-<p>Suppose that uplift occurs along a shallow fault dipping 10 degrees
-from horizontal. Then,</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>t</mi><mi>v</mi></msub><mo>=</mo><mfrac><mrow><mn>3</mn><mspace width="0.167em"></mspace><mn>000</mn><mspace width="0.167em"></mspace><mtext mathvariant="normal">m</mtext></mrow><mrow><mn>5</mn><mspace width="0.167em"></mspace><mtext mathvariant="normal">m</mtext><mi>/</mi><mn>200</mn><mspace width="0.167em"></mspace><mtext mathvariant="normal">yr</mtext></mrow></mfrac><mo>*</mo><mo>tan</mo><msup><mn>10</mn><mo>∘</mo></msup><mo>=</mo><mn>680</mn><mspace width="0.167em"></mspace><mn>000</mn><mspace width="0.167em"></mspace><mtext mathvariant="normal">yr</mtext></mrow><annotation encoding="application/x-tex">\begin{equation}
- t_{v} = \frac{3\,000\,\text{m}}{5\,\text{m} / 200\,\text{yr}} * \tan{10^{\circ}} = 680\,000\,\text{yr}
-\end{equation}</annotation></semantics></math></p>
-<p>For a steeper fault
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mn>30</mn><mo>∘</mo></msup><annotation encoding="application/x-tex">30^{\circ}</annotation></semantics></math>),
-uplift of
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>3</mn><mspace width="0.167em"></mspace><mn>000</mn><mtext mathvariant="normal">m</mtext></mrow><annotation encoding="application/x-tex">3\,000 \text{m}</annotation></semantics></math>
-occurs even more rapidly, in only
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>210</mn><mspace width="0.167em"></mspace><mn>000</mn><mspace width="0.167em"></mspace><mtext mathvariant="normal">yr</mtext></mrow><annotation encoding="application/x-tex">210\,000\,\text{yr}</annotation></semantics></math>.</p>
-<p>Thus, for rapid convergence rates and even shallow fault dips,
-significant topographic relief can appear in only several hundred
-thousand years - a geological instant! Of course, these calculations
-ignore the important effects of erosion and downward flexure of the
-lithosphere under the load of a growing mountain, both of which slow the
-rate at which a mountain can grow. We shall consider these effects more
-in future lectures.</p>
-<hr>
-</div>
-<div class="section level2">
-<h2 id="abbreviations-and-symbols">Abbreviations and symbols<a class="anchor" aria-label="anchor" href="#abbreviations-and-symbols"></a>
-</h2>
-<p>Two coordinate systems are of importance here: a principal stress
-coordinate system,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝕊</mi><annotation encoding="application/x-tex">\mathbb{S}</annotation></semantics></math>,
-with unit vectors
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mover><msub><mi>σ</mi><mn>1</mn></msub><mo accent="true">→</mo></mover><mo>,</mo><mover><msub><mi>σ</mi><mn>2</mn></msub><mo accent="true">→</mo></mover><mo>,</mo><mover><msub><mi>σ</mi><mn>3</mn></msub><mo accent="true">→</mo></mover><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{ \vec{\sigma_1},\vec{\sigma_2},\vec{\sigma_3} \}</annotation></semantics></math>
-aligned along the eigenvectors whose eigenvalues are
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">∥</mo><mo>,</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">∥</mo><mo>,</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">∥</mo><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{ \lVert\sigma_1\rVert,\lVert\sigma_2\rVert, \lVert\sigma_3\rVert  \}</annotation></semantics></math>,
-respectively; and a geographic coordinate system,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝔾</mi><annotation encoding="application/x-tex">\mathbb{G}</annotation></semantics></math>,
-with unit vectors
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mover><msub><mi>g</mi><mn>1</mn></msub><mo accent="true">→</mo></mover><mo>,</mo><mover><msub><mi>g</mi><mn>2</mn></msub><mo accent="true">→</mo></mover><mo>,</mo><mover><msub><mi>g</mi><mn>3</mn></msub><mo accent="true">→</mo></mover><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{\vec{g_1}, \vec{g_2}, \vec{g_3} \}</annotation></semantics></math>
-aligned with the north, east and down directions, respectively. In this
-paper, matrices are represented in sans serif upper-case letters
-(e.g. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝖲</mi><annotation encoding="application/x-tex">\mathsf{S}</annotation></semantics></math>),
-vectors in bold lower-case letters
-(e.g. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝐧</mi><annotation encoding="application/x-tex">\mathbf{n}</annotation></semantics></math>),
-and vector magnitudes in upper-case italics
-(e.g. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mi>n</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>𝐬</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">S_n = \lVert \mathbf{s}_n \rVert</annotation></semantics></math>;
-Table 2). The components of matrices and vectors are represented, for
-example, as
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>s</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">s_{ij}</annotation></semantics></math>
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>i</mi></msub><annotation encoding="application/x-tex">n_i</annotation></semantics></math>,
-respectively, and a caret and subscript
-(e.g. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><msub><mi>𝐬</mi><mi>𝐢</mi></msub><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\mathbf{\vec{s_i}}</annotation></semantics></math>
-) are used together to denote the ith unit basis vector of a coordinate
-system
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>i</mi><mo>=</mo><mn>1</mn><mo>,</mo><mn>2</mn><mo>,</mo><mn>3</mn></mrow><annotation encoding="application/x-tex">i = 1, 2, 3</annotation></semantics></math>).
-Vector orientations are expressed in terms of trend and plunge angles as
-trend/plunge (e.g. 135/25). For convenience, we use upper-case bold
-symbols for the two most frequently used parameters, namely the vectors
-of maximum horizontal stress
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mi>H</mi></msub><annotation encoding="application/x-tex">S_H</annotation></semantics></math>
-and its proxy
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>S</mi><mi>P</mi></msub><annotation encoding="application/x-tex">S_P</annotation></semantics></math>.</p>
-<table class="table">
-<caption>Table 2 Mathematical symbols. Indices
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>i</mi><annotation encoding="application/x-tex">i</annotation></semantics></math>
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>
-each span the range 1, 2, 3, and an arrow
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>.</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec{.}</annotation></semantics></math>)
-denotes a unit vector.</caption>
-<colgroup>
-<col width="50%">
-<col width="50%">
-</colgroup>
-<thead><tr class="header">
-<th>Symbol</th>
-<th>Explanation</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math></td>
-<td>Arbitrary trend angle measured clockwise from north</td>
-</tr>
-<tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>H</mi></msub><annotation encoding="application/x-tex">\alpha_H</annotation></semantics></math></td>
-<td>Trend of the maximum horizontal compressive stress</td>
-</tr>
-<tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>P</mi></msub><annotation encoding="application/x-tex">\alpha_P</annotation></semantics></math></td>
-<td>Trend of the maximum horizontal stress proxy</td>
-</tr>
-<tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝖠</mi><mrow><mi>𝕏</mi><mi>𝕐</mi></mrow></msub><annotation encoding="application/x-tex">\mathsf{A}_{\mathbb{XY}}</annotation></semantics></math></td>
-<td>Rotation matrix between coordinate systems
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝕐</mi><annotation encoding="application/x-tex">\mathbb{Y}</annotation></semantics></math>
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝕏</mi><annotation encoding="application/x-tex">\mathbb{X}</annotation></semantics></math>
-</td>
-</tr>
-<tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>β</mi><annotation encoding="application/x-tex">\beta</annotation></semantics></math></td>
-<td>fault dip angle</td>
-</tr>
-<tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝖣</mi><annotation encoding="application/x-tex">\mathsf{D}</annotation></semantics></math></td>
-<td>Deviatoric stress tensor (with respect to
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mn>3</mn></msub><mi>𝖨</mi></mrow><annotation encoding="application/x-tex">S_3\mathsf{I}</annotation></semantics></math>)</td>
-</tr>
-<tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝐝</mi><mi>n</mi></msub><annotation encoding="application/x-tex">\mathbf{d}_n</annotation></semantics></math></td>
-<td>Deviatoric normal stress vector</td>
-</tr>
-<tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>D</mi><mi>n</mi></msub><annotation encoding="application/x-tex">D_n</annotation></semantics></math></td>
-<td>Magnitude of the deviatoric normal stress vector</td>
-</tr>
-<tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝖥</mi><annotation encoding="application/x-tex">\mathsf{F}</annotation></semantics></math></td>
-<td>Fault displacement tensor</td>
-</tr>
-<tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>f</mi><mi>i</mi></msub><annotation encoding="application/x-tex">f_i</annotation></semantics></math></td>
-<td>Fault displacement component</td>
-</tr>
-<tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><msub><mi>f</mi><mi>i</mi></msub><mo accent="true">̇</mo></mover><mo>=</mo><mrow><mi>Δ</mi><msub><mi>f</mi><mi>i</mi></msub></mrow><mi>/</mi><mrow><mi>Δ</mi><mi>t</mi></mrow></mrow><annotation encoding="application/x-tex">\dot{f_i} = {\Delta f_i}/{\Delta t}</annotation></semantics></math></td>
-<td>Rate of fault displacement, i.e. displacement over time</td>
-</tr>
-<tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>g</mi><mo accent="true">→</mo></mover><mi>i</mi></msub><annotation encoding="application/x-tex">\vec{g}_i</annotation></semantics></math></td>
-<td>Axes of the north-east—down coordinate system
+<p>The offset along a fault can be factorized into several
+components.</p>
+<div class="float" id="id">
+<img src="fault_displacements.png" class="class" style="width:75.0%;height:75.0%" alt="Fig. 1: Graphic illustration of displacement components along a fault. \mathbb{G} as the georeference frame with D = down, E = East, N = North."><div class="figcaption">Fig. 1: Graphic illustration of displacement
+components along a fault.
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝔾</mi><annotation encoding="application/x-tex">\mathbb{G}</annotation></semantics></math>
-</td>
-</tr>
-<tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝖨</mi><annotation encoding="application/x-tex">\mathsf{I}</annotation></semantics></math></td>
-<td>Identity matrix</td>
-</tr>
-<tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>𝐧</mi><mo accent="true">→</mo></mover><mi>𝕏</mi></msub><annotation encoding="application/x-tex">\mathbf{\vec{n}}_{\mathbb{X}}</annotation></semantics></math></td>
-<td>Unit normal vector represented in coordinate system
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝕏</mi><annotation encoding="application/x-tex">\mathbb{X}</annotation></semantics></math>
-</td>
-</tr>
-<tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>n</mi><mi>i</mi></msub><annotation encoding="application/x-tex">n_i</annotation></semantics></math></td>
-<td>Components of the vector
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝐧</mi><annotation encoding="application/x-tex">\mathbf{n}</annotation></semantics></math>
-</td>
-</tr>
-<tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math></td>
-<td>Stress ratio equal to
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>S</mi><mn>1</mn></msub><mo>−</mo><msub><mi>S</mi><mn>2</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><mi>/</mi><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>S</mi><mn>1</mn></msub><mo>−</mo><msub><mi>S</mi><mn>3</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">(S_1 −S_2)/(S_1 −S_3)</annotation></semantics></math>
-</td>
-</tr>
-<tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝖲</mi><annotation encoding="application/x-tex">\mathsf{S}</annotation></semantics></math></td>
-<td>Stress tensor</td>
-</tr>
-<tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝐒</mi><mi>𝐇</mi></msub><annotation encoding="application/x-tex">\mathbf{S_H}</annotation></semantics></math></td>
-<td>Maximum horizontal compressive stress vector</td>
-</tr>
-<tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>𝛔</mi><mo accent="true">→</mo></mover><mi>𝐢</mi></msub><annotation encoding="application/x-tex">\mathbf{\vec{\sigma}_i}</annotation></semantics></math></td>
-<td>Axes of the principal stress coordinate system
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝕊</mi><annotation encoding="application/x-tex">\mathbb{S}</annotation></semantics></math>
-</td>
-</tr>
-<tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\sigma_{ij}</annotation></semantics></math></td>
-<td>Components of matrix
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝖲</mi><annotation encoding="application/x-tex">\mathsf{S}</annotation></semantics></math>
-(i.e. the
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>j</mi><annotation encoding="application/x-tex">j</annotation></semantics></math>th
-component of
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><msub><mi>s</mi><mi>i</mi></msub><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec{s_i}</annotation></semantics></math>
-)</td>
-</tr>
-<tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝛔</mi><mi>𝐧</mi></msub><annotation encoding="application/x-tex">\mathbf{\sigma_n}</annotation></semantics></math></td>
-<td>Normal stress vector</td>
-</tr>
-<tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mi>n</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">S_n = \lVert \sigma_n \rVert</annotation></semantics></math></td>
-<td>Magnitude of the normal stress vector</td>
-</tr>
-<tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝐒</mi><mi>P</mi></msub><mo>=</mo><msub><mi>𝛔</mi><mi>P</mi></msub></mrow><annotation encoding="application/x-tex">\mathbf{S}_P = \mathbf{\sigma}_P</annotation></semantics></math></td>
-<td>Maximum horizontal stress proxy vector</td>
-</tr>
-<tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>S</mi><mi>i</mi></msub><mo>=</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mi>i</mi></msub><mo stretchy="false" form="postfix">∥</mo></mrow><annotation encoding="application/x-tex">S_i = \lVert \sigma_i \rVert</annotation></semantics></math></td>
-<td>Magnitudes of the principal stresses
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>S</mi><mn>1</mn></msub><mo>≥</mo><msub><mi>S</mi><mn>2</mn></msub><mo>≥</mo><msub><mi>S</mi><mn>3</mn></msub><mo stretchy="true" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">(S_1 \geq S_2 \geq S_3)</annotation></semantics></math>
-</td>
-</tr>
-<tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>t</mi><annotation encoding="application/x-tex">t</annotation></semantics></math></td>
-<td>Time</td>
-</tr>
-<tr class="even">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>Δ</mi><mi>t</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>t</mi><mn>2</mn></msub><mo>−</mo><msub><mi>t</mi><mn>1</mn></msub><mo stretchy="true" form="postfix">|</mo></mrow></mrow><annotation encoding="application/x-tex">\Delta t = |t_2 - t_1|</annotation></semantics></math></td>
-<td>Time interval</td>
-</tr>
-<tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝕏</mi><annotation encoding="application/x-tex">\mathbb{X}</annotation></semantics></math></td>
-<td>Arbitrary coordinate system</td>
-</tr>
-</tbody>
-</table>
+as the georeference frame with D = down, E = East, N = North.</div>
+</div>
+<div class="section level3">
+<h3 id="get-different-components-with-trigonometry">Get different components with trigonometry<a class="anchor" aria-label="anchor" href="#get-different-components-with-trigonometry"></a>
+</h3>
+<div class="section level4">
+<h4 id="sec-offset-1">1. Input: Fault orientation (dip angle, dip direction), shorteninig
+direction, and horizontal throw<a class="anchor" aria-label="anchor" href="#sec-offset-1"></a>
+</h4>
+<p>Knowing the horizontal throw (e.g. from plate motion parameters), the
+remaining components of the displacements along a given fault are as
+follows.</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>δ</mi><mo>=</mo><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>σ</mi><mtext mathvariant="normal">Hmax</mtext></msub><mo>−</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">dip direction</mtext><mo>+</mo><msup><mn>90</mn><mo>∘</mo></msup><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">|</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}\delta = |\sigma_{\textrm{Hmax}} - (\textrm{dip direction}+90^{\circ})|\end{equation}</annotation></semantics></math></p>
+<p><em>Slip components in the horizontal plane:</em></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>f</mi><mtext mathvariant="normal">strike slip</mtext></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mo stretchy="true" form="prefix">|</mo><mo>cos</mo><mi>δ</mi><mo>*</mo><msub><mi>f</mi><mtext mathvariant="normal">horizontal throw</mtext></msub><mo stretchy="true" form="postfix">|</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>f</mi><mtext mathvariant="normal">heave</mtext></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msqrt><mrow><msubsup><mi>f</mi><mtext mathvariant="normal">horizontal throw</mtext><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>f</mi><mtext mathvariant="normal">strike slip</mtext><mn>2</mn></msubsup></mrow></msqrt></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{equation}\begin{split}
+  f_\textrm{strike slip} &amp; = |\cos{\delta} * f_\textrm{horizontal throw}|\\
+  f_\textrm{heave} &amp; = \sqrt{f_\textrm{horizontal throw}^2 - f_\textrm{strike slip}^2}
+  \end{split}\end{equation}</annotation></semantics></math></p>
+<p><em>Slip components in the vertical plane perpendicular to the strike
+of the fault:</em></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>f</mi><mtext mathvariant="normal">dip slip</mtext></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mfrac><msub><mi>f</mi><mtext mathvariant="normal">heave</mtext></msub><mrow><mi>c</mi><mi>o</mi><mi>s</mi><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">dip</mtext><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>f</mi><mtext mathvariant="normal">vertical throw</mtext></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msqrt><mrow><msubsup><mi>f</mi><mtext mathvariant="normal">dip slip</mtext><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>f</mi><mtext mathvariant="normal">heave</mtext><mn>2</mn></msubsup></mrow></msqrt></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{equation}\begin{split}
+  f_\textrm{dip slip} &amp;=  \frac{f_\textrm{heave}}{cos{(\textrm{dip})}}\\
+  f_\textrm{vertical throw} &amp;= \sqrt{f_\textrm{dip slip}^2 - f_\textrm{heave}^2}
+  \end{split}\end{equation}</annotation></semantics></math></p>
+<p><em>Slip components in the fault plane plane:</em></p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>f</mi><mtext mathvariant="normal">net slip</mtext></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msqrt><mrow><msubsup><mi>f</mi><mtext mathvariant="normal">strike slip</mtext><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>f</mi><mtext mathvariant="normal">dip slip</mtext><mn>2</mn></msubsup></mrow></msqrt></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mtext mathvariant="normal">rake</mtext></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mo>arctan</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msub><mi>f</mi><mtext mathvariant="normal">dip slip</mtext></msub><msub><mi>f</mi><mtext mathvariant="normal">strike slip</mtext></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{equation}\begin{split}
+  f_\textrm{net slip} &amp;= \sqrt{f_\textrm{strike slip}^2 + f_\textrm{dip slip}^2}\\
+  \textrm{rake} &amp;= \arctan{\left(\frac{f_\textrm{dip slip}}{f_\textrm{strike slip}}\right)}
+  \end{split}\end{equation}</annotation></semantics></math></p>
+<p>Thus, the rake angle describes the ratio between the dip slip and the
+strike slip component.</p>
+<p>Knowing the vertical throw (e.g. from thermochronology or petrology),
+the fault dip (?assumption), and the direction and amount of horizontal
+offset, the <strong>strike</strong> of the fault is as follows:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>f</mi><mtext mathvariant="normal">heave</mtext></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>f</mi><mtext mathvariant="normal">vertical throw</mtext></msub><mo>*</mo><mo>tan</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtext mathvariant="normal">dip</mtext><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mi>δ</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mo>arcsin</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msub><mi>f</mi><mtext mathvariant="normal">heave</mtext></msub><msub><mi>f</mi><mtext mathvariant="normal">horizontal throw</mtext></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mtext mathvariant="normal">strike</mtext></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>σ</mi><mtext mathvariant="normal">Hmax</mtext></msub><mo>−</mo><mi>δ</mi><mo stretchy="true" form="postfix">|</mo></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{equation}\begin{split}
+f_\textrm{heave} &amp;= f_\textrm{vertical throw} * \tan{(\textrm{dip})}\\
+\delta &amp;= \arcsin{\left(\frac{f_\textrm{heave}}{f_\textrm{horizontal throw}}\right)}\\
+\textrm{strike} &amp;= |\sigma_{\textrm{Hmax}} - \delta|
+\end{split}\end{equation}</annotation></semantics></math></p>
+<p>Knowing the vertical throw (e.g. from thermochronology or petrology),
+the fault strike (geomorphology), and the direction and amount of
+horizontal offset, the <strong>dip</strong> of the fault is as
+follows:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><mi>δ</mi></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mo stretchy="true" form="prefix">|</mo><msub><mi>σ</mi><mtext mathvariant="normal">Hmax</mtext></msub><mo>−</mo><mtext mathvariant="normal">strike</mtext><mo stretchy="true" form="postfix">|</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>f</mi><mtext mathvariant="normal">heave</mtext></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><msub><mi>f</mi><mtext mathvariant="normal">horizontal throw</mtext></msub><mo>*</mo><mo>sin</mo><mi>δ</mi></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"><mtext mathvariant="normal">dip</mtext></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mo>arctan</mo><mrow><mo stretchy="true" form="prefix">(</mo><mfrac><msub><mi>f</mi><mtext mathvariant="normal">heave</mtext></msub><msub><mi>f</mi><mtext mathvariant="normal">vertical throw</mtext></msub></mfrac><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{equation}\begin{split}
+\delta &amp;= |\sigma_{\textrm{Hmax}} - \textrm{strike}|\\
+f_\textrm{heave} &amp;= f_\textrm{horizontal throw} * \sin{\delta} \\
+\textrm{dip} &amp;= \arctan{\left(\frac{f_\textrm{heave}}{f_\textrm{vertical throw}}\right)} 
+\end{split}\end{equation}</annotation></semantics></math></p>
+<p>Knowing the vertical throw (e.g. from thermochronology or petrology)
+and the fault’s dip and rake, the <em>horizontal offset</em>, the
+horizontal throw, and the net-slip are as follows:</p>
+</div>
+</div>
+<div class="section level3">
+<h3 id="sec-tensors">Fault displacement tensors<a class="anchor" aria-label="anchor" href="#sec-tensors"></a>
+</h3>
+<p>Each fault component is a vector describing its direction and length.
+For instance, the vector of the strike slip is:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><msub><mi>f</mi><mtext mathvariant="normal">strike slip</mtext></msub><mo accent="true">→</mo></mover><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">strike-slip</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}
+  \vec{f_\text{strike slip}} = \begin{pmatrix} \lVert f_\textrm{strike-slip}\rVert \\ 0 \\ 0 \end{pmatrix}
+\end{equation}</annotation></semantics></math></p>
+</div>
+<div class="section level3">
+<h3 id="sec-tensors-netslip">Net slip vector<a class="anchor" aria-label="anchor" href="#sec-tensors-netslip"></a>
+</h3>
+<p>Net slip vector</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><msub><mi>f</mi><mtext mathvariant="normal">net</mtext></msub><mo accent="true">→</mo></mover><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">strike-slip</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">heave</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">vertical throw</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}
+  \vec{f_\text{net}} = \begin{pmatrix} \lVert f_\textrm{strike-slip}\rVert \\ \lVert f_\textrm{heave}\rVert \\ \lVert f_\textrm{vertical throw}\rVert \end{pmatrix}
+\end{equation}</annotation></semantics></math></p>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/fault_displacements.html">fault_displacements</a></span><span class="op">(</span>strikeslip <span class="op">=</span> <span class="fl">2</span>, verticalthrow <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, heave <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
+</div>
+<div class="section level3">
+<h3 id="sec-tensors-principal">Principal displacement tensor<a class="anchor" aria-label="anchor" href="#sec-tensors-principal"></a>
+</h3>
+<p>The Eigen values of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝖥</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><annotation encoding="application/x-tex">\mathsf{F}_{ij}</annotation></semantics></math>;
+represented as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mover><msub><mi>f</mi><mn>1</mn></msub><mo accent="true">→</mo></mover><mo>,</mo><mover><msub><mi>f</mi><mn>2</mn></msub><mo accent="true">→</mo></mover><mo>,</mo><mover><msub><mi>f</mi><mn>3</mn></msub><mo accent="true">→</mo></mover><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{ \vec{f_1}, \vec{f_2}, \vec{f_3} \}</annotation></semantics></math>
+are referred to as the heave, strike slip, and vertical throw component,
+respectively. These orthonormal vectors define a orthogonal matrix,
+i.e. the <strong>principal displacement tensor</strong>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝖥</mi><mi>𝔽</mi></msub><annotation encoding="application/x-tex">\mathsf{F}_\mathbb{F}</annotation></semantics></math>:</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝖥</mi><mi>𝔽</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">heave</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">strike-slip</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">vertical throw</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}\mathsf{F}_{\mathbb{F}} = {\begin{bmatrix} \lVert f_\textrm{heave}\rVert &amp; 0 &amp; 0\\ 0 &amp; \lVert f_\textrm{strike-slip}\rVert &amp; 0\\ 0 &amp; 0 &amp; \lVert f_\textrm{vertical throw}\rVert\end{bmatrix}}\end{equation}</annotation></semantics></math></p>
+<p>The tensor
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝖥</mi><annotation encoding="application/x-tex">\mathsf{F}</annotation></semantics></math>
+can also be defined by the magnitudes of the fault displacements:</p>
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Fu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fault-tensor.html">fault_tensor</a></span><span class="op">(</span>s <span class="op">=</span> <span class="fl">2</span>, v <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, h <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">Fu</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##      [,1] [,2] [,3]</span></span>
+<span><span class="co">## [1,]    3    0    0</span></span>
+<span><span class="co">## [2,]    0    2    0</span></span>
+<span><span class="co">## [3,]    0    0   -5</span></span>
+<span><span class="co">## attr(,"class")</span></span>
+<span><span class="co">## [1] "matrix"  "array"   "ftensor"</span></span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="sec-tensors-orientation">Orientation tensor<a class="anchor" aria-label="anchor" href="#sec-tensors-orientation"></a>
+</h3>
+<p>Fault orientation tensor is defined by the fault plane’s location,
+orientation (dip direction and dip angle), and the fault’s slip
+(direction and magnitude):</p>
+<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝖥</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>13</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>22</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>23</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>31</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>32</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>33</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}\mathsf{F}_{ij} = {\begin{bmatrix}f_{11} &amp; f_{12} &amp; f_{13}\\ f_{21} &amp; f_{22} &amp; f_{23}\\ f_{31} &amp; f_{32} &amp; f_{33}\end{bmatrix}}\end{equation}</annotation></semantics></math></p>
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Fg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fault-tensor.html">fault_tensor</a></span><span class="op">(</span>s <span class="op">=</span> <span class="fl">2</span>, v <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, h <span class="op">=</span> <span class="fl">3</span>, dip_direction <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">Fg</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">##         [,1]      [,2] [,3]</span></span>
+<span><span class="co">## [1,] 2.12132  1.414214    0</span></span>
+<span><span class="co">## [2,] 2.12132 -1.414214    0</span></span>
+<span><span class="co">## [3,] 0.00000  0.000000   -5</span></span>
+<span><span class="co">## attr(,"class")</span></span>
+<span><span class="co">## [1] "matrix"  "array"   "ftensor"</span></span></code></pre>
+</div>
+<div class="section level3">
+<h3 id="from-principal-displacement-tensor-to-orientation-tensor">From Principal displacement tensor to Orientation tensor<a class="anchor" aria-label="anchor" href="#from-principal-displacement-tensor-to-orientation-tensor"></a>
+</h3>
+<p>Translation point of origin in
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝖥</mi><mi>𝔽</mi></msub><annotation encoding="application/x-tex">\mathsf{F_\mathbb{F}}</annotation></semantics></math>
+into point of measurement and rotate into fault orientation
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝖥</mi><mrow><mi>𝔽</mi><mi>𝔾</mi></mrow></msub><annotation encoding="application/x-tex">\mathsf{F}_\mathbb{FG}</annotation></semantics></math></p>
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/fault-tensor.html">fault_tensor_decomposition</a></span><span class="op">(</span><span class="va">Fg</span>, dip_direction <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## $displacements</span></span>
+<span><span class="co">##           dip    delta     rake verticalthrow horizontalthrow heave  dipslip</span></span>
+<span><span class="co">## [1,] 300.9638 56.30993 71.06818            -5        3.605551     3 5.830952</span></span>
+<span><span class="co">##      strikeslip  netslip</span></span>
+<span><span class="co">## [1,]          2 6.164414</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $fault</span></span>
+<span><span class="co">## Fault object (n = 1):</span></span>
+<span><span class="co">## dip_direction           dip       azimuth        plunge         sense </span></span>
+<span><span class="co">##      45.00000     300.96376     258.69007      54.20424      -1.00000 </span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $strain_tensor</span></span>
+<span><span class="co">##      [,1] [,2] [,3]</span></span>
+<span><span class="co">## [1,]  3.0 -1.5 -1.5</span></span>
+<span><span class="co">## [2,] -1.0  1.0 -1.0</span></span>
+<span><span class="co">## [3,]  2.5  2.5 15.0</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $volumetric_strain</span></span>
+<span><span class="co">## [1] 19</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## $shear_strain</span></span>
+<span><span class="co">## [1] 5.196152</span></span></code></pre>
+<!-- ## Stress tensor -->
+<!-- > In continuum mechanics, the Cauchy stress tensor $\sigma$, true stress tensor, or simply called the **stress tensor** is a second order tensor named after Augustin-Louis Cauchy.  -->
+<!-- The tensor consists of nine components $\sigma_{ij}$ that completely define the state of stress at a point inside a material in the deformed state, placement, or configuration. The tensor relates a unit-length direction vector n to the traction vector $T^{(n)}$ across an imaginary surface perpendicular to n: -->
+<!-- \begin{equation} T^{(n)} = n * \sigma \end{equation} or  -->
+<!-- \begin{equation} T^{(n)}_j = n_{i}*\sigma_{ij}\end{equation} -->
+<!-- # Transformation of the stress tensor -->
+<!-- It can be shown that the stress tensor is a contravariant second order tensor, which is a statement of how it transforms under a change of the coordinate system. From an $x_i$-system to an $x_i'$-system, the components $\sigma_{ij}$ in the initial system are transformed into the components $\sigma_{ij}'$ in the new system according to the tensor transformation rule (see Figure 2):  -->
+<!-- $\sigma = a_{im} a_{jn} \sigma_{mn}$ or $\sigma' = \mathsf{A} \sigma \mathsf{A}^{T}$, -->
+<!-- where $\mathsf{A}$ is a rotation matrix with components $a_{ij}$. In matrix form this is -->
+<!-- \begin{equation} -->
+<!-- \begin{bmatrix}  -->
+<!-- \sigma'_{11} & \sigma'_{12} & \sigma'_{13} \\ -->
+<!-- \sigma'_{21} & \sigma'_{22} & \sigma'_{23} \\ -->
+<!-- \sigma'_{31} & \sigma'_{32} & \sigma'_{33} -->
+<!-- \end{bmatrix} -->
+<!-- = -->
+<!-- \begin{bmatrix}  -->
+<!-- a_{11} & a_{12} & a_{13} \\ -->
+<!-- a_{21} & a_{22} & a_{23} \\ -->
+<!-- a_{31} & a_{32} & a_{33} -->
+<!-- \end{bmatrix} -->
+<!-- \begin{bmatrix}  -->
+<!-- \sigma_{11} & \sigma_{12} & \sigma_{13} \\ -->
+<!-- \sigma_{21} & \sigma_{22} & \sigma_{23} \\ -->
+<!-- \sigma_{31} & \sigma_{32} & \sigma_{33} -->
+<!-- \end{bmatrix} -->
+<!-- \begin{bmatrix}  -->
+<!-- a_{11} & a_{12} & a_{13} \\ -->
+<!-- a_{21} & a_{22} & a_{23} \\ -->
+<!-- a_{31} & a_{32} & a_{33} -->
+<!-- \end{bmatrix} -->
+<!-- \end{equation} -->
+<!-- ![Fig. 2: Components of stress in three dimensions amd transformation of the Cauchy tensor. Source: https://commons.wikimedia.org/wiki/File:Stress_transformation_3D.svg](cauchy.png){#id .class width=75% height=75%} -->
+<!-- Expanding the matrix operation, and simplifying terms using the symmetry of the stress tensor, gives -->
+<!-- $\sigma_{11}' = a_{11}^{2}\sigma_{11} + a_{12}^{2}\sigma_{22} + a_{13}^{2}\sigma_{33} + 2a_{11}a_{12}\sigma_{12} + 2a_{11}a_{13}\sigma_{13} + 2a_{12}a_{13}\sigma_{23}$, -->
+<!-- $\sigma _{22}'=a_{21}^{2}\sigma _{11}+a_{22}^{2}\sigma _{22}+a_{23}^{2}\sigma _{33}+2a_{21}a_{22}\sigma _{12}+2a_{21}a_{23}\sigma _{13}+2a_{22}a_{23}\sigma _{23}$, -->
+<!-- $\sigma _{33}'=a_{31}^{2}\sigma _{11}+a_{32}^{2}\sigma _{22}+a_{33}^{2}\sigma _{33}+2a_{31}a_{32}\sigma _{12}+2a_{31}a_{33}\sigma _{13}+2a_{32}a_{33}\sigma _{23}$, -->
+<!-- $\sigma _{12}'=a_{11}a_{21}\sigma _{11}+a_{12}a_{22}\sigma _{22}+a_{13}a_{23}\sigma _{33}+(a_{11}a_{22}+a_{12}a_{21})\sigma _{12}+(a_{12}a_{23}+a_{13}a_{22})\sigma _{23}+(a_{11}a_{23}+a_{13}a_{21})\sigma _{13}$, -->
+<!-- $\sigma _{23}'=a_{21}a_{31}\sigma _{11}+a_{22}a_{32}\sigma _{22}+a_{23}a_{33}\sigma _{33}+(a_{21}a_{32}+a_{22}a_{31})\sigma _{12}+(a_{22}a_{33}+a_{23}a_{32})\sigma _{23}+(a_{21}a_{33}+a_{23}a_{31})\sigma _{13}$, -->
+<!-- $\sigma _{13}'=a_{11}a_{31}\sigma _{11}+a_{12}a_{32}\sigma _{22}+a_{13}a_{33}\sigma _{33}+(a_{11}a_{32}+a_{12}a_{31})\sigma _{12}+(a_{12}a_{33}+a_{13}a_{32})\sigma _{23}+(a_{11}a_{33}+a_{13}a_{31})\sigma _{13}$. -->
+<!-- The *Mohr circle* for stress is a graphical representation of this transformation of stresses.  -->
+<!-- ## Normal and shear stresses -->
+<!-- The magnitude of the normal stress component σn of any stress vector $T(n)$ acting on an arbitrary plane with normal unit vector n at a given point, in terms of the components $\sigma_{ij}$ of the stress tensor $\sigma$, is the dot product of the stress vector and the normal unit vector: -->
+<!-- \begin{equation} -->
+<!-- \begin{split} -->
+<!-- \sigma_\vec{n} & = \mathbf{T}^{(n)}\cdot \vec{n} \\  -->
+<!-- & = T^{(n)}_i n_i \\  -->
+<!-- & =\sigma_{ij} n_i n_j. -->
+<!-- \end{split} -->
+<!-- \end{equation} -->
+<!-- The magnitude of the shear stress component $\tau_n$, acting orthogonal to the vector **n**, can then be found using the Pythagorean theorem: -->
+<!-- \begin{equation} -->
+<!-- \begin{split} -->
+<!-- \tau_{\mathrm {n} }&={\sqrt{\left(T^{(\mathbf{n})}\right)^{2} - \sigma_{\mathrm{n}}^{2}}}\\ -->
+<!-- &={\sqrt{T_{i}^{(\mathbf{n})}T_{i}^{(\mathbf{n})} - \sigma_{\mathrm{n}}^{2}}}, -->
+<!-- \end{split} -->
+<!-- \end{equation} -->
+<!-- where -->
+<!-- \begin{equation}{\displaystyle \left(T^{(\mathbf {n} )}\right)^{2}=T_{i}^{(\mathbf {n} )}T_{i}^{(\mathbf {n} )}=\left(\sigma _{ij}n_{j}\right)\left(\sigma _{ik}n_{k}\right)=\sigma _{ij}\sigma _{ik}n_{j}n_{k}}.\end{equation} -->
+<!-- ## Principal stress -->
+<!-- At every point in a stressed body there are at least three planes, called principal planes, with normal vectors $\vec{n}$, called principal directions, where the corresponding stress vector is perpendicular to the plane, i.e., parallel or in the same direction as the normal vector $\vec{n}$, and where there are no normal shear stresses${\displaystyle \tau _{\vec{n}}}$. The three stresses normal to these principal planes are called principal stresses. -->
+<!-- The components $\sigma _{ij}$ of the stress tensor depend on the orientation of the coordinate system at the point under consideration. However, the stress tensor itself is a physical quantity and as such, it is independent of the coordinate system chosen to represent it. There are certain invariants associated with every tensor which are also independent of the coordinate system. For example, a vector is a simple tensor of rank one. In three dimensions, it has three components. The value of these components will depend on the coordinate system chosen to represent the vector, but the magnitude of the vector is a physical quantity (a scalar) and is independent of the Cartesian coordinate system chosen to represent the vector (so long as it is normal). Similarly, every second rank tensor (such as the stress and the strain tensors) has three independent invariant quantities associated with it. One set of such invariants are the principal stresses of the stress tensor, which are just the eigenvalues of the stress tensor. Their direction vectors are the principal directions or eigenvectors. -->
+<!-- A stress vector parallel to the normal unit vector $\vec{n}$ is given by:  -->
+<!-- \begin{equation} -->
+<!--   \mathbf{T}^{(n)} = \lambda \vec{n} = \mathbf{\sigma}_{n}\vec{n} -->
+<!-- \end{equation} -->
+<!-- where $\lambda$ is a constant of proportionality, and in this particular case corresponds to the magnitudes $\sigma_{n}$ of the normal stress vectors or principal stresses.  -->
+<!-- A coordinate system with axes oriented to the principal directions implies that the normal stresses are the principal stresses and the stress tensor is represented by a diagonal matrix: -->
+<!-- \begin{equation} -->
+<!--   \sigma_{ij}={\begin{bmatrix}\sigma_{1}&0&0\\0&\sigma_{2}&0\\0&0&\sigma_{3}\end{bmatrix}} -->
+<!-- \end{equation} -->
+<!-- The principal stresses can be combined to form the stress invariants, $I_{1}$, $I_{2}$, and $I_{3}$. The first and third invariant are the trace and determinant respectively, of the stress tensor. Thus, -->
+<!-- \begin{equation}  -->
+<!-- \begin{split} -->
+<!--   I_{1} & = \sigma_{1}+\sigma_{2}+\sigma_{3}\\ -->
+<!--   I_{2} & = \sigma_{1}\sigma_{2}+\sigma_{2}\sigma_{3}+\sigma_{3}\sigma_{1}\\ -->
+<!--   I_{3} & = \sigma_{1}\sigma_{2}\sigma_{3} -->
+<!--   \end{split} -->
+<!-- \end{equation}  -->
+<!-- Because of its simplicity, the principal coordinate system is often useful when considering the state of the elastic medium at a particular point. Principal stresses are often expressed in the following equation for evaluating stresses in the x and y directions or axial and bending stresses on a part. -->
+<!-- The principal normal stresses can then be used to calculate the von Mises stress and ultimately the safety factor and margin of safety. -->
+<!-- \begin{equation} -->
+<!--   \sigma_{1},\sigma_{2}={\frac {\sigma_{x}+\sigma_{y}}{2}}\pm {\sqrt {\left({\frac {\sigma_{x}-\sigma_{y}}{2}}\right)^{2}+\tau_{xy}^{2}}} -->
+<!-- \end{equation} -->
+<!-- Using just the part of the equation under the square root is equal to the maximum and minimum shear stress for plus and minus. This is shown as: -->
+<!-- \begin{equation} -->
+<!--   \tau_{\max },\tau_{\min }=\pm {\sqrt {\left({\frac {\sigma_{x}-\sigma_{y}}{2}}\right)^{2}+\tau_{xy}^{2}}} -->
+<!-- \end{equation} -->
+<!-- ## Stress deviator tensor -->
+<!-- The stress tensor $\sigma_{ij}$ can be expressed as the sum of two other stress tensors: -->
+<!-- *    a mean *hydrostatic stress* tensor or volumetric stress tensor or mean normal stress tensor, $\pi \delta_{ij}$, which tends to change the volume of the stressed body; and -->
+<!-- *    a deviatoric component called the stress deviator tensor, $s_{ij}$, which tends to distort it. -->
+<!-- So -->
+<!-- \begin{equation}   \sigma_{ij} = s_{ij} + \pi \delta_{ij}, \end{equation} -->
+<!-- where $\pi$ is the mean stress given by -->
+<!-- \begin{equation} \pi ={\frac {\sigma_{kk}}{3}}={\frac{\sigma_{11}+\sigma _{22}+\sigma_{33}}{3}}={\frac {1}{3}}I_{1}, \end{equation} -->
+<!-- Pressure ($p$) is generally defined as negative one-third the trace of the stress tensor minus any stress the divergence of the velocity contributes with, i.e. -->
+<!-- \begin{equation} p=\lambda \,\nabla \cdot {\vec {u}}-\pi =\lambda \,{\frac {\partial u_{k}}{\partial x_{k}}}-\pi =\sum_{k}\lambda \,{\frac {\partial u_{k}}{\partial x_{k}}}-\pi, \end{equation} -->
+<!-- where $\lambda$ is a proportionality constant, $\nabla$ is the divergence operator, $x_{k}$ is the k:th Cartesian coordinate, $\vec{u}$ is the velocity and $u_{k}$ is the k:th Cartesian component of $\vec{u}$. -->
+<!-- The deviatoric stress tensor can be obtained by subtracting the hydrostatic stress tensor from the Cauchy stress tensor: -->
+<!-- \begin{equation} -->
+<!-- \begin{split} -->
+<!-- s_{ij} & = \sigma_{ij} - {\frac {\sigma_{kk}}{3}}\delta_{ij},\\ -->
+<!-- \begin{bmatrix}s_{11}&s_{12}&s_{13}\\s_{21}&s_{22}&s_{23}\\s_{31}&s_{32}&s_{33}\end{bmatrix} & = \begin{bmatrix}\sigma_{11}&\sigma_{12}&\sigma_{13}\\\sigma_{21}&\sigma_{22}&\sigma_{23}\\\sigma_{31}&\sigma_{32}&\sigma_{33}\end{bmatrix} - \begin{bmatrix}\pi &0&0\\0&\pi &0\\0&0&\pi \end{bmatrix}\\ -->
+<!-- & = \begin{bmatrix}\sigma_{11}-\pi &\sigma_{12}&\sigma_{13}\\\sigma_{21}&\sigma_{22}-\pi &\sigma_{23}\\\sigma_{31}&\sigma_{32}&\sigma_{33}-\pi \end{bmatrix}. -->
+<!-- \end{split} -->
+<!-- \end{equation} -->
+<!-- # Mountain building and earthquakes: Some simple geometrical calculations -->
+<!-- Suppose we wish to compute how long it will take for 3000 meters (roughly 10,000 feet) of uplift to occur. Clearly, the time it requires is equal to the uplift ($v=f_{\text{vertical throw}}$) divided by the rate at which uplift occurs $\dot{v} = \frac{\delta f_{\text{vertical throw})}}{\delta t}$. -->
+<!-- \begin{equation} t_{\text{v}} = \frac{|v|}{\dot{v}} \end{equation} -->
+<!-- To compute how horizontal strain $\varepsilon$ that accumulates at a known rate ($\dot{\varepsilon} = 5\,\text{m} / 200\,\text{ys}$ in this example) translates into vertical uplift rate $\dot{v}$, we note that it is related to the tangent of the dip of the fault ($\beta$) as follows -->
+<!-- \begin{equation} -->
+<!--   \dot{v} = \dot{h} * \tan{\beta} -->
+<!-- \end{equation} -->
+<!-- where -->
+<!-- \begin{equation} -->
+<!--  \dot{h} = \frac{d_\text{earthquake}}{\Delta t_\text{earthquake}} -->
+<!-- \end{equation} -->
+<!-- $d_\text{earthquake}$  is the slip during average earthquake; $\Delta t_\text{earthquake}$ is the earthquake recurrence interval. -->
+<!-- Suppose that uplift occurs along a shallow fault dipping 10 degrees from horizontal. Then, -->
+<!-- \begin{equation} -->
+<!--  t_{v} = \frac{3\,000\,\text{m}}{5\,\text{m} / 200\,\text{yr}} * \tan{10^{\circ}} = 680\,000\,\text{yr} -->
+<!-- \end{equation} -->
+<!-- For a steeper fault ($30^{\circ}$), uplift of $3\,000 \text{m}$ occurs even more rapidly, in only $210\,000\,\text{yr}$. -->
+<!-- Thus, for rapid convergence rates and even shallow fault dips, significant topographic relief can appear in only several hundred thousand years - a geological instant! Of course, these calculations ignore the important effects of erosion and downward flexure of the lithosphere under the load of a growing mountain, both of which slow the rate at which a mountain can grow. We shall consider these effects more in future lectures. -->
+<!-- --- -->
+<!-- # Abbreviations and symbols -->
+<!-- Two coordinate systems are of importance here: a principal stress coordinate system, $\mathbb{S}$, with unit vectors $\{ \vec{\sigma_1},\vec{\sigma_2},\vec{\sigma_3} \}$ aligned along the eigenvectors whose eigenvalues are $\{ \lVert\sigma_1\rVert,\lVert\sigma_2\rVert, \lVert\sigma_3\rVert  \}$, respectively; and a geographic coordinate system, $\mathbb{G}$, with unit vectors $\{\vec{g_1}, \vec{g_2}, \vec{g_3} \}$ aligned with the north, east and down directions, respectively. -->
+<!-- In this paper, matrices are represented in sans serif upper-case letters (e.g. $\mathsf{S}$), vectors in bold lower-case letters (e.g. $\mathbf{n}$), and vector magnitudes in upper-case italics (e.g. $S_n = \lVert \mathbf{s}_n \rVert$; Table 2).  -->
+<!-- The components of matrices and vectors are represented, for example, as $s_{ij}$ and $n_i$, respectively, and a caret and subscript (e.g. $\mathbf{\vec{s_i}}$ ) are used together to denote the ith unit basis vector of a coordinate system ($i = 1, 2, 3$). Vector orientations are expressed in terms of trend and plunge angles as trend/plunge (e.g. 135/25).  -->
+<!-- For convenience, we use upper-case bold symbols for the two most frequently used  -->
+<!-- parameters, namely the vectors of maximum horizontal stress $S_H$ and its proxy $S_P$. -->
+<!-- Symbol | Explanation -->
+<!-- --- | --- -->
+<!-- $\alpha$ |  Arbitrary trend angle measured clockwise from north -->
+<!-- $\alpha_H$ | Trend of the maximum horizontal compressive stress -->
+<!-- $\alpha_P$ | Trend of the maximum horizontal stress proxy -->
+<!-- $\mathsf{A}_{\mathbb{XY}}$ | Rotation matrix between coordinate systems $\mathbb{Y}$ and $\mathbb{X}$ -->
+<!-- $\beta$ | fault dip angle -->
+<!-- $\mathsf{D}$ | Deviatoric stress tensor (with respect to $S_3\mathsf{I}$) -->
+<!-- $\mathbf{d}_n$ | Deviatoric normal stress vector -->
+<!-- $D_n$ |  Magnitude of the deviatoric normal stress vector -->
+<!-- $\mathsf{F}$ | Fault displacement tensor -->
+<!-- $f_i$ | Fault displacement component -->
+<!-- $\dot{f_i} = {\Delta f_i}/{\Delta t}$ | Rate of fault displacement, i.e. displacement over time  -->
+<!-- $\vec{g}_i$ | Axes of the north-east—down coordinate system $\mathbb{G}$ -->
+<!-- $\mathsf{I}$ | Identity matrix -->
+<!-- $\mathbf{\vec{n}}_{\mathbb{X}}$ | Unit normal vector represented in coordinate system $\mathbb{X}$ -->
+<!-- $n_i$  | Components of the vector $\mathbf{n}$ -->
+<!-- $R$  | Stress ratio equal to $(S_1 −S_2)/(S_1 −S_3)$ -->
+<!-- $\mathsf{S}$ | Stress tensor -->
+<!-- $\mathbf{S_H}$ | Maximum horizontal compressive stress vector -->
+<!-- $\mathbf{\vec{\sigma}_i}$ | Axes of the principal stress coordinate system $\mathbb{S}$ -->
+<!-- $\sigma_{ij}$ | Components of matrix $\mathsf{S}$ (i.e. the $j$th component of $\vec{s_i}$ ) -->
+<!-- $\mathbf{\sigma_n}$ | Normal stress vector -->
+<!-- $S_n = \lVert \sigma_n \rVert$  | Magnitude of the normal stress vector -->
+<!-- $\mathbf{S}_P = \mathbf{\sigma}_P$ | Maximum horizontal stress proxy vector -->
+<!-- $S_i = \lVert \sigma_i \rVert$ | Magnitudes of the principal stresses $(S_1 \geq S_2 \geq S_3)$ -->
+<!-- $t$ | Time -->
+<!-- $\Delta t = |t_2 - t_1|$ | Time interval -->
+<!-- $\mathbb{X}$ | Arbitrary coordinate system -->
+<!-- Table: Table 2 Mathematical symbols. Indices $i$ and $j$ each span the range 1, 2, 3, -->
+<!-- and an arrow ($\vec{.}$) denotes a unit vector. -->
+</div>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
 </h2>
+<p>Angelier, J. (1979). Determination of the mean principal directions
+of stresses for a given fault population. Tectonophysics, 56(3–4),
+T17–T26. <a href="https://doi.org/10.1016/0040-1951(79)90081-7" class="external-link uri">https://doi.org/10.1016/0040-1951(79)90081-7</a></p>
+<p>Angelier, J. (1990). Inversion of field data in fault tectonics to
+obtain the regional stress—III. A new rapid direct inversion method by
+analytical means. Ceophys. J. Int, 103, 363–376. <a href="https://doi.org/10.1111/j.1365-246X.1990.tb01777.x" class="external-link uri">https://doi.org/10.1111/j.1365-246X.1990.tb01777.x</a></p>
+<p>Lund, B., &amp; Townend, J. (2007). Calculating horizontal stress
+orientations with full or partial knowledge of the tectonic stress
+tensor. Geophysical Journal International, 170(3), 1328–1335. <a href="https://doi.org/10.1111/j.1365-246X.2007.03468.x" class="external-link uri">https://doi.org/10.1111/j.1365-246X.2007.03468.x</a></p>
+<p>Michael, A. J. (1984). Determination of stress from slip data: Faults
+and folds. Journal of Geophysical Research: Solid Earth, 89(B13),
+11517–11526. <a href="https://doi.org/10.1029/JB089iB13p11517" class="external-link uri">https://doi.org/10.1029/JB089iB13p11517</a></p>
 </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
