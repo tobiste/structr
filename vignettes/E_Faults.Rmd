@@ -151,6 +151,7 @@ test_data <- angelier1990$TYM
 stereoplot(title = "Test data", guides = FALSE)
 fault_plot(test_data, col = "grey30")
 ```
+
 The stress inversion with 10 bootstraps:
 
 ```{r slip_inversion_check}
