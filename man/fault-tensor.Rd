@@ -2,13 +2,13 @@
 % Please edit documentation in R/fault_displacement.R
 \name{fault-tensor}
 \alias{fault-tensor}
-\alias{fault_tensor}
-\alias{fault_tensor_decomposition}
+\alias{displacement_tensor}
+\alias{displacement_tensor_decomposition}
 \title{Fault displacement tensor}
 \usage{
-fault_tensor(h, s, v, dip_direction = NULL)
+displacement_tensor(h, s, v, dip_direction = NULL)
 
-fault_tensor_decomposition(ftensor, dip_direction = NULL)
+displacement_tensor_decomposition(ftensor, dip_direction = NULL)
 }
 \arguments{
 \item{h, s, v}{numeric. the heave, strike-slip, vertical throw displacement}
@@ -20,8 +20,8 @@ If \code{NULL}, the fault tensor will be given in the fault displacement
 coordinates. Otherwise, the tensor will be in the geographic reference frame.}
 }
 \value{
-\code{fault_tensor()} returns a 3x3 matrix of class \code{"ftensor"} containing the fault displacement tensor.
-\code{fault_tensor_analysis()} returns a list containing the principal fault displacement tensor and the fault orientation.
+\code{displacement_tensor()} returns a 3x3 matrix of class \code{"ftensor"} containing the fault displacement tensor.
+\code{displacement_tensor_decomposition()} returns a list containing the principal fault displacement tensor and the fault orientation.
 }
 \description{
 Creates the fault displacement tensor from displacement components.
@@ -39,19 +39,19 @@ The fault displacement tensor gives the displacements in all directions and has 
 \item The determinant of the tensor relates to the volumetric strain by: det(F) - 1, where
 }
 
-(\code{\link[=fault_tensor_decomposition]{fault_tensor_decomposition()}}) retrieves the principal fault displacement tensor using Singular Value Decomposition of a Matrix
+(\code{\link[=displacement_tensor_decomposition]{displacement_tensor_decomposition()}}) retrieves the principal fault displacement tensor using Singular Value Decomposition of a Matrix
 and the fault orientation if the dip direction is known.
 
 The orientation of the net-slip vector is the lineation component of the fault orientation.
 }
 \examples{
-A_princ <- fault_tensor(s = 2, v = -5, h = 3)
+A_princ <- displacement_tensor(s = 2, v = -5, h = 3)
 print(A_princ)
 det(A_princ)
 
-A_geo <- fault_tensor(s = 2, v = -5, h = 3, dip_direction = 45)
+A_geo <- displacement_tensor(s = 2, v = -5, h = 3, dip_direction = 45)
 print(A_geo)
 det(A_geo)
 
-fault_tensor_decomposition(A_geo, dip_direction = 45)
+displacement_tensor_decomposition(A_geo, dip_direction = 45)
 }

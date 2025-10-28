@@ -30,6 +30,19 @@
 #'  }
 #' 
 #' @references Michael, A. J. (1984). Determination of stress from slip data: Faults and folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526. https://doi.org/10.1029/JB089iB13p11517
+#' 
+#' @details
+#' The goal of slip inversion is to find the single uniform stress tensor that 
+#' most likely caused the faulting events. With only slip data to constrain the 
+#' stress tensor the isotropic component can not be determined, unless 
+#' assumptions about the fracture criterion are made. Hence inversion will be 
+#' for the deviatoric stress tensor only.
+#' A single fault can not completely constrain the deviatoric stress tensor a, 
+#' therefore it is necessary to simultaneously solve for a number of faults, so 
+#' that a single a that best satisfies all of the faults is found. 
+#' 
+#' 
+#' 
 #' @export
 #' 
 #' @importFrom stats t.test
@@ -38,7 +51,7 @@
 #' 
 #' @examples
 #' # Use Angelier examples:
-#' res_TYM <- stress_inversion(angelier1990$TYM, boot = 10)
+#' res_TYM <- slip_inversion(angelier1990$TYM, boot = 10)
 #' 
 #' # Plot the faults (color-coded by beta angle) and show the principal stress axes
 #' stereoplot(title = "Tymbaki, Crete, Greece", guides = FALSE)
@@ -49,7 +62,7 @@
 #' text(res_TYM$principal_axes, label = rownames(res_TYM$principal_axes), col = 2:4, adj = -.25)
 #' legend("topleft", col = 2:4, legend = rownames(res_TYM$principal_axes), pch = 16)
 #' 
-#' res_AVB <- stress_inversion(angelier1990$AVB)
+#' res_AVB <- slip_inversion(angelier1990$AVB)
 #' stereoplot(title = "Agia Varvara, Crete, Greece", guides = FALSE)
 #' fault_plot(angelier1990$AVB, col = "gray80")
 #' stereo_confidence(res_AVB$principal_axes_conf$sigma1, col = 2)
@@ -57,8 +70,8 @@
 #' stereo_confidence(res_AVB$principal_axes_conf$sigma3, col = 4)
 #' text(res_AVB$principal_axes, label = rownames(res_AVB$principal_axes), col = 2:4, adj = -.25)
 #' legend("topleft", col = 2:4, legend = rownames(res_AVB$principal_axes), pch = 16)
-stress_inversion <-  function(x, boot = 10L, conf.level = 0.95){
-  best.fit <- stress_inversion0(x)
+slip_inversion <-  function(x, boot = 10L, conf.level = 0.95){
+  best.fit <- slip_inversion0(x)
   fault_df <- best.fit$fault_data
   nx <- nrow(x)
   
@@ -66,7 +79,7 @@ stress_inversion <-  function(x, boot = 10L, conf.level = 0.95){
   boot_results <- lapply(1:boot, function(i) {
     idx <- sample.int(nx, replace = TRUE)
     x_sample <- x[idx, ]
-    stress_inversion0(x_sample)
+    slip_inversion0(x_sample)
   })
   
   # calculate confidence intervals from bootstrap results
@@ -116,7 +129,7 @@ stress_inversion <-  function(x, boot = 10L, conf.level = 0.95){
   )
 }
 
-stress_inversion0 <- function(x){
+slip_inversion0 <- function(x){
   tau <- linear_stress_inversion(x)
   # tau0 <- tau / sqrt(sum(tau^2)) # normalize Frobenius norm
   
@@ -136,7 +149,7 @@ stress_inversion0 <- function(x){
   
   # Angles between the tangential traction predicted by the best stress tensor and the slip vector on each plane
   betas <- sapply(1:nrow(x), function(i){
-    int <- crossprod.spherical(Plane(principal_axes[2, ]), Plane(x[i, ])) |> Line()
+    int <- crossprod(Plane(principal_axes[2, ]), Plane(x[i, ])) |> Line()
     angle(int, Line(x[i, ]))
   }) #|> as.vector()
   betas <- ifelse(betas > 90, 180 - betas, betas)

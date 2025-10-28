@@ -12,15 +12,17 @@ Fault_PT(x, ptangle = 90)
 \item{ptangle}{numeric. angle between P and T axes in degrees (90° by default).}
 }
 \value{
-list
+list. \code{p} and \code{t} are the P and T axes as \code{"Line"} objects,
+\code{m} and \code{d} are the M-planes and the dihedra sparation plnaes as \code{"Plane"} objects
 }
 \description{
-Calculates PT-axes, kinematic plane (M), and dihedra separation plane (d)
+The PT-techniques is a graphical solution of the \emph{Wallace-Bott hypothesis}, i.e. fault slip occurs parallel to the maximum shear stress.
+It calculates PT-axes, kinematic planes (also movement planes), and the dihedra separation plane.
 }
 \examples{
 f <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
 Fault_PT(f)
 }
 \seealso{
-\code{\link[=stress_inversion]{stress_inversion()}}
+\code{\link[=slip_inversion]{slip_inversion()}}
 }

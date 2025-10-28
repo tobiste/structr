@@ -4,7 +4,10 @@
 \alias{vecmath}
 \alias{vector_length}
 \alias{vector_norm}
-\alias{crossprod.spherical}
+\alias{crossprod.Vec3}
+\alias{crossprod.Line}
+\alias{crossprod.Ray}
+\alias{crossprod.Plane}
 \alias{dotprod}
 \alias{rotate}
 \alias{rotate.spherical}
@@ -21,7 +24,13 @@ vector_length(x)
 
 vector_norm(x)
 
-\method{crossprod}{spherical}(x, y = NULL, ...)
+\method{crossprod}{Vec3}(x, y = NULL, ...)
+
+\method{crossprod}{Line}(x, y = NULL, ...)
+
+\method{crossprod}{Ray}(x, y = NULL, ...)
+
+\method{crossprod}{Plane}(x, y = NULL, ...)
 
 dotprod(x, y)
 

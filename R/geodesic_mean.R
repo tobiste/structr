@@ -438,7 +438,7 @@ pair2rot <- function(x) {
   if (inherits(x, "Fault")) {
     l <- x[, 5] * l
   }
-  cross <- crossprod(p, l)
+  cross <- crossprod.Vec3(p, l)
 
   rotm <- rot_projected_matrix(list(pole = p, direction = l, cross = cross)) |>
     as.Rotation()

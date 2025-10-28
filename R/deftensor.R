@@ -40,7 +40,7 @@ defgrad_from_pair <- function(p) {
 
   D <- rbind(
     pl,
-    crossprod(pp, pl),
+    crossprod.Vec3(pp, pl),
     pp
   )
   rownames(D) <- colnames(D) <- NULL
@@ -68,7 +68,7 @@ defgrad_from_vectors <- function(v1, v2) {
   v2 <- Vec3(v2)
 
   defgrad_from_axisangle(
-    axis = crossprod(v1, v2),
+    axis = crossprod.Vec3(v1, v2),
     angle = angle(v1, v2) #* 180 / pi
   )
 }
