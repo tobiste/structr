@@ -53,6 +53,7 @@ list
 \item{\code{bott}}{numeric. Stress shape ratio after Bott (1959): \eqn{\R = (\sigma_3 - \sigma_1)/(\sigma_2 - \sigma_1)}. Values range between \eqn{-\infty} and \eqn{+\infty}.}
 \item{\code{bott_conf}}{Confidence interval for \code{bott}}
 \item{\code{beta}}{numeric. Average angle between the tangential traction predicted by the best stress tensor  and the slip vector on each plane. Should be close to 0.}
+\item{\code{beta_CI}}{numeric. Confidence interval of \code{beta} angle}
 \item{\code{sigma_s}}{numeric. Average resolved shear stress on each plane. Should be close to 1.}
 \item{\code{fault_data}}{\code{data.frame} containing the beta angles, the angles between sigma 1 and the plane normal,
 the resolved shear and normal stresses, and the slip and dilation tendency on each plane.}

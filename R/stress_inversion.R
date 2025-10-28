@@ -25,6 +25,7 @@
 #'  \item{`bott`}{numeric. Stress shape ratio after Bott (1959): \eqn{\R = (\sigma_3 - \sigma_1)/(\sigma_2 - \sigma_1)}. Values range between \eqn{-\infty} and \eqn{+\infty}.}
 #'  \item{`bott_conf`}{Confidence interval for `bott`}
 #'  \item{`beta`}{numeric. Average angle between the tangential traction predicted by the best stress tensor  and the slip vector on each plane. Should be close to 0.}  
+#'  \item{`beta_CI`}{numeric. Confidence interval of `beta` angle}  
 #'  \item{`sigma_s`}{numeric. Average resolved shear stress on each plane. Should be close to 1.}
 #'  \item{`fault_data`}{`data.frame` containing the beta angles, the angles between sigma 1 and the plane normal, 
 #'  the resolved shear and normal stresses, and the slip and dilation tendency on each plane.}
@@ -111,6 +112,8 @@ slip_inversion <-  function(x, boot = 100L, conf.level = 0.95, ...){
   })
   colnames(sigma_boot) <- names(best.fit$principal_vals)
   
+  beta_CI <- tectonicr::confidence_interval(fault_df$beta, conf.level = conf.level, axial = FALSE)
+  
   list(
     stress_tensor = best.fit$stress_tensor,
     principal_axes = best.fit$principal_axes,
@@ -124,6 +127,7 @@ slip_inversion <-  function(x, boot = 100L, conf.level = 0.95, ...){
     bott = best.fit$bott,
     bott_conf = bott_boot$conf.int,
     beta = best.fit$beta,
+    beta_CI = beta_CI,
     sigma_s = best.fit$sigma_s,
     fault_data = fault_df
   )
@@ -153,8 +157,7 @@ slip_inversion0 <- function(x){
     angle(int, Line(x[i, ]))
   }) #|> as.vector()
   betas <- ifelse(betas > 90, 180 - betas, betas)
-  beta_mean <- tectonicr::circular_mean(betas)
-  
+  beta_mean <- tectonicr::circular_mean(betas, axial = FALSE)
   
   # Resolved shear stress on plane
   theta <- sapply(1:nrow(x), function(i){

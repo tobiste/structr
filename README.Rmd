@@ -9,7 +9,9 @@ knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
   fig.path = "man/figures/README-",
-  out.width = "100%"
+  out.width = "100%",
+  dpi=300,
+  fig.width=7
 )
 ```
 
@@ -50,6 +52,10 @@ You can install the development version of `{structr}` from [GitHub](https://git
 devtools::install_github("tobiste/structr")
 ```
 
+## Documentation
+
+The detailed documentation can be found at <https://tobiste.github.io/structr/>
+
 ## Examples
 
 These are some basic examples which shows you what you can do with {structr}. First we load the package
@@ -65,24 +71,29 @@ library(structr)
 data("example_planes")
 data("example_lines")
 
+par(xpd = NA)
 stereoplot(title = "Lambert equal-area projection", sub = "Lower hemisphere")
 points(example_lines, col = "#B63679", pch = 19, cex = .5)
 points(example_planes, col = "#000004", pch = 1, cex = .5)
 
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```
+
 ### Density
+
+Desnity shown by fontour lines and filled contoursL
 
 ```{r stereo_density, warning=FALSE,message=FALSE}
 par(mfrow =c(1, 2))
-stereoplot(guides = FALSE, title = "Planes")
-image(example_planes, add = TRUE)
-points(example_planes, col = "grey", pch = 16, cex = .5)
+contour(example_planes)
+points(example_planes, col = "grey", cex = .5)
+title(main = "Planes")
 
-stereoplot(guides = FALSE, title = "Lines")
-image(example_lines, add = TRUE)
-points(example_lines, col = "grey", pch = 16, cex = .5)
+image(example_lines)
+points(example_lines, col = "grey", cex = .5)
+title(main = "Lines")
 ```
+
 ### Spherical statistics
 
 ```{r stats, warning=FALSE,message=FALSE}
@@ -90,17 +101,18 @@ planes_mean <- sph_mean(example_planes)
 planes_geomean <- geodesic_mean(example_planes)
 planes_eig <- ot_eigen(example_planes)$vectors
 
-par(mfrow = c(1, 2))
+par(mfrow = c(1, 2), xpd = NA)
 stereoplot(title = "Planes", guides = FALSE)
 points(example_planes, col = "lightgrey", pch = 1, cex = .5)
 lines(planes_eig, col = c("#FB8861FF", "#FEC287FF", "#FCFDBFFF"), lty = 1:3)
 points(planes_mean, col = "#B63679", pch = 19, cex = 1)
 points(planes_geomean, col = "#E65164FF", pch = 19, cex = 1)
 points(planes_eig, col = c("#FB8861FF", "#FEC287FF", "#FCFDBFFF"), pch = 19, cex = 1)
-legend("topright",
+legend(
+  0, -1.1, xjust = .5,
   legend = c("Arithmetic mean", "Geodesic mean", "Eigen 1", "Eigen 2", "Eigen 3"),
   col = c("#B63679", "#E65164FF", "#FB8861FF", "#FEC287FF", "#FCFDBFFF"),
-  pch = 10, lty = c(NA, NA, 1, 2, 3),
+  pch = 19, lty = c(NA, NA, 1, 2, 3),
   cex = .75
 )
 
@@ -114,14 +126,14 @@ points(lines_mean, col = "#B63679", pch = 19, cex = 1)
 stereo_confidence(lines_confangle, col = "#E65164FF")
 lines(lines_mean, ang = lines_delta, col = "#FB8861FF")
 legend(
-  "topright",
+  0, -1.1, xjust = .5,
   legend = c("Arithmetic mean", "95% confidence cone", "63% data cone"),
   col = c("#B63679", "#E65164FF", "#FB8861FF"),
   pch = c(19, NA, NA), lty = c(NA, 1, 1), cex = .75
 )
 ```
 
-#### Find best-fit great and small circles
+#### Best-fit great and small-circles (geodsic regression)
 
 ```{r bestfit, warning=FALSE,message=FALSE}
 set.seed(20250411)
@@ -135,38 +147,50 @@ bedding_gc <- regression_greatcircle(bedding)
 cleavage_sc <- regression_smallcircle(cleavage)
 bedding_sc <- regression_smallcircle(bedding)
 
-par(mfrow = c(1, 2))
-stereoplot(title = "Best greatcircle")
+par(mfrow = c(1, 2), xpd = NA)
+stereoplot(title = "Best greatcircle", guides = FALSE)
 lines(cleavage_gc$vec, col = "#000004FF")
 lines(bedding_gc$vec, col = "#B63679")
 points(cleavage, col = "#1D1147")
 points(bedding, col = "#E65164", pch = 4)
 
-legend("bottomright", col = c("#000004FF", "#B63679"), lty =c(1, 1), legend = c("Cleavage greatcircle", "Bedding greatcircle"), bg = 'white')
+legend(
+  0, -1.1,
+  xjust = .5,
+  col = c("#000004FF", "#B63679"),
+  lty = c(1, 1), legend = c("Cleavage greatcircle", "Bedding greatcircle"), bg = "white"
+)
 
-stereoplot(title = "Best smallcircle")
+stereoplot(title = "Best smallcircle", guides = FALSE)
 lines(cleavage_sc$vec, cleavage_sc$cone, col = "#000004FF")
 lines(bedding_sc$vec, bedding_sc$cone, col = "#B63679")
 points(cleavage, col = "#1D1147")
 points(bedding, col = "#E65164", pch = 4)
 
-legend("bottomright", col = c("#000004FF", "#B63679"), lty =c(1, 1), legend = c("Cleavage smallcircle", "Bedding smallcircle"), bg = 'white')
+legend(0, -1.1, xjust = .5,
+  col = c("#000004FF", "#B63679"), lty = c(1, 1), legend = c("Cleavage smallcircle", "Bedding smallcircle"), bg = "white"
+)
 ```
 
 
 ### Orientation tensor and fabric plots
 
 ```{r stereo_ortensor, warning=FALSE,message=FALSE}
-par(mfrow = c(1, 2))
+par(mfrow = c(1, 2), xpd = NA)
 vollmer_plot(example_planes, col = "#000004", pch = 16)
 vollmer_plot(example_lines, col = "#B63679FF", pch = 16, add = TRUE)
 title("Fabric plot of Vollmer (1990)")
 
 hsu_fabric_plot(example_planes, col = "#000004", pch = 16)
 hsu_fabric_plot(example_lines, col = "#B63679FF", pch = 16, add = TRUE)
+
+legend(
+  2.5, -.25, xjust = .5, horiz = TRUE, xpd = NA,
+  legend = c('Planes', 'Lines'), col = c("#000004", "#B63679FF"), pch = 16
+)
 ```
 
-### Fault plots and slip inversion
+### Fault plots 
 
 ```{r stereo_faults, warning=FALSE,message=FALSE}
 data("angelier1990")
@@ -179,6 +203,9 @@ angelier(faults)
 stereoplot(title = "Hoeppner plot")
 hoeppner(faults, points = FALSE)
 ```
+
+### Fault-slip inversion
+
 Compute deviatoric stress tensor and calculate 95% confidence intervals using bootstrap samples:
 
 ```{r stereo_inversion1, warning=FALSE,message=FALSE}
@@ -188,13 +215,11 @@ faults_stress <- slip_inversion(faults, boot = 10)
 
 Visualize the slip inversion results:
 
-```{r stereo_inversion2, warning=FALSE,message=FALSE}
+```{r stereo_inversion_plot, warning=FALSE,message=FALSE}
 cols <- c("#000004FF", "#B63679FF", "#FEC287FF")
-beta <- faults_stress$fault_data$beta
 R_val <-  round(faults_stress$R, 2)
 R_CI <-  round(faults_stress$R_conf, 2)
 
-par(mfrow = c(1, 2), xpd = NA)
 stereoplot(
   title = "Principal stress axes",
   sub = paste0("Relative stress magnitudes R = ", R_val, " | ", "95% CI: [", R_CI[1], ", ",R_CI[2], "]"),
@@ -208,10 +233,17 @@ text(faults_stress$principal_axes,
   label = rownames(faults_stress$principal_axes),
   col = cols, adj = -.25
 )
+```
+
+
+```{r stereo_inversion_deviation, warning=FALSE,message=FALSE}
+beta <- faults_stress$fault_data$beta
+beta_mean <- round(faults_stress$beta)
+beta_CI <- round(faults_stress$beta_CI$conf.angle)
 
 stereoplot(
   title = "Stress inversion accuracy",
-  sub = bquote("Average deviation" ~ bar(beta) == .(round(faults_stress$beta)) * degree),
+  sub = bquote("Average deviation" ~ bar(beta) == .(beta_mean) * degree ~ "\U00B1" ~ .(beta_CI) * degree),
   guides = FALSE
 )
 angelier(faults, col = assign_col(beta))
@@ -231,6 +263,7 @@ SH(
   R = faults_stress$R
 )
 ```
+
 ### Mohr circles
 
 ```{r stereo_inversion_mohr, warning=FALSE,message=FALSE}
@@ -240,7 +273,7 @@ points(faults_stress$fault_data$sigma_n, faults_stress$fault_data$sigma_s)
 
 
 
-### Strain and vorticity analysis
+### Strain analysis
 
 #### 2D Strain
 
@@ -264,6 +297,7 @@ flinn_plot(R_XY, R_YZ, log = TRUE, col = "#B63679", pch = 16)
 hsu_plot(R_XY, R_YZ, col = "#B63679", pch = 16)
 ```
 
+### Vorticity analysis
 
 #### Rigid Grain Net
 
@@ -275,9 +309,6 @@ RGN_plot(r = ramsay[, 1], theta = theta, col = "#B63679")
 title(main = "Rigid Grain Net")
 ```
 
-## Documentation
-
-The detailed documentation can be found at <https://tobiste.github.io/structr/>
 
 ## Author
 
