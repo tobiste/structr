@@ -7,11 +7,13 @@
 #'
 #' @returns list
 #' @export
+#' 
+#' @seealso [stress_inversion()]
 #'
 #' @examples
 #' f <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
-#' fault_analysis(f)
-fault_analysis <- function(x, ptangle = 90) {
+#' Fault_PT(f)
+Fault_PT <- function(x, ptangle = 90) {
   ptangle <- deg2rad(ptangle)
   x_corr <- misfit_pair(x)
   xp <- x_corr$fvec
@@ -109,7 +111,7 @@ correct_pair <- function(x) {
 #' slip vector and fault strike (measured clockwise from strike!)
 #' [Fault_sense()] extracts the fault sense from the rake (1: normal, -1: reverse)
 #'
-#' @inheritParams fault_analysis
+#' @inheritParams Fault_PT
 #' @param steps Integer. Either 2, 4, or 8 steps for parsing the fault sense
 #'
 #' @returns numeric. `"Plane"`, `"Ray"` or angle in degrees, respectively

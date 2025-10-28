@@ -46,16 +46,16 @@ res_TYM <- stress_inversion(angelier1990$TYM, boot = 10)
 
 # Plot the faults (color-coded by beta angle) and show the principal stress axes
 stereoplot(title = "Tymbaki, Crete, Greece", guides = FALSE)
-fault_plot(angelier1990$TYM, col = assign_col(res_TYM$fault_data$beta))
+fault_plot(angelier1990$TYM, col = "gray80")
 stereo_confidence(res_TYM$principal_axes_conf$sigma1, col = 2)
 stereo_confidence(res_TYM$principal_axes_conf$sigma2, col = 3)
 stereo_confidence(res_TYM$principal_axes_conf$sigma3, col = 4)
-text(res_AVB$principal_axes, label = rownames(res_TYM$principal_axes), col = 2:4, adj = -.25)
+text(res_TYM$principal_axes, label = rownames(res_TYM$principal_axes), col = 2:4, adj = -.25)
 legend("topleft", col = 2:4, legend = rownames(res_TYM$principal_axes), pch = 16)
 
 res_AVB <- stress_inversion(angelier1990$AVB)
 stereoplot(title = "Agia Varvara, Crete, Greece", guides = FALSE)
-fault_plot(angelier1990$AVB, col = assign_col(res_AVB$fault_data$beta))
+fault_plot(angelier1990$AVB, col = "gray80")
 stereo_confidence(res_AVB$principal_axes_conf$sigma1, col = 2)
 stereo_confidence(res_AVB$principal_axes_conf$sigma2, col = 3)
 stereo_confidence(res_AVB$principal_axes_conf$sigma3, col = 4)
@@ -66,5 +66,5 @@ legend("topleft", col = 2:4, legend = rownames(res_AVB$principal_axes), pch = 16
 Michael, A. J. (1984). Determination of stress from slip data: Faults and folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526. https://doi.org/10.1029/JB089iB13p11517
 }
 \seealso{
-\code{\link[=SH]{SH()}} to calculate the azimuth of the maximum horizontal stress; \code{\link[=fault_analysis]{fault_analysis()}} for a simple P-T stress analysis.
+\code{\link[=SH]{SH()}} to calculate the azimuth of the maximum horizontal stress; \code{\link[=Fault_PT]{Fault_PT()}} for a simple P-T stress analysis.
 }

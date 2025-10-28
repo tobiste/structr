@@ -1,10 +1,10 @@
 ---
-title: "6. Faults"
+title: "6. Faults and Paleostress"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{6. Faults}
+  %\VignetteIndexEntry{6. Faults and Paleostress}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 editor_options: 
@@ -89,7 +89,7 @@ print(my_fault2)
 ```
 
 ```{r faults_stress2}
-fault_analysis(my_fault2)
+Fault_PT(my_fault2)
 ```
 
 ### Fault slip inversion
@@ -120,6 +120,17 @@ test_data <- angelier1990$TYM
 stereoplot(title = "Test data", guides = FALSE)
 fault_plot(test_data, col = "grey30")
 ```
+The stress inversion with 10 bootstraps:
+
+```{r slip_inversion_check}
+test_res <- stress_inversion(test_data, boot = 10)
+
+# Average beta angle
+test_res$beta
+
+# Average resolved shear stress
+test_res$sigma_s
+```
 
 To check the accuracy of the solution, you can evaluate
 
@@ -129,15 +140,6 @@ To check the accuracy of the solution, you can evaluate
 -   the average resolved shear stress on each plane (should be close to
     1).
 
-```{r slip_inversion_check}
-test_res <- stress_inversion(angelier1990$TYM, boot = 10)
-
-# Average beta angle
-test_res$beta
-
-# Average resolved shear stress
-test_res$sigma_s
-```
 
 To visualizing the orientation of the principal stresses and the
 confidence region of the axes, you may use the stereoplot() functions
@@ -150,7 +152,7 @@ from {structr}
 cols <- c('#000004FF', "#B63679FF", "#FEC287FF")
 
 stereoplot(title = "Stress inversion", guides = FALSE)
-fault_plot(test_data, col = 'grey60')
+fault_plot(test_data, col = 'grey75')
 stereo_confidence(test_res$principal_axes_conf$sigma1, col = cols[1])
 stereo_confidence(test_res$principal_axes_conf$sigma2, col = cols[2])
 stereo_confidence(test_res$principal_axes_conf$sigma3, col = cols[3])
