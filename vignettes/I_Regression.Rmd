@@ -72,9 +72,6 @@ bedding_gc$r_squared
 
 Plot the results
 ```{r plot_greatcircle, warning=FALSE, message=FALSE}
-cleavage_gc <- regression_greatcircle(cleavage)
-bedding_gc <- regression_greatcircle(bedding)
-
 stereoplot()
 lines(cleavage_gc$vec, col = "#000004FF")
 lines(bedding_gc$vec, col = "#B63679")

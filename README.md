@@ -53,34 +53,250 @@ You can install the development version of `{structr}` from
 devtools::install_github("tobiste/structr")
 ```
 
-## Example
+## Examples
 
-This is a basic example which shows you how to import data and plot them
-on stereographic or equal-area projections.
+These are some basic examples which shows you what you can do with
+{structr}. First we load the package
 
 ``` r
 library(structr)
-library(ggplot2)
-library(mapproj)
-
-data(example_planes_df)
-planes <- Plane(example_planes_df$dipdir, example_planes_df$dip)
-
-fabric <- or_shape_params(planes)$Vollmer["D"]
-
-ggstereo() +
-  geom_contourf_stereo(gg(planes)) +
-  geom_point(data = gg(planes), aes(x, y), color = "grey", shape = 21) +
-  scale_fill_viridis_d(option = "F") +
-  labs(
-    subtitle = "Example data",
-    title = "Density contour plot",
-    fill = "Multiples of\nvon Mises-Fisher\ndistribution",
-    caption = paste0("Equal area, lower hemisphere projection | N: ", nrow(planes), " | Fabric strength: ", round(fabric, 2))
-  )
 ```
 
-<img src="man/figures/README-stereo-1.png" width="100%" />
+### Stereographic and equal-area projection
+
+``` r
+data("example_planes")
+data("example_lines")
+
+stereoplot(title = "Lambert equal-area projection", sub = "Lower hemisphere")
+points(example_lines, col = "#B63679", pch = 19, cex = .5)
+points(example_planes, col = "#000004", pch = 1, cex = .5)
+
+legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
+```
+
+<img src="man/figures/README-stereo-1.png" width="100%" /> \### Density
+
+``` r
+par(mfrow =c(1, 2))
+stereoplot(guides = FALSE, title = "Planes")
+image(example_planes, add = TRUE)
+points(example_planes, col = "grey", pch = 16, cex = .5)
+
+stereoplot(guides = FALSE, title = "Lines")
+image(example_lines, add = TRUE)
+points(example_lines, col = "grey", pch = 16, cex = .5)
+```
+
+<img src="man/figures/README-stereo_density-1.png" width="100%" /> \###
+Spherical statistics
+
+``` r
+planes_mean <- sph_mean(example_planes)
+planes_geomean <- geodesic_mean(example_planes)
+planes_eig <- ot_eigen(example_planes)$vectors
+
+par(mfrow = c(1, 2))
+stereoplot(title = "Planes", guides = FALSE)
+points(example_planes, col = "lightgrey", pch = 1, cex = .5)
+lines(planes_eig, col = c("#FB8861FF", "#FEC287FF", "#FCFDBFFF"), lty = 1:3)
+points(planes_mean, col = "#B63679", pch = 19, cex = 1)
+points(planes_geomean, col = "#E65164FF", pch = 19, cex = 1)
+points(planes_eig, col = c("#FB8861FF", "#FEC287FF", "#FCFDBFFF"), pch = 19, cex = 1)
+legend("topright",
+  legend = c("Arithmetic mean", "Geodesic mean", "Eigen 1", "Eigen 2", "Eigen 3"),
+  col = c("#B63679", "#E65164FF", "#FB8861FF", "#FEC287FF", "#FCFDBFFF"),
+  pch = 10, lty = c(NA, NA, 1, 2, 3),
+  cex = .75
+)
+
+lines_mean <- sph_mean(example_lines)
+lines_delta <- delta(example_lines)
+lines_confangle <- confidence_ellipse(example_lines)
+
+stereoplot(title = "Lines", guides = FALSE)
+points(example_lines, col = "lightgrey", pch = 1, cex = .5)
+points(lines_mean, col = "#B63679", pch = 19, cex = 1)
+stereo_confidence(lines_confangle, col = "#E65164FF")
+lines(lines_mean, ang = lines_delta, col = "#FB8861FF")
+legend(
+  "topright",
+  legend = c("Arithmetic mean", "95% confidence cone", "63% data cone"),
+  col = c("#B63679", "#E65164FF", "#FB8861FF"),
+  pch = c(19, NA, NA), lty = c(NA, 1, 1), cex = .75
+)
+```
+
+<img src="man/figures/README-stats-1.png" width="100%" />
+
+#### Find best-fit great and small circles
+
+``` r
+set.seed(20250411)
+data("gray_example")
+cleavage <- gray_example[1:8, ]
+bedding <- gray_example[9:16, ]
+
+cleavage_gc <- regression_greatcircle(cleavage)
+bedding_gc <- regression_greatcircle(bedding)
+
+cleavage_sc <- regression_smallcircle(cleavage)
+bedding_sc <- regression_smallcircle(bedding)
+
+par(mfrow = c(1, 2))
+stereoplot(title = "Best greatcircle")
+lines(cleavage_gc$vec, col = "#000004FF")
+lines(bedding_gc$vec, col = "#B63679")
+points(cleavage, col = "#1D1147")
+points(bedding, col = "#E65164", pch = 4)
+
+legend("bottomright", col = c("#000004FF", "#B63679"), lty =c(1, 1), legend = c("Cleavage greatcircle", "Bedding greatcircle"), bg = 'white')
+
+stereoplot(title = "Best smallcircle")
+lines(cleavage_sc$vec, cleavage_sc$cone, col = "#000004FF")
+lines(bedding_sc$vec, bedding_sc$cone, col = "#B63679")
+points(cleavage, col = "#1D1147")
+points(bedding, col = "#E65164", pch = 4)
+
+legend("bottomright", col = c("#000004FF", "#B63679"), lty =c(1, 1), legend = c("Cleavage smallcircle", "Bedding smallcircle"), bg = 'white')
+```
+
+<img src="man/figures/README-bestfit-1.png" width="100%" />
+
+### Orientation tensor and fabric plots
+
+``` r
+par(mfrow = c(1, 2))
+vollmer_plot(example_planes, col = "#000004", pch = 16)
+vollmer_plot(example_lines, col = "#B63679FF", pch = 16, add = TRUE)
+title("Fabric plot of Vollmer (1990)")
+
+hsu_fabric_plot(example_planes, col = "#000004", pch = 16)
+hsu_fabric_plot(example_lines, col = "#B63679FF", pch = 16, add = TRUE)
+```
+
+<img src="man/figures/README-stereo_ortensor-1.png" width="100%" />
+
+### Fault plots and slip inversion
+
+``` r
+data("angelier1990")
+faults <- angelier1990$TYM
+
+par(mfrow =c(1, 2))
+stereoplot(title = "Angelier plot")
+angelier(faults)
+
+stereoplot(title = "Hoeppner plot")
+hoeppner(faults, points = FALSE)
+```
+
+<img src="man/figures/README-stereo_faults-1.png" width="100%" />
+Compute deviatoric stress tensor and calculate 95% confidence intervals
+using bootstrap samples:
+
+``` r
+set.seed(20250411)
+faults_stress <- slip_inversion(faults, boot = 10)
+```
+
+Visualize the slip inversion results:
+
+``` r
+cols <- c("#000004FF", "#B63679FF", "#FEC287FF")
+beta <- faults_stress$fault_data$beta
+R_val <-  round(faults_stress$R, 2)
+R_CI <-  round(faults_stress$R_conf, 2)
+
+par(mfrow = c(1, 2), xpd = NA)
+stereoplot(
+  title = "Principal stress axes",
+  sub = paste0("Relative stress magnitudes R = ", R_val, " | ", "95% CI: [", R_CI[1], ", ",R_CI[2], "]"),
+  guides = FALSE
+)
+angelier(faults, col = "grey80")
+stereo_confidence(faults_stress$principal_axes_conf$sigma1, col = cols[1])
+stereo_confidence(faults_stress$principal_axes_conf$sigma2, col = cols[2])
+stereo_confidence(faults_stress$principal_axes_conf$sigma3, col = cols[3])
+text(faults_stress$principal_axes,
+  label = rownames(faults_stress$principal_axes),
+  col = cols, adj = -.25
+)
+
+stereoplot(
+  title = "Stress inversion accuracy",
+  sub = bquote("Average deviation" ~ bar(beta) == .(round(faults_stress$beta)) * degree),
+  guides = FALSE
+)
+angelier(faults, col = assign_col(beta))
+legend_c(
+  seq(min(beta), max(beta), 10),
+  title = bquote("Deviation angle" ~ beta ~ "(" * degree * ")")
+)
+```
+
+<img src="man/figures/README-stereo_inversion2-1.png" width="100%" />
+
+Azimuth of the maximum horizontal stress (in degrees):
+
+``` r
+SH(
+  S1 = faults_stress$principal_axes[1, ], 
+  S2 = faults_stress$principal_axes[2, ], 
+  S3 = faults_stress$principal_axes[3, ],
+  R = faults_stress$R
+)
+#> [1] 60.80844
+```
+
+### Mohr circles
+
+``` r
+Mohr_plot(sigma1 = faults_stress$principal_vals[1], sigma3 = faults_stress$principal_vals[3], unit = NA)
+points(faults_stress$fault_data$sigma_n, faults_stress$fault_data$sigma_s)
+```
+
+<img src="man/figures/README-stereo_inversion_mohr-1.png" width="100%" />
+
+### Strain and vorticity analysis
+
+#### 2D Strain
+
+``` r
+data(ramsay)
+
+par(mfrow = c(1,2))
+Rphi_plot(r = ramsay[, 1], phi = ramsay[, 2])
+Rphi_polar_plot(ramsay[, 1], ramsay[, 2], proj = "eqd")
+```
+
+<img src="man/figures/README-strain-1.png" width="100%" />
+
+#### 3D Strain
+
+``` r
+data("holst")
+R_XY <- holst[, "R_XY"]
+R_YZ <- holst[, "R_YZ"]
+
+par(mfrow = c(1,2))
+flinn_plot(R_XY, R_YZ, log = TRUE, col = "#B63679", pch = 16)
+hsu_plot(R_XY, R_YZ, col = "#B63679", pch = 16)
+```
+
+<img src="man/figures/README-strain3D-1.png" width="100%" />
+
+#### Rigid Grain Net
+
+``` r
+# assuming the mean orientation resembles the foliation
+theta <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2]
+
+RGN_plot(r = ramsay[, 1], theta = theta, col = "#B63679")
+title(main = "Rigid Grain Net")
+```
+
+<img src="man/figures/README-rgn-1.png" width="100%" />
 
 ## Documentation
 
