@@ -8,6 +8,7 @@
 #' @param x `"Fault"` object
 #' @param boot integer. Number of bootstrap samples (10 by default)
 #' @param conf.level numeric. Confidence level of the interval (0.95 by default)
+#' @param ... optional parameters passed to [confidence_ellipse()]
 #' 
 #' @returns list
 #'  \describe{
@@ -39,9 +40,7 @@
 #' for the deviatoric stress tensor only.
 #' A single fault can not completely constrain the deviatoric stress tensor a, 
 #' therefore it is necessary to simultaneously solve for a number of faults, so 
-#' that a single a that best satisfies all of the faults is found. 
-#' 
-#' 
+#' that a single a that best satisfies all of the faults is found.  
 #' 
 #' @export
 #' 
@@ -50,8 +49,9 @@
 #' @seealso [SH()] to calculate the azimuth of the maximum horizontal stress; [Fault_PT()] for a simple P-T stress analysis.
 #' 
 #' @examples
+#' set.seed(20250411)
 #' # Use Angelier examples:
-#' res_TYM <- slip_inversion(angelier1990$TYM, boot = 10)
+#' res_TYM <- slip_inversion(angelier1990$TYM, boot = 100, n = 1000, res = 100)
 #' 
 #' # Plot the faults (color-coded by beta angle) and show the principal stress axes
 #' stereoplot(title = "Tymbaki, Crete, Greece", guides = FALSE)
@@ -62,7 +62,7 @@
 #' text(res_TYM$principal_axes, label = rownames(res_TYM$principal_axes), col = 2:4, adj = -.25)
 #' legend("topleft", col = 2:4, legend = rownames(res_TYM$principal_axes), pch = 16)
 #' 
-#' res_AVB <- slip_inversion(angelier1990$AVB)
+#' res_AVB <- slip_inversion(angelier1990$AVB, boot = 100, n = 1000, res = 100)
 #' stereoplot(title = "Agia Varvara, Crete, Greece", guides = FALSE)
 #' fault_plot(angelier1990$AVB, col = "gray80")
 #' stereo_confidence(res_AVB$principal_axes_conf$sigma1, col = 2)
@@ -70,7 +70,7 @@
 #' stereo_confidence(res_AVB$principal_axes_conf$sigma3, col = 4)
 #' text(res_AVB$principal_axes, label = rownames(res_AVB$principal_axes), col = 2:4, adj = -.25)
 #' legend("topleft", col = 2:4, legend = rownames(res_AVB$principal_axes), pch = 16)
-slip_inversion <-  function(x, boot = 10L, conf.level = 0.95){
+slip_inversion <-  function(x, boot = 100L, conf.level = 0.95, ...){
   best.fit <- slip_inversion0(x)
   fault_df <- best.fit$fault_data
   nx <- nrow(x)
@@ -85,15 +85,15 @@ slip_inversion <-  function(x, boot = 10L, conf.level = 0.95){
   # calculate confidence intervals from bootstrap results
   sigma_vec1 <- do.call(rbind, lapply(boot_results, function(x){
     x$principal_axes[1, ]
-  })) |> confidence_ellipse(alpha = 1 - conf.level, res = 100)
+  })) |> confidence_ellipse(alpha = 1 - conf.level, ...)
   
   sigma_vec2 <- do.call(rbind, lapply(boot_results, function(x){
     x$principal_axes[2, ]
-  })) |> confidence_ellipse(alpha = 1 - conf.level, res = 100)
+  })) |> confidence_ellipse(alpha = 1 - conf.level, ...)
   
   sigma_vec3 <- do.call(rbind, lapply(boot_results, function(x){
     x$principal_axes[3, ]
-  })) |> confidence_ellipse(alpha = 1 - conf.level, res = 100)
+  })) |> confidence_ellipse(alpha = 1 - conf.level, ...)
   
   R_boot <- vapply(boot_results, function(x){x$R}, FUN.VALUE = numeric(1)) |> 
     stats::t.test(conf.level = conf.level)

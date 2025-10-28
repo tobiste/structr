@@ -4,9 +4,9 @@
 \alias{slip_inversion}
 \title{Stress Inversion for Fault-Slip Data}
 \usage{
-slip_inversion(x, boot = 10L, conf.level = 0.95)
+slip_inversion(x, boot = 100L, conf.level = 0.95, ...)
 
-slip_inversion(x, boot = 10L, conf.level = 0.95)
+slip_inversion(x, boot = 100L, conf.level = 0.95, ...)
 }
 \arguments{
 \item{x}{\code{"Fault"} object}
@@ -14,6 +14,8 @@ slip_inversion(x, boot = 10L, conf.level = 0.95)
 \item{boot}{integer. Number of bootstrap samples (10 by default)}
 
 \item{conf.level}{numeric. Confidence level of the interval (0.95 by default)}
+
+\item{...}{optional parameters passed to \code{\link[=confidence_ellipse]{confidence_ellipse()}}}
 }
 \value{
 list
@@ -107,8 +109,9 @@ stereo_confidence(res_AVB$principal_axes_conf$sigma2, col = 3)
 stereo_confidence(res_AVB$principal_axes_conf$sigma3, col = 4)
 text(res_AVB$principal_axes, label = rownames(res_AVB$principal_axes), col = 2:4, adj = -.25)
 legend("topleft", col = 2:4, legend = rownames(res_AVB$principal_axes), pch = 16)
+set.seed(20250411)
 # Use Angelier examples:
-res_TYM <- slip_inversion(angelier1990$TYM, boot = 10)
+res_TYM <- slip_inversion(angelier1990$TYM, boot = 100, n = 1000, res = 100)
 
 # Plot the faults (color-coded by beta angle) and show the principal stress axes
 stereoplot(title = "Tymbaki, Crete, Greece", guides = FALSE)
@@ -119,7 +122,7 @@ stereo_confidence(res_TYM$principal_axes_conf$sigma3, col = 4)
 text(res_TYM$principal_axes, label = rownames(res_TYM$principal_axes), col = 2:4, adj = -.25)
 legend("topleft", col = 2:4, legend = rownames(res_TYM$principal_axes), pch = 16)
 
-res_AVB <- slip_inversion(angelier1990$AVB)
+res_AVB <- slip_inversion(angelier1990$AVB, boot = 100, n = 1000, res = 100)
 stereoplot(title = "Agia Varvara, Crete, Greece", guides = FALSE)
 fault_plot(angelier1990$AVB, col = "gray80")
 stereo_confidence(res_AVB$principal_axes_conf$sigma1, col = 2)
