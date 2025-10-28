@@ -7,9 +7,9 @@
 \method{summary}{spherical}(object, ...)
 }
 \arguments{
-\item{object}{object of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}.}
+\item{object}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"} or \code{"Plane"}.}
 
-\item{...}{parameters passed to \code{\link[=sph_mean]{sph_mean()}}, \code{\link[=sph_var]{sph_var()}}, \code{\link[=delta]{delta()}}, and \code{\link[=confidence_angle]{confidence_angle()}}}
+\item{...}{parameters passed to \code{\link[=sph_mean]{sph_mean()}}, \code{\link[=sph_var]{sph_var()}}, \code{\link[=delta]{delta()}}, and \code{\link[=sph_confidence_angle]{sph_confidence_angle()}}}
 }
 \value{
 named vector

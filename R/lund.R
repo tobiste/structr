@@ -17,7 +17,7 @@
 #' @return The direction of SH from North as numeric angle in degrees (radians if all principal stress axes were given as `"Vec3"` objects).
 #' @export
 #' 
-#' @seealso [stress_inversion()] for stress inversion of fault slip data.
+#' @seealso [slip_inversion()] for stress inversion of fault slip data.
 #'
 #' @references Lund and Townend, (2007). Calculating horizontal stress
 #' orientations with full or partial knowledge of the tectonic stress tensor,

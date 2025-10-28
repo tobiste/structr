@@ -44,5 +44,5 @@ orientations with full or partial knowledge of the tectonic stress tensor,
 Geophys. J. Int., doi:\doi{10.1111/j.1365-246X.2007.03468.x}.
 }
 \seealso{
-\code{\link[=stress_inversion]{stress_inversion()}} for stress inversion of fault slip data.
+\code{\link[=slip_inversion]{slip_inversion()}} for stress inversion of fault slip data.
 }
