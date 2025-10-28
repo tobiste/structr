@@ -12,33 +12,34 @@
 `{structr}` is a free and open-source package for R that provides tools
 for structural geology. The toolset includes
 
-- analysis and visualization of orientation data of structural geology
+- Analysis and visualization of orientation data of structural geology
   (including, **stereographic projections**, contouring, fabric plots,
   and statistics),
 
-- **cluster analysis** of orientation data,
+- **Cluster analysis** of orientation data,
 
-- geodesic regression to find the **best-fitting great circle or small
+- Geodesic regression to find the **best-fitting great circle or small
   circle** through orientation data,
 
-- stress analysis (including visualization of the magnitudes of stress
+- Stress analysis (including visualization of the magnitudes of stress
   in the **Mohr circle** and extracting the **maximum horizontal
   stress** of a 3D stress tensor),
 
-- reconstruction of fabric orientations in **oriented drillcores** by
+- Reconstruction of fabric orientations in **oriented drillcores** by
   transforming the α, β, and γ angles,
 
-- calculation fault displacement components,
+- Calculation fault displacement components,
 
 - **Paleostress analysis**: reconstruction of stress orientation and
-  magnitudes using fault-slip inversion,
+  magnitudes from fault-slip data (stress inversion based on Michael,
+  1984),
 
-- strain analysis (**R**<sub>f</sub>/ϕ), contouring on the unit
+- Strain analysis (**R**<sub>f</sub>/ϕ), contouring on the unit
   hyperboloid, **Fry plots** and **Hsu plots**
 
-- vorticity analysis using the **Rigid Grain Net** method, and
+- Vorticity analysis using the **Rigid Grain Net** method, and
 
-- direct import of your field data from **StraboSpot** projects.
+- Direct import of your field data from **StraboSpot** projects.
 
 > The {structr} package is all about structures in 3D. For analyzing
 > orientations in 2D (statistics, rose diagrams, etc.), check out the

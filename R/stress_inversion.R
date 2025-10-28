@@ -1,12 +1,13 @@
 #' Stress Inversion for Fault-Slip Data
 #' 
 #' Determines the orientation of the principal stresses from fault slip data using the Michael (1984) method.
-#' Confidence intervals are estimated by bootstrapping.
+#' Confidence intervals are estimated by bootstrapping. 
+#' This inversion is simplified by the assumption that the magnitude of the 
+#' tangential traction on the various fault planes, at the time of rupture, is similar.
 #' 
 #' @param x `"Fault"` object
-# #' @param friction numeric. Value(s) for coefficient of friction
-#' @param boot Number of bootstrap samples (10 by default)
-#' @param conf.level confidence level of the interval (0.95 by default)
+#' @param boot integer. Number of bootstrap samples (10 by default)
+#' @param conf.level numeric. Confidence level of the interval (0.95 by default)
 #' 
 #' @returns list
 #'  \describe{
@@ -15,7 +16,8 @@
 #'  \item{`principal_axes_conf`}{list containg the confidence ellipses for the 3 principal stress vectors. See [confidence_ellipse()] for details.}
 #'  \item{`principal_vals`}{numeric. The proportional magnitudes of the principal stress axes given by the eigenvalues of the stress tensor: \eqn{\sigma_1}, \eqn{\sigma_2}, and \eqn{\sigma_3}}
 #'  \item{`principal_vals_conf`}{3-colum vector containing the lower and upper margins of the confidence interval of the principal vals}
-#'  \item{`R`}{numeric. Stress shape ratio after Gephart & Forsyth (1984): \eqn{R = (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3)}}
+#'  \item{`R`}{numeric. Stress shape ratio after Gephart & Forsyth (1984): \eqn{R = (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3)}. Values ranging from 0 to 1, with 0 being
+#' \eqn{\sigma_1 = \sigma_2} and 1 being \eqn{\sigma_2 = \sigma_3}.}
 #'  \item{`R_conf`}{Confidence interval for `R`}
 #'  \item{`phi`}{numeric. Stress shape ratio after Angelier (1979): \eqn{\Phi = (\sigma_2 - \sigma_3)/(\sigma_1 - \sigma_3)}. Values range between 0 (\eqn{\sigma_2 = \sigma_3}) and 1 (\eqn{\sigma_2 = \sigma_1}).}
 #'  \item{`phi_conf`}{Confidence interval for `phi`}
@@ -53,7 +55,7 @@
 #' stereo_confidence(res_AVB$principal_axes_conf$sigma3, col = 4)
 #' text(res_AVB$principal_axes, label = rownames(res_AVB$principal_axes), col = 2:4, adj = -.25)
 #' legend("topleft", col = 2:4, legend = rownames(res_AVB$principal_axes), pch = 16)
-stress_inversion <-  function(x, boot = 10, conf.level = 0.95){
+stress_inversion <-  function(x, boot = 10L, conf.level = 0.95){
   best.fit <- stress_inversion0(x)
   nx <- nrow(x)
   

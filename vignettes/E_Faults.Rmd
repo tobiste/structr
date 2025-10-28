@@ -78,7 +78,7 @@ fault_analysis(my_fault2)
 
 ## Fault slip inversion
 
-{tectonicr} provides a numerical solution to determine the orientation of the principal stresses from fault slip data using the Michael (1984) method. It uses bootstrapping for confidence intervals of the stress estimates.
+{structr} provides a numerical solution to determine the orientation of the principal stresses from fault slip data using the Michael (1984) method. It uses bootstrapping for confidence intervals of the stress estimates.
 
 
 First we load some example data (here the data from Angelier, 1990)
@@ -90,8 +90,11 @@ test_data <- angelier1990$TYM
 stereoplot(title = "Test data", guides = FALSE)
 fault_plot(test_data, col = "grey30")
 ```
+To check the accuracy of the solution, you can use 
+- the average angle &beta; between the tangential traction predicted by the best stress tensor and the slip vector on each plane (ideally close to 0), and 
+- the average resolved shear stress on each plane (should be close to 1).
 
-```{r slip_inversion2}
+```{r slip_inversion_check}
 test_res <- stress_inversion(angelier1990$TYM, boot = 10)
 
 # Average beta angle
@@ -101,7 +104,9 @@ test_res$beta
 test_res$sigma_s
 ```
 
-```{r slip_inversion3}
+To visualizing the orientation of the principal stresses and the confidence region of the axes, you may use the stereoplot() functions from {structr}
+
+```{r slip_inversion_plot}
 cols <- c('#000004FF', "#B63679FF", "#FEC287FF")
 
 stereoplot(title = "Stress inversion", guides = FALSE)
@@ -113,8 +118,8 @@ text(test_res$principal_axes, label = rownames(test_res$principal_axes), col = c
 legend("topleft", col = cols, legend = rownames(test_res$principal_axes), pch = 16)
 ```
 
-The stress shape ratio &\Phi; 
-```{r slip_inversion4}
+The stress shape ratio &\Phi; (Angelier 1979):
+```{r slip_inversion_phi}
 test_res$phi
 
 # 95% confidence interval
@@ -122,7 +127,7 @@ test_res$phi_conf
 ```
 The angle  &beta; is the angle between the tangential traction predicted by the best stress tensor and the slip vector. This deviation can be visualized in the stereoplot:
 
-```{r slip_inversion3}
+```{r slip_inversion_beta}
 beta <- test_res$fault_data$beta
 
 stereoplot(
