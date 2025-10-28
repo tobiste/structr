@@ -161,7 +161,7 @@ legend("topleft", col = cols,
        legend = rownames(test_res$principal_axes), pch = 16)
 ```
 
-The stress shape ratio &\Phi; (Angelier 1979)[^3]
+The stress shape ratio &Phi; (Angelier 1979)[^3]
 
 [^3]: Angelier, J. (1979). Determination of the mean principal
     directions of stresses for a given fault population. Tectonophysics,
