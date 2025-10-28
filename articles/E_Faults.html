@@ -76,8 +76,11 @@ Stephan</h4>
 
     
     
+<p>This tutorial demonstrates the <code>"Fault"</code> object. It also
+shows how you can extract paleo-stress directions from fault slip data,
+and how you can derive displacement components from fault slip.</p>
 <div class="section level2">
-<h2 id="introduction">Introduction<a class="anchor" aria-label="anchor" href="#introduction"></a>
+<h2 id="fault-objects">Fault objects<a class="anchor" aria-label="anchor" href="#fault-objects"></a>
 </h2>
 <p>A fault is given by the orientation of its plane (dip direction and
 dip angle), the orientation of the slip (e.g. measured from striae,
@@ -192,22 +195,25 @@ data: Faults and folds. Journal of Geophysical Research: Solid Earth,
 89(B13), 11517–11526. &lt;a href="https://doi.org/10.1029/JB089iB13p11517" class="external-link uri"&gt;https://doi.org/10.1029/JB089iB13p11517&lt;/a&gt;&lt;/p&gt;'><sup>1</sup></a>.
 It uses bootstrapping for confidence intervals of the stress
 estimates.</p>
-<p>First we load some example data (here the data from Angelier,
-1990)[~ref4]</p>
-<p>[~ref4]: Angelier, J. (1990). Inversion of field data in fault
+<p>First we load some example data (here the data from Angelier, 1990)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Angelier, J. (1990). Inversion of field data in fault
 tectonics to obtain the regional stress—III. A new rapid direct
-inversion method by analytical means. Ceophys. J. Int, 103, 363–376. <a href="https://doi.org/10.1111/j.1365-246X.1990.tb01777.x" class="external-link uri">https://doi.org/10.1111/j.1365-246X.1990.tb01777.x</a></p>
+inversion method by analytical means. Ceophys. J. Int, 103, 363–376. &lt;a href="https://doi.org/10.1111/j.1365-246X.1990.tb01777.x" class="external-link uri"&gt;https://doi.org/10.1111/j.1365-246X.1990.tb01777.x&lt;/a&gt;&lt;/p&gt;'><sup>2</sup></a></p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"angelier1990"</span><span class="op">)</span></span>
 <span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="va">angelier1990</span><span class="op">$</span><span class="va">TYM</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Test data"</span>, guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">test_data</span>, col <span class="op">=</span> <span class="st">"grey30"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="E_Faults_files/figure-html/slip_inversion1-1.png" width="700">
-To check the accuracy of the solution, you can use - the average angle β
-between the tangential traction predicted by the best stress tensor and
-the slip vector on each plane (ideally close to 0), and - the average
-resolved shear stress on each plane (should be close to 1).</p>
+<p><img src="E_Faults_files/figure-html/slip_inversion1-1.png" alt="Diagram showing some fault-slip data in a stereoplot
+" width="700"></p>
+<p>To check the accuracy of the solution, you can use</p>
+<ul>
+<li>the average angle β between the tangential traction predicted by the
+best stress tensor and the slip vector on each plane (ideally close to
+0), and</li>
+<li>the average resolved shear stress on each plane (should be close to
+1).</li>
+</ul>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stress_inversion.html">stress_inversion</a></span><span class="op">(</span><span class="va">angelier1990</span><span class="op">$</span><span class="va">TYM</span>, boot <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span></span>
@@ -231,11 +237,10 @@ from {structr}</p>
 <span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes_conf</span><span class="op">$</span><span class="va">sigma3</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span>, label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">cols</span>, adj <span class="op">=</span> <span class="op">-</span><span class="fl">.25</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>, col <span class="op">=</span> <span class="va">cols</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
-<p><img src="E_Faults_files/figure-html/slip_inversion_plot-1.png" width="700"></p>
-<p>The stress shape ratio &amp;; (Angelier 1979)[~ref5]</p>
-<p>[~ref5]: Angelier, J. (1979). Determination of the mean principal
+<p><img src="E_Faults_files/figure-html/slip_inversion_plot-1.png" alt="Diagram showing principal stress vector results in a stereoplot" width="700"></p>
+<p>The stress shape ratio &amp;; (Angelier 1979)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Angelier, J. (1979). Determination of the mean principal
 directions of stresses for a given fault population. Tectonophysics,
-56(3–4), T17–T26. <a href="https://doi.org/10.1016/0040-1951(79)90081-7" class="external-link uri">https://doi.org/10.1016/0040-1951(79)90081-7</a></p>
+56(3–4), T17–T26. &lt;a href="https://doi.org/10.1016/0040-1951(79)90081-7" class="external-link uri"&gt;https://doi.org/10.1016/0040-1951(79)90081-7&lt;/a&gt;&lt;/p&gt;'><sup>3</sup></a></p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_res</span><span class="op">$</span><span class="va">phi</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0.101247</span></span></code></pre>
@@ -258,7 +263,7 @@ visualized in the stereoplot:</p>
 <span></span>
 <span><span class="fu"><a href="../reference/fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">test_data</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/colorize.html">assign_col</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/colorize.html">legend_c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span>, title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/bquote.html" class="external-link">bquote</a></span><span class="op">(</span><span class="st">"Deviation angle"</span> <span class="op">~</span> <span class="va">beta</span> <span class="op">~</span> <span class="st">"("</span><span class="op">*</span><span class="va">degree</span><span class="op">*</span><span class="st">")"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="E_Faults_files/figure-html/slip_inversion_beta-1.png" width="700"></p>
+<p><img src="E_Faults_files/figure-html/slip_inversion_beta-1.png" alt="Diagram showing deviation of the best-fit principal stress tensor in a  stereoplot" width="700"></p>
 <!-- # ```{r slip_inversion_mohr} -->
 <!-- # sigmas <- test_res$principal_vals -->
 <!-- #  -->
@@ -268,10 +273,10 @@ visualized in the stereoplot:</p>
 <!-- # ``` -->
 </div>
 <div class="section level3">
-<h3 id="maximum-horizontal-stressref2">Maximum horizontal stress<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Lund &amp;amp; Townend (2007): Calculating horizontal stress
+<h3 id="maximum-horizontal-stress4">Maximum horizontal stress<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Lund &amp;amp; Townend (2007): Calculating horizontal stress
 orientations with full or partial knowledge of the tectonic stress
 tensor. &lt;em&gt;Geophys. J. Int.&lt;/em&gt;, 170, 1328—1335. doi:
-10.1111/j.1365-246X.2007.03468.x&lt;/p&gt;"><sup>2</sup></a><a class="anchor" aria-label="anchor" href="#maximum-horizontal-stressref2"></a>
+10.1111/j.1365-246X.2007.03468.x&lt;/p&gt;"><sup>4</sup></a><a class="anchor" aria-label="anchor" href="#maximum-horizontal-stress4"></a>
 </h3>
 <p>We de fine a vertical plane in the geographic coordinate system,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝔾</mi><annotation encoding="application/x-tex">\mathbb{G}</annotation></semantics></math>,
