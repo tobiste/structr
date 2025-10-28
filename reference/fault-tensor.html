@@ -23,15 +23,15 @@ geographic reference frame."></head><body>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/A_Basics.html">1. Basics</a></li>
-    <li><a class="dropdown-item" href="../articles/B_Import.html">2. Import data</a></li>
-    <li><a class="dropdown-item" href="../articles/C_Plots.html">4. Orientation plots</a></li>
-    <li><a class="dropdown-item" href="../articles/C_Statistics.html">3. Statistics of orientation data</a></li>
-    <li><a class="dropdown-item" href="../articles/D_Plots_ggplot.html">5. Orientation plots with ggplot</a></li>
-    <li><a class="dropdown-item" href="../articles/E_Faults.html">6. Faults</a></li>
+    <li><a class="dropdown-item" href="../articles/B_Import.html">2. Import Data</a></li>
+    <li><a class="dropdown-item" href="../articles/C_Plots.html">4. Orientation Plots</a></li>
+    <li><a class="dropdown-item" href="../articles/C_Statistics.html">3. Statistics on the Sphere</a></li>
+    <li><a class="dropdown-item" href="../articles/D_Plots_ggplot.html">5. Orientation Plots with ggplot</a></li>
+    <li><a class="dropdown-item" href="../articles/E_Faults.html">6. Faults and Paleostress</a></li>
     <li><a class="dropdown-item" href="../articles/F_Mohr_Circle.html">7. Mohr Circle</a></li>
-    <li><a class="dropdown-item" href="../articles/G_Oriented_Drill_Cores.html">8. Oriented drill cores</a></li>
+    <li><a class="dropdown-item" href="../articles/G_Oriented_Drill_Cores.html">8. Oriented Drill Cores</a></li>
     <li><a class="dropdown-item" href="../articles/H_Strain_Analysis.html">9. Strain and Vorticity Analysis</a></li>
-    <li><a class="dropdown-item" href="../articles/I_Regression.html">10. Regression</a></li>
+    <li><a class="dropdown-item" href="../articles/I_Regression.html">10. Regression on the Sphere</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -57,9 +57,9 @@ geographic reference frame.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fault_tensor</span><span class="op">(</span><span class="va">h</span>, <span class="va">s</span>, <span class="va">v</span>, dip_direction <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">displacement_tensor</span><span class="op">(</span><span class="va">h</span>, <span class="va">s</span>, <span class="va">v</span>, dip_direction <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">fault_tensor_decomposition</span><span class="op">(</span><span class="va">ftensor</span>, dip_direction <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">displacement_tensor_decomposition</span><span class="op">(</span><span class="va">ftensor</span>, dip_direction <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -82,8 +82,8 @@ coordinates. Otherwise, the tensor will be in the geographic reference frame.</p
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p><code>fault_tensor()</code> returns a 3x3 matrix of class <code>"ftensor"</code> containing the fault displacement tensor.
-<code>fault_tensor_analysis()</code> returns a list containing the principal fault displacement tensor and the fault orientation.</p>
+    <p><code>displacement_tensor()</code> returns a 3x3 matrix of class <code>"ftensor"</code> containing the fault displacement tensor.
+<code>displacement_tensor_decomposition()</code> returns a list containing the principal fault displacement tensor and the fault orientation.</p>
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
@@ -92,14 +92,14 @@ thrusting, negative for normal faulting) is the principal fault displacement ten
 This can be rotated in the fault plane orientation to retrieve slip components and rake.</p>
 <p>The fault displacement tensor gives the displacements in all directions and has the following properties:</p><ul><li><p>The square root of tensor's trace (i.e. the sum of the diagonal elements) equals the <strong>net slip</strong> on the fault plane.</p></li>
 <li><p>The determinant of the tensor relates to the volumetric strain by: det(F) - 1, where</p></li>
-</ul><p>(<code>fault_tensor_decomposition()</code>) retrieves the principal fault displacement tensor using Singular Value Decomposition of a Matrix
+</ul><p>(<code>displacement_tensor_decomposition()</code>) retrieves the principal fault displacement tensor using Singular Value Decomposition of a Matrix
 and the fault orientation if the dip direction is known.</p>
 <p>The orientation of the net-slip vector is the lineation component of the fault orientation.</p>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">A_princ</span> <span class="op">&lt;-</span> <span class="fu">fault_tensor</span><span class="op">(</span>s <span class="op">=</span> <span class="fl">2</span>, v <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, h <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">A_princ</span> <span class="op">&lt;-</span> <span class="fu">displacement_tensor</span><span class="op">(</span>s <span class="op">=</span> <span class="fl">2</span>, v <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, h <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">A_princ</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]    3    0    0</span>
@@ -110,7 +110,7 @@ and the fault orientation if the dip direction is known.</p>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/det.html" class="external-link">det</a></span><span class="op">(</span><span class="va">A_princ</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -30</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="va">A_geo</span> <span class="op">&lt;-</span> <span class="fu">fault_tensor</span><span class="op">(</span>s <span class="op">=</span> <span class="fl">2</span>, v <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, h <span class="op">=</span> <span class="fl">3</span>, dip_direction <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">A_geo</span> <span class="op">&lt;-</span> <span class="fu">displacement_tensor</span><span class="op">(</span>s <span class="op">=</span> <span class="fl">2</span>, v <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, h <span class="op">=</span> <span class="fl">3</span>, dip_direction <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">A_geo</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         [,1]      [,2] [,3]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 2.12132  1.414214    0</span>
@@ -121,7 +121,7 @@ and the fault orientation if the dip direction is known.</p>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/det.html" class="external-link">det</a></span><span class="op">(</span><span class="va">A_geo</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 30</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">fault_tensor_decomposition</span><span class="op">(</span><span class="va">A_geo</span>, dip_direction <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">displacement_tensor_decomposition</span><span class="op">(</span><span class="va">A_geo</span>, dip_direction <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $displacements</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           dip    delta     rake verticalthrow horizontalthrow heave  dipslip</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 300.9638 56.30993 71.06818            -5        3.605551     3 5.830952</span>

@@ -5,12 +5,12 @@
 <meta charset="utf-8">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<title>6. Faults • structr</title>
+<title>6. Faults and Paleostress • structr</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="6. Faults">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="6. Faults and Paleostress">
 </head>
 <body>
     <a href="#main" class="visually-hidden-focusable">Skip to contents</a>
@@ -34,15 +34,15 @@
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><a class="dropdown-item" href="../articles/A_Basics.html">1. Basics</a></li>
-    <li><a class="dropdown-item" href="../articles/B_Import.html">2. Import data</a></li>
-    <li><a class="dropdown-item" href="../articles/C_Plots.html">4. Orientation plots</a></li>
-    <li><a class="dropdown-item" href="../articles/C_Statistics.html">3. Statistics of orientation data</a></li>
-    <li><a class="dropdown-item" href="../articles/D_Plots_ggplot.html">5. Orientation plots with ggplot</a></li>
-    <li><a class="dropdown-item" href="../articles/E_Faults.html">6. Faults</a></li>
+    <li><a class="dropdown-item" href="../articles/B_Import.html">2. Import Data</a></li>
+    <li><a class="dropdown-item" href="../articles/C_Plots.html">4. Orientation Plots</a></li>
+    <li><a class="dropdown-item" href="../articles/C_Statistics.html">3. Statistics on the Sphere</a></li>
+    <li><a class="dropdown-item" href="../articles/D_Plots_ggplot.html">5. Orientation Plots with ggplot</a></li>
+    <li><a class="dropdown-item" href="../articles/E_Faults.html">6. Faults and Paleostress</a></li>
     <li><a class="dropdown-item" href="../articles/F_Mohr_Circle.html">7. Mohr Circle</a></li>
-    <li><a class="dropdown-item" href="../articles/G_Oriented_Drill_Cores.html">8. Oriented drill cores</a></li>
+    <li><a class="dropdown-item" href="../articles/G_Oriented_Drill_Cores.html">8. Oriented Drill Cores</a></li>
     <li><a class="dropdown-item" href="../articles/H_Strain_Analysis.html">9. Strain and Vorticity Analysis</a></li>
-    <li><a class="dropdown-item" href="../articles/I_Regression.html">10. Regression</a></li>
+    <li><a class="dropdown-item" href="../articles/I_Regression.html">10. Regression on the Sphere</a></li>
   </ul>
 </li>
       </ul>
@@ -64,7 +64,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
 
-      <h1>6. Faults</h1>
+      <h1>6. Faults and Paleostress</h1>
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
@@ -99,14 +99,17 @@ strike:</p>
 <p>Define a fault by just knowing the orientation of the fault plane,
 the sense, and the rake</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">fault_plane</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Plane</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">120</span>, <span class="fl">100</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">60</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span> <span class="co"># dip direction, dip angle</span></span>
+<code class="sourceCode R"><span><span class="co"># 1. Define a plane through dip direction, dip angle</span></span>
+<span><span class="va">fault_plane</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Plane</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">120</span>, <span class="fl">100</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">60</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># 2. Define a fault through the plane and rake angle:</span></span>
 <span><span class="fu"><a href="../reference/fault_from_rake.html">Fault_from_rake</a></span><span class="op">(</span><span class="va">fault_plane</span>, rake <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">84.7202</span>, <span class="op">-</span><span class="fl">10</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Fault object (n = 3):</span></span>
 <span><span class="co">##      dip_direction dip   azimuth    plunge sense</span></span>
 <span><span class="co">## [1,]           120  60 109.52858 59.581591     1</span></span>
 <span><span class="co">## [2,]           120  60 204.96163  8.649165    -1</span></span>
 <span><span class="co">## [3,]           100  50  30.36057 22.521012     1</span></span></code></pre>
-<p>Often measured orientation angles can be (slightly) imprecise and
+<p>Often, measured orientation angles can be (slightly) imprecise and
 subjected to some random noise. Thus the slip vector will not lie
 (perfectly) on the fault plane, judging by the measurements. To correct
 the measurements so that this will not be the case:</p>
@@ -140,73 +143,120 @@ displacement.</p>
 <div class="section level2">
 <h2 id="fault-stress-analysis">Fault stress analysis<a class="anchor" aria-label="anchor" href="#fault-stress-analysis"></a>
 </h2>
-<p>{tectonicr} offers several techniques to calculate the orientation of
-principal stress axes</p>
+<p>The <em>Wallace-Bott hypothesis</em> states that fault slip occurs
+parallel to the maximum shear stress. This allows to reconstruct stress
+axes using fault-slip data. {structr} offers several techniques to
+calculate the orientation of principal stress axes, the simple P-T
+method, and a fault-slip inversion technique.</p>
 <div class="section level3">
 <h3 id="p-t-method">P-T method<a class="anchor" aria-label="anchor" href="#p-t-method"></a>
 </h3>
 <p>This simple technique calculates PT-axes, kinematic plane (M), and
-dihedra separation plane (d):</p>
+dihedra separation plane (d).</p>
+<p>First we load some example data (here the first three faults from the
+TYM dataset by from Angelier, 1990)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Angelier, J. (1990). Inversion of field data in fault
+tectonics to obtain the regional stress—III. A new rapid direct
+inversion method by analytical means. Ceophys. J. Int, 103, 363–376. &lt;a href="https://doi.org/10.1111/j.1365-246X.1990.tb01777.x" class="external-link uri"&gt;https://doi.org/10.1111/j.1365-246X.1990.tb01777.x&lt;/a&gt;&lt;/p&gt;'><sup>1</sup></a></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">my_fault2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Fault</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">120</span>, <span class="fl">100</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">60</span>, <span class="fl">50</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">110</span>, <span class="fl">25</span>, <span class="fl">30</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">58</span>, <span class="fl">9</span>, <span class="fl">23</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"angelier1990"</span><span class="op">)</span></span>
+<span><span class="va">my_fault2</span> <span class="op">&lt;-</span> <span class="va">angelier1990</span><span class="op">$</span><span class="va">TYM</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="op">]</span></span>
+<span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">my_fault2</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Fault object (n = 3):</span></span>
-<span><span class="co">##      dip_direction dip azimuth plunge sense</span></span>
-<span><span class="co">## [1,]           120  60     110     58     1</span></span>
-<span><span class="co">## [2,]           120  60      25      9    -1</span></span>
-<span><span class="co">## [3,]           100  50      30     23     1</span></span></code></pre>
+<span><span class="co">##      dip_direction dip  azimuth   plunge sense</span></span>
+<span><span class="co">## [1,]           137  61 117.0135 59.46650     1</span></span>
+<span><span class="co">## [2,]           128  59 146.8990 57.58045     1</span></span>
+<span><span class="co">## [3,]             2  80 287.5304 56.63295     1</span></span></code></pre>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/fault_analysis.html">fault_analysis</a></span><span class="op">(</span><span class="va">my_fault2</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">my_fault2_PT</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/Fault_PT.html">Fault_PT</a></span><span class="op">(</span><span class="va">my_fault2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">my_fault2_PT</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## $p</span></span>
 <span><span class="co">## Line object (n = 3):</span></span>
 <span><span class="co">##       azimuth   plunge</span></span>
-<span><span class="co">## [1,] 314.9694 75.19695</span></span>
-<span><span class="co">## [2,] 248.4032 15.30354</span></span>
-<span><span class="co">## [3,] 342.4517 46.65113</span></span>
+<span><span class="co">## [1,] 340.6153 72.15071</span></span>
+<span><span class="co">## [2,] 281.6092 73.96385</span></span>
+<span><span class="co">## [3,] 214.3217 45.50717</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $t</span></span>
 <span><span class="co">## Line object (n = 3):</span></span>
 <span><span class="co">##       azimuth   plunge</span></span>
-<span><span class="co">## [1,] 116.2068 14.04837</span></span>
-<span><span class="co">## [2,] 345.9417 25.61490</span></span>
-<span><span class="co">## [3,] 241.3308 10.31892</span></span>
+<span><span class="co">## [1,] 129.6815 15.44075</span></span>
+<span><span class="co">## [2,] 135.2532 13.45689</span></span>
+<span><span class="co">## [3,] 336.9158 27.88916</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $m</span></span>
 <span><span class="co">## Plane object (n = 3):</span></span>
 <span><span class="co">##      dip_direction      dip</span></span>
-<span><span class="co">## [1,]      27.35344 85.42739</span></span>
-<span><span class="co">## [2,]     310.64119 30.43222</span></span>
-<span><span class="co">## [3,]     322.06010 48.49732</span></span>
+<span><span class="co">## [1,]      42.11395 81.26433</span></span>
+<span><span class="co">## [2,]     223.18909 81.43997</span></span>
+<span><span class="co">## [3,]     265.80721 58.54232</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $d</span></span>
 <span><span class="co">## Plane object (n = 3):</span></span>
 <span><span class="co">##      dip_direction      dip</span></span>
-<span><span class="co">## [1,]      289.7677 31.20915</span></span>
-<span><span class="co">## [2,]      208.8622 83.16168</span></span>
-<span><span class="co">## [3,]      210.2233 67.19865</span></span></code></pre>
+<span><span class="co">## [1,]      297.0135 30.53350</span></span>
+<span><span class="co">## [2,]      326.8990 32.41955</span></span>
+<span><span class="co">## [3,]      107.5304 33.36705</span></span></code></pre>
+<p>Plot the results</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"PT results"</span>, guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">my_fault2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">my_fault2_PT</span><span class="op">$</span><span class="va">p</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">my_fault2_PT</span><span class="op">$</span><span class="va">t</span>, col <span class="op">=</span> <span class="st">"#FEC287FF"</span>, pch <span class="op">=</span> <span class="fl">18</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">my_fault2_PT</span><span class="op">$</span><span class="va">t</span>, lty <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"grey40"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">my_fault2_PT</span><span class="op">$</span><span class="va">d</span>, lty <span class="op">=</span> <span class="fl">3</span>, col <span class="op">=</span> <span class="st">"grey80"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"right"</span>,</span>
+<span>  legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P-axis"</span>, <span class="st">"T-axis"</span>, <span class="st">"M-plane"</span>, <span class="st">"Diheadra"</span><span class="op">)</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679FF"</span>, <span class="st">"#FEC287FF"</span>, <span class="st">"grey40"</span>, <span class="st">"grey80"</span><span class="op">)</span>,</span>
+<span>  pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">16</span>, <span class="fl">18</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="E_Faults_files/figure-html/faults_pt_plot-1.png" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="fault-slip-inversion">Fault slip inversion<a class="anchor" aria-label="anchor" href="#fault-slip-inversion"></a>
 </h3>
+<p>Our goal is to find the single uniform stress tensor that most likely
+caused the faulting events. With only slip data to constrain the stress
+tensor the isotropic component can not be determined, unless assumptions
+about the fracture criterion are made. Hence inversion will be for the
+deviatoric stress tensor only. A single fault can not completely
+constrain the deviatoric stress tensor a, therefore it is necessary to
+simultaneously solve for a number of faults, so that a single a that
+best satisfies all of the faults is found.</p>
+<blockquote>
+<p>This is equivalent to assuming that the stress field is a constant
+tensor within the region being studied for the duration of the faulting
+event.</p>
+</blockquote>
 <p>{structr} provides a numerical solution to determine the orientation
 of the principal stresses from fault slip data using the Michael (1984)
 method<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Michael, A. J. (1984). Determination of stress from slip
 data: Faults and folds. Journal of Geophysical Research: Solid Earth,
-89(B13), 11517–11526. &lt;a href="https://doi.org/10.1029/JB089iB13p11517" class="external-link uri"&gt;https://doi.org/10.1029/JB089iB13p11517&lt;/a&gt;&lt;/p&gt;'><sup>1</sup></a>.
+89(B13), 11517–11526. &lt;a href="https://doi.org/10.1029/JB089iB13p11517" class="external-link uri"&gt;https://doi.org/10.1029/JB089iB13p11517&lt;/a&gt;&lt;/p&gt;'><sup>2</sup></a>.
 It uses bootstrapping for confidence intervals of the stress
 estimates.</p>
 <p>First we load some example data (here the data from Angelier, 1990)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Angelier, J. (1990). Inversion of field data in fault
 tectonics to obtain the regional stress—III. A new rapid direct
-inversion method by analytical means. Ceophys. J. Int, 103, 363–376. &lt;a href="https://doi.org/10.1111/j.1365-246X.1990.tb01777.x" class="external-link uri"&gt;https://doi.org/10.1111/j.1365-246X.1990.tb01777.x&lt;/a&gt;&lt;/p&gt;'><sup>2</sup></a></p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"angelier1990"</span><span class="op">)</span></span>
-<span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="va">angelier1990</span><span class="op">$</span><span class="va">TYM</span></span>
+inversion method by analytical means. Ceophys. J. Int, 103, 363–376. &lt;a href="https://doi.org/10.1111/j.1365-246X.1990.tb01777.x" class="external-link uri"&gt;https://doi.org/10.1111/j.1365-246X.1990.tb01777.x&lt;/a&gt;&lt;/p&gt;'><sup>3</sup></a></p>
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="va">angelier1990</span><span class="op">$</span><span class="va">TYM</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Test data"</span>, guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">test_data</span>, col <span class="op">=</span> <span class="st">"grey30"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="E_Faults_files/figure-html/slip_inversion1-1.png" alt="Diagram showing some fault-slip data in a stereoplot
-" width="700"></p>
-<p>To check the accuracy of the solution, you can use</p>
+" width="700"> The stress inversion with 10 bootstraps:</p>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">test_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slip_inversion.html">slip_inversion</a></span><span class="op">(</span><span class="va">test_data</span>, boot <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Average beta angle</span></span>
+<span><span class="va">test_res</span><span class="op">$</span><span class="va">beta</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 15.13804</span></span></code></pre>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Average resolved shear stress</span></span>
+<span><span class="va">test_res</span><span class="op">$</span><span class="va">sigma_s</span></span></code></pre></div>
+<pre><code><span><span class="co">## [1] 0.9289024</span></span></code></pre>
+<p>To check the accuracy of the solution, you can evaluate</p>
 <ul>
 <li>the average angle β between the tangential traction predicted by the
 best stress tensor and the slip vector on each plane (ideally close to
@@ -214,37 +264,30 @@ best stress tensor and the slip vector on each plane (ideally close to
 <li>the average resolved shear stress on each plane (should be close to
 1).</li>
 </ul>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">test_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stress_inversion.html">stress_inversion</a></span><span class="op">(</span><span class="va">angelier1990</span><span class="op">$</span><span class="va">TYM</span>, boot <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># Average beta angle</span></span>
-<span><span class="va">test_res</span><span class="op">$</span><span class="va">beta</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 15.13804</span></span></code></pre>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># Average resolved shear stress</span></span>
-<span><span class="va">test_res</span><span class="op">$</span><span class="va">sigma_s</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 0.9289024</span></span></code></pre>
 <p>To visualizing the orientation of the principal stresses and the
 confidence region of the axes, you may use the stereoplot() functions
 from {structr}</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'#000004FF'</span>, <span class="st">"#B63679FF"</span>, <span class="st">"#FEC287FF"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Stress inversion"</span>, guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">test_data</span>, col <span class="op">=</span> <span class="st">'grey60'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">test_data</span>, col <span class="op">=</span> <span class="st">'grey75'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes_conf</span><span class="op">$</span><span class="va">sigma1</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes_conf</span><span class="op">$</span><span class="va">sigma2</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes_conf</span><span class="op">$</span><span class="va">sigma3</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span>, label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">)</span>, col <span class="op">=</span> <span class="va">cols</span>, adj <span class="op">=</span> <span class="op">-</span><span class="fl">.25</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>, col <span class="op">=</span> <span class="va">cols</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span>, </span>
+<span>     label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">)</span>, </span>
+<span>     col <span class="op">=</span> <span class="va">cols</span>, adj <span class="op">=</span> <span class="op">-</span><span class="fl">.25</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>, col <span class="op">=</span> <span class="va">cols</span>, </span>
+<span>       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
 <p><img src="E_Faults_files/figure-html/slip_inversion_plot-1.png" alt="Diagram showing principal stress vector results in a stereoplot" width="700"></p>
 <p>The stress shape ratio &amp;; (Angelier 1979)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Angelier, J. (1979). Determination of the mean principal
 directions of stresses for a given fault population. Tectonophysics,
-56(3–4), T17–T26. &lt;a href="https://doi.org/10.1016/0040-1951(79)90081-7" class="external-link uri"&gt;https://doi.org/10.1016/0040-1951(79)90081-7&lt;/a&gt;&lt;/p&gt;'><sup>3</sup></a></p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+56(3–4), T17–T26. &lt;a href="https://doi.org/10.1016/0040-1951(79)90081-7" class="external-link uri"&gt;https://doi.org/10.1016/0040-1951(79)90081-7&lt;/a&gt;&lt;/p&gt;'><sup>4</sup></a></p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_res</span><span class="op">$</span><span class="va">phi</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0.101247</span></span></code></pre>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 95% confidence interval</span></span>
 <span><span class="va">test_res</span><span class="op">$</span><span class="va">phi_conf</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0.07111952 0.12989809</span></span>
@@ -253,7 +296,7 @@ directions of stresses for a given fault population. Tectonophysics,
 <p>The angle β is the angle between the tangential traction predicted by
 the best stress tensor and the slip vector. This deviation can be
 visualized in the stereoplot:</p>
-<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">beta</span> <span class="op">&lt;-</span> <span class="va">test_res</span><span class="op">$</span><span class="va">fault_data</span><span class="op">$</span><span class="va">beta</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span></span>
@@ -262,7 +305,10 @@ visualized in the stereoplot:</p>
 <span>  guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">test_data</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/colorize.html">assign_col</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/colorize.html">legend_c</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span>, title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/bquote.html" class="external-link">bquote</a></span><span class="op">(</span><span class="st">"Deviation angle"</span> <span class="op">~</span> <span class="va">beta</span> <span class="op">~</span> <span class="st">"("</span><span class="op">*</span><span class="va">degree</span><span class="op">*</span><span class="st">")"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/colorize.html">legend_c</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span>, </span>
+<span>  title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/bquote.html" class="external-link">bquote</a></span><span class="op">(</span><span class="st">"Deviation angle"</span> <span class="op">~</span> <span class="va">beta</span> <span class="op">~</span> <span class="st">"("</span><span class="op">*</span><span class="va">degree</span><span class="op">*</span><span class="st">")"</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span></code></pre></div>
 <p><img src="E_Faults_files/figure-html/slip_inversion_beta-1.png" alt="Diagram showing deviation of the best-fit principal stress tensor in a  stereoplot" width="700"></p>
 <!-- # ```{r slip_inversion_mohr} -->
 <!-- # sigmas <- test_res$principal_vals -->
@@ -276,7 +322,7 @@ visualized in the stereoplot:</p>
 <h3 id="maximum-horizontal-stress4">Maximum horizontal stress<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Lund &amp;amp; Townend (2007): Calculating horizontal stress
 orientations with full or partial knowledge of the tectonic stress
 tensor. &lt;em&gt;Geophys. J. Int.&lt;/em&gt;, 170, 1328—1335. doi:
-10.1111/j.1365-246X.2007.03468.x&lt;/p&gt;"><sup>4</sup></a><a class="anchor" aria-label="anchor" href="#maximum-horizontal-stress4"></a>
+10.1111/j.1365-246X.2007.03468.x&lt;/p&gt;"><sup>5</sup></a><a class="anchor" aria-label="anchor" href="#maximum-horizontal-stress4"></a>
 </h3>
 <p>We de fine a vertical plane in the geographic coordinate system,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝔾</mi><annotation encoding="application/x-tex">\mathbb{G}</annotation></semantics></math>,
@@ -459,19 +505,19 @@ accordingly:</p>
 <h4 id="code">Code<a class="anchor" aria-label="anchor" href="#code"></a>
 </h4>
 <p>Define the orientation of the principle stress axes:</p>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">S1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">250.89</span>, <span class="fl">70.07</span><span class="op">)</span></span>
 <span><span class="va">S3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">103.01</span>, <span class="fl">17.07</span><span class="op">)</span></span></code></pre></div>
 <p>To get S2 - which is perpendicular to S1 and S3, we calculate the
 cross-product of the two vectors:</p>
-<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">S2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">S3</span>, <span class="va">S1</span><span class="op">)</span></span></code></pre></div>
 <p>The azimuth of SHmax for a given stress ratio <code>R = 1</code>:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.html">SH</a></span><span class="op">(</span><span class="va">S1</span>, <span class="va">S2</span>, <span class="va">S3</span>, R <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># in degrees</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 70.89</span></span></code></pre>
 <p>For a several stress ratios:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">R</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">.1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">R</span>, SH <span class="op">=</span> <span class="fu"><a href="../reference/SH.html">SH</a></span><span class="op">(</span><span class="va">S1</span>, <span class="va">S2</span>, <span class="va">S3</span>, R <span class="op">=</span> <span class="va">R</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##         R       SH</span></span>
@@ -486,10 +532,13 @@ cross-product of the two vectors:</p>
 <span><span class="co">##  [9,] 0.8 28.23884</span></span>
 <span><span class="co">## [10,] 0.9 45.01043</span></span>
 <span><span class="co">## [11,] 1.0 70.89000</span></span></code></pre>
-<p>And for the stress inversion result from above:</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.html">SH</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>, <span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span>, <span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">3</span>, <span class="op">]</span>, </span>
-<span>   <span class="va">test_res</span><span class="op">$</span><span class="va">R</span><span class="op">)</span></span></code></pre></div>
+<p>And the SHmax for the slip inversion result from above:</p>
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.html">SH</a></span><span class="op">(</span></span>
+<span>  S1 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>, </span>
+<span>  S2 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span>, </span>
+<span>  S3 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">3</span>, <span class="op">]</span>,</span>
+<span>  R <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">R</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 60.80844</span></span></code></pre>
 </div>
 </div>
@@ -572,7 +621,7 @@ For instance, the vector of the strike slip is:</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><msub><mi>f</mi><mtext mathvariant="normal">net</mtext></msub><mo accent="true">→</mo></mover><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">strike-slip</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">heave</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>f</mi><mtext mathvariant="normal">vertical throw</mtext></msub><mo stretchy="false" form="postfix">∥</mo></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}
   \vec{f_\text{net}} = \begin{pmatrix} \lVert f_\textrm{strike-slip}\rVert \\ \lVert f_\textrm{heave}\rVert \\ \lVert f_\textrm{vertical throw}\rVert \end{pmatrix}
 \end{equation}</annotation></semantics></math></p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/fault_displacements.html">fault_displacements</a></span><span class="op">(</span>strikeslip <span class="op">=</span> <span class="fl">2</span>, verticalthrow <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, heave <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
@@ -590,8 +639,8 @@ i.e. the <strong>principal displacement tensor</strong>
 <p>The tensor
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝖥</mi><annotation encoding="application/x-tex">\mathsf{F}</annotation></semantics></math>
 can also be defined by the magnitudes of the fault displacements:</p>
-<div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Fu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fault-tensor.html">fault_tensor</a></span><span class="op">(</span>s <span class="op">=</span> <span class="fl">2</span>, v <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, h <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Fu</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fault-tensor.html">displacement_tensor</a></span><span class="op">(</span>s <span class="op">=</span> <span class="fl">2</span>, v <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, h <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">Fu</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##      [,1] [,2] [,3]</span></span>
 <span><span class="co">## [1,]    3    0    0</span></span>
@@ -607,8 +656,8 @@ can also be defined by the magnitudes of the fault displacements:</p>
 orientation (dip direction and dip angle), and the fault’s slip
 (direction and magnitude):</p>
 <p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝖥</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>11</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>12</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>13</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>21</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>22</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>23</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>31</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>32</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mi>f</mi><mn>33</mn></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">]</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}\mathsf{F}_{ij} = {\begin{bmatrix}f_{11} &amp; f_{12} &amp; f_{13}\\ f_{21} &amp; f_{22} &amp; f_{23}\\ f_{31} &amp; f_{32} &amp; f_{33}\end{bmatrix}}\end{equation}</annotation></semantics></math></p>
-<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">Fg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fault-tensor.html">fault_tensor</a></span><span class="op">(</span>s <span class="op">=</span> <span class="fl">2</span>, v <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, h <span class="op">=</span> <span class="fl">3</span>, dip_direction <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">Fg</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/fault-tensor.html">displacement_tensor</a></span><span class="op">(</span>s <span class="op">=</span> <span class="fl">2</span>, v <span class="op">=</span> <span class="op">-</span><span class="fl">5</span>, h <span class="op">=</span> <span class="fl">3</span>, dip_direction <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">Fg</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##         [,1]      [,2] [,3]</span></span>
 <span><span class="co">## [1,] 2.12132  1.414214    0</span></span>
@@ -624,8 +673,8 @@ orientation (dip direction and dip angle), and the fault’s slip
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝖥</mi><mi>𝔽</mi></msub><annotation encoding="application/x-tex">\mathsf{F_\mathbb{F}}</annotation></semantics></math>
 into point of measurement and rotate into fault orientation
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝖥</mi><mrow><mi>𝔽</mi><mi>𝔾</mi></mrow></msub><annotation encoding="application/x-tex">\mathsf{F}_\mathbb{FG}</annotation></semantics></math></p>
-<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/fault-tensor.html">fault_tensor_decomposition</a></span><span class="op">(</span><span class="va">Fg</span>, dip_direction <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb40"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/fault-tensor.html">displacement_tensor_decomposition</a></span><span class="op">(</span><span class="va">Fg</span>, dip_direction <span class="op">=</span> <span class="fl">45</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## $displacements</span></span>
 <span><span class="co">##           dip    delta     rake verticalthrow horizontalthrow heave  dipslip</span></span>
 <span><span class="co">## [1,] 300.9638 56.30993 71.06818            -5        3.605551     3 5.830952</span></span>
