@@ -72,6 +72,7 @@
 #' data("example_planes")
 #' head(example_planes)
 "example_planes"
+
 #' Example data set
 #'
 #' example data set
@@ -87,6 +88,26 @@
 #' head(simongomez)
 "simongomez"
 
+
+#' Example fault slip data
+#'
+#' List of different fault-slip data from Angelier (1990)
+#'
+#' @docType data
+#'
+#' @usage data('angelier1990')
+#' 
+#' @references 
+#' Angelier, J. (1990). Inversion of field data in fault tectonics to obtain the
+#'  regional stress-III. A new rapid direct inversion method by analytical means. 
+#'  Geophysical Journal International, 103(2), 363–376. https://doi.org/10.1111/j.1365-246X.1990.tb01777.x
+#'
+#' @format An object of class `data.frame`
+#' @keywords datasets
+#' @examples
+#' data("angelier1990")
+#' head(angelier1990)
+"angelier1990"
 
 
 #' R/phi data

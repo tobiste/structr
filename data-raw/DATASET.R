@@ -110,6 +110,7 @@ usethis::use_data(gray_example, overwrite = TRUE)
 
 # Angelier 1990 fault slip data
 angelier1990_df <- readxl::read_xlsx("inst/angelier_data.xlsx", sheet = 1) |>
+  dplyr::filter(site %in% c("TYM", "AVB")) |> 
   dplyr::group_by(site) |>
   dplyr::mutate(id = dplyr::row_number(), .before = "sense") |>
   dplyr::mutate( # dipdir = structr::rhr2dd(strike),
