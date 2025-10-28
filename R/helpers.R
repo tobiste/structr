@@ -308,11 +308,11 @@ legend_c <- function(breaks, title = NULL, pal = viridis::viridis, ...) {
     )
   )
 
-  graphics::par(new = TRUE)
+  graphics::par(new = TRUE, xpd = NA)
   graphics::layout(matrix(1, 1))
 
   plot(c(0, 1), c(0, 1), type = "n", axes = FALSE, xlab = NA, ylab = NA, main = NA)
-  graphics::text(x = 0.9 + (0.1 * 1.1), y = label_pos, labels = breaks, adj = 0)
+  graphics::text(x = 0.9 + (0.1 * 1.1), y = label_pos, labels = round(breaks, 2), adj = 0, cex = .8)
   graphics::text(x = .925, y = .5, labels = title, adj = 0.5, srt = 90, font = 2)
   graphics::rasterImage(legend_image, .95, 0, 1, 1)
 }

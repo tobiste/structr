@@ -73,8 +73,8 @@ correct_pair(p)
 
 ## Fault stress analysis
 
-{tectonicr} offers several techniques to calculate the orientation of
-principal stress axes
+{structr} offers several techniques to calculate the orientation of
+principal stress axes, the simple P-T method, and a fault-slip inversion technique.
 
 ### P-T method
 
@@ -82,7 +82,9 @@ This simple technique calculates PT-axes, kinematic plane (M), and
 dihedra separation plane (d):
 
 ```{r faults_stress1}
-my_fault2 <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
+my_fault2 <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), 
+                   rake = c(58, 9, 23), 
+                   sense = c(1, -1, 1))
 print(my_fault2)
 ```
 
@@ -119,7 +121,7 @@ stereoplot(title = "Test data", guides = FALSE)
 fault_plot(test_data, col = "grey30")
 ```
 
-To check the accuracy of the solution, you can use
+To check the accuracy of the solution, you can evaluate
 
 -   the average angle β between the tangential traction predicted by the
     best stress tensor and the slip vector on each plane (ideally close
@@ -152,8 +154,11 @@ fault_plot(test_data, col = 'grey60')
 stereo_confidence(test_res$principal_axes_conf$sigma1, col = cols[1])
 stereo_confidence(test_res$principal_axes_conf$sigma2, col = cols[2])
 stereo_confidence(test_res$principal_axes_conf$sigma3, col = cols[3])
-text(test_res$principal_axes, label = rownames(test_res$principal_axes), col = cols, adj = -.25)
-legend("topleft", col = cols, legend = rownames(test_res$principal_axes), pch = 16)
+text(test_res$principal_axes, 
+     label = rownames(test_res$principal_axes), 
+     col = cols, adj = -.25)
+legend("topleft", col = cols, 
+       legend = rownames(test_res$principal_axes), pch = 16)
 ```
 
 The stress shape ratio &\Phi; (Angelier 1979)[^3]
@@ -187,7 +192,10 @@ stereoplot(
   guides = FALSE)
 
 fault_plot(test_data, col = assign_col(beta))
-legend_c(seq(min(beta), max(beta), 10), title = bquote("Deviation angle" ~ beta ~ "("*degree*")"))
+legend_c(
+  seq(min(beta), max(beta), 10), 
+  title = bquote("Deviation angle" ~ beta ~ "("*degree*")")
+  )
 ```
 
 <!-- # ```{r slip_inversion_mohr} -->
@@ -353,8 +361,11 @@ cbind(R, SH = SH(S1, S2, S3, R = R))
 And for the stress inversion result from above:
 
 ```{r lund_3}
-SH(test_res$principal_axes[1, ], test_res$principal_axes[2, ], test_res$principal_axes[3, ], 
-   test_res$R)
+SH(
+  S1 = test_res$principal_axes[1, ], 
+  S2 = test_res$principal_axes[2, ], 
+  S3 = test_res$principal_axes[3, ],
+  R = test_res$R)
 ```
 
 ## Fault offsets {#sec.offset}
