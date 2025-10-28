@@ -32,6 +32,8 @@
 #' @references Michael, A. J. (1984). Determination of stress from slip data: Faults and folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526. https://doi.org/10.1029/JB089iB13p11517
 #' @export
 #' 
+#' @importFrom stats t.test
+#' 
 #' @seealso [SH()] to calculate the azimuth of the maximum horizontal stress; [fault_analysis()] for a simple P-T stress analysis.
 #' 
 #' @examples
@@ -80,17 +82,17 @@ stress_inversion <-  function(x, boot = 10L, conf.level = 0.95){
   })) |> confidence_ellipse(alpha = 1 - conf.level, res = 100)
   
   R_boot <- vapply(boot_results, function(x){x$R}, FUN.VALUE = numeric(1)) |> 
-    t.test(conf.level = conf.level)
+    stats::t.test(conf.level = conf.level)
   
   phi_boot <- vapply(boot_results, function(x){x$phi}, FUN.VALUE = numeric(1)) |> 
-    t.test(conf.level = conf.level)
+    stats::t.test(conf.level = conf.level)
   
   bott_boot <- vapply(boot_results, function(x){x$bott}, FUN.VALUE = numeric(1)) |> 
-    t.test(conf.level = conf.level)
+    stats::t.test(conf.level = conf.level)
   
   sigma_boot0 <- vapply(boot_results, function(x){x$principal_vals}, FUN.VALUE = numeric(3)) |> t()
   sigma_boot <- sapply(1:3, function(col){
-    sigma_boot_col <- t.test(sigma_boot0[, col], conf.level = conf.level)
+    sigma_boot_col <- stats::t.test(sigma_boot0[, col], conf.level = conf.level)
     sigma_boot_col$conf.int
   })
   colnames(sigma_boot) <- names(best.fit$principal_vals)
@@ -168,9 +170,7 @@ stress_inversion0 <- function(x){
   )
 }
 
-stress_inversion0 <- function(x
-                             #, friction = 0.6
-                             ){
+stress_inversion0 <- function(x){
   tau <- linear_stress_inversion(x)
   # tau0 <- tau / sqrt(sum(tau^2)) # normalize Frobenius norm
   
@@ -234,15 +234,19 @@ stress_inversion0 <- function(x
   )
 }
 
+#' @importFrom MASS ginv
 linear_stress_inversion <- function(x) {
   m <- nrow(x)
   
+  # plane normal
   n <- Plane(x) |>
     Vec3() |>
-    unclass() # plane normal
+    unclass() 
+  
+  # slip vector
   s <- Ray(x) |>
     Vec3() |>
-    unclass() # slip vector
+    unclass() 
   # rake <- structr::Fault_rake(fault) * pi / 180
   
   # Eq 8:

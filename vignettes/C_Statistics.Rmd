@@ -100,7 +100,7 @@ legend("topright", legend = c("Mean line", "95% confidence cone", "63% data cone
 ```
 
 ### Geodesic mean and variance
-Another measure of mean and dispersion is the  *Fréchet (geodesic L<sup>2</sup>) mean* and *variance* which is based on the angles between all data vectors.  
+Another measure of mean and dispersion is the  *Fr&#233;chet (geodesic L<sup>2</sup>) mean* and *variance* which is based on the angles between all data vectors.  
 This can be visualized using the `variance_plot()`; here showing the (geodesic) angle distances between all lines and the first line in the same data set:
 
 ```{r variance}
@@ -109,10 +109,10 @@ This can be visualized using the `variance_plot()`; here showing the (geodesic) 
 variance_plot(lines, y = lines[1, ])
 ```
 
-> The Fréchet mean is the vector that minimizes the sum of the squared angle distances to all data vectors.
-> The Fréchet variance about this mean is the sum of the squared angle distances between all data vectors and the Fréchet mean.
+> The Fr&#233;chet mean is the vector that minimizes the sum of the squared angle distances to all data vectors.
+> The Fr&#233;chet variance about this mean is the sum of the squared angle distances between all data vectors and the Fr&#233;chet mean.
 
-To find the Fréchet mean vector, the algorithm iteratively searches for the vector by using a numerical optimization method to minimize the distances to all other vectors 
+To find the Fr&#233;chet mean vector, the algorithm iteratively searches for the vector by using a numerical optimization method to minimize the distances to all other vectors 
 
 ```{r geodesic}
 # Mean

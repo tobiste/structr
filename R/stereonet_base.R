@@ -1002,7 +1002,7 @@ angelier <- function(x, pch = 1, lwd = 1, lty = 1, col = "black", cex = 1, point
 #' @inheritParams stereo_point
 #'
 #' @returns list. `angles` is a vector of the geodesic angles (in degrees) 
-#' between all vectors in `x` and `y` (or the mean), and `var` is a scalar giving the Fréchet variance. 
+#' between all vectors in `x` and `y` (or the mean), and `var` is a scalar giving the Fr&eacute;chet variance. 
 #' @export
 #'
 #' @seealso [stereo_segment()], [sph_mean()], [geodesic_mean()], [projected_mean()], [geodesic_var()]
@@ -1048,7 +1048,7 @@ variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "proj
     main = "Variance plot", 
     sub = paste(
       "Center vector:", round(y[1, 1]), "/", round(y[1, 2]),
-      "\nFréchet variance:", round(var_frechet, 2)
+      "\nFrechet variance:", round(var_frechet, 2)
       )
     )
 
