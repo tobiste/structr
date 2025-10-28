@@ -1,10 +1,10 @@
 ---
-title: "6. Faults"
+title: "6. Faults and Paleostress"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{6. Faults}
+  %\VignetteIndexEntry{6. Faults and Paleostress}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 editor_options: 
@@ -46,11 +46,14 @@ Define a fault by just knowing the orientation of the fault plane, the
 sense, and the rake
 
 ```{r faults_rake2}
-fault_plane <- Plane(c(120, 120, 100), c(60, 60, 50)) # dip direction, dip angle
+# 1. Define a plane through dip direction, dip angle
+fault_plane <- Plane(c(120, 120, 100), c(60, 60, 50)) 
+
+# 2. Define a fault through the plane and rake angle:
 Fault_from_rake(fault_plane, rake = c(84.7202, -10, 30))
 ```
 
-Often measured orientation angles can be (slightly) imprecise and
+Often, measured orientation angles can be (slightly) imprecise and
 subjected to some random noise. Thus the slip vector will not lie
 (perfectly) on the fault plane, judging by the measurements. To correct
 the measurements so that this will not be the case:
@@ -73,26 +76,55 @@ correct_pair(p)
 
 ## Fault stress analysis
 
+The *Wallace-Bott hypothesis* states that fault slip occurs parallel to the maximum shear stress. This allows to reconstruct stress axes using fault-slip data. 
 {structr} offers several techniques to calculate the orientation of
 principal stress axes, the simple P-T method, and a fault-slip inversion technique.
 
 ### P-T method
 
 This simple technique calculates PT-axes, kinematic plane (M), and
-dihedra separation plane (d):
+dihedra separation plane (d). 
 
-```{r faults_stress1}
-my_fault2 <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), 
-                   rake = c(58, 9, 23), 
-                   sense = c(1, -1, 1))
+First we load some example data (here the first three faults from the TYM dataset by from Angelier, 1990)[^2]
+
+```{r faults_pt1}
+data("angelier1990")
+my_fault2 <- angelier1990$TYM[1:3, ]
+
 print(my_fault2)
 ```
 
-```{r faults_stress2}
-fault_analysis(my_fault2)
+```{r faults_pt2}
+my_fault2_PT <- Fault_PT(my_fault2)
+print(my_fault2_PT)
 ```
 
+Plot the results
+
+```{r faults_pt_plot}
+stereoplot(title = "PT results", guides = FALSE)
+fault_plot(my_fault2)
+points(my_fault2_PT$p, col = "#B63679FF", pch = 16)
+points(my_fault2_PT$t, col = "#FEC287FF", pch = 18)
+lines(my_fault2_PT$t, lty = 2, col = "grey40")
+lines(my_fault2_PT$d, lty = 3, col = "grey80")
+
+legend("right",
+  legend = c("P-axis", "T-axis", "M-plane", "Diheadra"),
+  col = c("#B63679FF", "#FEC287FF", "grey40", "grey80"),
+  pch = c(16, 18, NA, NA), lty = c(NA, NA, 2, 3)
+)
+```
+
+
 ### Fault slip inversion
+
+Our goal is to find the single uniform stress tensor that most likely caused the faulting events. With only slip data to constrain the stress tensor the isotropic component can not be determined, unless assumptions about the fracture criterion are made. 
+Hence inversion will be for the deviatoric stress tensor only.
+A single fault can not completely constrain the deviatoric stress tensor a, therefore it is necessary to simultaneously solve 
+for a number of faults, so that a single a that best satisfies all of the faults is found. 
+
+> This is equivalent to assuming that the stress field is a constant tensor within the region being studied for the duration of the faulting event.
 
 {structr} provides a numerical solution to determine the orientation of
 the principal stresses from fault slip data using the Michael (1984)
@@ -114,11 +146,22 @@ First we load some example data (here the data from Angelier, 1990)[^2]
 #| fig.alt: >
 #|   Diagram showing some fault-slip data in a stereoplot
 #|   
-data("angelier1990")
 test_data <- angelier1990$TYM
 
 stereoplot(title = "Test data", guides = FALSE)
 fault_plot(test_data, col = "grey30")
+```
+
+The stress inversion with 10 bootstraps:
+
+```{r slip_inversion_check}
+test_res <- slip_inversion(test_data, boot = 10)
+
+# Average beta angle
+test_res$beta
+
+# Average resolved shear stress
+test_res$sigma_s
 ```
 
 To check the accuracy of the solution, you can evaluate
@@ -129,15 +172,6 @@ To check the accuracy of the solution, you can evaluate
 -   the average resolved shear stress on each plane (should be close to
     1).
 
-```{r slip_inversion_check}
-test_res <- stress_inversion(angelier1990$TYM, boot = 10)
-
-# Average beta angle
-test_res$beta
-
-# Average resolved shear stress
-test_res$sigma_s
-```
 
 To visualizing the orientation of the principal stresses and the
 confidence region of the axes, you may use the stereoplot() functions
@@ -150,7 +184,7 @@ from {structr}
 cols <- c('#000004FF', "#B63679FF", "#FEC287FF")
 
 stereoplot(title = "Stress inversion", guides = FALSE)
-fault_plot(test_data, col = 'grey60')
+fault_plot(test_data, col = 'grey75')
 stereo_confidence(test_res$principal_axes_conf$sigma1, col = cols[1])
 stereo_confidence(test_res$principal_axes_conf$sigma2, col = cols[2])
 stereo_confidence(test_res$principal_axes_conf$sigma3, col = cols[3])
@@ -358,7 +392,7 @@ R <- seq(0, 1, .1)
 cbind(R, SH = SH(S1, S2, S3, R = R))
 ```
 
-And for the stress inversion result from above:
+And the SHmax for the slip inversion result from above:
 
 ```{r lund_3}
 SH(
@@ -470,7 +504,7 @@ The tensor $\mathsf{F}$ can also be defined by the magnitudes of the
 fault displacements:
 
 ```{r displacement_tensor}
-Fu <- fault_tensor(s = 2, v = -5, h = 3)
+Fu <- displacement_tensor(s = 2, v = -5, h = 3)
 print(Fu)
 ```
 
@@ -483,7 +517,7 @@ orientation (dip direction and dip angle), and the fault's slip
 \begin{equation}\mathsf{F}_{ij} = {\begin{bmatrix}f_{11} & f_{12} & f_{13}\\ f_{21} & f_{22} & f_{23}\\ f_{31} & f_{32} & f_{33}\end{bmatrix}}\end{equation}
 
 ```{r ortensor}
-Fg <- fault_tensor(s = 2, v = -5, h = 3, dip_direction = 45)
+Fg <- displacement_tensor(s = 2, v = -5, h = 3, dip_direction = 45)
 print(Fg)
 ```
 
@@ -493,7 +527,7 @@ Translation point of origin in $\mathsf{F_\mathbb{F}}$ into point of
 measurement and rotate into fault orientation $\mathsf{F}_\mathbb{FG}$
 
 ```{r ftensor_decomp}
-fault_tensor_decomposition(Fg, dip_direction = 45)
+displacement_tensor_decomposition(Fg, dip_direction = 45)
 ```
 
 <!-- ## Stress tensor -->

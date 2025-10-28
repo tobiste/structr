@@ -104,8 +104,8 @@ fault_displacements <- function(
 #' If `NULL`, the fault tensor will be given in the fault displacement
 #' coordinates. Otherwise, the tensor will be in the geographic reference frame.
 #'
-#' @returns `fault_tensor()` returns a 3x3 matrix of class `"ftensor"` containing the fault displacement tensor.
-#' `fault_tensor_analysis()` returns a list containing the principal fault displacement tensor and the fault orientation.
+#' @returns `displacement_tensor()` returns a 3x3 matrix of class `"ftensor"` containing the fault displacement tensor.
+#' `displacement_tensor_decomposition()` returns a list containing the principal fault displacement tensor and the fault orientation.
 #'
 #' @details
 #' x axis of tensor = heave, y = strike slip, z = vertical throw (positive for
@@ -118,7 +118,7 @@ fault_displacements <- function(
 #'
 #' - The determinant of the tensor relates to the volumetric strain by: det(F) - 1, where
 #'
-#' ([fault_tensor_decomposition()]) retrieves the principal fault displacement tensor using Singular Value Decomposition of a Matrix
+#' ([displacement_tensor_decomposition()]) retrieves the principal fault displacement tensor using Singular Value Decomposition of a Matrix
 #' and the fault orientation if the dip direction is known.
 #'
 #' The orientation of the net-slip vector is the lineation component of the fault orientation.
@@ -126,20 +126,20 @@ fault_displacements <- function(
 #' @name fault-tensor
 #'
 #' @examples
-#' A_princ <- fault_tensor(s = 2, v = -5, h = 3)
+#' A_princ <- displacement_tensor(s = 2, v = -5, h = 3)
 #' print(A_princ)
 #' det(A_princ)
 #'
-#' A_geo <- fault_tensor(s = 2, v = -5, h = 3, dip_direction = 45)
+#' A_geo <- displacement_tensor(s = 2, v = -5, h = 3, dip_direction = 45)
 #' print(A_geo)
 #' det(A_geo)
 #'
-#' fault_tensor_decomposition(A_geo, dip_direction = 45)
+#' displacement_tensor_decomposition(A_geo, dip_direction = 45)
 NULL
 
 #' @rdname fault-tensor
 #' @export
-fault_tensor <- function(h, s, v, dip_direction = NULL) {
+displacement_tensor <- function(h, s, v, dip_direction = NULL) {
   A <- diag(c(h, s, v), 3, 3)
   # A_det <- det(A)
 
@@ -159,7 +159,7 @@ fault_tensor <- function(h, s, v, dip_direction = NULL) {
 
 #' @rdname fault-tensor
 #' @export
-fault_tensor_decomposition <- function(ftensor, dip_direction = NULL) {
+displacement_tensor_decomposition <- function(ftensor, dip_direction = NULL) {
   stopifnot(inherits(ftensor, "ftensor") || is.matrix(ftensor))
   A_svd <- svd(ftensor)
   A_d <- A_svd$d

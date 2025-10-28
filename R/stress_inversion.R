@@ -30,42 +30,56 @@
 #'  }
 #' 
 #' @references Michael, A. J. (1984). Determination of stress from slip data: Faults and folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526. https://doi.org/10.1029/JB089iB13p11517
+#' 
+#' @details
+#' The goal of slip inversion is to find the single uniform stress tensor that 
+#' most likely caused the faulting events. With only slip data to constrain the 
+#' stress tensor the isotropic component can not be determined, unless 
+#' assumptions about the fracture criterion are made. Hence inversion will be 
+#' for the deviatoric stress tensor only.
+#' A single fault can not completely constrain the deviatoric stress tensor a, 
+#' therefore it is necessary to simultaneously solve for a number of faults, so 
+#' that a single a that best satisfies all of the faults is found. 
+#' 
+#' 
+#' 
 #' @export
 #' 
 #' @importFrom stats t.test
 #' 
-#' @seealso [SH()] to calculate the azimuth of the maximum horizontal stress; [fault_analysis()] for a simple P-T stress analysis.
+#' @seealso [SH()] to calculate the azimuth of the maximum horizontal stress; [Fault_PT()] for a simple P-T stress analysis.
 #' 
 #' @examples
 #' # Use Angelier examples:
-#' res_TYM <- stress_inversion(angelier1990$TYM, boot = 10)
+#' res_TYM <- slip_inversion(angelier1990$TYM, boot = 10)
 #' 
 #' # Plot the faults (color-coded by beta angle) and show the principal stress axes
 #' stereoplot(title = "Tymbaki, Crete, Greece", guides = FALSE)
-#' fault_plot(angelier1990$TYM, col = assign_col(res_TYM$fault_data$beta))
+#' fault_plot(angelier1990$TYM, col = "gray80")
 #' stereo_confidence(res_TYM$principal_axes_conf$sigma1, col = 2)
 #' stereo_confidence(res_TYM$principal_axes_conf$sigma2, col = 3)
 #' stereo_confidence(res_TYM$principal_axes_conf$sigma3, col = 4)
-#' text(res_AVB$principal_axes, label = rownames(res_TYM$principal_axes), col = 2:4, adj = -.25)
+#' text(res_TYM$principal_axes, label = rownames(res_TYM$principal_axes), col = 2:4, adj = -.25)
 #' legend("topleft", col = 2:4, legend = rownames(res_TYM$principal_axes), pch = 16)
 #' 
-#' res_AVB <- stress_inversion(angelier1990$AVB)
+#' res_AVB <- slip_inversion(angelier1990$AVB)
 #' stereoplot(title = "Agia Varvara, Crete, Greece", guides = FALSE)
-#' fault_plot(angelier1990$AVB, col = assign_col(res_AVB$fault_data$beta))
+#' fault_plot(angelier1990$AVB, col = "gray80")
 #' stereo_confidence(res_AVB$principal_axes_conf$sigma1, col = 2)
 #' stereo_confidence(res_AVB$principal_axes_conf$sigma2, col = 3)
 #' stereo_confidence(res_AVB$principal_axes_conf$sigma3, col = 4)
 #' text(res_AVB$principal_axes, label = rownames(res_AVB$principal_axes), col = 2:4, adj = -.25)
 #' legend("topleft", col = 2:4, legend = rownames(res_AVB$principal_axes), pch = 16)
-stress_inversion <-  function(x, boot = 10L, conf.level = 0.95){
-  best.fit <- stress_inversion0(x)
+slip_inversion <-  function(x, boot = 10L, conf.level = 0.95){
+  best.fit <- slip_inversion0(x)
+  fault_df <- best.fit$fault_data
   nx <- nrow(x)
   
   # bootstrap results
   boot_results <- lapply(1:boot, function(i) {
     idx <- sample.int(nx, replace = TRUE)
     x_sample <- x[idx, ]
-    stress_inversion0(x_sample)
+    slip_inversion0(x_sample)
   })
   
   # calculate confidence intervals from bootstrap results
@@ -111,11 +125,11 @@ stress_inversion <-  function(x, boot = 10L, conf.level = 0.95){
     bott_conf = bott_boot$conf.int,
     beta = best.fit$beta,
     sigma_s = best.fit$sigma_s,
-    fault_data = best.fit$fault_data
+    fault_data = fault_df
   )
 }
 
-stress_inversion0 <- function(x){
+slip_inversion0 <- function(x){
   tau <- linear_stress_inversion(x)
   # tau0 <- tau / sqrt(sum(tau^2)) # normalize Frobenius norm
   
@@ -129,22 +143,20 @@ stress_inversion0 <- function(x){
   phi <- (sigma_vals[2] - sigma_vals[3]) / (sigma_vals[1] - sigma_vals[3]) # Angelier 1979
   shape_ratio_bott <- (sigma_vals[3] - sigma_vals[1]) / (sigma_vals[2] - sigma_vals[1]) # Bott, Simon-Gomez
 
-  #maybe transpose?
   principal_axes <- t(eig$vectors) |> as.Vec3() |> Line() # sigma1, sigma2, sigma3
   names(sigma_vals) <- rownames(principal_axes) <- c("sigma1", 'sigma2', "sigma3")
   
   
-  # Angles between the tangential traction predicted by the best stress tensor  and the slip vector on each plane
-  beta <- sapply(1:nrow(x), function(i){
+  # Angles between the tangential traction predicted by the best stress tensor and the slip vector on each plane
+  betas <- sapply(1:nrow(x), function(i){
     int <- crossprod(Plane(principal_axes[2, ]), Plane(x[i, ])) |> Line()
     angle(int, Line(x[i, ]))
-  }) 
-  beta <- ifelse(beta > 90, 180 - beta, beta)
-  beta_mean <- tectonicr::circular_mean(beta)
+  }) #|> as.vector()
+  betas <- ifelse(betas > 90, 180 - betas, betas)
+  beta_mean <- tectonicr::circular_mean(betas)
   
   
   # Resolved shear stress on plane
-  
   theta <- sapply(1:nrow(x), function(i){
     angle(Plane(x[i, ]), principal_axes[1, ])
   })
@@ -155,7 +167,6 @@ stress_inversion0 <- function(x){
   dilat_tend <- dilatation_tendency(sigma_vals[1], sigma_vals[3], sigma_n)
   
   sigma_s_mean <- mean(sigma_s)
-  
 
   list(
     stress_tensor = tau,
@@ -166,73 +177,10 @@ stress_inversion0 <- function(x){
     bott = shape_ratio_bott,
     beta = beta_mean,
     sigma_s = sigma_s_mean,
-    fault_data = data.frame(beta=beta, theta=theta, sigma_s=sigma_s, sigma_n = sigma_n, slip_tendency = slip_tend, dilational_tendency = dilat_tend)
+    fault_data = data.frame(beta=betas, theta=theta, sigma_s=sigma_s, sigma_n = sigma_n, slip_tendency = slip_tend, dilational_tendency = dilat_tend)
   )
 }
 
-stress_inversion0 <- function(x){
-  tau <- linear_stress_inversion(x)
-  # tau0 <- tau / sqrt(sum(tau^2)) # normalize Frobenius norm
-  
-  # Eigen decomposition of stress tensor
-  eig <- eigen(tau)
-  # sigma_vals <- sort(eig$values, decreasing  = TRUE)
-  sigma_vals <- eig$values
-
-  # stress ratios:
-  R <- (sigma_vals[1] - sigma_vals[2]) / (sigma_vals[1] - sigma_vals[3]) # Gephart & Forsyth 1984
-  phi <- (sigma_vals[2] - sigma_vals[3]) / (sigma_vals[1] - sigma_vals[3]) # Angelier 1979
-  shape_ratio_bott <- (sigma_vals[3] - sigma_vals[1]) / (sigma_vals[2] - sigma_vals[1]) # Bott, Simon-Gomez
-
-  #maybe transpose?
-  principal_axes <- t(eig$vectors) |> as.Vec3() |> Line() # sigma1, sigma2, sigma3
-  names(sigma_vals) <- rownames(principal_axes) <- c("sigma1", 'sigma2', "sigma3")
-  
-  
-  # Angles between the tangential traction predicted by the best stress tensor  and the slip vector on each plane
-  beta <- sapply(1:nrow(x), function(i){
-    int <- crossprod(Plane(principal_axes[2, ]), Plane(x[i, ])) |> Line()
-    angle(int, Line(x[i, ]))
-  }) 
-  beta <- ifelse(beta > 90, 180 - beta, beta)
-  beta_mean <- tectonicr::circular_mean(beta)
-  
-  
-  # Resolved shear stress on plane
-  
-  theta <- sapply(1:nrow(x), function(i){
-    angle(Plane(x[i, ]), principal_axes[1, ])
-  })
-  
-  sigma_s <- shear_stress(sigma_vals[1], sigma_vals[3], theta)
-  sigma_n <- normal_stress(sigma_vals[1], sigma_vals[3], theta)
-  slip_tend <- slip_tendency(sigma_s, sigma_n)
-  dilat_tend <- dilatation_tendency(sigma_vals[1], sigma_vals[3], sigma_n)
-  
-  sigma_s_mean <- mean(sigma_s)
-  
-  # p <- Plane(x)
-  # mean_instability <- numeric(length(friction))
-  # instabilites <- lapply(friction, function(i){
-  #   fault_instability_criterion(x, R = shape_ratio_gephart, mu = i)
-  # })
-  # mean_instability <- sapply(instabilites, mean)
-
-  list(
-    stress_tensor = tau,
-    principal_axes = principal_axes,
-    principal_vals = sigma_vals,
-    R = R,
-    phi = phi,
-    bott = shape_ratio_bott,
-    beta = beta_mean,
-    sigma_s = sigma_s_mean,
-    fault_data = data.frame(beta=beta, theta=theta, sigma_s=sigma_s, sigma_n = sigma_n, slip_tendency = slip_tend, dilational_tendency = dilat_tend)
-    #friction = friction,
-    #instability = instabilites,
-    #mean_instability = mean_instability
-  )
-}
 
 #' @importFrom MASS ginv
 linear_stress_inversion <- function(x) {

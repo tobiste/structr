@@ -94,21 +94,26 @@ vcross <- function(x, y) {
 
 #' @rdname vecmath
 #' @exportS3Method base::crossprod
-crossprod.spherical <- function(x, y = NULL, ...) {
-  xv <- Vec3(x) |> unclass()
+crossprod.Vec3 <- function(x, y = NULL, ...) {
+  xv <- unclass(x)
   if (is.null(y)) yv <- xv else yv <- Vec3(y) |> unclass()
-
-  xy <- vcross(xv, yv) |>
+  
+  vcross(xv, yv) |>
     as.Vec3()
-
-  if (is.Line(x)) {
-    Line(xy)
-  } else if (is.Plane(x)) {
-    Plane(xy)
-  } else {
-    xy
-  }
 }
+
+#' @rdname vecmath
+#' @exportS3Method base::crossprod
+crossprod.Line <- function(x, y = NULL, ...) crossprod.Vec3(Vec3(x), y, ...) |> Line()
+
+#' @rdname vecmath
+#' @exportS3Method base::crossprod
+crossprod.Ray <- function(x, y = NULL, ...) crossprod.Vec3(Vec3(x), y, ...) |> Ray()
+
+#' @rdname vecmath
+#' @exportS3Method base::crossprod
+crossprod.Plane <- function(x, y = NULL, ...) crossprod.Vec3(Vec3(x), y, ...) |> Plane()
+
 
 # `%x%.spherical` <- function(x, y) crossprod.spherical(x, y)
 
