@@ -56,6 +56,7 @@
 <span>  sigma_z <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  tau_xz <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  sigma1 <span class="op">=</span> <span class="cn">NA</span>,</span>
+<span>  sigma2 <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  sigma3 <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  unit <span class="op">=</span> <span class="st">"MPa"</span>,</span>
 <span>  col <span class="op">=</span> <span class="st">"black"</span>,</span>
@@ -86,6 +87,11 @@
 <dd><p>numeric. Magnitude of major principal stress</p></dd>
 
 
+<dt id="arg-sigma-">sigma2<a class="anchor" aria-label="anchor" href="#arg-sigma-"></a></dt>
+<dd><p>numeric. (optional) Magnitude of intermediate principal stress.
+This will add the additional Mohr circles between the principal stresses.</p></dd>
+
+
 <dt id="arg-sigma-">sigma3<a class="anchor" aria-label="anchor" href="#arg-sigma-"></a></dt>
 <dd><p>numeric. Magnitude of minor principal stress</p></dd>
 
@@ -104,7 +110,8 @@ representing the full Mohr circle (<code>512</code> by default).</p></dd>
 
 
 <dt id="arg-full-circle">full.circle<a class="anchor" aria-label="anchor" href="#arg-full-circle"></a></dt>
-<dd><p>logical. Should the complete Mohr circle be shown, or only the upper (positive shear stress) part of the circle?</p></dd>
+<dd><p>logical. Should the complete Mohr circle be shown, or only
+the upper (positive shear stress) part of the circle?</p></dd>
 
 
 <dt id="arg-include-zero">include.zero<a class="anchor" aria-label="anchor" href="#arg-include-zero"></a></dt>
@@ -131,7 +138,7 @@ representing the full Mohr circle (<code>512</code> by default).</p></dd>
 <span class="r-plt img"><img src="Mohr_plot-1.png" alt="" width="700" height="433"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># unitless Mohr diagram</span></span></span>
-<span class="r-in"><span><span class="fu">Mohr_plot</span><span class="op">(</span>sigma1 <span class="op">=</span> <span class="fl">1025</span>, sigma3 <span class="op">=</span> <span class="fl">250</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, unit <span class="op">=</span> <span class="cn">NULL</span>, include.zero <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">Mohr_plot</span><span class="op">(</span>sigma1 <span class="op">=</span> <span class="fl">1025</span>, sigma2 <span class="op">=</span> <span class="fl">450</span>, sigma3 <span class="op">=</span> <span class="fl">250</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, lwd <span class="op">=</span> <span class="fl">2</span>, unit <span class="op">=</span> <span class="cn">NULL</span>, include.zero <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="Mohr_plot-2.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
