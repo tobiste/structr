@@ -55,11 +55,12 @@
 <span>  <span class="va">sigma1</span>,</span>
 <span>  <span class="va">sigma2</span>,</span>
 <span>  sigma3 <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  units <span class="op">=</span> <span class="st">"MPa"</span>,</span>
 <span>  coulomb <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">70</span>, <span class="fl">0.6</span><span class="op">)</span>,</span>
 <span>  sliding <span class="op">=</span> <span class="fl">0.81</span>,</span>
-<span>  units <span class="op">=</span> <span class="st">"MPa"</span>,</span>
 <span>  fill <span class="op">=</span> <span class="st">"gray"</span>,</span>
 <span>  alpha <span class="op">=</span> <span class="fl">0.5</span>,</span>
+<span>  show.info <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -74,6 +75,11 @@ minor principal stresses. If only two principal stresses are given, only
 one Mohr Circle will be drawn, otherwise three.</p></dd>
 
 
+<dt id="arg-units">units<a class="anchor" aria-label="anchor" href="#arg-units"></a></dt>
+<dd><p>units of <code>sigma1</code>, <code>sigma2</code>, <code>sigma3</code> and cohesion (<code>"MPa"</code> by default).
+<code>NULL</code> if unitless (e.g. deviatoric stresses only)</p></dd>
+
+
 <dt id="arg-coulomb">coulomb<a class="anchor" aria-label="anchor" href="#arg-coulomb"></a></dt>
 <dd><p>numeric 2 element vector. Coulomb criterion containing the cohesion and the coefficient of sliding: (<code>c(70, 0.6)</code>)</p></dd>
 
@@ -82,16 +88,16 @@ one Mohr Circle will be drawn, otherwise three.</p></dd>
 <dd><p>Sliding criteria (<code>0.81</code> by default)</p></dd>
 
 
-<dt id="arg-units">units<a class="anchor" aria-label="anchor" href="#arg-units"></a></dt>
-<dd><p>units of <code>sigma1</code>, <code>sigma2</code>, <code>sigma3</code> and cohesion (<code>"MPa"</code> by default)</p></dd>
-
-
 <dt id="arg-fill">fill<a class="anchor" aria-label="anchor" href="#arg-fill"></a></dt>
 <dd><p>fill color of Mohr circle spanned by sigma1 and sigma3</p></dd>
 
 
 <dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
 <dd><p>opacity of Mohr circle spanned sigma1 and sigma3</p></dd>
+
+
+<dt id="arg-show-info">show.info<a class="anchor" aria-label="anchor" href="#arg-show-info"></a></dt>
+<dd><p>logical. Should Mohr parameters (mean stress and differential stress) be shown in the plot's caption?</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -112,6 +118,10 @@ stress \(\sigma_d\), and the fracture angles \(\theta_f\) and \(\alpha_f = 90 - 
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">ggMohr</span><span class="op">(</span><span class="fl">1025</span>, <span class="fl">450</span>, <span class="fl">250</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="ggMohr-1.png" alt="" width="700" height="433"></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Unitless Mohr circle</span></span></span>
+<span class="r-in"><span><span class="fu">ggMohr</span><span class="op">(</span><span class="fl">5</span>, <span class="fl">2</span>, <span class="fl">0</span>, units <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="ggMohr-2.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
