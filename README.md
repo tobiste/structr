@@ -85,7 +85,7 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 
 ### Density
 
-Desnity shown by fontour lines and filled contoursL
+Density shown by contour lines and filled contours:
 
 ``` r
 par(mfrow =c(1, 2))
@@ -141,7 +141,7 @@ legend(
 
 <img src="man/figures/README-stats-1.png" width="100%" />
 
-#### Best-fit great and small-circles (geodsic regression)
+#### Best-fit great and small-circles (geodesic regression)
 
 ``` r
 set.seed(20250411)
@@ -211,8 +211,8 @@ par(mfrow =c(1, 2))
 stereoplot(title = "Angelier plot")
 angelier(faults)
 
-stereoplot(title = "Hoeppner plot")
-hoeppner(faults, points = FALSE)
+stereoplot(title = "Hoeppener plot")
+hoeppener(faults, points = FALSE)
 ```
 
 <img src="man/figures/README-stereo_faults-1.png" width="100%" />
