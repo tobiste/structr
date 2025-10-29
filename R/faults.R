@@ -790,3 +790,73 @@ Plane_from_apparent_dips <- function(a1, a2) {
   res <- crossprod(a1, a2)
   Plane(res)
 }
+
+
+
+#' Dip-slip Kinematics from Strike-Slip Faults
+#'
+#' Dip-slip sense (1 for normal, -1 for reverse) when only strike-slip kinematics are known
+#'
+#' @param x `"Pair"` object(s) of the plane(s) and line(s) with unknown dip-slip offset
+#' @param left logical. `TRUE` if `x` is a left-lateral (sinistral) fault, and 
+#' `FALSE` if `x` is a right-lateral (dextral) fault. 
+#' Must have same length as rows in `x`
+#'
+#' @returns numeric. 1 if normal, -1 if reverse offset
+#' 
+#' @seealso [strikeslip_kinematics()]
+#' 
+#' @export
+#'
+#' @examples
+#' # Sinistral fault
+#' sense_from_strikeslip(Pair(120, 89, 30, 5), left = TRUE) # 1: normal offset
+#' 
+#' # Dextral fault
+#' sense_from_strikeslip(Pair(120, 89, 30, 5), left = FALSE) # -1: reverse offset
+sense_from_strikeslip <- function(x, left){
+  stopifnot(is.Pair(x), is.logical(left), length(left) == nrow(x))
+  
+  strike <- Line(dd2rhr(x[, 1]), rep(0, nrow(x)))
+  slip <- Line(x)
+  rake <- angle(strike, slip)
+  
+  # if sinistral fault:
+  sense <- ifelse(rake  < 90, 1, -1)
+  
+  # opposite sign if dextral:
+  ifelse(left, sense, -sense)
+}
+
+
+#' Strike-slip Kinematics
+#' 
+#' Returns the strike-slip kinematics of a fault
+#'
+#' @param x `"Fault"` object(s) 
+#'
+#' @returns character. `"left"` - left-lateral (sinistral) offset, `"right"` - right-lateral (dextral) offset
+#' @export
+#' 
+#' @seealso [sense_from_strikeslip()]
+#'
+#' @examples
+#' strikeslip_kinematics(Fault(120, 50, 104, 49, sense = -1))
+strikeslip_kinematics <- function(x){
+  stopifnot(is.Fault(x))
+  normal <- x[, 5] == 1
+  
+  strike <- Line(dd2rhr(x[, 1]), rep(0, nrow(x)))
+  slip <- Line(x)
+  rake <- angle(strike, slip)
+  
+  # if normal fault
+  sinistral <- rake < 90
+  
+  # dextral if reverse fault
+  sinistral <- ifelse(normal, sinistral, !sinistral)
+
+  # return string
+  ifelse(sinistral, "left", "right")
+}
+
