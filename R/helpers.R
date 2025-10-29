@@ -303,7 +303,7 @@ legend_c <- function(breaks, title = NULL, pal = viridis::viridis, ...) {
   label_pos <- .normalize(breaks)
   legend_image <- grDevices::as.raster(
     matrix(
-      color_func(seq(0, 1, .001), pal = pal, ...),
+      color_func(seq(0, 1, 0.1), pal = pal, ...),
       ncol = 1
     )
   )
@@ -314,7 +314,7 @@ legend_c <- function(breaks, title = NULL, pal = viridis::viridis, ...) {
   plot(c(0, 1), c(0, 1), type = "n", axes = FALSE, xlab = NA, ylab = NA, main = NA)
   graphics::text(x = 0.9 + (0.1 * 1.1), y = label_pos, labels = round(breaks, 2), adj = 0, cex = .8)
   graphics::text(x = .925, y = .5, labels = title, adj = 0.5, srt = 90, font = 2)
-  graphics::rasterImage(legend_image, .95, 0, 1, 1)
+  graphics::rasterImage(legend_image, .95, 1, 1, 0)
 }
 
 #' @rdname colorize

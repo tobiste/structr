@@ -13,6 +13,8 @@ Mohr_plot(
   unit = "MPa",
   col = "black",
   n = 512,
+  full.circle = FALSE,
+  include.zero = TRUE,
   ...
 )
 }
@@ -34,6 +36,10 @@ Mohr_plot(
 \item{n}{integer. Resolution given amount of points along the generated path
 representing the full Mohr circle (\code{512} by default).}
 
+\item{full.circle}{logical. Should the complete Mohr circle be shown, or only the upper (positive shear stress) part of the circle?}
+
+\item{include.zero}{logical. the plot range be extended to include normal_stress = 0?}
+
 \item{...}{optional graphical parameters.}
 }
 \description{
@@ -48,11 +54,10 @@ One of the following two sets of data must be entered
 }
 \examples{
 Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = "#B63679", lwd = 2)
-Mohr_plot(sigma1 = 1025, sigma3 = 250, col = "#B63679", lwd = 2)
+
+# unitless Mohr diagram
+Mohr_plot(sigma1 = 1025, sigma3 = 250, col = "#B63679", lwd = 2, unit = NULL, include.zero = FALSE)
 }
 \seealso{
 \code{\link[=Mohr_calc]{Mohr_calc()}}, \code{\link[=ggMohr]{ggMohr()}}
-}
-\author{
-Kyle Elmy and Jim Kaklamanos
 }

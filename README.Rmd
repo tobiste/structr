@@ -267,8 +267,8 @@ SH(
 ### Mohr circles
 
 ```{r stereo_inversion_mohr, warning=FALSE,message=FALSE}
-Mohr_plot(sigma1 = faults_stress$principal_vals[1], sigma3 = faults_stress$principal_vals[3], unit = NA)
-points(faults_stress$fault_data$sigma_n, faults_stress$fault_data$sigma_s)
+Mohr_plot(sigma1 = faults_stress$principal_vals[1], sigma3 = faults_stress$principal_vals[3], unit = NULL, include.zero = FALSE)
+points(faults_stress$fault_data$sigma_n, faults_stress$fault_data$sigma_s, col = assign_col(beta), pch = 16)
 ```
 
 

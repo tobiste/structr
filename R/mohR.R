@@ -220,6 +220,8 @@ Mohr_calc <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
 #' @param col color for Mohr circle.
 #' @param n integer. Resolution given amount of points along the generated path
 #' representing the full Mohr circle (`512` by default).
+#' @param full.circle logical. Should the complete Mohr circle be shown, or only the upper (positive shear stress) part of the circle?
+#' @param include.zero logical. the plot range be extended to include normal_stress = 0?
 #' @param ... optional graphical parameters.
 #' @note One of the following two sets of data must be entered
 #' \enumerate{
@@ -227,13 +229,14 @@ Mohr_calc <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
 #' \item{`"sigma1"`, `"sigma3"`}
 #' }
 #' @seealso [Mohr_calc()], [ggMohr()]
-#' @author Kyle Elmy and Jim Kaklamanos
 #' @export
 #' @examples
 #' Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = "#B63679", lwd = 2)
-#' Mohr_plot(sigma1 = 1025, sigma3 = 250, col = "#B63679", lwd = 2)
+#' 
+#' # unitless Mohr diagram
+#' Mohr_plot(sigma1 = 1025, sigma3 = 250, col = "#B63679", lwd = 2, unit = NULL, include.zero = FALSE)
 Mohr_plot <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigma3 = NA,
-                      unit = "MPa", col = "black", n = 512, ...) {
+                      unit = "MPa", col = "black", n = 512, full.circle = FALSE, include.zero = TRUE, ...) {
   ##  Calculate normal and shear stresses
   theta <- seq(from = 0, to = 180, length.out = n)
   stress_vec <- sapply(
@@ -243,21 +246,37 @@ Mohr_plot <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
   sigma <- as.numeric(stress_vec[1, ])
   tau <- as.numeric(stress_vec[2, ])
 
+  if(!full.circle){
+    positive_tau <- tau >= 0
+    tau <- tau[positive_tau]
+    sigma <- sigma[positive_tau]
+  }
+  
   ##  Expression for axes
+  if(is.null(unit)){
+    xLab <- bquote("Normal stress," ~ sigma[n])
+    yLab <- bquote("Shear stress," ~ sigma[s])
+  } else {
   xLab <- bquote("Normal stress," ~ sigma[n] ~ (.(unit)))
   yLab <- bquote("Shear stress," ~ sigma[s] ~ (.(unit)))
+  }
 
+  xlim <- if(include.zero) c(min(0, min(sigma, na.rm = TRUE)), max(sigma, na.rm = TRUE) * 1.05) else NULL
+  ylim <- if(full.circle) NULL else c(0, max(tau, na.rm = TRUE))
+  
   plot(
     range(sigma), range(tau),
     type = "n",
     xlab = xLab, ylab = yLab,
     xaxs = "i",
-    xlim = c(min(0, min(sigma)), max(sigma) * 1.1),
-    asp = 1
+    xlim = xlim,
+    ylim = ylim,
+    asp = 1,
+    axes = !is.null(unit)
   )
 
-  graphics::abline(h = 0)
   graphics::lines(sigma, tau, col = col, ...)
+  graphics::abline(h = 0)
   graphics::points(mean(range(sigma)), 0, col = col)
 }
 

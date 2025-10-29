@@ -165,7 +165,7 @@ slip_inversion0 <- function(x){
   })
   
   sigma_s <- shear_stress(sigma_vals[1], sigma_vals[3], theta)
-  sigma_n <- normal_stress(sigma_vals[1], sigma_vals[3], theta)
+  sigma_n <- normal_stress(sigma_vals[1], sigma_vals[3], 90+theta)
   slip_tend <- slip_tendency(sigma_s, sigma_n)
   dilat_tend <- dilatation_tendency(sigma_vals[1], sigma_vals[3], sigma_n)
   
