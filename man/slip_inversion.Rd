@@ -4,7 +4,7 @@
 \alias{slip_inversion}
 \title{Stress Inversion for Fault-Slip Data}
 \usage{
-slip_inversion(x, boot = 100L, conf.level = 0.95, ...)
+slip_inversion(x, boot = 100L, conf.level = 0.95, friction = 0.6, ...)
 }
 \arguments{
 \item{x}{\code{"Fault"} object}
@@ -13,16 +13,19 @@ slip_inversion(x, boot = 100L, conf.level = 0.95, ...)
 
 \item{conf.level}{numeric. Confidence level of the interval (0.95 by default)}
 
+\item{friction}{numeric. Coefficient of friction (0.6 by default)}
+
 \item{...}{optional parameters passed to \code{\link[=confidence_ellipse]{confidence_ellipse()}}}
 }
 \value{
 list
 \describe{
 \item{\code{stress_tensor}}{matrix. Best-fit devitoric stress tensor}
-\item{\code{principal_axes}}{\code{"Line"} obects. Orientation of the principal stress axes}
+\item{\code{principal_axes}}{\code{"Line"} objects. Orientation of the principal stress axes}
 \item{\code{principal_axes_conf}}{list containg the confidence ellipses for the 3 principal stress vectors. See \code{\link[=confidence_ellipse]{confidence_ellipse()}} for details.}
 \item{\code{principal_vals}}{numeric. The proportional magnitudes of the principal stress axes given by the eigenvalues of the stress tensor: \eqn{\sigma_1}, \eqn{\sigma_2}, and \eqn{\sigma_3}}
 \item{\code{principal_vals_conf}}{3-column vector containing the lower and upper margins of the confidence interval of the principal vals}
+\item{\code{principal_fault}}{Principal fault planes as \code{"Fault"} objects.}
 \item{\code{R}}{numeric. Stress shape ratio after Gephart & Forsyth (1984): \eqn{R = (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3)}. Values ranging from 0 to 1, with 0 being
 \eqn{\sigma_1 = \sigma_2} and 1 being \eqn{\sigma_2 = \sigma_3}.}
 \item{\code{R_conf}}{Confidence interval for \code{R}}
@@ -38,7 +41,8 @@ the resolved shear and normal stresses, and the slip and dilation tendency on ea
 }
 }
 \description{
-Determines the orientation of the principal stresses from fault slip data using the Michael (1984) method.
+Linear stress inversion (based on Michael, 1984) determines the orientation
+of the principal stresses from fault slip data.
 Confidence intervals are estimated by bootstrapping.
 This inversion is simplified by the assumption that the magnitude of the
 tangential traction on the various fault planes, at the time of rupture, is similar.

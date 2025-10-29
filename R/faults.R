@@ -1,6 +1,7 @@
 #' Stress Inversion for Fault-Slip Data
 #' 
-#' Determines the orientation of the principal stresses from fault slip data using the Michael (1984) method.
+#' Linear stress inversion (based on Michael, 1984) determines the orientation 
+#' of the principal stresses from fault slip data.
 #' Confidence intervals are estimated by bootstrapping. 
 #' This inversion is simplified by the assumption that the magnitude of the 
 #' tangential traction on the various fault planes, at the time of rupture, is similar.
@@ -8,15 +9,17 @@
 #' @param x `"Fault"` object
 #' @param boot integer. Number of bootstrap samples (10 by default)
 #' @param conf.level numeric. Confidence level of the interval (0.95 by default)
+#' @param friction numeric. Coefficient of friction (0.6 by default)
 #' @param ... optional parameters passed to [confidence_ellipse()]
 #' 
 #' @returns list
 #'  \describe{
 #'  \item{`stress_tensor`}{matrix. Best-fit devitoric stress tensor}
-#'  \item{`principal_axes`}{`"Line"` obects. Orientation of the principal stress axes}
+#'  \item{`principal_axes`}{`"Line"` objects. Orientation of the principal stress axes}
 #'  \item{`principal_axes_conf`}{list containg the confidence ellipses for the 3 principal stress vectors. See [confidence_ellipse()] for details.}
 #'  \item{`principal_vals`}{numeric. The proportional magnitudes of the principal stress axes given by the eigenvalues of the stress tensor: \eqn{\sigma_1}, \eqn{\sigma_2}, and \eqn{\sigma_3}}
 #'  \item{`principal_vals_conf`}{3-column vector containing the lower and upper margins of the confidence interval of the principal vals}
+#'  \item{`principal_fault`}{Principal fault planes as `"Fault"` objects.}
 #'  \item{`R`}{numeric. Stress shape ratio after Gephart & Forsyth (1984): \eqn{R = (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3)}. Values ranging from 0 to 1, with 0 being
 #' \eqn{\sigma_1 = \sigma_2} and 1 being \eqn{\sigma_2 = \sigma_3}.}
 #'  \item{`R_conf`}{Confidence interval for `R`}
@@ -71,8 +74,8 @@
 #' stereo_confidence(res_AVB$principal_axes_conf$sigma3, col = 4)
 #' text(res_AVB$principal_axes, label = rownames(res_AVB$principal_axes), col = 2:4, adj = -.25)
 #' legend("topleft", col = 2:4, legend = rownames(res_AVB$principal_axes), pch = 16)
-slip_inversion <-  function(x, boot = 100L, conf.level = 0.95, ...){
-  best.fit <- slip_inversion0(x)
+slip_inversion <-  function(x, boot = 100L, conf.level = 0.95, friction = 0.6, ...){
+  best.fit <- slip_inversion0(x, friction)
   fault_df <- best.fit$fault_data
   nx <- nrow(x)
   
@@ -120,6 +123,7 @@ slip_inversion <-  function(x, boot = 100L, conf.level = 0.95, ...){
     principal_axes_conf = list(sigma1 = sigma_vec1, sigma2 = sigma_vec2, sigma3 = sigma_vec3),
     principal_vals = best.fit$principal_vals,
     principal_vals_conf = sigma_boot,
+    principal_fault = best.fit$principal_fault,
     R = best.fit$R,
     R_conf = R_boot$conf.int,
     phi = best.fit$phi,
@@ -133,23 +137,19 @@ slip_inversion <-  function(x, boot = 100L, conf.level = 0.95, ...){
   )
 }
 
-slip_inversion0 <- function(x){
+slip_inversion0 <- function(x, friction = 0.6){
   tau <- linear_stress_inversion(x)
   # tau0 <- tau / sqrt(sum(tau^2)) # normalize Frobenius norm
   
-  # Eigen decomposition of stress tensor
-  eig <- eigen(tau)
-  # sigma_vals <- sort(eig$values, decreasing  = TRUE)
-  sigma_vals <- eig$values
+  tau_stress <- tau2stress(tau)
+  sigma_vals <- tau_stress$sigma_vals
+  principal_axes <- tau_stress$principal_axes
+ 
   
   # stress ratios:
   R <- (sigma_vals[1] - sigma_vals[2]) / (sigma_vals[1] - sigma_vals[3]) # Gephart & Forsyth 1984
   phi <- (sigma_vals[2] - sigma_vals[3]) / (sigma_vals[1] - sigma_vals[3]) # Angelier 1979
   shape_ratio_bott <- (sigma_vals[3] - sigma_vals[1]) / (sigma_vals[2] - sigma_vals[1]) # Bott, Simon-Gomez
-  
-  principal_axes <- t(eig$vectors) |> as.Vec3() |> Line() # sigma1, sigma2, sigma3
-  names(sigma_vals) <- rownames(principal_axes) <- c("sigma1", 'sigma2', "sigma3")
-  
   
   # Angles between the tangential traction predicted by the best stress tensor and the slip vector on each plane
   betas <- sapply(1:nrow(x), function(i){
@@ -159,22 +159,28 @@ slip_inversion0 <- function(x){
   betas <- ifelse(betas > 90, 180 - betas, betas)
   beta_mean <- tectonicr::circular_mean(betas, axial = FALSE)
   
-  # Resolved shear stress on plane
+  
+  # Angle between slip planes and sigma 1
   theta <- sapply(1:nrow(x), function(i){
     angle(Plane(x[i, ]), principal_axes[1, ])
   })
   
-  sigma_s <- shear_stress(sigma_vals[1], sigma_vals[3], theta)
-  sigma_n <- normal_stress(sigma_vals[1], sigma_vals[3], 90+theta)
+  # Theoretically resolved shear stress on plane
+  sigma_s_mean <- mean(shear_stress(sigma_vals[1], sigma_vals[3], theta))
+
+  pr <- principal_fault(principal_axes[1, ], principal_axes[3, ], friction)
+  
+  shearnorm <- tau2shearnorm(tau, x, friction = friction)
+  sigma_s <- shearnorm[, 'shear']
+  sigma_n <- shearnorm[, 'normal']
   slip_tend <- slip_tendency(sigma_s, sigma_n)
   dilat_tend <- dilatation_tendency(sigma_vals[1], sigma_vals[3], sigma_n)
-  
-  sigma_s_mean <- mean(sigma_s)
-  
+
   list(
     stress_tensor = tau,
     principal_axes = principal_axes,
     principal_vals = sigma_vals,
+    principal_fault = pf,
     R = R,
     phi = phi,
     bott = shape_ratio_bott,
@@ -304,6 +310,92 @@ fault_instability_criterion <- function(x, R, mu = 0.6) {
   
   instability <- (tau - mu * (sigma - 1)) / (mu + sqrt(1 + mu^2))
   return(instability)
+}
+
+
+#' Calculate Principal Fault planes from stress vectors and friction
+#'
+#' @param s1,s3 Principal stress vectors as spherical objects
+#' @param friction numeric. Coefficient of friction 
+#'
+#' @returns `"Fault"` object
+#' @export
+#'
+#' @examples
+#' res_TYM <- slip_inversion(angelier1990$TYM, boot = 10)
+#' pr_TYM <- principal_fault(res_TYM$principal_axes[1,], res_TYM$principal_axes[3,]) 
+#' 
+#' stereoplot()
+#' fault_plot(angelier1990$TYM, col = "grey")
+#' fault_plot(pr_TYM, col = 'red')
+#' points(res_TYM$principal_axes, pch = 16)
+principal_fault <- function(s1, s3, friction = 0.6){
+  mu <- 0.5 * atan(1 / friction)
+  
+  s1_vec <- Vec3(s1)
+  s3_vec <- Vec3(s3)
+  
+  n1 <- sin(mu) * s1_vec - cos(mu) * s3_vec
+  u1 <- cos(mu) * s1_vec + sin(mu) * s3_vec
+  sense1 <- ifelse(u1[, 3] >= 0,  1, -1)
+  
+  n2 <- sin(-mu) * s1_vec - cos(-mu) * s3_vec
+  u2 <- cos(-mu) * s1_vec + sin(-mu) * s3_vec
+  sense2 <- ifelse(u2[, 3] >= 0,  1, -1)
+  
+  n <- rbind(n1, n2)
+  u <- rbind(u1, u2)
+  sense = c(sense1, sense2)
+  
+  Fault(Plane(n), Line(u), sense = sense)
+}
+
+# Extract principal stress from stress tensor
+tau2stress <- function(tau){
+  eig <- eigen(tau)
+  # sigma_vals <- sort(eig$values, decreasing  = TRUE)
+  sigma_vals <- eig$values
+  
+  principal_axes <- t(eig$vectors) |> as.Vec3() |> Line() # sigma1, sigma2, sigma3
+  names(sigma_vals) <- rownames(principal_axes) <- c("sigma1", 'sigma2', "sigma3")
+  
+  list(sigma_vals = sigma_vals, principal_axes = principal_axes)
+}
+
+# Calculate normal and shear stress components for faults
+tau2shearnorm <- function(tau, fault, friction){
+  #Principal fault planes
+  stess <- tau2stress(tau)
+  np <- principal_fault(s1 = stess$principal_axes[1, ], s3 = stess$principal_axes[3, ], friction = friction)
+  np1 <- Plane(np[1, ]) |> Vec3()
+  np2 <- Plane(np[2, ]) |> Vec3()
+  
+  # Fault normals in Cartesian coordinates
+  n <- Plane(fault) |> Vec3()
+  n1 <- n[, 1]
+  n2 <- n[, 2]
+  n3 <- n[, 3]
+  
+  # Shear and normal stress
+  tau_normal <- tau[1, 1] * n1^2 + tau[2, 2] * n2^2 + tau[3, 3] * n3^2 +
+    2 * (tau[1, 2] * n1 * n2 + tau[1, 3] * n1 * n3 + tau[2, 3] * n2 * n3)
+  
+  total <- tau %*% rbind(n1, n2, n3)
+  tau_total <- sqrt(colSums(total^2))
+  tau_shear <- sqrt(tau_total^2 - tau_normal^2)
+  
+  # Fault–principal deviation and half-plane
+  # dot1 <- abs(n1 * np1[1] + n2 * np2[1] + n3 * np3[1])
+  # dot2 <- abs(n1 * np1[2] + n2 * np2[2] + n3 * np3[2])
+  # 
+  # dev1 <- acos(pmin(dot1, 1)) * 180 / pi
+  # dev2 <- acos(pmin(dot2, 1)) * 180 / pi
+  dev1 <- angle(n, np1)
+  dev2 <- angle(n, np2)
+  
+  tau_shear <- ifelse(dev1 < dev2, tau_shear, -tau_shear)
+  
+  cbind(normal = tau_normal, shear = tau_shear)
 }
 
 
