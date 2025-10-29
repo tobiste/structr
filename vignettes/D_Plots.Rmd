@@ -219,7 +219,7 @@ title(
 
 ## Fault plots
 
-Fault objects consist of planes (fault plane), lines (e.g. striae), and the sense of movement. There are two ways how these combined features can be visualized, namely the Angelier and the Hoeppner plot.
+Fault objects consist of planes (fault plane), lines (e.g. striae), and the sense of movement. There are two ways how these combined features can be visualized, namely the Angelier and the Hoeppener plot.
 
 ### Angelier plot
 The **Angelier plot** shows all planes as *great circles* and lineations as points (after Angelier , 1984). Fault striae are plotted as vectors on top of the lineation pointing in the movement direction of the hanging wall. Easy to read in case of homogeneous or small datasets. 
@@ -240,20 +240,20 @@ stereoplot(title = "Angelier plot")
 angelier(f, col = viridis::magma(nrow(f), end = .9))
 ```
 
-### Hoeppner plot
+### Hoeppener plot
 
-The **Hoeppner plot** shows all planes as *poles* while lineations are not shown (after Hoeppner, 1955). Instead, fault striae are plotted as vectors on top of poles pointing in the movement direction of the hanging wall. Useful in case of large or heterogeneous datasets. 
+The **Hoeppener plot** shows all planes as *poles* while lineations are not shown (after Hoeppener, 1955). Instead, fault striae are plotted as vectors on top of poles pointing in the movement direction of the hanging wall. Useful in case of large or heterogeneous datasets. 
 
 ```{r faults2}
 #| fig.alt: >
 #|   Diagram showing example fault data plotted in an
 #|   equal-area projection
-stereoplot(title = "Hoeppner plot")
-hoeppner(f, col = viridis::magma(nrow(f), end = .9), points = FALSE)
+stereoplot(title = "Hoeppener plot")
+hoeppener(f, col = viridis::magma(nrow(f), end = .9), points = FALSE)
 ```
 
 The `points` argument disables plotting the points at the start of the arrows.
 
 
-> `fault_plot()` is a wrapper function that allows to switch between Angelier and Hoeppner plot using the `type` argument. See `?fault_plot` for details.
+> `fault_plot()` is a wrapper function that allows to switch between Angelier and Hoeppener plot using the `type` argument. See `?fault_plot` for details.
 

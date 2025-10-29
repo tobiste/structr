@@ -81,7 +81,7 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 
 ### Density
 
-Desnity shown by fontour lines and filled contoursL
+Density shown by contour lines and filled contours:
 
 ```{r stereo_density, warning=FALSE,message=FALSE}
 par(mfrow =c(1, 2))
@@ -133,7 +133,7 @@ legend(
 )
 ```
 
-#### Best-fit great and small-circles (geodsic regression)
+#### Best-fit great and small-circles (geodesic regression)
 
 ```{r bestfit, warning=FALSE,message=FALSE}
 set.seed(20250411)
@@ -200,8 +200,8 @@ par(mfrow =c(1, 2))
 stereoplot(title = "Angelier plot")
 angelier(faults)
 
-stereoplot(title = "Hoeppner plot")
-hoeppner(faults, points = FALSE)
+stereoplot(title = "Hoeppener plot")
+hoeppener(faults, points = FALSE)
 ```
 
 ### Fault-slip inversion

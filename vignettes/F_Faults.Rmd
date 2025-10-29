@@ -71,7 +71,7 @@ correct_pair(p)
 ```
 
 > A `"Pair"` object is a container of associated plane and line
-> measurements. Basically like a fault wihtout the sense of
+> measurements. Basically like a fault without the sense of
 > displacement.
 
 ## Fault stress analysis
@@ -139,7 +139,7 @@ First we load some example data (here the data from Angelier, 1990)[^2]
 
 [^2]: Angelier, J. (1990). Inversion of field data in fault tectonics to
     obtain the regional stress—III. A new rapid direct inversion method
-    by analytical means. Ceophys. J. Int, 103, 363–376.
+    by analytical means. Geophys. J. Int, 103, 363–376.
     <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
 
 ```{r slip_inversion1}
@@ -412,7 +412,7 @@ North.](fault_displacements.png){#id .class width="75%" height="75%"}
 
 ### Get different components with trigonometry
 
-#### 1. Input: Fault orientation (dip angle, dip direction), shorteninig direction, and horizontal throw {#sec.offset.1}
+#### 1. Input: Fault orientation (dip angle, dip direction), shortening direction, and horizontal throw {#sec.offset.1}
 
 Knowing the horizontal throw (e.g. from plate motion parameters), the
 remaining components of the displacements along a given fault are as

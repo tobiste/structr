@@ -13,7 +13,7 @@ Fault_PT(x, ptangle = 90)
 }
 \value{
 list. \code{p} and \code{t} are the P and T axes as \code{"Line"} objects,
-\code{m} and \code{d} are the M-planes and the dihedra sparation plnaes as \code{"Plane"} objects
+\code{m} and \code{d} are the M-planes and the dihedra separation planes as \code{"Plane"} objects
 }
 \description{
 The PT-techniques is a graphical solution of the \emph{Wallace-Bott hypothesis}, i.e. fault slip occurs parallel to the maximum shear stress.

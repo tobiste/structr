@@ -180,7 +180,7 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1
 #' )
 #' # stereoplot()
 #' # stereo_fault(faults, col = 1:4)
-#' # stereo_fault(faults, col =1:4, hoeppner = TRUE)
+#' # stereo_fault(faults, col =1:4, hoeppener = TRUE)
 #' # legend("bottomright", c("normal", "thrust", "unknown", "normal"), fill = 1:4)
 #'
 #' stereoplot()
@@ -189,7 +189,7 @@ NULL
 
 # #' @rdname stereo-fault
 # #' @export
-# stereo_fault <- function(x, hoeppner = FALSE, greatcirles = TRUE, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex = 1, text.pos = 4, upper.hem = FALSE, earea = TRUE) {
+# stereo_fault <- function(x, hoeppener = FALSE, greatcirles = TRUE, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex = 1, text.pos = 4, upper.hem = FALSE, earea = TRUE) {
 #   stopifnot(is.Fault(x))
 #   x0 <- x
 #
@@ -207,7 +207,7 @@ NULL
 #     x[, 2],
 #     upper.hem
 #   )
-#   if (hoeppner) {
+#   if (hoeppener) {
 #     crds.l <- stereo_coords(
 #       x[, 3] + 180,
 #       90 - x[, 4],
@@ -230,7 +230,7 @@ NULL
 #         graphics::text(crds.p[, "x"], crds.p[, "y"], labels = lab, pos = text.pos, col = col[i], cex = cex[i])
 #       }
 #     }
-#     if (hoeppner) {
+#     if (hoeppener) {
 #       ang <- (x0[i, 3] * sign(x0[i, "sense"]))
 #       graphics::points(crds.l[i, "x"], crds.l[i, "y"], pch = pch[i], col = col[i], cex = cex[i] / 1.25)
 #       if (x0[i, "sense"] != 0) {
@@ -874,7 +874,7 @@ hypot <- function(x, y) {
 #' @param angle numeric. Angle from the shaft of the arrow to the edge of the arrow head.
 #' @param scale numeric. Scales the length of the vector. `0.1` by default
 #'
-#' @seealso [hoeppner()], [angelier()]
+#' @seealso [hoeppener()], [angelier()]
 #'
 #' @importFrom graphics arrows
 #' @export
@@ -917,7 +917,7 @@ stereo_arrows <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.
 #' Add fault data to existing plot
 #'
 #' @param x `"Fault"` object
-#' @param type character. One of `"angelier"` (for "Angelier plot") or `"hoeppner"` (for "Hoeppner plot"). See details.
+#' @param type character. One of `"angelier"` (for "Angelier plot") or `"hoeppener"` (for "Hoeppener plot"). See details.
 #' @param lty,lwd,cex,pch,col,bg plotting parameters
 #' @param points logical. Whether the lineation points (Angelier plot) or poles (Hoeppner plot) should be added to the plot
 #' @param ... arguments passed to [stereo_arrows()]
@@ -930,7 +930,7 @@ stereo_arrows <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.
 #' @details
 #' **Angelier plot** shows all planes as *great circles* and lineations as points. Fault striae are plotted as vectors on top of the lineation pointing in the movement direction of the hangingwall. Easy to read in case of homogeneous or small datasets.
 #'
-#' **Hoeppner plot** shows all planes as *poles* while lineations are not shown. Fault striae are plotted as vectors on top of poles pointing in the movement direction of the hangingwall. Useful in case of large or heterogeneous datasets.
+#' **Hoeppener plot** shows all planes as *poles* while lineations are not shown. Fault striae are plotted as vectors on top of poles pointing in the movement direction of the hangingwall. Useful in case of large or heterogeneous datasets.
 #'
 #' @references
 #' Angelier, J. Tectonic analysis of fault slip data sets, J. Geophys. Res. 89 (B7), 5835-5848 (1984)
@@ -949,24 +949,24 @@ stereo_arrows <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.
 #' stereoplot(title = "Angelier plot")
 #' angelier(f, col = 1:nrow(f), pch = 16, scale = 0.1)
 #'
-#' stereoplot(title = "Hoeppner plot")
-#' hoeppner(f, col = 1:nrow(f), cex = 1, scale = 0.1, points = FALSE)
+#' stereoplot(title = "Hoeppener plot")
+#' hoeppener(f, col = 1:nrow(f), cex = 1, scale = 0.1, points = FALSE)
 #' 
 #' # or
 #' stereoplot()
-#' fault_plot(f, type = "hoeppner", col = 1:nrow(f), cex = 1, scale = 0.1, points = FALSE)
+#' fault_plot(f, type = "hoeppener", col = 1:nrow(f), cex = 1, scale = 0.1, points = FALSE)
 NULL
 
 #' @rdname fault-plot
 #' @export
-fault_plot <- function(x, type = c("angelier", "hoeppner"), ...) {
+fault_plot <- function(x, type = c("angelier", "hoeppener"), ...) {
   type <- match.arg(type)
-  if (type == "angelier") angelier(x, ...) else hoeppner(x, ...)
+  if (type == "angelier") angelier(x, ...) else hoeppener(x, ...)
 }
 
 #' @rdname fault-plot
 #' @export
-hoeppner <- function(x, pch = 1, col = "black", cex = 1, bg = NULL, points = TRUE, ...) {
+hoeppener <- function(x, pch = 1, col = "black", cex = 1, bg = NULL, points = TRUE, ...) {
   stopifnot(is.Fault(x))
 
   stereo_arrows(Plane(x), sense = x[, "sense"], col = col, ...)

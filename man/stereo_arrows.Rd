@@ -47,5 +47,5 @@ points(p, pch = 16, cex = .5)
 stereo_arrows(p, sense = 1, col = "red")
 }
 \seealso{
-\code{\link[=hoeppner]{hoeppner()}}, \code{\link[=angelier]{angelier()}}
+\code{\link[=hoeppener]{hoeppener()}}, \code{\link[=angelier]{angelier()}}
 }

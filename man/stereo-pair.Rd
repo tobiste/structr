@@ -51,7 +51,7 @@ faults <- Fault(
 )
 # stereoplot()
 # stereo_fault(faults, col = 1:4)
-# stereo_fault(faults, col =1:4, hoeppner = TRUE)
+# stereo_fault(faults, col =1:4, hoeppener = TRUE)
 # legend("bottomright", c("normal", "thrust", "unknown", "normal"), fill = 1:4)
 
 stereoplot()

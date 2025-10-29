@@ -248,7 +248,7 @@ projected_mean <- function(x, ...) {
 #' Woodcock, N. H.  (1977): "Specification of fabric shapes using an eigenvalue method." Geological Society of America Bulletin 88.9: 1231-1236.
 #'
 #' @seealso More details on shape parameters: [ell_lode()], [ell_nadai()],
-#' [ell_jelinek()], [ell_flinn()]. Details on eigenvecors from orientation
+#' [ell_jelinek()], [ell_flinn()]. Details on eigenvectors from orientation
 #' tensors: [ot_eigen()].
 #'
 #' @examples

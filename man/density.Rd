@@ -27,7 +27,7 @@ density_calc(
 \item{FUN}{density estimation function if \code{kamb=TRUE}; one of \code{\link[=exponential_kamb]{exponential_kamb()}} (the default),
 \link{kamb_count}, and \code{\link[=schmidt_count]{schmidt_count()}}.}
 
-\item{n}{integer. Gridzise. \code{128} by default.}
+\item{n}{integer. Grid size. \code{128} by default.}
 
 \item{sigma}{numeric. Radius for Kamb circle used for counting. 3 by default.}
 

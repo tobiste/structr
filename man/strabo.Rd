@@ -27,7 +27,7 @@ using the Longitude and Latitude columns.}
 \describe{
 \item{\code{data}}{\code{"tbl_df"} object. Metadata.}
 \item{\code{spots}}{\code{"tbl_df"} object or \code{"sf"} if \code{sf == TRUE}. Locations and spot descriptions.}
-\item{\code{tags}}{\code{"tbl_df"} object. Tags and their descriptsions.}
+\item{\code{tags}}{\code{"tbl_df"} object. Tags and their descriptions.}
 \item{\code{planar}}{Plane elements. Same row IDs as in \code{data}.}
 \item{\code{linear}}{Line elements. Same row IDs as in \code{data}.}
 }

@@ -16,7 +16,7 @@
 #' containing the bootstrapped R and phi values are added.
 #' @export
 #'
-#' @references Ramsay (1976), Folding and Fracturing of Rocks, McGraw-Hill Book COmpany.
+#' @references Ramsay (1976), Folding and Fracturing of Rocks, McGraw-Hill Book Company.
 #'
 #' @seealso [mean_strain_ellipse()]
 #'
@@ -751,7 +751,7 @@ vorticity_boot <- function(B, R = 100, probs = 0.975) {
 #' porphyroclast over the theoretical distribution of tailless clasts. The plot estimates
 #' the critical shape factor `Rc` marking the transition between the stable-sink
 #' position and infinitely rotating porphyroclasts.
-#' This critical shape factor can be interpreted as the the **mean kinmatic vorticity number**.
+#' This critical shape factor can be interpreted as the the **mean kinematic vorticity number**.
 #' Here the `Rc` is estimated using the bootstrap method described in Stephan et al. (2025).
 #'
 #' @param r numeric. The porphyroclast aspect ratio (long axis/short axis)

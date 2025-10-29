@@ -331,8 +331,8 @@ estimate_k <- function(x, w = NULL, na.rm = FALSE) {
 #' \describe{
 #' \item{`"k"`}{estimated concentration parameter \eqn{\kappa} for the von Mises-Fisher
 #' distribution}
-#' \item{`"csd"`}{estimated angular standard deviation enclosing 63% of the orientation data. Angle is in degrees if `x` is a spherical object, and raidan if otherwise.}
-#' \item{`"alpha"`}{Confidence limit for given `conf.level`. Angle is in degrees if `x` is a spherical object, and raidan if otherwise.}
+#' \item{`"csd"`}{estimated angular standard deviation enclosing 63% of the orientation data. Angle is in degrees if `x` is a spherical object, and radians if otherwise.}
+#' \item{`"alpha"`}{Confidence limit for given `conf.level`. Angle is in degrees if `x` is a spherical object, and radians if otherwise.}
 #' }
 #'
 #' @export

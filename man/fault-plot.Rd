@@ -3,13 +3,13 @@
 \name{fault-plot}
 \alias{fault-plot}
 \alias{fault_plot}
-\alias{hoeppner}
+\alias{hoeppener}
 \alias{angelier}
 \title{Add fault data to existing plot}
 \usage{
-fault_plot(x, type = c("angelier", "hoeppner"), ...)
+fault_plot(x, type = c("angelier", "hoeppener"), ...)
 
-hoeppner(x, pch = 1, col = "black", cex = 1, bg = NULL, points = TRUE, ...)
+hoeppener(x, pch = 1, col = "black", cex = 1, bg = NULL, points = TRUE, ...)
 
 angelier(
   x,
@@ -26,7 +26,7 @@ angelier(
 \arguments{
 \item{x}{\code{"Fault"} object}
 
-\item{type}{character. One of \code{"angelier"} (for "Angelier plot") or \code{"hoeppner"} (for "Hoeppner plot"). See details.}
+\item{type}{character. One of \code{"angelier"} (for "Angelier plot") or \code{"hoeppener"} (for "Hoeppener plot"). See details.}
 
 \item{...}{arguments passed to \code{\link[=stereo_arrows]{stereo_arrows()}}}
 
@@ -40,7 +40,7 @@ Add fault data to existing plot
 \details{
 \strong{Angelier plot} shows all planes as \emph{great circles} and lineations as points. Fault striae are plotted as vectors on top of the lineation pointing in the movement direction of the hangingwall. Easy to read in case of homogeneous or small datasets.
 
-\strong{Hoeppner plot} shows all planes as \emph{poles} while lineations are not shown. Fault striae are plotted as vectors on top of poles pointing in the movement direction of the hangingwall. Useful in case of large or heterogeneous datasets.
+\strong{Hoeppener plot} shows all planes as \emph{poles} while lineations are not shown. Fault striae are plotted as vectors on top of poles pointing in the movement direction of the hangingwall. Useful in case of large or heterogeneous datasets.
 }
 \examples{
 f <- Fault(
@@ -54,12 +54,12 @@ f <- Fault(
 stereoplot(title = "Angelier plot")
 angelier(f, col = 1:nrow(f), pch = 16, scale = 0.1)
 
-stereoplot(title = "Hoeppner plot")
-hoeppner(f, col = 1:nrow(f), cex = 1, scale = 0.1, points = FALSE)
+stereoplot(title = "Hoeppener plot")
+hoeppener(f, col = 1:nrow(f), cex = 1, scale = 0.1, points = FALSE)
 
 # or
 stereoplot()
-fault_plot(f, type = "hoeppner", col = 1:nrow(f), cex = 1, scale = 0.1, points = FALSE)
+fault_plot(f, type = "hoeppener", col = 1:nrow(f), cex = 1, scale = 0.1, points = FALSE)
 }
 \references{
 Angelier, J. Tectonic analysis of fault slip data sets, J. Geophys. Res. 89 (B7), 5835-5848 (1984)

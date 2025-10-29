@@ -38,7 +38,7 @@ data(ramsay)
 mean_strain_ellipse_ramsay(ramsay[, "R"], ramsay[, "phi"])
 }
 \references{
-Ramsay (1976), Folding and Fracturing of Rocks, McGraw-Hill Book COmpany.
+Ramsay (1976), Folding and Fracturing of Rocks, McGraw-Hill Book Company.
 }
 \seealso{
 \code{\link[=mean_strain_ellipse]{mean_strain_ellipse()}}

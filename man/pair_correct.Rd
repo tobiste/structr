@@ -19,7 +19,7 @@ correct_pair(x)
 }
 \description{
 Both the line and the plane  are rotated in opposite directions by half the angle between
-the slip and the plane normal vector about the vector that is pperpendicular to both.
+the slip and the plane normal vector about the vector that is perpendicular to both.
 }
 \examples{
 p <- Pair(120, 60, 110, 58, correction = FALSE)

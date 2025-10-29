@@ -44,7 +44,7 @@ strain ratio (\code{R}) of orientation (\code{phi}) of
 porphyroclast over the theoretical distribution of tailless clasts. The plot estimates
 the critical shape factor \code{Rc} marking the transition between the stable-sink
 position and infinitely rotating porphyroclasts.
-This critical shape factor can be interpreted as the the \strong{mean kinmatic vorticity number}.
+This critical shape factor can be interpreted as the the \strong{mean kinematic vorticity number}.
 Here the \code{Rc} is estimated using the bootstrap method described in Stephan et al. (2025).
 }
 \examples{

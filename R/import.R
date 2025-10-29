@@ -20,7 +20,7 @@
 #' \describe{
 #' \item{`data`}{`"tbl_df"` object. Metadata.}
 #' \item{`spots`}{`"tbl_df"` object or `"sf"` if `sf == TRUE`. Locations and spot descriptions.}
-#' \item{`tags`}{`"tbl_df"` object. Tags and their descriptsions.}
+#' \item{`tags`}{`"tbl_df"` object. Tags and their descriptions.}
 #' \item{`planar`}{Plane elements. Same row IDs as in `data`.}
 #' \item{`linear`}{Line elements. Same row IDs as in `data`.}
 #' }

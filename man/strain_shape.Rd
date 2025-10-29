@@ -77,6 +77,6 @@ Woodcock, N. H.  (1977): "Specification of fabric shapes using an eigenvalue met
 \code{\link[=ortensor]{ortensor()}}, \code{\link[=ot_eigen]{ot_eigen()}}, \code{\link[=fabric_indexes]{fabric_indexes()}}
 
 More details on shape parameters: \code{\link[=ell_lode]{ell_lode()}}, \code{\link[=ell_nadai]{ell_nadai()}},
-\code{\link[=ell_jelinek]{ell_jelinek()}}, \code{\link[=ell_flinn]{ell_flinn()}}. Details on eigenvecors from orientation
+\code{\link[=ell_jelinek]{ell_jelinek()}}, \code{\link[=ell_flinn]{ell_flinn()}}. Details on eigenvectors from orientation
 tensors: \code{\link[=ot_eigen]{ot_eigen()}}.
 }
