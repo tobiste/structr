@@ -218,7 +218,7 @@ Mohr_calc <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
 #' @inheritParams Mohr_calc
 #' @param sigma2 numeric. (optional) Magnitude of intermediate principal stress.
 #' This will add the additional Mohr circles between the principal stresses.
-#' @param unit character. The unit used for magnitude of stress (`"MPa"` by default).
+#' @param unit character. The unit used for magnitude of stress (`"MPa"` by default). `NULL` if unitless.
 #' @param col color for Mohr circle.
 #' @param n integer. Resolution given amount of points along the generated path
 #' representing the full Mohr circle (`512` by default).
@@ -236,8 +236,18 @@ Mohr_calc <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
 #' @examples
 #' Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = "#B63679", lwd = 2)
 #'
-#' # unitless Mohr diagram
-#' Mohr_plot(sigma1 = 1025, sigma2 = 450, sigma3 = 250, col = "#B63679", lwd = 2, unit = NULL, include.zero = FALSE)
+#' Mohr_plot(sigma1 = 1025, sigma2 = 450, sigma3 = 250)
+#' 
+#' ## Deviatoric stress from stress ratio:
+#' R <- 0.4 # Stress ratio after Gephart & Forsyth (1984)
+#' sigma1 <- 1; sigma3 <- 0
+#' sigma2 <- sigma1 - R * (sigma1 - sigma3)
+#' 
+#' ## unitless Mohr diagram
+#' Mohr_plot(
+#'   sigma1 = sigma1, sigma2 = sigma2, sigma3 = sigma3,
+#'   col = "#B63679", lwd = 2, unit = NULL, include.zero = FALSE
+#' )
 Mohr_plot <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigma2 = NA, sigma3 = NA,
                       unit = "MPa", col = "black", n = 512, full.circle = FALSE, include.zero = TRUE, ...) {
   ##  Calculate normal and shear stresses
@@ -384,12 +394,14 @@ tau_max <- function(sigma_x, sigma_z, tau_xz) {
 #'
 #' @param coulomb numeric 2 element vector. Coulomb criterion containing the cohesion and the coefficient of sliding: (`c(70, 0.6)`)
 #' @param sliding Sliding criteria (`0.81` by default)
-#' @param units units of `sigma1`, `sigma2`, `sigma3` and cohesion (`"MPa"` by default)
+#' @param units units of `sigma1`, `sigma2`, `sigma3` and cohesion (`"MPa"` by default). 
+#' `NULL` if unitless (e.g. deviatoric stresses only)
 #' @param sigma1,sigma2,sigma3 numeric. Magnitudes of major, intermediate, and
 #' minor principal stresses. If only two principal stresses are given, only
 #' one Mohr Circle will be drawn, otherwise three.
 #' @param fill fill color of Mohr circle spanned by sigma1 and sigma3
 #' @param alpha opacity of Mohr circle spanned sigma1 and sigma3
+#' @param show.info logical. Should Mohr parameters (mean stress and differential stress) be shown in the plot's caption?
 #' @param ... optional parameters passed to [ggforce::geom_circle()]
 #'
 #' @seealso [Mohr_plot()]
@@ -404,7 +416,10 @@ tau_max <- function(sigma_x, sigma_z, tau_xz) {
 #' @importFrom ggplot2 aes coord_fixed geom_abline geom_hline geom_line geom_point geom_text geom_vline ggplot labs
 #' @examples
 #' ggMohr(1025, 450, 250)
-ggMohr <- function(sigma1, sigma2, sigma3 = NULL, coulomb = c(70, 0.6), sliding = 0.81, units = "MPa", fill = "gray", alpha = .5, ...) {
+#' 
+#' # Unitless Mohr circle
+#' ggMohr(5, 2, 0, units = NULL)
+ggMohr <- function(sigma1, sigma2, sigma3 = NULL, units = "MPa", coulomb = c(70, 0.6), sliding = 0.81, fill = "gray", alpha = .5, show.info = TRUE, ...) {
   stress <- c(sigma1, sigma2, sigma3)
   one_circle <- any(is.na(stress)) || length(stress) == 2
   stress <- sort(stats::na.omit(stress), decreasing = TRUE)
@@ -437,6 +452,14 @@ ggMohr <- function(sigma1, sigma2, sigma3 = NULL, coulomb = c(70, 0.6), sliding 
   sigma_s <- shear_stress(s1, s3, theta.f / 2)
   sigma_n <- normal_stress(s1, s3, theta.f / 2)
 
+  if(is.null(units)) {
+    xlab = bquote("Normal stress," ~ sigma[n])
+    ylab = bquote("Shear stress," ~ sigma[s])
+  } else {
+    xlab = bquote("Normal stress," ~ sigma[n] ~ (.(units)))
+    ylab = bquote("Shear stress," ~ sigma[s] ~ (.(units)))
+  }
+  
   ggplot() +
     geom_circle(aes(x0 = circle13.m, y0 = 0, r = circle13.r), fill = fill, alpha = alpha, ...) +
     {
@@ -450,15 +473,33 @@ ggMohr <- function(sigma1, sigma2, sigma3 = NULL, coulomb = c(70, 0.6), sliding 
       }
     } +
     {
-      if (!is.null(sliding)) geom_abline(intercept = 0, slope = sliding, lty = 2)
+      if (!is.null(sliding) & !is.null(units)) geom_abline(intercept = 0, slope = sliding, lty = 2)
     } +
     {
-      if (!is.null(coulomb)) geom_abline(intercept = coulomb[1], slope = coulomb[2], lty = 1)
+      if (!is.null(coulomb)& !is.null(units)) geom_abline(intercept = coulomb[1], slope = coulomb[2], lty = 1)
     } +
     geom_point(aes(x = circle13.m, 0)) +
-    geom_line(aes(x = c(circle13.m, sigma_n), y = c(0, sigma_s)), lty = 3) +
-    geom_hline(yintercept = 0, alpha = .2) +
-    geom_vline(xintercept = 0, alpha = .2) +
+    #geom_line(aes(x = c(circle13.m, sigma_n), y = c(0, sigma_s)), lty = 3) +
+    {
+      if(!is.null(units)) {
+        geom_hline(yintercept = 0, alpha = .2)
+      }
+    } +
+    {
+      if(!is.null(units)) {
+        geom_vline(xintercept = 0, alpha = .2)
+      }
+    } +
+    {
+      if(is.null(units)) {
+        scale_x_continuous(breaks = NULL, labels = NULL)
+      }
+    } +
+    {
+      if(is.null(units)) {
+        scale_y_continuous(breaks = NULL, labels = NULL)
+      }
+    } +
     geom_text(aes(x = (s1 + s3) / 2, y = 0), label = "sigma['m']", vjust = -.5, hjust = -1, parse = TRUE) +
     geom_text(aes(x = s3, y = 0), label = "sigma[3]", vjust = -.5, hjust = -1, parse = TRUE) +
     {
@@ -468,13 +509,17 @@ ggMohr <- function(sigma1, sigma2, sigma3 = NULL, coulomb = c(70, 0.6), sliding 
     } +
     geom_text(aes(x = s1, y = 0), label = "sigma[1]", vjust = -.5, hjust = -1, parse = TRUE) +
     coord_fixed() +
-    labs(
-      x = bquote("Normal stress," ~ sigma[n] ~ (.(units))), y = bquote("Shear stress," ~ sigma[s] ~ (.(units))),
-      caption = bquote(
-        sigma[m] == .(round(circle13.m, 2)) ~ .(units) ~ "|" ~
-          sigma[d] == .(round(2 * circle13.r, 2)) ~ .(units) ~ "|" ~
-          theta[f] == .(round(theta.f, 2)) * degree ~ "|" ~
-          alpha[f] == .(round(90 - theta.f, 2)) * degree
-      )
-    )
+    {
+      if (show.info & !is.null(units)) {
+        labs(
+          caption = bquote(
+            sigma[m] == .(round(circle13.m, 2)) ~ .(units) ~ "|" ~
+              sigma[d] == .(round(2 * circle13.r, 2)) ~ .(units) #~ "|" ~
+              #theta[f] == .(round(theta.f, 2)) * degree ~ "|" ~
+              #alpha[f] == .(round(90 - theta.f, 2)) * degree
+          )
+        )
+      }
+    } +
+    labs(x = xlab, y = ylab)
 }

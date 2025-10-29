@@ -8,11 +8,12 @@ ggMohr(
   sigma1,
   sigma2,
   sigma3 = NULL,
+  units = "MPa",
   coulomb = c(70, 0.6),
   sliding = 0.81,
-  units = "MPa",
   fill = "gray",
   alpha = 0.5,
+  show.info = TRUE,
   ...
 )
 }
@@ -21,15 +22,18 @@ ggMohr(
 minor principal stresses. If only two principal stresses are given, only
 one Mohr Circle will be drawn, otherwise three.}
 
+\item{units}{units of \code{sigma1}, \code{sigma2}, \code{sigma3} and cohesion (\code{"MPa"} by default).
+\code{NULL} if unitless (e.g. deviatoric stresses only)}
+
 \item{coulomb}{numeric 2 element vector. Coulomb criterion containing the cohesion and the coefficient of sliding: (\code{c(70, 0.6)})}
 
 \item{sliding}{Sliding criteria (\code{0.81} by default)}
 
-\item{units}{units of \code{sigma1}, \code{sigma2}, \code{sigma3} and cohesion (\code{"MPa"} by default)}
-
 \item{fill}{fill color of Mohr circle spanned by sigma1 and sigma3}
 
 \item{alpha}{opacity of Mohr circle spanned sigma1 and sigma3}
+
+\item{show.info}{logical. Should Mohr parameters (mean stress and differential stress) be shown in the plot's caption?}
 
 \item{...}{optional parameters passed to \code{\link[ggforce:geom_circle]{ggforce::geom_circle()}}}
 }
@@ -42,6 +46,9 @@ stress \eqn{\sigma_d}, and the fracture angles \eqn{\theta_f} and \eqn{\alpha_f 
 }
 \examples{
 ggMohr(1025, 450, 250)
+
+# Unitless Mohr circle
+ggMohr(5, 2, 0, units = NULL)
 }
 \seealso{
 \code{\link[=Mohr_plot]{Mohr_plot()}}

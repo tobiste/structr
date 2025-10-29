@@ -33,7 +33,7 @@ This will add the additional Mohr circles between the principal stresses.}
 
 \item{sigma3}{numeric. Magnitude of minor principal stress}
 
-\item{unit}{character. The unit used for magnitude of stress (\code{"MPa"} by default).}
+\item{unit}{character. The unit used for magnitude of stress (\code{"MPa"} by default). \code{NULL} if unitless.}
 
 \item{col}{color for Mohr circle.}
 
@@ -60,8 +60,18 @@ One of the following two sets of data must be entered
 \examples{
 Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = "#B63679", lwd = 2)
 
-# unitless Mohr diagram
-Mohr_plot(sigma1 = 1025, sigma2 = 450, sigma3 = 250, col = "#B63679", lwd = 2, unit = NULL, include.zero = FALSE)
+Mohr_plot(sigma1 = 1025, sigma2 = 450, sigma3 = 250)
+
+## Deviatoric stress from stress ratio:
+R <- 0.4 # Stress ratio after Gephart & Forsyth (1984)
+sigma1 <- 1; sigma3 <- 0
+sigma2 <- sigma1 - R * (sigma1 - sigma3)
+
+## unitless Mohr diagram
+Mohr_plot(
+  sigma1 = sigma1, sigma2 = sigma2, sigma3 = sigma3,
+  col = "#B63679", lwd = 2, unit = NULL, include.zero = FALSE
+)
 }
 \seealso{
 \code{\link[=Mohr_calc]{Mohr_calc()}}, \code{\link[=ggMohr]{ggMohr()}}

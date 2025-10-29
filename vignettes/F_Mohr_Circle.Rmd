@@ -50,10 +50,24 @@ normal_stress(s1, s3, theta = 35)
 fracture_angle(mu = 0.6)
 ```
 
-To plot the Mohr circle:
+To plot the Mohr circle, you can either use base R plotting:
+
 ```{r mohr1, message=FALSE, warning=FALSE}
 #| fig.alt: >
 #|   Diagram showing the stress state at some point including the Mohr circle
+Mohr_plot(sigma1 = s1, sigma2 = s2, sigma3 = s3, unit = "MPa") 
+```
+
+or ggplot-style plotting:
+
+```{r mohr2, message=FALSE, warning=FALSE}
+#| fig.alt: >
+#|   Diagram showing the stress state at some point including the Mohr circle
 ggMohr(sigma1 = s1, sigma2 = s2, sigma3 = s3, unit = "MPa") +
+  
+  # Only show upper half of MohR Circle
+  coord_equal(ylim = c(0, NA), expand  = FALSE) +
+
+  # select plotting theme
   theme_classic()
 ```
