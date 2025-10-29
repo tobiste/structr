@@ -47,7 +47,7 @@ sense, and the rake
 
 ```{r faults_rake2}
 # 1. Define a plane through dip direction, dip angle
-fault_plane <- Plane(c(120, 120, 100), c(60, 60, 50)) 
+fault_plane <- Plane(c(120, 120, 100), c(60, 60, 50))
 
 # 2. Define a fault through the plane and rake angle:
 Fault_from_rake(fault_plane, rake = c(84.7202, -10, 30))
@@ -145,7 +145,7 @@ First we load some example data (here the data from Angelier, 1990)[^2]
 ```{r slip_inversion1}
 #| fig.alt: >
 #|   Diagram showing some fault-slip data in a stereoplot
-#|   
+#|
 test_data <- angelier1990$TYM
 
 stereoplot(title = "Test data", guides = FALSE)
@@ -181,18 +181,21 @@ from {structr}
 #| fig.alt: >
 #|   Diagram showing principal stress vector results in a stereoplot
 
-cols <- c('#000004FF', "#B63679FF", "#FEC287FF")
+cols <- c("#000004FF", "#B63679FF", "#FEC287FF")
 
 stereoplot(title = "Stress inversion", guides = FALSE)
-fault_plot(test_data, col = 'grey75')
+fault_plot(test_data, col = "grey75")
 stereo_confidence(test_res$principal_axes_conf$sigma1, col = cols[1])
 stereo_confidence(test_res$principal_axes_conf$sigma2, col = cols[2])
 stereo_confidence(test_res$principal_axes_conf$sigma3, col = cols[3])
-text(test_res$principal_axes, 
-     label = rownames(test_res$principal_axes), 
-     col = cols, adj = -.25)
-legend("topleft", col = cols, 
-       legend = rownames(test_res$principal_axes), pch = 16)
+text(test_res$principal_axes,
+  label = rownames(test_res$principal_axes),
+  col = cols, adj = -.25
+)
+legend("topleft",
+  col = cols,
+  legend = rownames(test_res$principal_axes), pch = 16
+)
 ```
 
 The stress shape ratio &Phi; (Angelier 1979)[^3]
@@ -215,32 +218,34 @@ visualized in the stereoplot:
 
 ```{r slip_inversion_beta}
 #| fig.alt: >
-#|   Diagram showing deviation of the best-fit principal stress tensor in a 
+#|   Diagram showing deviation of the best-fit principal stress tensor in a
 #|   stereoplot
 
 beta <- test_res$fault_data$beta
 
 stereoplot(
-  title = "Deviation", 
-  sub = bquote(bar(beta) == .(round(test_res$beta)) * degree), 
-  guides = FALSE)
+  title = "Deviation",
+  sub = bquote(bar(beta) == .(round(test_res$beta)) * degree),
+  guides = FALSE
+)
 
 fault_plot(test_data, col = assign_col(beta))
 legend_c(
-  seq(min(beta), max(beta), 10), 
-  title = bquote("Deviation angle" ~ beta ~ "("*degree*")")
-  )
+  seq(min(beta), max(beta), 10),
+  title = bquote("Deviation angle" ~ beta ~ "(" * degree * ")")
+)
 ```
 
 ```{r slip_inversion_mohr}
 Mohr_plot(
-  sigma1 = test_res$principal_vals[1], 
-  sigma2 = test_res$principal_vals[2], 
-  sigma3 = test_res$principal_vals[3], 
+  sigma1 = test_res$principal_vals[1],
+  sigma2 = test_res$principal_vals[2],
+  sigma3 = test_res$principal_vals[3],
   unit = NULL, include.zero = FALSE
-  )
-points(test_res$fault_data$sigma_n, abs(test_res$fault_data$sigma_s), 
-       col = assign_col(beta), pch = 16)
+)
+points(test_res$fault_data$sigma_n, abs(test_res$fault_data$sigma_s),
+  col = assign_col(beta), pch = 16
+)
 ```
 
 ### Maximum horizontal stress[^4]
@@ -393,10 +398,11 @@ And the SHmax for the slip inversion result from above:
 
 ```{r lund_3}
 SH(
-  S1 = test_res$principal_axes[1, ], 
-  S2 = test_res$principal_axes[2, ], 
+  S1 = test_res$principal_axes[1, ],
+  S2 = test_res$principal_axes[2, ],
   S3 = test_res$principal_axes[3, ],
-  R = test_res$R)
+  R = test_res$R
+)
 ```
 
 ## Fault offsets {#sec.offset}

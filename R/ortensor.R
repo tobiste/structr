@@ -161,17 +161,17 @@ ot_eigen <- function(x, scaled = FALSE, ...) {
 #'
 #' @seealso [ot_eigen()] for eigenvalues of orientation tensor,
 #'  [sph_mean()] for arithmetic mean, [geodesic_mean()] for geodesic mean.
-#'  
-#' @references 
-#' Bachmann, F., Hielscher, R., Jupp, P. E., Pantleon, W., Schaeben, H., & 
-#' Wegert, E. (2010). Inferential statistics of electron backscatter diffraction 
+#'
+#' @references
+#' Bachmann, F., Hielscher, R., Jupp, P. E., Pantleon, W., Schaeben, H., &
+#' Wegert, E. (2010). Inferential statistics of electron backscatter diffraction
 #' data from within individual crystalline grains. Journal of Applied Crystallography, 43(6), 1338–1355. https://doi.org/10.1107/S002188981003027X
 #'
 #' @export
 #'
 #' @examples
 #' example_lines_df$quality
-#' projected_mean(example_lines, w =  runif(nrow(example_lines)))
+#' projected_mean(example_lines, w = runif(nrow(example_lines)))
 projected_mean <- function(x, ...) {
   ot_eigen(x, ...)$vectors[1, ]
 }
@@ -531,8 +531,8 @@ ell_shape_invariant <- function(s) {
 #'
 #' Rotate vector object to position that ortensor eigenvectors are parallel to
 #' axes of coordinate system: E3||X (north-south), E2||X(east-west),
-#' E1||X(vertical). 
-#' Useful when one wants to inspect the distribution of vectors, especially when vectors plot 
+#' E1||X(vertical).
+#' Useful when one wants to inspect the distribution of vectors, especially when vectors plot
 #' near the perimeter of the stereonet.
 #'
 #' @inheritParams ortensor

@@ -50,7 +50,7 @@ plunge_quadrant <- c("E", "S", "W", "N", "E", "W", "E", "S", "W")
 Fault_from_rake_quadrant(Plane(dip_dir, dip), rake1, plunge_quadrant, type = "plunge")
 
 rake2 <- c(0, 45, 90, 45, 0, 45, 90, 45, 0)
-rake_quadrant <- c("E", "S", "S", "E", "E", 'W', "N", "S", "W")
+rake_quadrant <- c("E", "S", "S", "E", "E", "W", "N", "S", "W")
 Fault_from_rake_quadrant(Plane(dip_dir, dip), rake2, rake_quadrant, type = "rake")
 }
 \seealso{

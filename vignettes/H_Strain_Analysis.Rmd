@@ -94,9 +94,9 @@ Here the `Rc` is estimated using the bootstrap method described in Stephan et al
 #| fig.alt: >
 #|   Rigid grain net
 
-# assuming the mean orientation resembles the foliation
-theta <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2]
+data(shebandowan)
+set.seed(20250411)
 
-RGN_plot(r = ramsay[, 1], theta = theta, col = "#B63679")
-title(main = "Rigid Grain Net")
+# Color code porphyroclasts by size of clast (area in log-scale):
+RGN_plot(shebandowan$r, shebandowan$phi, col = assign_col(log(shebandowan$area)), pch = 16)
 ```

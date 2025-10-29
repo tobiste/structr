@@ -3,7 +3,7 @@
 \docType{data}
 \name{example_planes}
 \alias{example_planes}
-\title{Example planes}
+\title{Planes orientations as "Plane" objects}
 \format{
 An object of class \code{Plane}
 }
@@ -11,10 +11,18 @@ An object of class \code{Plane}
 data('example_planes')
 }
 \description{
-example data set
+200 foliation measurements from a folded metasedimentary sequence in the
+Quetico Subprovince (Stephan et al., 2025)
 }
 \examples{
 data("example_planes")
 head(example_planes)
+}
+\references{
+Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
+Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
+vorticity control gold enrichment in Archean shear zones
+(Shebandowan Greenstone Belt, Superior Province, Canada).
+Journal of Structural Geology, 201, 105542. https://doi.org/10.1016/j.jsg.2025.105542
 }
 \keyword{datasets}

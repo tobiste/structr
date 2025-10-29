@@ -19,10 +19,10 @@ Calculate Principal Fault planes from stress vectors and friction
 }
 \examples{
 res_TYM <- slip_inversion(angelier1990$TYM, boot = 10)
-pr_TYM <- principal_fault(res_TYM$principal_axes[1,], res_TYM$principal_axes[3,]) 
+pr_TYM <- principal_fault(res_TYM$principal_axes[1, ], res_TYM$principal_axes[3, ])
 
 stereoplot()
 fault_plot(angelier1990$TYM, col = "grey")
-fault_plot(pr_TYM, col = 'red')
+fault_plot(pr_TYM, col = "red")
 points(res_TYM$principal_axes, pch = 16)
 }

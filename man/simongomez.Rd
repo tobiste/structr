@@ -11,7 +11,7 @@ An object of class \code{data.frame}
 data('simongomez')
 }
 \description{
-example data set
+80 Fault-slip orientations from Simon-Gomez
 }
 \examples{
 data("simongomez")

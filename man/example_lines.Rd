@@ -3,7 +3,7 @@
 \docType{data}
 \name{example_lines}
 \alias{example_lines}
-\title{Example lines}
+\title{Intersection lineations as "Line" object}
 \format{
 An object of class \code{Line}
 }
@@ -11,10 +11,18 @@ An object of class \code{Line}
 data('example_lines')
 }
 \description{
-example data set
+84 intersection lineations from a folded metasedimentary sequence in the
+Quetico Subprovince (Stephan et al., 2025)
 }
 \examples{
 data("example_lines")
 head(example_lines)
+}
+\references{
+Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
+Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
+vorticity control gold enrichment in Archean shear zones
+(Shebandowan Greenstone Belt, Superior Province, Canada).
+Journal of Structural Geology, 201, 105542. https://doi.org/10.1016/j.jsg.2025.105542
 }
 \keyword{datasets}

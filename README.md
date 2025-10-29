@@ -69,6 +69,8 @@ library(structr)
 
 ### Stereographic and equal-area projection
 
+Plot orientation data in equal-area, lower hemisphere projection:
+
 ``` r
 data("example_planes")
 data("example_lines")
@@ -88,7 +90,7 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 Density shown by contour lines and filled contours:
 
 ``` r
-par(mfrow =c(1, 2))
+par(mfrow = c(1, 2))
 contour(example_planes)
 points(example_planes, col = "grey", cex = .5)
 title(main = "Planes")
@@ -101,6 +103,9 @@ title(main = "Lines")
 <img src="man/figures/README-stereo_density-1.png" width="100%" />
 
 ### Spherical statistics
+
+Calculation of arithmetic mean, geodesic mean, confidence cones and
+eigenvectors… and plotting them in the equal-area projection:
 
 ``` r
 planes_mean <- sph_mean(example_planes)
@@ -115,7 +120,8 @@ points(planes_mean, col = "#B63679", pch = 19, cex = 1)
 points(planes_geomean, col = "#E65164FF", pch = 19, cex = 1)
 points(planes_eig, col = c("#FB8861FF", "#FEC287FF", "#FCFDBFFF"), pch = 19, cex = 1)
 legend(
-  0, -1.1, xjust = .5,
+  0, -1.1,
+  xjust = .5,
   legend = c("Arithmetic mean", "Geodesic mean", "Eigen 1", "Eigen 2", "Eigen 3"),
   col = c("#B63679", "#E65164FF", "#FB8861FF", "#FEC287FF", "#FCFDBFFF"),
   pch = 19, lty = c(NA, NA, 1, 2, 3),
@@ -132,7 +138,8 @@ points(lines_mean, col = "#B63679", pch = 19, cex = 1)
 stereo_confidence(lines_confangle, col = "#E65164FF")
 lines(lines_mean, ang = lines_delta, col = "#FB8861FF")
 legend(
-  0, -1.1, xjust = .5,
+  0, -1.1,
+  xjust = .5,
   legend = c("Arithmetic mean", "95% confidence cone", "63% data cone"),
   col = c("#B63679", "#E65164FF", "#FB8861FF"),
   pch = c(19, NA, NA), lty = c(NA, 1, 1), cex = .75
@@ -141,7 +148,33 @@ legend(
 
 <img src="man/figures/README-stats-1.png" width="100%" />
 
+### Orientation tensor and fabric plots
+
+The shape parameters of the orientation tensor of the above examples
+planes and lines can be visualized in two ways:
+
+``` r
+par(mfrow = c(1, 2), xpd = NA)
+vollmer_plot(example_planes, col = "#000004", pch = 16)
+vollmer_plot(example_lines, col = "#B63679FF", pch = 16, add = TRUE)
+title("Fabric plot of Vollmer (1990)")
+
+hsu_fabric_plot(example_planes, col = "#000004", pch = 16)
+hsu_fabric_plot(example_lines, col = "#B63679FF", pch = 16, add = TRUE)
+
+legend(
+  2.5, -.25,
+  xjust = .5, horiz = TRUE, xpd = NA,
+  legend = c("Planes", "Lines"), col = c("#000004", "#B63679FF"), pch = 16
+)
+```
+
+<img src="man/figures/README-stereo_ortensor-1.png" width="100%" />
+
 #### Best-fit great and small-circles (geodesic regression)
+
+Finds the best-fit great or small-circle for a given set of vectors by
+applying geodesic regression:
 
 ``` r
 set.seed(20250411)
@@ -175,39 +208,25 @@ lines(bedding_sc$vec, bedding_sc$cone, col = "#B63679")
 points(cleavage, col = "#1D1147")
 points(bedding, col = "#E65164", pch = 4)
 
-legend(0, -1.1, xjust = .5,
+legend(0, -1.1,
+  xjust = .5,
   col = c("#000004FF", "#B63679"), lty = c(1, 1), legend = c("Cleavage smallcircle", "Bedding smallcircle"), bg = "white"
 )
 ```
 
 <img src="man/figures/README-bestfit-1.png" width="100%" />
 
-### Orientation tensor and fabric plots
-
-``` r
-par(mfrow = c(1, 2), xpd = NA)
-vollmer_plot(example_planes, col = "#000004", pch = 16)
-vollmer_plot(example_lines, col = "#B63679FF", pch = 16, add = TRUE)
-title("Fabric plot of Vollmer (1990)")
-
-hsu_fabric_plot(example_planes, col = "#000004", pch = 16)
-hsu_fabric_plot(example_lines, col = "#B63679FF", pch = 16, add = TRUE)
-
-legend(
-  2.5, -.25, xjust = .5, horiz = TRUE, xpd = NA,
-  legend = c('Planes', 'Lines'), col = c("#000004", "#B63679FF"), pch = 16
-)
-```
-
-<img src="man/figures/README-stereo_ortensor-1.png" width="100%" />
-
 ### Fault plots
+
+Graphical representation of fault-slip data using Angelier plot (slip
+vector on fault plane great circle) and Hoeppener plot (fault slip
+vector projected on pole to fault plane):
 
 ``` r
 data("angelier1990")
 faults <- angelier1990$TYM
 
-par(mfrow =c(1, 2))
+par(mfrow = c(1, 2))
 stereoplot(title = "Angelier plot")
 angelier(faults)
 
@@ -227,16 +246,17 @@ set.seed(20250411)
 faults_stress <- slip_inversion(faults, boot = 10)
 ```
 
-Visualize the slip inversion results:
+Visualize the slip inversion results (orientation of principal
+stresses):
 
 ``` r
 cols <- c("#000004FF", "#B63679FF", "#FEC287FF")
-R_val <-  round(faults_stress$R, 2)
-R_CI <-  round(faults_stress$R_conf, 2)
+R_val <- round(faults_stress$R, 2)
+R_CI <- round(faults_stress$R_conf, 2)
 
 stereoplot(
   title = "Principal stress axes",
-  sub = paste0("Relative stress magnitudes R = ", R_val, " | ", "95% CI: [", R_CI[1], ", ",R_CI[2], "]"),
+  sub = paste0("Relative stress magnitudes R = ", R_val, " | ", "95% CI: [", R_CI[1], ", ", R_CI[2], "]"),
   guides = FALSE
 )
 angelier(faults, col = "grey80")
@@ -250,6 +270,9 @@ text(faults_stress$principal_axes,
 ```
 
 <img src="man/figures/README-stereo_inversion_plot-1.png" width="100%" />
+
+Visualize the accuracy of the slip inversion by showing the deviation
+angle (β) between the theoretical slip and the actual slip vector:
 
 ``` r
 beta <- faults_stress$fault_data$beta
@@ -270,12 +293,13 @@ legend_c(
 
 <img src="man/figures/README-stereo_inversion_deviation-1.png" width="100%" />
 
-Azimuth of the maximum horizontal stress (in degrees):
+Azimuth of the maximum horizontal stress (in degrees) for the slip
+inversion result:
 
 ``` r
 SH(
-  S1 = faults_stress$principal_axes[1, ], 
-  S2 = faults_stress$principal_axes[2, ], 
+  S1 = faults_stress$principal_axes[1, ],
+  S2 = faults_stress$principal_axes[2, ],
   S3 = faults_stress$principal_axes[3, ],
   R = faults_stress$R
 )
@@ -284,15 +308,18 @@ SH(
 
 ### Mohr circles
 
+The Mohr circle for the slip inversion result:
+
 ``` r
 Mohr_plot(
-  sigma1 = faults_stress$principal_vals[1], 
-  sigma2 = faults_stress$principal_vals[2], 
-  sigma3 = faults_stress$principal_vals[3], 
+  sigma1 = faults_stress$principal_vals[1],
+  sigma2 = faults_stress$principal_vals[2],
+  sigma3 = faults_stress$principal_vals[3],
   unit = NULL, include.zero = FALSE
-  )
-points(faults_stress$fault_data$sigma_n, abs(faults_stress$fault_data$sigma_s), 
-       col = assign_col(beta), pch = 16)
+)
+points(faults_stress$fault_data$sigma_n, abs(faults_stress$fault_data$sigma_s),
+  col = assign_col(beta), pch = 16
+)
 ```
 
 <img src="man/figures/README-stereo_inversion_mohr-1.png" width="100%" />
@@ -301,10 +328,13 @@ points(faults_stress$fault_data$sigma_n, abs(faults_stress$fault_data$sigma_s),
 
 #### 2D Strain
 
+Aspect ratio of finite strain ellipses vs orientation of long-axis
+(Rf/ϕ)
+
 ``` r
 data(ramsay)
 
-par(mfrow = c(1,2))
+par(mfrow = c(1, 2))
 Rphi_plot(r = ramsay[, 1], phi = ramsay[, 2])
 Rphi_polar_plot(ramsay[, 1], ramsay[, 2], proj = "eqd")
 ```
@@ -313,12 +343,14 @@ Rphi_polar_plot(ramsay[, 1], ramsay[, 2], proj = "eqd")
 
 #### 3D Strain
 
+Finite strain ellipsoids plotted in Flinn diagram and Hsu diagram:
+
 ``` r
 data("holst")
 R_XY <- holst[, "R_XY"]
 R_YZ <- holst[, "R_YZ"]
 
-par(mfrow = c(1,2))
+par(mfrow = c(1, 2))
 flinn_plot(R_XY, R_YZ, log = TRUE, col = "#B63679", pch = 16)
 hsu_plot(R_XY, R_YZ, col = "#B63679", pch = 16)
 ```
@@ -327,14 +359,16 @@ hsu_plot(R_XY, R_YZ, col = "#B63679", pch = 16)
 
 ### Vorticity analysis
 
-#### Rigid Grain Net
+Aspect ratio of finite strain ellipses of porphyroclasts vs orientation
+of long-axis with respect to foliation plotted in the **Rigid Grain
+Net**
 
 ``` r
-# assuming the mean orientation resembles the foliation
-theta <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2]
+data(shebandowan)
+set.seed(20250411)
 
-RGN_plot(r = ramsay[, 1], theta = theta, col = "#B63679")
-title(main = "Rigid Grain Net")
+# Color code porphyroclasts by size of clast (area in log-scale):
+RGN_plot(shebandowan$r, shebandowan$phi, col = assign_col(log(shebandowan$area)), pch = 16)
 ```
 
 <img src="man/figures/README-rgn-1.png" width="100%" />

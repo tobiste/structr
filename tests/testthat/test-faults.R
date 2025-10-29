@@ -9,14 +9,13 @@ test_that("multiplication works", {
 
 # test from Shorrot and Lise, 1998, Tab. 2
 strike_con7 <- c(270, 315, 0, 45, 90, 135, 180, 225, 270) # strike in left-hand-rule
-strike_con6 <- c(90,135,180,225,270,315,0,45,90)
-quadrant_con4 <- c("N", 'E', 'E', 'S', 'S', 'W', 'W', 'N', "N") # dip quadrant
+strike_con6 <- c(90, 135, 180, 225, 270, 315, 0, 45, 90)
+quadrant_con4 <- c("N", "E", "E", "S", "S", "W", "W", "N", "N") # dip quadrant
 dip_direction_con2 <- seq(0, 360, 45) %% 360
 
 test_that("Quadrant convenction", {
   expect_equal(quadrant2dd(strike_con7, quadrant_con4), dip_direction_con2)
   expect_equal(quadrant2dd(strike_con6, quadrant_con4), dip_direction_con2)
-  
 })
 
 
@@ -26,7 +25,7 @@ test_that("Right-hand rule 2", {
   expect_equal(rhr2dd(strike), dip_dir)
 })
 
-dip_quadrant <- c("S", 'S', 'W', 'W', 'N', 'N', 'N', 'E', 'E')
+dip_quadrant <- c("S", "S", "W", "W", "N", "N", "N", "E", "E")
 # test_that("dip quadrant", {
 #   expect_equal(azimuth_to_cardinal(dip_dir, 4), dip_quadrant)
 # })
@@ -55,11 +54,11 @@ plunge <- c(0, 7.1, 15, 20.7, 0, 144.6, 115, 115, 136.9, 180)
 # test from Shorrot and Lise, 1998, Tab. 2
 # dip_con1 <- c(5, 10, 15, 30, 40, 55, 65, 75, 90)
 # dip_dir_con2 <- c(180, 225, 270, 315, 360, 0, 45, 90, 135)
-# 
-# 
+#
+#
 # plunge_11 <- c(0, 7, 15, 21, 0, 35, 65, 43, 0)
 # azimuth_12 <- c(90, 179, 270, 4, 90, 299, 45, 165, 225)
-# 
+#
 # pitch_con17 <- c(0, 45, 90, 135, 180, 45, 90, 135, 180)
 # pitch_con15 <- c(0, 45, 90, 45, 0, 45, 90, 45, 0)
 # plunge_quadrant_14 <- c("E", "S", "W", "N", "E", "W", "E", "S", "W")
@@ -69,16 +68,16 @@ plunge <- c(0, 7.1, 15, 20.7, 0, 144.6, 115, 115, 136.9, 180)
 
 # test_that("Quadrant convenction rake 1", {
 #   expect_equal(
-#     round(Fault_from_rake_quadrant(Plane(dip_dir_con2, dip_con1), pitch_con17, plunge_quadrant_14, "plunge")|> Fault_rake()), 
+#     round(Fault_from_rake_quadrant(Plane(dip_dir_con2, dip_con1), pitch_con17, plunge_quadrant_14, "plunge")|> Fault_rake()),
 #     rake_con_18)
 # })
-# 
+#
 # test_that("Quadrant convenction rake 2", {
 #   expect_equal(
-#     round(Fault_from_rake_quadrant(Plane(dip_dir_con2, dip_con1), pitch_con15, pitch_quadrant_con16, "rake") |> Fault_rake()), 
+#     round(Fault_from_rake_quadrant(Plane(dip_dir_con2, dip_con1), pitch_con15, pitch_quadrant_con16, "rake") |> Fault_rake()),
 #     rake_con_18)
 # })
-# 
+#
 # test_that("Fault rake", {
 #   expect_equal(
 #     round(Fault_rake(Fault(dip_dir_con2, dip_con1, azimuth_12, plunge_11, sense = exp_sense)) %% 360),

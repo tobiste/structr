@@ -3,7 +3,7 @@
 \docType{data}
 \name{gray_example}
 \alias{gray_example}
-\title{Example data from Gray et al. 1980 to find best small and great circle}
+\title{Bedding and cleavage data}
 \format{
 An object of class \code{data.frame}
 }
@@ -11,7 +11,7 @@ An object of class \code{data.frame}
 data('gray_example')
 }
 \description{
-example data set
+16 bedding and cleavage orientations from Gray et al. (1980) to find best small and great circle
 }
 \examples{
 data("gray_example")

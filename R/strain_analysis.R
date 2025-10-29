@@ -773,22 +773,20 @@ vorticity_boot <- function(B, R = 100, probs = 0.975) {
 #' kinematic vorticity number (Wm)." Journal of Structural Geology 29.3 (2007):
 #' 411-421. doi: 10.1016/j.jsg.2006.11.003
 #'
-#' Stephan, Tobias, et al. "Going with the flow—Changes of vorticity control
-#' gold enrichment in Archean shear zones (Shebandowan Greenstone Belt,
-#' Superior Province, Canada)." Journal of Structural Geology (2025): 105542.
-#' doi: 10.1016/j.jsg.2025.105542
+#' Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
+#' Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
+#' vorticity control gold enrichment in Archean shear zones
+#' (Shebandowan Greenstone Belt, Superior Province, Canada).
+#' Journal of Structural Geology, 201, 105542.
+#' https://doi.org/10.1016/j.jsg.2025.105542
 #'
 #' @export
 #'
 #' @examples
-#' data(ramsay)
+#' data(shebandowan)
 #' set.seed(20250411)
-#'
-#' # assuming the mean orientation is the foliation:
-#' theta <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2]
-#'
-#' RGN_plot(ramsay[, "R"], theta, col = "darkred")
-RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.972, grid = 0.05, main = "Rigid-Grain-Net", ...) {
+#' RGN_plot(shebandowan$r, shebandowan$phi, col = "darkred")
+RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.975, grid = 0.05, main = "Rigid-Grain-Net", ...) {
   R_val <- r
   theta <- theta %% 180
   theta <- ifelse(theta > 90, theta - 180, theta)

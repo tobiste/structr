@@ -19,7 +19,7 @@ Eigenvector with largest eigenvalue of the orientation tensor
 }
 \examples{
 example_lines_df$quality
-projected_mean(example_lines, w =  runif(nrow(example_lines)))
+projected_mean(example_lines, w = runif(nrow(example_lines)))
 }
 \references{
 Bachmann, F., Hielscher, R., Jupp, P. E., Pantleon, W., Schaeben, H., &

@@ -1,6 +1,6 @@
-#' Example data from Gray et al. 1980 to find best small and great circle
+#' Bedding and cleavage data
 #'
-#' example data set
+#' 16 bedding and cleavage orientations from Gray et al. (1980) to find best small and great circle
 #'
 #' @docType data
 #'
@@ -13,13 +13,21 @@
 #' head(gray_example)
 "gray_example"
 
-#' Example lines
+#' Intersection lineation data
 #'
-#' example data set
-#'
+#' 84 intersection lineations from a folded metasedimentary sequence in the 
+#' Quetico Subprovince (Stephan et al., 2025)
+#' 
 #' @docType data
 #'
 #' @usage data('example_lines_df')
+#' 
+#' @references
+#' Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
+#' Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
+#' vorticity control gold enrichment in Archean shear zones
+#' (Shebandowan Greenstone Belt, Superior Province, Canada).
+#' Journal of Structural Geology, 201, 105542. https://doi.org/10.1016/j.jsg.2025.105542
 #'
 #' @format An object of class `data.frame`
 #' @keywords datasets
@@ -28,13 +36,21 @@
 #' head(example_lines_df)
 "example_lines_df"
 
-#' Example lines
+#' Intersection lineations as "Line" object
 #'
-#' example data set
+#' 84 intersection lineations from a folded metasedimentary sequence in the 
+#' Quetico Subprovince (Stephan et al., 2025)
 #'
 #' @docType data
 #'
 #' @usage data('example_lines')
+#' 
+#' @references
+#' Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
+#' Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
+#' vorticity control gold enrichment in Archean shear zones
+#' (Shebandowan Greenstone Belt, Superior Province, Canada).
+#' Journal of Structural Geology, 201, 105542. https://doi.org/10.1016/j.jsg.2025.105542
 #'
 #' @format An object of class `Line`
 #' @keywords datasets
@@ -43,13 +59,21 @@
 #' head(example_lines)
 "example_lines"
 
-#' Example planes
+#' Planes orientations data
 #'
-#' example data set
-#'
+#' 200 foliation measurements from a folded metasedimentary sequence in the 
+#' Quetico Subprovince (Stephan et al., 2025)
+#' 
 #' @docType data
 #'
 #' @usage data('example_planes_df')
+#' 
+#' @references
+#' Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
+#' Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
+#' vorticity control gold enrichment in Archean shear zones
+#' (Shebandowan Greenstone Belt, Superior Province, Canada).
+#' Journal of Structural Geology, 201, 105542. https://doi.org/10.1016/j.jsg.2025.105542
 #'
 #' @format An object of class `data.frame`
 #' @keywords datasets
@@ -58,13 +82,21 @@
 #' head(example_planes_df)
 "example_planes_df"
 
-#' Example planes
+#' Planes orientations as "Plane" objects
 #'
-#' example data set
+#' 200 foliation measurements from a folded metasedimentary sequence in the 
+#' Quetico Subprovince (Stephan et al., 2025)
 #'
 #' @docType data
 #'
 #' @usage data('example_planes')
+#'
+#' @references
+#' Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
+#' Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
+#' vorticity control gold enrichment in Archean shear zones
+#' (Shebandowan Greenstone Belt, Superior Province, Canada).
+#' Journal of Structural Geology, 201, 105542. https://doi.org/10.1016/j.jsg.2025.105542
 #'
 #' @format An object of class `Plane`
 #' @keywords datasets
@@ -75,7 +107,7 @@
 
 #' Example data set
 #'
-#' example data set
+#' 80 Fault-slip orientations from Simon-Gomez
 #'
 #' @docType data
 #'
@@ -89,17 +121,17 @@
 "simongomez"
 
 
-#' Example fault slip data
+#' Fault-Slip Data
 #'
 #' List of different fault-slip data from Angelier (1990)
 #'
 #' @docType data
 #'
 #' @usage data('angelier1990')
-#' 
-#' @references 
+#'
+#' @references
 #' Angelier, J. (1990). Inversion of field data in fault tectonics to obtain the
-#'  regional stress-III. A new rapid direct inversion method by analytical means. 
+#'  regional stress-III. A new rapid direct inversion method by analytical means.
 #'  Geophysical Journal International, 103(2), 363–376. https://doi.org/10.1111/j.1365-246X.1990.tb01777.x
 #'
 #' @format An object of class `data.frame`
@@ -126,7 +158,7 @@
 "ramsay"
 
 
-#' 3D strain data
+#' 3D Strain Data
 #'
 #' Example data from Holst and Fossen (1987) containing 3D strain data from 17 localities in the West Norwegian Caledonides.
 #' The data gives the  difference of the  \eqn{\epsilon_1} and \eqn{\epsilon_2} (`e1e2`) and \eqn{\epsilon_2} and \eqn{\epsilon_3} (`e2e3`)
@@ -140,3 +172,29 @@
 #' data("holst")
 #' head(holst)
 "holst"
+
+
+#' Vorticity from Rotated Porphyroclasts
+#'
+#' 194 measurements of aspect ratio and orientation (wrt. foliation) of rotated
+#' porphyroclasts in a mylonitic, greenschist-grade metavolcanic rock from the
+#' Shebandowan Greenstone Belt (Superior Province, Canada).
+#' Sample HT-17-XZ from Stephan et al. (2025)
+#'
+#' @docType data
+#'
+#' @usage data('shebandowan')
+#'
+#' @references
+#' Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
+#' Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
+#' vorticity control gold enrichment in Archean shear zones
+#' (Shebandowan Greenstone Belt, Superior Province, Canada).
+#' Journal of Structural Geology, 201, 105542. https://doi.org/10.1016/j.jsg.2025.105542
+#'
+#' @format An object of class `data.frame`
+#' @keywords datasets
+#' @examples
+#' data("shebandowan")
+#' head(shebandowan)
+"shebandowan"

@@ -201,7 +201,7 @@ Line <- function(x, plunge) {
   } else if (is.Ray(x)) {
     azimuth <- x[, "azimuth"]
     plunge <- x[, "plunge"]
-    
+
     # convert to lower hemisphere
     azimuth <- ifelse(plunge < 0, azimuth + 180, azimuth)
     plunge <- abs(plunge)
@@ -345,8 +345,8 @@ Pair <- function(x, y, azimuth, plunge, correction = FALSE) {
 Fault <- function(x, y, azimuth, plunge, sense, correction = FALSE) {
   stopifnot(is.logical(correction))
   rn <- rownames(x)
-  
-  if(is.character(sense)) {
+
+  if (is.character(sense)) {
     sense <- ifelse(tolower(sense) == "n", 1, -1)
   }
 
@@ -404,7 +404,7 @@ print.Vec3 <- function(x, ...) {
   n <- nrow(x)
   cat(paste0("Vector (Vec3) object (n = ", n, "):\n"))
   print(unclass(x)[seq_len(n), ]) # avoids printing all the attributes of x
-  
+
   return(invisible(x))
 }
 

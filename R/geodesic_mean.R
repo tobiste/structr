@@ -1,22 +1,22 @@
 #' The Fr&#233;chet (geodesic \eqn{L^2}) variance
 #'
-#' Dispersion  measured using the Fr&#233;chet variance, i.e the sum of the squared 
-#' geodesic distances between all vectors and a specified vector. 
+#' Dispersion  measured using the Fr&#233;chet variance, i.e the sum of the squared
+#' geodesic distances between all vectors and a specified vector.
 #'
 #' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`.
 #' @param y Only for variance. object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"` about which the Fr&#233;chet variance should be calculated for.
-#' If `NULL` (the default), Fr&#233;chet variance about the Fr&#233;chet mean. 
+#' If `NULL` (the default), Fr&#233;chet variance about the Fr&#233;chet mean.
 #' @param ... parameters passed to [geodesic_meanvariance_ray()] (if `x` is a Ray), [geodesic_meanvariance_line()] (if `x` is a Vec3, Line or Plane)
 #' or [geodesic_mean_pair()] (if `x` is a Pair or a Fault).
 #' @inheritParams geodesic_mean_pair
-#' 
+#'
 #' @details The variance of a dataset \eqn{{x_1, \ldots, x_n}} about a vector \eqn{y} is defined as
 #' \deqn{ \Psi(x) = \frac{1}{2n} \sum_{i=1}^n d_G(y, x_i)^2}
 #' where \eqn{d_G(x, y)} is the geodesic distance between vectors \eqn{x} and \eqn{y} (see [angle()]).
 #'
 #' @name geodesic-var
 #'
-#' @returns the Fr&#233;chet variance as a numeric number. Because distances in SO(3) never exceed \eqn{\pi}, the maximum possible variance 
+#' @returns the Fr&#233;chet variance as a numeric number. Because distances in SO(3) never exceed \eqn{\pi}, the maximum possible variance
 #' is \eqn{\frac{\pi^2}{2} \approx 4.93}.
 #'
 #' @references Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis
@@ -28,7 +28,7 @@
 #'
 #' @examples
 #' set.seed(20250411)
-#' geodesic_var(example_planes, example_planes[1,])
+#' geodesic_var(example_planes, example_planes[1, ])
 #' geodesic_var(example_planes)
 NULL
 
@@ -39,7 +39,7 @@ geodesic_var <- function(x, ...) UseMethod("geodesic_var")
 #' @rdname geodesic-var
 #' @export
 geodesic_var.Vec3 <- function(x, y = NULL, ...) {
-  if(is.null(y)) {
+  if (is.null(y)) {
     geodesic_var_line(x, ...)
   } else {
     stopifnot(is.spherical(y) & nrow(y) == 1)
@@ -50,7 +50,7 @@ geodesic_var.Vec3 <- function(x, y = NULL, ...) {
 #' @rdname geodesic-var
 #' @export
 geodesic_var.Line <- function(x, y = NULL, ...) {
-  if(is.null(y)) {
+  if (is.null(y)) {
     geodesic_var_line(x, ...)
   } else {
     stopifnot(is.spherical(y) & nrow(y) == 1)
@@ -61,7 +61,7 @@ geodesic_var.Line <- function(x, y = NULL, ...) {
 #' @rdname geodesic-var
 #' @export
 geodesic_var.Plane <- function(x, y = NULL, ...) {
-  if(is.null(y)) {
+  if (is.null(y)) {
     geodesic_var_line(x, ...)
   } else {
     stopifnot(is.spherical(y) & nrow(y) == 1)
@@ -72,7 +72,7 @@ geodesic_var.Plane <- function(x, y = NULL, ...) {
 #' @rdname geodesic-var
 #' @export
 geodesic_var.Ray <- function(x, y = NULL, ...) {
-  if(is.null(y)) {
+  if (is.null(y)) {
     geodesic_var_ray(x, ...)
   } else {
     stopifnot(is.spherical(y) & nrow(y) == 1)
@@ -83,7 +83,7 @@ geodesic_var.Ray <- function(x, y = NULL, ...) {
 #' @rdname geodesic-var
 #' @export
 geodesic_var.Pair <- function(x, y = NULL, group = NULL, ...) {
-  if(is.null(y)) {
+  if (is.null(y)) {
     geodesic_var_pair(x, ...)
   } else {
     stopifnot(is.spherical(y) & nrow(y) == 1)
@@ -93,15 +93,14 @@ geodesic_var.Pair <- function(x, y = NULL, group = NULL, ...) {
     }
 
     group_mat <- switch(group,
-                        "orthorhombic" = oriLineInPlaneGroup(),
-                        "triclinic" = oriRayInPlaneGroup(),
-                        "trivial" = oriTrivialGroup(),
-                        "trigonal" = oriTrigonalTrapezohedralGroup(),
-                        "hexagonal" = oriHexagonalTrapezohedralGroup()
+      "orthorhombic" = oriLineInPlaneGroup(),
+      "triclinic" = oriRayInPlaneGroup(),
+      "trivial" = oriTrivialGroup(),
+      "trigonal" = oriTrigonalTrapezohedralGroup(),
+      "hexagonal" = oriHexagonalTrapezohedralGroup()
     )
 
     oriVariance(vec_list(x), pair2rot(y), group = group_mat)
-
   }
 }
 

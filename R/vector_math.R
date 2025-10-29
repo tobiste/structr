@@ -16,7 +16,7 @@
 #' \item{`crossprod()`}{the cross-product of two vectors, i.e. the vector perpendicular to the 2 vectors. If `y = NULL` is taken to be the sam,e vector as `x`: \deqn{x \times y = (x_2 y_3 - x_3 y_2, x_3 y_1 - x_1 y_3, x_1 y_2 - x_2 y_1)}}.
 #' \item{`dotprod()`}{the dot product of two vectors: \eqn{x \cdot y = x_1 y_1 + x_2 y_2 + x_3 y_3}}
 #' \item{`angle()`}{angle between two vectors:  \eqn{\theta = \arccos{\frac{x \cdot y}{||x|| \, ||y||}}}}
-#' \item{`project()`}{projection of one vector onto the other (changes the vector length of second vector, unless their are unit vectors): 
+#' \item{`project()`}{projection of one vector onto the other (changes the vector length of second vector, unless their are unit vectors):
 #' \deqn{proj_y(x) = \frac{x \cdot y}{||y||^2} y}}
 #' \item{`transform_linear()`}{Linear transformation of a vector by a 3x3 matrix: \eqn{x' = A x}}
 #' }
@@ -97,7 +97,7 @@ vcross <- function(x, y) {
 crossprod.Vec3 <- function(x, y = NULL, ...) {
   xv <- unclass(x)
   if (is.null(y)) yv <- xv else yv <- Vec3(y) |> unclass()
-  
+
   vcross(xv, yv) |>
     as.Vec3()
 }
@@ -120,7 +120,7 @@ crossprod.Plane <- function(x, y = NULL, ...) crossprod.Vec3(Vec3(x), y, ...) |>
 vdot <- function(x, y) {
   # equivalent to: x %*% t(y)
   res <- x[, 1] * y[, 1] + x[, 2] * y[, 2] + x[, 3] * y[, 3]
-  #res <- sum(t(x) * t(y))
+  # res <- sum(t(x) * t(y))
   unname(res)
 }
 
@@ -433,9 +433,9 @@ v_lower <- function(v) {
 #' @param t numeric. Interpolation factor(s) (`t = [0, 1]`).
 #'
 #' @note For non-unit vectors the interpolation is not uniform.
-#' 
+#'
 #' @name slerp
-#' 
+#'
 #' @returns object of class `x0`
 #'
 #' @details
@@ -445,7 +445,7 @@ v_lower <- function(v) {
 #' two unit vectors `x0` and `x1` is:
 #' \deqn{\text{Slerp}(x_0, x_1; t) = \frac{sin((1 - t) \theta)}{sin(\theta)} x_0 + \frac{sin(t \theta)}{sin(\theta)} x_1}
 #' where the angle \eqn{\theta} is the angle between `x0` and `x1`, and `t` is
-#' the interpolation factor (ranging from 0 to 1), i.e. the fraction along the 
+#' the interpolation factor (ranging from 0 to 1), i.e. the fraction along the
 #' geodesic path between `x0` and `x1` for which interpolated vector will be calculated.
 #'
 #' @seealso [stereo_segment()] for plotting the Slerp path as a line
@@ -470,23 +470,23 @@ slerp.default <- function(x0, x1, t) {
   stopifnot(
     t >= 0 | t <= 1
   )
-  
+
   theta <- vdot(x0, x1)
   sin.theta <- sin(theta)
-  
+
   a <- sin(((1 - t) * theta)) / sin.theta * x0
   b <- sin(t * theta) / sin.theta * x1
-  
+
   return(a + b)
 }
 
 #' @rdname slerp
 #' @export
-slerp.Vec3 <- function(x0, x1, t){
+slerp.Vec3 <- function(x0, x1, t) {
   stopifnot(is.numeric(t), all(t >= 0), all(t <= 1))
   vx0 <- unclass(x0)
   vx1 <- unclass(x1)
-  
+
   sapply(t, function(i) {
     slerp.default(vx0, vx1, t = i)
   }) |>
@@ -497,24 +497,24 @@ slerp.Vec3 <- function(x0, x1, t){
 
 #' @rdname slerp
 #' @export
-slerp.Line <- function(x0, x1, t){
+slerp.Line <- function(x0, x1, t) {
   slerp.Vec3(Vec3(x0), Vec3(x1), t) |> Line()
 }
 
 #' @rdname slerp
 #' @export
-slerp.Ray <- function(x0, x1, t){
+slerp.Ray <- function(x0, x1, t) {
   slerp.Vec3(Vec3(x0), Vec3(x1), t) |> Ray()
 }
 
 #' @rdname slerp
 #' @export
-slerp.Plane <- function(x0, x1, t){
+slerp.Plane <- function(x0, x1, t) {
   slerp.Vec3(Vec3(x0), Vec3(x1, t)) |> Plane()
 }
 
 #' @rdname slerp
 #' @export
-slerp.Pair <- function(x0, x1, t){
+slerp.Pair <- function(x0, x1, t) {
   stop("Not implemented for Pair objects.")
 }

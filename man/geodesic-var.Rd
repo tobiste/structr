@@ -60,7 +60,7 @@ where \eqn{d_G(x, y)} is the geodesic distance between vectors \eqn{x} and \eqn{
 }
 \examples{
 set.seed(20250411)
-geodesic_var(example_planes, example_planes[1,])
+geodesic_var(example_planes, example_planes[1, ])
 geodesic_var(example_planes)
 }
 \references{

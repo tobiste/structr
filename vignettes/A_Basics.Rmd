@@ -101,8 +101,8 @@ Vec3(1, 0, 0)
 Any of the spherical objects (Ray, Line, Plane, Pair, Fault) can be transformed to Cartesian coordinates, or any other spherical data type, using `Vec3()`, `Line()`, `Plane()`, `Ray()`, `Pair()`, or `Fault()` functions. 
 
 ```{r conversion}
-Line(120, 30) |>  Vec3()
-Plane(120, 30) |>  Line()
+Line(120, 30) |> Vec3()
+Plane(120, 30) |> Line()
 
 Pair(Plane(120, 30), Line(120, 30))
 ```
@@ -110,7 +110,7 @@ Pair(Plane(120, 30), Line(120, 30))
 You can also convert into other data types without transformation, using `as.<data type>()` functions. For example, converting a Line into a Plane:
 
 ```{r conversion2}
-Line(120, 30) |>  as.Plane()
+Line(120, 30) |> as.Plane()
 ```
 
 

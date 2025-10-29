@@ -139,26 +139,27 @@ These estimators are good descriptors of the concentration of the data around th
 #| fig.alt: >
 #|  Equal area projections showing the different estimators of the mean
 
-par(mfrow = c(1,2))
+par(mfrow = c(1, 2))
 stereoplot(guides = FALSE)
 points(example_lines, col = "grey", pch = 16, cex = .7)
 points(sph_mean(example_lines), col = "#1D1147FF", pch = 16)
 points(geodesic_mean(example_lines), col = "#B63679FF", pch = 16)
 points(projected_mean(example_lines), col = "#FEC287FF", pch = 16)
-title(main = 'Lines')
+title(main = "Lines")
 
 legend("bottomleft",
-       legend = c("Arithmetic mean", "Geodesic mean", "Projected mean"),
-       col = c("#1D1147FF", "#B63679FF", "#FEC287FF"),
-       pch = 16,
-       bg = 'white')
+  legend = c("Arithmetic mean", "Geodesic mean", "Projected mean"),
+  col = c("#1D1147FF", "#B63679FF", "#FEC287FF"),
+  pch = 16,
+  bg = "white"
+)
 
 stereoplot(guides = FALSE)
 points(example_planes, col = "grey", pch = 16, cex = .7)
 points(sph_mean(example_planes), col = "#1D1147FF", pch = 16)
 points(geodesic_mean(example_planes), col = "#B63679FF", pch = 16)
 points(projected_mean(example_planes), col = "#FEC287FF", pch = 16)
-title(main = 'Planes')
+title(main = "Planes")
 ```
 
 

@@ -74,16 +74,16 @@ usethis::use_data(holst, overwrite = TRUE)
 
 # Compare with Holst and Fossen (1987), Fig. 5:
 # plot(log(holst[, 'R_YZ']), log(holst[, 'R_XY']), asp = 1, xlim = c(0, 4), ylim = c(0, 4))
-# 
-# 
-# 
-# 
+#
+#
+#
+#
 gr <- tibble::tribble(
   ~strike, ~dip, ~dipdir_quadrant, ~facing, ~type,
   142, 58, "W", "L", "Cleavage",
   155, 63, "W", "L", "Cleavage",
   166, 82, "W", "L", "Cleavage",
-  177+180, 83, "E", "U", "Cleavage",
+  177 + 180, 83, "E", "U", "Cleavage",
   9, 68, "E", "U", "Cleavage",
   11, 60, "E", "U", "Cleavage",
   17, 48, "E", "U", "Cleavage",
@@ -97,9 +97,9 @@ gr <- tibble::tribble(
   34, 48, "E", "U", "Bedding",
   29, 61, "E", "U", "Bedding"
 ) |>
-  mutate(dipdir = rhr2dd(strike), .after = dip) |> 
-  # mutate(dipdir_quadrant2 = azimuth_to_cardinal(dipdir), .after = dipdir_quadrant) |> 
-  mutate(sense = ifelse(facing=="L", 1, -1))
+  mutate(dipdir = rhr2dd(strike), .after = dip) |>
+  # mutate(dipdir_quadrant2 = azimuth_to_cardinal(dipdir), .after = dipdir_quadrant) |>
+  mutate(sense = ifelse(facing == "L", 1, -1))
 
 # gray_example <- Ray(gr$dipdir, gr$dip, sense = gr$sense) |> Line() |> as.Plane()
 gray_example <- Plane(gr$dipdir, gr$dip, sense = gr$sense)
@@ -110,21 +110,28 @@ usethis::use_data(gray_example, overwrite = TRUE)
 
 # Angelier 1990 fault slip data
 angelier1990_df <- readxl::read_xlsx("inst/angelier_data.xlsx", sheet = 1) |>
-  dplyr::filter(site %in% c("TYM", "AVB")) |> 
+  dplyr::filter(site %in% c("TYM", "AVB")) |>
   dplyr::group_by(site) |>
   dplyr::mutate(id = dplyr::row_number(), .before = "sense") |>
   dplyr::mutate( # dipdir = structr::rhr2dd(strike),
     sense = ifelse(sense == "N", 1, -1)
   )
-angelier1990 <- angelier1990_df |> split(angelier1990_df$site) |> 
-  lapply(function(x){
+angelier1990 <- angelier1990_df |>
+  split(angelier1990_df$site) |>
+  lapply(function(x) {
     Fault_from_rake_quadrant(
-      Plane(quadrant2dd(x$strike, x$dip_card), x$dip), 
-      rake = x$pitch, 
-      quadrant = x$pitch_card, 
-      type = "rake", 
-      sense = x$sense)
-})
+      Plane(quadrant2dd(x$strike, x$dip_card), x$dip),
+      rake = x$pitch,
+      quadrant = x$pitch_card,
+      type = "rake",
+      sense = x$sense
+    )
+  })
 usethis::use_data(angelier1990, overwrite = TRUE)
 
-
+# Vorticity example
+shebandowan <- read.csv("inst/vorticity_example.csv") |>
+  dplyr::select(-c(ID, part, pretty, flip, Sample, Area, Section, B, e, Max, Min)) |>
+  dplyr::rename_all(tolower) |>
+  dplyr::rename(area = area_norm)
+usethis::use_data(shebandowan, overwrite = TRUE)

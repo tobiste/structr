@@ -123,9 +123,9 @@ azimuth_to_cardinal <- function(x, n_directions = 8) {
   # Normalize to 0–360
   azimuth <- x %% 360
 
-  
+
   if (n_directions == 4) {
-  dirs <- c("N", "E", "S", "W")
+    dirs <- c("N", "E", "S", "W")
   } else if (n_directions == 8) {
     dirs <- c("N", "NE", "E", "SE", "S", "SW", "W", "NW")
   } else if (n_directions == 16) {
@@ -158,15 +158,15 @@ azimuth_to_cardinal <- function(x, n_directions = 8) {
 #'
 #' @examples
 #' s <- c(270, 315, 0, 45, 90, 135, 180, 225, 270) # strike in left-hand-rule
-#' q <- c("N", 'E', 'E', 'S', 'S', 'W', 'W', 'N', "N") # dip quadrant
+#' q <- c("N", "E", "E", "S", "S", "W", "W", "N", "N") # dip quadrant
 #' quadrant2dd(s, q)
-quadrant2dd <- function(strike, dip_quadrant, n_directions = c(4L, 8L, 16L)){
+quadrant2dd <- function(strike, dip_quadrant, n_directions = c(4L, 8L, 16L)) {
   # 1. try right-hand-rule
   dd <- strike - 90
-  
+
   # check if already correct
-  res1 <- azimuth_to_cardinal(dd, n_directions = min(2*n_directions, 16))
-  match <- sapply(seq_along(res1), function(i) grepl(dip_quadrant[i], res1[i])) 
+  res1 <- azimuth_to_cardinal(dd, n_directions = min(2 * n_directions, 16))
+  match <- sapply(seq_along(res1), function(i) grepl(dip_quadrant[i], res1[i]))
   # do left-handrule if not
   ifelse(match, dd, strike + 90) %% 360
 }

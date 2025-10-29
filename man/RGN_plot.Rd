@@ -9,7 +9,7 @@ RGN_plot(
   theta,
   angle_error = 3,
   boot = 100L,
-  probs = 0.972,
+  probs = 0.975,
   grid = 0.05,
   main = "Rigid-Grain-Net",
   ...
@@ -48,13 +48,9 @@ This critical shape factor can be interpreted as the the \strong{mean kinematic 
 Here the \code{Rc} is estimated using the bootstrap method described in Stephan et al. (2025).
 }
 \examples{
-data(ramsay)
+data(shebandowan)
 set.seed(20250411)
-
-# assuming the mean orientation is the foliation:
-theta <- tectonicr::circular_mean(ramsay[, 2]) - ramsay[, 2]
-
-RGN_plot(ramsay[, "R"], theta, col = "darkred")
+RGN_plot(shebandowan$r, shebandowan$phi, col = "darkred")
 }
 \references{
 Jessup, Micah J., Richard D. Law, and Chiara Frassi.
@@ -62,8 +58,10 @@ Jessup, Micah J., Richard D. Law, and Chiara Frassi.
 kinematic vorticity number (Wm)." Journal of Structural Geology 29.3 (2007):
 411-421. doi: 10.1016/j.jsg.2006.11.003
 
-Stephan, Tobias, et al. "Going with the flow—Changes of vorticity control
-gold enrichment in Archean shear zones (Shebandowan Greenstone Belt,
-Superior Province, Canada)." Journal of Structural Geology (2025): 105542.
-doi: 10.1016/j.jsg.2025.105542
+Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
+Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
+vorticity control gold enrichment in Archean shear zones
+(Shebandowan Greenstone Belt, Superior Province, Canada).
+Journal of Structural Geology, 201, 105542.
+https://doi.org/10.1016/j.jsg.2025.105542
 }

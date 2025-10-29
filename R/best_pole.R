@@ -8,7 +8,7 @@
 #' least-square fit of small and great circles to spherically projected data.
 #' Mathematical Geology, Vol. 12, No. 3, 1980.
 #' @export
-#' 
+#'
 #' @seealso [regression_smallcircle()], [regression_greatcircle()]
 #'
 #' @returns list. `axis_c` is the axis of the small-circle cone, `axis_g` is the axis of the great-circle,
@@ -156,9 +156,9 @@ gray_algorithm <- function(x, sm = TRUE) {
 #' \item{`K`}{(only for cones) half apical angle of best fit cone (in radians).}
 #' }
 #' @name best_pole
-#' 
+#'
 #' @references Ramsay, J. G. (1967). Folding and Fracturing of Rocks. McGraw-Hill.
-#' 
+#'
 #' @examples
 #' \dontrun{
 #' # example from Ramsay, 1967, p. 20
@@ -369,7 +369,7 @@ regression_cone_ramsay2 <- function(x) {
 #' Least-square fit of small and great circles to spherically projected data
 #'
 #' Fits a great circle arc to a set of lines, based on an independent scalar variable.
-#' 
+#'
 #' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`.
 #' @param val A vector of real numbers. Values of independent scalar variables. Same length as `x`.
 #' @param iterations A real number (positive integer). A bound on the number of numerical optimization iterations allowed.
@@ -386,11 +386,11 @@ regression_cone_ramsay2 <- function(x) {
 #' \item{`range`}{Range of the regression line (in radians if `x` is of class `"Vec3"`, degrees otherwise)}
 #' }
 #' @name best_fit
-#' 
-#' @references Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis 
-#' for three-dimensional orientational data. Journal of Structural Geology, 96, 
+#'
+#' @references Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis
+#' for three-dimensional orientational data. Journal of Structural Geology, 96,
 #' 65–89. https://doi.org/10.1016/j.jsg.2017.01.002
-#' 
+#'
 #' @examples
 #' data("gray_example")
 #' bestgc_clea <- regression_greatcircle(gray_example[1:8, ])
@@ -410,7 +410,7 @@ regression_cone_ramsay2 <- function(x) {
 #' points(bestsc_clea$vec, col = "lightblue", pch = 16)
 #' lines(bestgc_clea$vec, lty = 2, col = "blue")
 #' points(bestgc_clea$vec, col = "blue", pch = 17)
-#' 
+#'
 #' # best for bedding
 #' lines(bestsc_bedd$vec, bestsc_bedd$cone, col = "sienna")
 #' points(bestsc_bedd$vec, col = "sienna", pch = 16)
@@ -488,8 +488,8 @@ regression_greatcircle <- function(x, val = seq_len(nrow(x)), iterations = 1000L
 #' @export
 regression_smallcircle <- function(x, val = seq_len(nrow(x)), num_seeds = 5L, iterations = 1000L, n_points = 100L) {
   xv <- vec_list(x)
- 
-  if(is.Ray(x) | is.Vec3(x)) {
+
+  if (is.Ray(x) | is.Vec3(x)) {
     res <- rayRegressionSmallCircleRescaled(val, xv, numSeeds = num_seeds, numSteps = iterations, numPoints = n_points)
   } else {
     res <- lineRegressionSmallCircleRescaled(val, xv, numSeeds = num_seeds, numSteps = iterations, numPoints = n_points)
@@ -497,11 +497,11 @@ regression_smallcircle <- function(x, val = seq_len(nrow(x)), num_seeds = 5L, it
 
   vec <- as.Vec3(res$pole)
   points <- as.Vec3(do.call(rbind, res$points))
-  cone <- angle(points,vec)[1]
-  
+  cone <- angle(points, vec)[1]
+
   if (!is.Vec3(x)) cone <- rad2deg(cone)
   if (!is.Vec3(x)) res$angle <- rad2deg(res$angle)
-  
+
   list(
     vec = Spherical(vec, class(x)[1]),
     cone = cone,
@@ -690,4 +690,3 @@ scale <- function(y, a = 0, b = 1) {
 scales <- function(ys) {
   sapply(ys, scale, min(ys), max(ys))
 }
-

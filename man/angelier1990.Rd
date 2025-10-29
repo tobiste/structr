@@ -3,7 +3,7 @@
 \docType{data}
 \name{angelier1990}
 \alias{angelier1990}
-\title{Example fault slip data}
+\title{Fault-Slip Data}
 \format{
 An object of class \code{data.frame}
 }

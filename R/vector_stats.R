@@ -136,10 +136,10 @@ v_confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = FALSE) {
 #' @details
 #'  These statistical estimators are based on the resultant vector of a set of \eqn{n} vectors \eqn{x_1, \ldots, x_n} (Mardia 1972). The resultant vector is given by
 #'  \deqn{\bar{\mathbf{x}} = \sum_{i=1}^{n} \mathbf{x}_i}
-#'  
+#'
 #'  The mean resultant is defined as
 #'  \deqn{\bar{\mathbf{R}} = ||\bar{\mathbf{x}}|| = \sqrt{x_x^2 + x_y^2 + x_z^2}}
-#' 
+#'
 #' `sph_mean` returns the spherical mean of a set of vectors
 #' (object of class of `x`), that is the maximum likelihood estimate of the mean direction given by the arithmetic mean of the vector components normalized by the mean resultant vector:
 #' \deqn{\mu = \frac{\bar{\mathbf{x}}}{\bar{\mathbf{R}}}}
@@ -175,11 +175,11 @@ v_confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = FALSE) {
 #'  \deqn{\hat{\kappa} = \frac{\bar{R}(p - \bar{R}^2)}{1 - \bar{R}^2}}
 #'  where \eqn{p} is the dimension of the data (3 for spherical data).
 #'
-#' @references 
+#' @references
 #' Mardia, Kanti; Jupp, P. E. (1999). Directional Statistics. John Wiley & Sons Ltd. ISBN 978-0-471-95333-3.
-#' 
+#'
 #' Sra, S. A short note on parameter approximation for von Mises-Fisher distributions: and a fast implementation of I s (x). Comput Stat 27, 177–190 (2012). https://doi.org/10.1007/s00180-011-0232-x
-#' 
+#'
 #' @examples
 #' set.seed(20250411)
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)

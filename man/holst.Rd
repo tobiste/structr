@@ -3,7 +3,7 @@
 \docType{data}
 \name{holst}
 \alias{holst}
-\title{3D strain data}
+\title{3D Strain Data}
 \format{
 An object of class \code{matrix}
 }

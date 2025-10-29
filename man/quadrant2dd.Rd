@@ -21,7 +21,7 @@ Converts strike and dip quadrant notation into into dip direction
 }
 \examples{
 s <- c(270, 315, 0, 45, 90, 135, 180, 225, 270) # strike in left-hand-rule
-q <- c("N", 'E', 'E', 'S', 'S', 'W', 'W', 'N', "N") # dip quadrant
+q <- c("N", "E", "E", "S", "S", "W", "W", "N", "N") # dip quadrant
 quadrant2dd(s, q)
 }
 \seealso{

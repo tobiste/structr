@@ -149,7 +149,9 @@ spatial_interpolation <- function(x,
 
 
           # mean vector and spherical standard deviation
-          vecs <- datas[ids_R, 3:4] |>  as.Line() |> Spherical(xclass)
+          vecs <- datas[ids_R, 3:4] |>
+            as.Line() |>
+            Spherical(xclass)
           mean_vec <- sph_mean(vecs, w) |> unclass()
           var_vec <- sph_var(vecs, w)
         }

@@ -951,7 +951,7 @@ stereo_arrows <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.
 #'
 #' stereoplot(title = "Hoeppener plot")
 #' hoeppener(f, col = 1:nrow(f), cex = 1, scale = 0.1, points = FALSE)
-#' 
+#'
 #' # or
 #' stereoplot()
 #' fault_plot(f, type = "hoeppener", col = 1:nrow(f), cex = 1, scale = 0.1, points = FALSE)
@@ -1001,8 +1001,8 @@ angelier <- function(x, pch = 1, lwd = 1, lty = 1, col = "black", cex = 1, point
 #' @param show.center logical. Whether the center point `y` of the mean should be highlighted in the plot.
 #' @inheritParams stereo_point
 #'
-#' @returns list. `angles` is a vector of the geodesic angles (in degrees) 
-#' between all vectors in `x` and `y` (or the mean), and `var` is a scalar giving the Fr&eacute;chet variance. 
+#' @returns list. `angles` is a vector of the geodesic angles (in degrees)
+#' between all vectors in `x` and `y` (or the mean), and `var` is a scalar giving the Fr&eacute;chet variance.
 #' @export
 #'
 #' @seealso [stereo_segment()], [sph_mean()], [geodesic_mean()], [projected_mean()], [geodesic_var()]
@@ -1037,20 +1037,20 @@ variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "proj
     ang_col <- assign_col(ang, ...)
     points(xl, col = ang_col, pch = 16, cex = .66, upper.hem = upper.hem, earea = earea)
   }
-  
+
   if (isTRUE(show.center)) {
     points(yl, pch = 1, cex = 1, lwd = 2, col = "red", upper.hem = upper.hem, earea = earea)
   }
 
   var_frechet <- geodesic_var(x, y)
-  
+
   graphics::title(
-    main = "Variance plot", 
+    main = "Variance plot",
     sub = paste(
       "Center vector:", round(y[1, 1]), "/", round(y[1, 2]),
       "\nFrechet variance:", round(var_frechet, 2)
-      )
     )
+  )
 
   invisible(list(angles = ang, var = var_frechet))
 }

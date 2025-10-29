@@ -148,7 +148,7 @@ plane_weightings <- 6 / example_planes_df$quality
 
 stereoplot(guides = FALSE)
 points(planes, col = "grey", pch = 16, cex = .5)
-contour(planes, add = TRUE, density.params	= list(weights = plane_weightings))
+contour(planes, add = TRUE, density.params = list(weights = plane_weightings))
 ```
 
 `contour()` adds contour lines, while `contourf()` adds filled contours and `image()` adds a density image (i.e. a dense grid of colored rectangles). See `?contour`, `?contourf`, and `?image` for more information.
@@ -159,7 +159,7 @@ contour(planes, add = TRUE, density.params	= list(weights = plane_weightings))
 #|   equal-area projection
 stereoplot(guides = FALSE)
 points(planes, col = "grey", pch = 16, cex = .5)
-contourf(planes, add = TRUE, density.params	= list(weights = plane_weightings))
+contourf(planes, add = TRUE, density.params = list(weights = plane_weightings))
 ```
 
 ## Synopsis
@@ -207,7 +207,7 @@ stereoplot(guides = TRUE, col = "grey96")
 points(lines, col = "grey", pch = 16, cex = .5)
 contour(lines, add = TRUE, weights = line_weightings)
 points(lines_mean, col = "black", pch = 16)
-lines(lines_mean, ang = lines_sd,  col = "black")
+lines(lines_mean, ang = lines_sd, col = "black")
 title(
   main = "Lines",
   sub = paste0(
