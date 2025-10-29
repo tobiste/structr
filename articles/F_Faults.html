@@ -68,7 +68,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-10-28</h4>
+            <h4 data-toc-skip class="date">2025-10-29</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/F_Faults.Rmd" class="external-link"><code>vignettes/F_Faults.Rmd</code></a></small>
       <div class="d-none name"><code>F_Faults.Rmd</code></div>
@@ -136,7 +136,7 @@ the measurements so that this will not be the case:</p>
 <span><span class="co">##     120.08575      59.20326     109.76769      58.79085</span></span></code></pre>
 <blockquote>
 <p>A <code>"Pair"</code> object is a container of associated plane and
-line measurements. Basically like a fault wihtout the sense of
+line measurements. Basically like a fault without the sense of
 displacement.</p>
 </blockquote>
 </div>
@@ -156,7 +156,7 @@ dihedra separation plane (d).</p>
 <p>First we load some example data (here the first three faults from the
 TYM dataset by from Angelier, 1990)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Angelier, J. (1990). Inversion of field data in fault
 tectonics to obtain the regional stress—III. A new rapid direct
-inversion method by analytical means. Ceophys. J. Int, 103, 363–376. &lt;a href="https://doi.org/10.1111/j.1365-246X.1990.tb01777.x" class="external-link uri"&gt;https://doi.org/10.1111/j.1365-246X.1990.tb01777.x&lt;/a&gt;&lt;/p&gt;'><sup>1</sup></a></p>
+inversion method by analytical means. Geophys. J. Int, 103, 363–376. &lt;a href="https://doi.org/10.1111/j.1365-246X.1990.tb01777.x" class="external-link uri"&gt;https://doi.org/10.1111/j.1365-246X.1990.tb01777.x&lt;/a&gt;&lt;/p&gt;'><sup>1</sup></a></p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"angelier1990"</span><span class="op">)</span></span>
 <span><span class="va">my_fault2</span> <span class="op">&lt;-</span> <span class="va">angelier1990</span><span class="op">$</span><span class="va">TYM</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, <span class="op">]</span></span>
@@ -238,7 +238,7 @@ It uses bootstrapping for confidence intervals of the stress
 estimates.</p>
 <p>First we load some example data (here the data from Angelier, 1990)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Angelier, J. (1990). Inversion of field data in fault
 tectonics to obtain the regional stress—III. A new rapid direct
-inversion method by analytical means. Ceophys. J. Int, 103, 363–376. &lt;a href="https://doi.org/10.1111/j.1365-246X.1990.tb01777.x" class="external-link uri"&gt;https://doi.org/10.1111/j.1365-246X.1990.tb01777.x&lt;/a&gt;&lt;/p&gt;'><sup>3</sup></a></p>
+inversion method by analytical means. Geophys. J. Int, 103, 363–376. &lt;a href="https://doi.org/10.1111/j.1365-246X.1990.tb01777.x" class="external-link uri"&gt;https://doi.org/10.1111/j.1365-246X.1990.tb01777.x&lt;/a&gt;&lt;/p&gt;'><sup>3</sup></a></p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="va">angelier1990</span><span class="op">$</span><span class="va">TYM</span></span>
 <span></span>
@@ -559,7 +559,7 @@ as the georeference frame with D = down, E = East, N = North.</div>
 <h3 id="get-different-components-with-trigonometry">Get different components with trigonometry<a class="anchor" aria-label="anchor" href="#get-different-components-with-trigonometry"></a>
 </h3>
 <div class="section level4">
-<h4 id="sec-offset-1">1. Input: Fault orientation (dip angle, dip direction), shorteninig
+<h4 id="sec-offset-1">1. Input: Fault orientation (dip angle, dip direction), shortening
 direction, and horizontal throw<a class="anchor" aria-label="anchor" href="#sec-offset-1"></a>
 </h4>
 <p>Knowing the horizontal throw (e.g. from plate motion parameters), the
