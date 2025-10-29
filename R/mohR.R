@@ -216,11 +216,14 @@ Mohr_calc <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
 #' plots the Mohr Circle
 #'
 #' @inheritParams Mohr_calc
+#' @param sigma2 numeric. (optional) Magnitude of intermediate principal stress. 
+#' This will add the additional Mohr circles between the principal stresses. 
 #' @param unit character. The unit used for magnitude of stress (`"MPa"` by default).
 #' @param col color for Mohr circle.
 #' @param n integer. Resolution given amount of points along the generated path
 #' representing the full Mohr circle (`512` by default).
-#' @param full.circle logical. Should the complete Mohr circle be shown, or only the upper (positive shear stress) part of the circle?
+#' @param full.circle logical. Should the complete Mohr circle be shown, or only 
+#' the upper (positive shear stress) part of the circle?
 #' @param include.zero logical. the plot range be extended to include normal_stress = 0?
 #' @param ... optional graphical parameters.
 #' @note One of the following two sets of data must be entered
@@ -234,8 +237,8 @@ Mohr_calc <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
 #' Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = "#B63679", lwd = 2)
 #' 
 #' # unitless Mohr diagram
-#' Mohr_plot(sigma1 = 1025, sigma3 = 250, col = "#B63679", lwd = 2, unit = NULL, include.zero = FALSE)
-Mohr_plot <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigma3 = NA,
+#' Mohr_plot(sigma1 = 1025, sigma2 = 450, sigma3 = 250, col = "#B63679", lwd = 2, unit = NULL, include.zero = FALSE)
+Mohr_plot <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigma2 = NA, sigma3 = NA,
                       unit = "MPa", col = "black", n = 512, full.circle = FALSE, include.zero = TRUE, ...) {
   ##  Calculate normal and shear stresses
   theta <- seq(from = 0, to = 180, length.out = n)
@@ -251,6 +254,36 @@ Mohr_plot <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
     tau <- tau[positive_tau]
     sigma <- sigma[positive_tau]
   }
+  
+  
+  all_principals <- !is.na(sigma1) & !is.na(sigma2) & !is.na(sigma3)
+  if(all_principals){
+    stress_vec23 <- sapply(
+      X = theta, FUN = stress_transformation,
+      sigma1 = sigma2, sigma3 = sigma3
+    )
+    sigma23<- as.numeric(stress_vec23[1, ])
+    tau23 <- as.numeric(stress_vec23[2, ])
+    
+    stress_vec12 <- sapply(
+      X = theta, FUN = stress_transformation,
+      sigma1 = sigma1, sigma3 = sigma2
+    )
+    sigma12<- as.numeric(stress_vec12[1, ])
+    tau12 <- as.numeric(stress_vec12[2, ])
+    
+    
+    if(!full.circle){
+      tau23 <- tau23[positive_tau]
+      sigma23 <- sigma23[positive_tau]
+      
+      tau12 <- tau12[positive_tau]
+      sigma12 <- sigma12[positive_tau]
+    }
+  }
+  
+  
+  
   
   ##  Expression for axes
   if(is.null(unit)){
@@ -275,6 +308,11 @@ Mohr_plot <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
     axes = !is.null(unit)
   )
 
+  if(all_principals) {
+    graphics::lines(sigma23, tau23, col = col, ...)
+    graphics::lines(sigma12, tau12, col = col, ...)
+  }
+  
   graphics::lines(sigma, tau, col = col, ...)
   graphics::abline(h = 0)
   graphics::points(mean(range(sigma)), 0, col = col)

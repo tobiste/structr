@@ -9,6 +9,7 @@ Mohr_plot(
   sigma_z = NA,
   tau_xz = NA,
   sigma1 = NA,
+  sigma2 = NA,
   sigma3 = NA,
   unit = "MPa",
   col = "black",
@@ -27,6 +28,9 @@ Mohr_plot(
 
 \item{sigma1}{numeric. Magnitude of major principal stress}
 
+\item{sigma2}{numeric. (optional) Magnitude of intermediate principal stress.
+This will add the additional Mohr circles between the principal stresses.}
+
 \item{sigma3}{numeric. Magnitude of minor principal stress}
 
 \item{unit}{character. The unit used for magnitude of stress (\code{"MPa"} by default).}
@@ -36,7 +40,8 @@ Mohr_plot(
 \item{n}{integer. Resolution given amount of points along the generated path
 representing the full Mohr circle (\code{512} by default).}
 
-\item{full.circle}{logical. Should the complete Mohr circle be shown, or only the upper (positive shear stress) part of the circle?}
+\item{full.circle}{logical. Should the complete Mohr circle be shown, or only
+the upper (positive shear stress) part of the circle?}
 
 \item{include.zero}{logical. the plot range be extended to include normal_stress = 0?}
 
@@ -56,7 +61,7 @@ One of the following two sets of data must be entered
 Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = "#B63679", lwd = 2)
 
 # unitless Mohr diagram
-Mohr_plot(sigma1 = 1025, sigma3 = 250, col = "#B63679", lwd = 2, unit = NULL, include.zero = FALSE)
+Mohr_plot(sigma1 = 1025, sigma2 = 450, sigma3 = 250, col = "#B63679", lwd = 2, unit = NULL, include.zero = FALSE)
 }
 \seealso{
 \code{\link[=Mohr_calc]{Mohr_calc()}}, \code{\link[=ggMohr]{ggMohr()}}

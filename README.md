@@ -285,7 +285,12 @@ SH(
 ### Mohr circles
 
 ``` r
-Mohr_plot(sigma1 = faults_stress$principal_vals[1], sigma3 = faults_stress$principal_vals[3], unit = NULL, include.zero = FALSE)
+Mohr_plot(
+  sigma1 = faults_stress$principal_vals[1], 
+  sigma2 = faults_stress$principal_vals[2], 
+  sigma3 = faults_stress$principal_vals[3], 
+  unit = NULL, include.zero = FALSE
+  )
 points(faults_stress$fault_data$sigma_n, faults_stress$fault_data$sigma_s, col = assign_col(beta), pch = 16)
 ```
 
