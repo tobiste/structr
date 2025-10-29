@@ -181,9 +181,9 @@ slip_inversion0 <- function(x, friction = 0.6){
     principal_axes = principal_axes,
     principal_vals = sigma_vals,
     principal_fault = pf,
-    R = R,
-    phi = phi,
-    bott = shape_ratio_bott,
+    R = unname(R),
+    phi = unname(phi),
+    bott = unname(shape_ratio_bott),
     beta = beta_mean,
     sigma_s = sigma_s_mean,
     fault_data = data.frame(beta=betas, theta=theta, sigma_s=sigma_s, sigma_n = sigma_n, slip_tendency = slip_tend, dilational_tendency = dilat_tend)

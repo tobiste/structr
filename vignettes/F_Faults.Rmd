@@ -232,19 +232,16 @@ legend_c(
   )
 ```
 
-<!-- # ```{r slip_inversion_mohr} -->
-
-<!-- # sigmas <- test_res$principal_vals -->
-
-<!-- #  -->
-
-<!-- # ggMohr(sigmas[1], sigmas[2], sigmas[3], coulomb = NULL, sliding = NULL) + -->
-
-<!-- #   geom_point(data = test_res$fault_data, aes(sigma_n, sigma_s)) + -->
-
-<!-- #   theme_void() -->
-
-<!-- # ``` -->
+```{r slip_inversion_mohr}
+Mohr_plot(
+  sigma1 = test_res$principal_vals[1], 
+  sigma2 = test_res$principal_vals[2], 
+  sigma3 = test_res$principal_vals[3], 
+  unit = NULL, include.zero = FALSE
+  )
+points(test_res$fault_data$sigma_n, abs(test_res$fault_data$sigma_s), 
+       col = assign_col(beta), pch = 16)
+```
 
 ### Maximum horizontal stress[^4]
 
