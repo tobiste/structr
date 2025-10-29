@@ -100,7 +100,7 @@ strike:</p>
 the sense, and the rake</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 1. Define a plane through dip direction, dip angle</span></span>
-<span><span class="va">fault_plane</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Plane</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">120</span>, <span class="fl">100</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">60</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="va">fault_plane</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Plane</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">120</span>, <span class="fl">100</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">60</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># 2. Define a fault through the plane and rake angle:</span></span>
 <span><span class="fu"><a href="../reference/fault_from_rake.html">Fault_from_rake</a></span><span class="op">(</span><span class="va">fault_plane</span>, rake <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">84.7202</span>, <span class="op">-</span><span class="fl">10</span>, <span class="fl">30</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -240,12 +240,12 @@ estimates.</p>
 tectonics to obtain the regional stress—III. A new rapid direct
 inversion method by analytical means. Geophys. J. Int, 103, 363–376. &lt;a href="https://doi.org/10.1111/j.1365-246X.1990.tb01777.x" class="external-link uri"&gt;https://doi.org/10.1111/j.1365-246X.1990.tb01777.x&lt;/a&gt;&lt;/p&gt;'><sup>3</sup></a></p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="va">angelier1990</span><span class="op">$</span><span class="va">TYM</span></span>
+<code class="sourceCode R"><span><span class="co">#|</span></span>
+<span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="va">angelier1990</span><span class="op">$</span><span class="va">TYM</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Test data"</span>, guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">test_data</span>, col <span class="op">=</span> <span class="st">"grey30"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="F_Faults_files/figure-html/slip_inversion1-1.png" alt="Diagram showing some fault-slip data in a stereoplot
-" width="700"></p>
+<p><img src="F_Faults_files/figure-html/slip_inversion1-1.png" alt="Diagram showing some fault-slip data in a stereoplot" width="700"></p>
 <p>The stress inversion with 10 bootstraps:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slip_inversion.html">slip_inversion</a></span><span class="op">(</span><span class="va">test_data</span>, boot <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
@@ -269,18 +269,21 @@ best stress tensor and the slip vector on each plane (ideally close to
 confidence region of the axes, you may use the stereoplot() functions
 from {structr}</p>
 <div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'#000004FF'</span>, <span class="st">"#B63679FF"</span>, <span class="st">"#FEC287FF"</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#000004FF"</span>, <span class="st">"#B63679FF"</span>, <span class="st">"#FEC287FF"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Stress inversion"</span>, guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">test_data</span>, col <span class="op">=</span> <span class="st">'grey75'</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">test_data</span>, col <span class="op">=</span> <span class="st">"grey75"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes_conf</span><span class="op">$</span><span class="va">sigma1</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes_conf</span><span class="op">$</span><span class="va">sigma2</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes_conf</span><span class="op">$</span><span class="va">sigma3</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span>, </span>
-<span>     label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">)</span>, </span>
-<span>     col <span class="op">=</span> <span class="va">cols</span>, adj <span class="op">=</span> <span class="op">-</span><span class="fl">.25</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>, col <span class="op">=</span> <span class="va">cols</span>, </span>
-<span>       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span>,</span>
+<span>  label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">)</span>,</span>
+<span>  col <span class="op">=</span> <span class="va">cols</span>, adj <span class="op">=</span> <span class="op">-</span><span class="fl">.25</span></span>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>,</span>
+<span>  col <span class="op">=</span> <span class="va">cols</span>,</span>
+<span>  legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="F_Faults_files/figure-html/slip_inversion_plot-1.png" alt="Diagram showing principal stress vector results in a stereoplot" width="700"></p>
 <p>The stress shape ratio Φ (Angelier 1979)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Angelier, J. (1979). Determination of the mean principal
 directions of stresses for a given fault population. Tectonophysics,
@@ -301,25 +304,27 @@ visualized in the stereoplot:</p>
 <code class="sourceCode R"><span><span class="va">beta</span> <span class="op">&lt;-</span> <span class="va">test_res</span><span class="op">$</span><span class="va">fault_data</span><span class="op">$</span><span class="va">beta</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span></span>
-<span>  title <span class="op">=</span> <span class="st">"Deviation"</span>, </span>
-<span>  sub <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/bquote.html" class="external-link">bquote</a></span><span class="op">(</span><span class="fu">bar</span><span class="op">(</span><span class="va">beta</span><span class="op">)</span> <span class="op">==</span> <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">beta</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="va">degree</span><span class="op">)</span>, </span>
-<span>  guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span>  title <span class="op">=</span> <span class="st">"Deviation"</span>,</span>
+<span>  sub <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/bquote.html" class="external-link">bquote</a></span><span class="op">(</span><span class="fu">bar</span><span class="op">(</span><span class="va">beta</span><span class="op">)</span> <span class="op">==</span> <span class="fu">.</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">beta</span><span class="op">)</span><span class="op">)</span> <span class="op">*</span> <span class="va">degree</span><span class="op">)</span>,</span>
+<span>  guides <span class="op">=</span> <span class="cn">FALSE</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">test_data</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/colorize.html">assign_col</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/colorize.html">legend_c</a></span><span class="op">(</span></span>
-<span>  <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span>, </span>
-<span>  title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/bquote.html" class="external-link">bquote</a></span><span class="op">(</span><span class="st">"Deviation angle"</span> <span class="op">~</span> <span class="va">beta</span> <span class="op">~</span> <span class="st">"("</span><span class="op">*</span><span class="va">degree</span><span class="op">*</span><span class="st">")"</span><span class="op">)</span></span>
-<span>  <span class="op">)</span></span></code></pre></div>
-<p><img src="F_Faults_files/figure-html/slip_inversion_beta-1.png" alt="Diagram showing deviation of the best-fit principal stress tensor in a  stereoplot" width="700"></p>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span>,</span>
+<span>  title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/bquote.html" class="external-link">bquote</a></span><span class="op">(</span><span class="st">"Deviation angle"</span> <span class="op">~</span> <span class="va">beta</span> <span class="op">~</span> <span class="st">"("</span> <span class="op">*</span> <span class="va">degree</span> <span class="op">*</span> <span class="st">")"</span><span class="op">)</span></span>
+<span><span class="op">)</span></span></code></pre></div>
+<p><img src="F_Faults_files/figure-html/slip_inversion_beta-1.png" alt="Diagram showing deviation of the best-fit principal stress tensor in a stereoplot" width="700"></p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Mohr_plot.html">Mohr_plot</a></span><span class="op">(</span></span>
-<span>  sigma1 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_vals</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, </span>
-<span>  sigma2 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_vals</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, </span>
-<span>  sigma3 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_vals</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, </span>
+<span>  sigma1 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_vals</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
+<span>  sigma2 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_vals</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,</span>
+<span>  sigma3 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_vals</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,</span>
 <span>  unit <span class="op">=</span> <span class="cn">NULL</span>, include.zero <span class="op">=</span> <span class="cn">FALSE</span></span>
-<span>  <span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">fault_data</span><span class="op">$</span><span class="va">sigma_n</span>, <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">fault_data</span><span class="op">$</span><span class="va">sigma_s</span><span class="op">)</span>, </span>
-<span>       col <span class="op">=</span> <span class="fu"><a href="../reference/colorize.html">assign_col</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
+<span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">fault_data</span><span class="op">$</span><span class="va">sigma_n</span>, <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">fault_data</span><span class="op">$</span><span class="va">sigma_s</span><span class="op">)</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="../reference/colorize.html">assign_col</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <p><img src="F_Faults_files/figure-html/slip_inversion_mohr-1.png" width="700"></p>
 </div>
 <div class="section level3">
@@ -539,10 +544,11 @@ cross-product of the two vectors:</p>
 <p>And the SHmax for the slip inversion result from above:</p>
 <div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.html">SH</a></span><span class="op">(</span></span>
-<span>  S1 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>, </span>
-<span>  S2 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span>, </span>
+<span>  S1 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>,</span>
+<span>  S2 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span>,</span>
 <span>  S3 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">3</span>, <span class="op">]</span>,</span>
-<span>  R <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">R</span><span class="op">)</span></span></code></pre></div>
+<span>  R <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">R</span></span>
+<span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 60.80844</span></span></code></pre>
 </div>
 </div>

@@ -161,11 +161,11 @@ interpreted as the the <strong>mean kinematic vorticity number</strong>.
 Here the <code>Rc</code> is estimated using the bootstrap method
 described in Stephan et al. (2025).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="co"># assuming the mean orientation resembles the foliation</span></span>
-<span><span class="va">theta</span> <span class="op">&lt;-</span> <span class="fu">tectonicr</span><span class="fu">::</span><span class="fu"><a href="https://tobiste.github.io/tectonicr/reference/circle_stats.html" class="external-link">circular_mean</a></span><span class="op">(</span><span class="va">ramsay</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span> <span class="op">-</span> <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">shebandowan</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20250411</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/RGN_plot.html">RGN_plot</a></span><span class="op">(</span>r <span class="op">=</span> <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, theta <span class="op">=</span> <span class="va">theta</span>, col <span class="op">=</span> <span class="st">"#B63679"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Rigid Grain Net"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># Color code porphyroclasts by size of clast (area in log-scale):</span></span>
+<span><span class="fu"><a href="../reference/RGN_plot.html">RGN_plot</a></span><span class="op">(</span><span class="va">shebandowan</span><span class="op">$</span><span class="va">r</span>, <span class="va">shebandowan</span><span class="op">$</span><span class="va">phi</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/colorize.html">assign_col</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">shebandowan</span><span class="op">$</span><span class="va">area</span><span class="op">)</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
 <p><img src="H_Strain_Analysis_files/figure-html/vorticity-1.png" alt="Rigid grain net" width="700"></p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

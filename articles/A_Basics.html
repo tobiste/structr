@@ -182,11 +182,11 @@ using <code><a href="../reference/classes.html">Vec3()</a></code>, <code><a href
 <code><a href="../reference/classes.html">Ray()</a></code>, <code><a href="../reference/classes.html">Pair()</a></code>, or <code><a href="../reference/classes.html">Fault()</a></code>
 functions.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">30</span><span class="op">)</span> <span class="op">|&gt;</span>  <span class="fu"><a href="../reference/classes.html">Vec3</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">30</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/classes.html">Vec3</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Vector (Vec3) object (n = 1):</span></span>
 <span><span class="co">#&gt;          x          y          z </span></span>
 <span><span class="co">#&gt; -0.4330127  0.7500000  0.5000000</span></span>
-<span><span class="fu"><a href="../reference/classes.html">Plane</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">30</span><span class="op">)</span> <span class="op">|&gt;</span>  <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/classes.html">Plane</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">30</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Line object (n = 1):</span></span>
 <span><span class="co">#&gt; azimuth  plunge </span></span>
 <span><span class="co">#&gt;     300      60</span></span>
@@ -199,7 +199,7 @@ functions.</p>
 using <code>as.&lt;data type&gt;()</code> functions. For example,
 converting a Line into a Plane:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">30</span><span class="op">)</span> <span class="op">|&gt;</span>  <span class="fu"><a href="../reference/classes.html">as.Plane</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">30</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/classes.html">as.Plane</a></span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Plane object (n = 1):</span></span>
 <span><span class="co">#&gt; dip_direction           dip </span></span>
 <span><span class="co">#&gt;           120            30</span></span></code></pre></div>
