@@ -11,7 +11,7 @@ regression_cone_ramsay(x)
 regression_cone_ramsay2(x)
 }
 \arguments{
-\item{x}{matrix. Cartesian coordinates of points}
+\item{x}{matrix, where the rows are the observations and the columns are the coordinates of points}
 }
 \value{
 numeric vector with

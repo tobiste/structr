@@ -7,7 +7,8 @@
 woodcock_plot(x, labels = NULL, add = FALSE, max = 7, ...)
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}.}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
+rows are the observations and the columns are the coordinates.}
 
 \item{labels}{character. text labels}
 

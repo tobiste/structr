@@ -20,7 +20,8 @@ density_calc(
 )
 }
 \arguments{
-\item{x}{object of class \code{"Vec3()"}, \code{"Line()"}, \code{"Ray"}, or \code{"Plane()"}.}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
+rows are the observations and the columns are the coordinates.}
 
 \item{...}{arguments passed to \code{\link[=density_calc]{density_calc()}}}
 

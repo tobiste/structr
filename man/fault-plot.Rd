@@ -24,7 +24,7 @@ angelier(
 )
 }
 \arguments{
-\item{x}{\code{"Fault"} object}
+\item{x}{\code{"Fault"} object where the rows are the observations, and the columns the coordinates.}
 
 \item{type}{character. One of \code{"angelier"} (for "Angelier plot") or \code{"hoeppener"} (for "Hoeppener plot"). See details.}
 

@@ -19,7 +19,7 @@ stereo_pair(
 )
 }
 \arguments{
-\item{x}{Object of class \code{"Fault"}}
+\item{x}{\code{"Fault"} object where the rows are the observations, and the columns the coordinates.}
 
 \item{pch, col, lwd, lty}{plotting parameters for planes and lines}
 

@@ -7,7 +7,8 @@
 vec_list(x)
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}.}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
+rows are the observations and the columns are the coordinates.}
 }
 \value{
 list

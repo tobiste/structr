@@ -4,7 +4,9 @@
 #' and concentration parameter (\eqn{\kappa}) .
 #'
 #' @param n integer. number of random samples to be generated
-#' @param x,mu object of class `"Vec3"`, `"Line"` or `"Plane"`
+#' @inheritParams sph_mean
+#' @param mu Mean vector. object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, where the 
+#'  rows are the observations and the columns are the coordinates.
 #' @param k numeric. The concentration parameter (\eqn{\kappa}) of the von
 #' Mises-Fisher distribution
 #' @seealso [runif.spherical()] for alternative algorithms to generate uniform
@@ -127,9 +129,7 @@ runif.spherical <- function(n = 100, class = c("Vec3", "Line", "Plane"), method 
 #'
 #' Simulation of random values from a spherical Fisher-Bingham distribution.
 #'
-#' @param n integer. number of random samples to be generated
-#' @param mu object of class `"Vec3"`, `"Line"` or `"Plane"`
-#' @param k numeric. The concentration parameter (\eqn{\kappa})
+#' @inheritParams rvmf
 #' @param A symmetric matrix
 #' @source Adapted from [Directional::rfb()]
 #' @importFrom Directional rfb
@@ -167,8 +167,6 @@ rfb <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, A) {
 #' Simulation of random values from a spherical Kent distribution.
 #'
 #' @inheritParams rvmf
-#' @param mu Mean orientation. object of class description `"Vec3()"`, `"Line()"`, or `"Plane"`
-#' @param k numeric. The concentration parameter (\eqn{\kappa})
 #' @param b numeric. \eqn{\beta} (ellipticity): \eqn{0 \leq \beta < \kappa}
 #'
 #' @source Adapted from [Directional::rkent()]

@@ -7,7 +7,8 @@
 projected_mean(x, ...)
 }
 \arguments{
-\item{x}{Object of class \code{"Vec3"}, \code{"Line"} or \code{"Plane"}}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
+rows are the observations and the columns are the coordinates.}
 
 \item{...}{additional arguments passed to \code{\link[=ortensor]{ortensor()}}.}
 }

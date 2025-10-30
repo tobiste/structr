@@ -11,7 +11,8 @@
 inertia_tensor(x, w = NULL)
 }
 \arguments{
-\item{x}{Object of class \code{"Vec3"}, \code{"Line"} or \code{"Plane"}}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
+rows are the observations and the columns are the coordinates.}
 
 \item{w}{numeric. weightings}
 }

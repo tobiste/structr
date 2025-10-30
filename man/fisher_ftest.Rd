@@ -7,7 +7,8 @@
 fisher_ftest(x, y, alpha = 0.05, na.rm = TRUE)
 }
 \arguments{
-\item{x, y}{objects of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}.}
+\item{x, y}{objects of class \code{"Vec3"}, \code{"Line"}, or \code{"Plane"}, , where the
+rows are the observations and the columns are the coordinates.}
 
 \item{alpha}{numeric. Significance level for the confidence angle (default is 0.05 for a 95\% confidence angle).}
 

@@ -44,7 +44,7 @@ blank_grid_regular <- function(n, r = 1) {
 #'  the density using `FUN`.  Each input point is weighted by the corresponding
 #'  item of `weights`. The weights are normalized to 1 before calculation.
 #'
-#' @param azi,inc degree
+#' @param azi,inc degrees.
 #' @param FUN The method of density estimation to use. Defaults to [exponential_kamb()].
 #' @param sigma (optional) numeric. The number of standard deviations defining the expected number of
 #' standard deviations by which a random sample from a uniform
@@ -128,7 +128,7 @@ count_points <- function(azi, inc, FUN, sigma, ngrid, weights, r) {
 #' Returns a regular (in lat-long space) grid of density estimates over a
 #' hemispherical surface.
 #'
-#' @param x spherical object
+#' @inheritParams sph_mean
 #' @param weights (optional) numeric vector of length of `azi`.
 #' The relative weight to be applied to each input measurement. The array
 #' will be normalized to sum to 1, so absolute value of the `weights` do not
@@ -341,7 +341,7 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 
 #' Spherical density estimation
 #'
-#' @param x object of class `"Vec3()"`, `"Line()"`, `"Ray"`, or `"Plane()"`.
+#' @inheritParams sph_mean
 # #' @param kamb logical. Whether to use the von Mises-Fisher kernel density estimation (`FALSE`) or Kamb's method (`TRUE`, the default).
 #' @param FUN density estimation function if `kamb=TRUE`; one of [exponential_kamb()] (the default),
 #'  [kamb_count], and [schmidt_count()].

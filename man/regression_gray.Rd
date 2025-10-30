@@ -7,7 +7,8 @@
 regression_gray(x)
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}.}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
+rows are the observations and the columns are the coordinates.}
 }
 \value{
 list. \code{axis_c} is the axis of the small-circle cone, \code{axis_g} is the axis of the great-circle,

@@ -26,7 +26,8 @@ geodesic_var(x, ...)
 \method{geodesic_var}{Pair}(x, y = NULL, group = NULL, ...)
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"}.}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"},
+where the rows are the observations and the columns are the coordinates.}
 
 \item{...}{parameters passed to \code{\link[=geodesic_meanvariance_ray]{geodesic_meanvariance_ray()}} (if \code{x} is a Ray), \code{\link[=geodesic_meanvariance_line]{geodesic_meanvariance_line()}} (if \code{x} is a Vec3, Line or Plane)
 or \code{\link[=geodesic_mean_pair]{geodesic_mean_pair()}} (if \code{x} is a Pair or a Fault).}

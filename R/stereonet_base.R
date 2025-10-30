@@ -111,7 +111,7 @@ stereo_coords <- function(az, inc, upper.hem = FALSE, earea = TRUE, r = 1) {
 #'
 #' Visualization of lines, planes in a stereographic projection.
 #'
-#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`. `"Pair"`, or `"Fault"`
+#' @inheritParams geodesic_mean
 #' @param upper.hem logical. Whether the projection is shown for upper
 #' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
 #' @param earea logical `TRUE` for Lambert equal-area projection (also "Schmidt net"; the default), or
@@ -155,7 +155,7 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1
 #'
 #' Visualization of pairs (planes and lines) in a stereographic projection.
 #'
-#' @param x Object of class `"Fault"`
+#' @inheritParams slip_inversion
 #' @param greatcircles logical. Whether greatcircles are displayed (`TRUE`, the default) or poles to planes (`FALSE`)
 #' @param pch,col,lwd,lty plotting parameters for planes and lines
 #' @param lab character. text labels
@@ -271,15 +271,11 @@ stereo_pair <- function(x, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex 
 #'
 #' Visualization of smallcircles and greatcircles in a stereographic projection.
 #'
-#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`.
+#' @inheritParams stereo_point
 #' @param d numeric. conical angle in degrees.
 #' @param col,lty,lwd color, line type, and line width parameters
 #' @param N integer. number of points to calculate
 #' @param BALL.radius numeric size of sphere
-#' @param upper.hem logical. Whether the projection is shown for upper
-#' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
-#' @param earea logical `TRUE` for Lambert equal-area projection (also "Schmidt net"; the default), or
-#' `FALSE` for meridional stereographic projection (also "Wulff net" or "Stereonet").
 #' @param ... optional graphical parameters
 #' @importFrom graphics lines
 #' @name stereo_cones
@@ -680,10 +676,8 @@ stereoplot_guides <- function(d = 10, earea = TRUE, radius = 1, ...) {
 
 #' Plot spherical objects
 #'
-#' @param x objects of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`.
+#' @inheritParams stereo_point
 #' @inheritParams stereoplot
-#' @param upper.hem logical. Whether the projection is shown for upper
-#' hemisphere (`TRUE`) or lower hemisphere (`FALSE`, the default).
 #' @param grid.params list.
 #' @param ... parameters passed to [stereo_point()], [stereo_smallcircle()], [stereo_greatcircle()], or [fault_plot()]
 #'
@@ -864,7 +858,7 @@ hypot <- function(x, y) {
 #'
 #' A quiver plot displays displacement vectors into pointing into the direction of movement.
 #'
-#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`.
+#' @inheritParams sph_mean
 #' @param sense numeric. Sense of the line on a fault plane. Either
 #' `1`or `-1` for normal or thrust offset, respectively. The "sense" is the sign
 #' of the fault's rake (see [Fault_from_rake()] for details).
@@ -916,7 +910,7 @@ stereo_arrows <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.
 
 #' Add fault data to existing plot
 #'
-#' @param x `"Fault"` object
+#' @inheritParams slip_inversion
 #' @param type character. One of `"angelier"` (for "Angelier plot") or `"hoeppener"` (for "Hoeppener plot"). See details.
 #' @param lty,lwd,cex,pch,col,bg plotting parameters
 #' @param points logical. Whether the lineation points (Angelier plot) or poles (Hoeppner plot) should be added to the plot
@@ -991,7 +985,7 @@ angelier <- function(x, pch = 1, lwd = 1, lty = 1, col = "black", cex = 1, point
 #' specified vector in a stereoplot.
 #' The greatcircles are color-coded by the angular distance.
 #'
-#' @param x set of vectors. Object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`.
+#' @inheritParams geodesic_mean
 #' @param y The vector from which the variance should be visualized (only one vector allowed).
 #' When `NULL`, then the mean vector of `x` is used (the default).
 #' @param .mean character. The type of mean to be used if `y` is `NULL`.

@@ -7,7 +7,7 @@
 Fault_PT(x, ptangle = 90)
 }
 \arguments{
-\item{x}{object of class \code{"Fault"}}
+\item{x}{\code{"Fault"} object where the rows are the observations, and the columns the coordinates.}
 
 \item{ptangle}{numeric. angle between P and T axes in degrees (90° by default).}
 }

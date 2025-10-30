@@ -16,10 +16,14 @@ dvmf(x, mu, k = 5)
 \arguments{
 \item{n}{integer. number of random samples to be generated}
 
+\item{mu}{Mean vector. object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
+rows are the observations and the columns are the coordinates.}
+
 \item{k}{numeric. The concentration parameter (\eqn{\kappa}) of the von
 Mises-Fisher distribution}
 
-\item{x, mu}{object of class \code{"Vec3"}, \code{"Line"} or \code{"Plane"}}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
+rows are the observations and the columns are the coordinates.}
 }
 \description{
 Density and random generation for the spherical normal distribution with mean

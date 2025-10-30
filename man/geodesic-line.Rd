@@ -26,7 +26,8 @@ geodesic_meanvariance_line(x, seeds = 5L, steps = 100L)
 geodesic_meanvariance_ray(x, seeds = 5L, steps = 100L)
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"} or \code{"Plane"}}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
+rows are the observations and the columns are the coordinates.}
 
 \item{...}{parameters passed to \code{\link[=geodesic_meanvariance_line]{geodesic_meanvariance_line()}} or \code{\link[=geodesic_meanvariance_ray]{geodesic_meanvariance_ray()}}}
 

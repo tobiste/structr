@@ -23,13 +23,14 @@
 \method{plot}{Fault}(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...)
 }
 \arguments{
-\item{x}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"}.}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"},
+where the rows are the observations and the columns are the coordinates.}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
 hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
 
-\item{earea}{logical. Projection, either \code{TRUE} for Lambert equal-area
-projection (the default), or \code{FALSE} for meridional stereographic projection.}
+\item{earea}{logical \code{TRUE} for Lambert equal-area projection (also "Schmidt net"; the default), or
+\code{FALSE} for meridional stereographic projection (also "Wulff net" or "Stereonet").}
 
 \item{grid.params}{list.}
 

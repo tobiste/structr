@@ -11,7 +11,8 @@ gg(x, ...)
 ggl(x, ..., d = 90, n = 1000)
 }
 \arguments{
-\item{x}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"}.}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"},
+where the rows are the observations and the columns are the coordinates.}
 
 \item{...}{\code{\link[rlang:args_data_masking]{<data-masking>}} Name-value pairs. The name gives the name of the column in the output.
 The value can be:

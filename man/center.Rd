@@ -7,7 +7,8 @@
 center(x, max_vertical = FALSE)
 }
 \arguments{
-\item{x}{Object of class \code{"Vec3"}, \code{"Line"} or \code{"Plane"}}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
+rows are the observations and the columns are the coordinates.}
 
 \item{max_vertical}{Whether the maximum of the von Mises-Fisher distribution
 is already vertical or not.}

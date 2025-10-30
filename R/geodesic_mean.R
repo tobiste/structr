@@ -3,7 +3,8 @@
 #' Dispersion  measured using the Fr&#233;chet variance, i.e the sum of the squared
 #' geodesic distances between all vectors and a specified vector.
 #'
-#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`.
+#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`, 
+#' where the rows are the observations and the columns are the coordinates.
 #' @param y Only for variance. object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"` about which the Fr&#233;chet variance should be calculated for.
 #' If `NULL` (the default), Fr&#233;chet variance about the Fr&#233;chet mean.
 #' @param ... parameters passed to [geodesic_meanvariance_ray()] (if `x` is a Ray), [geodesic_meanvariance_line()] (if `x` is a Vec3, Line or Plane)
@@ -168,7 +169,7 @@ geodesic_mean.Pair <- function(x, ...) geodesic_mean_pair(x, ...)
 #' epsilon is achieved or `steps` iterations have been used. Try multiple
 #' seeds, to improve your chances of finding the global optimum.
 #'
-#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"` or `"Plane"`
+#' @inheritParams sph_mean
 #' @param seeds positive integer. How many `x` to try as seeds
 #' @param steps positive integer. Bound on how many iterations to use.
 #' @param ... parameters passed to [geodesic_meanvariance_line()] or [geodesic_meanvariance_ray()]

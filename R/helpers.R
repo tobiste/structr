@@ -114,6 +114,8 @@ quadrantletter_to_azimuth <- function(x) {
 #'
 #' @returns character vector
 #' @export
+#' 
+#' @seealso [split_trailing_letters()]
 #'
 #' @examples
 #' azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350), 4) # 8-point compass
@@ -153,7 +155,7 @@ azimuth_to_cardinal <- function(x, n_directions = 8) {
 #' @param n_directions integer.
 #'
 #' @returns Dip direction in degrees
-#' @seealso [azimuth_to_cardinal()], [Fault_from_rake_quadrant()]
+#' @seealso [azimuth_to_cardinal()], [Fault_from_rake_quadrant()], [split_trailing_letters()]
 #' @export
 #'
 #' @examples
@@ -209,7 +211,8 @@ parse_quadrant_measurement <- function(x) {
   }, simplify = TRUE)
 }
 
-
+#' @keywords internal
+#' @noRd
 .scale <- function(x, from = range(x), to) {
   original_min <- from[1]
   original_max <- from[2]
@@ -223,6 +226,8 @@ parse_quadrant_measurement <- function(x) {
 
 # Color assignment helper functions --------------------------------------------
 
+#' @keywords internal
+#' @noRd
 .normalize <- function(x) {
   (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
 }
@@ -414,6 +419,8 @@ ellipse <- function(
 
 
 # Modes from a kde distribution ------------------------------------------------
+#' @keywords internal
+#' @noRd
 modes <- function(kde) {
   c(
     kde$x[kde$x < 0][which.max(kde$y[kde$x < 0])],
@@ -421,7 +428,8 @@ modes <- function(kde) {
   )
 }
 
-
+#' @keywords internal
+#' @noRd
 .bind_cols <- function(x, ...) {
   dots <- list(...)
 

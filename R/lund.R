@@ -129,7 +129,7 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 0.005) 
 
 #' Direction of maximum horizontal stress from the stress tensor (full knowledge)
 #'
-#' @param S 3x3 matrix
+#' @param S 3x3 matrix where the columns are the principal stress axes and the rows are the coordinates.
 #'
 #' @return numeric angle in degrees. The direction of SH from North.
 #' @export

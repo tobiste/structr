@@ -7,7 +7,7 @@
 SH_from_tensor(S)
 }
 \arguments{
-\item{S}{3x3 matrix}
+\item{S}{3x3 matrix where the columns are the principal stress axes and the rows are the coordinates.}
 }
 \value{
 numeric angle in degrees. The direction of SH from North.

@@ -7,7 +7,8 @@
 v_lower(v)
 }
 \arguments{
-\item{v}{object of class \code{'Vec3'}}
+\item{v}{object of class \code{'Vec3'}, where the
+rows are the observations and the columns are the Cartesian coordinates.}
 }
 \value{
 object of class \code{'Vec3'}

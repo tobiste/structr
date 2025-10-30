@@ -29,7 +29,8 @@ delta(x, w = NULL, na.rm = TRUE)
 estimate_k(x, w = NULL, na.rm = FALSE)
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}.}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
+rows are the observations and the columns are the coordinates.}
 
 \item{na.rm}{logical. Whether \code{NA} values should be removed before the computation proceeds.}
 

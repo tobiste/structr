@@ -16,7 +16,8 @@ stereo_arrows(
 )
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}.}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
+rows are the observations and the columns are the coordinates.}
 
 \item{sense}{numeric. Sense of the line on a fault plane. Either
 \code{1}or \code{-1} for normal or thrust offset, respectively. The "sense" is the sign
@@ -31,8 +32,8 @@ of the fault's rake (see \code{\link[=Fault_from_rake]{Fault_from_rake()}} for d
 \item{upper.hem}{logical. Whether the projection is shown for upper
 hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
 
-\item{earea}{logical. Projection, either \code{TRUE} for Lambert equal-area
-projection (the default), or \code{FALSE} for meridional stereographic projection.}
+\item{earea}{logical \code{TRUE} for Lambert equal-area projection (also "Schmidt net"; the default), or
+\code{FALSE} for meridional stereographic projection (also "Wulff net" or "Stereonet").}
 
 \item{...}{arguments passed to \code{\link[graphics:arrows]{graphics::arrows()}}}
 }

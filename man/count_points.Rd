@@ -7,7 +7,7 @@
 count_points(azi, inc, FUN, sigma, ngrid, weights, r)
 }
 \arguments{
-\item{azi, inc}{degree}
+\item{azi, inc}{degrees.}
 
 \item{FUN}{The method of density estimation to use. Defaults to \code{\link[=exponential_kamb]{exponential_kamb()}}.}
 

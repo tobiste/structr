@@ -7,7 +7,7 @@
 slip_inversion(x, boot = 100L, conf.level = 0.95, friction = 0.6, ...)
 }
 \arguments{
-\item{x}{\code{"Fault"} object}
+\item{x}{\code{"Fault"} object where the rows are the observations, and the columns the coordinates.}
 
 \item{boot}{integer. Number of bootstrap samples (10 by default)}
 
@@ -26,6 +26,8 @@ list
 \item{\code{principal_vals}}{numeric. The proportional magnitudes of the principal stress axes given by the eigenvalues of the stress tensor: \eqn{\sigma_1}, \eqn{\sigma_2}, and \eqn{\sigma_3}}
 \item{\code{principal_vals_conf}}{3-column vector containing the lower and upper margins of the confidence interval of the principal vals}
 \item{\code{principal_fault}}{Principal fault planes as \code{"Fault"} objects.}
+\item{\code{SHmax}}{numeric. Direction of maximum horizontal stress (in degrees)}
+\item{\code{SHmax_CI}}{numeric. Confidence interval of \code{SHmax} angle}
 \item{\code{R}}{numeric. Stress shape ratio after Gephart & Forsyth (1984): \eqn{R = (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3)}. Values ranging from 0 to 1, with 0 being
 \eqn{\sigma_1 = \sigma_2} and 1 being \eqn{\sigma_2 = \sigma_3}.}
 \item{\code{R_conf}}{Confidence interval for \code{R}}
@@ -84,5 +86,7 @@ legend("topleft", col = 2:4, legend = rownames(res_AVB$principal_axes), pch = 16
 Michael, A. J. (1984). Determination of stress from slip data: Faults and folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526. https://doi.org/10.1029/JB089iB13p11517
 }
 \seealso{
-\code{\link[=SH]{SH()}} to calculate the azimuth of the maximum horizontal stress; \code{\link[=Fault_PT]{Fault_PT()}} for a simple P-T stress analysis.
+\code{\link[=Fault_PT]{Fault_PT()}} for a simple P-T stress analysis,
+\code{\link[=SH]{SH()}} and \code{\link[=SH_from_tensor]{SH_from_tensor()}} to calculate the azimuth of the maximum horizontal stress;
+\code{\link[=Mohr_plot]{Mohr_plot()}} for graohical representation of the deviatoric stress tensor.
 }

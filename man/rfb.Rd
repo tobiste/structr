@@ -12,9 +12,11 @@ rfb(n = 100, mu = Vec3(1, 0, 0), k = 5, A)
 \arguments{
 \item{n}{integer. number of random samples to be generated}
 
-\item{mu}{object of class \code{"Vec3"}, \code{"Line"} or \code{"Plane"}}
+\item{mu}{Mean vector. object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
+rows are the observations and the columns are the coordinates.}
 
-\item{k}{numeric. The concentration parameter (\eqn{\kappa})}
+\item{k}{numeric. The concentration parameter (\eqn{\kappa}) of the von
+Mises-Fisher distribution}
 
 \item{A}{symmetric matrix}
 }

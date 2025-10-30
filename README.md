@@ -277,7 +277,7 @@ angle (β) between the theoretical slip and the actual slip vector:
 ``` r
 beta <- faults_stress$fault_data$beta
 beta_mean <- round(faults_stress$beta)
-beta_CI <- round(faults_stress$beta_CI$conf.angle)
+beta_CI <- round(faults_stress$beta_CI)
 
 stereoplot(
   title = "Stress inversion accuracy",
@@ -297,6 +297,10 @@ Azimuth of the maximum horizontal stress (in degrees) for the slip
 inversion result:
 
 ``` r
+# Simply call
+# faults_stress$SHmax
+# faults_stress$SHmax_CI # confidence interval
+
 SH(
   S1 = faults_stress$principal_axes[1, ],
   S2 = faults_stress$principal_axes[2, ],

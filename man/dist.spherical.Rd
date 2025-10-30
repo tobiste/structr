@@ -7,7 +7,8 @@
 \method{dist}{spherical}(x, ...)
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}.}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
+rows are the observations and the columns are the coordinates.}
 
 \item{...}{optional parameters passed to \code{\link[stats:dist]{stats::as.dist()}}}
 }

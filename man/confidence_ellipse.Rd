@@ -10,7 +10,8 @@ geologyGeometry (J.R. Davis)
 confidence_ellipse(x, n = 10000L, alpha = 0.05, res = 512L, isotropic = FALSE)
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"} or \code{"Plane"}}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
+rows are the observations and the columns are the coordinates.}
 
 \item{n}{integer (10000 by default).}
 

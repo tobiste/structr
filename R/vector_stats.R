@@ -121,7 +121,8 @@ v_confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = FALSE) {
 
 #' Statistical estimators of the distribution of a set of vectors
 #'
-#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`.
+#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, where the 
+#'  rows are the observations and the columns are the coordinates.
 #' @param w numeric. Optional weights for each observation.
 #' @param alpha numeric. Significance level for the confidence angle (default is 0.05 for a 95% confidence angle).
 #' @param na.rm logical. Whether `NA` values should be removed before the computation proceeds.
@@ -454,7 +455,8 @@ bingham_statistics <- function(x, w = NULL, na.rm = TRUE) {
 #'
 #' Test against the null-hypothesis that the samples are drawn from the same Fisher population.
 #'
-#' @param x,y  objects of class `"Vec3"`, `"Line"`, or `"Plane"`.
+#' @param x,y  objects of class `"Vec3"`, `"Line"`, or `"Plane"`, , where the 
+#'  rows are the observations and the columns are the coordinates.
 #' @inheritParams sph_mean
 #'
 #' @returns list indicating the F-statistic and the p-value.
@@ -607,7 +609,7 @@ dist.spherical <- function(x, ...) v_dist(x, ...)
 #'
 #' Calculates the arithmetic mean, variance, 68% cone, and the confidence cone around the mean.
 #'
-#' @param object object of class `"Vec3"`, `"Line"`, `"Ray"` or `"Plane"`.
+#' @inheritParams sph_mean
 #' @param ... parameters passed to [sph_mean()], [sph_var()], [delta()], and [sph_confidence_angle()]
 #'
 #' @returns named vector

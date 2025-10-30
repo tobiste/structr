@@ -2,7 +2,8 @@
 
 #' Vector math operations
 #'
-#' @param x,y objects of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`.
+#' @param x,y objects of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, where the 
+#'  rows are the observations and the columns are the coordinates.
 #' @param rotaxis Axis of rotation given as object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`.
 #' @param rotangle Angle of rotation in radians for `"Vec3"` objects and in degrees for `"Line"`, `"Ray"` and `"Plane"` objects.
 #' @param A numeric 3x3 matrix. Transformation matrix.
@@ -410,7 +411,8 @@ antipode.Fault <- function(x, ...) {
 #'
 #' Negates any vector with positive `z`-component. Used in lower-hemisphere plots.
 #'
-#' @param v object of class `'Vec3'`
+#' @param v object of class `'Vec3'`, where the 
+#'  rows are the observations and the columns are the Cartesian coordinates.
 #' @return object of class `'Vec3'`
 #' @export
 #' @keywords internal

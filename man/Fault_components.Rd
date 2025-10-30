@@ -20,7 +20,7 @@ Fault_plane(x)
 Fault_sense(x, steps = 8)
 }
 \arguments{
-\item{x}{object of class \code{"Fault"}}
+\item{x}{\code{"Fault"} object where the rows are the observations, and the columns the coordinates.}
 
 \item{steps}{Integer. Either 2, 4, or 8 steps for parsing the fault sense}
 }

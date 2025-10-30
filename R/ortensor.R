@@ -3,7 +3,7 @@
 #' 3D orientation tensor, which characterize data distribution using
 #' eigenvalue method. See (Watson 1966, Scheidegger 1965).
 #'
-#' @param x Object of class `"Vec3"`, `"Line"` or `"Plane"`
+#' @inheritParams sph_mean
 #' @param norm logical. Whether the tensor should be normalized or not.
 #' @param w numeric. weightings
 #'

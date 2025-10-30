@@ -6,7 +6,7 @@
 #' This inversion is simplified by the assumption that the magnitude of the
 #' tangential traction on the various fault planes, at the time of rupture, is similar.
 #'
-#' @param x `"Fault"` object
+#' @param x `"Fault"` object where the rows are the observations, and the columns the coordinates.
 #' @param boot integer. Number of bootstrap samples (10 by default)
 #' @param conf.level numeric. Confidence level of the interval (0.95 by default)
 #' @param friction numeric. Coefficient of friction (0.6 by default)
@@ -20,6 +20,8 @@
 #'  \item{`principal_vals`}{numeric. The proportional magnitudes of the principal stress axes given by the eigenvalues of the stress tensor: \eqn{\sigma_1}, \eqn{\sigma_2}, and \eqn{\sigma_3}}
 #'  \item{`principal_vals_conf`}{3-column vector containing the lower and upper margins of the confidence interval of the principal vals}
 #'  \item{`principal_fault`}{Principal fault planes as `"Fault"` objects.}
+#'  \item{`SHmax`}{numeric. Direction of maximum horizontal stress (in degrees)}
+#'  \item{`SHmax_CI`}{numeric. Confidence interval of `SHmax` angle}
 #'  \item{`R`}{numeric. Stress shape ratio after Gephart & Forsyth (1984): \eqn{R = (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3)}. Values ranging from 0 to 1, with 0 being
 #' \eqn{\sigma_1 = \sigma_2} and 1 being \eqn{\sigma_2 = \sigma_3}.}
 #'  \item{`R_conf`}{Confidence interval for `R`}
@@ -50,7 +52,9 @@
 #'
 #' @importFrom stats t.test
 #'
-#' @seealso [SH()] to calculate the azimuth of the maximum horizontal stress; [Fault_PT()] for a simple P-T stress analysis.
+#' @seealso [Fault_PT()] for a simple P-T stress analysis,
+#'  [SH()] and [SH_from_tensor()] to calculate the azimuth of the maximum horizontal stress; 
+#'  [Mohr_plot()] for graohical representation of the deviatoric stress tensor.
 #'
 #' @examples
 #' set.seed(20250411)
@@ -124,6 +128,11 @@ slip_inversion <- function(x, boot = 100L, conf.level = 0.95, friction = 0.6, ..
   colnames(sigma_boot) <- names(best.fit$principal_vals)
 
   beta_CI <- tectonicr::confidence_interval(fault_df$beta, conf.level = conf.level, axial = FALSE)
+  
+  SHmax_CI <- vapply(boot_results, function(x) {
+    x$SHmax
+  }, FUN.VALUE = numeric(1)) |>
+    tectonicr::confidence_interval(conf.level = conf.level, axial = TRUE)
 
   list(
     stress_tensor = best.fit$stress_tensor,
@@ -132,6 +141,8 @@ slip_inversion <- function(x, boot = 100L, conf.level = 0.95, friction = 0.6, ..
     principal_vals = best.fit$principal_vals,
     principal_vals_conf = sigma_boot,
     principal_faults = best.fit$principal_faults,
+    SHmax = best.fit$SHmax, 
+    SHmax_CI = SHmax_CI$conf.interval,
     R = best.fit$R,
     R_conf = R_boot$conf.int,
     phi = best.fit$phi,
@@ -139,7 +150,7 @@ slip_inversion <- function(x, boot = 100L, conf.level = 0.95, friction = 0.6, ..
     bott = best.fit$bott,
     bott_conf = bott_boot$conf.int,
     beta = best.fit$beta,
-    beta_CI = beta_CI,
+    beta_CI = beta_CI$conf.interval,
     sigma_s = best.fit$sigma_s,
     fault_data = fault_df
   )
@@ -183,12 +194,19 @@ slip_inversion0 <- function(x, friction = 0.6) {
   sigma_n <- shearnorm[, "normal"]
   slip_tend <- slip_tendency(sigma_s, sigma_n)
   dilat_tend <- dilatation_tendency(sigma_vals[1], sigma_vals[3], sigma_n)
-
+  
+  
+  SHmax <- tryCatch(
+    expr = SH_from_tensor(eigen(tau)$vectors),
+    error = function(e) NA
+  )
+  
   list(
     stress_tensor = tau,
     principal_axes = principal_axes,
     principal_vals = sigma_vals,
     principal_faults = pr,
+    SHmax = SHmax,
     R = unname(R),
     phi = unname(phi),
     bott = unname(shape_ratio_bott),
@@ -414,7 +432,7 @@ tau2shearnorm <- function(tau, fault, friction) {
 #' The PT-techniques is a graphical solution of the *Wallace-Bott hypothesis*, i.e. fault slip occurs parallel to the maximum shear stress.
 #' It calculates PT-axes, kinematic planes (also movement planes), and the dihedra separation plane.
 #'
-#' @param x object of class `"Fault"`
+#' @inheritParams slip_inversion
 #' @param ptangle numeric. angle between P and T axes in degrees (90&deg; by default).
 #'
 #' @returns list. `p` and `t` are the P and T axes as `"Line"` objects,

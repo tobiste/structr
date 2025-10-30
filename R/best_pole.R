@@ -2,7 +2,7 @@
 #'
 #' Finds the best small and great circles using the algorithm by Gray et al. (1980)
 #'
-#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`.
+#' @inheritParams sph_mean
 #'
 #' @references Gray, N.H., Geiser, P.A., Geiser, J.R. (1980). On the
 #' least-square fit of small and great circles to spherically projected data.
@@ -146,7 +146,7 @@ gray_algorithm <- function(x, sm = TRUE) {
 #' Finding the best fit pole of rotation for a given set of points that are
 #' assumed to lie on a mutual small or great circle circle using Ramsay 1967 algorithm
 #'
-#' @param x matrix. Cartesian coordinates of points
+#' @param x matrix, where the rows are the observations and the columns are the coordinates of points
 #' @importFrom dplyr mutate summarise
 #' @references Ramsay, 1967, p. 18-21
 #' @returns numeric vector with
@@ -370,7 +370,7 @@ regression_cone_ramsay2 <- function(x) {
 #'
 #' Fits a great circle arc to a set of lines, based on an independent scalar variable.
 #'
-#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`.
+#' @inheritParams sph_mean
 #' @param val A vector of real numbers. Values of independent scalar variables. Same length as `x`.
 #' @param iterations A real number (positive integer). A bound on the number of numerical optimization iterations allowed.
 #' @param n_points A real number (positive integer). The number of points along the regression curve requested.

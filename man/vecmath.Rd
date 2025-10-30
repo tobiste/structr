@@ -53,7 +53,8 @@ reject(x, y)
 transform_linear(x, A, norm = FALSE)
 }
 \arguments{
-\item{x, y}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}.}
+\item{x, y}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
+rows are the observations and the columns are the coordinates.}
 
 \item{...}{arguments passed to function call}
 

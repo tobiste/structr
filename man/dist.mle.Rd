@@ -14,7 +14,8 @@ kent_mle(x)
 vmf_mle(x)
 }
 \arguments{
-\item{x}{Object of class \code{"Vec3"}, \code{"Line"} or \code{"Plane"}}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
+rows are the observations and the columns are the coordinates.}
 }
 \description{
 Estimates the parameters of a von Mises-Fisher or Kent distribution.
