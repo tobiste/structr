@@ -85,32 +85,38 @@ Mohr circle.</p>
 <p>Some basic calculations:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Define the magnitudes of the principal stress axes</span></span>
-<span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fl">1025</span> <span class="co"># maximum stress, sigma 1</span></span>
-<span><span class="va">s2</span> <span class="op">&lt;-</span> <span class="fl">400</span> <span class="co"># intermediate stress, sigma 2</span></span>
-<span><span class="va">s3</span> <span class="op">&lt;-</span> <span class="fl">250</span> <span class="co"># minimum stress, sigma 3</span></span>
+<span><span class="va">s1</span> <span class="op">&lt;-</span> <span class="fl">66</span> <span class="co"># maximum stress, sigma 1</span></span>
+<span><span class="va">s2</span> <span class="op">&lt;-</span> <span class="fl">30</span> <span class="co"># intermediate stress, sigma 2</span></span>
+<span><span class="va">s3</span> <span class="op">&lt;-</span> <span class="fl">20</span> <span class="co"># minimum stress, sigma 3</span></span>
 <span></span>
 <span><span class="co"># Differential stress</span></span>
 <span><span class="fu"><a href="../reference/stress-comp.html">diff_stress</a></span><span class="op">(</span><span class="va">s1</span>, <span class="va">s3</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 775</span></span>
+<span><span class="co">#&gt; [1] 46</span></span>
 <span></span>
 <span><span class="co"># Mean stress</span></span>
 <span><span class="fu"><a href="../reference/stress-comp.html">mean_stress</a></span><span class="op">(</span><span class="va">s1</span>, <span class="va">s3</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 637.5</span></span>
+<span><span class="co">#&gt; [1] 43</span></span>
 <span></span>
 <span><span class="co"># Shear stress at given angle</span></span>
 <span><span class="fu"><a href="../reference/stress-comp.html">shear_stress</a></span><span class="op">(</span><span class="va">s1</span>, <span class="va">s3</span>, theta <span class="op">=</span> <span class="fl">35</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 364.1309</span></span>
+<span><span class="co">#&gt; [1] 21.61293</span></span>
 <span></span>
 <span><span class="co"># Normal stress at given angle</span></span>
 <span><span class="fu"><a href="../reference/stress-comp.html">normal_stress</a></span><span class="op">(</span><span class="va">s1</span>, <span class="va">s3</span>, theta <span class="op">=</span> <span class="fl">35</span><span class="op">)</span></span>
-<span><span class="co">#&gt; [1] 504.9672</span></span>
+<span><span class="co">#&gt; [1] 35.13354</span></span>
 <span></span>
 <span><span class="co"># Angle of fracture for given coefficient of internal friction</span></span>
 <span><span class="fu"><a href="../reference/stress-comp.html">fracture_angle</a></span><span class="op">(</span>mu <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 60.48188</span></span></code></pre></div>
 <p>To plot the Mohr circle, you can either use base R plotting:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/Mohr_plot.html">Mohr_plot</a></span><span class="op">(</span>sigma1 <span class="op">=</span> <span class="va">s1</span>, sigma2 <span class="op">=</span> <span class="va">s2</span>, sigma3 <span class="op">=</span> <span class="va">s3</span>, unit <span class="op">=</span> <span class="st">"MPa"</span><span class="op">)</span> </span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/Mohr_plot.html">Mohr_plot</a></span><span class="op">(</span>sigma1 <span class="op">=</span> <span class="va">s1</span>, sigma2 <span class="op">=</span> <span class="va">s2</span>, sigma3 <span class="op">=</span> <span class="va">s3</span>, </span>
+<span>  unit <span class="op">=</span> <span class="st">"MPa"</span>, full.circle <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>, <span class="fl">70</span><span class="op">)</span>, ylim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">30</span>, <span class="fl">30</span><span class="op">)</span></span>
+<span>  <span class="op">)</span></span>
+<span></span>
+<span><span class="co"># add the failure criterion</span></span>
+<span><span class="fu"><a href="../reference/failure_criterion.html">failure_criterion</a></span><span class="op">(</span>col <span class="op">=</span> <span class="st">'#B63679'</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p><img src="F_Mohr_Circle_files/figure-html/mohr1-1.png" alt="Diagram showing the stress state at some point including the Mohr circle" width="700"></p>
 <p>or ggplot-style plotting:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
