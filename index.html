@@ -282,7 +282,7 @@
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">beta</span> <span class="op">&lt;-</span> <span class="va">faults_stress</span><span class="op">$</span><span class="va">fault_data</span><span class="op">$</span><span class="va">beta</span></span>
 <span><span class="va">beta_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">faults_stress</span><span class="op">$</span><span class="va">beta</span><span class="op">)</span></span>
-<span><span class="va">beta_CI</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">faults_stress</span><span class="op">$</span><span class="va">beta_CI</span><span class="op">$</span><span class="va">conf.angle</span><span class="op">)</span></span>
+<span><span class="va">beta_CI</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">faults_stress</span><span class="op">$</span><span class="va">beta_CI</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/stereoplot.html">stereoplot</a></span><span class="op">(</span></span>
 <span>  title <span class="op">=</span> <span class="st">"Stress inversion accuracy"</span>,</span>
@@ -297,7 +297,11 @@
 <p><img src="reference/figures/README-stereo_inversion_deviation-1.png" width="100%"></p>
 <p>Azimuth of the maximum horizontal stress (in degrees) for the slip inversion result:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/SH.html">SH</a></span><span class="op">(</span></span>
+<code class="sourceCode R"><span><span class="co"># Simply call</span></span>
+<span><span class="co"># faults_stress$SHmax</span></span>
+<span><span class="co"># faults_stress$SHmax_CI # confidence interval</span></span>
+<span></span>
+<span><span class="fu"><a href="reference/SH.html">SH</a></span><span class="op">(</span></span>
 <span>  S1 <span class="op">=</span> <span class="va">faults_stress</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>,</span>
 <span>  S2 <span class="op">=</span> <span class="va">faults_stress</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span>,</span>
 <span>  S3 <span class="op">=</span> <span class="va">faults_stress</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">3</span>, <span class="op">]</span>,</span>

@@ -71,7 +71,7 @@ tangential traction on the various fault planes, at the time of rupture, is simi
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p><code>"Fault"</code> object</p></dd>
+<dd><p><code>"Fault"</code> object where the rows are the observations, and the columns the coordinates.</p></dd>
 
 
 <dt id="arg-boot">boot<a class="anchor" aria-label="anchor" href="#arg-boot"></a></dt>
@@ -109,6 +109,12 @@ tangential traction on the various fault planes, at the time of rupture, is simi
 
 <dt><code>principal_fault</code></dt>
 <dd><p>Principal fault planes as <code>"Fault"</code> objects.</p></dd>
+
+<dt><code>SHmax</code></dt>
+<dd><p>numeric. Direction of maximum horizontal stress (in degrees)</p></dd>
+
+<dt><code>SHmax_CI</code></dt>
+<dd><p>numeric. Confidence interval of <code>SHmax</code> angle</p></dd>
 
 <dt><code>R</code></dt>
 <dd><p>numeric. Stress shape ratio after Gephart &amp; Forsyth (1984): \(R = (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3)\). Values ranging from 0 to 1, with 0 being
@@ -161,7 +167,9 @@ that a single a that best satisfies all of the faults is found.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="SH.html">SH()</a></code> to calculate the azimuth of the maximum horizontal stress; <code><a href="Fault_PT.html">Fault_PT()</a></code> for a simple P-T stress analysis.</p></div>
+    <div class="dont-index"><p><code><a href="Fault_PT.html">Fault_PT()</a></code> for a simple P-T stress analysis,
+<code><a href="SH.html">SH()</a></code> and <code><a href="SH_from_tensor.html">SH_from_tensor()</a></code> to calculate the azimuth of the maximum horizontal stress;
+<code><a href="Mohr_plot.html">Mohr_plot()</a></code> for graohical representation of the deviatoric stress tensor.</p></div>
     </div>
 
     <div class="section level2">
