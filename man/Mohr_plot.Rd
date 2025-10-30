@@ -16,6 +16,8 @@ Mohr_plot(
   n = 512,
   full.circle = FALSE,
   include.zero = TRUE,
+  xlim = NULL,
+  ylim = NULL,
   ...
 )
 }
@@ -45,6 +47,8 @@ the upper (positive shear stress) part of the circle?}
 
 \item{include.zero}{logical. the plot range be extended to include normal_stress = 0?}
 
+\item{xlim, ylim}{range of plot}
+
 \item{...}{optional graphical parameters.}
 }
 \description{
@@ -60,7 +64,8 @@ One of the following two sets of data must be entered
 \examples{
 Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = "#B63679", lwd = 2)
 
-Mohr_plot(sigma1 = 1025, sigma2 = 450, sigma3 = 250)
+Mohr_plot(sigma1 = 66, sigma2 = 30, sigma3 = 20, xlim = c(-50, 125), full.circle = TRUE)
+failure_criterion(col = "#B63679") # adds failure criterion
 
 ## Deviatoric stress from stress ratio:
 R <- 0.4 # Stress ratio after Gephart & Forsyth (1984)
@@ -74,5 +79,7 @@ Mohr_plot(
 )
 }
 \seealso{
-\code{\link[=Mohr_calc]{Mohr_calc()}}, \code{\link[=ggMohr]{ggMohr()}}
+\code{\link[=failure_criterion]{failure_criterion()}} to add the failure criterion;
+\code{\link[=Mohr_calc]{Mohr_calc()}} to calculate the parameters;
+\code{\link[=ggMohr]{ggMohr()}} for ggplot2 functionality;
 }

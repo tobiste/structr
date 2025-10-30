@@ -9,7 +9,7 @@ ggMohr(
   sigma2,
   sigma3 = NULL,
   units = "MPa",
-  coulomb = c(70, 0.6),
+  coulomb = c(1, 0.6),
   sliding = 0.81,
   fill = "gray",
   alpha = 0.5,

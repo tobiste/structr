@@ -225,18 +225,22 @@ Mohr_calc <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
 #' @param full.circle logical. Should the complete Mohr circle be shown, or only
 #' the upper (positive shear stress) part of the circle?
 #' @param include.zero logical. the plot range be extended to include normal_stress = 0?
+#' @param xlim,ylim range of plot
 #' @param ... optional graphical parameters.
 #' @note One of the following two sets of data must be entered
 #' \enumerate{
 #' \item{`"sigma_x"`, `"sigma_z"`, `"tau_xz"`}
 #' \item{`"sigma1"`, `"sigma3"`}
 #' }
-#' @seealso [Mohr_calc()], [ggMohr()]
+#' @seealso [failure_criterion()] to add the failure criterion; 
+#' [Mohr_calc()] to calculate the parameters; 
+#' [ggMohr()] for ggplot2 functionality; 
 #' @export
 #' @examples
 #' Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = "#B63679", lwd = 2)
 #'
-#' Mohr_plot(sigma1 = 1025, sigma2 = 450, sigma3 = 250)
+#' Mohr_plot(sigma1 = 66, sigma2 = 30, sigma3 = 20, xlim = c(-50, 125), full.circle = TRUE)
+#' failure_criterion(col = "#B63679") # adds failure criterion
 #' 
 #' ## Deviatoric stress from stress ratio:
 #' R <- 0.4 # Stress ratio after Gephart & Forsyth (1984)
@@ -249,7 +253,7 @@ Mohr_calc <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
 #'   col = "#B63679", lwd = 2, unit = NULL, include.zero = FALSE
 #' )
 Mohr_plot <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigma2 = NA, sigma3 = NA,
-                      unit = "MPa", col = "black", n = 512, full.circle = FALSE, include.zero = TRUE, ...) {
+                      unit = "MPa", col = "black", n = 512, full.circle = FALSE, include.zero = TRUE, xlim = NULL, ylim = NULL, ...) {
   ##  Calculate normal and shear stresses
   theta <- seq(from = 0, to = 180, length.out = n)
   stress_vec <- sapply(
@@ -304,8 +308,8 @@ Mohr_plot <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
     yLab <- bquote("Shear stress," ~ sigma[s] ~ (.(unit)))
   }
 
-  xlim <- if (include.zero) c(min(0, min(sigma, na.rm = TRUE)), max(sigma, na.rm = TRUE) * 1.05) else NULL
-  ylim <- if (full.circle) NULL else c(0, max(tau, na.rm = TRUE))
+  xlim <- if (include.zero) c(min(0, min(sigma, na.rm = TRUE)), max(sigma, na.rm = TRUE) * 1.05) else xlim
+  ylim <- if (!full.circle) c(0, max(tau, na.rm = TRUE)) else ylim
 
   plot(
     range(sigma), range(tau),
@@ -419,7 +423,7 @@ tau_max <- function(sigma_x, sigma_z, tau_xz) {
 #' 
 #' # Unitless Mohr circle
 #' ggMohr(5, 2, 0, units = NULL)
-ggMohr <- function(sigma1, sigma2, sigma3 = NULL, units = "MPa", coulomb = c(70, 0.6), sliding = 0.81, fill = "gray", alpha = .5, show.info = TRUE, ...) {
+ggMohr <- function(sigma1, sigma2, sigma3 = NULL, units = "MPa", coulomb = c(1, 0.6), sliding = 0.81, fill = "gray", alpha = .5, show.info = TRUE, ...) {
   stress <- c(sigma1, sigma2, sigma3)
   one_circle <- any(is.na(stress)) || length(stress) == 2
   stress <- sort(stats::na.omit(stress), decreasing = TRUE)
@@ -522,4 +526,53 @@ ggMohr <- function(sigma1, sigma2, sigma3 = NULL, units = "MPa", coulomb = c(70,
       }
     } +
     labs(x = xlab, y = ylab)
+}
+
+
+
+
+
+griffith_criterion <- function(sigma_n, tensile){
+  suppressWarnings(
+  sigma_s <- sqrt(
+    4 * (tensile^2 - abs(tensile) * abs(sigma_n))
+  )
+  )
+  return(sigma_s)
+}
+
+
+failure_criterion.helper <- function(sigma_n = seq(-70, 1000, 1), cohesion = 70, friction = 0.6){
+  tensile <- cohesion / 2
+  sigma_s <- ifelse(sigma_n<0, 
+                    griffith_criterion(sigma_n, tensile),
+                    friction * sigma_n + cohesion
+  )
+  
+  return(cbind(sigma_n = sigma_n, sigma_s = sigma_s))
+}
+
+
+#' Failure Criterion
+#' 
+#' Adds the Griffith-Coulomb-fracture criterion to a plot.
+#'
+#' @inheritParams slip_tendency 
+#' @param cohesion numeric. Cohesion
+#' @param friction numeric. Coefficient of friction
+#' @param ... optional plotting arguments passed to [graphics::lines()]
+#'
+#' @returns a matrix of the normal and shear stresses. 
+#' @export
+#'
+#' @examples
+#' Mohr_plot(sigma1 = 66, sigma2 = 30, sigma3 = 20, xlim = c(-50, 125), full.circle = TRUE)
+#' failure_criterion(col = 'red')
+failure_criterion <- function(sigma_n = seq(-100, 100, .01), cohesion = 1, friction = 0.6, ...) {
+  dat <- failure_criterion.helper(sigma_n, cohesion, friction)
+  graphics::lines(dat, ...)
+  
+  dat_neg <- cbind(dat[, 1], -dat[, 2])
+  graphics::lines(rbind(dat, dat_neg), ...)
+  invisible(dat)
 }
