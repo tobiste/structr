@@ -3,6 +3,8 @@ title: "Import Data"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+description: >
+  How do you import data into R and structr?
 vignette: >
   %\VignetteIndexEntry{Import Data}
   %\VignetteEngine{knitr::rmarkdown}

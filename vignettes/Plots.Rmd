@@ -3,6 +3,8 @@ title: "Orientation Plots"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+description: >
+  This tutorial introduces the various ways to plot spherical data.
 vignette: >
   %\VignetteIndexEntry{Orientation Plots}
   %\VignetteEngine{knitr::rmarkdown}

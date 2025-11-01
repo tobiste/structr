@@ -3,6 +3,8 @@ title: "Oriented Drill Cores"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+description: >
+  Learn how to deal with drillcore orientations. 
 vignette: >
   %\VignetteIndexEntry{Oriented Drill Cores}
   %\VignetteEngine{knitr::rmarkdown}

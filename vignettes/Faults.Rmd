@@ -3,6 +3,8 @@ title: "Faults and Paleostress"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+description: >
+  Introduction into the Fault object, and how to perform stress inversions
 vignette: >
   %\VignetteIndexEntry{Faults and Paleostress}
   %\VignetteEngine{knitr::rmarkdown}

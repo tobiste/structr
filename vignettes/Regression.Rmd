@@ -3,6 +3,8 @@ title: "Regression on the Sphere"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+description: >
+  Learn how to use geodesic regression to find the best-fit small or great circle.
 vignette: >
   %\VignetteIndexEntry{Regression on the Sphere}
   %\VignetteEngine{knitr::rmarkdown}

@@ -93,7 +93,7 @@ geodesic_var.Pair <- function(x, y = NULL, group = NULL, ...) {
       group <- if (inherits(y, "Fault")) "triclinic" else "triclinic"
     }
 
-    group_mat <- symmetry_group(grosup)
+    group_mat <- symmetry_group(group)
 
     oriVariance(vec_list(x), pair2rot(y), group = group_mat)
   }

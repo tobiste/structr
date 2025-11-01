@@ -3,6 +3,8 @@ title: "Strain and Vorticity Analysis"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+description: >
+  This tutorial demonstrates how to perform strain and vorticity analysis using the {structr} package in R.
 vignette: >
   %\VignetteIndexEntry{Strain and Vorticity Analysis}
   %\VignetteEngine{knitr::rmarkdown}

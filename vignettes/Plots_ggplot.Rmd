@@ -3,6 +3,8 @@ title: "Orientation Plots with ggplot"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+description: >
+  This tutorial introduces the various ways to plot spherical data using ggplots
 vignette: >
   %\VignetteIndexEntry{Orientation Plots with ggplot}
   %\VignetteEngine{knitr::rmarkdown}

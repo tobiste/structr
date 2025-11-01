@@ -3,6 +3,8 @@ title: "Mohr Circle"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
+description: >
+  Learn how to calculate stress components and plot the Mohr circle diagram.
 vignette: >
   %\VignetteIndexEntry{Mohr Circle}
   %\VignetteEngine{knitr::rmarkdown}

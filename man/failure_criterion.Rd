@@ -12,6 +12,8 @@ failure_criterion(
 )
 }
 \arguments{
+\item{sigma_n}{numeric. A vector of normal stresses, for which the critical shear stress should be calculated.}
+
 \item{cohesion}{numeric. Cohesion}
 
 \item{friction}{numeric. Coefficient of friction}

@@ -558,7 +558,7 @@ failure_criterion.helper <- function(sigma_n = seq(-70, 1000, 1), cohesion = 70,
 #'
 #' Adds the Griffith-Coulomb-fracture criterion to a plot.
 #'
-#' @inheritParams slip_tendency
+#' @param sigma_n numeric. A vector of normal stresses, for which the critical shear stress should be calculated.
 #' @param cohesion numeric. Cohesion
 #' @param friction numeric. Coefficient of friction
 #' @param ... optional plotting arguments passed to [graphics::lines()]

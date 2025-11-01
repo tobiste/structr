@@ -609,7 +609,8 @@ dist.spherical <- function(x, ...) v_dist(x, ...)
 #'
 #' Calculates the arithmetic mean, variance, 68% cone, and the confidence cone around the mean.
 #'
-#' @inheritParams sph_mean
+#' @param object object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, where the
+#'  rows are the observations and the columns are the coordinates.
 #' @param ... parameters passed to [sph_mean()], [sph_var()], [delta()], and [sph_confidence_angle()]
 #'
 #' @returns named vector

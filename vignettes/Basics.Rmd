@@ -2,7 +2,9 @@
 title: "Basics"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+output: rmarkdowns::html_vignette
+description: >
+  This vignette explains the basic objects used in the package.
 vignette: >
   %\VignetteIndexEntry{Basics}
   %\VignetteEngine{knitr::rmarkdown}
