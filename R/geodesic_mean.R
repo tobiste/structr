@@ -93,7 +93,7 @@ geodesic_var.Pair <- function(x, y = NULL, group = NULL, ...) {
       group <- if (inherits(y, "Fault")) "triclinic" else "triclinic"
     }
 
-    group_mat <- symmetrie_group(grpup)
+    group_mat <- symmetry_group(grosup)
 
     oriVariance(vec_list(x), pair2rot(y), group = group_mat)
   }
@@ -389,7 +389,7 @@ geodesic_var_pair <- function(x, group = NULL) {
     group <- if (inherits(x, "Fault")) "triclinic" else "monoclinic"
   }
 
-  group_mat <- symmetrie_group(group)
+  group_mat <- symmetry_group(group)
   ori_mean_variance(xvec, group = group_mat)
 }
 

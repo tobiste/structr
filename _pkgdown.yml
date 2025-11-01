@@ -4,6 +4,11 @@ template:
   bslib:
     danger: "#A6081A"
 
+authors:
+  Tobias Stephan:
+    href: https://tobiste.github.io/
+
+
 articles:
 - title: Basics and Data Imports
   navbar:
