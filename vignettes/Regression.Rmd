@@ -1,10 +1,10 @@
 ---
-title: "10. Regression on the Sphere"
+title: "Regression on the Sphere"
 author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 vignette: >
-  %\VignetteIndexEntry{10. Regression on the Sphere}
+  %\VignetteIndexEntry{Regression on the Sphere}
   %\VignetteEngine{knitr::rmarkdown}
   %\VignetteEncoding{UTF-8}
 editor_options: 

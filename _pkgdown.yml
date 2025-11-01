@@ -3,3 +3,33 @@ template:
   bootstrap: 5
   bslib:
     danger: "#A6081A"
+
+articles:
+- title: Basics and Data Imports
+  navbar:
+  contents:
+  - Basics
+  - Import
+  - Oriented_Drill_Cores
+
+- title: Plotting
+  navbar: 
+  contents:
+  - Plots
+  - Plots_ggplot
+
+- title: Statistics
+  navbar: 
+  contents:
+  - Statistics
+  - Regression
+
+- title: Faults and Stress
+  navbar: 
+  contents:
+  - Faults
+  - Mohr_Circle
+
+- title: Other
+  contents:
+  - Strain_Analysis
