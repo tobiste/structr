@@ -121,7 +121,7 @@ v_confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = FALSE) {
 
 #' Statistical estimators of the distribution of a set of vectors
 #'
-#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, where the 
+#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, where the
 #'  rows are the observations and the columns are the coordinates.
 #' @param w numeric. Optional weights for each observation.
 #' @param alpha numeric. Significance level for the confidence angle (default is 0.05 for a 95% confidence angle).
@@ -455,7 +455,7 @@ bingham_statistics <- function(x, w = NULL, na.rm = TRUE) {
 #'
 #' Test against the null-hypothesis that the samples are drawn from the same Fisher population.
 #'
-#' @param x,y  objects of class `"Vec3"`, `"Line"`, or `"Plane"`, , where the 
+#' @param x,y  objects of class `"Vec3"`, `"Line"`, or `"Plane"`, , where the
 #'  rows are the observations and the columns are the coordinates.
 #' @inheritParams sph_mean
 #'

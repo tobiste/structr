@@ -15,13 +15,13 @@
 
 #' Intersection lineation data
 #'
-#' 84 intersection lineations from a folded metasedimentary sequence in the 
+#' 84 intersection lineations from a folded metasedimentary sequence in the
 #' Quetico Subprovince (Stephan et al., 2025)
-#' 
+#'
 #' @docType data
 #'
 #' @usage data('example_lines_df')
-#' 
+#'
 #' @references
 #' Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
 #' Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
@@ -38,13 +38,13 @@
 
 #' Intersection lineations as "Line" object
 #'
-#' 84 intersection lineations from a folded metasedimentary sequence in the 
+#' 84 intersection lineations from a folded metasedimentary sequence in the
 #' Quetico Subprovince (Stephan et al., 2025)
 #'
 #' @docType data
 #'
 #' @usage data('example_lines')
-#' 
+#'
 #' @references
 #' Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
 #' Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
@@ -61,13 +61,13 @@
 
 #' Planes orientations data
 #'
-#' 200 foliation measurements from a folded metasedimentary sequence in the 
+#' 200 foliation measurements from a folded metasedimentary sequence in the
 #' Quetico Subprovince (Stephan et al., 2025)
-#' 
+#'
 #' @docType data
 #'
 #' @usage data('example_planes_df')
-#' 
+#'
 #' @references
 #' Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
 #' Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
@@ -84,7 +84,7 @@
 
 #' Planes orientations as "Plane" objects
 #'
-#' 200 foliation measurements from a folded metasedimentary sequence in the 
+#' 200 foliation measurements from a folded metasedimentary sequence in the
 #' Quetico Subprovince (Stephan et al., 2025)
 #'
 #' @docType data
@@ -107,13 +107,13 @@
 
 #' Example data set
 #'
-#' 80 Fault-slip orientations from Simon-Gomez
+#' 80 Fault-slip orientations from Simon-Gomez ???
 #'
 #' @docType data
 #'
 #' @usage data('simongomez')
 #'
-#' @format An object of class `data.frame`
+#' @format An object of class `"Fault`
 #' @keywords datasets
 #' @examples
 #' data("simongomez")

@@ -232,21 +232,22 @@ Mohr_calc <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
 #' \item{`"sigma_x"`, `"sigma_z"`, `"tau_xz"`}
 #' \item{`"sigma1"`, `"sigma3"`}
 #' }
-#' @seealso [failure_criterion()] to add the failure criterion; 
-#' [Mohr_calc()] to calculate the parameters; 
-#' [ggMohr()] for ggplot2 functionality; 
+#' @seealso [failure_criterion()] to add the failure criterion;
+#' [Mohr_calc()] to calculate the parameters;
+#' [ggMohr()] for ggplot2 functionality;
 #' @export
 #' @examples
 #' Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = "#B63679", lwd = 2)
 #'
 #' Mohr_plot(sigma1 = 66, sigma2 = 30, sigma3 = 20, xlim = c(-50, 125), full.circle = TRUE)
 #' failure_criterion(col = "#B63679") # adds failure criterion
-#' 
+#'
 #' ## Deviatoric stress from stress ratio:
 #' R <- 0.4 # Stress ratio after Gephart & Forsyth (1984)
-#' sigma1 <- 1; sigma3 <- 0
+#' sigma1 <- 1
+#' sigma3 <- 0
 #' sigma2 <- sigma1 - R * (sigma1 - sigma3)
-#' 
+#'
 #' ## unitless Mohr diagram
 #' Mohr_plot(
 #'   sigma1 = sigma1, sigma2 = sigma2, sigma3 = sigma3,
@@ -398,7 +399,7 @@ tau_max <- function(sigma_x, sigma_z, tau_xz) {
 #'
 #' @param coulomb numeric 2 element vector. Coulomb criterion containing the cohesion and the coefficient of sliding: (`c(70, 0.6)`)
 #' @param sliding Sliding criteria (`0.81` by default)
-#' @param units units of `sigma1`, `sigma2`, `sigma3` and cohesion (`"MPa"` by default). 
+#' @param units units of `sigma1`, `sigma2`, `sigma3` and cohesion (`"MPa"` by default).
 #' `NULL` if unitless (e.g. deviatoric stresses only)
 #' @param sigma1,sigma2,sigma3 numeric. Magnitudes of major, intermediate, and
 #' minor principal stresses. If only two principal stresses are given, only
@@ -420,7 +421,7 @@ tau_max <- function(sigma_x, sigma_z, tau_xz) {
 #' @importFrom ggplot2 aes coord_fixed geom_abline geom_hline geom_line geom_point geom_text geom_vline ggplot labs
 #' @examples
 #' ggMohr(1025, 450, 250)
-#' 
+#'
 #' # Unitless Mohr circle
 #' ggMohr(5, 2, 0, units = NULL)
 ggMohr <- function(sigma1, sigma2, sigma3 = NULL, units = "MPa", coulomb = c(1, 0.6), sliding = 0.81, fill = "gray", alpha = .5, show.info = TRUE, ...) {
@@ -456,14 +457,14 @@ ggMohr <- function(sigma1, sigma2, sigma3 = NULL, units = "MPa", coulomb = c(1, 
   sigma_s <- shear_stress(s1, s3, theta.f / 2)
   sigma_n <- normal_stress(s1, s3, theta.f / 2)
 
-  if(is.null(units)) {
-    xlab = bquote("Normal stress," ~ sigma[n])
-    ylab = bquote("Shear stress," ~ sigma[s])
+  if (is.null(units)) {
+    xlab <- bquote("Normal stress," ~ sigma[n])
+    ylab <- bquote("Shear stress," ~ sigma[s])
   } else {
-    xlab = bquote("Normal stress," ~ sigma[n] ~ (.(units)))
-    ylab = bquote("Shear stress," ~ sigma[s] ~ (.(units)))
+    xlab <- bquote("Normal stress," ~ sigma[n] ~ (.(units)))
+    ylab <- bquote("Shear stress," ~ sigma[s] ~ (.(units)))
   }
-  
+
   ggplot() +
     geom_circle(aes(x0 = circle13.m, y0 = 0, r = circle13.r), fill = fill, alpha = alpha, ...) +
     {
@@ -480,27 +481,27 @@ ggMohr <- function(sigma1, sigma2, sigma3 = NULL, units = "MPa", coulomb = c(1, 
       if (!is.null(sliding) & !is.null(units)) geom_abline(intercept = 0, slope = sliding, lty = 2)
     } +
     {
-      if (!is.null(coulomb)& !is.null(units)) geom_abline(intercept = coulomb[1], slope = coulomb[2], lty = 1)
+      if (!is.null(coulomb) & !is.null(units)) geom_abline(intercept = coulomb[1], slope = coulomb[2], lty = 1)
     } +
     geom_point(aes(x = circle13.m, 0)) +
-    #geom_line(aes(x = c(circle13.m, sigma_n), y = c(0, sigma_s)), lty = 3) +
+    # geom_line(aes(x = c(circle13.m, sigma_n), y = c(0, sigma_s)), lty = 3) +
     {
-      if(!is.null(units)) {
+      if (!is.null(units)) {
         geom_hline(yintercept = 0, alpha = .2)
       }
     } +
     {
-      if(!is.null(units)) {
+      if (!is.null(units)) {
         geom_vline(xintercept = 0, alpha = .2)
       }
     } +
     {
-      if(is.null(units)) {
+      if (is.null(units)) {
         scale_x_continuous(breaks = NULL, labels = NULL)
       }
     } +
     {
-      if(is.null(units)) {
+      if (is.null(units)) {
         scale_y_continuous(breaks = NULL, labels = NULL)
       }
     } +
@@ -518,9 +519,9 @@ ggMohr <- function(sigma1, sigma2, sigma3 = NULL, units = "MPa", coulomb = c(1, 
         labs(
           caption = bquote(
             sigma[m] == .(round(circle13.m, 2)) ~ .(units) ~ "|" ~
-              sigma[d] == .(round(2 * circle13.r, 2)) ~ .(units) #~ "|" ~
-              #theta[f] == .(round(theta.f, 2)) * degree ~ "|" ~
-              #alpha[f] == .(round(90 - theta.f, 2)) * degree
+              sigma[d] == .(round(2 * circle13.r, 2)) ~ .(units) # ~ "|" ~
+            # theta[f] == .(round(theta.f, 2)) * degree ~ "|" ~
+            # alpha[f] == .(round(90 - theta.f, 2)) * degree
           )
         )
       }
@@ -532,46 +533,46 @@ ggMohr <- function(sigma1, sigma2, sigma3 = NULL, units = "MPa", coulomb = c(1, 
 
 
 
-griffith_criterion <- function(sigma_n, tensile){
+griffith_criterion <- function(sigma_n, tensile) {
   suppressWarnings(
-  sigma_s <- sqrt(
-    4 * (tensile^2 - abs(tensile) * abs(sigma_n))
-  )
+    sigma_s <- sqrt(
+      4 * (tensile^2 - abs(tensile) * abs(sigma_n))
+    )
   )
   return(sigma_s)
 }
 
 
-failure_criterion.helper <- function(sigma_n = seq(-70, 1000, 1), cohesion = 70, friction = 0.6){
+failure_criterion.helper <- function(sigma_n = seq(-70, 1000, 1), cohesion = 70, friction = 0.6) {
   tensile <- cohesion / 2
-  sigma_s <- ifelse(sigma_n<0, 
-                    griffith_criterion(sigma_n, tensile),
-                    friction * sigma_n + cohesion
+  sigma_s <- ifelse(sigma_n < 0,
+    griffith_criterion(sigma_n, tensile),
+    friction * sigma_n + cohesion
   )
-  
+
   return(cbind(sigma_n = sigma_n, sigma_s = sigma_s))
 }
 
 
 #' Failure Criterion
-#' 
+#'
 #' Adds the Griffith-Coulomb-fracture criterion to a plot.
 #'
-#' @inheritParams slip_tendency 
+#' @inheritParams slip_tendency
 #' @param cohesion numeric. Cohesion
 #' @param friction numeric. Coefficient of friction
 #' @param ... optional plotting arguments passed to [graphics::lines()]
 #'
-#' @returns a matrix of the normal and shear stresses. 
+#' @returns a matrix of the normal and shear stresses.
 #' @export
 #'
 #' @examples
 #' Mohr_plot(sigma1 = 66, sigma2 = 30, sigma3 = 20, xlim = c(-50, 125), full.circle = TRUE)
-#' failure_criterion(col = 'red')
+#' failure_criterion(col = "red")
 failure_criterion <- function(sigma_n = seq(-100, 100, .01), cohesion = 1, friction = 0.6, ...) {
   dat <- failure_criterion.helper(sigma_n, cohesion, friction)
   graphics::lines(dat, ...)
-  
+
   dat_neg <- cbind(dat[, 1], -dat[, 2])
   graphics::lines(rbind(dat, dat_neg), ...)
   invisible(dat)

@@ -5,13 +5,13 @@
 \alias{simongomez}
 \title{Example data set}
 \format{
-An object of class \code{data.frame}
+An object of class \verb{"Fault}
 }
 \usage{
 data('simongomez')
 }
 \description{
-80 Fault-slip orientations from Simon-Gomez
+80 Fault-slip orientations from Simon-Gomez ???
 }
 \examples{
 data("simongomez")

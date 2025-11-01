@@ -35,14 +35,7 @@ or \code{\link[=geodesic_mean_pair]{geodesic_mean_pair()}} (if \code{x} is a Pai
 \item{y}{Only for variance. object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"} about which the Fréchet variance should be calculated for.
 If \code{NULL} (the default), Fréchet variance about the Fréchet mean.}
 
-\item{group}{character. Symmetry group of \code{x}. One of
-\code{"orthorhombic"} (line-in-plane symmetry, e.g. foliation-lineations, cylindrical fold
-orientations, triaxial ellipsoid orientations, and earthquake
-focal mechanisms, and olivine),
-\code{"triclinic"} (ray-in-plane symmetry, e.g. faults with slip directions),
-\code{"trigonal"} (e.g. alpha-quartz),
-\code{"hexagonal"} (e.g. beta-quartz), or
-\code{"trivial"} (rotations).
+\item{group}{Symmetry group of \code{x}. See \code{\link[=symmetry_group]{symmetry_group()}} for details
 If \code{NULL}, the group will be
 automatically picked based on the class of \code{x}.}
 }

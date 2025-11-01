@@ -5,7 +5,7 @@
 #'
 #' @param n integer. number of random samples to be generated
 #' @inheritParams sph_mean
-#' @param mu Mean vector. object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, where the 
+#' @param mu Mean vector. object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, where the
 #'  rows are the observations and the columns are the coordinates.
 #' @param k numeric. The concentration parameter (\eqn{\kappa}) of the von
 #' Mises-Fisher distribution

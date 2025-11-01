@@ -26,5 +26,5 @@ Adds the Griffith-Coulomb-fracture criterion to a plot.
 }
 \examples{
 Mohr_plot(sigma1 = 66, sigma2 = 30, sigma3 = 20, xlim = c(-50, 125), full.circle = TRUE)
-failure_criterion(col = 'red')
+failure_criterion(col = "red")
 }

@@ -3,7 +3,7 @@
 #' Dispersion  measured using the Fr&#233;chet variance, i.e the sum of the squared
 #' geodesic distances between all vectors and a specified vector.
 #'
-#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`, 
+#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`,
 #' where the rows are the observations and the columns are the coordinates.
 #' @param y Only for variance. object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"` about which the Fr&#233;chet variance should be calculated for.
 #' If `NULL` (the default), Fr&#233;chet variance about the Fr&#233;chet mean.
@@ -90,16 +90,10 @@ geodesic_var.Pair <- function(x, y = NULL, group = NULL, ...) {
     stopifnot(is.spherical(y) & nrow(y) == 1)
 
     if (is.null(group)) {
-      group <- if (inherits(y, "Fault")) "triclinic" else "orthorhombic"
+      group <- if (inherits(y, "Fault")) "triclinic" else "triclinic"
     }
 
-    group_mat <- switch(group,
-      "orthorhombic" = oriLineInPlaneGroup(),
-      "triclinic" = oriRayInPlaneGroup(),
-      "trivial" = oriTrivialGroup(),
-      "trigonal" = oriTrigonalTrapezohedralGroup(),
-      "hexagonal" = oriHexagonalTrapezohedralGroup()
-    )
+    group_mat <- symmetrie_group(grpup)
 
     oriVariance(vec_list(x), pair2rot(y), group = group_mat)
   }
@@ -349,14 +343,7 @@ cartesianFromHorizontal <- function(tz) {
 #' and lineations
 #'
 #' @param x object of class `"Pair"` or `"Fault"`
-#' @param group character. Symmetry group of `x`. One of
-#' `"orthorhombic"` (line-in-plane symmetry, e.g. foliation-lineations, cylindrical fold
-#' orientations, triaxial ellipsoid orientations, and earthquake
-#' focal mechanisms, and olivine),
-#' `"triclinic"` (ray-in-plane symmetry, e.g. faults with slip directions),
-#' `"trigonal"` (e.g. alpha-quartz),
-#' `"hexagonal"` (e.g. beta-quartz), or
-#' `"trivial"` (rotations).
+#' @param group Symmetry group of `x`. See [symmetry_group()] for details
 #' If `NULL`, the group will be
 #' automatically picked based on the class of `x`.
 #'
@@ -399,16 +386,10 @@ geodesic_var_pair <- function(x, group = NULL) {
   xvec <- pair2rot(x)
 
   if (is.null(group)) {
-    group <- if (inherits(x, "Fault")) "triclinic" else "orthorhombic"
+    group <- if (inherits(x, "Fault")) "triclinic" else "monoclinic"
   }
 
-  group_mat <- switch(group,
-    "orthorhombic" = oriLineInPlaneGroup(),
-    "triclinic" = oriRayInPlaneGroup(),
-    "trivial" = oriTrivialGroup(),
-    "trigonal" = oriTrigonalTrapezohedralGroup(),
-    "hexagonal" = oriHexagonalTrapezohedralGroup()
-  )
+  group_mat <- symmetrie_group(group)
   ori_mean_variance(xvec, group = group_mat)
 }
 
@@ -775,15 +756,83 @@ rotAntisymmetricFromVector <- function(v) {
 
 ### SYMMETRY GROUPS ###
 
-# Frequently orientations are subject to some symmetry group G, which is a
-# finite set of rotations (satisfying certain properties). For any rotation Q
-# in G, the rotation matrix Q %*% R represents the same orientation as R does.
-# Here are some common symmetry groups.
+#' Symmetry groups
+#'
+#' Frequently orientations are subject to some symmetry group \eqn{\mathbb{G}}, which is a
+#' finite set of rotations (satisfying certain properties). For any rotation \eqn{Q}
+#' in \eqn{\mathbb{G}}, the rotation matrix \eqn{Q \cdot R} represents the same orientation as \eqn{R} does.
+#'
+#' @param group character (symmetry class) or integer number of the enantiomorphic point group. See table below for details.
+#'  Also accepts `""ray_in_plane"` (equivalent to triclinic symmetry) and `"line_in_plane"` (monoclinic).
+#'
+#' @details
+#' \tabular{lcl}{
+#' Symmetry \tab Enantiomorphic Point Group \tab Example \cr
+#' `triclinic` 	\tab 1 \tab Ray in plane, plagioclase \cr
+#' `monoclinic` \tab 2 \tab Line in plane, orthoclase, gypsum, muscovite, clinopyroxene, clinoamphibole \cr
+#' `orthorhombic` \tab 222 \tab olivine, aragonite, marcasite, orthopyroxenes \cr
+#' `tetragonal` \tab 	4 \tab Pyramidal: zircon \cr
+#'            \tab 422 \tab Trapezohedral\cr
+#' `trigonal` \tab 	3 \tab Pyramidal, Rhombohedral \cr
+#'          \tab	32 \tab Trapezohedral: \eqn{\alpha}-Quartz \cr
+#' `hexagonal` \tab	6 \tab Pyramidal, Rhombohedral\cr
+#'           \tab	622 \tab Trapezohedral: \eqn{\beta}-Quartz \cr
+#' `cubic` \tab	 23 \tab Tetartoidal \cr
+#'       \tab	432 \tab Hexoctahedral: galena, pyrite, fluorite \cr
+#' }
+#'
+#' @return list of rotation parameters
+#'
+#' @export
+#'
+#' @examples
+#' symmetry_group("triclinic")
+#'
+#' symmetry_group(2)
+symmetry_group <- function(group = c("triclinic", "ray_in_plane", "line_in_plane", "monoclinic", "trigonal-trapezohedral", "hexagonal-trapezohedral", "trivial")) {
+  if (is.character(group)) {
+    group <- match.arg(group)
+
+    switch(group,
+      "ray_in_plane" = oriRayInPlaneGroup(), # 1 triclinic
+      "triclinic" = oriRayInPlaneGroup(),
+      "line_in_plane" = oriLineInPlaneGroup(), # 2 monoclinic
+      "monoclinie" = oriLineInPlaneGroup(), # 2 monoclinic
+      "orthorhombic" = NULL,
+      "tetragonal" = NULL,
+      "trigonal-trapezohedral" = oriTrigonalTrapezohedralGroup(), # 32 trigonal-trapezohedral
+      "hexagonal-trapezohedral" = oriHexagonalTrapezohedralGroup(), # 622 hexagonal-trapezohedral
+      "cubic" = NULL,
+      "trivial" = oriTrivialGroup()
+    )
+  } else {
+    stopifnot(group %in% c(1, 2, 222, 4, 422, 3, 32, 6, 622, 23, 432))
+    switch(as.character(group),
+      "1" = oriRayInPlaneGroup(), # 1 triclinic
+      "2" = oriLineInPlaneGroup(), # 2 monoclinic
+      "222" = NULL,
+      "4" = NULL,
+      "422" = NULL,
+      "3" = NULL,
+      "32" = oriTrigonalTrapezohedralGroup(), # 32 trigonal-trapezohedral
+      "6" = NULL,
+      "622" = oriHexagonalTrapezohedralGroup(), # 622 hexagonal-trapezohedral
+      "23" = NULL,
+      "432" = NULL
+    )
+  }
+}
+
+
 
 #' When trivial symmetry is used, the orientations are simply rotations. This case is so important that we have separate code, in rot.R, for doing it. But let's include the trivial group, for completeness.
+#' @noRd
+#' @keywords internal
 oriTrivialGroup <- function() list(diag(c(1, 1, 1)))
 
 #' Ray-in-plane symmetry is applicable to faults-with-slip-directions, such as slickensides (and certain minerals).
+#' @noRd
+#' @keywords internal
 oriRayInPlaneGroup <- function() {
   list(
     diag(c(1, 1, 1)),
@@ -791,6 +840,8 @@ oriRayInPlaneGroup <- function() {
   )
 }
 #' Line-in-plane symmetry is applicable to foliation-lineations, cylindrical fold orientations, triaxial ellipsoid orientations, and earthquake focal mechanisms (and olivine).
+#' @noRd
+#' @keywords internal
 oriLineInPlaneGroup <- function() {
   list(
     diag(c(1, 1, 1)),
@@ -800,6 +851,8 @@ oriLineInPlaneGroup <- function() {
   )
 }
 #' Trigonal trapezohedral is the point group of alpha-quartz.
+#' @noRd
+#' @keywords internal
 oriTrigonalTrapezohedralGroup <- function() {
   list(
     diag(c(1, 1, 1)),
@@ -813,6 +866,8 @@ oriTrigonalTrapezohedralGroup <- function() {
   )
 }
 #' Hexagonal trapezohedral is the point group of beta-quartz.
+#' @noRd
+#' @keywords internals
 oriHexagonalTrapezohedralGroup <- function() {
   list(
     diag(c(1, 1, 1)),

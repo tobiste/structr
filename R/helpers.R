@@ -114,7 +114,7 @@ quadrantletter_to_azimuth <- function(x) {
 #'
 #' @returns character vector
 #' @export
-#' 
+#'
 #' @seealso [split_trailing_letters()]
 #'
 #' @examples

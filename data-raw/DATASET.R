@@ -1,4 +1,6 @@
 ## code to prepare `DATASET` dataset goes here
+library(dplyr)
+
 # simongomez = read.delim("clipboard")
 # simongomez <- simongomez |> mutate(
 #   dipdir = Strike + 90,
@@ -7,6 +9,30 @@
 # theta = simongomez$Rake
 # ve = simongomez$ve
 # usethis::use_data(simongomez, overwrite = TRUE)
+
+# simongomez |> select(-dipdir, -ve) |>
+#   write.csv("inst/simongomez.csv")
+
+simongomez_df <- read.csv("inst/simongomez.csv") |> mutate(
+  dipslip = ifelse(sense %in% c("N", "R", "T"), T, F),
+  left = ifelse(!dipslip & sense == "S", TRUE, FALSE)
+)
+simongomez_df$dipdir <- quadrant2dd(simongomez_df$Strike, simongomez_df$Dip_direction)
+sg_planes <- (Plane(simongomez_df$dipdir, simongomez_df$Dip))
+sg_f1 <- Fault_from_rake_quadrant(
+  sg_planes,
+  rake = as.numeric(simongomez_df$Rake),
+  quadrant = simongomez_df$Direction,
+  type = "rake"
+)
+sg_f1[, 5] <- 1
+strike_slip_ids <- simongomez_df |>
+  filter(left) |>
+  pull(id)
+sg_f1[strike_slip_ids, 5] <- sense_from_strikeslip(sg_f1[strike_slip_ids, ], simongomez_df$left[strike_slip_ids])
+simongomez <- sg_f1
+usethis::use_data(simongomez, overwrite = TRUE)
+
 
 # readr::read_csv("Field Work/data_planes.txt") |>
 #   dplyr::filter(cluster == "Huronian Lk.") |>

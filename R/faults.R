@@ -53,7 +53,7 @@
 #' @importFrom stats t.test
 #'
 #' @seealso [Fault_PT()] for a simple P-T stress analysis,
-#'  [SH()] and [SH_from_tensor()] to calculate the azimuth of the maximum horizontal stress; 
+#'  [SH()] and [SH_from_tensor()] to calculate the azimuth of the maximum horizontal stress;
 #'  [Mohr_plot()] for graohical representation of the deviatoric stress tensor.
 #'
 #' @examples
@@ -128,7 +128,7 @@ slip_inversion <- function(x, boot = 100L, conf.level = 0.95, friction = 0.6, ..
   colnames(sigma_boot) <- names(best.fit$principal_vals)
 
   beta_CI <- tectonicr::confidence_interval(fault_df$beta, conf.level = conf.level, axial = FALSE)
-  
+
   SHmax_CI <- vapply(boot_results, function(x) {
     x$SHmax
   }, FUN.VALUE = numeric(1)) |>
@@ -141,7 +141,7 @@ slip_inversion <- function(x, boot = 100L, conf.level = 0.95, friction = 0.6, ..
     principal_vals = best.fit$principal_vals,
     principal_vals_conf = sigma_boot,
     principal_faults = best.fit$principal_faults,
-    SHmax = best.fit$SHmax, 
+    SHmax = best.fit$SHmax,
     SHmax_CI = SHmax_CI$conf.interval,
     R = best.fit$R,
     R_conf = R_boot$conf.int,
@@ -194,13 +194,13 @@ slip_inversion0 <- function(x, friction = 0.6) {
   sigma_n <- shearnorm[, "normal"]
   slip_tend <- slip_tendency(sigma_s, sigma_n)
   dilat_tend <- dilatation_tendency(sigma_vals[1], sigma_vals[3], sigma_n)
-  
-  
+
+
   SHmax <- tryCatch(
     expr = SH_from_tensor(eigen(tau)$vectors),
     error = function(e) NA
   )
-  
+
   list(
     stress_tensor = tau,
     principal_axes = principal_axes,
@@ -816,65 +816,64 @@ Plane_from_apparent_dips <- function(a1, a2) {
 #' Dip-slip sense (1 for normal, -1 for reverse) when only strike-slip kinematics are known
 #'
 #' @param x `"Pair"` object(s) of the plane(s) and line(s) with unknown dip-slip offset
-#' @param left logical. `TRUE` if `x` is a left-lateral (sinistral) fault, and 
-#' `FALSE` if `x` is a right-lateral (dextral) fault. 
+#' @param left logical. `TRUE` if `x` is a left-lateral (sinistral) fault, and
+#' `FALSE` if `x` is a right-lateral (dextral) fault.
 #' Must have same length as rows in `x`
 #'
 #' @returns numeric. 1 if normal, -1 if reverse offset
-#' 
+#'
 #' @seealso [strikeslip_kinematics()]
-#' 
+#'
 #' @export
 #'
 #' @examples
 #' # Sinistral fault
 #' sense_from_strikeslip(Pair(120, 89, 30, 5), left = TRUE) # 1: normal offset
-#' 
+#'
 #' # Dextral fault
 #' sense_from_strikeslip(Pair(120, 89, 30, 5), left = FALSE) # -1: reverse offset
-sense_from_strikeslip <- function(x, left){
+sense_from_strikeslip <- function(x, left) {
   stopifnot(is.Pair(x), is.logical(left), length(left) == nrow(x))
-  
+
   strike <- Line(dd2rhr(x[, 1]), rep(0, nrow(x)))
   slip <- Line(x)
   rake <- angle(strike, slip)
-  
+
   # if sinistral fault:
-  sense <- ifelse(rake  < 90, 1, -1)
-  
+  sense <- ifelse(rake < 90, 1, -1)
+
   # opposite sign if dextral:
   ifelse(left, sense, -sense)
 }
 
 
 #' Strike-slip Kinematics
-#' 
+#'
 #' Returns the strike-slip kinematics of a fault
 #'
-#' @param x `"Fault"` object(s) 
+#' @param x `"Fault"` object(s)
 #'
 #' @returns character. `"left"` - left-lateral (sinistral) offset, `"right"` - right-lateral (dextral) offset
 #' @export
-#' 
+#'
 #' @seealso [sense_from_strikeslip()]
 #'
 #' @examples
 #' strikeslip_kinematics(Fault(120, 50, 104, 49, sense = -1))
-strikeslip_kinematics <- function(x){
+strikeslip_kinematics <- function(x) {
   stopifnot(is.Fault(x))
   normal <- x[, 5] == 1
-  
+
   strike <- Line(dd2rhr(x[, 1]), rep(0, nrow(x)))
   slip <- Line(x)
   rake <- angle(strike, slip)
-  
+
   # if normal fault
   sinistral <- rake < 90
-  
+
   # dextral if reverse fault
   sinistral <- ifelse(normal, sinistral, !sinistral)
 
   # return string
   ifelse(sinistral, "left", "right")
 }
-

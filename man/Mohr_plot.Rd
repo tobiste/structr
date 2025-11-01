@@ -69,7 +69,8 @@ failure_criterion(col = "#B63679") # adds failure criterion
 
 ## Deviatoric stress from stress ratio:
 R <- 0.4 # Stress ratio after Gephart & Forsyth (1984)
-sigma1 <- 1; sigma3 <- 0
+sigma1 <- 1
+sigma3 <- 0
 sigma2 <- sigma1 - R * (sigma1 - sigma3)
 
 ## unitless Mohr diagram
