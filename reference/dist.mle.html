@@ -16,7 +16,29 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Basics and Import</h6></li>
+    <li><a class="dropdown-item" href="../articles/Basics.html">Basics</a></li>
+    <li><a class="dropdown-item" href="../articles/Import.html">Import Data</a></li>
+    <li><a class="dropdown-item" href="../articles/Oriented_Drill_Cores.html">Oriented Drill Cores</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Plotting</h6></li>
+    <li><a class="dropdown-item" href="../articles/Plots.html">Orientation Plots</a></li>
+    <li><a class="dropdown-item" href="../articles/Plots_ggplot.html">Orientation Plots with ggplot</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Statistics</h6></li>
+    <li><a class="dropdown-item" href="../articles/Statistics.html">Statistics on the Sphere</a></li>
+    <li><a class="dropdown-item" href="../articles/Regression.html">Regression on the Sphere</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Faults and Stress</h6></li>
+    <li><a class="dropdown-item" href="../articles/Faults.html">Faults and Paleostress</a></li>
+    <li><a class="dropdown-item" href="../articles/Mohr_Circle.html">Mohr Circle</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Other</h6></li>
+    <li><a class="dropdown-item" href="../articles/Strain_Analysis.html">Strain and Vorticity Analysis</a></li>
+  </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/tobiste/structr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -64,32 +86,32 @@ rows are the observations and the columns are the coordinates.</p></dd>
 <span class="r-in"><span><span class="fu">kent_mle</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $G</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Line object (n = 3):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>        azimuth    plunge</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> mean  115.5786 57.132655</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> major  17.5326  5.167578</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> minor 284.2481 32.355404</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         azimuth   plunge</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> mean  120.17749 52.14905</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> major  14.28332 12.01438</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> minor 275.63112 35.25550</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $param</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>     kappa      beta       psi </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 4.7100410 0.8514107 0.2155276 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      kappa       beta        psi </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 4.75262432 0.31314498 0.08433336 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $logcon</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.034359</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.039385</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $loglik</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -130.0266</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -128.4344</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu">vmf_mle</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $loglik</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -132.9748</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -128.5391</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $mu</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Line object (n = 1):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   azimuth    plunge </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 115.57863  57.13265 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 120.17749  52.14905 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $kappa</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.512821</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 4.719276</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

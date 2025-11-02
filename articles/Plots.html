@@ -34,7 +34,31 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="active nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
+<li class="active nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Basics and Import</h6></li>
+    <li><a class="dropdown-item" href="../articles/Basics.html">Basics</a></li>
+    <li><a class="dropdown-item" href="../articles/Import.html">Import Data</a></li>
+    <li><a class="dropdown-item" href="../articles/Oriented_Drill_Cores.html">Oriented Drill Cores</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Plotting</h6></li>
+    <li><a class="dropdown-item" href="../articles/Plots.html">Orientation Plots</a></li>
+    <li><a class="dropdown-item" href="../articles/Plots_ggplot.html">Orientation Plots with ggplot</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Statistics</h6></li>
+    <li><a class="dropdown-item" href="../articles/Statistics.html">Statistics on the Sphere</a></li>
+    <li><a class="dropdown-item" href="../articles/Regression.html">Regression on the Sphere</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Faults and Stress</h6></li>
+    <li><a class="dropdown-item" href="../articles/Faults.html">Faults and Paleostress</a></li>
+    <li><a class="dropdown-item" href="../articles/Mohr_Circle.html">Mohr Circle</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Other</h6></li>
+    <li><a class="dropdown-item" href="../articles/Strain_Analysis.html">Strain and Vorticity Analysis</a></li>
+  </ul>
+</li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -120,7 +144,7 @@ function.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"lightgrey"</span>, lty <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Plots_files/figure-html/stereo_greatcircle-1.png" alt="Diagram showing greatcircles" width="700"></p>
-<p>To plota small circle with, e.g., a 10° radius, you need to specify
+<p>To plot a small circle with, e.g., a 10° radius, you need to specify
 the <code>ang</code> argument in <code><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines()</a></code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -136,10 +160,14 @@ the shape of the distribution of these vectors, that is who clustered,
 cylindrical or random these vectors are distributed.</p>
 <p>A Fabric plot visualizes the shape of the distribution by plotting
 the eigenvalues of the orientation tensor. Three different diagram are
-provided by {structr}, namely the triangular <em>Vollmer plot</em> after
-Vollmer (1990), the logarithmic biplot (<em>Woodcock plot</em>) after
-Woodcock (1977), and the Lode parameter vs. natural octahedral strain
-diagram (<em>Hsü plot</em>) after Hsü (1965).</p>
+provided by {structr}, namely the triangular <em>Vollmer plot</em><a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Vollmer, F. W. (1990). An application of eigenvalue
+methods to structural domain analysis. Geological Society of America
+Bulletin, 102, 786–791.&lt;/p&gt;"><sup>1</sup></a>, the
+logarithmic biplot (<em>Woodcock plot</em>)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Woodcock, N. H. (1977). Specification of fabric shapes
+using an eigenvalue method. Geological Society of America Bulletin88,
+1231–1236. Retrieved from &lt;a href="http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf" class="external-link uri"&gt;http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf&lt;/a&gt;&lt;/p&gt;'><sup>2</sup></a>, and the Lode
+parameter vs. natural octahedral strain diagram (<em>Hsu
+plot</em>)[|^hsu].</p>
 <div class="section level3">
 <h3 id="vollmer-plot">Vollmer plot<a class="anchor" aria-label="anchor" href="#vollmer-plot"></a>
 </h3>
@@ -163,11 +191,15 @@ shape of the orientation distribution (after Woodcock, 1977).</p>
 <p><img src="Plots_files/figure-html/woodcock-1.png" alt="Diagram showing eigen-vector analysis of some example data plotted in an biplot plot after Woodcok 1977" width="700"></p>
 </div>
 <div class="section level3">
-<h3 id="hsü-plot">Hsü plot<a class="anchor" aria-label="anchor" href="#hs%C3%BC-plot"></a>
+<h3 id="hsu-plot">Hsu plot<a class="anchor" aria-label="anchor" href="#hsu-plot"></a>
 </h3>
-<p><code><a href="../reference/hsu_fabric_plot.html">hsu_fabric_plot()</a></code> creates a Lode parameter vs. natural
-octahedral strain diagram showing the shape of the orientation
-distribution (after Hsü, 1965).</p>
+<p><code><a href="../reference/hsu_fabric_plot.html">hsu_fabric_plot()</a></code> creates a Lode parameter<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Lode, W. (1926). Versuche über den Einfluß der mittleren
+Hauptspannung auf das Fließen der Metalle Eisen. Kupfer und Nickel.
+Zeitschrift Für Physik, 36(11–12), 913–939. &lt;a href="https://doi.org/10.1007/BF01400222" class="external-link uri"&gt;https://doi.org/10.1007/BF01400222&lt;/a&gt;&lt;/p&gt;'><sup>3</sup></a> vs. natural octahedral
+strain<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Nádai, A. (1950). Theory of flow and fracture of solids.
+McGraw-Hill.&lt;/p&gt;"><sup>4</sup></a>
+diagram showing the shape of the orientation distribution (after Hsu,
+1965).</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/hsu_fabric_plot.html">hsu_fabric_plot</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/hsu_fabric_plot.html">hsu_fabric_plot</a></span><span class="op">(</span><span class="va">lines</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
@@ -178,11 +210,12 @@ distribution (after Hsü, 1965).</p>
 <div class="section level2">
 <h2 id="density-plots">Density plots<a class="anchor" aria-label="anchor" href="#density-plots"></a>
 </h2>
-<p><strong>Kamb</strong> contours and densities can be added to an
-existing projection plot using the <code>contour</code> functions.
-Weighted densities can be controlled by the <code>weights</code>
-argument and are useful when the orientation measurements have different
-accuracies.</p>
+<p><strong>Kamb</strong> contours<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Kamb, W. B. (1959). Ice Petrofabric Observations from
+Blue Glacier, Washington, in Relation to Theory and Experiment. Journal
+of Geophysical Research, 54(11).&lt;/p&gt;"><sup>5</sup></a> and densities can be added to an existing
+projection plot using the <code>contour</code> functions. Weighted
+densities can be controlled by the <code>weights</code> argument and are
+useful when the orientation measurements have different accuracies.</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example_planes_df</span><span class="op">$</span><span class="va">quality</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">example_planes_df</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span>, <span class="fl">6</span>, <span class="va">example_planes_df</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span> <span class="co"># replacing NA values with 6</span></span>
 <span><span class="va">plane_weightings</span> <span class="op">&lt;-</span> <span class="fl">6</span> <span class="op">/</span> <span class="va">example_planes_df</span><span class="op">$</span><span class="va">quality</span></span>
@@ -265,7 +298,8 @@ plot.</p>
 <h3 id="angelier-plot">Angelier plot<a class="anchor" aria-label="anchor" href="#angelier-plot"></a>
 </h3>
 <p>The <strong>Angelier plot</strong> shows all planes as <em>great
-circles</em> and lineations as points (after Angelier , 1984). Fault
+circles</em> and lineations as points (after Angelier, 1984)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Angelier, J. Tectonic analysis of fault slip data sets,
+J. Geophys. Res. 89 (B7), 5835-5848 (1984)&lt;/p&gt;"><sup>6</sup></a>. Fault
 striae are plotted as vectors on top of the lineation pointing in the
 movement direction of the hanging wall. Easy to read in case of
 homogeneous or small datasets.</p>
@@ -286,9 +320,10 @@ homogeneous or small datasets.</p>
 <h3 id="hoeppener-plot">Hoeppener plot<a class="anchor" aria-label="anchor" href="#hoeppener-plot"></a>
 </h3>
 <p>The <strong>Hoeppener plot</strong> shows all planes as
-<em>poles</em> while lineations are not shown (after Hoeppener, 1955).
-Instead, fault striae are plotted as vectors on top of poles pointing in
-the movement direction of the hanging wall. Useful in case of large or
+<em>poles</em> while lineations are not shown (after Hoeppener, 1955)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Hoeppener, R. Tektonik im Schiefergebirge. Geol Rundsch
+44, 26-58 (1955). &lt;a href="https://doi.org/10.1007/BF01802903" class="external-link uri"&gt;https://doi.org/10.1007/BF01802903&lt;/a&gt;&lt;/p&gt;'><sup>7</sup></a>. Instead,
+fault striae are plotted as vectors on top of poles pointing in the
+movement direction of the hanging wall. Useful in case of large or
 heterogeneous datasets.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Hoeppener plot"</span><span class="op">)</span></span>
@@ -303,6 +338,7 @@ argument. See <code><a href="../reference/fault-plot.html">?fault_plot</a></code
 </blockquote>
 </div>
 </div>
+
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>

@@ -34,7 +34,31 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="active nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
+<li class="active nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Basics and Import</h6></li>
+    <li><a class="dropdown-item" href="../articles/Basics.html">Basics</a></li>
+    <li><a class="dropdown-item" href="../articles/Import.html">Import Data</a></li>
+    <li><a class="dropdown-item" href="../articles/Oriented_Drill_Cores.html">Oriented Drill Cores</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Plotting</h6></li>
+    <li><a class="dropdown-item" href="../articles/Plots.html">Orientation Plots</a></li>
+    <li><a class="dropdown-item" href="../articles/Plots_ggplot.html">Orientation Plots with ggplot</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Statistics</h6></li>
+    <li><a class="dropdown-item" href="../articles/Statistics.html">Statistics on the Sphere</a></li>
+    <li><a class="dropdown-item" href="../articles/Regression.html">Regression on the Sphere</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Faults and Stress</h6></li>
+    <li><a class="dropdown-item" href="../articles/Faults.html">Faults and Paleostress</a></li>
+    <li><a class="dropdown-item" href="../articles/Mohr_Circle.html">Mohr Circle</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Other</h6></li>
+    <li><a class="dropdown-item" href="../articles/Strain_Analysis.html">Strain and Vorticity Analysis</a></li>
+  </ul>
+</li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -91,15 +115,31 @@ to spherical objects:</p>
 </h3>
 <p>The arithmetic mean orientation of spherical data is calculated by
 summing up all orientation vectors and normalizing the resulting
-vector.</p>
+vector<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Mardia, K. V., &amp;amp; Jupp, P. E. (2000). Directional
+Statistics. (K. V. Mardia &amp;amp; P. E. Jupp, Eds.). Hoboken, NJ, USA:
+Wiley. &lt;a href="https://doi.org/10.1002/9780470316979" class="external-link uri"&gt;https://doi.org/10.1002/9780470316979&lt;/a&gt;&lt;/p&gt;'><sup>1</sup></a>:</p>
+<p>This involves the resultant vector of a set of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>n</mi><annotation encoding="application/x-tex">n</annotation></semantics></math>
+vectors
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>x</mi><mn>1</mn></msub><mo>,</mo><mi>…</mi><mo>,</mo><msub><mi>x</mi><mi>n</mi></msub></mrow><annotation encoding="application/x-tex">x_1, \ldots, x_n</annotation></semantics></math>,
+given by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>𝐱</mi><mo accent="true">‾</mo></mover><mo>=</mo><msubsup><mo>∑</mo><mrow><mi>i</mi><mo>=</mo><mn>1</mn></mrow><mi>n</mi></msubsup><msub><mi>𝐱</mi><mi>i</mi></msub></mrow><annotation encoding="application/x-tex">\bar{\mathbf{x}} = \sum_{i=1}^{n} \mathbf{x}_i</annotation></semantics></math>,
+and the resultant length defined as
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><mi>𝐑</mi><mo accent="true">‾</mo></mover><mo>=</mo><msqrt><mrow><msubsup><mi>x</mi><mi>x</mi><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>x</mi><mi>y</mi><mn>2</mn></msubsup><mo>+</mo><msubsup><mi>x</mi><mi>z</mi><mn>2</mn></msubsup></mrow></msqrt></mrow><annotation encoding="application/x-tex">\bar{\mathbf{R}} = \sqrt{x_x^2 + x_y^2 + x_z^2}</annotation></semantics></math>.</p>
+<p>The arithmetic mean of the vector components is the mean resultant
+vector, i.e the resultant vector normalized by its length
+<math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>μ</mi><mo>=</mo><mfrac><mover><mi>𝐱</mi><mo accent="true">‾</mo></mover><mover><mi>𝐑</mi><mo accent="true">‾</mo></mover></mfrac></mrow><annotation encoding="application/x-tex">\mu = \frac{\bar{\mathbf{x}}}{\bar{\mathbf{R}}}</annotation></semantics></math></p>
 <p>In geology, the statistical estimators are useful for
 <strong>vectorial data</strong> (<code>"Line"</code> objects) such as
 lineations (e.g. mineral lineations, stretching lineations) or plunge
 directions of fold axes, but less for axial data (<code>"Ray"</code>
 objects) such as paleomagnetic directions or orientations of fold axes,
-where the direction is not relevant.</p>
+where the direction is not relevant<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Bachmann, F., Hielscher, R., Jupp, P. E., Pantleon, W.,
+Schaeben, H., &amp;amp; Wegert, E. (2010). Inferential statistics of
+electron backscatter diffraction data from within individual crystalline
+grains. Journal of Applied Crystallography, 43(6), 1338–1355. &lt;a href="https://doi.org/10.1107/S002188981003027X" class="external-link uri"&gt;https://doi.org/10.1107/S002188981003027X&lt;/a&gt;&lt;/p&gt;'><sup>2</sup></a>.</p>
 <p>These estimators are good descriptors of the concentration of the
-data around the mean direction, assuming a unimodal, isotropic
+data around the mean direction, assuming an unimodal, isotropic
 distributions such as the <em>von Mises-Fisher distribution</em>.</p>
 <p>Define some weights for our lines based on the quality reported for
 the measurements:</p>
@@ -145,8 +185,10 @@ and the 95% confidence cone around the mean:</p>
 <h3 id="geodesic-mean-and-variance">Geodesic mean and variance<a class="anchor" aria-label="anchor" href="#geodesic-mean-and-variance"></a>
 </h3>
 <p>Another measure of mean and dispersion is the <em>Fréchet (geodesic
-L<sup>2</sup>) mean</em> and <em>variance</em> which is based on the
-angles between all data vectors.<br>
+L</em><sup>2</sup>) mean and <em>variance</em> which is based on the
+angles between all data vectors<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Davis, J. R., &amp;amp; Titus, S. J. (2017). Modern methods
+of analysis for three-dimensional orientational data. Journal of
+Structural Geology, 96, 65–89. &lt;a href="https://doi.org/10.1016/j.jsg.2017.01.002" class="external-link uri"&gt;https://doi.org/10.1016/j.jsg.2017.01.002&lt;/a&gt;&lt;/p&gt;'><sup>3</sup></a>.<br>
 This can be visualized using the <code><a href="../reference/variance_plot.html">variance_plot()</a></code>; here
 showing the (geodesic) angle distances between all lines and the first
 line in the same data set:</p>
@@ -190,7 +232,7 @@ function for this is:</p>
 <span><span class="co">#&gt;  azimuth   plunge </span></span>
 <span><span class="co">#&gt; 69.09796 14.82125</span></span></code></pre></div>
 <p>These estimators are good descriptors of the concentration of the
-data around the mean direction, when data follows a unimodal,
+data around the mean direction, when data follows an unimodal,
 anisotropic distributions such as the <em>Kent</em> or <em>Bingham
 distributions</em>.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
@@ -251,12 +293,15 @@ line represents the population mean as the p-value is smaller than
 <div class="section level3">
 <h3 id="eigenvectors">Eigenvectors<a class="anchor" aria-label="anchor" href="#eigenvectors"></a>
 </h3>
-<p>The orientation tensor (Scheidegger 1965) is a matrix comprising the
-mean direction cosines of the orientation vectors. In case of a Bingham
-distribution, the <strong>Eigenvectors</strong> of this tensor describe
-the orientation of the most dense, intermediate and least dense
-orientation, and thus, are used to determine the orientation of
-girdle-distributed vectors (e.g. folded planes).</p>
+<p>The orientation tensor<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Scheidegger, A. E. (1964). The tectonic stress and
+tectonic motion direction in Europe and Western Asia as calculated from
+earthquake fault plane solutions. Bulletin of the Seismological Society
+of America, 54(5A), 1519–1528. &lt;a href="https://doi.org/10.1785/BSSA05405A1519" class="external-link uri"&gt;https://doi.org/10.1785/BSSA05405A1519&lt;/a&gt;&lt;/p&gt;'><sup>4</sup></a> is a matrix comprising the mean direction
+cosines of the orientation vectors. In case of a Bingham distribution,
+the <strong>Eigenvectors</strong> of this tensor describe the
+orientation of the most dense, intermediate and least dense orientation,
+and thus, are used to determine the orientation of girdle-distributed
+vectors (e.g. folded planes).</p>
 <div class="section level4">
 <h4 id="shape-parameters">Shape parameters<a class="anchor" aria-label="anchor" href="#shape-parameters"></a>
 </h4>
@@ -350,7 +395,14 @@ Applied Crystallography, 43(6), 1338–1355. <a href="https://doi.org/10.1107/S0
 <p>Davis, J. R., &amp; Titus, S. J. (2017). Modern methods of analysis
 for three-dimensional orientational data. Journal of Structural Geology,
 96, 65–89. <a href="https://doi.org/10.1016/j.jsg.2017.01.002" class="external-link uri">https://doi.org/10.1016/j.jsg.2017.01.002</a></p>
+<p>Mardia, K. V., &amp; Jupp, P. E. (2000). Directional Statistics. (K.
+V. Mardia &amp; P. E. Jupp, Eds.). Hoboken, NJ, USA: Wiley. <a href="https://doi.org/10.1002/9780470316979" class="external-link uri">https://doi.org/10.1002/9780470316979</a></p>
+<p>Scheidegger, A. E. (1964). The tectonic stress and tectonic motion
+direction in Europe and Western Asia as calculated from earthquake fault
+plane solutions. Bulletin of the Seismological Society of America,
+54(5A), 1519–1528. <a href="https://doi.org/10.1785/BSSA05405A1519" class="external-link uri">https://doi.org/10.1785/BSSA05405A1519</a></p>
 </div>
+
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>

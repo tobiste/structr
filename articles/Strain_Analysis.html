@@ -34,7 +34,31 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="active nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
+<li class="active nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Basics and Import</h6></li>
+    <li><a class="dropdown-item" href="../articles/Basics.html">Basics</a></li>
+    <li><a class="dropdown-item" href="../articles/Import.html">Import Data</a></li>
+    <li><a class="dropdown-item" href="../articles/Oriented_Drill_Cores.html">Oriented Drill Cores</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Plotting</h6></li>
+    <li><a class="dropdown-item" href="../articles/Plots.html">Orientation Plots</a></li>
+    <li><a class="dropdown-item" href="../articles/Plots_ggplot.html">Orientation Plots with ggplot</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Statistics</h6></li>
+    <li><a class="dropdown-item" href="../articles/Statistics.html">Statistics on the Sphere</a></li>
+    <li><a class="dropdown-item" href="../articles/Regression.html">Regression on the Sphere</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Faults and Stress</h6></li>
+    <li><a class="dropdown-item" href="../articles/Faults.html">Faults and Paleostress</a></li>
+    <li><a class="dropdown-item" href="../articles/Mohr_Circle.html">Mohr Circle</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Other</h6></li>
+    <li><a class="dropdown-item" href="../articles/Strain_Analysis.html">Strain and Vorticity Analysis</a></li>
+  </ul>
+</li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -71,9 +95,9 @@ analysis using the {structr} package in R.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tobiste.github.io/structr/">structr</a></span><span class="op">)</span></span></code></pre></div>
 <div class="section level2">
-<h2 id="strain-analysis-fabric-analysis">Strain analysis (fabric analysis)<a class="anchor" aria-label="anchor" href="#strain-analysis-fabric-analysis"></a>
+<h2 id="strain-analysis">Strain analysis<a class="anchor" aria-label="anchor" href="#strain-analysis"></a>
 </h2>
-<p>Import some R-phi data from elliptical strain markers</p>
+<p>Import some Rf/ϕ data from elliptical strain markers</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ramsay</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">ramsay</span><span class="op">)</span></span>
@@ -86,7 +110,9 @@ analysis using the {structr} package in R.</p>
 <span><span class="co">#&gt; [6,] 1.70 24.45</span></span></code></pre></div>
 <p>The mean mean strain ellipse (shape and orientation) of deformed
 elliptical objects as strain markers can be calculated by using the mean
-shape matrix and its eigenvalues (Shimamoto and Ikeda, 1976):</p>
+shape matrix and its eigenvalues<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Shimamoto, T., &amp;amp; Ikeda, Y. (1976). A simple
+algebraic method for strain estimation from deformed ellipsoidal
+objects. 1. Basic theory. Tectonophysics, 36(4), 315–337. &lt;a href="https://doi.org/10.1016/0040-1951(76)90107-4" class="external-link uri"&gt;https://doi.org/10.1016/0040-1951(76)90107-4&lt;/a&gt;&lt;/p&gt;'><sup>1</sup></a>:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ramsay_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/mean_strain_ellipse.html">mean_strain_ellipse</a></span><span class="op">(</span>r <span class="op">=</span> <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, phi <span class="op">=</span> <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ramsay_mean</span><span class="op">)</span></span>
@@ -104,12 +130,18 @@ shape matrix and its eigenvalues (Shimamoto and Ikeda, 1976):</p>
 <p>The {structr} algorithm also calculates bootstrapped 95% confidence
 interval.</p>
 <p>To visualize the distribution of the strain values, we can calculate
-densities in Rf-Phi space and plot them in a <strong>Rf/phi</strong>
-diagram:</p>
+densities in Rf/ϕ space<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Vollmer, F. W. (2018). Computers and Geosciences
+Automatic contouring of geologic fabric and finite strain data on the
+unit hyperboloid. Computers and Geosciences, 115(June 2017), 134–142. &lt;a href="https://doi.org/10.1016/j.cageo.2018.03.006" class="external-link uri"&gt;https://doi.org/10.1016/j.cageo.2018.03.006&lt;/a&gt;&lt;/p&gt;'><sup>2</sup></a> and plot them in a <strong>Rf/ϕ</strong>
+diagram<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Ramsay, J. G., &amp;amp; Huber, M. I. (1983). The Techniques
+of Modern Structural Geology: Strain Analyses (Vol. 1). London: Academic
+Press.&lt;/p&gt;"><sup>3</sup></a>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Rphi_plot.html">Rphi_plot</a></span><span class="op">(</span>r <span class="op">=</span> <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, phi <span class="op">=</span> <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Strain_Analysis_files/figure-html/rphi-1.png" alt="Rf-phi plot" width="700"></p>
-<p>or in an <strong>Equidistant polar plot</strong>:</p>
+<p>or in an <strong>Equidistant polar plot</strong><a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Elliott, D. (1970). Determination of Finite Strain and
+Initial Shape from Deformed Elliptical Objects. GSA Bulletin, 81(8),
+2221–2236. &lt;a href="https://doi.org/https://doi.org/10.1130/0016-7606(1970)81%5B2221:DOFSAI%5D2.0.CO;2" class="external-link uri"&gt;https://doi.org/https://doi.org/10.1130/0016-7606(1970)81[2221:DOFSAI]2.0.CO;2&lt;/a&gt;&lt;/p&gt;'><sup>4</sup></a>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Rphi_polar_plot.html">Rphi_polar_plot</a></span><span class="op">(</span><span class="va">ramsay</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>, proj <span class="op">=</span> <span class="st">"eqd"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Strain_Analysis_files/figure-html/plot2-1.png" alt="R/phi data in polar plot" width="700"></p>
@@ -120,8 +152,9 @@ diagram:</p>
 <p>Three-dimensional strain data are expressed by the ratio of the
 magnitudes of the 3 principal strain axes of the strain ellipsoid,
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>X</mi><mo>≥</mo><mi>Y</mi><mo>≥</mo><mi>Z</mi></mrow><annotation encoding="application/x-tex">X \geq Y \geq Z</annotation></semantics></math>.
-They can be represented in the <strong>Flinn diagram</strong> (linear of
-logarithmic axes)…</p>
+They can be represented in the <strong>Flinn diagram</strong><a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Flinn, D. (1965). On the Symmetry Principle and the
+Deformation Ellipsoid. Geological Magazine, 102(1), 36–45. &lt;a href="https://doi.org/10.1017/S0016756800053851" class="external-link uri"&gt;https://doi.org/10.1017/S0016756800053851&lt;/a&gt;&lt;/p&gt;'><sup>5</sup></a>, either
+linear or logarithmic.</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"holst"</span><span class="op">)</span></span>
 <span><span class="va">R_XY</span> <span class="op">&lt;-</span> <span class="va">holst</span><span class="op">[</span>, <span class="st">"R_XY"</span><span class="op">]</span></span>
@@ -129,11 +162,15 @@ logarithmic axes)…</p>
 <span></span>
 <span><span class="fu"><a href="../reference/flinn_plot.html">flinn_plot</a></span><span class="op">(</span><span class="va">R_XY</span>, <span class="va">R_YZ</span>, log <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Strain_Analysis_files/figure-html/flinn-1.png" alt="Flinn diagram" width="700"></p>
-<p>or the <strong>Hsü diagram</strong> using the natural octahedral unit
-strain
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>ϵ</mi><mo accent="true">‾</mo></mover><mi>s</mi></msub><annotation encoding="application/x-tex">\bar{\epsilon}_s</annotation></semantics></math>
-and the Lode parameter
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ν</mi><annotation encoding="application/x-tex">\nu</annotation></semantics></math></p>
+<p>or the <strong>Hsu diagram</strong><a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Hsu, T. C. (1966). The characteristics of coaxial and
+non-coaxial strain paths. Journal of Strain Analysis, 1(3), 216–222. &lt;a href="https://doi.org/10.1243/03093247V013216" class="external-link uri"&gt;https://doi.org/10.1243/03093247V013216&lt;/a&gt;&lt;/p&gt;'><sup>6</sup></a> using the natural
+octahedral unit strain<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Nádai, A. (1950). Theory of flow and fracture of solids.
+McGraw-Hill.&lt;/p&gt;"><sup>7</sup></a>
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>ϵ</mi><mo accent="true">‾</mo></mover><mi>s</mi></msub><annotation encoding="application/x-tex">\bar{\epsilon}_s</annotation></semantics></math>)
+and the Lode parameter<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Lode, W. (1926). Versuche über den Einfluß der mittleren
+Hauptspannung auf das Fließen der Metalle Eisen. Kupfer und Nickel.
+Zeitschrift Für Physik, 36(11–12), 913–939. &lt;a href="https://doi.org/10.1007/BF01400222" class="external-link uri"&gt;https://doi.org/10.1007/BF01400222&lt;/a&gt;&lt;/p&gt;'><sup>8</sup></a>
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ν</mi><annotation encoding="application/x-tex">\nu</annotation></semantics></math>):</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">R_XY</span>, <span class="va">R_YZ</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Strain_Analysis_files/figure-html/hsu-1.png" alt="Hsu diagram" width="700"></p>
@@ -141,15 +178,22 @@ and the Lode parameter
 <div class="section level2">
 <h2 id="vorticity-analysis">Vorticity analysis<a class="anchor" aria-label="anchor" href="#vorticity-analysis"></a>
 </h2>
-<p>The <strong>rigid grain net</strong> after (Jessup et al. 2007) plots
-the distribution the strain ratio (<code>R</code>) of orientation
+<p>The <strong>rigid grain net</strong> after (Jessup et al. 2007)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Jessup, M. J., Law, R. D., &amp;amp; Frassi, C. (2007). The
+Rigid Grain Net (RGN): An alternative method for estimating mean
+kinematic vorticity number (Wm). Journal of Structural Geology, 29(3),
+411–421. &lt;a href="https://doi.org/10.1016/j.jsg.2006.11.003" class="external-link uri"&gt;https://doi.org/10.1016/j.jsg.2006.11.003&lt;/a&gt;&lt;/p&gt;'><sup>9</sup></a> plots the
+distribution the strain ratio (<code>R</code>) of orientation
 (<code>phi</code>) of porphyroclast over the theoretical distribution of
 tailless clasts. The plot estimates the critical threshold
 <code>Rc</code> marking the transition between the stable-sink position
 and infinitely rotating porphyroclasts. This threshold can be
 interpreted as the the <strong>mean kinematic vorticity number</strong>.
 Here the <code>Rc</code> is estimated using the bootstrap method
-described in Stephan et al. (2025).</p>
+described in Stephan et al. (2025)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Stephan, T., Phillips, N., Tiitto, H., Perez, A.,
+Nwakanma, M., Creaser, R., &amp;amp; Hollings, P. (2025). Going with the
+flow — Changes of vorticity control gold enrichment in Archean shear
+zones (Shebandowan Greenstone Belt, Superior Province, Canada). Journal
+of Structural Geology, 201(September), 105542. &lt;a href="https://doi.org/10.1016/j.jsg.2025.105542" class="external-link uri"&gt;https://doi.org/10.1016/j.jsg.2025.105542&lt;/a&gt;&lt;/p&gt;'><sup>10</sup></a>.</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">shebandowan</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20250411</span><span class="op">)</span></span>
@@ -158,6 +202,7 @@ described in Stephan et al. (2025).</p>
 <span><span class="fu"><a href="../reference/RGN_plot.html">RGN_plot</a></span><span class="op">(</span><span class="va">shebandowan</span><span class="op">$</span><span class="va">r</span>, <span class="va">shebandowan</span><span class="op">$</span><span class="va">phi</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/colorize.html">assign_col</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">shebandowan</span><span class="op">$</span><span class="va">area</span><span class="op">)</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Strain_Analysis_files/figure-html/vorticity-1.png" alt="Rigid grain net" width="700"></p>
 </div>
+
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>

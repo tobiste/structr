@@ -32,7 +32,31 @@
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
 <li class="nav-item"><a class="nav-link" href="reference/index.html">Reference</a></li>
-<li class="nav-item"><a class="nav-link" href="articles/index.html">Articles</a></li>
+<li class="nav-item dropdown">
+  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
+  <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
+<li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Basics and Import</h6></li>
+    <li><a class="dropdown-item" href="articles/Basics.html">Basics</a></li>
+    <li><a class="dropdown-item" href="articles/Import.html">Import Data</a></li>
+    <li><a class="dropdown-item" href="articles/Oriented_Drill_Cores.html">Oriented Drill Cores</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Plotting</h6></li>
+    <li><a class="dropdown-item" href="articles/Plots.html">Orientation Plots</a></li>
+    <li><a class="dropdown-item" href="articles/Plots_ggplot.html">Orientation Plots with ggplot</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Statistics</h6></li>
+    <li><a class="dropdown-item" href="articles/Statistics.html">Statistics on the Sphere</a></li>
+    <li><a class="dropdown-item" href="articles/Regression.html">Regression on the Sphere</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Faults and Stress</h6></li>
+    <li><a class="dropdown-item" href="articles/Faults.html">Faults and Paleostress</a></li>
+    <li><a class="dropdown-item" href="articles/Mohr_Circle.html">Mohr Circle</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li><h6 class="dropdown-header" data-toc-skip>Other</h6></li>
+    <li><a class="dropdown-item" href="articles/Strain_Analysis.html">Strain and Vorticity Analysis</a></li>
+  </ul>
+</li>
       </ul>
 <ul class="navbar-nav">
 <li class="nav-item"><form class="form-inline" role="search">
@@ -55,13 +79,13 @@
 <p><a href="https://tobiste.github.io/structr/">structr</a> is a free and open-source package for R that provides tools for structural geology. The toolset includes</p>
 <ul>
 <li><p>Analysis and visualization of orientation data of structural geology (including, <strong>stereographic projections</strong>, contouring, fabric plots, and statistics),</p></li>
-<li><p>Statistical analysis: spherical mean and variance, confidence regions, hypothesis tests, <strong>cluster analysis</strong> of orientation data, and geodesic regression to find the <strong>best-fitting great circle or small circle</strong> through orientation data,</p></li>
-<li><p>Reconstruction of fabric orientations in <strong>oriented drillcores</strong> by transforming the α, β, and γ angles,</p></li>
-<li><p><strong>Stress analysis</strong>: reconstruction of stress orientation and magnitudes from fault-slip data (stress inversion based on <strong>Michael, 1984</strong>), extracting the <strong>maximum horizontal stress</strong> of a 3D stress tensor), and visualization of magnitudes of stress in the <strong>Mohr circle</strong>,</p></li>
+<li><p>Statistical analysis: spherical mean and variance, confidence regions, hypothesis tests, <strong>cluster analysis</strong> of orientation data ([sph_cluster()]), and geodesic regression to find the <strong>best-fitting great circle or small circle</strong> through orientation data ([regression_greatcircle()] and [regression_smallcircle()]),</p></li>
+<li><p>Reconstruction of fabric orientations in <strong>oriented drillcores</strong> by transforming the α, β, and γ angles ([drillcore_transformation()]),</p></li>
+<li><p><strong>Stress analysis</strong>: reconstruction of stress orientation and magnitudes from fault-slip data (stress inversion based on <strong>Michael, 1984</strong>: [slip_inversion()]), extracting the <strong>maximum horizontal stress</strong> of a 3D stress tensor ([SH()]), and visualization of magnitudes of stress in the <strong>Mohr circle</strong> ([Mohr_plot()]),</p></li>
 <li><p>Calculation fault displacement components,</p></li>
 <li><p>Strain analysis (<strong>R</strong><sub>f</sub>/ϕ), contouring on the unit hyperboloid, <strong>Fry plots</strong> and <strong>Hsu plots</strong></p></li>
-<li><p>Vorticity analysis using the <strong>Rigid Grain Net</strong> method, and</p></li>
-<li><p>Direct import of your field data from <strong>StraboSpot</strong> projects.</p></li>
+<li><p>Vorticity analysis using the <strong>Rigid Grain Net</strong> method ([RGN_plot()]), and</p></li>
+<li><p>Direct import of your field data from <strong>StraboSpot</strong> projects ([read_strabo_JSON()]).</p></li>
 </ul>
 <blockquote>
 <p>The {structr} package is all about structures in 3D. For analyzing orientations in 2D (statistics, rose diagrams, etc.), check out the <a href="https://github.com/tobiste/tectonicr" class="external-link">tectonicr</a> package!</p>
