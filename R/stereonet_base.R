@@ -913,7 +913,7 @@ stereo_arrows <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.
 #' @inheritParams slip_inversion
 #' @param type character. One of `"angelier"` (for "Angelier plot") or `"hoeppener"` (for "Hoeppener plot"). See details.
 #' @param lty,lwd,cex,pch,col,bg plotting parameters
-#' @param points logical. Whether the lineation points (Angelier plot) or poles (Hoeppner plot) should be added to the plot
+#' @param points logical. Whether the lineation points (Angelier plot) or poles (Hoeppener plot) should be added to the plot
 #' @param ... arguments passed to [stereo_arrows()]
 #'
 #' @returns NULL

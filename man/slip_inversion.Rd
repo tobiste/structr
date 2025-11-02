@@ -22,7 +22,7 @@ list
 \describe{
 \item{\code{stress_tensor}}{matrix. Best-fit devitoric stress tensor}
 \item{\code{principal_axes}}{\code{"Line"} objects. Orientation of the principal stress axes}
-\item{\code{principal_axes_conf}}{list containg the confidence ellipses for the 3 principal stress vectors. See \code{\link[=confidence_ellipse]{confidence_ellipse()}} for details.}
+\item{\code{principal_axes_conf}}{list containing the confidesnce ellipses for the 3 principal stress vectors. See \code{\link[=confidence_ellipse]{confidence_ellipse()}} for details.}
 \item{\code{principal_vals}}{numeric. The proportional magnitudes of the principal stress axes given by the eigenvalues of the stress tensor: \eqn{\sigma_1}, \eqn{\sigma_2}, and \eqn{\sigma_3}}
 \item{\code{principal_vals_conf}}{3-column vector containing the lower and upper margins of the confidence interval of the principal vals}
 \item{\code{principal_fault}}{Principal fault planes as \code{"Fault"} objects.}
@@ -88,5 +88,5 @@ Michael, A. J. (1984). Determination of stress from slip data: Faults and folds.
 \seealso{
 \code{\link[=Fault_PT]{Fault_PT()}} for a simple P-T stress analysis,
 \code{\link[=SH]{SH()}} and \code{\link[=SH_from_tensor]{SH_from_tensor()}} to calculate the azimuth of the maximum horizontal stress;
-\code{\link[=Mohr_plot]{Mohr_plot()}} for graohical representation of the deviatoric stress tensor.
+\code{\link[=Mohr_plot]{Mohr_plot()}} for graphical representation of the deviatoric stress tensor.
 }

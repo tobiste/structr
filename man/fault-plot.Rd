@@ -30,7 +30,7 @@ angelier(
 
 \item{...}{arguments passed to \code{\link[=stereo_arrows]{stereo_arrows()}}}
 
-\item{points}{logical. Whether the lineation points (Angelier plot) or poles (Hoeppner plot) should be added to the plot}
+\item{points}{logical. Whether the lineation points (Angelier plot) or poles (Hoeppener plot) should be added to the plot}
 
 \item{lty, lwd, cex, pch, col, bg}{plotting parameters}
 }

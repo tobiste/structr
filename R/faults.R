@@ -16,7 +16,7 @@
 #'  \describe{
 #'  \item{`stress_tensor`}{matrix. Best-fit devitoric stress tensor}
 #'  \item{`principal_axes`}{`"Line"` objects. Orientation of the principal stress axes}
-#'  \item{`principal_axes_conf`}{list containg the confidence ellipses for the 3 principal stress vectors. See [confidence_ellipse()] for details.}
+#'  \item{`principal_axes_conf`}{list containing the confidesnce ellipses for the 3 principal stress vectors. See [confidence_ellipse()] for details.}
 #'  \item{`principal_vals`}{numeric. The proportional magnitudes of the principal stress axes given by the eigenvalues of the stress tensor: \eqn{\sigma_1}, \eqn{\sigma_2}, and \eqn{\sigma_3}}
 #'  \item{`principal_vals_conf`}{3-column vector containing the lower and upper margins of the confidence interval of the principal vals}
 #'  \item{`principal_fault`}{Principal fault planes as `"Fault"` objects.}
@@ -54,7 +54,7 @@
 #'
 #' @seealso [Fault_PT()] for a simple P-T stress analysis,
 #'  [SH()] and [SH_from_tensor()] to calculate the azimuth of the maximum horizontal stress;
-#'  [Mohr_plot()] for graohical representation of the deviatoric stress tensor.
+#'  [Mohr_plot()] for graphical representation of the deviatoric stress tensor.
 #'
 #' @examples
 #' set.seed(20250411)

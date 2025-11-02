@@ -2,7 +2,7 @@
 % Please edit documentation in R/fabric_plots.R
 \name{hsu_fabric_plot}
 \alias{hsu_fabric_plot}
-\title{Fabric plot of Hsü (1965)}
+\title{Fabric plot of Hsu (1965)}
 \usage{
 hsu_fabric_plot(x, labels = NULL, add = FALSE, es.max = 3, ...)
 }
@@ -22,7 +22,7 @@ rows are the observations and the columns are the coordinates.}
 plot and when stored as object, a list containing the Lode parameter \code{lode} and the natural octahedral strain \code{es}.
 }
 \description{
-Fabric plot of Hsü (1965)
+Fabric plot of Hsu (1965)
 }
 \examples{
 set.seed(20250411)
@@ -33,4 +33,12 @@ hsu_fabric_plot(x, labels = "x")
 set.seed(20250411)
 y <- rvmf(100, mu = mu, k = 20)
 hsu_fabric_plot(y, labels = "y", col = "red", add = TRUE)
+}
+\references{
+Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial
+strain paths. Journal of Strain Analysis, 1(3), 216–222.
+\url{https://doi.org/10.1243/03093247V013216}
+}
+\seealso{
+\code{\link[=ell_lode]{ell_lode()}} for Lode parameter, and \link{ell_nadai} for natural octahedral strain.
 }

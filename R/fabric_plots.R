@@ -215,14 +215,19 @@ woodcock_plot <- function(x, labels = NULL, add = FALSE, max = 7, ...) {
   invisible(x_eigen)
 }
 
-#' Fabric plot of Hsü (1965)
+#' Fabric plot of Hsu (1965)
 #'
 #' @inheritParams woodcock_plot
 #' @inheritParams hsu_plot
 #' @param ... optional parameters passed to [hsu_plot()]
 #'
 #' @returns plot and when stored as object, a list containing the Lode parameter `lode` and the natural octahedral strain `es`.
+#' @seealso [ell_lode()] for Lode parameter, and [ell_nadai] for natural octahedral strain.
 #' @export
+#' 
+#' @references Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial 
+#' strain paths. Journal of Strain Analysis, 1(3), 216–222. 
+#' <https://doi.org/10.1243/03093247V013216>
 #'
 #' @examples
 #' set.seed(20250411)

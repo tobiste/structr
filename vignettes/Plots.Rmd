@@ -81,7 +81,7 @@ lines(planes, col = "lightgrey", lty = 1)
 points(planes, col = "#000004", pch = 1, cex = .5)
 ```
 
-To plota small circle with, e.g., a 10° radius, you need to specify the `ang` argument in `lines()`:
+To plot a small circle with, e.g., a 10° radius, you need to specify the `ang` argument in `lines()`:
 ```{r stereo_smallcircle}
 #| fig.alt: >
 #|   Diagram showing smallcircles
@@ -94,8 +94,15 @@ lines(lines[1, ], ang = 10, col = "#B63679", pch = 19, cex = .5)
 The **Eigenvalues** of the orientation tensor describe the shape of the distribution of these vectors, that is who clustered, cylindrical or random these vectors are distributed.
 
 A Fabric plot visualizes the shape of the distribution by plotting the eigenvalues of the orientation tensor.
-Three different diagram are provided by {structr}, namely the triangular *Vollmer plot* after Vollmer (1990), the logarithmic biplot (*Woodcock plot*) after Woodcock (1977), and the  Lode parameter vs. natural octahedral strain  diagram (*Hsü plot*) after Hsü (1965).
+Three different diagram are provided by {structr}, namely the triangular *Vollmer plot*[^vollmer], the logarithmic biplot (*Woodcock plot*)[^woodcock], and the  Lode parameter vs. natural octahedral strain  diagram (*Hsu plot*)[|^hsu].
 
+[^vollmer]: Vollmer, F. W. (1990). An application of eigenvalue methods to structural domain analysis. Geological Society of America Bulletin, 102, 786–791.
+
+[^woodcock]: Woodcock, N. H. (1977). Specification of fabric shapes using an eigenvalue method. Geological Society of America Bulletin88, 1231–1236. Retrieved from http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf
+
+[^hsu]: Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial
+    strain paths. Journal of Strain Analysis, 1(3), 216–222.
+    <https://doi.org/10.1243/03093247V013216>
 
 ### Vollmer plot
 `vollmer_plot()` creates a triangular plot showing the shape of the orientation distribution (after Vollmer, 1990).
@@ -123,8 +130,16 @@ woodcock_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```
 
-### Hsü plot
-`hsu_fabric_plot()` creates a Lode parameter vs. natural octahedral strain diagram showing the shape of the orientation distribution (after Hsü, 1965).
+### Hsu plot
+`hsu_fabric_plot()` creates a Lode parameter[^lode] vs. natural octahedral strain[^nadai] diagram showing the shape of the orientation distribution (after Hsu, 1965).
+
+[^nadai]: Nádai, A. (1950). Theory of flow and fracture of solids.
+    McGraw-Hill.
+
+[^lode]: Lode, W. (1926). Versuche über den Einfluß der mittleren
+    Hauptspannung auf das Fließen der Metalle Eisen. Kupfer und Nickel.
+    Zeitschrift Für Physik, 36(11–12), 913–939.
+    <https://doi.org/10.1007/BF01400222>
 
 ```{r hsu, message=FALSE,warning=FALSE}
 #| fig.alt: >
@@ -138,8 +153,10 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 
 ## Density plots
 
-**Kamb** contours and densities can be added to an existing projection plot using the `contour` functions. 
+**Kamb** contours[^kamb] and densities can be added to an existing projection plot using the `contour` functions. 
 Weighted densities can be controlled by the `weights` argument and are useful when the orientation measurements have different accuracies.
+
+[^kamb]: Kamb, W. B. (1959). Ice Petrofabric Observations from Blue Glacier, Washington, in Relation to Theory and Experiment. Journal of Geophysical Research, 54(11).
 
 ```{r dens_contour, message=FALSE,warning=FALSE}
 #| fig.alt: >
@@ -224,7 +241,10 @@ title(
 Fault objects consist of planes (fault plane), lines (e.g. striae), and the sense of movement. There are two ways how these combined features can be visualized, namely the Angelier and the Hoeppener plot.
 
 ### Angelier plot
-The **Angelier plot** shows all planes as *great circles* and lineations as points (after Angelier , 1984). Fault striae are plotted as vectors on top of the lineation pointing in the movement direction of the hanging wall. Easy to read in case of homogeneous or small datasets. 
+The **Angelier plot** shows all planes as *great circles* and lineations as points (after Angelier, 1984)[^angelier]. Fault striae are plotted as vectors on top of the lineation pointing in the movement direction of the hanging wall. Easy to read in case of homogeneous or small datasets. 
+
+[^angelier]: Angelier, J. Tectonic analysis of fault slip data sets, J. Geophys. Res. 89 (B7), 5835-5848 (1984)
+
 
 ```{r faults1}
 #| fig.alt: >
@@ -244,7 +264,10 @@ angelier(f, col = viridis::magma(nrow(f), end = .9))
 
 ### Hoeppener plot
 
-The **Hoeppener plot** shows all planes as *poles* while lineations are not shown (after Hoeppener, 1955). Instead, fault striae are plotted as vectors on top of poles pointing in the movement direction of the hanging wall. Useful in case of large or heterogeneous datasets. 
+The **Hoeppener plot** shows all planes as *poles* while lineations are not shown (after Hoeppener, 1955)[^hoeppener]. Instead, fault striae are plotted as vectors on top of poles pointing in the movement direction of the hanging wall. Useful in case of large or heterogeneous datasets. 
+
+[^hoeppener]: Hoeppener, R. Tektonik im Schiefergebirge. Geol Rundsch 44, 26-58 (1955). https://doi.org/10.1007/BF01802903
+
 
 ```{r faults2}
 #| fig.alt: >
