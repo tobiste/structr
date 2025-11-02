@@ -7,3 +7,28 @@ template:
 authors:
   Tobias Stephan:
     href: https://tobiste.github.io/
+
+articles:
+- title: Basics and Data Imports
+  contents:
+  - Basics
+  - Import
+  - Oriented_Drill_Cores
+
+- title: Plotting
+  contents:
+  - Plots
+  - Plots_ggplot
+
+- title: Statistics
+  contents:
+  - Statistics
+  - Regression
+
+- title: Faults and Stress
+  contents:
+  - Faults
+  - Mohr_Circle
+
+- title: Other
+  - Strain_Analysis

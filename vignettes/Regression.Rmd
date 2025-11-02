@@ -36,6 +36,8 @@ gray_example
 Show data in equal-area projection:
 
 ```{r plot_data, warning=FALSE, message=FALSE}
+#| fig.alt: >
+#|   Diagram showing some data in a stereoplot
 cleavage <- gray_example[1:8, ]
 bedding <- gray_example[9:16, ]
 
@@ -74,6 +76,8 @@ bedding_gc$r_squared
 
 Plot the results
 ```{r plot_greatcircle, warning=FALSE, message=FALSE}
+#| fig.alt: >
+#|   Diagram showing the great-circle regression result in a stereoplot
 stereoplot()
 lines(cleavage_gc$vec, col = "#000004FF")
 lines(bedding_gc$vec, col = "#B63679")
@@ -110,6 +114,8 @@ bedding_sc$r_squared
 
 Plot the results:
 ```{r plot_smallcircle, warning=FALSE, message=FALSE}
+#| fig.alt: >
+#|   Diagram showing the small-circle regression result in a stereoplot
 stereoplot()
 lines(cleavage_sc$vec, cleavage_sc$cone, col = "#000004FF")
 lines(bedding_sc$vec, bedding_sc$cone, col = "#B63679")

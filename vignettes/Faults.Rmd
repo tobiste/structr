@@ -104,6 +104,8 @@ print(my_fault2_PT)
 Plot the results
 
 ```{r faults_pt_plot}
+#| fig.alt: >
+#|   Diagram showing some fault-slip data and the PT axes in a stereoplot
 stereoplot(title = "PT results", guides = FALSE)
 fault_plot(my_fault2)
 points(my_fault2_PT$p, col = "#B63679FF", pch = 16)
@@ -147,7 +149,6 @@ First we load some example data (here the data from Angelier, 1990)[^2]
 ```{r slip_inversion1}
 #| fig.alt: >
 #|   Diagram showing some fault-slip data in a stereoplot
-#|
 test_data <- angelier1990$TYM
 
 stereoplot(title = "Test data", guides = FALSE)
@@ -239,6 +240,9 @@ legend_c(
 ```
 
 ```{r slip_inversion_mohr}
+#| fig.alt: >
+#|   Diagram showing the Mohr circle, and the normal and shear stresses for the
+#|   slip inversion result
 Mohr_plot(
   sigma1 = test_res$principal_vals[1],
   sigma2 = test_res$principal_vals[2],
