@@ -18,18 +18,18 @@ for structural geology. The toolset includes
 
 - Statistical analysis: spherical mean and variance, confidence regions,
   hypothesis tests, **cluster analysis** of orientation data
-  (\[sph_cluster()\]), and geodesic regression to find the
-  **best-fitting great circle or small circle** through orientation data
-  (\[regression_greatcircle()\] and \[regression_smallcircle()\]),
+  (`sph_cluster()`, and geodesic regression to find the **best-fitting
+  great circle or small circle** through orientation data
+  (`regression_greatcircle()` and `regression_smallcircle()`),
 
 - Reconstruction of fabric orientations in **oriented drillcores** by
-  transforming the α, β, and γ angles (\[drillcore_transformation()\]),
+  transforming the α, β, and γ angles (`drillcore_transformation()`,
 
 - **Stress analysis**: reconstruction of stress orientation and
   magnitudes from fault-slip data (stress inversion based on **Michael,
-  1984**: \[slip_inversion()\]), extracting the **maximum horizontal
-  stress** of a 3D stress tensor (\[SH()\]), and visualization of
-  magnitudes of stress in the **Mohr circle** (\[Mohr_plot()\]),
+  1984**: `slip_inversion()`), extracting the **maximum horizontal
+  stress** of a 3D stress tensor (`SH()`), and visualization of
+  magnitudes of stress in the **Mohr circle** (`Mohr_plot()`),
 
 - Calculation fault displacement components,
 
@@ -37,10 +37,10 @@ for structural geology. The toolset includes
   hyperboloid, **Fry plots** and **Hsu plots**
 
 - Vorticity analysis using the **Rigid Grain Net** method
-  (\[RGN_plot()\]), and
+  (`RGN_plot()`), and
 
 - Direct import of your field data from **StraboSpot** projects
-  (\[read_strabo_JSON()\]).
+  (`read_strabo_JSON()`).
 
 > The {structr} package is all about structures in 3D. For analyzing
 > orientations in 2D (statistics, rose diagrams, etc.), check out the
