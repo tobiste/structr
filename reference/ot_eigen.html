@@ -16,20 +16,7 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
-<li class="nav-item dropdown">
-  <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
-  <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><a class="dropdown-item" href="../articles/Basics.html">Basics</a></li>
-    <li><a class="dropdown-item" href="../articles/Import.html">Import Data</a></li>
-    <li><a class="dropdown-item" href="../articles/Oriented_Drill_Cores.html">Oriented Drill Cores</a></li>
-    <li><a class="dropdown-item" href="../articles/Plots.html">Orientation Plots</a></li>
-    <li><a class="dropdown-item" href="../articles/Plots_ggplot.html">Orientation Plots with ggplot</a></li>
-    <li><a class="dropdown-item" href="../articles/Statistics.html">Statistics on the Sphere</a></li>
-    <li><a class="dropdown-item" href="../articles/Regression.html">Regression on the Sphere</a></li>
-    <li><a class="dropdown-item" href="../articles/Faults.html">Faults and Paleostress</a></li>
-    <li><a class="dropdown-item" href="../articles/Mohr_Circle.html">Mohr Circle</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li><a class="dropdown-item" href="../articles/index.html">More articles...</a></li>
-  </ul></li>
+<li class="nav-item"><a class="nav-link" href="../articles/index.html">Articles</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/tobiste/structr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -97,14 +84,14 @@ Eigenvalues (only effective if <code>x</code> is in Cartesian coordinates).</p><
 <span class="r-in"><span><span class="va">x_eigen</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> eigen() decomposition</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $values</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.53047859 0.42082600 0.04869541</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.50719187 0.44553936 0.04726877</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $vectors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Vector (Vec3) object (n = 3):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>               x          y         z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] -0.7765282  0.1125542 0.6199480</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.5611419  0.5710388 0.5991949</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.2865725 -0.8131705 0.5065866</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>              x          y          z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.9398361  0.1154253 -0.3215357</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.2078803  0.5536590  0.8063792</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.2710977 -0.8247052  0.4963541</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, col <span class="op">=</span> <span class="st">"grey"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">mu</span>, col <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>
