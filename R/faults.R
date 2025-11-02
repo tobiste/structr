@@ -171,7 +171,7 @@ slip_inversion0 <- function(x, friction = 0.6) {
   shape_ratio_bott <- (sigma_vals[3] - sigma_vals[1]) / (sigma_vals[2] - sigma_vals[1]) # Bott, Simon-Gomez
 
   # Angles between the tangential traction predicted by the best stress tensor and the slip vector on each plane
-  betas <- sapply(1:nrow(x), function(i) {
+  betas <- sapply(seq_len(nrow(x)), function(i) {
     int <- crossprod(Plane(principal_axes[2, ]), Plane(x[i, ])) |> Line()
     angle(int, Line(x[i, ]))
   }) #|> as.vector()
@@ -180,7 +180,7 @@ slip_inversion0 <- function(x, friction = 0.6) {
 
 
   # Angle between slip planes and sigma 1
-  theta <- sapply(1:nrow(x), function(i) {
+  theta <- sapply(seq_len(nrow(x)), function(i) {
     angle(Plane(x[i, ]), principal_axes[1, ])
   })
 
@@ -448,12 +448,7 @@ Fault_PT <- function(x, ptangle = 90) {
   ptangle <- deg2rad(ptangle)
   x_corr <- misfit_pair(x)
   xp <- x_corr$fvec
-  xl <- x_corr$lvec
-
-  for (i in 1:nrow(x)) {
-    if (x[i, 5] < 0) xl[i, ] <- -xl[i, ]
-  }
-
+  xl <- x_corr$lvec * ifelse(x[, 5] < 0, -1, 1)
 
   pvec <- rotate(xp, crossprod(xl, xp), -ptangle / 2)
   tvec <- rotate(xp, crossprod(xl, xp), ptangle / 2)

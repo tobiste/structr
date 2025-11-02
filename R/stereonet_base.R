@@ -330,7 +330,7 @@ stereo_smallcircle0 <- function(x, d = 90, col = 1, N = 1000, upper.hem = FALSE,
   z <- rep(BALL.radius * cos(theta), N)
   D <- cbind(x, y, z)
 
-  for (i in 1:length(az)) {
+  for (i in seq_along(az)) {
     ry <- roty3(inc[i])
     rz <- rotz3(az[i])
     Rmat <- ry %*% rz
