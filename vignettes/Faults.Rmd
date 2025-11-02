@@ -303,140 +303,141 @@ points(test_res$fault_data$sigma_n, abs(test_res$fault_data$sigma_s),
 )
 ```
 
-### Maximum horizontal stress[^5]
+### Maximum horizontal stress
+<!-- We de fine a vertical plane in the geographic coordinate system, -->
+<!-- $\mathbb{G}$, using its unit normal vector, -->
+<!-- $\vec{n}^T_\mathbb{G} = (n_N, n_E, n_D) = (\cos\alpha, \sin\alpha, 0)$, -->
+<!-- where $\alpha$ is the normal’s trend angle measured clockwise from north -->
+<!-- and the plane’s strike is $\alpha+\pi/2$. We represent $\vec{n}$ with -->
+<!-- respect to the principal stress coordinate system using the -->
+<!-- transformation matrix -->
+
+<!-- \begin{equation} -->
+<!-- \mathsf{A}_{\mathbb{S}\mathbb{G}} = \begin{pmatrix} -->
+<!-- \vec{\sigma}_1 \vec{g}_1 & \vec{\sigma}_1 \vec{g}_2 & \vec{\sigma}_1 \vec{g}_3 \\ -->
+<!-- \vec{\sigma}_2 \vec{g}_1 & \vec{\sigma}_2 \vec{g}_2 & \vec{\sigma}_2 \vec{g}_3 \\ -->
+<!-- \vec{\sigma}_3 \vec{g}_1 & \vec{\sigma}_3 \vec{g}_2 & \vec{\sigma}_3 \vec{g}_3 \\ -->
+<!-- \end{pmatrix} -->
+<!-- \end{equation} -->
+
+<!-- (i.e. $a_{ij} = \sigma_i g_j$). Here -->
+<!-- $\sigma_i = (\sigma_{iN}, \sigma_{iE}, \sigma_{iD})$ are unit vectors in -->
+<!-- the principal stress directions (principal stress coordinate system -->
+<!-- $\mathbb{S}$ with unit vectors -->
+<!-- $\{ \mathbf{\vec{\sigma_1}}, \mathbf{\vec{\sigma_2}}, \mathbf{\vec{\sigma_3}} \}$) -->
+<!-- with respect to the geographic coordinate system ($\mathbb{G}$), and -->
+<!-- $\vec{g_1} = (1,0,0)$, $\vec{g_2} =(0,1,0)$ and $\vec{g_3} = (0,0,1)$ -->
+<!-- are the basis vectors in the geographic coordinate system. The normal -->
+<!-- vector expressed with respect to the principal stress system is then -->
+
+<!-- \begin{equation} -->
+<!-- \vec{\mathbf{n}}_\mathbb{S} = \mathsf{A}_{\mathbb{S}\mathbb{G}}\vec{\mathbf{n}}_\mathbb{G} = \begin{pmatrix} -->
+<!-- \sigma_{1N}n_N + \sigma_{1E}n_E\\ -->
+<!-- \sigma_{2N}n_N + \sigma_{2E}n_E\\ -->
+<!-- \sigma_{3N}n_N + \sigma_{3E}n_E -->
+<!-- \end{pmatrix}, -->
+<!-- \end{equation} -->
+
+<!-- where, for example, $\sigma_{1N}$ is the north component of the -->
+<!-- $\vec{\sigma}_1$ unit vector. In the principal coordinate system, the -->
+<!-- stress tensor is diagonal -->
+
+<!-- \begin{equation} -->
+<!-- \mathsf{S}_\mathbb{S} =  -->
+<!-- \begin{pmatrix}  -->
+<!-- \lVert \sigma_1 \rVert & 0 & 0 \\ -->
+<!-- 0 & \lVert\sigma_2\rVert & 0 \\ -->
+<!-- 0 & 0 & \lVert\sigma_3\rVert -->
+<!-- \end{pmatrix} -->
+<!-- \end{equation} -->
+
+<!-- and the normal stress acting on the vertical plane of interest is -->
+
+<!-- \begin{equation} -->
+<!-- \begin{split} -->
+<!-- \sigma_n &= \left( \mathbf{\vec{n}}^T_\mathbb{S} \mathsf{S}_\mathbb{S} \mathbf{\vec{n}}_\mathbb{S} \right)\\ -->
+<!--  &= \left[  -->
+<!--   \lVert\sigma_1\rVert ( \sigma_{1N}n_N + \sigma_{1E}n_E )^2 + -->
+<!--   \lVert\sigma_2\rVert ( \sigma_{2N}n_N + \sigma_{2E}n_E )^2 + -->
+<!--  \lVert\sigma_3\rVert (\sigma_{3N}n_N + \sigma_{3E}n_E)^2  -->
+<!--  \right] \mathbf{\vec{n}}_{\mathbb{S}}\\ -->
+<!--  &= \lVert\sigma_n\rVert \mathbf{\vec{n}}_\mathbb{S}. -->
+<!-- \end{split} -->
+<!-- \end{equation} -->
+
+<!-- This normal stress corresponds to the horizontal stress in the direction -->
+<!-- of $\mathbf{\vec{n}}$. -->
+
+<!-- We can find the direction of the maximum horizontal stress analytically -->
+<!-- by differentiating the last equation with respect to $\alpha$. -->
+
+<!-- \begin{equation} -->
+<!-- \frac{d\sigma_n}{d\alpha} = \left[ -->
+<!-- \lVert\sigma_1\rVert ( \sigma_{1E}^2 - \sigma_{1N}^2 ) +  -->
+<!-- \lVert\sigma_2\rVert ( \sigma_{2E}^2 - \sigma_{2N}^2 ) + -->
+<!-- \lVert\sigma_3\rVert ( \sigma_{3E}^2 - \sigma_{3N}^2 ) -->
+<!-- \right] \sin{2\alpha} +  -->
+<!-- 2 \left[\lVert\sigma_1\rVert \sigma_{1N} \sigma_{1E} + \lVert\sigma_2\rVert \sigma_{2N} \sigma_{2E} + \lVert\sigma_3\rVert \sigma_{3N} \sigma_{3E} \right] \cos{2\alpha}. -->
+<!-- \end{equation} -->
+
+<!-- | Condition | Interpretation | -->
+<!-- |------------------------------------|------------------------------------| -->
+<!-- | $\sigma_{1N} = \pm \sigma_{1E}$ and $R = 1$ | $\mathbb{S}_H$ undefined if $\mathbf{\vec{\sigma_1}}$ vertical, else $\alpha_H = \alpha_1$ (45$^{\circ}$ or 135°) | -->
+<!-- | $\sigma_{1N} = \pm \sigma_{1E}$ and $\sigma_{2N} = \pm \sigma_{2E}$ | $\mathbb{S}_H$ undefined if $R = 0$, else $\alpha_H = \alpha_1$ (45$^{\circ}$ or 135°) | -->
+<!-- | $(\sigma_{1N}^2 - \sigma_{1E}^2) + (1 - R)(\sigma_{2N}^2 - \sigma_{2E}^2) = 0$ | $\mathbb{S}_H$ undefined if $R = 0$, else $\alpha_H = \alpha_1$ (45$^{\circ}$ or 135°) | -->
+
+<!-- : Table 1 Summary of the conditions under which the denominator of eq. -->
+<!-- (11) equals zero. $\alpha_H$ and $\alpha_1$ denote the trends of the -->
+<!-- axis of maximum horizontal stress, $\sigma_H$, and the principal axis of -->
+<!-- maximum compressive stress, $\mathbf{\vec{\sigma_1}}$, respectively. -->
+
+<!-- In general (cf. Table 1), $\sigma_n$ has one maximum and one minimum in -->
+<!-- the interval $0 \leq \alpha \leq \pi$ and setting the derivative in the -->
+<!-- last equation to zero, we find these stationary points: -->
+
+<!-- \begin{equation} -->
+<!-- \tan{2\alpha} = \frac{ -->
+<!-- 2 ( \lVert\sigma_1\rVert \sigma_{1N} \sigma_{1E} + \lVert\sigma_2\rVert \sigma_{2N} \sigma_{2E} + \lVert\sigma_3\rVert \sigma_{3N} \sigma_{3E} )}{\lVert\sigma_1\rVert ( \sigma_{1E}^2 - \sigma_{1N}^2 ) +  -->
+<!-- \lVert\sigma_2\rVert ( \sigma_{2E}^2 - \sigma_{2N}^2 ) + -->
+<!-- \lVert\sigma_3\rVert ( \sigma_{3E}^2 - \sigma_{3N}^2 )}. -->
+<!-- \end{equation} -->
+
+<!-- Using the second derivative of $\sigma_n$ with respect to $\alpha$ we -->
+<!-- can determine whether $\sigma_n (\alpha)$ yields a maximum or a minimum -->
+<!-- value, and identify the $\sigma_H$ trend ($\alpha_H$) accordingly: -->
+
+<!-- \begin{equation} -->
+<!-- \alpha_H =  -->
+<!-- \begin{cases} -->
+<!-- \alpha & \text{if $\lVert\sigma_n (\alpha)\rVert$ is a maximum} \\ -->
+<!-- \alpha + \pi/2 & \text{if $\lVert\sigma_n (\alpha)\rVert$ is a minimum}  -->
+<!-- \end{cases}. -->
+<!-- \end{equation} -->
+
+<!-- #### Code -->
+
+The orientation of the maximum horizontal stress ($\sigma_\text{Hmax}$) can be calculated from the stress tensor the the orientation of the principal stress ($\sigma_1$, $\sigma_2$, $\sigma_3$) axes their their relative magnitudes($R$) [^5].
 
 [^5]: Lund & Townend (2007): Calculating horizontal stress orientations
     with full or partial knowledge of the tectonic stress tensor.
     *Geophys. J. Int.*, 170, 1328—1335. doi:
     10.1111/j.1365-246X.2007.03468.x
 
-We de fine a vertical plane in the geographic coordinate system,
-$\mathbb{G}$, using its unit normal vector,
-$\vec{n}^T_\mathbb{G} = (n_N, n_E, n_D) = (\cos\alpha, \sin\alpha, 0)$,
-where $\alpha$ is the normal’s trend angle measured clockwise from north
-and the plane’s strike is $\alpha+\pi/2$. We represent $\vec{n}$ with
-respect to the principal stress coordinate system using the
-transformation matrix
-
-\begin{equation}
-\mathsf{A}_{\mathbb{S}\mathbb{G}} = \begin{pmatrix}
-\vec{\sigma}_1 \vec{g}_1 & \vec{\sigma}_1 \vec{g}_2 & \vec{\sigma}_1 \vec{g}_3 \\
-\vec{\sigma}_2 \vec{g}_1 & \vec{\sigma}_2 \vec{g}_2 & \vec{\sigma}_2 \vec{g}_3 \\
-\vec{\sigma}_3 \vec{g}_1 & \vec{\sigma}_3 \vec{g}_2 & \vec{\sigma}_3 \vec{g}_3 \\
-\end{pmatrix}
-\end{equation}
-
-(i.e. $a_{ij} = \sigma_i g_j$). Here
-$\sigma_i = (\sigma_{iN}, \sigma_{iE}, \sigma_{iD})$ are unit vectors in
-the principal stress directions (principal stress coordinate system
-$\mathbb{S}$ with unit vectors
-$\{ \mathbf{\vec{\sigma_1}}, \mathbf{\vec{\sigma_2}}, \mathbf{\vec{\sigma_3}} \}$)
-with respect to the geographic coordinate system ($\mathbb{G}$), and
-$\vec{g_1} = (1,0,0)$, $\vec{g_2} =(0,1,0)$ and $\vec{g_3} = (0,0,1)$
-are the basis vectors in the geographic coordinate system. The normal
-vector expressed with respect to the principal stress system is then
-
-\begin{equation}
-\vec{\mathbf{n}}_\mathbb{S} = \mathsf{A}_{\mathbb{S}\mathbb{G}}\vec{\mathbf{n}}_\mathbb{G} = \begin{pmatrix}
-\sigma_{1N}n_N + \sigma_{1E}n_E\\
-\sigma_{2N}n_N + \sigma_{2E}n_E\\
-\sigma_{3N}n_N + \sigma_{3E}n_E
-\end{pmatrix},
-\end{equation}
-
-where, for example, $\sigma_{1N}$ is the north component of the
-$\vec{\sigma}_1$ unit vector. In the principal coordinate system, the
-stress tensor is diagonal
-
-\begin{equation}
-\mathsf{S}_\mathbb{S} = 
-\begin{pmatrix} 
-\lVert \sigma_1 \rVert & 0 & 0 \\
-0 & \lVert\sigma_2\rVert & 0 \\
-0 & 0 & \lVert\sigma_3\rVert
-\end{pmatrix}
-\end{equation}
-
-and the normal stress acting on the vertical plane of interest is
-
-\begin{equation}
-\begin{split}
-\sigma_n &= \left( \mathbf{\vec{n}}^T_\mathbb{S} \mathsf{S}_\mathbb{S} \mathbf{\vec{n}}_\mathbb{S} \right)\\
- &= \left[ 
-  \lVert\sigma_1\rVert ( \sigma_{1N}n_N + \sigma_{1E}n_E )^2 +
-  \lVert\sigma_2\rVert ( \sigma_{2N}n_N + \sigma_{2E}n_E )^2 +
- \lVert\sigma_3\rVert (\sigma_{3N}n_N + \sigma_{3E}n_E)^2 
- \right] \mathbf{\vec{n}}_{\mathbb{S}}\\
- &= \lVert\sigma_n\rVert \mathbf{\vec{n}}_\mathbb{S}.
-\end{split}
-\end{equation}
-
-This normal stress corresponds to the horizontal stress in the direction
-of $\mathbf{\vec{n}}$.
-
-We can find the direction of the maximum horizontal stress analytically
-by differentiating the last equation with respect to $\alpha$.
-
-\begin{equation}
-\frac{d\sigma_n}{d\alpha} = \left[
-\lVert\sigma_1\rVert ( \sigma_{1E}^2 - \sigma_{1N}^2 ) + 
-\lVert\sigma_2\rVert ( \sigma_{2E}^2 - \sigma_{2N}^2 ) +
-\lVert\sigma_3\rVert ( \sigma_{3E}^2 - \sigma_{3N}^2 )
-\right] \sin{2\alpha} + 
-2 \left[\lVert\sigma_1\rVert \sigma_{1N} \sigma_{1E} + \lVert\sigma_2\rVert \sigma_{2N} \sigma_{2E} + \lVert\sigma_3\rVert \sigma_{3N} \sigma_{3E} \right] \cos{2\alpha}.
-\end{equation}
-
-| Condition | Interpretation |
-|------------------------------------|------------------------------------|
-| $\sigma_{1N} = \pm \sigma_{1E}$ and $R = 1$ | $\mathbb{S}_H$ undefined if $\mathbf{\vec{\sigma_1}}$ vertical, else $\alpha_H = \alpha_1$ (45$^{\circ}$ or 135°) |
-| $\sigma_{1N} = \pm \sigma_{1E}$ and $\sigma_{2N} = \pm \sigma_{2E}$ | $\mathbb{S}_H$ undefined if $R = 0$, else $\alpha_H = \alpha_1$ (45$^{\circ}$ or 135°) |
-| $(\sigma_{1N}^2 - \sigma_{1E}^2) + (1 - R)(\sigma_{2N}^2 - \sigma_{2E}^2) = 0$ | $\mathbb{S}_H$ undefined if $R = 0$, else $\alpha_H = \alpha_1$ (45$^{\circ}$ or 135°) |
-
-: Table 1 Summary of the conditions under which the denominator of eq.
-(11) equals zero. $\alpha_H$ and $\alpha_1$ denote the trends of the
-axis of maximum horizontal stress, $\sigma_H$, and the principal axis of
-maximum compressive stress, $\mathbf{\vec{\sigma_1}}$, respectively.
-
-In general (cf. Table 1), $\sigma_n$ has one maximum and one minimum in
-the interval $0 \leq \alpha \leq \pi$ and setting the derivative in the
-last equation to zero, we find these stationary points:
-
-\begin{equation}
-\tan{2\alpha} = \frac{
-2 ( \lVert\sigma_1\rVert \sigma_{1N} \sigma_{1E} + \lVert\sigma_2\rVert \sigma_{2N} \sigma_{2E} + \lVert\sigma_3\rVert \sigma_{3N} \sigma_{3E} )}{\lVert\sigma_1\rVert ( \sigma_{1E}^2 - \sigma_{1N}^2 ) + 
-\lVert\sigma_2\rVert ( \sigma_{2E}^2 - \sigma_{2N}^2 ) +
-\lVert\sigma_3\rVert ( \sigma_{3E}^2 - \sigma_{3N}^2 )}.
-\end{equation}
-
-Using the second derivative of $\sigma_n$ with respect to $\alpha$ we
-can determine whether $\sigma_n (\alpha)$ yields a maximum or a minimum
-value, and identify the $\sigma_H$ trend ($\alpha_H$) accordingly:
-
-\begin{equation}
-\alpha_H = 
-\begin{cases}
-\alpha & \text{if $\lVert\sigma_n (\alpha)\rVert$ is a maximum} \\
-\alpha + \pi/2 & \text{if $\lVert\sigma_n (\alpha)\rVert$ is a minimum} 
-\end{cases}.
-\end{equation}
-
-#### Code
-
-Define the orientation of the principle stress axes:
+First, we define the orientation of the principle stress axes:
 
 ```{r lund0}
 S1 <- Line(250.89, 70.07)
 S3 <- Line(103.01, 17.07)
 ```
 
-To get S2 - which is perpendicular to S1 and S3, we calculate the
+To get $\sigma_2$ - which is perpendicular to $\sigma_1$ and $\sigma_3$, we calculate the
 cross-product of the two vectors:
 
 ```{r lund01}
 S2 <- crossprod(S3, S1)
 ```
 
-The azimuth of SHmax for a given stress ratio `R = 1`:
+The azimuth of $\sigma_\text{Hmax}$ for a given stress ratio `R = 1`:
 
 ```{r lund1}
 SH(S1, S2, S3, R = 1) # in degrees
@@ -449,7 +450,8 @@ R <- seq(0, 1, .1)
 cbind(R, SH = SH(S1, S2, S3, R = R))
 ```
 
-And the SHmax for the slip inversion result from above:
+
+The $\sigma_\text{Hmax}$ for our slip inversion result from above:
 
 ```{r lund_3}
 SH(

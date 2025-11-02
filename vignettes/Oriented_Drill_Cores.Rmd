@@ -59,13 +59,15 @@ The orientations can be plotted in a equal-area (lower hemisphere) projection:
 stereoplot()
 
 # plot the core axis' azimuth and inclination)
-stereo_point(Line(azi, inc), lab = "core-axis")
+points(Line(azi, inc))
+text(Line(azi, inc), lab = "core-axis")
 
 # plot the plane orientations as poles...
-stereo_point(planes_AB, lab = c("A", "B"), col = c("#B63679FF", "#FB8861FF"))
+points(planes_AB, col = c("#B63679FF", "#FB8861FF"))
+text(planes_AB, lab = c("A", "B"), col = c("#B63679FF", "#FB8861FF"))
 
 # ... and as great circles
-stereo_greatcircle(planes_AB, col = c("#B63679FF", "#FB8861FF"))
+lines(planes_AB, col = c("#B63679FF", "#FB8861FF"))
 ```
 
 ## References

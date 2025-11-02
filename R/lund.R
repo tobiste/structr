@@ -17,7 +17,7 @@
 #' @return The direction of SH from North as numeric angle in degrees (radians if all principal stress axes were given as `"Vec3"` objects).
 #' @export
 #'
-#' @seealso [slip_inversion()] for stress inversion of fault slip data.
+#' @seealso [SH_from_tensor()] when full knowledge of stress tensor; [slip_inversion()] for stress inversion of fault slip data.
 #'
 #' @references Lund and Townend, (2007). Calculating horizontal stress
 #' orientations with full or partial knowledge of the tectonic stress tensor,
@@ -137,6 +137,9 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 0.005) 
 #' @references Lund and Townend, (2007). Calculating horizontal stress
 #' orientations with full or partial knowledge of the tectonic stress tensor,
 #' Geophys. J. Int., doi:\doi{10.1111/j.1365-246X.2007.03468.x}.
+#' 
+#' @seealso [SH()] when only principal axes and their relative magnitudes are known; 
+#' [slip_inversion()] for stress inversion of fault slip data.
 #'
 #' @examples
 #' S1 <- c(-0.11163471165673433, -0.32215903156083286, 0.94008044843891103)
