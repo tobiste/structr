@@ -79,13 +79,13 @@
 <p><a href="https://tobiste.github.io/structr/">structr</a> is a free and open-source package for R that provides tools for structural geology. The toolset includes</p>
 <ul>
 <li><p>Analysis and visualization of orientation data of structural geology (including, <strong>stereographic projections</strong>, contouring, fabric plots, and statistics),</p></li>
-<li><p>Statistical analysis: spherical mean and variance, confidence regions, hypothesis tests, <strong>cluster analysis</strong> of orientation data ([sph_cluster()]), and geodesic regression to find the <strong>best-fitting great circle or small circle</strong> through orientation data ([regression_greatcircle()] and [regression_smallcircle()]),</p></li>
-<li><p>Reconstruction of fabric orientations in <strong>oriented drillcores</strong> by transforming the α, β, and γ angles ([drillcore_transformation()]),</p></li>
-<li><p><strong>Stress analysis</strong>: reconstruction of stress orientation and magnitudes from fault-slip data (stress inversion based on <strong>Michael, 1984</strong>: [slip_inversion()]), extracting the <strong>maximum horizontal stress</strong> of a 3D stress tensor ([SH()]), and visualization of magnitudes of stress in the <strong>Mohr circle</strong> ([Mohr_plot()]),</p></li>
+<li><p>Statistical analysis: spherical mean and variance, confidence regions, hypothesis tests, <strong>cluster analysis</strong> of orientation data (<code><a href="reference/sph_cluster.html">sph_cluster()</a></code>, and geodesic regression to find the <strong>best-fitting great circle or small circle</strong> through orientation data (<code><a href="reference/best_fit.html">regression_greatcircle()</a></code> and <code><a href="reference/best_fit.html">regression_smallcircle()</a></code>),</p></li>
+<li><p>Reconstruction of fabric orientations in <strong>oriented drillcores</strong> by transforming the α, β, and γ angles (<code><a href="reference/drillcore.html">drillcore_transformation()</a></code>,</p></li>
+<li><p><strong>Stress analysis</strong>: reconstruction of stress orientation and magnitudes from fault-slip data (stress inversion based on <strong>Michael, 1984</strong>: <code><a href="reference/slip_inversion.html">slip_inversion()</a></code>), extracting the <strong>maximum horizontal stress</strong> of a 3D stress tensor (<code><a href="reference/SH.html">SH()</a></code>), and visualization of magnitudes of stress in the <strong>Mohr circle</strong> (<code><a href="reference/Mohr_plot.html">Mohr_plot()</a></code>),</p></li>
 <li><p>Calculation fault displacement components,</p></li>
 <li><p>Strain analysis (<strong>R</strong><sub>f</sub>/ϕ), contouring on the unit hyperboloid, <strong>Fry plots</strong> and <strong>Hsu plots</strong></p></li>
-<li><p>Vorticity analysis using the <strong>Rigid Grain Net</strong> method ([RGN_plot()]), and</p></li>
-<li><p>Direct import of your field data from <strong>StraboSpot</strong> projects ([read_strabo_JSON()]).</p></li>
+<li><p>Vorticity analysis using the <strong>Rigid Grain Net</strong> method (<code><a href="reference/RGN_plot.html">RGN_plot()</a></code>), and</p></li>
+<li><p>Direct import of your field data from <strong>StraboSpot</strong> projects (<code><a href="reference/strabo.html">read_strabo_JSON()</a></code>).</p></li>
 </ul>
 <blockquote>
 <p>The {structr} package is all about structures in 3D. For analyzing orientations in 2D (statistics, rose diagrams, etc.), check out the <a href="https://github.com/tobiste/tectonicr" class="external-link">tectonicr</a> package!</p>
