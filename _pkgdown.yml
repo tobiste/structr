@@ -10,26 +10,31 @@ authors:
 
 articles:
 - title: Basics and Data Imports
+  navbar: "Basics and Import"
   contents:
   - Basics
   - Import
   - Oriented_Drill_Cores
 
 - title: Plotting
+  navbar: "Plotting"
   contents:
   - Plots
   - Plots_ggplot
 
 - title: Statistics
+  navbar: "Statistics"
   contents:
   - Statistics
   - Regression
 
 - title: Faults and Stress
+  navbar: "Faults and Stress"
   contents:
   - Faults
   - Mohr_Circle
 
 - title: Other
+  navbar: "Other"
   contents:
   - Strain_Analysis

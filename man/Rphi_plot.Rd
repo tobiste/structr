@@ -75,6 +75,10 @@ R/phi plot
 data(ramsay)
 Rphi_plot(ramsay[, 1], ramsay[, 2])
 }
+\references{
+Ramsay, J. G., & Huber, M. I. (1983). The Techniques of Modern
+Structural Geology: Strain Analyses (Vol. 1). London: Academic Press.
+}
 \seealso{
 \code{\link[=hypercontour]{hypercontour()}}, \code{\link[=Rphi_polar_plot]{Rphi_polar_plot()}}
 }

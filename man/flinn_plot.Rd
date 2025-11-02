@@ -32,3 +32,7 @@ R_YZ <- holst[, "R_YZ"]
 flinn_plot(R_XY, R_YZ, log = FALSE, col = "#B63679", pch = 16)
 flinn_plot(R_XY, R_YZ, log = TRUE, col = "#B63679", pch = 16)
 }
+\references{
+Flinn, D. (1965). On the Symmetry Principle and the Deformation
+Ellipsoid. Geological Magazine, 102(1), 36–45. https://doi.org/10.1017/S0016756800053851
+}

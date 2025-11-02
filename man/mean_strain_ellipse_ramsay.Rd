@@ -39,6 +39,8 @@ mean_strain_ellipse_ramsay(ramsay[, "R"], ramsay[, "phi"])
 }
 \references{
 Ramsay (1976), Folding and Fracturing of Rocks, McGraw-Hill Book Company.
+
+Ramsay, J. G., & Huber, M. I. (1983). The Techniques of Modern Structural Geology: Strain Analyses (Vol. 1). London: Academic Press.
 }
 \seealso{
 \code{\link[=mean_strain_ellipse]{mean_strain_ellipse()}}

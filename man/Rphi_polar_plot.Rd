@@ -58,10 +58,14 @@ drawn as density grid. Ignored when \code{contour=FALSE}}
 plot
 }
 \description{
-Plots R/phi fabric plot in polar coordinates
+Plots R/phi fabric plot in polar coordinates (after Elliott, 1970)
 }
 \examples{
 Rphi_polar_plot(ramsay[, 1], ramsay[, 2], proj = "eqa")
+}
+\references{
+Elliott, D. (1970). Determination of Finite Strain and Initial
+Shape from Deformed Elliptical Objects. GSA Bulletin, 81(8), 2221–2236.
 }
 \seealso{
 \code{\link[=hypercontour]{hypercontour()}}, \code{\link[=Rphi_plot]{Rphi_plot()}}

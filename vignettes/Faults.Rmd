@@ -14,10 +14,13 @@ editor_options:
     wrap: 72
 ---
 
-This tutorial demonstrates the `"Fault"` object. It also shows how you can extract paleo-stress directions from fault slip data, and how you can derive displacement components from fault slip. 
+This tutorial demonstrates the `"Fault"` object. It also shows how you
+can extract paleo-stress directions from fault slip data, and how you
+can derive displacement components from fault slip.
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
+set.seed(20250411)
 ```
 
 ## Fault objects
@@ -76,18 +79,60 @@ correct_pair(p)
 > measurements. Basically like a fault without the sense of
 > displacement.
 
+## Plotting faults
+
+Fault objects consist of planes (fault plane), lines (e.g. striae), and
+the sense of movement. There are two ways how these combined features
+can be visualized, namely the Angelier and the Hoeppener plot.
+
+-   The **Angelier plot** shows all planes as *great circles* and
+    lineations as points (after Angelier , 1984). Fault striae are
+    plotted as vectors on top of the lineation pointing in the movement
+    direction of the hanging wall. Easy to read in case of homogeneous
+    or small datasets.
+-   The **Hoeppener plot** shows all planes as *poles* while lineations
+    are not shown (after Hoeppener, 1955). Instead, fault striae are
+    plotted as vectors on top of poles pointing in the movement
+    direction of the hanging wall. Useful in case of large or
+    heterogeneous datasets.
+
+```{r faults_plotting}
+#| fig.alt: >
+#|   Diagram showing some fault data in equa-area projection using the Angelier 
+#|   and Hoeppener representation of fault-slip
+# simongomez is a example fault dataset:
+
+# define some colors for each fault in the dataset (here the fault sense)
+fault_cols <- assign_col(simongomez[, 5], pal = viridis::magma, begin = .2, end = .8)
+
+par(mfrow = c(1, 2))
+stereoplot(title = "Angelier plot")
+angelier(simongomez, col = fault_cols)
+
+stereoplot(title = "Hoeppener plot")
+hoeppener(simongomez, col = fault_cols, points = FALSE)
+```
+
 ## Fault stress analysis
 
-The *Wallace-Bott hypothesis* states that fault slip occurs parallel to the maximum shear stress. This allows to reconstruct stress axes using fault-slip data. 
-{structr} offers several techniques to calculate the orientation of
-principal stress axes, the simple P-T method, and a fault-slip inversion technique.
+The *Wallace-Bott hypothesis* states that fault slip occurs parallel to
+the maximum shear stress. This allows to reconstruct stress axes using
+fault-slip data. {structr} offers several techniques to calculate the
+orientation of principal stress axes, the simple P-T method, and a
+fault-slip inversion technique.
 
 ### P-T method
 
 This simple technique calculates PT-axes, kinematic plane (M), and
-dihedra separation plane (d). 
+dihedra separation plane (d).
 
-First we load some example data (here the first three faults from the TYM dataset by from Angelier, 1990)[^2]
+First we load some example data (here the first three faults from the
+TYM dataset by from Angelier, 1990)[^1]
+
+[^1]: Angelier, J. (1990). Inversion of field data in fault tectonics to
+    obtain the regional stress—III. A new rapid direct inversion method
+    by analytical means. Geophys. J. Int, 103, 363–376.
+    <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
 
 ```{r faults_pt1}
 data("angelier1990")
@@ -120,28 +165,33 @@ legend("right",
 )
 ```
 
-
 ### Fault slip inversion
 
-Our goal is to find the single uniform stress tensor that most likely caused the faulting events. With only slip data to constrain the stress tensor the isotropic component can not be determined, unless assumptions about the fracture criterion are made. 
-Hence inversion will be for the deviatoric stress tensor only.
-A single fault can not completely constrain the deviatoric stress tensor a, therefore it is necessary to simultaneously solve 
-for a number of faults, so that a single a that best satisfies all of the faults is found. 
+Our goal is to find the single uniform stress tensor that most likely
+caused the faulting events. With only slip data to constrain the stress
+tensor the isotropic component can not be determined, unless assumptions
+about the fracture criterion are made. Hence inversion will be for the
+deviatoric stress tensor only. A single fault can not completely
+constrain the deviatoric stress tensor a, therefore it is necessary to
+simultaneously solve for a number of faults, so that a single a that
+best satisfies all of the faults is found.
 
-> This is equivalent to assuming that the stress field is a constant tensor within the region being studied for the duration of the faulting event.
+> This is equivalent to assuming that the stress field is a constant
+> tensor within the region being studied for the duration of the
+> faulting event.
 
 {structr} provides a numerical solution to determine the orientation of
 the principal stresses from fault slip data using the Michael (1984)
-method[^1]. It uses bootstrapping for confidence intervals of the stress
+method[^2]. It uses bootstrapping for confidence intervals of the stress
 estimates.
 
-[^1]: Michael, A. J. (1984). Determination of stress from slip data:
+[^2]: Michael, A. J. (1984). Determination of stress from slip data:
     Faults and folds. Journal of Geophysical Research: Solid Earth,
     89(B13), 11517–11526. <https://doi.org/10.1029/JB089iB13p11517>
 
-First we load some example data (here the data from Angelier, 1990)[^2]
+First we load some example data (here the data from Angelier, 1990)[^3]
 
-[^2]: Angelier, J. (1990). Inversion of field data in fault tectonics to
+[^3]: Angelier, J. (1990). Inversion of field data in fault tectonics to
     obtain the regional stress—III. A new rapid direct inversion method
     by analytical means. Geophys. J. Int, 103, 363–376.
     <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
@@ -175,7 +225,6 @@ To check the accuracy of the solution, you can evaluate
 -   the average resolved shear stress on each plane (should be close to
     1).
 
-
 To visualizing the orientation of the principal stresses and the
 confidence region of the axes, you may use the stereoplot() functions
 from {structr}
@@ -201,9 +250,9 @@ legend("topleft",
 )
 ```
 
-The stress shape ratio &Phi; (Angelier 1979)[^3]
+The stress shape ratio Φ (Angelier 1979)[^4]
 
-[^3]: Angelier, J. (1979). Determination of the mean principal
+[^4]: Angelier, J. (1979). Determination of the mean principal
     directions of stresses for a given fault population. Tectonophysics,
     56(3–4), T17–T26.
     [https://doi.org/10.1016/0040-1951(79)90081-7](https://doi.org/10.1016/0040-1951(79)90081-7){.uri}
@@ -254,9 +303,9 @@ points(test_res$fault_data$sigma_n, abs(test_res$fault_data$sigma_s),
 )
 ```
 
-### Maximum horizontal stress[^4]
+### Maximum horizontal stress[^5]
 
-[^4]: Lund & Townend (2007): Calculating horizontal stress orientations
+[^5]: Lund & Townend (2007): Calculating horizontal stress orientations
     with full or partial knowledge of the tectonic stress tensor.
     *Geophys. J. Int.*, 170, 1328—1335. doi:
     10.1111/j.1365-246X.2007.03468.x

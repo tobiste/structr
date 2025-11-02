@@ -10,11 +10,19 @@
 #' @returns matrix
 #'
 #' @details The normalized orientation tensor is given as \deqn{D = \frac{1}{n} (x_i, y_i, z_i) (x_i, y_i, z_i)^T}
-#' n = 1
 #'
 #' @name ortensor
 #'
 #' @seealso [ot_eigen()], [inertia_tensor()]
+#' 
+#' @references 
+#' Watson, G. S. (1966). The Statistics of Orientation Data. The Journal of 
+#' Geology, 74(5), 786–797.
+#' 
+#' Scheidegger, A. E. (1964). The tectonic stress and tectonic motion direction 
+#' in Europe and Western Asia as calculated from earthquake fault plane solutions. 
+#' Bulletin of the Seismological Society of America, 54(5A), 1519–1528. 
+#' https://doi.org/10.1785/BSSA05405A1519
 #'
 #' @examples
 #' set.seed(20250411)

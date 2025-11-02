@@ -33,6 +33,7 @@ Import some example data of some folded fabric elements
 data("gray_example")
 gray_example
 ```     
+
 Show data in equal-area projection:
 
 ```{r plot_data, warning=FALSE, message=FALSE}

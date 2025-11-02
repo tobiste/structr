@@ -14,7 +14,8 @@ editor_options:
     wrap: 72
 ---
 
-This tutorial demonstrates how to perform strain and vorticity analysis using the {structr} package in R.
+This tutorial demonstrates how to perform strain and vorticity analysis
+using the {structr} package in R.
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -28,31 +29,56 @@ set.seed(20250411)
 library(structr)
 ```
 
-## Strain analysis (fabric analysis)
+## Strain analysis
 
-Import some R-phi data from elliptical strain markers
+Import some Rf/ϕ data from elliptical strain markers
+
 ```{r data}
 data(ramsay)
 head(ramsay)
 ```
 
-The mean mean strain ellipse (shape and orientation) of deformed elliptical objects as strain markers can be calculated by using the mean shape matrix and its eigenvalues (Shimamoto and Ikeda, 1976):
+The mean mean strain ellipse (shape and orientation) of deformed
+elliptical objects as strain markers can be calculated by using the mean
+shape matrix and its eigenvalues[^1]:
+
+[^1]: Shimamoto, T., & Ikeda, Y. (1976). A simple algebraic method for
+    strain estimation from deformed ellipsoidal objects. 1. Basic
+    theory. Tectonophysics, 36(4), 315–337.
+    [https://doi.org/10.1016/0040-1951(76)90107-4](https://doi.org/10.1016/0040-1951(76)90107-4){.uri}
 
 ```{r mean_strain}
 ramsay_mean <- mean_strain_ellipse(r = ramsay[, 1], phi = ramsay[, 2])
 print(ramsay_mean)
 ```
-The {structr} algorithm also calculates bootstrapped 95% confidence interval.
 
+The {structr} algorithm also calculates bootstrapped 95% confidence
+interval.
 
-To visualize the distribution of the strain values, we can calculate densities in Rf-Phi space and plot them in a **Rf/phi** diagram:
+To visualize the distribution of the strain values, we can calculate
+densities in Rf/ϕ space[^2] and plot them in a **Rf/ϕ** diagram[^3]:
+
+[^2]: Vollmer, F. W. (2018). Computers and Geosciences Automatic
+    contouring of geologic fabric and finite strain data on the unit
+    hyperboloid. Computers and Geosciences, 115(June 2017), 134–142.
+    <https://doi.org/10.1016/j.cageo.2018.03.006>
+
+[^3]: Ramsay, J. G., & Huber, M. I. (1983). The Techniques of Modern
+    Structural Geology: Strain Analyses (Vol. 1). London: Academic
+    Press.
+
 ```{r rphi, message=FALSE, warning=FALSE}
 #| fig-alt: >
 #|    Rf-phi plot
 Rphi_plot(r = ramsay[, 1], phi = ramsay[, 2])
 ```
 
-or in an **Equidistant polar plot**:
+or in an **Equidistant polar plot**[^4]:
+
+[^4]: Elliott, D. (1970). Determination of Finite Strain and Initial
+    Shape from Deformed Elliptical Objects. GSA Bulletin, 81(8), 2221–2236.
+    [https://doi.org/https://doi.org/10.1130/0016-7606(1970)81[2221:DOFSAI]2.0.CO;2](https://doi.org/https://doi.org/10.1130/0016-7606(1970)81%5B2221:DOFSAI%5D2.0.CO;2){.uri}
+
 ```{r plot2}
 #| fig.alt: >
 #|   R/phi data in polar plot
@@ -61,8 +87,14 @@ Rphi_polar_plot(ramsay[, 1], ramsay[, 2], proj = "eqd")
 
 ## 3D Strain
 
-Three-dimensional strain data are expressed by the ratio of the magnitudes of the 3 principal strain axes of the strain ellipsoid, $X \geq Y \geq Z$. 
-They can be represented in the **Flinn diagram** (linear of logarithmic axes)...
+Three-dimensional strain data are expressed by the ratio of the
+magnitudes of the 3 principal strain axes of the strain ellipsoid,
+$X \geq Y \geq Z$. They can be represented in the **Flinn diagram**[^5],
+either linear or logarithmic.
+
+[^5]: Flinn, D. (1965). On the Symmetry Principle and the Deformation
+    Ellipsoid. Geological Magazine, 102(1), 36–45.
+    <https://doi.org/10.1017/S0016756800053851>
 
 ```{r flinn}
 #| fig.alt: >
@@ -74,7 +106,20 @@ R_YZ <- holst[, "R_YZ"]
 flinn_plot(R_XY, R_YZ, log = TRUE, col = "#B63679", pch = 16)
 ```
 
-or the **Hsü diagram** using the natural octahedral unit strain $\bar{\epsilon}_s$ and the Lode parameter $\nu$ 
+or the **Hsu diagram**[^6] using the natural octahedral unit strain[^7]
+($\bar{\epsilon}_s$) and the Lode parameter[^8] ($\nu$):
+
+[^6]: Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial
+    strain paths. Journal of Strain Analysis, 1(3), 216–222.
+    <https://doi.org/10.1243/03093247V013216>
+
+[^7]: Nádai, A. (1950). Theory of flow and fracture of solids.
+    McGraw-Hill.
+
+[^8]: Lode, W. (1926). Versuche über den Einfluß der mittleren
+    Hauptspannung auf das Fließen der Metalle Eisen. Kupfer und Nickel.
+    Zeitschrift Für Physik, 36(11–12), 913–939.
+    <https://doi.org/10.1007/BF01400222>
 
 ```{r hsu}
 #| fig.alt: >
@@ -84,13 +129,26 @@ hsu_plot(R_XY, R_YZ, col = "#B63679", pch = 16)
 
 ## Vorticity analysis
 
-The **rigid grain net** after (Jessup et al. 2007) plots the distribution the 
-strain ratio (`R`) of orientation (`phi`) of 
-porphyroclast over the theoretical distribution of tailless clasts. The plot estimates 
-the critical threshold `Rc` marking the transition between the stable-sink 
-position and infinitely rotating porphyroclasts. 
-This threshold can be interpreted as the the **mean kinematic vorticity number**.
-Here the `Rc` is estimated using the bootstrap method described in Stephan et al. (2025).
+The **rigid grain net** after (Jessup et al. 2007)[^9] plots the
+distribution the strain ratio (`R`) of orientation (`phi`) of
+porphyroclast over the theoretical distribution of tailless clasts. The
+plot estimates the critical threshold `Rc` marking the transition
+between the stable-sink position and infinitely rotating porphyroclasts.
+This threshold can be interpreted as the the **mean kinematic vorticity
+number**. Here the `Rc` is estimated using the bootstrap method
+described in Stephan et al. (2025)[^10].
+
+[^9]: Jessup, M. J., Law, R. D., & Frassi, C. (2007). The Rigid Grain
+    Net (RGN): An alternative method for estimating mean kinematic
+    vorticity number (Wm). Journal of Structural Geology, 29(3),
+    411–421. <https://doi.org/10.1016/j.jsg.2006.11.003>
+
+[^10]: Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
+    Creaser, R., & Hollings, P. (2025). Going with the flow — Changes of
+    vorticity control gold enrichment in Archean shear zones
+    (Shebandowan Greenstone Belt, Superior Province, Canada). Journal of
+    Structural Geology, 201(September), 105542.
+    <https://doi.org/10.1016/j.jsg.2025.105542>
 
 ```{r vorticity, message=FALSE, warning=FALSE}
 #| fig.alt: >

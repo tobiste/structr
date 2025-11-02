@@ -3,9 +3,9 @@
 \encoding{UTF-8}
 \name{hsu_plot}
 \alias{hsu_plot}
-\title{Hsü plot}
+\title{Hsu plot}
 \usage{
-hsu_plot(R_XY, R_YZ, main = "Hsü diagram", es.max = NULL, ...)
+hsu_plot(R_XY, R_YZ, main = "Hsu diagram", es.max = NULL, ...)
 }
 \arguments{
 \item{R_XY}{ratio of maximum strain and intermediate strain}
@@ -22,10 +22,24 @@ hsu_plot(R_XY, R_YZ, main = "Hsü diagram", es.max = NULL, ...)
 plot and when stored as an object, the Lode parameter \code{Lode} and the natural octahedral strain \code{es}.
 }
 \description{
-3D strain diagram using the Hsü (1965) method to display the natural octahedral strain and the Lode parameter.
+3D strain diagram using the Hsu (1965) method to display the natural
+octahedral strain (Nádai, 1950) and Lode's parameter (Lode, 1926).
 }
 \examples{
 R_XY <- holst[, "R_XY"]
 R_YZ <- holst[, "R_YZ"]
 hsu_plot(R_XY, R_YZ, col = "#B63679", pch = 16)
+}
+\references{
+Lode, W. (1926). Versuche über den Einfluß der mittleren Hauptspannung auf
+das Fließen der Metalle Eisen. Kupfer und Nickel. Zeitschrift Für Physik,
+36(11–12), 913–939. https://doi.org/10.1007/BF01400222
+
+Nádai, A. (1950). Theory of flow and fracture of solids. McGraw-Hill.
+
+Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial strain
+paths. Journal of Strain Analysis, 1(3), 216–222. https://doi.org/10.1243/03093247V013216
+
+Hossack, J. R. (1968). Pebble deformation and thrusting in the Bygdin area
+(Southern Norway). Tectonophysics, 5(4), 315–339. https://doi.org/10.1016/0040-1951(68)90035-8
 }

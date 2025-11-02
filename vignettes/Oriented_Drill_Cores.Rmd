@@ -67,3 +67,7 @@ stereo_point(planes_AB, lab = c("A", "B"), col = c("#B63679FF", "#FB8861FF"))
 # ... and as great circles
 stereo_greatcircle(planes_AB, col = c("#B63679FF", "#FB8861FF"))
 ```
+
+## References
+
+Stigsson, M., & Munier, R. (2013). Orientation uncertainty goes bananas: An algorithm to visualise the uncertainty sample space on stereonets for oriented objects measured in boreholes. Computers and Geosciences, 56, 56–61. https://doi.org/10.1016/j.cageo.2013.03.001

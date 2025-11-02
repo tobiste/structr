@@ -14,7 +14,10 @@ editor_options:
     wrap: 72
 ---
 
-This tutorial describes how to calculate basic statistics for spherical orientation data using the `{structr}` package. It covers the calculation of mean orientations, dispersion measures, hypothesis testing, orientation tensors, and clustering of orientation data.
+This tutorial describes how to calculate basic statistics for spherical
+orientation data using the `{structr}` package. It covers the
+calculation of mean orientations, dispersion measures, hypothesis
+testing, orientation tensors, and clustering of orientation data.
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -25,11 +28,14 @@ set.seed(20250411)
 ```
 
 Load the package:
+
 ```{r setup, warning=FALSE, message=FALSE}
 library(structr)
 ```
 
-To start, we import some example planes and lines, and convert them to spherical objects:
+To start, we import some example planes and lines, and convert them to
+spherical objects:
+
 ```{r example}
 data(example_planes_df)
 data(example_lines_df)
@@ -39,22 +45,48 @@ lines <- Line(example_lines_df$trend, example_lines_df$plunge)
 ```
 
 ## Mean and dispersion
+
 Arithmetic mean, geodesic mean, and projected mean
 
 ### Arithmetic mean and variance
 
-The arithmetic mean orientation of spherical data is calculated by summing up all orientation vectors and normalizing the resulting vector. 
+The arithmetic mean orientation of spherical data is calculated by
+summing up all orientation vectors and normalizing the resulting
+vector[^1]:
 
-In geology, the statistical estimators are useful for **vectorial data** (`"Line"` objects) such as lineations (e.g. mineral lineations, stretching lineations) or plunge directions of fold axes, but less for axial data (`"Ray"` objects) such as paleomagnetic directions or orientations of fold axes, where the direction is not relevant.
+[^1]: Mardia, K. V., & Jupp, P. E. (2000). Directional Statistics. (K.
+    V. Mardia & P. E. Jupp, Eds.). Hoboken, NJ, USA: Wiley.
+    <https://doi.org/10.1002/9780470316979>
 
-These estimators are good descriptors of the concentration of the data around the mean direction, assuming a unimodal, isotropic distributions such as the *von Mises-Fisher distribution*.
+This involves the resultant vector of a set of $n$ vectors $x_1, \ldots, x_n$, given by $\bar{\mathbf{x}} = \sum_{i=1}^{n} \mathbf{x}_i$,
+and the resultant length defined as $\bar{\mathbf{R}} = \sqrt{x_x^2 + x_y^2 + x_z^2}$.
 
-Define some weights for our lines based on the quality reported for the measurements:
-```{r stat0}    
+The arithmetic mean of the vector components is the mean resultant vector, i.e the resultant vector normalized by its length
+$$\mu = \frac{\bar{\mathbf{x}}}{\bar{\mathbf{R}}}$$
+
+In geology, the statistical estimators are useful for **vectorial data**
+(`"Line"` objects) such as lineations (e.g. mineral lineations,
+stretching lineations) or plunge directions of fold axes, but less for
+axial data (`"Ray"` objects) such as paleomagnetic directions or
+orientations of fold axes, where the direction is not relevant[^2].
+
+[^2]: Bachmann, F., Hielscher, R., Jupp, P. E., Pantleon, W., Schaeben,
+    H., & Wegert, E. (2010). Inferential statistics of electron
+    backscatter diffraction data from within individual crystalline
+    grains. Journal of Applied Crystallography, 43(6), 1338–1355.
+    <https://doi.org/10.1107/S002188981003027X>
+
+These estimators are good descriptors of the concentration of the data
+around the mean direction, assuming an unimodal, isotropic distributions
+such as the *von Mises-Fisher distribution*.
+
+Define some weights for our lines based on the quality reported for the
+measurements:
+
+```{r stat0}
 example_lines_df$quality <- ifelse(is.na(example_lines_df$quality), 6, example_lines_df$quality) # replacing NA values with 6
 line_weightings <- 6 / example_lines_df$quality
 ```
-
 
 The (weighted) arithmetic mean orientation of spherical data is:
 
@@ -68,7 +100,8 @@ lines_mean <- sph_mean(lines, w = line_weightings)
 lines_variance <- sph_var(lines, w = line_weightings)
 ```
 
-the (weighted) standard deviation (i.e. the 63% cone around the mean) and the 95% confidence cone around the mean:
+the (weighted) standard deviation (i.e. the 63% cone around the mean)
+and the 95% confidence cone around the mean:
 
 ```{r stat_delta}
 lines_delta <- delta(lines, w = line_weightings)
@@ -76,6 +109,7 @@ lines_confangle <- sph_confidence_angle(lines, w = line_weightings)
 ```
 
 Taken together, this prints as
+
 ```{r stat}
 c(
   "Variance" = lines_variance,
@@ -85,11 +119,13 @@ c(
 ```
 
 Summary stats can also be retrieved through
+
 ```{r summary}
 summary(lines)
 ```
 
 Plotting a summary of the stats on a equal-area projection:
+
 ```{r stat_plot, message=FALSE,warning=FALSE}
 #| fig.alt: >
 #|   Diagram showing statistical results of some example data plotted in an
@@ -103,8 +139,17 @@ legend("topright", legend = c("Mean line", "95% confidence cone", "63% data cone
 ```
 
 ### Geodesic mean and variance
-Another measure of mean and dispersion is the  *Fr&#233;chet (geodesic L<sup>2</sup>) mean* and *variance* which is based on the angles between all data vectors.  
-This can be visualized using the `variance_plot()`; here showing the (geodesic) angle distances between all lines and the first line in the same data set:
+
+Another measure of mean and dispersion is the *Fréchet (geodesic
+L*<sup>2</sup>) mean and *variance* which is based on the angles between
+all data vectors[^3].\
+This can be visualized using the `variance_plot()`; here showing the
+(geodesic) angle distances between all lines and the first line in the
+same data set:
+
+[^3]: Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis
+    for three-dimensional orientational data. Journal of Structural
+    Geology, 96, 65–89. <https://doi.org/10.1016/j.jsg.2017.01.002>
 
 ```{r variance}
 #| fig.alt: >
@@ -112,10 +157,14 @@ This can be visualized using the `variance_plot()`; here showing the (geodesic) 
 variance_plot(lines, y = lines[1, ])
 ```
 
-> The Fr&#233;chet mean is the vector that minimizes the sum of the squared angle distances to all data vectors.
-> The Fr&#233;chet variance about this mean is the sum of the squared angle distances between all data vectors and the Fr&#233;chet mean.
+> The Fréchet mean is the vector that minimizes the sum of the squared
+> angle distances to all data vectors. The Fréchet variance about this
+> mean is the sum of the squared angle distances between all data
+> vectors and the Fréchet mean.
 
-To find the Fr&#233;chet mean vector, the algorithm iteratively searches for the vector by using a numerical optimization method to minimize the distances to all other vectors 
+To find the Fréchet mean vector, the algorithm iteratively searches for
+the vector by using a numerical optimization method to minimize the
+distances to all other vectors
 
 ```{r geodesic}
 # Mean
@@ -125,18 +174,23 @@ geodesic_mean(lines)
 geodesic_var(lines)
 ```
 
-These estimators are good descriptors of the concentration of the data around the mean direction, when data follows a unimodal, anisotropic distributions such as the *Kent* or *Bingham distributions*.
+These estimators are good descriptors of the concentration of the data
+around the mean direction, when data follows a unimodal, anisotropic
+distributions such as the *Kent* or *Bingham distributions*.
 
 ### Projected mean
 
-The Eigenvector with the largest Eigenvalue represents a vector parallel to the highest concentration of a population. This vector can also be described as the **projected mean**. A shortcut function for this is:
+The Eigenvector with the largest Eigenvalue represents a vector parallel
+to the highest concentration of a population. This vector can also be
+described as the **projected mean**. A shortcut function for this is:
 
 ```{r projected}
 projected_mean(example_lines)
 ```
 
-These estimators are good descriptors of the concentration of the data around the mean direction, when data follows a unimodal, anisotropic distributions such as the *Kent* or *Bingham distributions*.
-
+These estimators are good descriptors of the concentration of the data
+around the mean direction, when data follows an unimodal, anisotropic
+distributions such as the *Kent* or *Bingham distributions*.
 
 ```{r mean_plot}
 #| fig.alt: >
@@ -165,22 +219,27 @@ points(projected_mean(example_planes), col = "#FEC287FF", pch = 16)
 title(main = "Planes")
 ```
 
-
 ### Hypothesis testing
-To test if a line represents the population mean of a given set of lineations, we need to calculate the confidence region of our population.
 
-Let's test the hypothesis that a horizontal lineation trending towards 70&deg; is the mean for our lineations.
+To test if a line represents the population mean of a given set of
+lineations, we need to calculate the confidence region of our
+population.
+
+Let's test the hypothesis that a horizontal lineation trending towards
+70° is the mean for our lineations.
 
 ```{r test0}
 line_NULL <- Line(70, 0)
 ```
 
 The 95% confidence interval (from 10,000 bootstrap samples):
+
 ```{r test1}
 ce <- confidence_ellipse(lines, n = 10000, alpha = 0.05)
 ```
 
 To visualize the confidence region of our lines:
+
 ```{r test2}
 #| fig.alt: Diagram showing the confidence region of a mean
 plot(lines, col = "grey")
@@ -189,29 +248,43 @@ points(line_NULL, col = "#000004", pch = 16)
 ```
 
 The p-value for our hypothesis line:
+
 ```{r test3}
 ce$pvalue.FUN(line_NULL)
 ```
 
-With (95% confidence) we rejected the Null Hypothesis that the given line represents the population mean as the p-value is smaller than 5%.
+With (95% confidence) we rejected the Null Hypothesis that the given
+line represents the population mean as the p-value is smaller than 5%.
 
+## Orientation tensor
 
-## Orientation tensor 
 ### Eigenvectors
 
-The orientation tensor (Scheidegger 1965) is a matrix comprising the mean direction cosines of the orientation vectors. In case of a Bingham distribution, the **Eigenvectors** of this tensor describe the orientation of the most dense, intermediate and least dense orientation, and thus, are used to determine the orientation of girdle-distributed vectors (e.g. folded planes).
+The orientation tensor[^4] is a matrix comprising the mean direction
+cosines of the orientation vectors. In case of a Bingham distribution,
+the **Eigenvectors** of this tensor describe the orientation of the most
+dense, intermediate and least dense orientation, and thus, are used to
+determine the orientation of girdle-distributed vectors (e.g. folded
+planes).
+
+[^4]: Scheidegger, A. E. (1964). The tectonic stress and tectonic motion
+    direction in Europe and Western Asia as calculated from earthquake
+    fault plane solutions. Bulletin of the Seismological Society of
+    America, 54(5A), 1519–1528. <https://doi.org/10.1785/BSSA05405A1519>
 
 #### Shape parameters
-There are more shape parameters using different algorithms based on the orientation tensor:
+
+There are more shape parameters using different algorithms based on the
+orientation tensor:
 
 ```{r shapes}
 or_shape_params(planes)
 ```
 
-
 ## Cluster vectors
 
-To find k clusters of orientational data, the `sph_cluster()` function can be used:
+To find k clusters of orientational data, the `sph_cluster()` function
+can be used:
 
 ```{r cluster}
 #| fig.alt: >
@@ -233,6 +306,22 @@ legend_d(assign_col_d(unique(cl$cluster)), title = "Cluster")
 ```
 
 ## References
-Bachmann, F., Hielscher, R., Jupp, P. E., Pantleon, W., Schaeben, H., & Wegert, E. (2010). Inferential statistics of electron backscatter diffraction data from within individual crystalline grains. Journal of Applied Crystallography, 43(6), 1338–1355. https://doi.org/10.1107/S002188981003027X
 
-Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis for three-dimensional orientational data. Journal of Structural Geology, 96, 65–89. https://doi.org/10.1016/j.jsg.2017.01.002
+Bachmann, F., Hielscher, R., Jupp, P. E., Pantleon, W., Schaeben, H., &
+Wegert, E. (2010). Inferential statistics of electron backscatter
+diffraction data from within individual crystalline grains. Journal of
+Applied Crystallography, 43(6), 1338–1355.
+<https://doi.org/10.1107/S002188981003027X>
+
+Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis for
+three-dimensional orientational data. Journal of Structural Geology, 96,
+65–89. <https://doi.org/10.1016/j.jsg.2017.01.002>
+
+Mardia, K. V., & Jupp, P. E. (2000). Directional Statistics. (K. V.
+Mardia & P. E. Jupp, Eds.). Hoboken, NJ, USA: Wiley.
+<https://doi.org/10.1002/9780470316979>
+
+Scheidegger, A. E. (1964). The tectonic stress and tectonic motion
+direction in Europe and Western Asia as calculated from earthquake fault
+plane solutions. Bulletin of the Seismological Society of America,
+54(5A), 1519–1528. <https://doi.org/10.1785/BSSA05405A1519>

@@ -17,6 +17,8 @@
 #' @export
 #'
 #' @references Ramsay (1976), Folding and Fracturing of Rocks, McGraw-Hill Book Company.
+#' 
+#' Ramsay, J. G., & Huber, M. I. (1983). The Techniques of Modern Structural Geology: Strain Analyses (Vol. 1). London: Academic Press.
 #'
 #' @seealso [mean_strain_ellipse()]
 #'
@@ -484,6 +486,9 @@ gridHyper <- function(rphi, rmax, kappa, nnodes, normalize = TRUE, proj = "eqd")
 #' @returns plot
 #'
 #' @seealso [hypercontour()], [Rphi_polar_plot()]
+#' 
+#' @references Ramsay, J. G., & Huber, M. I. (1983). The Techniques of Modern 
+#' Structural Geology: Strain Analyses (Vol. 1). London: Academic Press.
 #'
 #' @export
 #'
@@ -585,7 +590,7 @@ Rphi_plot <- function(r, phi,
 
 #' Polar R/phi plot
 #'
-#' Plots R/phi fabric plot in polar coordinates
+#' Plots R/phi fabric plot in polar coordinates (after Elliott, 1970)
 #'
 #' @inheritParams mean_strain_ellipse
 #' @param proj character. Projection,  `'eqd'` for equidistant (Elliot plot),
@@ -594,6 +599,9 @@ Rphi_plot <- function(r, phi,
 #' @param proj character.
 #' @inheritParams Rphi_plot
 #' @returns plot
+#' 
+#' @references Elliott, D. (1970). Determination of Finite Strain and Initial 
+#' Shape from Deformed Elliptical Objects. GSA Bulletin, 81(8), 2221–2236.
 #'
 #' @seealso [hypercontour()], [Rphi_plot()]
 #'
@@ -857,9 +865,10 @@ RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.975, grid
 
 
 
-#' Hsü plot
+#' Hsu plot
 #'
-#' 3D strain diagram using the Hsü (1965) method to display the natural octahedral strain and the Lode parameter.
+#' 3D strain diagram using the Hsu (1965) method to display the natural 
+#' octahedral strain (Nádai, 1950) and Lode's parameter (Lode, 1926).
 #'
 #' @param R_XY ratio of maximum strain and intermediate strain
 #' @param R_YZ ratio of intermediate strain and minimum strain
@@ -869,13 +878,27 @@ RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.975, grid
 #'
 #' @encoding UTF-8
 #' @returns plot and when stored as an object, the Lode parameter `Lode` and the natural octahedral strain `es`.
+#' 
+#' @references 
+#' Lode, W. (1926). Versuche über den Einfluß der mittleren Hauptspannung auf 
+#' das Fließen der Metalle Eisen. Kupfer und Nickel. Zeitschrift Für Physik, 
+#' 36(11–12), 913–939. https://doi.org/10.1007/BF01400222
+#' 
+#' Nádai, A. (1950). Theory of flow and fracture of solids. McGraw-Hill.
+#' 
+#' Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial strain 
+#' paths. Journal of Strain Analysis, 1(3), 216–222. https://doi.org/10.1243/03093247V013216
+#' 
+#' Hossack, J. R. (1968). Pebble deformation and thrusting in the Bygdin area 
+#' (Southern Norway). Tectonophysics, 5(4), 315–339. https://doi.org/10.1016/0040-1951(68)90035-8
+#' 
 #' @export
 #'
 #' @examples
 #' R_XY <- holst[, "R_XY"]
 #' R_YZ <- holst[, "R_YZ"]
 #' hsu_plot(R_XY, R_YZ, col = "#B63679", pch = 16)
-hsu_plot <- function(R_XY, R_YZ, main = "Hs\u00fc diagram", es.max = NULL, ...) {
+hsu_plot <- function(R_XY, R_YZ, main = "Hsu diagram", es.max = NULL, ...) {
   R_XZ <- R_XY * R_YZ
   R <- es <- 1 / sqrt(3) * sqrt(log(R_XY)^2 + log(R_YZ)^2 + log(1 / R_XZ)^2) # Nadai, 1963
 
@@ -969,6 +992,9 @@ hsu_plot <- function(R_XY, R_YZ, main = "Hs\u00fc diagram", es.max = NULL, ...) 
 #'
 #' @returns plot and when stored as an object, the multiplication factors for X, Y and Z.
 #' @export
+#' 
+#' @references Flinn, D. (1965). On the Symmetry Principle and the Deformation 
+#' Ellipsoid. Geological Magazine, 102(1), 36–45. https://doi.org/10.1017/S0016756800053851
 #'
 #' @examples
 #' data(holst)
