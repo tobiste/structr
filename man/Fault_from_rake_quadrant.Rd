@@ -31,16 +31,17 @@ Fault from rake and quadrant notation
 }
 \details{
 \code{type=="plunge"} This is the angle measured in the fault plane between the
-strike given by either right or left hand rule and the lineation.
+strike given by either right or left-hand rule and the lineation.
 The angle is recorded in a clockwise sense (looking down upon the fault plane) and has a range
 from 0 to 180\%deg;. The quadrant of plunge indicates the direction
-of the strike from which the angle of pitch is measured.
+of the strike from which the rake angle is measured. The \code{sense} argument is
+ignored, as it it implied by the sign of the rake.
 
-\code{type=="rake"} Rake is the acute angle measured in the fault plane between the strike of the fault and the
+\code{type=="rake"} Rake is the \strong{acute} angle measured in the fault plane between the strike of the fault and the
 lineation . Starting from the strike line, the angle is measured in a sense
-which is down the dip of the plane. Quadrant of pitch The variable is used to
-indicate the direction of the strike from which the angle of pitch is measured.
-Angle ranges from 0 to 90 °
+which is down the dip of the plane. Quadrant of rake indicate the direction of
+the strike  from which the rake angle is measured, i.e. whether right-hand or left-handrule is followed.
+Angle ranges from 0 to 90 °. Use \code{sense} argument to specify the sense of motion.
 }
 \examples{
 dip <- c(5, 10, 15, 30, 40, 55, 65, 75, 90)

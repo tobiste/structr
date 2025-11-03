@@ -694,16 +694,17 @@ Fault_from_rake <- function(p, rake, sense = NULL, ...) {
 #'
 #' @details
 #' `type=="plunge"` This is the angle measured in the fault plane between the
-#' strike given by either right or left hand rule and the lineation.
+#' strike given by either right or left-hand rule and the lineation.
 #' The angle is recorded in a clockwise sense (looking down upon the fault plane) and has a range
 #' from 0 to 180%deg;. The quadrant of plunge indicates the direction
-#' of the strike from which the angle of pitch is measured.
+#' of the strike from which the rake angle is measured. The `sense` argument is 
+#' ignored, as it it implied by the sign of the rake.
 #'
-#' `type=="rake"` Rake is the acute angle measured in the fault plane between the strike of the fault and the
+#' `type=="rake"` Rake is the **acute** angle measured in the fault plane between the strike of the fault and the
 #' lineation . Starting from the strike line, the angle is measured in a sense
-#' which is down the dip of the plane. Quadrant of pitch The variable is used to
-#' indicate the direction of the strike from which the angle of pitch is measured.
-#' Angle ranges from 0 to 90 &deg;
+#' which is down the dip of the plane. Quadrant of rake indicate the direction of 
+#' the strike  from which the rake angle is measured, i.e. whether right-hand or left-handrule is followed.
+#' Angle ranges from 0 to 90 &deg;. Use `sense` argument to specify the sense of motion.
 #'
 #' @family parse-orientations
 # #' @seealso [azimuth_to_cardinal()] to convert azimuth to cardinal directions, [quadrant2dd()] to define a plane using the strike and dip quadrant notation
