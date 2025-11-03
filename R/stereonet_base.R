@@ -124,6 +124,9 @@ stereo_coords <- function(az, inc, upper.hem = FALSE, earea = TRUE, r = 1) {
 #' @param ... optional graphical parameters
 #' @note `"Plane"` and `"Fault"` objects will be displayed as pole to the plane (only).
 #' @importFrom graphics points text
+#' 
+#' @family stereo-plot
+#' 
 #' @export
 #' @examples
 #' stereoplot()
@@ -279,6 +282,7 @@ stereo_pair <- function(x, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex 
 #' @param ... optional graphical parameters
 #' @importFrom graphics lines
 #' @name stereo_cones
+#' @family stereo-plot
 #' @examples
 #' stereoplot()
 #' stereo_point(Line(90, 5), lab = "L")
@@ -370,6 +374,8 @@ stereo_greatcircle <- function(x, ...) {
 #'
 #' @returns NULL
 #' @export
+#' 
+#' @family stereo-plot
 #'
 #' @seealso [slerp()], [stereo_greatcircle]
 #'
@@ -490,6 +496,9 @@ stereoplot_frame <- function(n = 512L, radius = 1, ...) {
 #' @param radius numeric. Radius of circle
 #'
 #' @source Adapted from the `RFOC` package
+#' 
+#' @family stereo-plot
+#' 
 #' @importFrom graphics points
 #' @export
 #' @examples
@@ -526,7 +535,7 @@ stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = "lightgray",
 #'
 #' @importFrom graphics segments
 #' @export
-#' @seealso [stereoplot()], [stereoplot_frame()], [stereoplot_guides()]
+#' @family stereo-plot
 #' @examples
 #' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
 #' stereoplot_frame()
@@ -657,7 +666,7 @@ stereo_guides_wulff <- function(d = 9, n = 512, r = 1, rotation = 0, ...) {
 #'
 #' @importFrom graphics lines
 #'
-#' @seealso [stereoplot()], [stereoplot_frame()], [stereoplot_ticks()]
+#' @family stereo-plot
 #' @export
 #' @examples
 #' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
@@ -686,6 +695,7 @@ stereoplot_guides <- function(d = 10, earea = TRUE, radius = 1, ...) {
 #' and open symbols point into the upper hemisphere
 #'
 #' @name plot-spherical
+#' @family stereo-plot
 #'
 #' @examples
 #' plot(rvmf(10, mu = Vec3(1, 0, 0))) # Vec
@@ -776,6 +786,7 @@ plot.Fault <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(),
 #' @importFrom graphics points
 #'
 #' @exportS3Method graphics::points
+#' @family stereo-plot
 #'
 #' @examples
 #' stereoplot()
@@ -808,6 +819,8 @@ points.spherical <- function(x, upper.hem = FALSE, earea = TRUE, ...) {
 #' @param ... arguments passed to [graphics::lines()]
 #' @importFrom graphics lines
 #' @exportS3Method graphics::lines
+#' 
+#' @family stereo-plot
 #'
 #' @examples
 #' set.seed(20250411)
@@ -824,6 +837,8 @@ lines.spherical <- function(x, ang = 90, ...) {
 #' @inheritParams plot.Vec3
 #' @inheritParams graphics::text
 #' @importFrom graphics text
+#' 
+#' @family stereo-plot
 #'
 #' @exportS3Method graphics::text
 #'
@@ -869,6 +884,7 @@ hypot <- function(x, y) {
 #' @param scale numeric. Scales the length of the vector. `0.1` by default
 #'
 #' @seealso [hoeppener()], [angelier()]
+#' @family stereo-plot
 #'
 #' @importFrom graphics arrows
 #' @export
@@ -919,7 +935,7 @@ stereo_arrows <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.
 #' @returns NULL
 #' @name fault-plot
 #'
-#' @seealso [stereo_arrows()]
+#' @family stereo-plot
 #'
 #' @details
 #' **Angelier plot** shows all planes as *great circles* and lineations as points. Fault striae are plotted as vectors on top of the lineation pointing in the movement direction of the hangingwall. Easy to read in case of homogeneous or small datasets.
@@ -1063,6 +1079,7 @@ variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "proj
 #' @inheritParams stereo_smallcircle
 #'
 #' @returns output of [confidence_ellipse()]
+#' @family stereo-plot
 #' @seealso [confidence_ellipse()]
 #' @export
 #'

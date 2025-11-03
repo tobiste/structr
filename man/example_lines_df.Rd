@@ -23,6 +23,19 @@ Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
 Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
 vorticity control gold enrichment in Archean shear zones
 (Shebandowan Greenstone Belt, Superior Province, Canada).
-Journal of Structural Geology, 201, 105542. https://doi.org/10.1016/j.jsg.2025.105542
+Journal of Structural Geology, 201, 105542. \doi{10.1016/j.jsg.2025.105542}
 }
+\seealso{
+Other datasets: 
+\code{\link{angelier1990}},
+\code{\link{example_lines}},
+\code{\link{example_planes}},
+\code{\link{example_planes_df}},
+\code{\link{gray_example}},
+\code{\link{holst}},
+\code{\link{ramsay}},
+\code{\link{shebandowan}},
+\code{\link{simongomez}}
+}
+\concept{datasets}
 \keyword{datasets}

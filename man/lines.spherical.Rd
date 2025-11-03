@@ -22,3 +22,20 @@ set.seed(20250411)
 stereoplot()
 lines(rvmf(n = 5), ang = runif(5, 0, 90), col = 1:5)
 }
+\seealso{
+Other stereo-plot: 
+\code{\link{fault-plot}},
+\code{\link{plot-spherical}},
+\code{\link{points.spherical}()},
+\code{\link{stereo_arrows}()},
+\code{\link{stereo_cones}},
+\code{\link{stereo_confidence}()},
+\code{\link{stereo_contour}},
+\code{\link{stereo_point}()},
+\code{\link{stereo_segment}()},
+\code{\link{stereoplot}()},
+\code{\link{stereoplot_guides}()},
+\code{\link{stereoplot_ticks}()},
+\code{\link{text.spherical}()}
+}
+\concept{stereo-plot}

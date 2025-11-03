@@ -58,5 +58,5 @@ ce$pvalue.FUN((Line(90, 0)))
 \references{
 Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis
 for three-dimensional orientational data. Journal of Structural Geology,
-96, 65–89. https://doi.org/10.1016/j.jsg.2017.01.002
+96, 65–89. \doi{10.1016/j.jsg.2017.01.002}
 }

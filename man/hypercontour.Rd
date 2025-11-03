@@ -62,7 +62,7 @@ head(out$z)
 \references{
 Vollmer, F.W., 2018. Automatic contouring of geological fabric and finite
 strain data on the unit hyperboloid. Computers & Geosciences,
-https://doi.org/10.1016/j.cageo.2018.03.006
+\doi{10.1016/j.cageo.2018.03.006}
 }
 \seealso{
 \code{\link[=Rphi_plot]{Rphi_plot()}}, \code{\link[=Rphi_polar_plot]{Rphi_polar_plot()}}

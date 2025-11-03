@@ -2,18 +2,24 @@
 % Please edit documentation in R/ortensor.R
 \name{ot_eigen}
 \alias{ot_eigen}
+\alias{ot_eigen.spherical}
+\alias{ot_eigen.ortensor}
 \title{Eigenvalues and Eigenvectors of a Set of Vectors}
 \usage{
 ot_eigen(x, scaled = FALSE, ...)
+
+\method{ot_eigen}{spherical}(x, scaled = FALSE, ...)
+
+\method{ot_eigen}{ortensor}(x, scaled = FALSE)
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
-rows are the observations and the columns are the coordinates.}
+\item{x}{either an object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
+rows are the observations and the columns are the coordinates, or an \code{"ortensor"} object.}
 
 \item{scaled}{logical. Whether the Eigenvectors should be scaled by the
 Eigenvalues (only effective if \code{x} is in Cartesian coordinates).}
 
-\item{...}{additional arguments passed to \code{\link[=ortensor]{ortensor()}}.}
+\item{...}{additional arguments passed to \code{\link[=ortensor]{ortensor()}} (ignored if \code{x} is \code{"ortensor"} object).}
 }
 \value{
 list containing
@@ -38,5 +44,8 @@ points(x_eigen$vectors, col = c(1, 2, 3))
 text(x_eigen$vectors, col = c(1, 2, 3), labels = c("E1", "E2", "E3"), pos = 4)
 }
 \seealso{
-\code{\link[=ortensor]{ortensor()}}
+Other ortensor: 
+\code{\link{ortensor}()},
+\code{\link{strain_shape}}
 }
+\concept{ortensor}

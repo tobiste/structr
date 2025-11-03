@@ -18,6 +18,7 @@
 #' @name stereo_contour
 #' @aliases contour image density-plot density_plot
 #'
+#' @family stereo-plot
 #' @seealso [count_points()], [density]
 #' @importFrom graphics image.default .filled.contour contour
 #'

@@ -17,4 +17,17 @@ data('simongomez')
 data("simongomez")
 head(simongomez)
 }
+\seealso{
+Other datasets: 
+\code{\link{angelier1990}},
+\code{\link{example_lines}},
+\code{\link{example_lines_df}},
+\code{\link{example_planes}},
+\code{\link{example_planes_df}},
+\code{\link{gray_example}},
+\code{\link{holst}},
+\code{\link{ramsay}},
+\code{\link{shebandowan}}
+}
+\concept{datasets}
 \keyword{datasets}

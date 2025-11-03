@@ -36,7 +36,9 @@
 #'  the resolved shear and normal stresses, and the slip and dilation tendency on each plane.}
 #'  }
 #'
-#' @references Michael, A. J. (1984). Determination of stress from slip data: Faults and folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526. https://doi.org/10.1029/JB089iB13p11517
+#' @references Michael, A. J. (1984). Determination of stress from slip data: 
+#' Faults and folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526. 
+#' \doi{10.1029/JB089iB13p11517}
 #'
 #' @details
 #' The goal of slip inversion is to find the single uniform stress tensor that
@@ -703,8 +705,8 @@ Fault_from_rake <- function(p, rake, sense = NULL, ...) {
 #' indicate the direction of the strike from which the angle of pitch is measured.
 #' Angle ranges from 0 to 90 &deg;
 #'
-#' @seealso [azimuth_to_cardinal()] to convert azimuth to cardinal directions,
-#' [quadrant2dd()] to define a plane using the strike and dip quadrant notation
+#' @family parse-orientations
+# #' @seealso [azimuth_to_cardinal()] to convert azimuth to cardinal directions, [quadrant2dd()] to define a plane using the strike and dip quadrant notation
 #'
 #' @returns `"Fault"` object
 #' @export
@@ -816,7 +818,7 @@ Plane_from_apparent_dips <- function(a1, a2) {
 #' Must have same length as rows in `x`
 #'
 #' @returns numeric. 1 if normal, -1 if reverse offset
-#'
+#' @family parse-orientations
 #' @seealso [strikeslip_kinematics()]
 #'
 #' @export
@@ -850,7 +852,7 @@ sense_from_strikeslip <- function(x, left) {
 #'
 #' @returns character. `"left"` - left-lateral (sinistral) offset, `"right"` - right-lateral (dextral) offset
 #' @export
-#'
+#' @family parse-orientations
 #' @seealso [sense_from_strikeslip()]
 #'
 #' @examples

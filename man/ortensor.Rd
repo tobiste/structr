@@ -2,14 +2,22 @@
 % Please edit documentation in R/ortensor.R
 \name{ortensor}
 \alias{ortensor}
+\alias{is.ortensor}
+\alias{as.ortensor}
 \alias{ortensor.spherical}
 \title{Orientation tensor}
 \usage{
+is.ortensor(object)
+
+as.ortensor(object)
+
 \method{ortensor}{spherical}(x, norm = TRUE, w = NULL)
 
 ortensor(x, norm = TRUE, w = NULL)
 }
 \arguments{
+\item{object}{3x3 matrix}
+
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
 rows are the observations and the columns are the coordinates.}
 
@@ -18,7 +26,11 @@ rows are the observations and the columns are the coordinates.}
 \item{w}{numeric. weightings}
 }
 \value{
-matrix
+\code{ortensor()} returns an object of class \code{"ortensor"}
+
+\code{is.ortensor} returns \code{TRUE} if \code{x} is an \code{"ortensor"} object, and \code{FALSE} otherwise.
+
+\code{as.ortensor} coerces a 3x3 matrix into an \code{"ortensor"} object.
 }
 \description{
 3D orientation tensor, which characterize data distribution using
@@ -31,6 +43,9 @@ The normalized orientation tensor is given as \deqn{D = \frac{1}{n} (x_i, y_i, z
 set.seed(20250411)
 x <- rfb(100, mu = Line(120, 50), k = 1, A = diag(c(10, 0, 0)))
 ortensor(x, w = runif(nrow(x)))
+
+test <- as.ortensor(diag(3))
+is.ortensor(test)
 }
 \references{
 Watson, G. S. (1966). The Statistics of Orientation Data. The Journal of
@@ -39,8 +54,13 @@ Geology, 74(5), 786–797.
 Scheidegger, A. E. (1964). The tectonic stress and tectonic motion direction
 in Europe and Western Asia as calculated from earthquake fault plane solutions.
 Bulletin of the Seismological Society of America, 54(5A), 1519–1528.
-https://doi.org/10.1785/BSSA05405A1519
+\doi{10.1785/BSSA05405A1519}
 }
 \seealso{
-\code{\link[=ot_eigen]{ot_eigen()}}, \code{\link[=inertia_tensor]{inertia_tensor()}}
+\code{\link[=inertia_tensor]{inertia_tensor()}}
+
+Other ortensor: 
+\code{\link{ot_eigen}()},
+\code{\link{strain_shape}}
 }
+\concept{ortensor}

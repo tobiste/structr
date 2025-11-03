@@ -55,3 +55,20 @@ stereoplot()
 stereo_point(Line(c(129, 90), c(30, 5)), lab = c("L1", "L2"))
 stereo_smallcircle(Line(c(129, 90), c(30, 5)), d = c(10, 5), col = 1:2, lty = 1:2, lwd = 1:2)
 }
+\seealso{
+Other stereo-plot: 
+\code{\link{fault-plot}},
+\code{\link{lines.spherical}()},
+\code{\link{plot-spherical}},
+\code{\link{points.spherical}()},
+\code{\link{stereo_arrows}()},
+\code{\link{stereo_confidence}()},
+\code{\link{stereo_contour}},
+\code{\link{stereo_point}()},
+\code{\link{stereo_segment}()},
+\code{\link{stereoplot}()},
+\code{\link{stereoplot_guides}()},
+\code{\link{stereoplot_ticks}()},
+\code{\link{text.spherical}()}
+}
+\concept{stereo-plot}

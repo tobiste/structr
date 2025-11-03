@@ -25,6 +25,9 @@
 #' \item{`linear`}{Line elements. Same row IDs as in `data`.}
 #' }
 #' @name strabo
+#' 
+#' @seealso [drillcore_transformation()]
+#' 
 #' @examples
 #' \dontrun{
 #' # import from excel file

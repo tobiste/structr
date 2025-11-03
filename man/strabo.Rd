@@ -49,3 +49,6 @@ read_strabo_mobile("path/to/my/file.txt")
 read_strabo_JSON("path/to/my/file.json")
 }
 }
+\seealso{
+\code{\link[=drillcore_transformation]{drillcore_transformation()}}
+}

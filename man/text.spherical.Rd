@@ -33,3 +33,20 @@ stereoplot()
 points(Line(c(90, 80), c(10, 75)), col = 1:2)
 text(Line(c(90, 80), c(10, 75)), labels = c("L1", "L2"), col = 1:2, pos = 3)
 }
+\seealso{
+Other stereo-plot: 
+\code{\link{fault-plot}},
+\code{\link{lines.spherical}()},
+\code{\link{plot-spherical}},
+\code{\link{points.spherical}()},
+\code{\link{stereo_arrows}()},
+\code{\link{stereo_cones}},
+\code{\link{stereo_confidence}()},
+\code{\link{stereo_contour}},
+\code{\link{stereo_point}()},
+\code{\link{stereo_segment}()},
+\code{\link{stereoplot}()},
+\code{\link{stereoplot_guides}()},
+\code{\link{stereoplot_ticks}()}
+}
+\concept{stereo-plot}

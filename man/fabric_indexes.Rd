@@ -7,8 +7,9 @@
 fabric_indexes(x)
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
-rows are the observations and the columns are the coordinates.}
+\item{x}{object of class \code{"ortensor"}, \code{"ellipsoid"}, or
+\code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the rows are the
+observations and the columns are the coordinates.}
 }
 \value{
 numeric vector containing the fabric shape and intensity indices:
@@ -35,5 +36,5 @@ x <- rvmf(100, mu = mu, k = 1)
 fabric_indexes(x)
 }
 \seealso{
-\code{\link[=or_shape_params]{or_shape_params()}}
+\code{\link[=shape_params]{shape_params()}}
 }

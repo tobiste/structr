@@ -31,6 +31,7 @@ the deformation gradient tensor accumulated after some time.
 \examples{
 D <- defgrad_from_comp(xx = 2, xy = 1, zz = 0.5)
 L <- velgrad_from_defgrad(D, time = 10)
-L
+print(L)
+
 defgrad_from_velgrad(L, time = 10, steps = 2)
 }

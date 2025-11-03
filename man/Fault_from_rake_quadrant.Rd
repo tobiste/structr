@@ -54,6 +54,11 @@ rake_quadrant <- c("E", "S", "S", "E", "E", "W", "N", "S", "W")
 Fault_from_rake_quadrant(Plane(dip_dir, dip), rake2, rake_quadrant, type = "rake")
 }
 \seealso{
-\code{\link[=azimuth_to_cardinal]{azimuth_to_cardinal()}} to convert azimuth to cardinal directions,
-\code{\link[=quadrant2dd]{quadrant2dd()}} to define a plane using the strike and dip quadrant notation
+Other parse-orientations: 
+\code{\link{azimuth_to_cardinal}()},
+\code{\link{quadrant2dd}()},
+\code{\link{sense_from_strikeslip}()},
+\code{\link{split_trailing_letters}()},
+\code{\link{strikeslip_kinematics}()}
 }
+\concept{parse-orientations}

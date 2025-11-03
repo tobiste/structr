@@ -34,5 +34,13 @@ flinn_plot(R_XY, R_YZ, log = TRUE, col = "#B63679", pch = 16)
 }
 \references{
 Flinn, D. (1965). On the Symmetry Principle and the Deformation
-Ellipsoid. Geological Magazine, 102(1), 36–45. https://doi.org/10.1017/S0016756800053851
+Ellipsoid. Geological Magazine, 102(1), 36–45. \doi{10.1017/S0016756800053851}
 }
+\seealso{
+Other fabric-plot: 
+\code{\link{hsu_fabric_plot}()},
+\code{\link{hsu_plot}()},
+\code{\link{vollmer_plot}()},
+\code{\link{woodcock_plot}()}
+}
+\concept{fabric-plot}

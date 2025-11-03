@@ -26,3 +26,20 @@ stereoplot()
 points(rvmf(n = 100))
 points(Plane(120, 30), col = "red", pch = 19)
 }
+\seealso{
+Other stereo-plot: 
+\code{\link{fault-plot}},
+\code{\link{lines.spherical}()},
+\code{\link{plot-spherical}},
+\code{\link{stereo_arrows}()},
+\code{\link{stereo_cones}},
+\code{\link{stereo_confidence}()},
+\code{\link{stereo_contour}},
+\code{\link{stereo_point}()},
+\code{\link{stereo_segment}()},
+\code{\link{stereoplot}()},
+\code{\link{stereoplot_guides}()},
+\code{\link{stereoplot_ticks}()},
+\code{\link{text.spherical}()}
+}
+\concept{stereo-plot}

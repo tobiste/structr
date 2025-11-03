@@ -2,13 +2,13 @@
 #'
 #' @param Rxy,Ryz numeric. the XY and YZ strain ratio to create a strain tensor
 #' with axial stretches.Values must be greater than or equal to 1.
-#' @param p object of class `pair`
-#' @param v1,v2 objects of class `"spherical"` or three-element vector.
+#' @param p object of class `"Pair"`
+#' @param v1,v2 spherical objects or three-element vector.
 #' Deformation gradient results from the rotation around axis perpendicular to
 #' both vectors to rotate `v1` to `v2`.
-#' @param axis,angle rotation axis and angle, axis can be an object of class
-#' `"spherical"` (incl. `"line"` and `"plane"`) or a three-element vector. Angle in
-#' degrees when axis is a object of class `"spherical"`, and radians otherwise.
+#' @param axis,angle rotation axis and angle, axis can be an object of class `"Vec3"`,
+#' `"Line"`, `"Ray"`, or `"Plane"`, or a three-element vector. Angle in
+#' degrees when axis is a object of class `"Line"`, `"Ray"`, or `"Plane"`, and radians otherwise.
 #' @param xx,xy,xz,yx,yy,yz,zx,zy,zz numeric. Directly specify components of
 #' the tensor. Identity matrix by default.
 #'
@@ -17,8 +17,8 @@
 #'
 #' @examples
 #' defgrad_from_ratio(2, 3)
-#' defgrad_from_axisangle(Line(120, 30), 45)
-#' defgrad_from_vectors(Line(120, 30), Line(210, 60))
+#' defgrad_from_axisangle(Line(120, 50), 60)
+#' defgrad_from_vectors(Line(120, 50), Line(270, 80))
 #' defgrad_from_pair(Pair(40, 20, 75, 16))
 NULL
 
@@ -42,7 +42,8 @@ defgrad_from_pair <- function(p) {
     pl,
     crossprod.Vec3(pp, pl),
     pp
-  )
+  ) |> 
+    unclass()
   rownames(D) <- colnames(D) <- NULL
   t(D)
 }
@@ -141,7 +142,8 @@ defgrad_from_comp <- function(xx = 1, xy = 0, xz = 0, yx = 0, yy = 1, yz = 0,
 #' @examples
 #' D <- defgrad_from_comp(xx = 2, xy = 1, zz = 0.5)
 #' L <- velgrad_from_defgrad(D, time = 10)
-#' L
+#' print(L)
+#' 
 #' defgrad_from_velgrad(L, time = 10, steps = 2)
 NULL
 

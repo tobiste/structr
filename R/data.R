@@ -7,6 +7,7 @@
 #' @usage data('gray_example')
 #'
 #' @format An object of class `data.frame`
+#' @family datasets
 #' @keywords datasets
 #' @examples
 #' data("gray_example")
@@ -27,9 +28,10 @@
 #' Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
 #' vorticity control gold enrichment in Archean shear zones
 #' (Shebandowan Greenstone Belt, Superior Province, Canada).
-#' Journal of Structural Geology, 201, 105542. https://doi.org/10.1016/j.jsg.2025.105542
+#' Journal of Structural Geology, 201, 105542. \doi{10.1016/j.jsg.2025.105542}
 #'
 #' @format An object of class `data.frame`
+#' @family datasets
 #' @keywords datasets
 #' @examples
 #' data("example_lines_df")
@@ -50,9 +52,10 @@
 #' Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
 #' vorticity control gold enrichment in Archean shear zones
 #' (Shebandowan Greenstone Belt, Superior Province, Canada).
-#' Journal of Structural Geology, 201, 105542. https://doi.org/10.1016/j.jsg.2025.105542
+#' Journal of Structural Geology, 201, 105542. \doi{10.1016/j.jsg.2025.105542}
 #'
 #' @format An object of class `Line`
+#' @family datasets
 #' @keywords datasets
 #' @examples
 #' data("example_lines")
@@ -73,9 +76,10 @@
 #' Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
 #' vorticity control gold enrichment in Archean shear zones
 #' (Shebandowan Greenstone Belt, Superior Province, Canada).
-#' Journal of Structural Geology, 201, 105542. https://doi.org/10.1016/j.jsg.2025.105542
+#' Journal of Structural Geology, 201, 105542. \doi{10.1016/j.jsg.2025.105542}
 #'
 #' @format An object of class `data.frame`
+#' @family datasets
 #' @keywords datasets
 #' @examples
 #' data("example_planes_df")
@@ -96,9 +100,10 @@
 #' Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
 #' vorticity control gold enrichment in Archean shear zones
 #' (Shebandowan Greenstone Belt, Superior Province, Canada).
-#' Journal of Structural Geology, 201, 105542. https://doi.org/10.1016/j.jsg.2025.105542
+#' Journal of Structural Geology, 201, 105542. \doi{10.1016/j.jsg.2025.105542}
 #'
 #' @format An object of class `Plane`
+#' @family datasets
 #' @keywords datasets
 #' @examples
 #' data("example_planes")
@@ -115,6 +120,7 @@
 #'
 #' @format An object of class `"Fault`
 #' @keywords datasets
+#' @family datasets
 #' @examples
 #' data("simongomez")
 #' head(simongomez)
@@ -132,9 +138,10 @@
 #' @references
 #' Angelier, J. (1990). Inversion of field data in fault tectonics to obtain the
 #'  regional stress-III. A new rapid direct inversion method by analytical means.
-#'  Geophysical Journal International, 103(2), 363–376. https://doi.org/10.1111/j.1365-246X.1990.tb01777.x
+#'  Geophysical Journal International, 103(2), 363–376. \doi{10.1111/j.1365-246X.1990.tb01777.x}
 #'
 #' @format An object of class `data.frame`
+#' @family datasets
 #' @keywords datasets
 #' @examples
 #' data("angelier1990")
@@ -151,6 +158,7 @@
 #' @usage data('ramsay')
 #'
 #' @format An object of class `matrix`
+#' @family datasets
 #' @keywords datasets
 #' @examples
 #' data("ramsay")
@@ -167,6 +175,7 @@
 #' @usage data('holst')
 #'
 #' @format An object of class `matrix`
+#' @family datasets
 #' @keywords datasets
 #' @examples
 #' data("holst")
@@ -190,9 +199,10 @@
 #' Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
 #' vorticity control gold enrichment in Archean shear zones
 #' (Shebandowan Greenstone Belt, Superior Province, Canada).
-#' Journal of Structural Geology, 201, 105542. https://doi.org/10.1016/j.jsg.2025.105542
+#' Journal of Structural Geology, 201, 105542. \doi{10.1016/j.jsg.2025.105542}
 #'
 #' @format An object of class `data.frame`
+#' @family datasets
 #' @keywords datasets
 #' @examples
 #' data("shebandowan")

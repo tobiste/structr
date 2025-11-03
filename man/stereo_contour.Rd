@@ -120,4 +120,20 @@ title(
 }
 \seealso{
 \code{\link[=count_points]{count_points()}}, \link{density}
+
+Other stereo-plot: 
+\code{\link{fault-plot}},
+\code{\link{lines.spherical}()},
+\code{\link{plot-spherical}},
+\code{\link{points.spherical}()},
+\code{\link{stereo_arrows}()},
+\code{\link{stereo_cones}},
+\code{\link{stereo_confidence}()},
+\code{\link{stereo_point}()},
+\code{\link{stereo_segment}()},
+\code{\link{stereoplot}()},
+\code{\link{stereoplot_guides}()},
+\code{\link{stereoplot_ticks}()},
+\code{\link{text.spherical}()}
 }
+\concept{stereo-plot}

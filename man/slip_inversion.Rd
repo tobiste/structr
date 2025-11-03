@@ -83,7 +83,9 @@ text(res_AVB$principal_axes, label = rownames(res_AVB$principal_axes), col = 2:4
 legend("topleft", col = 2:4, legend = rownames(res_AVB$principal_axes), pch = 16)
 }
 \references{
-Michael, A. J. (1984). Determination of stress from slip data: Faults and folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526. https://doi.org/10.1029/JB089iB13p11517
+Michael, A. J. (1984). Determination of stress from slip data:
+Faults and folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526.
+\doi{10.1029/JB089iB13p11517}
 }
 \seealso{
 \code{\link[=Fault_PT]{Fault_PT()}} for a simple P-T stress analysis,

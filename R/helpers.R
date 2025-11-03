@@ -45,6 +45,7 @@ parse_strike_dip <- function(strike, dip) {
 #' @param x character or number
 #'
 #' @return list
+#' @family parse-orientations
 #' @export
 #'
 #' @examples
@@ -115,7 +116,7 @@ quadrantletter_to_azimuth <- function(x) {
 #' @returns character vector
 #' @export
 #'
-#' @seealso [split_trailing_letters()]
+#' @family parse-orientations
 #'
 #' @examples
 #' azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350), 4) # 8-point compass
@@ -155,7 +156,7 @@ azimuth_to_cardinal <- function(x, n_directions = 8) {
 #' @param n_directions integer.
 #'
 #' @returns Dip direction in degrees
-#' @seealso [azimuth_to_cardinal()], [Fault_from_rake_quadrant()], [split_trailing_letters()]
+#' @family parse-orientations
 #' @export
 #'
 #' @examples

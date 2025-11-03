@@ -18,4 +18,17 @@ The data gives the  difference of the  \eqn{\epsilon_1} and \eqn{\epsilon_2} (\c
 data("holst")
 head(holst)
 }
+\seealso{
+Other datasets: 
+\code{\link{angelier1990}},
+\code{\link{example_lines}},
+\code{\link{example_lines_df}},
+\code{\link{example_planes}},
+\code{\link{example_planes_df}},
+\code{\link{gray_example}},
+\code{\link{ramsay}},
+\code{\link{shebandowan}},
+\code{\link{simongomez}}
+}
+\concept{datasets}
 \keyword{datasets}

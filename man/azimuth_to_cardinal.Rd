@@ -23,5 +23,11 @@ azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350), 8) # 8-point compass
 azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350), 16) # 16-point compass
 }
 \seealso{
-\code{\link[=split_trailing_letters]{split_trailing_letters()}}
+Other parse-orientations: 
+\code{\link{Fault_from_rake_quadrant}()},
+\code{\link{quadrant2dd}()},
+\code{\link{sense_from_strikeslip}()},
+\code{\link{split_trailing_letters}()},
+\code{\link{strikeslip_kinematics}()}
 }
+\concept{parse-orientations}

@@ -17,4 +17,17 @@ Example strain data from Ramsay and Huber 1983
 data("ramsay")
 head(ramsay)
 }
+\seealso{
+Other datasets: 
+\code{\link{angelier1990}},
+\code{\link{example_lines}},
+\code{\link{example_lines_df}},
+\code{\link{example_planes}},
+\code{\link{example_planes_df}},
+\code{\link{gray_example}},
+\code{\link{holst}},
+\code{\link{shebandowan}},
+\code{\link{simongomez}}
+}
+\concept{datasets}
 \keyword{datasets}

@@ -91,15 +91,21 @@ ell_jelinek(s)
 ell_flinn(s)
 }
 \references{
-Flinn, Derek.(1963): "On the statistical analysis of fabric diagrams." Geological Journal 3.2: 247-253.
+Flinn, Derek.(1963): "On the statistical analysis of fabric diagrams."
+Geological Journal 3.2: 247-253.
 
-Lode, Walter (1926): "Versuche über den Einfluß der mittleren Hauptspannung auf das Fließen der Metalle Eisen, Kupfer und Nickel“
-(\emph{"Experiments on the influence of the mean principal stress on the flow of the metals iron, copper and nickel"}], Zeitschrift für Physik, vol. 36 (November), pp. 913–939, DOI: 10.1007/BF01400222
+Lode, Walter (1926): "Versuche über den Einfluß der mittleren Hauptspannung
+auf das Fließen der Metalle Eisen, Kupfer und Nickel“
+(\emph{"Experiments on the influence of the mean principal stress on the flow of
+the metals iron, copper and nickel"}], Zeitschrift für Physik, vol. 36 (November),
+pp. 913–939, \doi{10.1007/BF01400222}
 
-Nadai, A., and Hodge, P. G., Jr. (1963): "Theory of Flow and Fracture of Solids, vol. II." ASME. J. Appl. Mech. December 1963; 30(4): 640. https://doi.org/10.1115/1.3636654
+Nadai, A., and Hodge, P. G., Jr. (1963): "Theory of Flow and Fracture of Solids,
+vol. II." ASME. J. Appl. Mech. December 1963; 30(4): 640. \doi{10.1115/1.3636654}
 
-Jelinek, Vit. "Characterization of the magnetic fabric of rocks." Tectonophysics 79.3-4 (1981): T63-T67.
+Jelinek, Vit. "Characterization of the magnetic fabric of rocks."
+Tectonophysics 79.3-4 (1981): T63-T67.
 }
 \seealso{
-\code{\link[=or_shape_params]{or_shape_params()}}, \code{\link[=ot_eigen]{ot_eigen()}}
+\code{\link[=shape_params]{shape_params()}}, \code{\link[=ot_eigen]{ot_eigen()}}
 }

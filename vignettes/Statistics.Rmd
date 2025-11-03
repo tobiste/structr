@@ -278,7 +278,7 @@ There are more shape parameters using different algorithms based on the
 orientation tensor:
 
 ```{r shapes}
-or_shape_params(planes)
+shape_params(planes)
 ```
 
 ## Cluster vectors

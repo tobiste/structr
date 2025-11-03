@@ -7,12 +7,9 @@
 hsu_fabric_plot(x, labels = NULL, add = FALSE, es.max = 3, ...)
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
-rows are the observations and the columns are the coordinates.}
-
-\item{labels}{character. text labels}
-
-\item{add}{logical. Should data be plotted to an existing plot?}
+\item{x}{object of class \code{"ortensor"}, \code{"ellipsoid"}, or
+\code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the rows are the
+observations and the columns are the coordinates.}
 
 \item{es.max}{maximum strain for scaling.}
 
@@ -37,8 +34,15 @@ hsu_fabric_plot(y, labels = "y", col = "red", add = TRUE)
 \references{
 Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial
 strain paths. Journal of Strain Analysis, 1(3), 216–222.
-\url{https://doi.org/10.1243/03093247V013216}
+\doi{10.1243/03093247V013216}
 }
 \seealso{
 \code{\link[=ell_lode]{ell_lode()}} for Lode parameter, and \link{ell_nadai} for natural octahedral strain.
+
+Other fabric-plot: 
+\code{\link{flinn_plot}()},
+\code{\link{hsu_plot}()},
+\code{\link{vollmer_plot}()},
+\code{\link{woodcock_plot}()}
 }
+\concept{fabric-plot}

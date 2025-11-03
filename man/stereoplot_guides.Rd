@@ -27,5 +27,19 @@ plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
 stereoplot_guides(d = 15, earea = TRUE, col = "orange", rotation = 90)
 }
 \seealso{
-\code{\link[=stereoplot]{stereoplot()}}, \code{\link[=stereoplot_frame]{stereoplot_frame()}}, \code{\link[=stereoplot_ticks]{stereoplot_ticks()}}
+Other stereo-plot: 
+\code{\link{fault-plot}},
+\code{\link{lines.spherical}()},
+\code{\link{plot-spherical}},
+\code{\link{points.spherical}()},
+\code{\link{stereo_arrows}()},
+\code{\link{stereo_cones}},
+\code{\link{stereo_confidence}()},
+\code{\link{stereo_contour}},
+\code{\link{stereo_point}()},
+\code{\link{stereo_segment}()},
+\code{\link{stereoplot}()},
+\code{\link{stereoplot_ticks}()},
+\code{\link{text.spherical}()}
 }
+\concept{stereo-plot}

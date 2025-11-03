@@ -75,5 +75,5 @@ text(Line(res2), labels = c("lA", "lB"), col = 2:3, pos = 4)
 Stigsson, M., & Munier, R. (2013). Orientation uncertainty goes
 bananas: An algorithm to visualise the uncertainty sample space on stereonets
 for oriented objects measured in boreholes. Computers and Geosciences, 56,
-56–61. https://doi.org/10.1016/j.cageo.2013.03.001
+56–61. \doi{10.1016/j.cageo.2013.03.001}
 }

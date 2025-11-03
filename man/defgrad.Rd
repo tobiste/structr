@@ -33,15 +33,15 @@ defgrad_from_comp(
 \item{Rxy, Ryz}{numeric. the XY and YZ strain ratio to create a strain tensor
 with axial stretches.Values must be greater than or equal to 1.}
 
-\item{p}{object of class \code{pair}}
+\item{p}{object of class \code{"Pair"}}
 
-\item{v1, v2}{objects of class \code{"spherical"} or three-element vector.
+\item{v1, v2}{spherical objects or three-element vector.
 Deformation gradient results from the rotation around axis perpendicular to
 both vectors to rotate \code{v1} to \code{v2}.}
 
-\item{axis, angle}{rotation axis and angle, axis can be an object of class
-\code{"spherical"} (incl. \code{"line"} and \code{"plane"}) or a three-element vector. Angle in
-degrees when axis is a object of class \code{"spherical"}, and radians otherwise.}
+\item{axis, angle}{rotation axis and angle, axis can be an object of class \code{"Vec3"},
+\code{"Line"}, \code{"Ray"}, or \code{"Plane"}, or a three-element vector. Angle in
+degrees when axis is a object of class \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, and radians otherwise.}
 
 \item{xx, xy, xz, yx, yy, yz, zx, zy, zz}{numeric. Directly specify components of
 the tensor. Identity matrix by default.}
@@ -54,7 +54,7 @@ Deformation Gradient Tensor
 }
 \examples{
 defgrad_from_ratio(2, 3)
-defgrad_from_axisangle(Line(120, 30), 45)
-defgrad_from_vectors(Line(120, 30), Line(210, 60))
+defgrad_from_axisangle(Line(120, 50), 60)
+defgrad_from_vectors(Line(120, 50), Line(270, 80))
 defgrad_from_pair(Pair(40, 20, 75, 16))
 }

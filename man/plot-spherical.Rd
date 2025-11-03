@@ -51,3 +51,20 @@ plot(Plane(120, 30), col = "red")
 plot(Pair(120, 50, 36, 8))
 plot(Fault(120, 50, 36, 8, -1))
 }
+\seealso{
+Other stereo-plot: 
+\code{\link{fault-plot}},
+\code{\link{lines.spherical}()},
+\code{\link{points.spherical}()},
+\code{\link{stereo_arrows}()},
+\code{\link{stereo_cones}},
+\code{\link{stereo_confidence}()},
+\code{\link{stereo_contour}},
+\code{\link{stereo_point}()},
+\code{\link{stereo_segment}()},
+\code{\link{stereoplot}()},
+\code{\link{stereoplot_guides}()},
+\code{\link{stereoplot_ticks}()},
+\code{\link{text.spherical}()}
+}
+\concept{stereo-plot}

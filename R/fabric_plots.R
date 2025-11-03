@@ -2,7 +2,7 @@
 
 #' Fabric intensity and shape indices
 #'
-#' @inheritParams regression_greatcircle
+#' @inheritParams shape_params
 #' @returns numeric vector containing the fabric shape and intensity indices:
 #' \describe{
 #' \item{`P`}{Point (Vollmer 1990). Range: (0, 1)}
@@ -18,7 +18,7 @@
 #' }
 #' @export
 #'
-#' @seealso [or_shape_params()]
+#' @seealso [shape_params()]
 #'
 #' @examples
 #' set.seed(20250411)
@@ -26,7 +26,7 @@
 #' x <- rvmf(100, mu = mu, k = 1)
 #' fabric_indexes(x)
 fabric_indexes <- function(x) {
-  or_shape_params(x)$Vollmer
+  shape_params(x)$Vollmer
 }
 
 
@@ -39,10 +39,11 @@ fabric_indexes <- function(x) {
 #' for the P, G, and G axes. Constant grid spacing when only one integer is given.
 #' `NULL` when no grid.
 #'
-#' @references Vollmer, F. W. (1990). An application of eigenvalue methods to structural domain analysis. Geological Society of America Bulletin, 102, 786<U+2013>791.
+#' @references Vollmer, F. W. (1990). An application of eigenvalue methods to 
+#' structural domain analysis. Geological Society of America Bulletin, 102, 786<U+2013>791.
 #'
-#' @seealso [woodcock_plot()], [fabric_indexes()]
-#'
+#' @seealso [fabric_indexes()]
+#' @family fabric-plot
 #' @returns plot and when stored as an object, the `P`, `G`, and `R` values as a numeric vector.
 #'
 #' @export
@@ -148,7 +149,7 @@ vollmer_plot <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...)
 #'
 #' Creates a fabric plot using the eigenvalue method
 #'
-#' @inheritParams regression_greatcircle
+#' @inheritParams ot_eigen
 #' @param labels character. text labels
 #' @param add logical. Should data be plotted to an existing plot?
 #' @param max numeric. Maximum value for x and y axes. If `NULL`, it is calculated from the data.
@@ -156,8 +157,9 @@ vollmer_plot <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...)
 #'
 #' @references Woodcock, N. H. (1977). Specification of fabric shapes using an eigenvalue method. Geological Society of America Bulletin88, 1231<U+2013>1236. http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf
 #'
-#' @seealso [vollmer_plot()], [fabric_indexes()], [ot_eigen()]
-#'
+#' @seealso [fabric_indexes()], [ot_eigen()]
+#' @family fabric-plot
+#' 
 #' @return A plot and when stored as an object, the orientation tensor's
 #' eigenvalues and eigenvectors as a list.
 #'
@@ -217,17 +219,18 @@ woodcock_plot <- function(x, labels = NULL, add = FALSE, max = 7, ...) {
 
 #' Fabric plot of Hsu (1965)
 #'
-#' @inheritParams woodcock_plot
+#' @inheritParams principal_stretch
 #' @inheritParams hsu_plot
 #' @param ... optional parameters passed to [hsu_plot()]
 #'
 #' @returns plot and when stored as object, a list containing the Lode parameter `lode` and the natural octahedral strain `es`.
+#' @family fabric-plot
 #' @seealso [ell_lode()] for Lode parameter, and [ell_nadai] for natural octahedral strain.
 #' @export
 #' 
 #' @references Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial 
 #' strain paths. Journal of Strain Analysis, 1(3), 216–222. 
-#' <https://doi.org/10.1243/03093247V013216>
+#' \doi{10.1243/03093247V013216}
 #'
 #' @examples
 #' set.seed(20250411)

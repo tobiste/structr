@@ -45,4 +45,8 @@ Geophys. J. Int., doi:\doi{10.1111/j.1365-246X.2007.03468.x}.
 }
 \seealso{
 \code{\link[=slip_inversion]{slip_inversion()}} for stress inversion of fault slip data.
+
+Other SH-from-tensor: 
+\code{\link{SH_from_tensor}()}
 }
+\concept{SH-from-tensor}

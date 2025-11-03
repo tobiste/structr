@@ -7,8 +7,8 @@
 vollmer_plot(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...)
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
-rows are the observations and the columns are the coordinates.}
+\item{x}{either an object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
+rows are the observations and the columns are the coordinates, or an \code{"ortensor"} object.}
 
 \item{labels}{character. text labels}
 
@@ -46,8 +46,16 @@ vollmer_plot(d, lab = "KENT", add = TRUE, col = "blue")
 title("Fabric plot of Vollmer (1990)")
 }
 \references{
-Vollmer, F. W. (1990). An application of eigenvalue methods to structural domain analysis. Geological Society of America Bulletin, 102, 786<U+2013>791.
+Vollmer, F. W. (1990). An application of eigenvalue methods to
+structural domain analysis. Geological Society of America Bulletin, 102, 786<U+2013>791.
 }
 \seealso{
-\code{\link[=woodcock_plot]{woodcock_plot()}}, \code{\link[=fabric_indexes]{fabric_indexes()}}
+\code{\link[=fabric_indexes]{fabric_indexes()}}
+
+Other fabric-plot: 
+\code{\link{flinn_plot}()},
+\code{\link{hsu_fabric_plot}()},
+\code{\link{hsu_plot}()},
+\code{\link{woodcock_plot}()}
 }
+\concept{fabric-plot}

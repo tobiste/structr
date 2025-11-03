@@ -17,4 +17,17 @@ data('gray_example')
 data("gray_example")
 head(gray_example)
 }
+\seealso{
+Other datasets: 
+\code{\link{angelier1990}},
+\code{\link{example_lines}},
+\code{\link{example_lines_df}},
+\code{\link{example_planes}},
+\code{\link{example_planes_df}},
+\code{\link{holst}},
+\code{\link{ramsay}},
+\code{\link{shebandowan}},
+\code{\link{simongomez}}
+}
+\concept{datasets}
 \keyword{datasets}

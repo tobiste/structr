@@ -20,6 +20,19 @@ head(angelier1990)
 \references{
 Angelier, J. (1990). Inversion of field data in fault tectonics to obtain the
 regional stress-III. A new rapid direct inversion method by analytical means.
-Geophysical Journal International, 103(2), 363–376. https://doi.org/10.1111/j.1365-246X.1990.tb01777.x
+Geophysical Journal International, 103(2), 363–376. \doi{10.1111/j.1365-246X.1990.tb01777.x}
 }
+\seealso{
+Other datasets: 
+\code{\link{example_lines}},
+\code{\link{example_lines_df}},
+\code{\link{example_planes}},
+\code{\link{example_planes_df}},
+\code{\link{gray_example}},
+\code{\link{holst}},
+\code{\link{ramsay}},
+\code{\link{shebandowan}},
+\code{\link{simongomez}}
+}
+\concept{datasets}
 \keyword{datasets}

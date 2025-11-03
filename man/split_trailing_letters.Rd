@@ -19,3 +19,12 @@ Parse measurement and direction strings
 test <- c("45NW", "4SE")
 split_trailing_letters(test)
 }
+\seealso{
+Other parse-orientations: 
+\code{\link{Fault_from_rake_quadrant}()},
+\code{\link{azimuth_to_cardinal}()},
+\code{\link{quadrant2dd}()},
+\code{\link{sense_from_strikeslip}()},
+\code{\link{strikeslip_kinematics}()}
+}
+\concept{parse-orientations}

@@ -46,7 +46,7 @@ geodesic_mean(example_planes)
 \references{
 Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis
 for three-dimensional orientational data. Journal of Structural Geology,
-96, 65–89. https://doi.org/10.1016/j.jsg.2017.01.002
+96, 65–89. \doi{10.1016/j.jsg.2017.01.002}
 }
 \seealso{
 \code{\link[=geodesic_var]{geodesic_var()}} for Fréchet variance, \code{\link[=sph_mean]{sph_mean()}} for the arithmetic mean, \code{\link[=projected_mean]{projected_mean()}} for projected mean

@@ -3,19 +3,49 @@
 \name{strain_shape}
 \alias{strain_shape}
 \alias{principal_stretch}
+\alias{principal_stretch.Vec3}
+\alias{principal_stretch.Line}
+\alias{principal_stretch.Ray}
+\alias{principal_stretch.Plane}
+\alias{principal_stretch.ortensor}
+\alias{principal_stretch.ellipsoid}
 \alias{principal_strain}
-\alias{or_shape_params}
+\alias{shape_params}
+\alias{shape_params.spherical}
+\alias{shape_params.ortensor}
+\alias{shape_params.ellipsoid}
 \title{Principal Stretches, Strain and Shape Parameters based on the Orientation Tensor.}
 \usage{
-principal_stretch(x)
+principal_stretch(x, ...)
+
+\method{principal_stretch}{Vec3}(x, ...)
+
+\method{principal_stretch}{Line}(x, ...)
+
+\method{principal_stretch}{Ray}(x, ...)
+
+\method{principal_stretch}{Plane}(x, ...)
+
+\method{principal_stretch}{ortensor}(x)
+
+\method{principal_stretch}{ellipsoid}(x)
 
 principal_strain(x)
 
-or_shape_params(x)
+shape_params(x, ...)
+
+\method{shape_params}{spherical}(x, ...)
+
+\method{shape_params}{ortensor}(x)
+
+\method{shape_params}{ellipsoid}(x)
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
-rows are the observations and the columns are the coordinates.}
+\item{x}{object of class \code{"ortensor"}, \code{"ellipsoid"}, or
+\code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the rows are the
+observations and the columns are the coordinates.}
+
+\item{...}{optional parameters passed to \code{\link[=ortensor]{ortensor()}}}
 }
 \value{
 list
@@ -46,7 +76,7 @@ mu <- Line(120, 50)
 x <- rvmf(100, mu = mu, k = 20)
 principal_stretch(x)
 principal_strain(x)
-or_shape_params(x)
+shape_params(x)
 }
 \references{
 Flinn, Derek.(1963): "On the statistical analysis of fabric diagrams." Geological Journal 3.2: 247-253.
@@ -75,9 +105,14 @@ Watterson, Juan. (1968): "Homogeneous deformation of the gneisses of Vesterland,
 Woodcock, N. H.  (1977): "Specification of fabric shapes using an eigenvalue method." Geological Society of America Bulletin 88.9: 1231-1236.
 }
 \seealso{
-\code{\link[=ortensor]{ortensor()}}, \code{\link[=ot_eigen]{ot_eigen()}}, \code{\link[=fabric_indexes]{fabric_indexes()}}
+\code{\link[=fabric_indexes]{fabric_indexes()}}
 
 More details on shape parameters: \code{\link[=ell_lode]{ell_lode()}}, \code{\link[=ell_nadai]{ell_nadai()}},
 \code{\link[=ell_jelinek]{ell_jelinek()}}, \code{\link[=ell_flinn]{ell_flinn()}}. Details on eigenvectors from orientation
 tensors: \code{\link[=ot_eigen]{ot_eigen()}}.
+
+Other ortensor: 
+\code{\link{ortensor}()},
+\code{\link{ot_eigen}()}
 }
+\concept{ortensor}

@@ -18,7 +18,8 @@
 #'
 #' @references Ramsay (1976), Folding and Fracturing of Rocks, McGraw-Hill Book Company.
 #' 
-#' Ramsay, J. G., & Huber, M. I. (1983). The Techniques of Modern Structural Geology: Strain Analyses (Vol. 1). London: Academic Press.
+#' Ramsay, J. G., & Huber, M. I. (1983). The Techniques of Modern Structural 
+#' Geology: Strain Analyses (Vol. 1). London: Academic Press.
 #'
 #' @seealso [mean_strain_ellipse()]
 #'
@@ -103,7 +104,7 @@ mean_strain_ellipse_ramsay0 <- function(r, phi = NULL) {
 #'
 #' @references Shimamoto, T., Ikeda, Y., 1976. A simple algebraic method for
 #' strain estimation from ellipsoidal objects. Tectonophysics 36, 315–337.
-#' doi: 10.1016/0040-1951(76)90107-4
+#' \doi{10.1016/0040-1951(76)90107-4}
 #'
 #' @examples
 #' set.seed(20250411)
@@ -209,7 +210,7 @@ mean_strain_ellipse0 <- function(r, phi) {
 #' @references
 #' Vollmer, F.W., 2018. Automatic contouring of geological fabric and finite
 #' strain data on the unit hyperboloid. Computers & Geosciences,
-#' https://doi.org/10.1016/j.cageo.2018.03.006
+#' \doi{10.1016/j.cageo.2018.03.006}
 #'
 #' @export
 #'
@@ -779,14 +780,14 @@ vorticity_boot <- function(B, R = 100, probs = 0.975) {
 #' @references Jessup, Micah J., Richard D. Law, and Chiara Frassi.
 #' "The rigid grain net (RGN): an alternative method for estimating mean
 #' kinematic vorticity number (Wm)." Journal of Structural Geology 29.3 (2007):
-#' 411-421. doi: 10.1016/j.jsg.2006.11.003
+#' 411-421. \doi{10.1016/j.jsg.2006.11.003}
 #'
 #' Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
 #' Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
 #' vorticity control gold enrichment in Archean shear zones
 #' (Shebandowan Greenstone Belt, Superior Province, Canada).
 #' Journal of Structural Geology, 201, 105542.
-#' https://doi.org/10.1016/j.jsg.2025.105542
+#' \doi{10.1016/j.jsg.2025.105542}
 #'
 #' @export
 #'
@@ -882,17 +883,18 @@ RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.975, grid
 #' @references 
 #' Lode, W. (1926). Versuche über den Einfluß der mittleren Hauptspannung auf 
 #' das Fließen der Metalle Eisen. Kupfer und Nickel. Zeitschrift Für Physik, 
-#' 36(11–12), 913–939. https://doi.org/10.1007/BF01400222
+#' 36(11–12), 913–939. \doi{10.1007/BF01400222}
 #' 
 #' Nádai, A. (1950). Theory of flow and fracture of solids. McGraw-Hill.
 #' 
 #' Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial strain 
-#' paths. Journal of Strain Analysis, 1(3), 216–222. https://doi.org/10.1243/03093247V013216
+#' paths. Journal of Strain Analysis, 1(3), 216–222. \doi{10.1243/03093247V013216}
 #' 
 #' Hossack, J. R. (1968). Pebble deformation and thrusting in the Bygdin area 
-#' (Southern Norway). Tectonophysics, 5(4), 315–339. https://doi.org/10.1016/0040-1951(68)90035-8
+#' (Southern Norway). Tectonophysics, 5(4), 315–339. \doi{10.1016/0040-1951(68)90035-8}
 #' 
 #' @export
+#' @family fabric-plot
 #'
 #' @examples
 #' R_XY <- holst[, "R_XY"]
@@ -993,8 +995,10 @@ hsu_plot <- function(R_XY, R_YZ, main = "Hsu diagram", es.max = NULL, ...) {
 #' @returns plot and when stored as an object, the multiplication factors for X, Y and Z.
 #' @export
 #' 
+#' @family fabric-plot
+#' 
 #' @references Flinn, D. (1965). On the Symmetry Principle and the Deformation 
-#' Ellipsoid. Geological Magazine, 102(1), 36–45. https://doi.org/10.1017/S0016756800053851
+#' Ellipsoid. Geological Magazine, 102(1), 36–45. \doi{10.1017/S0016756800053851}
 #'
 #' @examples
 #' data(holst)

@@ -33,13 +33,21 @@ hsu_plot(R_XY, R_YZ, col = "#B63679", pch = 16)
 \references{
 Lode, W. (1926). Versuche über den Einfluß der mittleren Hauptspannung auf
 das Fließen der Metalle Eisen. Kupfer und Nickel. Zeitschrift Für Physik,
-36(11–12), 913–939. https://doi.org/10.1007/BF01400222
+36(11–12), 913–939. \doi{10.1007/BF01400222}
 
 Nádai, A. (1950). Theory of flow and fracture of solids. McGraw-Hill.
 
 Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial strain
-paths. Journal of Strain Analysis, 1(3), 216–222. https://doi.org/10.1243/03093247V013216
+paths. Journal of Strain Analysis, 1(3), 216–222. \doi{10.1243/03093247V013216}
 
 Hossack, J. R. (1968). Pebble deformation and thrusting in the Bygdin area
-(Southern Norway). Tectonophysics, 5(4), 315–339. https://doi.org/10.1016/0040-1951(68)90035-8
+(Southern Norway). Tectonophysics, 5(4), 315–339. \doi{10.1016/0040-1951(68)90035-8}
 }
+\seealso{
+Other fabric-plot: 
+\code{\link{flinn_plot}()},
+\code{\link{hsu_fabric_plot}()},
+\code{\link{vollmer_plot}()},
+\code{\link{woodcock_plot}()}
+}
+\concept{fabric-plot}

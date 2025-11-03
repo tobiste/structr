@@ -56,12 +56,12 @@ RGN_plot(shebandowan$r, shebandowan$phi, col = "darkred")
 Jessup, Micah J., Richard D. Law, and Chiara Frassi.
 "The rigid grain net (RGN): an alternative method for estimating mean
 kinematic vorticity number (Wm)." Journal of Structural Geology 29.3 (2007):
-411-421. doi: 10.1016/j.jsg.2006.11.003
+411-421. \doi{10.1016/j.jsg.2006.11.003}
 
 Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
 Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
 vorticity control gold enrichment in Archean shear zones
 (Shebandowan Greenstone Belt, Superior Province, Canada).
 Journal of Structural Geology, 201, 105542.
-https://doi.org/10.1016/j.jsg.2025.105542
+\doi{10.1016/j.jsg.2025.105542}
 }
