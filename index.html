@@ -128,23 +128,34 @@
 <div class="section level3">
 <h3 id="density">Density<a class="anchor" aria-label="anchor" href="#density"></a>
 </h3>
-<p>Density shown by contour lines and filled contours:</p>
+<p>Density shown by contour lines…</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/stereo_contour.html">contour</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">example_planes</span>, col <span class="op">=</span> <span class="st">"grey"</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Planes"</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu"><a href="reference/stereo_contour.html">contour</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">example_lines</span>, col <span class="op">=</span> <span class="st">"grey"</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Lines"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-stereo_density_lines-1.png" width="100%"></p>
+<p>or as filled contours:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/stereo_contour.html">image</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">example_planes</span>, col <span class="op">=</span> <span class="st">"grey"</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Planes"</span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu"><a href="reference/stereo_contour.html">image</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">example_lines</span>, col <span class="op">=</span> <span class="st">"grey"</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Lines"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-stereo_density-1.png" width="100%"></p>
+<p><img src="reference/figures/README-stereo_density_img-1.png" width="100%"></p>
 </div>
 <div class="section level3">
 <h3 id="spherical-statistics">Spherical statistics<a class="anchor" aria-label="anchor" href="#spherical-statistics"></a>
 </h3>
 <p>Calculation of arithmetic mean, geodesic mean, confidence cones and eigenvectors… and plotting them in the equal-area projection:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">planes_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/stats.html">sph_mean</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">)</span></span>
 <span><span class="va">planes_geomean</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/geodesic-mean.html">geodesic_mean</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">)</span></span>
 <span><span class="va">planes_eig</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/ot_eigen.html">ot_eigen</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">)</span><span class="op">$</span><span class="va">vectors</span></span>
@@ -187,23 +198,21 @@
 <h3 id="orientation-tensor-and-fabric-plots">Orientation tensor and fabric plots<a class="anchor" aria-label="anchor" href="#orientation-tensor-and-fabric-plots"></a>
 </h3>
 <p>The shape parameters of the orientation tensor of the above examples planes and lines can be visualized in two ways:</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span>, xpd <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/vollmer_plot.html">vollmer_plot</a></span><span class="op">(</span><span class="va">example_planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/vollmer_plot.html">vollmer_plot</a></span><span class="op">(</span><span class="va">example_lines</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span>, pch <span class="op">=</span> <span class="fl">16</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Fabric plot of Vollmer (1990)"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">example_planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-stereo_ortensor-1.png" width="100%"></p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">example_lines</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span>, pch <span class="op">=</span> <span class="fl">16</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">example_planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">example_lines</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span>, pch <span class="op">=</span> <span class="fl">16</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span></span>
 <span>  <span class="fl">2.5</span>, <span class="op">-</span><span class="fl">.25</span>,</span>
 <span>  xjust <span class="op">=</span> <span class="fl">.5</span>, horiz <span class="op">=</span> <span class="cn">TRUE</span>, xpd <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Planes"</span>, <span class="st">"Lines"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#000004"</span>, <span class="st">"#B63679FF"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-stereo_ortensor-2.png" width="100%"></p>
+<p><img src="reference/figures/README-stereo_ortensor-1.png" width="100%"></p>
 <div class="section level4">
 <h4 id="best-fit-great-and-small-circles-geodesic-regression">Best-fit great and small-circles (geodesic regression)<a class="anchor" aria-label="anchor" href="#best-fit-great-and-small-circles-geodesic-regression"></a>
 </h4>
@@ -349,7 +358,7 @@
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/Rphi_plot.html">Rphi_plot</a></span><span class="op">(</span>r <span class="op">=</span> <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, phi <span class="op">=</span> <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/Rphi_polar_plot.html">Rphi_polar_plot</a></span><span class="op">(</span><span class="va">ramsay</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>, proj <span class="op">=</span> <span class="st">"eqd"</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/Rphi_polar_plot.html">elliott_plot</a></span><span class="op">(</span><span class="va">ramsay</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>, proj <span class="op">=</span> <span class="st">"eqd"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-strain-1.png" width="100%"></p>
 </div>
 <div class="section level4">

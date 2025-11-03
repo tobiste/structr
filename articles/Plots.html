@@ -201,12 +201,10 @@ McGraw-Hill.&lt;/p&gt;"><sup>4</sup></a>
 diagram showing the shape of the orientation distribution (after Hsu,
 1965).</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Plots_files/figure-html/hsu-1.png" alt="Diagram showing eigen-vector analysis of some example data plotted in a Hsü plot" width="700"></p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">lines</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">lines</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Lines"</span>, <span class="st">"Planes"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679"</span>, <span class="st">"#000004"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="fl">1</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Plots_files/figure-html/hsu-2.png" alt="Diagram showing eigen-vector analysis of some example data plotted in a Hsü plot" width="700"></p>
+<p><img src="Plots_files/figure-html/hsu-1.png" alt="Diagram showing eigen-vector analysis of some example data plotted in a Hsü plot" width="700"></p>
 </div>
 </div>
 <div class="section level2">
@@ -218,7 +216,7 @@ of Geophysical Research, 54(11).&lt;/p&gt;"><sup>5</sup></a> and densities can b
 projection plot using the <code>contour</code> functions. Weighted
 densities can be controlled by the <code>weights</code> argument and are
 useful when the orientation measurements have different accuracies.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example_planes_df</span><span class="op">$</span><span class="va">quality</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">example_planes_df</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span>, <span class="fl">6</span>, <span class="va">example_planes_df</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span> <span class="co"># replacing NA values with 6</span></span>
 <span><span class="va">plane_weightings</span> <span class="op">&lt;-</span> <span class="fl">6</span> <span class="op">/</span> <span class="va">example_planes_df</span><span class="op">$</span><span class="va">quality</span></span>
 <span></span>
@@ -231,7 +229,7 @@ useful when the orientation measurements have different accuracies.</p>
 adds a density image (i.e. a dense grid of colored rectangles). See
 <code><a href="../reference/stereo_contour.html">?contour</a></code>, <code><a href="../reference/stereo_contour.html">?contourf</a></code>, and <code><a href="../reference/stereo_contour.html">?image</a></code>
 for more information.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"grey"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/stereo_contour.html">contourf</a></span><span class="op">(</span><span class="va">planes</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, density.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>weights <span class="op">=</span> <span class="va">plane_weightings</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -243,7 +241,7 @@ for more information.</p>
 <p>Let’s create a publication ready synoptical plot for the line and
 plane orientation data, showing the density distribution,
 eigenvectors/mean values, and fabric strength.</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Minimum eigenvector of plane's orientation tensor:</span></span>
 <span><span class="va">planes_eigen</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ot_eigen.html">ot_eigen</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span><span class="op">$</span><span class="va">vectors</span></span>
 <span><span class="va">planes_eigen3</span> <span class="op">&lt;-</span> <span class="va">planes_eigen</span><span class="op">[</span><span class="fl">3</span>, <span class="op">]</span></span>
@@ -256,7 +254,7 @@ eigenvectors/mean values, and fabric strength.</p>
 <span><span class="va">fabric_p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/strain_shape.html">shape_params</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span><span class="op">$</span><span class="va">Vollmer</span><span class="op">[</span><span class="st">"D"</span><span class="op">]</span></span>
 <span><span class="va">fabric_l</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/strain_shape.html">shape_params</a></span><span class="op">(</span><span class="va">lines</span><span class="op">)</span><span class="op">$</span><span class="va">Vollmer</span><span class="op">[</span><span class="st">"D"</span><span class="op">]</span></span></code></pre></div>
 <p>The final plot:</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># two plots side by side</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -305,7 +303,7 @@ J. Geophys. Res. 89 (B7), 5835-5848 (1984)&lt;/p&gt;"><sup>6</sup></a>. Fault
 striae are plotted as vectors on top of the lineation pointing in the
 movement direction of the hanging wall. Easy to read in case of
 homogeneous or small datasets.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Fault</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span> <span class="op">=</span> <span class="fl">120</span>, <span class="st">"b"</span> <span class="op">=</span> <span class="fl">125</span>, <span class="st">"c"</span> <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">62</span>, <span class="fl">50</span><span class="op">)</span>,</span>
@@ -327,7 +325,7 @@ homogeneous or small datasets.</p>
 fault striae are plotted as vectors on top of poles pointing in the
 movement direction of the hanging wall. Useful in case of large or
 heterogeneous datasets.</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Hoeppener plot"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/fault-plot.html">hoeppener</a></span><span class="op">(</span><span class="va">f</span>, col <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">magma</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>, end <span class="op">=</span> <span class="fl">.9</span><span class="op">)</span>, points <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Plots_files/figure-html/faults2-1.png" alt="Diagram showing example fault data plotted in an equal-area projection" width="700"></p>
