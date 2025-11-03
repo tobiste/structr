@@ -2,16 +2,26 @@
 % Please edit documentation in R/deftensor.R
 \name{defgrad}
 \alias{defgrad}
+\alias{is.defgrad}
+\alias{as.defgrad}
 \alias{defgrad_from_ratio}
-\alias{defgrad_from_pair}
+\alias{defgrad.Pair}
 \alias{defgrad_from_vectors}
 \alias{defgrad_from_axisangle}
 \alias{defgrad_from_comp}
+\alias{defgrad.default}
+\alias{defgrad.velgrad}
 \title{Deformation Gradient Tensor}
 \usage{
+is.defgrad(x)
+
+as.defgrad(object)
+
+defgrad(x, ...)
+
 defgrad_from_ratio(Rxy = 1, Ryz = 1)
 
-defgrad_from_pair(p)
+\method{defgrad}{Pair}(x)
 
 defgrad_from_vectors(v1, v2)
 
@@ -28,14 +38,20 @@ defgrad_from_comp(
   zy = 0,
   zz = 1
 )
+
+\method{defgrad}{default}(x)
+
+\method{defgrad}{velgrad}(x, time, steps)
 }
 \arguments{
+\item{x}{object of class \code{"Pair"}, \code{"velgrad"} or 3x3 \code{"matrix"}}
+
+\item{object}{3x3 \code{"matrix"}}
+
 \item{Rxy, Ryz}{numeric. the XY and YZ strain ratio to create a strain tensor
 with axial stretches.Values must be greater than or equal to 1.}
 
-\item{p}{object of class \code{"Pair"}}
-
-\item{v1, v2}{spherical objects or three-element vector.
+\item{v1, v2}{spherical objects.
 Deformation gradient results from the rotation around axis perpendicular to
 both vectors to rotate \code{v1} to \code{v2}.}
 
@@ -45,6 +61,10 @@ degrees when axis is a object of class \code{"Line"}, \code{"Ray"}, or \code{"Pl
 
 \item{xx, xy, xz, yx, yy, yz, zx, zy, zz}{numeric. Directly specify components of
 the tensor. Identity matrix by default.}
+
+\item{time}{numeric. Total time (default is 1)}
+
+\item{steps}{numeric. Time increments (default is 1)}
 }
 \value{
 3x3 matrix.
@@ -56,5 +76,5 @@ Deformation Gradient Tensor
 defgrad_from_ratio(2, 3)
 defgrad_from_axisangle(Line(120, 50), 60)
 defgrad_from_vectors(Line(120, 50), Line(270, 80))
-defgrad_from_pair(Pair(40, 20, 75, 16))
+defgrad(Pair(40, 20, 75, 16))
 }

@@ -131,7 +131,7 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 ```
 
 ### Hsu plot
-`hsu_fabric_plot()` creates a Lode parameter[^lode] vs. natural octahedral strain[^nadai] diagram showing the shape of the orientation distribution (after Hsu, 1965).
+`hsu_plot()` creates a Lode parameter[^lode] vs. natural octahedral strain[^nadai] diagram showing the shape of the orientation distribution (after Hsu, 1965).
 
 [^nadai]: Nádai, A. (1950). Theory of flow and fracture of solids.
     McGraw-Hill.
@@ -146,8 +146,8 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 #|   Diagram showing eigen-vector analysis of some example data plotted in a
 #|   Hsü plot
 
-hsu_fabric_plot(planes, col = "#000004", pch = 1, cex = 2)
-hsu_fabric_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
+hsu_plot(planes, col = "#000004", pch = 1, cex = 2)
+hsu_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```
 

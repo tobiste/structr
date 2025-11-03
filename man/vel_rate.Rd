@@ -21,7 +21,10 @@ Rate and spin of velocity gradient tensor
 }
 \examples{
 R <- defgrad_from_comp(xx = 2, xy = 1, zz = 0.5)
-L <- velgrad_from_defgrad(R, time = 10)
+L <- velgrad(R, time = 10)
 velgrad_rate(L)
 velgrad_spin(L)
+}
+\seealso{
+\code{\link[=velgrad]{velgrad()}}
 }

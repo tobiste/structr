@@ -26,9 +26,9 @@ principal_stretch(x, ...)
 
 \method{principal_stretch}{Plane}(x, ...)
 
-\method{principal_stretch}{ortensor}(x)
+\method{principal_stretch}{ortensor}(x, ...)
 
-\method{principal_stretch}{ellipsoid}(x)
+\method{principal_stretch}{ellipsoid}(x, ...)
 
 principal_strain(x)
 

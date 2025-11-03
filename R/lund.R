@@ -138,9 +138,9 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 0.005) 
 #' @references Lund and Townend, (2007). Calculating horizontal stress
 #' orientations with full or partial knowledge of the tectonic stress tensor,
 #' Geophys. J. Int., doi:\doi{10.1111/j.1365-246X.2007.03468.x}.
-#' 
+#'
 #' @family SH-from-tensor
-# #' @seealso [SH()] when only principal axes and their relative magnitudes are known; 
+# #' @seealso [SH()] when only principal axes and their relative magnitudes are known;
 #' @seealso [slip_inversion()] for stress inversion of fault slip data.
 #'
 #' @examples

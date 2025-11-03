@@ -98,7 +98,7 @@ can be visualized, namely the Angelier and the Hoeppener plot.
 
 ```{r faults_plotting}
 #| fig.alt: >
-#|   Diagram showing some fault data in equa-area projection using the Angelier 
+#|   Diagram showing some fault data in equa-area projection using the Angelier
 #|   and Hoeppener representation of fault-slip
 # simongomez is a example fault dataset:
 

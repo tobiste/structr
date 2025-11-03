@@ -41,7 +41,6 @@ Woodcock, N. H. (1977). Specification of fabric shapes using an eigenvalue metho
 
 Other fabric-plot: 
 \code{\link{flinn_plot}()},
-\code{\link{hsu_fabric_plot}()},
 \code{\link{hsu_plot}()},
 \code{\link{vollmer_plot}()}
 }

@@ -2,8 +2,8 @@
 #'
 #' @param Rxy,Ryz numeric. the XY and YZ strain ratio to create a strain tensor
 #' with axial stretches.Values must be greater than or equal to 1.
-#' @param p object of class `"Pair"`
-#' @param v1,v2 spherical objects or three-element vector.
+#' @param x object of class `"Pair"`, `"velgrad"` or 3x3 `"matrix"`
+#' @param v1,v2 spherical objects.
 #' Deformation gradient results from the rotation around axis perpendicular to
 #' both vectors to rotate `v1` to `v2`.
 #' @param axis,angle rotation axis and angle, axis can be an object of class `"Vec3"`,
@@ -11,6 +11,9 @@
 #' degrees when axis is a object of class `"Line"`, `"Ray"`, or `"Plane"`, and radians otherwise.
 #' @param xx,xy,xz,yx,yy,yz,zx,zy,zz numeric. Directly specify components of
 #' the tensor. Identity matrix by default.
+#' @param time numeric. Total time (default is 1)
+#' @param steps numeric. Time increments (default is 1)
+#' @param object 3x3 `"matrix"`
 #'
 #' @return 3x3 matrix.
 #' @name defgrad
@@ -19,8 +22,27 @@
 #' defgrad_from_ratio(2, 3)
 #' defgrad_from_axisangle(Line(120, 50), 60)
 #' defgrad_from_vectors(Line(120, 50), Line(270, 80))
-#' defgrad_from_pair(Pair(40, 20, 75, 16))
+#' defgrad(Pair(40, 20, 75, 16))
 NULL
+
+#' @rdname defgrad
+#' @export
+is.defgrad <- function(x) inherits(x, "defgrad")
+
+#' @rdname defgrad
+#' @export
+as.defgrad <- function(object) {
+  stopifnot(is.matrix(object))
+  structure(
+    object,
+    class = append(class(object), "defgrad"),
+    dimnames = list(rownames(object), colnames(object))
+  )
+}
+
+#' @rdname defgrad
+#' @export
+defgrad <- function(x, ...) UseMethod("defgrad")
 
 #' @rdname defgrad
 #' @export
@@ -28,24 +50,25 @@ defgrad_from_ratio <- function(Rxy = 1, Ryz = 1) {
   stopifnot(Rxy >= 1, Ryz >= 1)
   A <- diag(3)
   y <- (Ryz / Rxy)**(1 / 3)
-  A * c(y * Rxy, y, y / Ryz)
+  D <- A * c(y * Rxy, y, y / Ryz)
+  as.defgrad(D)
 }
 
 #' @rdname defgrad
 #' @export
-defgrad_from_pair <- function(p) {
-  stopifnot(is.Pair(p))
-  pl <- Line(p[, 3], p[, 4]) |> Vec3()
-  pp <- Plane(p[, 1], p[, 2]) |> Vec3()
+defgrad.Pair <- function(x) {
+  # stopifnot(is.Pair(p))
+  pl <- Line(x[, 3], x[, 4]) |> Vec3()
+  pp <- Plane(x[, 1], x[, 2]) |> Vec3()
 
   D <- rbind(
     pl,
     crossprod.Vec3(pp, pl),
     pp
-  ) |> 
+  ) |>
     unclass()
   rownames(D) <- colnames(D) <- NULL
-  t(D)
+  t(D) |> as.defgrad()
 }
 
 # defgrad_from_pairs <- function(p1, p2, symmetry = FALSE) {
@@ -105,7 +128,8 @@ defgrad_from_axisangle <- function(axis, angle) {
     c(x * xc + c, xyc - zs, zxc + ys),
     c(xyc + zs, y * yc + c, yzc - xs),
     c(zxc - ys, yzc + xs, z * zc + c)
-  )
+  ) |> 
+    as.defgrad()
 }
 
 #' @rdname defgrad
@@ -116,7 +140,32 @@ defgrad_from_comp <- function(xx = 1, xy = 0, xz = 0, yx = 0, yy = 1, yz = 0,
     c(xx, xy, xz),
     c(yx, yy, yz),
     c(zx, zy, zz)
-  )
+  ) |> as.defgrad()
+}
+
+#' @rdname defgrad
+#' @export
+defgrad.default <- function(x) {
+  as.defgrad(x)
+}
+
+#' @rdname defgrad
+#' @export
+defgrad.velgrad <- function(x, time, steps) {
+  if (steps > 1) {
+    R <- list()
+    t <- seq(0, time, steps)
+    for (i in t) {
+      Ri <- as.defgrad(expm::expm(x * i))
+      Ri <- list(Ri)
+      names(Ri) <- i
+      R <- append(R, Ri)
+    }
+  } else {
+    R <- as.defgrad(expm::expm(x * time))
+  }
+  
+  return(R)
 }
 
 
@@ -127,10 +176,9 @@ defgrad_from_comp <- function(xx = 1, xy = 0, xz = 0, yx = 0, yy = 1, yz = 0,
 #' deformation gradient tensor divided by given time, and
 #' the deformation gradient tensor accumulated after some time.
 #'
-#' @param R 3x3 matrix. Deformation gradient tensor.
-#' @param V 3x3 matrix. Velocity gradient tensor.
+#' @param x 3x3 matrix. Deformation gradient tensor.
+#' @param object 3x3 `"matrix"`
 #' @param time numeric. Total time (default is 1)
-#' @param steps numeric. Time increments (default is 1)
 #'
 #' @name gradient
 #'
@@ -141,36 +189,47 @@ defgrad_from_comp <- function(xx = 1, xy = 0, xz = 0, yx = 0, yy = 1, yz = 0,
 #'
 #' @examples
 #' D <- defgrad_from_comp(xx = 2, xy = 1, zz = 0.5)
-#' L <- velgrad_from_defgrad(D, time = 10)
+#' L <- velgrad(D, time = 10)
 #' print(L)
-#' 
-#' defgrad_from_velgrad(L, time = 10, steps = 2)
+#'
+#' defgrad(L, time = 10, steps = 2)
 NULL
 
 #' @rdname gradient
 #' @export
-velgrad_from_defgrad <- function(R, time = 1) {
-  # L = pracma::logm(R) / time
-  expm::logm(R) / time
-}
+is.velgrad <- function(x) inherits(x, "velgrad")
 
 #' @rdname gradient
 #' @export
-defgrad_from_velgrad <- function(V, time = 1, steps = 1) {
-  if (steps > 1) {
-    R <- list()
-    t <- seq(0, time, steps)
-    for (i in t) {
-      Ri <- structure(expm::expm(V * i), class = "defgrad")
-      Ri <- list(Ri)
-      names(Ri) <- i
-      R <- append(R, Ri)
-    }
-  } else {
-    R <- structure(expm::expm(V * time), class = "defgrad")
-  }
-  R
+as.velgrad <- function(object) {
+  stopifnot(is.matrix(object))
+  structure(
+    object,
+    class = append(class(object), "velgrad"),
+    dimnames = list(rownames(object), colnames(object))
+  )
 }
+
+
+#' @rdname gradient
+#' @export
+velgrad <- function(x, ...) UseMethod('velgrad')
+
+#' @rdname gradient
+#' @export
+velgrad.default <- function(x, ...) {
+  as.velgrad(x)
+}
+
+
+#' @rdname gradient
+#' @export
+velgrad.defgrad <- function(x, time = 1) {
+  # L = pracma::logm(R) / time
+  L <- expm::logm(x) / time
+  as.velgrad(L)
+}
+
 
 
 #' Rate and spin of velocity gradient tensor
@@ -180,10 +239,11 @@ defgrad_from_velgrad <- function(V, time = 1, steps = 1) {
 #' @return 3x3 matrix
 #'
 #' @name vel_rate
+#' @seealso [velgrad()]
 #'
 #' @examples
 #' R <- defgrad_from_comp(xx = 2, xy = 1, zz = 0.5)
-#' L <- velgrad_from_defgrad(R, time = 10)
+#' L <- velgrad(R, time = 10)
 #' velgrad_rate(L)
 #' velgrad_spin(L)
 NULL

@@ -39,7 +39,7 @@ fabric_indexes <- function(x) {
 #' for the P, G, and G axes. Constant grid spacing when only one integer is given.
 #' `NULL` when no grid.
 #'
-#' @references Vollmer, F. W. (1990). An application of eigenvalue methods to 
+#' @references Vollmer, F. W. (1990). An application of eigenvalue methods to
 #' structural domain analysis. Geological Society of America Bulletin, 102, 786<U+2013>791.
 #'
 #' @seealso [fabric_indexes()]
@@ -159,7 +159,7 @@ vollmer_plot <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...)
 #'
 #' @seealso [fabric_indexes()], [ot_eigen()]
 #' @family fabric-plot
-#' 
+#'
 #' @return A plot and when stored as an object, the orientation tensor's
 #' eigenvalues and eigenvectors as a list.
 #'
@@ -219,29 +219,59 @@ woodcock_plot <- function(x, labels = NULL, add = FALSE, max = 7, ...) {
 
 #' Fabric plot of Hsu (1965)
 #'
-#' @inheritParams principal_stretch
-#' @inheritParams hsu_plot
-#' @param ... optional parameters passed to [hsu_plot()]
+#' 3D strain diagram using the Hsu (1965) method to display the natural
+#' octahedral strain (Nádai, 1950) and Lode's parameter (Lode, 1926).
+#'
+#' @param x accepts the following objects: a two-column matrix where first column is the ratio of maximum strain and
+#' intermediate strain (X/Y) and second column is the the ratio of intermediate strain and minimum strain (Y/Z);
+#' objects of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`; or `"ortensor"` objects.
+#' @inheritParams Rphi_plot
+#' @param labels character. text labels
+#' @param add logical. Should data be plotted to an existing plot?
+#' @param ... plotting arguments passed to [graphics::points()]
+#' @param es.max maximum strain for scaling.
 #'
 #' @returns plot and when stored as object, a list containing the Lode parameter `lode` and the natural octahedral strain `es`.
 #' @family fabric-plot
 #' @seealso [ell_lode()] for Lode parameter, and [ell_nadai] for natural octahedral strain.
-#' @export
-#' 
-#' @references Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial 
-#' strain paths. Journal of Strain Analysis, 1(3), 216–222. 
-#' \doi{10.1243/03093247V013216}
+#'
+#' @name hsu_plot
+#'
+#' @references
+#' Lode, W. (1926). Versuche über den Einfluß der mittleren Hauptspannung auf
+#' das Fließen der Metalle Eisen. Kupfer und Nickel. Zeitschrift Für Physik,
+#' 36(11–12), 913–939. \doi{10.1007/BF01400222}
+#'
+#' Nádai, A. (1950). Theory of flow and fracture of solids. McGraw-Hill.
+#'
+#' Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial strain
+#' paths. Journal of Strain Analysis, 1(3), 216–222. \doi{10.1243/03093247V013216}
+#'
+#' Hossack, J. R. (1968). Pebble deformation and thrusting in the Bygdin area
+#' (Southern Norway). Tectonophysics, 5(4), 315–339. \doi{10.1016/0040-1951(68)90035-8}
 #'
 #' @examples
+#' R_XY <- holst[, "R_XY"]
+#' R_YZ <- holst[, "R_YZ"]
+#' hsu_plot(cbind(R_XY, R_YZ), col = "#B63679", pch = 16, type = "b")
+#'
 #' set.seed(20250411)
 #' mu <- Line(120, 50)
 #' x <- rvmf(100, mu = mu, k = 1)
-#' hsu_fabric_plot(x, labels = "x")
+#' hsu_plot(x, labels = "x")
 #'
 #' set.seed(20250411)
 #' y <- rvmf(100, mu = mu, k = 20)
-#' hsu_fabric_plot(y, labels = "y", col = "red", add = TRUE)
-hsu_fabric_plot <- function(x, labels = NULL, add = FALSE, es.max = 3, ...) {
+#' hsu_plot(ortensor(y), labels = "y", col = "red", add = TRUE)
+NULL
+
+#' @rdname hsu_plot
+#' @export
+hsu_plot <- function(x, ...) UseMethod("hsu_plot")
+
+#' @rdname hsu_plot
+#' @export
+hsu_plot.ortensor <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...) {
   x_eigen <- principal_stretch(x)
 
   # X <- x_eigen$values[1]
@@ -264,7 +294,7 @@ hsu_fabric_plot <- function(x, labels = NULL, add = FALSE, es.max = 3, ...) {
   lode <- ell_lode(x_eigen)
 
   if (!add) {
-    hsu_plot(0, 0, es.max = es.max)
+    hsu_plot.default(cbind(0, 0), es.max = es.max)
   }
 
   # Map Lode parameter (-1..1) to angle in radians (-30°..+30° around vertical)
@@ -284,4 +314,242 @@ hsu_fabric_plot <- function(x, labels = NULL, add = FALSE, es.max = 3, ...) {
   }
 
   invisible(list(lode = lode, es = es))
+}
+
+#' @rdname hsu_plot
+#' @export
+hsu_plot.spherical <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...) {
+  ortensor(x) |>
+    hsu_plot.ortensor()
+}
+
+#' @rdname hsu_plot
+#' @export
+hsu_plot.default <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...) {
+  R_XY <- x[, 1]
+  R_YZ <- x[, 2]
+
+  R_XZ <- R_XY * R_YZ
+  R <- es <- 1 / sqrt(3) * sqrt(log(R_XY)^2 + log(R_YZ)^2 + log(1 / R_XZ)^2) # Nadai, 1963
+
+  K <- log(R_XY) / log(R_YZ) # Hossack 1968
+  lode <- (1 - K) / (1 + K)
+
+  # Set plot limits
+
+  rmax <- if (is.null(es.max)) max(R) * 1.1 else es.max
+  rseq <- pretty(c(0, rmax))
+  rmax2 <- max(rseq)
+
+  if (!add) {
+    plot(0, 0,
+      type = "n", asp = 1,
+      xlim = c(-1, 1) * rmax2 * cos(pi / 2 + pi / 6),
+      ylim = c(0, rmax2 * 1.1),
+      axes = FALSE, xlab = "", ylab = "", main = main
+    )
+
+    # Draw wedge boundaries (±30°)
+    graphics::segments(0, 0, rmax2 * cos(pi / 2 + pi / 6), rmax2 * sin(pi / 2 + pi / 6),
+      lty = 1, col = "black"
+    )
+    graphics::segments(0, 0, rmax2 * cos(pi / 2 - pi / 6), rmax2 * sin(pi / 2 - pi / 6),
+      lty = 1, col = "black"
+    )
+
+
+    graphics::segments(0, 0, rmax2 * cos(pi / 2 - pi / 6 / 2), rmax2 * sin(pi / 2 - pi / 6 / 2),
+      lty = 1, col = "lightgray"
+    )
+
+    graphics::segments(0, 0, rmax2 * cos(pi / 2 + pi / 6 / 2), rmax2 * sin(pi / 2 + pi / 6 / 2),
+      lty = 1, col = "lightgray"
+    )
+
+    # Draw vertical plane strain line
+    graphics::segments(0, 0, 0, rmax2, lty = 1, col = "lightgray")
+
+
+    # Draw cropped concentric arcs (strain magnitude ticks)
+    arc_theta <- seq(pi / 2 - pi / 6, pi / 2 + pi / 6, length.out = 200)
+    for (rr in rseq) {
+      col_grd <- if (rr == rmax2) "black" else "lightgray"
+      lwd_grd <- if (rr == rmax2) 1 else 0.5
+
+      graphics::lines(rr * cos(arc_theta), rr * sin(arc_theta), col = col_grd, lwd = lwd_grd)
+      # text(rr, 0, labels = format(rr, digits = 2), pos = 4, col = "grey40", cex = 0.8)
+    }
+
+    # Lode parameters labels
+    for (rr in rseq[-1]) {
+      graphics::text(cos(pi / 2 - pi / 6 * 1.05) * rr, sin(pi / 2 - pi / 6 * 1.05) * rr, rr, adj = 1)
+    }
+
+    # Strain magnitude labels
+    for (vr in seq(-1, 1, by = 0.5)) {
+      graphics::text(rmax2 * cos(pi / 2 + pi / 6 * vr) * 1.05, rmax2 * sin(pi / 2 - pi / 6 * vr) * 1.05, vr, adj = 0.5)
+    }
+
+
+    graphics::text(0, rmax2 * 1.1, expression(bold(nu)), adj = 0.5, col = "black", font = 2)
+    graphics::text(rmax2 * cos(pi / 2 - pi / 6 * 1.3) / 2, rmax2 * sin(pi / 2 - pi / 6 * 1.3) / 2, expression(bold(bar(epsilon[s]))), adj = .5, col = "black", font = 2)
+
+    # Labels
+    graphics::text(0, rmax2 * 0.8, "Plane strain", adj = 0.5, col = "grey70", srt = 90)
+    graphics::text(rmax2 * cos(pi / 2 + pi / 6 * 0.9) * 0.8, rmax2 * sin(pi / 2 + pi / 6 * 0.9) * 0.8, "Flattening", adj = 0.5, col = "grey70", srt = 60)
+    graphics::text(rmax2 * cos(pi / 2 - pi / 6 * 0.9) * 0.8, rmax2 * sin(pi / 2 - pi / 6 * 0.9) * 0.8, "Constriction", adj = 0.5, col = "grey70", srt = -60)
+  }
+
+  # Data points
+
+  # Map Lode parameter (-1..1) to angle in radians (-30°..+30° around vertical)
+  theta <- lode * (pi / 6) # -1 -> -30°, 0 -> 0° (vertical), +1 -> +30°
+
+  # Shift so plane strain = vertical (pi/2)
+  theta_shift <- theta + pi / 2
+
+  # Cartesian coordinates
+  x <- R * cos(theta_shift)
+  y <- R * sin(theta_shift)
+  graphics::points(x, y, ...)
+
+  invisible(list(lode = lode, es = R))
+}
+
+#' Flinn diagram
+#'
+#' @inheritParams hsu_plot
+#' @param R.max numeric. Maximum aspect ratio for scaling.
+#' @param log logical. Whether the axes should be in logarithmic scale.
+#'
+#' @returns plot and when stored as an object, the multiplication factors for X, Y and Z.
+#'
+#' @family fabric-plot
+#' @name flinn_plot
+#'
+#' @references Flinn, D. (1965). On the Symmetry Principle and the Deformation
+#' Ellipsoid. Geological Magazine, 102(1), 36–45. \doi{10.1017/S0016756800053851}
+#'
+#' @examples
+#' data(holst)
+#' R_XY <- holst[, "R_XY"]
+#' R_YZ <- holst[, "R_YZ"]
+#' flinn_plot(cbind(R_XY, R_YZ), log = FALSE, col = "#B63679", pch = 16)
+#' flinn_plot(cbind(R_XY, R_YZ), log = TRUE, col = "#B63679", pch = 16, type = 'b')
+#'
+#' set.seed(20250411)
+#' mu <- Line(120, 50)
+#' x <- rvmf(100, mu = mu, k = 1)
+#' flinn_plot(x, R.max = 2)
+#'
+#' set.seed(20250411)
+#' y <- rvmf(100, mu = mu, k = 20)
+#' flinn_plot(ortensor(y), col = "red", R.max = 2, add = TRUE)
+NULL
+
+#' @rdname flinn_plot
+#' @export
+flinn_plot <- function(x, main = "Flinn diagram", R.max = NULL, log = FALSE, add = FALSE,  ...) UseMethod("flinn_plot")
+
+#' @rdname flinn_plot
+#' @export
+flinn_plot.default <- function(x, main = "Flinn diagram", R.max = NULL, log = FALSE, add = FALSE,  ...) {
+  R_XY <- x[, 1]
+  R_YZ <- x[, 2]
+
+  if (log) {
+    xlab <- "ln(Y/Z)"
+    ylab <- "ln(X/Y)"
+    R_XY <- log(R_XY)
+    R_YZ <- log(R_YZ)
+    R.min <- 0
+  } else {
+    xlab <- "Y/Z"
+    ylab <- "X/Y"
+    R.min <- 1
+  }
+
+  if (is.null(R.max)) {
+    R.max <- max(c(R_XY, R_YZ)) * 1.05
+  }
+
+  if (isFALSE(add)) {
+    plot(R.min, R.min,
+      type = "n",
+      asp = 1,
+      xlim = c(R.min, R.max),
+      ylim = c(R.min, R.max),
+      # log = log,
+      axes = FALSE,
+      xaxs = "i", yaxs = "i",
+      xlab = xlab,
+      ylab = ylab,
+      main = main
+    )
+
+    graphics::abline(0, b = 1, col = "grey30", lwd = .75)
+
+    rbreaks <- pretty(c(R.min, R.max))
+
+
+    for (i in c(.2, .5, 2, 5)) {
+      graphics::abline(a = 0, b = i, col = "lightgray", lwd = .5, lty = 2)
+    }
+
+
+    if (log) {
+      arc_theta <- seq(0, pi / 2, length.out = 200)
+      for (rr in rbreaks) {
+        graphics::lines(rr * cos(arc_theta), rr * sin(arc_theta), col = "lightgray", lwd = .5, lty = 2)
+      }
+    } else {
+      for (rr in rbreaks) {
+        # graphics::abline(a = rr, b = -1, col = "grey80", lwd = .5, lty = 2)
+        graphics::lines(c(rr, R.min), c(R.min, rr), col = "lightgray", lwd = .5, lty = 2)
+      }
+    }
+
+    graphics::axis(side = 1, at = rbreaks, labels = rbreaks)
+    graphics::axis(side = 2, at = rbreaks, labels = rbreaks)
+
+    graphics::text(R.max / 2, R.max / 2, "Plane strain", adj = 0.5, col = "grey70", srt = 45)
+    graphics::text(R.max * .75, R.max * .25, "Flattening", adj = 0.5, col = "grey70")
+    graphics::text(R.max * .25, R.max * .75, "Constriction", adj = 0.5, col = "grey70")
+  }
+
+  graphics::points(R_YZ, R_XY, ...)
+ 
+  invisible(
+    list(
+      X = R_XY * R_YZ,
+      Y = R_YZ,
+      Z = 1
+    )
+  )
+}
+
+#' @rdname flinn_plot
+#' @export
+flinn_plot.ortensor <- function(x, ...) {
+  x.stretch <- principal_stretch(x)
+
+  a <- sort(x.stretch, TRUE) |> unname()
+
+  R_xy <- a[1] / a[2]
+  R_yz <- a[2] / a[3]
+
+  flinn_plot.default(cbind(R_xy, R_yz), ...)
+}
+
+#' @rdname flinn_plot
+#' @export
+flinn_plot.ellipsoid <- function(x, ...) {
+  flinn_plot.ortensor(as.ortensor(x), ...)
+}
+
+
+#' @rdname flinn_plot
+#' @export
+flinn_plot.spherical <- function(x, ...) {
+  flinn_plot.ortensor(ortensor(x), ...)
 }

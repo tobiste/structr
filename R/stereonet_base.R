@@ -124,9 +124,9 @@ stereo_coords <- function(az, inc, upper.hem = FALSE, earea = TRUE, r = 1) {
 #' @param ... optional graphical parameters
 #' @note `"Plane"` and `"Fault"` objects will be displayed as pole to the plane (only).
 #' @importFrom graphics points text
-#' 
+#'
 #' @family stereo-plot
-#' 
+#'
 #' @export
 #' @examples
 #' stereoplot()
@@ -374,7 +374,7 @@ stereo_greatcircle <- function(x, ...) {
 #'
 #' @returns NULL
 #' @export
-#' 
+#'
 #' @family stereo-plot
 #'
 #' @seealso [slerp()], [stereo_greatcircle]
@@ -496,9 +496,9 @@ stereoplot_frame <- function(n = 512L, radius = 1, ...) {
 #' @param radius numeric. Radius of circle
 #'
 #' @source Adapted from the `RFOC` package
-#' 
+#'
 #' @family stereo-plot
-#' 
+#'
 #' @importFrom graphics points
 #' @export
 #' @examples
@@ -819,7 +819,7 @@ points.spherical <- function(x, upper.hem = FALSE, earea = TRUE, ...) {
 #' @param ... arguments passed to [graphics::lines()]
 #' @importFrom graphics lines
 #' @exportS3Method graphics::lines
-#' 
+#'
 #' @family stereo-plot
 #'
 #' @examples
@@ -837,7 +837,7 @@ lines.spherical <- function(x, ang = 90, ...) {
 #' @inheritParams plot.Vec3
 #' @inheritParams graphics::text
 #' @importFrom graphics text
-#' 
+#'
 #' @family stereo-plot
 #'
 #' @exportS3Method graphics::text

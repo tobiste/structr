@@ -10,7 +10,7 @@ ot_eigen(x, scaled = FALSE, ...)
 
 \method{ot_eigen}{spherical}(x, scaled = FALSE, ...)
 
-\method{ot_eigen}{ortensor}(x, scaled = FALSE)
+\method{ot_eigen}{ortensor}(x, scaled = FALSE, ...)
 }
 \arguments{
 \item{x}{either an object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the

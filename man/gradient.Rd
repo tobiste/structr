@@ -2,22 +2,29 @@
 % Please edit documentation in R/deftensor.R
 \name{gradient}
 \alias{gradient}
-\alias{velgrad_from_defgrad}
-\alias{defgrad_from_velgrad}
+\alias{is.velgrad}
+\alias{as.velgrad}
+\alias{velgrad}
+\alias{velgrad.default}
+\alias{velgrad.defgrad}
 \title{Velocity gradient and Deformation gradient tensors}
 \usage{
-velgrad_from_defgrad(R, time = 1)
+is.velgrad(x)
 
-defgrad_from_velgrad(V, time = 1, steps = 1)
+as.velgrad(object)
+
+velgrad(x, ...)
+
+\method{velgrad}{default}(x, ...)
+
+\method{velgrad}{defgrad}(x, time = 1)
 }
 \arguments{
-\item{R}{3x3 matrix. Deformation gradient tensor.}
+\item{x}{3x3 matrix. Deformation gradient tensor.}
+
+\item{object}{3x3 \code{"matrix"}}
 
 \item{time}{numeric. Total time (default is 1)}
-
-\item{V}{3x3 matrix. Velocity gradient tensor.}
-
-\item{steps}{numeric. Time increments (default is 1)}
 }
 \value{
 3x3 matrix. If steps is > 1, then a list
@@ -30,8 +37,8 @@ the deformation gradient tensor accumulated after some time.
 }
 \examples{
 D <- defgrad_from_comp(xx = 2, xy = 1, zz = 0.5)
-L <- velgrad_from_defgrad(D, time = 10)
+L <- velgrad(D, time = 10)
 print(L)
 
-defgrad_from_velgrad(L, time = 10, steps = 2)
+defgrad(L, time = 10, steps = 2)
 }

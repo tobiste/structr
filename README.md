@@ -162,8 +162,13 @@ vollmer_plot(example_planes, col = "#000004", pch = 16)
 vollmer_plot(example_lines, col = "#B63679FF", pch = 16, add = TRUE)
 title("Fabric plot of Vollmer (1990)")
 
-hsu_fabric_plot(example_planes, col = "#000004", pch = 16)
-hsu_fabric_plot(example_lines, col = "#B63679FF", pch = 16, add = TRUE)
+hsu_plot(example_planes, col = "#000004", pch = 16)
+```
+
+<img src="man/figures/README-stereo_ortensor-1.png" width="100%" />
+
+``` r
+hsu_plot(example_lines, col = "#B63679FF", pch = 16, add = TRUE)
 
 legend(
   2.5, -.25,
@@ -172,7 +177,7 @@ legend(
 )
 ```
 
-<img src="man/figures/README-stereo_ortensor-1.png" width="100%" />
+<img src="man/figures/README-stereo_ortensor-2.png" width="100%" />
 
 #### Best-fit great and small-circles (geodesic regression)
 
@@ -358,8 +363,8 @@ R_XY <- holst[, "R_XY"]
 R_YZ <- holst[, "R_YZ"]
 
 par(mfrow = c(1, 2))
-flinn_plot(R_XY, R_YZ, log = TRUE, col = "#B63679", pch = 16)
-hsu_plot(R_XY, R_YZ, col = "#B63679", pch = 16)
+flinn_plot(cbind(R_XY, R_YZ), log = TRUE, col = "#B63679", pch = 16)
+hsu_plot(cbind(R_XY, R_YZ), col = "#B63679", pch = 16)
 ```
 
 <img src="man/figures/README-strain3D-1.png" width="100%" />

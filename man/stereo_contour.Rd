@@ -86,7 +86,7 @@ stereo_point(x, col = "lightgrey", pch = 21)
 par(mfrow = c(1, 2))
 wp <- 6 / ifelse(is.na(example_planes_df$quality), 6, example_planes_df$quality)
 my_planes <- Plane(example_planes_df$dipdir, example_planes_df$dip)
-fabric_p <- or_shape_params(my_planes)$Vollmer["D"]
+fabric_p <- shape_params(my_planes)$Vollmer["D"]
 my_planes_eig <- ot_eigen(my_planes)
 
 stereoplot(guides = TRUE, col = "grey96")
@@ -104,7 +104,7 @@ title(
 
 my_lines <- Line(example_lines_df$trend, example_lines_df$plunge)
 wl <- 6 / ifelse(is.na(example_lines_df$quality), 6, example_lines_df$quality)
-fabric_l <- or_shape_params(my_lines)$Vollmer["D"]
+fabric_l <- shape_params(my_lines)$Vollmer["D"]
 
 stereoplot(guides = TRUE, col = "grey96")
 points(my_lines, col = "grey", pch = 16, cex = .5)

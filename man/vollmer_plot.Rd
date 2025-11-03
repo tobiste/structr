@@ -54,7 +54,6 @@ structural domain analysis. Geological Society of America Bulletin, 102, 786<U+2
 
 Other fabric-plot: 
 \code{\link{flinn_plot}()},
-\code{\link{hsu_fabric_plot}()},
 \code{\link{hsu_plot}()},
 \code{\link{woodcock_plot}()}
 }

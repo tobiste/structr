@@ -17,8 +17,8 @@
 #' @export
 #'
 #' @references Ramsay (1976), Folding and Fracturing of Rocks, McGraw-Hill Book Company.
-#' 
-#' Ramsay, J. G., & Huber, M. I. (1983). The Techniques of Modern Structural 
+#'
+#' Ramsay, J. G., & Huber, M. I. (1983). The Techniques of Modern Structural
 #' Geology: Strain Analyses (Vol. 1). London: Academic Press.
 #'
 #' @seealso [mean_strain_ellipse()]
@@ -487,8 +487,8 @@ gridHyper <- function(rphi, rmax, kappa, nnodes, normalize = TRUE, proj = "eqd")
 #' @returns plot
 #'
 #' @seealso [hypercontour()], [Rphi_polar_plot()]
-#' 
-#' @references Ramsay, J. G., & Huber, M. I. (1983). The Techniques of Modern 
+#'
+#' @references Ramsay, J. G., & Huber, M. I. (1983). The Techniques of Modern
 #' Structural Geology: Strain Analyses (Vol. 1). London: Academic Press.
 #'
 #' @export
@@ -600,8 +600,8 @@ Rphi_plot <- function(r, phi,
 #' @param proj character.
 #' @inheritParams Rphi_plot
 #' @returns plot
-#' 
-#' @references Elliott, D. (1970). Determination of Finite Strain and Initial 
+#'
+#' @references Elliott, D. (1970). Determination of Finite Strain and Initial
 #' Shape from Deformed Elliptical Objects. GSA Bulletin, 81(8), 2221–2236.
 #'
 #' @seealso [hypercontour()], [Rphi_plot()]
@@ -860,218 +860,6 @@ RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.975, grid
     list(
       values = cbind(B = B_val, theta = theta),
       Rc_CI = c(geo.lowerCI, geo.upperCI)
-    )
-  )
-}
-
-
-
-#' Hsu plot
-#'
-#' 3D strain diagram using the Hsu (1965) method to display the natural 
-#' octahedral strain (Nádai, 1950) and Lode's parameter (Lode, 1926).
-#'
-#' @param R_XY ratio of maximum strain and intermediate strain
-#' @param R_YZ ratio of intermediate strain and minimum strain
-#' @inheritParams Rphi_plot
-#' @param ... plotting arguments passed to [graphics::points()]
-#' @param es.max maximum strain for scaling.
-#'
-#' @encoding UTF-8
-#' @returns plot and when stored as an object, the Lode parameter `Lode` and the natural octahedral strain `es`.
-#' 
-#' @references 
-#' Lode, W. (1926). Versuche über den Einfluß der mittleren Hauptspannung auf 
-#' das Fließen der Metalle Eisen. Kupfer und Nickel. Zeitschrift Für Physik, 
-#' 36(11–12), 913–939. \doi{10.1007/BF01400222}
-#' 
-#' Nádai, A. (1950). Theory of flow and fracture of solids. McGraw-Hill.
-#' 
-#' Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial strain 
-#' paths. Journal of Strain Analysis, 1(3), 216–222. \doi{10.1243/03093247V013216}
-#' 
-#' Hossack, J. R. (1968). Pebble deformation and thrusting in the Bygdin area 
-#' (Southern Norway). Tectonophysics, 5(4), 315–339. \doi{10.1016/0040-1951(68)90035-8}
-#' 
-#' @export
-#' @family fabric-plot
-#'
-#' @examples
-#' R_XY <- holst[, "R_XY"]
-#' R_YZ <- holst[, "R_YZ"]
-#' hsu_plot(R_XY, R_YZ, col = "#B63679", pch = 16)
-hsu_plot <- function(R_XY, R_YZ, main = "Hsu diagram", es.max = NULL, ...) {
-  R_XZ <- R_XY * R_YZ
-  R <- es <- 1 / sqrt(3) * sqrt(log(R_XY)^2 + log(R_YZ)^2 + log(1 / R_XZ)^2) # Nadai, 1963
-
-  K <- log(R_XY) / log(R_YZ) # Hossack 1968
-  lode <- (1 - K) / (1 + K)
-
-  # Set plot limits
-
-  rmax <- if (is.null(es.max)) max(R) * 1.1 else es.max
-  rseq <- pretty(c(0, rmax))
-  rmax2 <- max(rseq)
-
-  plot(0, 0,
-    type = "n", asp = 1,
-    xlim = c(-1, 1) * rmax2 * cos(pi / 2 + pi / 6),
-    ylim = c(0, rmax2 * 1.1),
-    axes = FALSE, xlab = "", ylab = "", main = main
-  )
-
-  # Draw wedge boundaries (±30°)
-  graphics::segments(0, 0, rmax2 * cos(pi / 2 + pi / 6), rmax2 * sin(pi / 2 + pi / 6),
-    lty = 1, col = "black"
-  )
-  graphics::segments(0, 0, rmax2 * cos(pi / 2 - pi / 6), rmax2 * sin(pi / 2 - pi / 6),
-    lty = 1, col = "black"
-  )
-
-
-  graphics::segments(0, 0, rmax2 * cos(pi / 2 - pi / 6 / 2), rmax2 * sin(pi / 2 - pi / 6 / 2),
-    lty = 1, col = "lightgray"
-  )
-
-  graphics::segments(0, 0, rmax2 * cos(pi / 2 + pi / 6 / 2), rmax2 * sin(pi / 2 + pi / 6 / 2),
-    lty = 1, col = "lightgray"
-  )
-
-  # Draw vertical plane strain line
-  graphics::segments(0, 0, 0, rmax2, lty = 1, col = "lightgray")
-
-
-  # Draw cropped concentric arcs (strain magnitude ticks)
-  arc_theta <- seq(pi / 2 - pi / 6, pi / 2 + pi / 6, length.out = 200)
-  for (rr in rseq) {
-    col_grd <- if (rr == rmax2) "black" else "lightgray"
-    lwd_grd <- if (rr == rmax2) 1 else 0.5
-
-    graphics::lines(rr * cos(arc_theta), rr * sin(arc_theta), col = col_grd, lwd = lwd_grd)
-    # text(rr, 0, labels = format(rr, digits = 2), pos = 4, col = "grey40", cex = 0.8)
-  }
-
-  # Lode parameters labels
-  for (rr in rseq[-1]) {
-    graphics::text(cos(pi / 2 - pi / 6 * 1.05) * rr, sin(pi / 2 - pi / 6 * 1.05) * rr, rr, adj = 1)
-  }
-
-  # Strain magnitude labels
-  for (vr in seq(-1, 1, by = 0.5)) {
-    graphics::text(rmax2 * cos(pi / 2 + pi / 6 * vr) * 1.05, rmax2 * sin(pi / 2 - pi / 6 * vr) * 1.05, vr, adj = 0.5)
-  }
-
-
-  graphics::text(0, rmax2 * 1.1, expression(bold(nu)), adj = 0.5, col = "black", font = 2)
-  graphics::text(rmax2 * cos(pi / 2 - pi / 6 * 1.3) / 2, rmax2 * sin(pi / 2 - pi / 6 * 1.3) / 2, expression(bold(bar(epsilon[s]))), adj = .5, col = "black", font = 2)
-
-  # Labels
-  graphics::text(0, rmax2 * 0.8, "Plane strain", adj = 0.5, col = "grey70", srt = 90)
-  graphics::text(rmax2 * cos(pi / 2 + pi / 6 * 0.9) * 0.8, rmax2 * sin(pi / 2 + pi / 6 * 0.9) * 0.8, "Flattening", adj = 0.5, col = "grey70", srt = 60)
-  graphics::text(rmax2 * cos(pi / 2 - pi / 6 * 0.9) * 0.8, rmax2 * sin(pi / 2 - pi / 6 * 0.9) * 0.8, "Constriction", adj = 0.5, col = "grey70", srt = -60)
-
-  # Data points
-
-  # Map Lode parameter (-1..1) to angle in radians (-30°..+30° around vertical)
-  theta <- lode * (pi / 6) # -1 -> -30°, 0 -> 0° (vertical), +1 -> +30°
-
-  # Shift so plane strain = vertical (pi/2)
-  theta_shift <- theta + pi / 2
-
-  # Cartesian coordinates
-  x <- R * cos(theta_shift)
-  y <- R * sin(theta_shift)
-  graphics::points(x, y, ...)
-
-  invisible(list(lode = lode, es = R))
-}
-
-#' Flinn diagram
-#'
-#' @inheritParams hsu_plot
-#' @param R.max numeric. Maximum aspect ratio for scaling.
-#' @param log logical. Whether the axes should be in logarithmic scale.
-#'
-#' @returns plot and when stored as an object, the multiplication factors for X, Y and Z.
-#' @export
-#' 
-#' @family fabric-plot
-#' 
-#' @references Flinn, D. (1965). On the Symmetry Principle and the Deformation 
-#' Ellipsoid. Geological Magazine, 102(1), 36–45. \doi{10.1017/S0016756800053851}
-#'
-#' @examples
-#' data(holst)
-#' R_XY <- holst[, "R_XY"]
-#' R_YZ <- holst[, "R_YZ"]
-#' flinn_plot(R_XY, R_YZ, log = FALSE, col = "#B63679", pch = 16)
-#' flinn_plot(R_XY, R_YZ, log = TRUE, col = "#B63679", pch = 16)
-flinn_plot <- function(R_XY, R_YZ, main = "Flinn diagram", R.max = NULL, log = FALSE, ...) {
-  if (log) {
-    xlab <- "ln(Y/Z)"
-    ylab <- "ln(X/Y)"
-    R_XY <- log(R_XY)
-    R_YZ <- log(R_YZ)
-    R.min <- 0
-  } else {
-    xlab <- "Y/Z"
-    ylab <- "X/Y"
-    R.min <- 1
-  }
-
-  if (is.null(R.max)) {
-    R.max <- max(c(R_XY, R_YZ)) * 1.05
-  }
-
-  plot(R.min, R.min,
-    type = "n",
-    asp = 1,
-    xlim = c(R.min, R.max),
-    ylim = c(R.min, R.max),
-    # log = log,
-    axes = FALSE,
-    xaxs = "i", yaxs = "i",
-    xlab = xlab,
-    ylab = ylab,
-    main = main
-  )
-
-  graphics::abline(0, b = 1, col = "grey30", lwd = .75)
-
-  rbreaks <- pretty(c(R.min, R.max))
-
-
-  for (i in c(.2, .5, 2, 5)) {
-    graphics::abline(a = 0, b = i, col = "lightgray", lwd = .5, lty = 2)
-  }
-
-
-  if (log) {
-    arc_theta <- seq(0, pi / 2, length.out = 200)
-    for (rr in rbreaks) {
-      graphics::lines(rr * cos(arc_theta), rr * sin(arc_theta), col = "lightgray", lwd = .5, lty = 2)
-    }
-  } else {
-    for (rr in rbreaks) {
-      # graphics::abline(a = rr, b = -1, col = "grey80", lwd = .5, lty = 2)
-      graphics::lines(c(rr, R.min), c(R.min, rr), col = "lightgray", lwd = .5, lty = 2)
-    }
-  }
-
-  graphics::axis(side = 1, at = rbreaks, labels = rbreaks)
-  graphics::axis(side = 2, at = rbreaks, labels = rbreaks)
-
-  graphics::text(R.max / 2, R.max / 2, "Plane strain", adj = 0.5, col = "grey70", srt = 45)
-  graphics::text(R.max * .75, R.max * .25, "Flattening", adj = 0.5, col = "grey70")
-  graphics::text(R.max * .25, R.max * .75, "Constriction", adj = 0.5, col = "grey70")
-
-  graphics::points(R_YZ, R_XY, ...)
-
-  invisible(
-    list(
-      X = R_XY * R_YZ,
-      Y = R_YZ,
-      Z = 1
     )
   )
 }
