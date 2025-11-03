@@ -36,8 +36,8 @@
 #'  the resolved shear and normal stresses, and the slip and dilation tendency on each plane.}
 #'  }
 #'
-#' @references Michael, A. J. (1984). Determination of stress from slip data: 
-#' Faults and folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526. 
+#' @references Michael, A. J. (1984). Determination of stress from slip data:
+#' Faults and folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526.
 #' \doi{10.1029/JB089iB13p11517}
 #'
 #' @details
@@ -676,7 +676,7 @@ Fault_from_rake <- function(p, rake, sense = NULL, ...) {
     qd <- (rake %% 360) <= 180
     sense <- ifelse(qd, 1, -1)
   } else {
-    rake <- sense * (rake %% 180)
+    #rake <- sense * (rake %% 180)
   }
 
   l <- rotate(strike, p, rake)
@@ -740,12 +740,13 @@ Fault_from_rake_quadrant <- function(p, rake, quadrant, type = c("plunge", "rake
       f <- Fault_from_rake(p, rake2)
     }
   } else {
-    strike1 <- dd2rhr(p[, 1])
+    dipdir1 <- p[, 1]
+    strike1 <- dd2rhr(dipdir1)
     rake_mod <- rake %% 180
     res1 <- azimuth_to_cardinal(strike1, n_directions = 16)
     match1 <- sapply(seq_along(rake_mod), function(i) grepl(quadrant[i], res1[i]))
 
-    rake2 <- ifelse(match1, 1, -1) * rake_mod
+    rake2 <- 360 + ifelse(match1, 1, -1) * rake
     f <- Fault_from_rake(p, rake2 %% 180, sense = sense)
   }
   return(f)
