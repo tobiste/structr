@@ -70,7 +70,7 @@
 <span><span class="fu">defgrad_from_ratio</span><span class="op">(</span>Rxy <span class="op">=</span> <span class="fl">1</span>, Ryz <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'Pair'</span></span>
-<span><span class="fu">defgrad</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="fu">defgrad</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">defgrad_from_vectors</span><span class="op">(</span><span class="va">v1</span>, <span class="va">v2</span><span class="op">)</span></span>
 <span></span>
@@ -89,7 +89,7 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Default S3 method</span></span>
-<span><span class="fu">defgrad</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="fu">defgrad</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'velgrad'</span></span>
 <span><span class="fu">defgrad</span><span class="op">(</span><span class="va">x</span>, <span class="va">time</span>, <span class="va">steps</span><span class="op">)</span></span></code></pre></div>
@@ -105,6 +105,10 @@
 
 <dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
 <dd><p>3x3 <code>"matrix"</code></p></dd>
+
+
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>parameters passed to function call</p></dd>
 
 
 <dt id="arg-rxy-ryz">Rxy, Ryz<a class="anchor" aria-label="anchor" href="#arg-rxy-ryz"></a></dt>
