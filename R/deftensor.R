@@ -43,7 +43,7 @@ as.defgrad <- function(object) {
 
 #' @rdname defgrad
 #' @export
-defgrad <- function(x, ...) UseMethod("defgrad")
+defgrad <- function(x, time, steps, ...) UseMethod("defgrad")
 
 #' @rdname defgrad
 #' @export
@@ -152,7 +152,7 @@ defgrad.default <- function(x, ...) {
 
 #' @rdname defgrad
 #' @export
-defgrad.velgrad <- function(x, time, steps) {
+defgrad.velgrad <- function(x, time, steps, ...) {
   if (steps > 1) {
     R <- list()
     t <- seq(0, time, steps)
@@ -215,7 +215,7 @@ as.velgrad <- function(object) {
 
 #' @rdname gradient
 #' @export
-velgrad <- function(x, ...) UseMethod('velgrad')
+velgrad <- function(x, time, ...) UseMethod('velgrad')
 
 #' @rdname gradient
 #' @export

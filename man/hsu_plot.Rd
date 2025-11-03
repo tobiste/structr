@@ -11,7 +11,7 @@ hsu_plot(x, ...)
 
 \method{hsu_plot}{ortensor}(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...)
 
-\method{hsu_plot}{spherical}(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...)
+\method{hsu_plot}{spherical}(x, ...)
 
 \method{hsu_plot}{default}(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...)
 }

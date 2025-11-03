@@ -13,7 +13,7 @@ is.velgrad(x)
 
 as.velgrad(object)
 
-velgrad(x, ...)
+velgrad(x, time, ...)
 
 \method{velgrad}{default}(x, ...)
 
@@ -24,9 +24,9 @@ velgrad(x, ...)
 
 \item{object}{3x3 \code{"matrix"}}
 
-\item{...}{parameters passed to function call}
-
 \item{time}{numeric. Total time (default is 1)}
+
+\item{...}{parameters passed to function call}
 }
 \value{
 3x3 matrix. If steps is > 1, then a list

@@ -17,7 +17,7 @@ is.defgrad(x)
 
 as.defgrad(object)
 
-defgrad(x, ...)
+defgrad(x, time, steps, ...)
 
 defgrad_from_ratio(Rxy = 1, Ryz = 1)
 
@@ -41,12 +41,16 @@ defgrad_from_comp(
 
 \method{defgrad}{default}(x, ...)
 
-\method{defgrad}{velgrad}(x, time, steps)
+\method{defgrad}{velgrad}(x, time, steps, ...)
 }
 \arguments{
 \item{x}{object of class \code{"Pair"}, \code{"velgrad"} or 3x3 \code{"matrix"}}
 
 \item{object}{3x3 \code{"matrix"}}
+
+\item{time}{numeric. Total time (default is 1)}
+
+\item{steps}{numeric. Time increments (default is 1)}
 
 \item{...}{parameters passed to function call}
 
@@ -63,10 +67,6 @@ degrees when axis is a object of class \code{"Line"}, \code{"Ray"}, or \code{"Pl
 
 \item{xx, xy, xz, yx, yy, yz, zx, zy, zz}{numeric. Directly specify components of
 the tensor. Identity matrix by default.}
-
-\item{time}{numeric. Total time (default is 1)}
-
-\item{steps}{numeric. Time increments (default is 1)}
 }
 \value{
 3x3 matrix.

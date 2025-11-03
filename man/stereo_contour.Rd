@@ -73,7 +73,8 @@ x <- rfb(100, mu = Line(120, 10), k = 5, A = diag(c(-1, 0, 1)))
 
 contour(x)
 
-contourf(x,
+x_density <- density(x)
+contourf(x_density,
   col.params = list(direction = -1, begin = .05, end = .95, alpha = .75)
 )
 stereo_point(x, col = "black", pch = 21)

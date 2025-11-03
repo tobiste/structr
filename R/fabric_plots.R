@@ -85,7 +85,7 @@ vollmer_plot <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...)
 
   coords <- colSums(vec * abc) / PGR
 
-  if (!add) {
+  if (isFALSE(add)) {
     graphics::par(xpd = TRUE)
     graphics::plot(1, "n", ylim = c(0, sqrt(3) / 2), xlim = c(0, 1), asp = 1, axes = FALSE, xlab = "", ylab = "")
 
@@ -293,7 +293,7 @@ hsu_plot.ortensor <- function(x, labels = NULL, add = FALSE, es.max = 3, main = 
 
   lode <- ell_lode(x_eigen)
 
-  if (!add) {
+  if (isFALSE(add)) {
     hsu_plot.default(cbind(0, 0), es.max = es.max)
   }
 
@@ -318,9 +318,9 @@ hsu_plot.ortensor <- function(x, labels = NULL, add = FALSE, es.max = 3, main = 
 
 #' @rdname hsu_plot
 #' @export
-hsu_plot.spherical <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...) {
+hsu_plot.spherical <- function(x, ...) {
   ortensor(x) |>
-    hsu_plot.ortensor()
+    hsu_plot.ortensor(...)
 }
 
 #' @rdname hsu_plot
@@ -341,7 +341,7 @@ hsu_plot.default <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "
   rseq <- pretty(c(0, rmax))
   rmax2 <- max(rseq)
 
-  if (!add) {
+  if (isFALSE(add)) {
     plot(0, 0,
       type = "n", asp = 1,
       xlim = c(-1, 1) * rmax2 * cos(pi / 2 + pi / 6),

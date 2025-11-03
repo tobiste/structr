@@ -460,7 +460,9 @@ gridHyper <- function(rphi, rmax, kappa, nnodes, normalize = TRUE, proj = "eqd")
 
 
 
-#' R/phi plot
+#' R<sub>f</sub>/&varphi; plot
+#' 
+#' Plot finite strain ellipse against orientation of finite stretching axes (after Ramsay, 1983)
 #'
 #' @inheritParams mean_strain_ellipse
 #' @inheritParams hypercontour
@@ -589,9 +591,9 @@ Rphi_plot <- function(r, phi,
 }
 
 
-#' Polar R/phi plot
+#' Polar R<sub>f</sub>/&varphi; plot (Elliott plot)
 #'
-#' Plots R/phi fabric plot in polar coordinates (after Elliott, 1970)
+#' Plots R<sub>f</sub>/&varphi; plot fabric plot in polar coordinates (after Elliott, 1970).
 #'
 #' @inheritParams mean_strain_ellipse
 #' @param proj character. Projection,  `'eqd'` for equidistant (Elliot plot),
@@ -600,16 +602,21 @@ Rphi_plot <- function(r, phi,
 #' @param proj character.
 #' @inheritParams Rphi_plot
 #' @returns plot
+#' 
+#' @note `Rphi_plot()` and `elliot_plot()` are identical.
 #'
 #' @references Elliott, D. (1970). Determination of Finite Strain and Initial
 #' Shape from Deformed Elliptical Objects. GSA Bulletin, 81(8), 2221–2236.
 #'
 #' @seealso [hypercontour()], [Rphi_plot()]
-#'
-#' @export
+#' @name Rphi_polar_plot
 #'
 #' @examples
 #' Rphi_polar_plot(ramsay[, 1], ramsay[, 2], proj = "eqa")
+NULL
+
+#' @rdname Rphi_polar_plot
+#' @export
 Rphi_polar_plot <- function(r, phi,
                             proj = c("eqd", "eqa", "stg", "ort", "gno", "lin", "rdl"),
                             contour = TRUE,
@@ -691,7 +698,9 @@ Rphi_polar_plot <- function(r, phi,
   graphics::mtext(paste(proj.pretty, "projection"))
 }
 
-
+#' @rdname Rphi_polar_plot
+#' @export
+elliott_plot <- Rphi_polar_plot
 
 
 mean_vorticity <- function(R) {
@@ -755,8 +764,8 @@ vorticity_boot <- function(B, R = 100, probs = 0.975) {
 
 #' Rigid Grain Net (RGN)
 #'
-#' The rigid grain net after (Jessup et al. 2007) plots the distribution the
-#' strain ratio (`R`) of orientation (`phi`) of
+#' The rigid grain net after (Jessup et al. 2007) plots the distribution the finite
+#' strain ratio (`R`) and orientation (`phi`) of
 #' porphyroclast over the theoretical distribution of tailless clasts. The plot estimates
 #' the critical shape factor `Rc` marking the transition between the stable-sink
 #' position and infinitely rotating porphyroclasts.

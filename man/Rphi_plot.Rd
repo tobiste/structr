@@ -2,7 +2,7 @@
 % Please edit documentation in R/strain_analysis.R
 \name{Rphi_plot}
 \alias{Rphi_plot}
-\title{R/phi plot}
+\title{R\if{html}{\out{<sub>}}f\if{html}{\out{</sub>}}/ϕ plot}
 \usage{
 Rphi_plot(
   r,
@@ -69,7 +69,7 @@ axes are to be drawn.}
 plot
 }
 \description{
-R/phi plot
+Plot finite strain ellipse against orientation of finite stretching axes (after Ramsay, 1983)
 }
 \examples{
 data(ramsay)

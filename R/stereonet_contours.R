@@ -31,11 +31,12 @@
 #'
 #' contour(x)
 #'
-#' contourf(x,
+#' x_density <- density(x)
+#' contourf(x_density,
 #'   col.params = list(direction = -1, begin = .05, end = .95, alpha = .75)
 #' )
 #' stereo_point(x, col = "black", pch = 21)
-#'
+#' 
 #' image(x)
 #' stereo_point(x, col = "lightgrey", pch = 21)
 #'
@@ -158,15 +159,13 @@ stereo_density <- function(x,
     # )
     d <- do.call(density.spherical, append(list(x = x), density.params))
   }
-
   densities <- d$density
-
+  
+  if (isFALSE(add)) {
+    stereoplot(guides = FALSE)
+  }
+  
   if (type == "image") {
-    if (!add) {
-      stereoplot(guides = FALSE)
-      add <- TRUE
-    }
-
     col.params <- append(list(n = nlevels), col.params)
     col <- do.call(col.palette, col.params)
 
@@ -177,15 +176,20 @@ stereo_density <- function(x,
       asp = 1,
       axes = FALSE,
       frame.plot = FALSE,
-      add = add,
+      add = TRUE,
       ...
     )
+    
+    # if(isTRUE(legend)){
+    #   if(isTRUE(add)){
+    #     graphics::par(new = TRUE, xpd = NA)
+    #     graphics::layout(matrix(1, 1))
+    #   }
+    #   graphics::image(1, nlevels, t(seq_len(nlevels)), col=col, axes=FALSE)
+    #   graphics::axis(4)
+    # }
+    
   } else if (type == "contour") {
-    if (!add) {
-      stereoplot(guides = FALSE)
-      add <- TRUE
-    }
-
     if (is.null(col)) {
       levels <- pretty(range(densities, na.rm = TRUE), nlevels)
       col.params <- append(list(n = length(levels) - 1), col.params)
@@ -200,12 +204,19 @@ stereo_density <- function(x,
       asp = 1,
       axes = FALSE,
       frame.plot = FALSE,
-      add = add,
+      add = TRUE,
       ...
     )
+    # if(isTRUE(legend)){
+    #   if(isTRUE(add)){
+    #     graphics::par(new = TRUE, xpd = NA)
+    #     graphics::layout(matrix(1, 1))
+    #   }
+    #   graphics::image(1, levels, t(seq_along(levels)), col=col, axes=FALSE)
+    #   graphics::axis(4)
+    # }
+    
   } else {
-    if (!add) stereoplot(guides = FALSE)
-
     levels <- pretty(range(densities, na.rm = TRUE), nlevels)
     col.params <- append(list(n = length(levels) - 1), col.params)
     col <- do.call(col.palette, col.params)
@@ -216,7 +227,17 @@ stereo_density <- function(x,
       levels = levels,
       col = col
     )
+    # if(isTRUE(legend)){
+    #   if(isTRUE(add)){
+    #     graphics::par(new = TRUE, xpd = NA)
+    #     graphics::layout(matrix(1, 1))
+    #   }
+    #   graphics::image(1, levels, t(seq_along(levels)), col=col, axes=FALSE)
+    #   graphics::axis(4)
+    # }
   }
+  
+  invisible(densities)
 }
 
 

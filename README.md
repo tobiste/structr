@@ -90,11 +90,26 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 
 ### Density
 
-Density shown by contour lines and filled contours:
+Density shown by contour lines…
 
 ``` r
 par(mfrow = c(1, 2))
 contour(example_planes)
+points(example_planes, col = "grey", cex = .5)
+title(main = "Planes")
+
+contour(example_lines)
+points(example_lines, col = "grey", cex = .5)
+title(main = "Lines")
+```
+
+<img src="man/figures/README-stereo_density_lines-1.png" width="100%" />
+
+or as filled contours:
+
+``` r
+par(mfrow = c(1, 2))
+image(example_planes)
 points(example_planes, col = "grey", cex = .5)
 title(main = "Planes")
 
@@ -103,7 +118,7 @@ points(example_lines, col = "grey", cex = .5)
 title(main = "Lines")
 ```
 
-<img src="man/figures/README-stereo_density-1.png" width="100%" />
+<img src="man/figures/README-stereo_density_img-1.png" width="100%" />
 
 ### Spherical statistics
 
@@ -163,11 +178,6 @@ vollmer_plot(example_lines, col = "#B63679FF", pch = 16, add = TRUE)
 title("Fabric plot of Vollmer (1990)")
 
 hsu_plot(example_planes, col = "#000004", pch = 16)
-```
-
-<img src="man/figures/README-stereo_ortensor-1.png" width="100%" />
-
-``` r
 hsu_plot(example_lines, col = "#B63679FF", pch = 16, add = TRUE)
 
 legend(
@@ -177,7 +187,7 @@ legend(
 )
 ```
 
-<img src="man/figures/README-stereo_ortensor-2.png" width="100%" />
+<img src="man/figures/README-stereo_ortensor-1.png" width="100%" />
 
 #### Best-fit great and small-circles (geodesic regression)
 
@@ -348,7 +358,7 @@ data(ramsay)
 
 par(mfrow = c(1, 2))
 Rphi_plot(r = ramsay[, 1], phi = ramsay[, 2])
-Rphi_polar_plot(ramsay[, 1], ramsay[, 2], proj = "eqd")
+elliott_plot(ramsay[, 1], ramsay[, 2], proj = "eqd")
 ```
 
 <img src="man/figures/README-strain-1.png" width="100%" />

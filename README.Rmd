@@ -82,11 +82,24 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 
 ### Density
 
-Density shown by contour lines and filled contours:
+Density shown by contour lines...
 
-```{r stereo_density, warning=FALSE,message=FALSE}
+```{r stereo_density_lines, warning=FALSE,message=FALSE}
 par(mfrow = c(1, 2))
 contour(example_planes)
+points(example_planes, col = "grey", cex = .5)
+title(main = "Planes")
+
+contour(example_lines)
+points(example_lines, col = "grey", cex = .5)
+title(main = "Lines")
+```
+
+or as filled contours:
+
+```{r stereo_density_img, warning=FALSE,message=FALSE}
+par(mfrow = c(1, 2))
+image(example_planes)
 points(example_planes, col = "grey", cex = .5)
 title(main = "Planes")
 
@@ -308,7 +321,7 @@ data(ramsay)
 
 par(mfrow = c(1, 2))
 Rphi_plot(r = ramsay[, 1], phi = ramsay[, 2])
-Rphi_polar_plot(ramsay[, 1], ramsay[, 2], proj = "eqd")
+elliott_plot(ramsay[, 1], ramsay[, 2], proj = "eqd")
 ```
 
 #### 3D Strain

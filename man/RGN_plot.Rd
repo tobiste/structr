@@ -39,8 +39,8 @@ a plot or a list of the calculated \code{B} (shape factor) and \code{theta} valu
 and the bootstrapped confidence interval of the critical B value (\code{Rc_CI}).
 }
 \description{
-The rigid grain net after (Jessup et al. 2007) plots the distribution the
-strain ratio (\code{R}) of orientation (\code{phi}) of
+The rigid grain net after (Jessup et al. 2007) plots the distribution the finite
+strain ratio (\code{R}) and orientation (\code{phi}) of
 porphyroclast over the theoretical distribution of tailless clasts. The plot estimates
 the critical shape factor \code{Rc} marking the transition between the stable-sink
 position and infinitely rotating porphyroclasts.

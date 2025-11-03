@@ -2,9 +2,28 @@
 % Please edit documentation in R/strain_analysis.R
 \name{Rphi_polar_plot}
 \alias{Rphi_polar_plot}
-\title{Polar R/phi plot}
+\alias{elliott_plot}
+\title{Polar R\if{html}{\out{<sub>}}f\if{html}{\out{</sub>}}/ϕ plot (Elliott plot)}
 \usage{
 Rphi_polar_plot(
+  r,
+  phi,
+  proj = c("eqd", "eqa", "stg", "ort", "gno", "lin", "rdl"),
+  contour = TRUE,
+  image = FALSE,
+  n = 10L,
+  contour.lines = TRUE,
+  contour.lines.params = list(lwd = 0.5, col = par("col")),
+  contour.col = viridis,
+  contour.col.params = list(),
+  mean.ellipse = TRUE,
+  mean.ellipse.params = list(col = "red", lwd = 2),
+  point.params = list(col = "grey", pch = 16, cex = 0.5),
+  main = "Polar Rf/phi plot",
+  ...
+)
+
+elliott_plot(
   r,
   phi,
   proj = c("eqd", "eqa", "stg", "ort", "gno", "lin", "rdl"),
@@ -58,7 +77,10 @@ drawn as density grid. Ignored when \code{contour=FALSE}}
 plot
 }
 \description{
-Plots R/phi fabric plot in polar coordinates (after Elliott, 1970)
+Plots R\if{html}{\out{<sub>}}f\if{html}{\out{</sub>}}/ϕ plot fabric plot in polar coordinates (after Elliott, 1970).
+}
+\note{
+\code{Rphi_plot()} and \code{elliot_plot()} are identical.
 }
 \examples{
 Rphi_polar_plot(ramsay[, 1], ramsay[, 2], proj = "eqa")
