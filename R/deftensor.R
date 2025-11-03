@@ -14,6 +14,7 @@
 #' @param time numeric. Total time (default is 1)
 #' @param steps numeric. Time increments (default is 1)
 #' @param object 3x3 `"matrix"`
+#' @param ... parameters passed to function call
 #'
 #' @return 3x3 matrix.
 #' @name defgrad
@@ -56,7 +57,7 @@ defgrad_from_ratio <- function(Rxy = 1, Ryz = 1) {
 
 #' @rdname defgrad
 #' @export
-defgrad.Pair <- function(x) {
+defgrad.Pair <- function(x, ...) {
   # stopifnot(is.Pair(p))
   pl <- Line(x[, 3], x[, 4]) |> Vec3()
   pp <- Plane(x[, 1], x[, 2]) |> Vec3()
@@ -145,7 +146,7 @@ defgrad_from_comp <- function(xx = 1, xy = 0, xz = 0, yx = 0, yy = 1, yz = 0,
 
 #' @rdname defgrad
 #' @export
-defgrad.default <- function(x) {
+defgrad.default <- function(x, ...) {
   as.defgrad(x)
 }
 
@@ -179,6 +180,7 @@ defgrad.velgrad <- function(x, time, steps) {
 #' @param x 3x3 matrix. Deformation gradient tensor.
 #' @param object 3x3 `"matrix"`
 #' @param time numeric. Total time (default is 1)
+#' @param ... parameters passed to function call
 #'
 #' @name gradient
 #'
@@ -221,10 +223,9 @@ velgrad.default <- function(x, ...) {
   as.velgrad(x)
 }
 
-
 #' @rdname gradient
 #' @export
-velgrad.defgrad <- function(x, time = 1) {
+velgrad.defgrad <- function(x, time = 1, ...) {
   # L = pracma::logm(R) / time
   L <- expm::logm(x) / time
   as.velgrad(L)

@@ -36,9 +36,9 @@ shape_params(x, ...)
 
 \method{shape_params}{spherical}(x, ...)
 
-\method{shape_params}{ortensor}(x)
+\method{shape_params}{ortensor}(x, ...)
 
-\method{shape_params}{ellipsoid}(x)
+\method{shape_params}{ellipsoid}(x, ...)
 }
 \arguments{
 \item{x}{object of class \code{"ortensor"}, \code{"ellipsoid"}, or

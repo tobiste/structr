@@ -387,7 +387,7 @@ shape_params.spherical <- function(x, ...) {
 
 #' @rdname strain_shape
 #' @export
-shape_params.ortensor <- function(x) {
+shape_params.ortensor <- function(x, ...) {
   eig <- eigen(x, only.values = TRUE)$values
   s <- principal_stretch(x) |> unname()
   e <- principal_strain(x) |> unname()
@@ -476,7 +476,7 @@ shape_params.ortensor <- function(x) {
 
 #' @rdname strain_shape
 #' @export
-shape_params.ellipsoid <- function(x) {
+shape_params.ellipsoid <- function(x, ...) {
   as.ortensor(x) |> shape_params.ortensor()
 }
 

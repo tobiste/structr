@@ -21,7 +21,7 @@ defgrad(x, ...)
 
 defgrad_from_ratio(Rxy = 1, Ryz = 1)
 
-\method{defgrad}{Pair}(x)
+\method{defgrad}{Pair}(x, ...)
 
 defgrad_from_vectors(v1, v2)
 
@@ -39,7 +39,7 @@ defgrad_from_comp(
   zz = 1
 )
 
-\method{defgrad}{default}(x)
+\method{defgrad}{default}(x, ...)
 
 \method{defgrad}{velgrad}(x, time, steps)
 }
@@ -47,6 +47,8 @@ defgrad_from_comp(
 \item{x}{object of class \code{"Pair"}, \code{"velgrad"} or 3x3 \code{"matrix"}}
 
 \item{object}{3x3 \code{"matrix"}}
+
+\item{...}{parameters passed to function call}
 
 \item{Rxy, Ryz}{numeric. the XY and YZ strain ratio to create a strain tensor
 with axial stretches.Values must be greater than or equal to 1.}

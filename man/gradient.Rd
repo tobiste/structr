@@ -17,12 +17,14 @@ velgrad(x, ...)
 
 \method{velgrad}{default}(x, ...)
 
-\method{velgrad}{defgrad}(x, time = 1)
+\method{velgrad}{defgrad}(x, time = 1, ...)
 }
 \arguments{
 \item{x}{3x3 matrix. Deformation gradient tensor.}
 
 \item{object}{3x3 \code{"matrix"}}
+
+\item{...}{parameters passed to function call}
 
 \item{time}{numeric. Total time (default is 1)}
 }
