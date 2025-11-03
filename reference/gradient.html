@@ -67,29 +67,33 @@ the deformation gradient tensor accumulated after some time.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">velgrad_from_defgrad</span><span class="op">(</span><span class="va">R</span>, time <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">is.velgrad</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">defgrad_from_velgrad</span><span class="op">(</span><span class="va">V</span>, time <span class="op">=</span> <span class="fl">1</span>, steps <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu">as.velgrad</span><span class="op">(</span><span class="va">object</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">velgrad</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Default S3 method</span></span>
+<span><span class="fu">velgrad</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'defgrad'</span></span>
+<span><span class="fu">velgrad</span><span class="op">(</span><span class="va">x</span>, time <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-r">R<a class="anchor" aria-label="anchor" href="#arg-r"></a></dt>
+<dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>3x3 matrix. Deformation gradient tensor.</p></dd>
+
+
+<dt id="arg-object">object<a class="anchor" aria-label="anchor" href="#arg-object"></a></dt>
+<dd><p>3x3 <code>"matrix"</code></p></dd>
 
 
 <dt id="arg-time">time<a class="anchor" aria-label="anchor" href="#arg-time"></a></dt>
 <dd><p>numeric. Total time (default is 1)</p></dd>
-
-
-<dt id="arg-v">V<a class="anchor" aria-label="anchor" href="#arg-v"></a></dt>
-<dd><p>3x3 matrix. Velocity gradient tensor.</p></dd>
-
-
-<dt id="arg-steps">steps<a class="anchor" aria-label="anchor" href="#arg-steps"></a></dt>
-<dd><p>numeric. Time increments (default is 1)</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -101,20 +105,23 @@ of matrices is returned.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">D</span> <span class="op">&lt;-</span> <span class="fu"><a href="defgrad.html">defgrad_from_comp</a></span><span class="op">(</span>xx <span class="op">=</span> <span class="fl">2</span>, xy <span class="op">=</span> <span class="fl">1</span>, zz <span class="op">=</span> <span class="fl">0.5</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">L</span> <span class="op">&lt;-</span> <span class="fu">velgrad_from_defgrad</span><span class="op">(</span><span class="va">D</span>, time <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">L</span></span></span>
+<span class="r-in"><span><span class="va">L</span> <span class="op">&lt;-</span> <span class="fu">velgrad</span><span class="op">(</span><span class="va">D</span>, time <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">L</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            [,1]       [,2]        [,3]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.06931472 0.06931472  0.00000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.00000000 0.00000000  0.00000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.00000000 0.00000000 -0.06931472</span>
-<span class="r-in"><span><span class="fu">defgrad_from_velgrad</span><span class="op">(</span><span class="va">L</span>, time <span class="op">=</span> <span class="fl">10</span>, steps <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "matrix"  "array"   "velgrad"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="defgrad.html">defgrad</a></span><span class="op">(</span><span class="va">L</span>, time <span class="op">=</span> <span class="fl">10</span>, steps <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`0`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,]    1    0    0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0    1    0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0    0    1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "defgrad"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "matrix"  "array"   "defgrad"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`2`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          [,1]      [,2]      [,3]</span>
@@ -122,7 +129,7 @@ of matrices is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.000000 1.0000000 0.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.000000 0.0000000 0.8705506</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "defgrad"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "matrix"  "array"   "defgrad"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`4`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          [,1]      [,2]      [,3]</span>
@@ -130,7 +137,7 @@ of matrices is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.000000 1.0000000 0.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.000000 0.0000000 0.7578583</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "defgrad"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "matrix"  "array"   "defgrad"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`6`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          [,1]      [,2]     [,3]</span>
@@ -138,7 +145,7 @@ of matrices is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.000000 1.0000000 0.000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.000000 0.0000000 0.659754</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "defgrad"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "matrix"  "array"   "defgrad"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`8`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>          [,1]      [,2]      [,3]</span>
@@ -146,7 +153,7 @@ of matrices is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.000000 1.0000000 0.0000000</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.000000 0.0000000 0.5743492</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "defgrad"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "matrix"  "array"   "defgrad"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $`10`</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3]</span>
@@ -154,7 +161,7 @@ of matrices is returned.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0    1  0.0</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0    0  0.5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "defgrad"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "matrix"  "array"   "defgrad"</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

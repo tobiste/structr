@@ -82,7 +82,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-11-02</h4>
+            <h4 data-toc-skip class="date">2025-11-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/Faults.Rmd" class="external-link"><code>vignettes/Faults.Rmd</code></a></small>
       <div class="d-none name"><code>Faults.Rmd</code></div>
@@ -185,7 +185,7 @@ heterogeneous datasets.</li>
 <span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Hoeppener plot"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/fault-plot.html">hoeppener</a></span><span class="op">(</span><span class="va">simongomez</span>, col <span class="op">=</span> <span class="va">fault_cols</span>, points <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Faults_files/figure-html/faults_plotting-1.png" alt="Diagram showing some fault data in equa-area projection using the Angelier  and Hoeppener representation of fault-slip" width="700"></p>
+<p><img src="Faults_files/figure-html/faults_plotting-1.png" alt="Diagram showing some fault data in equa-area projection using the Angelier and Hoeppener representation of fault-slip" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="fault-stress-analysis">Fault stress analysis<a class="anchor" aria-label="anchor" href="#fault-stress-analysis"></a>
@@ -374,200 +374,131 @@ visualized in the stereoplot:</p>
 <p><img src="Faults_files/figure-html/slip_inversion_mohr-1.png" alt="Diagram showing the Mohr circle, and the normal and shear stresses for the slip inversion result" width="700"></p>
 </div>
 <div class="section level3">
-<h3 id="maximum-horizontal-stress5">Maximum horizontal stress<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Lund &amp;amp; Townend (2007): Calculating horizontal stress
+<h3 id="maximum-horizontal-stress">Maximum horizontal stress<a class="anchor" aria-label="anchor" href="#maximum-horizontal-stress"></a>
+</h3>
+<!-- We de fine a vertical plane in the geographic coordinate system, -->
+<!-- $\mathbb{G}$, using its unit normal vector, -->
+<!-- $\vec{n}^T_\mathbb{G} = (n_N, n_E, n_D) = (\cos\alpha, \sin\alpha, 0)$, -->
+<!-- where $\alpha$ is the normal’s trend angle measured clockwise from north -->
+<!-- and the plane’s strike is $\alpha+\pi/2$. We represent $\vec{n}$ with -->
+<!-- respect to the principal stress coordinate system using the -->
+<!-- transformation matrix -->
+<!-- \begin{equation} -->
+<!-- \mathsf{A}_{\mathbb{S}\mathbb{G}} = \begin{pmatrix} -->
+<!-- \vec{\sigma}_1 \vec{g}_1 & \vec{\sigma}_1 \vec{g}_2 & \vec{\sigma}_1 \vec{g}_3 \\ -->
+<!-- \vec{\sigma}_2 \vec{g}_1 & \vec{\sigma}_2 \vec{g}_2 & \vec{\sigma}_2 \vec{g}_3 \\ -->
+<!-- \vec{\sigma}_3 \vec{g}_1 & \vec{\sigma}_3 \vec{g}_2 & \vec{\sigma}_3 \vec{g}_3 \\ -->
+<!-- \end{pmatrix} -->
+<!-- \end{equation} -->
+<!-- (i.e. $a_{ij} = \sigma_i g_j$). Here -->
+<!-- $\sigma_i = (\sigma_{iN}, \sigma_{iE}, \sigma_{iD})$ are unit vectors in -->
+<!-- the principal stress directions (principal stress coordinate system -->
+<!-- $\mathbb{S}$ with unit vectors -->
+<!-- $\{ \mathbf{\vec{\sigma_1}}, \mathbf{\vec{\sigma_2}}, \mathbf{\vec{\sigma_3}} \}$) -->
+<!-- with respect to the geographic coordinate system ($\mathbb{G}$), and -->
+<!-- $\vec{g_1} = (1,0,0)$, $\vec{g_2} =(0,1,0)$ and $\vec{g_3} = (0,0,1)$ -->
+<!-- are the basis vectors in the geographic coordinate system. The normal -->
+<!-- vector expressed with respect to the principal stress system is then -->
+<!-- \begin{equation} -->
+<!-- \vec{\mathbf{n}}_\mathbb{S} = \mathsf{A}_{\mathbb{S}\mathbb{G}}\vec{\mathbf{n}}_\mathbb{G} = \begin{pmatrix} -->
+<!-- \sigma_{1N}n_N + \sigma_{1E}n_E\\ -->
+<!-- \sigma_{2N}n_N + \sigma_{2E}n_E\\ -->
+<!-- \sigma_{3N}n_N + \sigma_{3E}n_E -->
+<!-- \end{pmatrix}, -->
+<!-- \end{equation} -->
+<!-- where, for example, $\sigma_{1N}$ is the north component of the -->
+<!-- $\vec{\sigma}_1$ unit vector. In the principal coordinate system, the -->
+<!-- stress tensor is diagonal -->
+<!-- \begin{equation} -->
+<!-- \mathsf{S}_\mathbb{S} =  -->
+<!-- \begin{pmatrix}  -->
+<!-- \lVert \sigma_1 \rVert & 0 & 0 \\ -->
+<!-- 0 & \lVert\sigma_2\rVert & 0 \\ -->
+<!-- 0 & 0 & \lVert\sigma_3\rVert -->
+<!-- \end{pmatrix} -->
+<!-- \end{equation} -->
+<!-- and the normal stress acting on the vertical plane of interest is -->
+<!-- \begin{equation} -->
+<!-- \begin{split} -->
+<!-- \sigma_n &= \left( \mathbf{\vec{n}}^T_\mathbb{S} \mathsf{S}_\mathbb{S} \mathbf{\vec{n}}_\mathbb{S} \right)\\ -->
+<!--  &= \left[  -->
+<!--   \lVert\sigma_1\rVert ( \sigma_{1N}n_N + \sigma_{1E}n_E )^2 + -->
+<!--   \lVert\sigma_2\rVert ( \sigma_{2N}n_N + \sigma_{2E}n_E )^2 + -->
+<!--  \lVert\sigma_3\rVert (\sigma_{3N}n_N + \sigma_{3E}n_E)^2  -->
+<!--  \right] \mathbf{\vec{n}}_{\mathbb{S}}\\ -->
+<!--  &= \lVert\sigma_n\rVert \mathbf{\vec{n}}_\mathbb{S}. -->
+<!-- \end{split} -->
+<!-- \end{equation} -->
+<!-- This normal stress corresponds to the horizontal stress in the direction -->
+<!-- of $\mathbf{\vec{n}}$. -->
+<!-- We can find the direction of the maximum horizontal stress analytically -->
+<!-- by differentiating the last equation with respect to $\alpha$. -->
+<!-- \begin{equation} -->
+<!-- \frac{d\sigma_n}{d\alpha} = \left[ -->
+<!-- \lVert\sigma_1\rVert ( \sigma_{1E}^2 - \sigma_{1N}^2 ) +  -->
+<!-- \lVert\sigma_2\rVert ( \sigma_{2E}^2 - \sigma_{2N}^2 ) + -->
+<!-- \lVert\sigma_3\rVert ( \sigma_{3E}^2 - \sigma_{3N}^2 ) -->
+<!-- \right] \sin{2\alpha} +  -->
+<!-- 2 \left[\lVert\sigma_1\rVert \sigma_{1N} \sigma_{1E} + \lVert\sigma_2\rVert \sigma_{2N} \sigma_{2E} + \lVert\sigma_3\rVert \sigma_{3N} \sigma_{3E} \right] \cos{2\alpha}. -->
+<!-- \end{equation} -->
+<!-- | Condition | Interpretation | -->
+<!-- |------------------------------------|------------------------------------| -->
+<!-- | $\sigma_{1N} = \pm \sigma_{1E}$ and $R = 1$ | $\mathbb{S}_H$ undefined if $\mathbf{\vec{\sigma_1}}$ vertical, else $\alpha_H = \alpha_1$ (45$^{\circ}$ or 135°) | -->
+<!-- | $\sigma_{1N} = \pm \sigma_{1E}$ and $\sigma_{2N} = \pm \sigma_{2E}$ | $\mathbb{S}_H$ undefined if $R = 0$, else $\alpha_H = \alpha_1$ (45$^{\circ}$ or 135°) | -->
+<!-- | $(\sigma_{1N}^2 - \sigma_{1E}^2) + (1 - R)(\sigma_{2N}^2 - \sigma_{2E}^2) = 0$ | $\mathbb{S}_H$ undefined if $R = 0$, else $\alpha_H = \alpha_1$ (45$^{\circ}$ or 135°) | -->
+<!-- : Table 1 Summary of the conditions under which the denominator of eq. -->
+<!-- (11) equals zero. $\alpha_H$ and $\alpha_1$ denote the trends of the -->
+<!-- axis of maximum horizontal stress, $\sigma_H$, and the principal axis of -->
+<!-- maximum compressive stress, $\mathbf{\vec{\sigma_1}}$, respectively. -->
+<!-- In general (cf. Table 1), $\sigma_n$ has one maximum and one minimum in -->
+<!-- the interval $0 \leq \alpha \leq \pi$ and setting the derivative in the -->
+<!-- last equation to zero, we find these stationary points: -->
+<!-- \begin{equation} -->
+<!-- \tan{2\alpha} = \frac{ -->
+<!-- 2 ( \lVert\sigma_1\rVert \sigma_{1N} \sigma_{1E} + \lVert\sigma_2\rVert \sigma_{2N} \sigma_{2E} + \lVert\sigma_3\rVert \sigma_{3N} \sigma_{3E} )}{\lVert\sigma_1\rVert ( \sigma_{1E}^2 - \sigma_{1N}^2 ) +  -->
+<!-- \lVert\sigma_2\rVert ( \sigma_{2E}^2 - \sigma_{2N}^2 ) + -->
+<!-- \lVert\sigma_3\rVert ( \sigma_{3E}^2 - \sigma_{3N}^2 )}. -->
+<!-- \end{equation} -->
+<!-- Using the second derivative of $\sigma_n$ with respect to $\alpha$ we -->
+<!-- can determine whether $\sigma_n (\alpha)$ yields a maximum or a minimum -->
+<!-- value, and identify the $\sigma_H$ trend ($\alpha_H$) accordingly: -->
+<!-- \begin{equation} -->
+<!-- \alpha_H =  -->
+<!-- \begin{cases} -->
+<!-- \alpha & \text{if $\lVert\sigma_n (\alpha)\rVert$ is a maximum} \\ -->
+<!-- \alpha + \pi/2 & \text{if $\lVert\sigma_n (\alpha)\rVert$ is a minimum}  -->
+<!-- \end{cases}. -->
+<!-- \end{equation} -->
+<!-- #### Code -->
+<p>The orientation of the maximum horizontal stress
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mtext mathvariant="normal">Hmax</mtext></msub><annotation encoding="application/x-tex">\sigma_\text{Hmax}</annotation></semantics></math>)
+can be calculated from the stress tensor the the orientation of the
+principal stress
+(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\sigma_1</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\sigma_2</annotation></semantics></math>,
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mn>3</mn></msub><annotation encoding="application/x-tex">\sigma_3</annotation></semantics></math>)
+axes their their relative
+magnitudes(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>R</mi><annotation encoding="application/x-tex">R</annotation></semantics></math>)
+<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Lund &amp;amp; Townend (2007): Calculating horizontal stress
 orientations with full or partial knowledge of the tectonic stress
 tensor. &lt;em&gt;Geophys. J. Int.&lt;/em&gt;, 170, 1328—1335. doi:
-10.1111/j.1365-246X.2007.03468.x&lt;/p&gt;"><sup>5</sup></a><a class="anchor" aria-label="anchor" href="#maximum-horizontal-stress5"></a>
-</h3>
-<p>We de fine a vertical plane in the geographic coordinate system,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝔾</mi><annotation encoding="application/x-tex">\mathbb{G}</annotation></semantics></math>,
-using its unit normal vector,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msubsup><mover><mi>n</mi><mo accent="true">→</mo></mover><mi>𝔾</mi><mi>T</mi></msubsup><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>n</mi><mi>N</mi></msub><mo>,</mo><msub><mi>n</mi><mi>E</mi></msub><mo>,</mo><msub><mi>n</mi><mi>D</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mo>cos</mo><mi>α</mi><mo>,</mo><mo>sin</mo><mi>α</mi><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\vec{n}^T_\mathbb{G} = (n_N, n_E, n_D) = (\cos\alpha, \sin\alpha, 0)</annotation></semantics></math>,
-where
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
-is the normal’s trend angle measured clockwise from north and the
-plane’s strike is
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>α</mi><mo>+</mo><mi>π</mi><mi>/</mi><mn>2</mn></mrow><annotation encoding="application/x-tex">\alpha+\pi/2</annotation></semantics></math>.
-We represent
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>n</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\vec{n}</annotation></semantics></math>
-with respect to the principal stress coordinate system using the
-transformation matrix</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝖠</mi><mrow><mi>𝕊</mi><mi>𝔾</mi></mrow></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mover><mi>σ</mi><mo accent="true">→</mo></mover><mn>1</mn></msub><msub><mover><mi>g</mi><mo accent="true">→</mo></mover><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mover><mi>σ</mi><mo accent="true">→</mo></mover><mn>1</mn></msub><msub><mover><mi>g</mi><mo accent="true">→</mo></mover><mn>2</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mover><mi>σ</mi><mo accent="true">→</mo></mover><mn>1</mn></msub><msub><mover><mi>g</mi><mo accent="true">→</mo></mover><mn>3</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mover><mi>σ</mi><mo accent="true">→</mo></mover><mn>2</mn></msub><msub><mover><mi>g</mi><mo accent="true">→</mo></mover><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mover><mi>σ</mi><mo accent="true">→</mo></mover><mn>2</mn></msub><msub><mover><mi>g</mi><mo accent="true">→</mo></mover><mn>2</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mover><mi>σ</mi><mo accent="true">→</mo></mover><mn>2</mn></msub><msub><mover><mi>g</mi><mo accent="true">→</mo></mover><mn>3</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mover><mi>σ</mi><mo accent="true">→</mo></mover><mn>3</mn></msub><msub><mover><mi>g</mi><mo accent="true">→</mo></mover><mn>1</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mover><mi>σ</mi><mo accent="true">→</mo></mover><mn>3</mn></msub><msub><mover><mi>g</mi><mo accent="true">→</mo></mover><mn>2</mn></msub></mtd><mtd columnalign="center" style="text-align: center"><msub><mover><mi>σ</mi><mo accent="true">→</mo></mover><mn>3</mn></msub><msub><mover><mi>g</mi><mo accent="true">→</mo></mover><mn>3</mn></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}
-\mathsf{A}_{\mathbb{S}\mathbb{G}} = \begin{pmatrix}
-\vec{\sigma}_1 \vec{g}_1 &amp; \vec{\sigma}_1 \vec{g}_2 &amp; \vec{\sigma}_1 \vec{g}_3 \\
-\vec{\sigma}_2 \vec{g}_1 &amp; \vec{\sigma}_2 \vec{g}_2 &amp; \vec{\sigma}_2 \vec{g}_3 \\
-\vec{\sigma}_3 \vec{g}_1 &amp; \vec{\sigma}_3 \vec{g}_2 &amp; \vec{\sigma}_3 \vec{g}_3 \\
-\end{pmatrix}
-\end{equation}</annotation></semantics></math></p>
-<p>(i.e. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>a</mi><mrow><mi>i</mi><mi>j</mi></mrow></msub><mo>=</mo><msub><mi>σ</mi><mi>i</mi></msub><msub><mi>g</mi><mi>j</mi></msub></mrow><annotation encoding="application/x-tex">a_{ij} = \sigma_i g_j</annotation></semantics></math>).
-Here
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mi>i</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>σ</mi><mrow><mi>i</mi><mi>N</mi></mrow></msub><mo>,</mo><msub><mi>σ</mi><mrow><mi>i</mi><mi>E</mi></mrow></msub><mo>,</mo><msub><mi>σ</mi><mrow><mi>i</mi><mi>D</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\sigma_i = (\sigma_{iN}, \sigma_{iE}, \sigma_{iD})</annotation></semantics></math>
-are unit vectors in the principal stress directions (principal stress
-coordinate system
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝕊</mi><annotation encoding="application/x-tex">\mathbb{S}</annotation></semantics></math>
-with unit vectors
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo stretchy="false" form="prefix">{</mo><mover><msub><mi>𝛔</mi><mn>𝟏</mn></msub><mo accent="true">→</mo></mover><mo>,</mo><mover><msub><mi>𝛔</mi><mn>𝟐</mn></msub><mo accent="true">→</mo></mover><mo>,</mo><mover><msub><mi>𝛔</mi><mn>𝟑</mn></msub><mo accent="true">→</mo></mover><mo stretchy="false" form="postfix">}</mo></mrow><annotation encoding="application/x-tex">\{ \mathbf{\vec{\sigma_1}}, \mathbf{\vec{\sigma_2}}, \mathbf{\vec{\sigma_3}} \}</annotation></semantics></math>)
-with respect to the geographic coordinate system
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>𝔾</mi><annotation encoding="application/x-tex">\mathbb{G}</annotation></semantics></math>),
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><msub><mi>g</mi><mn>1</mn></msub><mo accent="true">→</mo></mover><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\vec{g_1} = (1,0,0)</annotation></semantics></math>,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><msub><mi>g</mi><mn>2</mn></msub><mo accent="true">→</mo></mover><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo>,</mo><mn>0</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\vec{g_2} =(0,1,0)</annotation></semantics></math>
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mover><msub><mi>g</mi><mn>3</mn></msub><mo accent="true">→</mo></mover><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>0</mn><mo>,</mo><mn>0</mn><mo>,</mo><mn>1</mn><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\vec{g_3} = (0,0,1)</annotation></semantics></math>
-are the basis vectors in the geographic coordinate system. The normal
-vector expressed with respect to the principal stress system is then</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mover><mi>𝐧</mi><mo accent="true">→</mo></mover><mi>𝕊</mi></msub><mo>=</mo><msub><mi>𝖠</mi><mrow><mi>𝕊</mi><mi>𝔾</mi></mrow></msub><msub><mover><mi>𝐧</mi><mo accent="true">→</mo></mover><mi>𝔾</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>1</mn><mi>N</mi></mrow></msub><msub><mi>n</mi><mi>N</mi></msub><mo>+</mo><msub><mi>σ</mi><mrow><mn>1</mn><mi>E</mi></mrow></msub><msub><mi>n</mi><mi>E</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>2</mn><mi>N</mi></mrow></msub><msub><mi>n</mi><mi>N</mi></msub><mo>+</mo><msub><mi>σ</mi><mrow><mn>2</mn><mi>E</mi></mrow></msub><msub><mi>n</mi><mi>E</mi></msub></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><msub><mi>σ</mi><mrow><mn>3</mn><mi>N</mi></mrow></msub><msub><mi>n</mi><mi>N</mi></msub><mo>+</mo><msub><mi>σ</mi><mrow><mn>3</mn><mi>E</mi></mrow></msub><msub><mi>n</mi><mi>E</mi></msub></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow><mo>,</mo></mrow><annotation encoding="application/x-tex">\begin{equation}
-\vec{\mathbf{n}}_\mathbb{S} = \mathsf{A}_{\mathbb{S}\mathbb{G}}\vec{\mathbf{n}}_\mathbb{G} = \begin{pmatrix}
-\sigma_{1N}n_N + \sigma_{1E}n_E\\
-\sigma_{2N}n_N + \sigma_{2E}n_E\\
-\sigma_{3N}n_N + \sigma_{3E}n_E
-\end{pmatrix},
-\end{equation}</annotation></semantics></math></p>
-<p>where, for example,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mrow><mn>1</mn><mi>N</mi></mrow></msub><annotation encoding="application/x-tex">\sigma_{1N}</annotation></semantics></math>
-is the north component of the
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mover><mi>σ</mi><mo accent="true">→</mo></mover><mn>1</mn></msub><annotation encoding="application/x-tex">\vec{\sigma}_1</annotation></semantics></math>
-unit vector. In the principal coordinate system, the stress tensor is
-diagonal</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>𝖲</mi><mi>𝕊</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><mtable><mtr><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">∥</mo></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">∥</mo></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd></mtr><mtr><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mn>0</mn></mtd><mtd columnalign="center" style="text-align: center"><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">∥</mo></mtd></mtr></mtable><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\begin{equation}
-\mathsf{S}_\mathbb{S} = 
-\begin{pmatrix} 
-\lVert \sigma_1 \rVert &amp; 0 &amp; 0 \\
-0 &amp; \lVert\sigma_2\rVert &amp; 0 \\
-0 &amp; 0 &amp; \lVert\sigma_3\rVert
-\end{pmatrix}
-\end{equation}</annotation></semantics></math></p>
-<p>and the normal stress acting on the vertical plane of interest is</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mtable><mtr><mtd columnalign="right" style="text-align: right"><msub><mi>σ</mi><mi>n</mi></msub></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mover><mi>𝐧</mi><mo accent="true">→</mo></mover><mi>𝕊</mi><mi>T</mi></msubsup><msub><mi>𝖲</mi><mi>𝕊</mi></msub><msub><mover><mi>𝐧</mi><mo accent="true">→</mo></mover><mi>𝕊</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">∥</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>σ</mi><mrow><mn>1</mn><mi>N</mi></mrow></msub><msub><mi>n</mi><mi>N</mi></msub><mo>+</mo><msub><mi>σ</mi><mrow><mn>1</mn><mi>E</mi></mrow></msub><msub><mi>n</mi><mi>E</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">∥</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>σ</mi><mrow><mn>2</mn><mi>N</mi></mrow></msub><msub><mi>n</mi><mi>N</mi></msub><mo>+</mo><msub><mi>σ</mi><mrow><mn>2</mn><mi>E</mi></mrow></msub><msub><mi>n</mi><mi>E</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo>+</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">∥</mo><msup><mrow><mo stretchy="true" form="prefix">(</mo><msub><mi>σ</mi><mrow><mn>3</mn><mi>N</mi></mrow></msub><msub><mi>n</mi><mi>N</mi></msub><mo>+</mo><msub><mi>σ</mi><mrow><mn>3</mn><mi>E</mi></mrow></msub><msub><mi>n</mi><mi>E</mi></msub><mo stretchy="true" form="postfix">)</mo></mrow><mn>2</mn></msup><mo stretchy="true" form="postfix">]</mo></mrow><msub><mover><mi>𝐧</mi><mo accent="true">→</mo></mover><mi>𝕊</mi></msub></mtd></mtr><mtr><mtd columnalign="right" style="text-align: right"></mtd><mtd columnalign="left" style="text-align: left"><mo>=</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mi>n</mi></msub><mo stretchy="false" form="postfix">∥</mo><msub><mover><mi>𝐧</mi><mo accent="true">→</mo></mover><mi>𝕊</mi></msub><mi>.</mi></mtd></mtr></mtable><annotation encoding="application/x-tex">\begin{equation}
-\begin{split}
-\sigma_n &amp;= \left( \mathbf{\vec{n}}^T_\mathbb{S} \mathsf{S}_\mathbb{S} \mathbf{\vec{n}}_\mathbb{S} \right)\\
- &amp;= \left[ 
-  \lVert\sigma_1\rVert ( \sigma_{1N}n_N + \sigma_{1E}n_E )^2 +
-  \lVert\sigma_2\rVert ( \sigma_{2N}n_N + \sigma_{2E}n_E )^2 +
- \lVert\sigma_3\rVert (\sigma_{3N}n_N + \sigma_{3E}n_E)^2 
- \right] \mathbf{\vec{n}}_{\mathbb{S}}\\
- &amp;= \lVert\sigma_n\rVert \mathbf{\vec{n}}_\mathbb{S}.
-\end{split}
-\end{equation}</annotation></semantics></math></p>
-<p>This normal stress corresponds to the horizontal stress in the
-direction of
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><mi>𝐧</mi><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\mathbf{\vec{n}}</annotation></semantics></math>.</p>
-<p>We can find the direction of the maximum horizontal stress
-analytically by differentiating the last equation with respect to
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>.</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mfrac><mrow><mi>d</mi><msub><mi>σ</mi><mi>n</mi></msub></mrow><mrow><mi>d</mi><mi>α</mi></mrow></mfrac><mo>=</mo><mrow><mo stretchy="true" form="prefix">[</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">∥</mo><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>σ</mi><mrow><mn>1</mn><mi>E</mi></mrow><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>σ</mi><mrow><mn>1</mn><mi>N</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">∥</mo><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>σ</mi><mrow><mn>2</mn><mi>E</mi></mrow><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>σ</mi><mrow><mn>2</mn><mi>N</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">∥</mo><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>σ</mi><mrow><mn>3</mn><mi>E</mi></mrow><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>σ</mi><mrow><mn>3</mn><mi>N</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="true" form="postfix">]</mo></mrow><mo>sin</mo><mrow><mn>2</mn><mi>α</mi></mrow><mo>+</mo><mn>2</mn><mrow><mo stretchy="true" form="prefix">[</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">∥</mo><msub><mi>σ</mi><mrow><mn>1</mn><mi>N</mi></mrow></msub><msub><mi>σ</mi><mrow><mn>1</mn><mi>E</mi></mrow></msub><mo>+</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">∥</mo><msub><mi>σ</mi><mrow><mn>2</mn><mi>N</mi></mrow></msub><msub><mi>σ</mi><mrow><mn>2</mn><mi>E</mi></mrow></msub><mo>+</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">∥</mo><msub><mi>σ</mi><mrow><mn>3</mn><mi>N</mi></mrow></msub><msub><mi>σ</mi><mrow><mn>3</mn><mi>E</mi></mrow></msub><mo stretchy="true" form="postfix">]</mo></mrow><mo>cos</mo><mrow><mn>2</mn><mi>α</mi></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{equation}
-\frac{d\sigma_n}{d\alpha} = \left[
-\lVert\sigma_1\rVert ( \sigma_{1E}^2 - \sigma_{1N}^2 ) + 
-\lVert\sigma_2\rVert ( \sigma_{2E}^2 - \sigma_{2N}^2 ) +
-\lVert\sigma_3\rVert ( \sigma_{3E}^2 - \sigma_{3N}^2 )
-\right] \sin{2\alpha} + 
-2 \left[\lVert\sigma_1\rVert \sigma_{1N} \sigma_{1E} + \lVert\sigma_2\rVert \sigma_{2N} \sigma_{2E} + \lVert\sigma_3\rVert \sigma_{3N} \sigma_{3E} \right] \cos{2\alpha}.
-\end{equation}</annotation></semantics></math></p>
-<table class="table">
-<caption>Table 1 Summary of the conditions under which the denominator
-of eq. (11) equals zero.
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>H</mi></msub><annotation encoding="application/x-tex">\alpha_H</annotation></semantics></math>
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\alpha_1</annotation></semantics></math>
-denote the trends of the axis of maximum horizontal stress,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mi>H</mi></msub><annotation encoding="application/x-tex">\sigma_H</annotation></semantics></math>,
-and the principal axis of maximum compressive stress,
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><msub><mi>𝛔</mi><mn>𝟏</mn></msub><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\mathbf{\vec{\sigma_1}}</annotation></semantics></math>,
-respectively.</caption>
-<colgroup>
-<col width="50%">
-<col width="50%">
-</colgroup>
-<thead><tr class="header">
-<th>Condition</th>
-<th>Interpretation</th>
-</tr></thead>
-<tbody>
-<tr class="odd">
-<td>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mrow><mn>1</mn><mi>N</mi></mrow></msub><mo>=</mo><mo>±</mo><msub><mi>σ</mi><mrow><mn>1</mn><mi>E</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\sigma_{1N} = \pm \sigma_{1E}</annotation></semantics></math>
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">R = 1</annotation></semantics></math>
-</td>
-<td>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝕊</mi><mi>H</mi></msub><annotation encoding="application/x-tex">\mathbb{S}_H</annotation></semantics></math>
-undefined if
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mover><msub><mi>𝛔</mi><mn>𝟏</mn></msub><mo accent="true">→</mo></mover><annotation encoding="application/x-tex">\mathbf{\vec{\sigma_1}}</annotation></semantics></math>
-vertical, else
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mi>H</mi></msub><mo>=</mo><msub><mi>α</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\alpha_H = \alpha_1</annotation></semantics></math>
-(45<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi></mi><mo>∘</mo></msup><annotation encoding="application/x-tex">^{\circ}</annotation></semantics></math>
-or 135°)</td>
-</tr>
-<tr class="even">
-<td>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mrow><mn>1</mn><mi>N</mi></mrow></msub><mo>=</mo><mo>±</mo><msub><mi>σ</mi><mrow><mn>1</mn><mi>E</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\sigma_{1N} = \pm \sigma_{1E}</annotation></semantics></math>
-and
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mrow><mn>2</mn><mi>N</mi></mrow></msub><mo>=</mo><mo>±</mo><msub><mi>σ</mi><mrow><mn>2</mn><mi>E</mi></mrow></msub></mrow><annotation encoding="application/x-tex">\sigma_{2N} = \pm \sigma_{2E}</annotation></semantics></math>
-</td>
-<td>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝕊</mi><mi>H</mi></msub><annotation encoding="application/x-tex">\mathbb{S}_H</annotation></semantics></math>
-undefined if
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">R = 0</annotation></semantics></math>,
-else
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mi>H</mi></msub><mo>=</mo><msub><mi>α</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\alpha_H = \alpha_1</annotation></semantics></math>
-(45<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi></mi><mo>∘</mo></msup><annotation encoding="application/x-tex">^{\circ}</annotation></semantics></math>
-or 135°)</td>
-</tr>
-<tr class="odd">
-<td><math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>σ</mi><mrow><mn>1</mn><mi>N</mi></mrow><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>σ</mi><mrow><mn>1</mn><mi>E</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mrow><mo stretchy="true" form="prefix">(</mo><mn>1</mn><mo>−</mo><mi>R</mi><mo stretchy="true" form="postfix">)</mo></mrow><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>σ</mi><mrow><mn>2</mn><mi>N</mi></mrow><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>σ</mi><mrow><mn>2</mn><mi>E</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">(\sigma_{1N}^2 - \sigma_{1E}^2) + (1 - R)(\sigma_{2N}^2 - \sigma_{2E}^2) = 0</annotation></semantics></math></td>
-<td>
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>𝕊</mi><mi>H</mi></msub><annotation encoding="application/x-tex">\mathbb{S}_H</annotation></semantics></math>
-undefined if
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>R</mi><mo>=</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">R = 0</annotation></semantics></math>,
-else
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mi>H</mi></msub><mo>=</mo><msub><mi>α</mi><mn>1</mn></msub></mrow><annotation encoding="application/x-tex">\alpha_H = \alpha_1</annotation></semantics></math>
-(45<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msup><mi></mi><mo>∘</mo></msup><annotation encoding="application/x-tex">^{\circ}</annotation></semantics></math>
-or 135°)</td>
-</tr>
-</tbody>
-</table>
-<p>In general (cf. Table 1),
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mi>n</mi></msub><annotation encoding="application/x-tex">\sigma_n</annotation></semantics></math>
-has one maximum and one minimum in the interval
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mn>0</mn><mo>≤</mo><mi>α</mi><mo>≤</mo><mi>π</mi></mrow><annotation encoding="application/x-tex">0 \leq \alpha \leq \pi</annotation></semantics></math>
-and setting the derivative in the last equation to zero, we find these
-stationary points:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mo>tan</mo><mrow><mn>2</mn><mi>α</mi></mrow><mo>=</mo><mfrac><mrow><mn>2</mn><mrow><mo stretchy="true" form="prefix">(</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">∥</mo><msub><mi>σ</mi><mrow><mn>1</mn><mi>N</mi></mrow></msub><msub><mi>σ</mi><mrow><mn>1</mn><mi>E</mi></mrow></msub><mo>+</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">∥</mo><msub><mi>σ</mi><mrow><mn>2</mn><mi>N</mi></mrow></msub><msub><mi>σ</mi><mrow><mn>2</mn><mi>E</mi></mrow></msub><mo>+</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">∥</mo><msub><mi>σ</mi><mrow><mn>3</mn><mi>N</mi></mrow></msub><msub><mi>σ</mi><mrow><mn>3</mn><mi>E</mi></mrow></msub><mo stretchy="true" form="postfix">)</mo></mrow></mrow><mrow><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>1</mn></msub><mo stretchy="false" form="postfix">∥</mo><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>σ</mi><mrow><mn>1</mn><mi>E</mi></mrow><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>σ</mi><mrow><mn>1</mn><mi>N</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>2</mn></msub><mo stretchy="false" form="postfix">∥</mo><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>σ</mi><mrow><mn>2</mn><mi>E</mi></mrow><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>σ</mi><mrow><mn>2</mn><mi>N</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow><mo>+</mo><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">∥</mo><mrow><mo stretchy="true" form="prefix">(</mo><msubsup><mi>σ</mi><mrow><mn>3</mn><mi>E</mi></mrow><mn>2</mn></msubsup><mo>−</mo><msubsup><mi>σ</mi><mrow><mn>3</mn><mi>N</mi></mrow><mn>2</mn></msubsup><mo stretchy="true" form="postfix">)</mo></mrow></mrow></mfrac><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{equation}
-\tan{2\alpha} = \frac{
-2 ( \lVert\sigma_1\rVert \sigma_{1N} \sigma_{1E} + \lVert\sigma_2\rVert \sigma_{2N} \sigma_{2E} + \lVert\sigma_3\rVert \sigma_{3N} \sigma_{3E} )}{\lVert\sigma_1\rVert ( \sigma_{1E}^2 - \sigma_{1N}^2 ) + 
-\lVert\sigma_2\rVert ( \sigma_{2E}^2 - \sigma_{2N}^2 ) +
-\lVert\sigma_3\rVert ( \sigma_{3E}^2 - \sigma_{3N}^2 )}.
-\end{equation}</annotation></semantics></math></p>
-<p>Using the second derivative of
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mi>n</mi></msub><annotation encoding="application/x-tex">\sigma_n</annotation></semantics></math>
-with respect to
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>α</mi><annotation encoding="application/x-tex">\alpha</annotation></semantics></math>
-we can determine whether
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>σ</mi><mi>n</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow></mrow><annotation encoding="application/x-tex">\sigma_n (\alpha)</annotation></semantics></math>
-yields a maximum or a minimum value, and identify the
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mi>H</mi></msub><annotation encoding="application/x-tex">\sigma_H</annotation></semantics></math>
-trend
-(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>α</mi><mi>H</mi></msub><annotation encoding="application/x-tex">\alpha_H</annotation></semantics></math>)
-accordingly:</p>
-<p><math display="block" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>α</mi><mi>H</mi></msub><mo>=</mo><mrow><mo stretchy="true" form="prefix">{</mo><mtable><mtr><mtd columnalign="left" style="text-align: left"><mi>α</mi></mtd><mtd columnalign="left" style="text-align: left"><mrow><mtext mathvariant="normal">if </mtext><mspace width="0.333em"></mspace></mrow><mrow><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mi>n</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="false" form="postfix">∥</mo></mrow><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> is a maximum</mtext></mrow></mtd></mtr><mtr><mtd columnalign="left" style="text-align: left"><mi>α</mi><mo>+</mo><mi>π</mi><mi>/</mi><mn>2</mn></mtd><mtd columnalign="left" style="text-align: left"><mrow><mtext mathvariant="normal">if </mtext><mspace width="0.333em"></mspace></mrow><mrow><mo stretchy="false" form="prefix">∥</mo><msub><mi>σ</mi><mi>n</mi></msub><mrow><mo stretchy="true" form="prefix">(</mo><mi>α</mi><mo stretchy="true" form="postfix">)</mo></mrow><mo stretchy="false" form="postfix">∥</mo></mrow><mrow><mspace width="0.333em"></mspace><mtext mathvariant="normal"> is a minimum</mtext></mrow></mtd></mtr></mtable></mrow><mi>.</mi></mrow><annotation encoding="application/x-tex">\begin{equation}
-\alpha_H = 
-\begin{cases}
-\alpha &amp; \text{if $\lVert\sigma_n (\alpha)\rVert$ is a maximum} \\
-\alpha + \pi/2 &amp; \text{if $\lVert\sigma_n (\alpha)\rVert$ is a minimum} 
-\end{cases}.
-\end{equation}</annotation></semantics></math></p>
-<div class="section level4">
-<h4 id="code">Code<a class="anchor" aria-label="anchor" href="#code"></a>
-</h4>
-<p>Define the orientation of the principle stress axes:</p>
+10.1111/j.1365-246X.2007.03468.x&lt;/p&gt;"><sup>5</sup></a>.</p>
+<p>First, we define the orientation of the principle stress axes:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">S1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">250.89</span>, <span class="fl">70.07</span><span class="op">)</span></span>
 <span><span class="va">S3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">103.01</span>, <span class="fl">17.07</span><span class="op">)</span></span></code></pre></div>
-<p>To get S2 - which is perpendicular to S1 and S3, we calculate the
-cross-product of the two vectors:</p>
+<p>To get
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mn>2</mn></msub><annotation encoding="application/x-tex">\sigma_2</annotation></semantics></math>
+- which is perpendicular to
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mn>1</mn></msub><annotation encoding="application/x-tex">\sigma_1</annotation></semantics></math>
+and
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mn>3</mn></msub><annotation encoding="application/x-tex">\sigma_3</annotation></semantics></math>,
+we calculate the cross-product of the two vectors:</p>
 <div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">S2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">S3</span>, <span class="va">S1</span><span class="op">)</span></span></code></pre></div>
-<p>The azimuth of SHmax for a given stress ratio <code>R = 1</code>:</p>
+<p>The azimuth of
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mtext mathvariant="normal">Hmax</mtext></msub><annotation encoding="application/x-tex">\sigma_\text{Hmax}</annotation></semantics></math>
+for a given stress ratio <code>R = 1</code>:</p>
 <div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.html">SH</a></span><span class="op">(</span><span class="va">S1</span>, <span class="va">S2</span>, <span class="va">S3</span>, R <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># in degrees</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 70.89</span></span></code></pre>
@@ -587,7 +518,9 @@ cross-product of the two vectors:</p>
 <span><span class="co">##  [9,] 0.8 28.23884</span></span>
 <span><span class="co">## [10,] 0.9 45.01043</span></span>
 <span><span class="co">## [11,] 1.0 70.89000</span></span></code></pre>
-<p>And the SHmax for the slip inversion result from above:</p>
+<p>The
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mtext mathvariant="normal">Hmax</mtext></msub><annotation encoding="application/x-tex">\sigma_\text{Hmax}</annotation></semantics></math>
+for our slip inversion result from above:</p>
 <div class="sourceCode" id="cb35"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.html">SH</a></span><span class="op">(</span></span>
 <span>  S1 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>,</span>
@@ -596,7 +529,6 @@ cross-product of the two vectors:</p>
 <span>  R <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">R</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 60.80844</span></span></code></pre>
-</div>
 </div>
 </div>
 <div class="section level2">

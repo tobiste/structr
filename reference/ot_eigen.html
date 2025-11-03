@@ -61,7 +61,13 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ot_eigen</span><span class="op">(</span><span class="va">x</span>, scaled <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ot_eigen</span><span class="op">(</span><span class="va">x</span>, scaled <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'spherical'</span></span>
+<span><span class="fu">ot_eigen</span><span class="op">(</span><span class="va">x</span>, scaled <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'ortensor'</span></span>
+<span><span class="fu">ot_eigen</span><span class="op">(</span><span class="va">x</span>, scaled <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -69,8 +75,8 @@
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>object of class <code>"Vec3"</code>, <code>"Line"</code>, <code>"Ray"</code>, or <code>"Plane"</code>, where the
-rows are the observations and the columns are the coordinates.</p></dd>
+<dd><p>either an object of class <code>"Vec3"</code>, <code>"Line"</code>, <code>"Ray"</code>, or <code>"Plane"</code>, where the
+rows are the observations and the columns are the coordinates, or an <code>"ortensor"</code> object.</p></dd>
 
 
 <dt id="arg-scaled">scaled<a class="anchor" aria-label="anchor" href="#arg-scaled"></a></dt>
@@ -79,7 +85,7 @@ Eigenvalues (only effective if <code>x</code> is in Cartesian coordinates).</p><
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>additional arguments passed to <code><a href="ortensor.html">ortensor()</a></code>.</p></dd>
+<dd><p>additional arguments passed to <code><a href="ortensor.html">ortensor()</a></code> (ignored if <code>x</code> is <code>"ortensor"</code> object).</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -94,7 +100,9 @@ Eigenvalues (only effective if <code>x</code> is in Cartesian coordinates).</p><
 </dl></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="ortensor.html">ortensor()</a></code></p></div>
+    <div class="dont-index"><p>Other ortensor:
+<code><a href="ortensor.html">ortensor</a>()</code>,
+<code><a href="strain_shape.html">strain_shape</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -106,14 +114,14 @@ Eigenvalues (only effective if <code>x</code> is in Cartesian coordinates).</p><
 <span class="r-in"><span><span class="va">x_eigen</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> eigen() decomposition</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $values</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.50728225 0.44931162 0.04340613</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.53387096 0.41662695 0.04950209</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $vectors</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Vector (Vec3) object (n = 3):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              x            y          z</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.8693159 -0.003890268 -0.4942416</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.4149276  0.549090456  0.7254893</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.2685610 -0.835753873  0.4789472</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>               x          y          z</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.7874558 -0.0816992 -0.6109326</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.5438492  0.5585544  0.6262946</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.2900713  0.8254346 -0.4842690</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, col <span class="op">=</span> <span class="st">"grey"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">mu</span>, col <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span></span>

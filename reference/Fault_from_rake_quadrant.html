@@ -101,20 +101,25 @@
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p><code>type=="plunge"</code> This is the angle measured in the fault plane between the
-strike given by either right or left hand rule and the lineation.
+strike given by either right or left-hand rule and the lineation.
 The angle is recorded in a clockwise sense (looking down upon the fault plane) and has a range
 from 0 to 180%deg;. The quadrant of plunge indicates the direction
-of the strike from which the angle of pitch is measured.</p>
-<p><code>type=="rake"</code> Rake is the acute angle measured in the fault plane between the strike of the fault and the
+of the strike from which the rake angle is measured. The <code>sense</code> argument is
+ignored, as it it implied by the sign of the rake.</p>
+<p><code>type=="rake"</code> Rake is the <strong>acute</strong> angle measured in the fault plane between the strike of the fault and the
 lineation . Starting from the strike line, the angle is measured in a sense
-which is down the dip of the plane. Quadrant of pitch The variable is used to
-indicate the direction of the strike from which the angle of pitch is measured.
-Angle ranges from 0 to 90 °</p>
+which is down the dip of the plane. Quadrant of rake indicate the direction of
+the strike  from which the rake angle is measured, i.e. whether right-hand or left-handrule is followed.
+Angle ranges from 0 to 90 °. Use <code>sense</code> argument to specify the sense of motion.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="azimuth_to_cardinal.html">azimuth_to_cardinal()</a></code> to convert azimuth to cardinal directions,
-<code><a href="quadrant2dd.html">quadrant2dd()</a></code> to define a plane using the strike and dip quadrant notation</p></div>
+    <div class="dont-index"><p>Other parse-orientations:
+<code><a href="azimuth_to_cardinal.html">azimuth_to_cardinal</a>()</code>,
+<code><a href="quadrant2dd.html">quadrant2dd</a>()</code>,
+<code><a href="sense_from_strikeslip.html">sense_from_strikeslip</a>()</code>,
+<code><a href="split_trailing_letters.html">split_trailing_letters</a>()</code>,
+<code><a href="strikeslip_kinematics.html">strikeslip_kinematics</a>()</code></p></div>
     </div>
 
     <div class="section level2">

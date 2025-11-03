@@ -82,7 +82,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-11-02</h4>
+            <h4 data-toc-skip class="date">2025-11-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/Strain_Analysis.Rmd" class="external-link"><code>vignettes/Strain_Analysis.Rmd</code></a></small>
       <div class="d-none name"><code>Strain_Analysis.Rmd</code></div>
@@ -160,7 +160,7 @@ linear or logarithmic.</p>
 <span><span class="va">R_XY</span> <span class="op">&lt;-</span> <span class="va">holst</span><span class="op">[</span>, <span class="st">"R_XY"</span><span class="op">]</span></span>
 <span><span class="va">R_YZ</span> <span class="op">&lt;-</span> <span class="va">holst</span><span class="op">[</span>, <span class="st">"R_YZ"</span><span class="op">]</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/flinn_plot.html">flinn_plot</a></span><span class="op">(</span><span class="va">R_XY</span>, <span class="va">R_YZ</span>, log <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/flinn_plot.html">flinn_plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">R_XY</span>, <span class="va">R_YZ</span><span class="op">)</span>, log <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Strain_Analysis_files/figure-html/flinn-1.png" alt="Flinn diagram" width="700"></p>
 <p>or the <strong>Hsu diagram</strong><a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Hsu, T. C. (1966). The characteristics of coaxial and
 non-coaxial strain paths. Journal of Strain Analysis, 1(3), 216–222. &lt;a href="https://doi.org/10.1243/03093247V013216" class="external-link uri"&gt;https://doi.org/10.1243/03093247V013216&lt;/a&gt;&lt;/p&gt;'><sup>6</sup></a> using the natural
@@ -172,7 +172,7 @@ Hauptspannung auf das Fließen der Metalle Eisen. Kupfer und Nickel.
 Zeitschrift Für Physik, 36(11–12), 913–939. &lt;a href="https://doi.org/10.1007/BF01400222" class="external-link uri"&gt;https://doi.org/10.1007/BF01400222&lt;/a&gt;&lt;/p&gt;'><sup>8</sup></a>
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ν</mi><annotation encoding="application/x-tex">\nu</annotation></semantics></math>):</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">R_XY</span>, <span class="va">R_YZ</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">R_XY</span>, <span class="va">R_YZ</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Strain_Analysis_files/figure-html/hsu-1.png" alt="Hsu diagram" width="700"></p>
 </div>
 <div class="section level2">

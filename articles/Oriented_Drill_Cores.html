@@ -82,7 +82,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-11-02</h4>
+            <h4 data-toc-skip class="date">2025-11-03</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/Oriented_Drill_Cores.Rmd" class="external-link"><code>vignettes/Oriented_Drill_Cores.Rmd</code></a></small>
       <div class="d-none name"><code>Oriented_Drill_Cores.Rmd</code></div>
@@ -129,13 +129,15 @@ projection:</p>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># plot the core axis' azimuth and inclination)</span></span>
-<span><span class="fu"><a href="../reference/stereo_point.html">stereo_point</a></span><span class="op">(</span><span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="va">azi</span>, <span class="va">inc</span><span class="op">)</span>, lab <span class="op">=</span> <span class="st">"core-axis"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="va">azi</span>, <span class="va">inc</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="va">azi</span>, <span class="va">inc</span><span class="op">)</span>, lab <span class="op">=</span> <span class="st">"core-axis"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># plot the plane orientations as poles...</span></span>
-<span><span class="fu"><a href="../reference/stereo_point.html">stereo_point</a></span><span class="op">(</span><span class="va">planes_AB</span>, lab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679FF"</span>, <span class="st">"#FB8861FF"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">planes_AB</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679FF"</span>, <span class="st">"#FB8861FF"</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">planes_AB</span>, lab <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"A"</span>, <span class="st">"B"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679FF"</span>, <span class="st">"#FB8861FF"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># ... and as great circles</span></span>
-<span><span class="fu"><a href="../reference/stereo_cones.html">stereo_greatcircle</a></span><span class="op">(</span><span class="va">planes_AB</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679FF"</span>, <span class="st">"#FB8861FF"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">planes_AB</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679FF"</span>, <span class="st">"#FB8861FF"</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Oriented_Drill_Cores_files/figure-html/stereonet-1.png" alt="Diagram showing the orientation of the drillcore in a equal-area projection" width="700"></p>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

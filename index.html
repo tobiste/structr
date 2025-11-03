@@ -193,20 +193,22 @@
 <span><span class="fu"><a href="reference/vollmer_plot.html">vollmer_plot</a></span><span class="op">(</span><span class="va">example_lines</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span>, pch <span class="op">=</span> <span class="fl">16</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Fabric plot of Vollmer (1990)"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="reference/hsu_fabric_plot.html">hsu_fabric_plot</a></span><span class="op">(</span><span class="va">example_planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/hsu_fabric_plot.html">hsu_fabric_plot</a></span><span class="op">(</span><span class="va">example_lines</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span>, pch <span class="op">=</span> <span class="fl">16</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">example_planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
+<p><img src="reference/figures/README-stereo_ortensor-1.png" width="100%"></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">example_lines</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span>, pch <span class="op">=</span> <span class="fl">16</span>, add <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span></span>
 <span>  <span class="fl">2.5</span>, <span class="op">-</span><span class="fl">.25</span>,</span>
 <span>  xjust <span class="op">=</span> <span class="fl">.5</span>, horiz <span class="op">=</span> <span class="cn">TRUE</span>, xpd <span class="op">=</span> <span class="cn">NA</span>,</span>
 <span>  legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Planes"</span>, <span class="st">"Lines"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#000004"</span>, <span class="st">"#B63679FF"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-stereo_ortensor-1.png" width="100%"></p>
+<p><img src="reference/figures/README-stereo_ortensor-2.png" width="100%"></p>
 <div class="section level4">
 <h4 id="best-fit-great-and-small-circles-geodesic-regression">Best-fit great and small-circles (geodesic regression)<a class="anchor" aria-label="anchor" href="#best-fit-great-and-small-circles-geodesic-regression"></a>
 </h4>
 <p>Finds the best-fit great or small-circle for a given set of vectors by applying geodesic regression:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20250411</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"gray_example"</span><span class="op">)</span></span>
 <span><span class="va">cleavage</span> <span class="op">&lt;-</span> <span class="va">gray_example</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">8</span>, <span class="op">]</span></span>
@@ -249,7 +251,7 @@
 <h3 id="fault-plots">Fault plots<a class="anchor" aria-label="anchor" href="#fault-plots"></a>
 </h3>
 <p>Graphical representation of fault-slip data using Angelier plot (slip vector on fault plane great circle) and Hoeppener plot (fault slip vector projected on pole to fault plane):</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"angelier1990"</span><span class="op">)</span></span>
 <span><span class="va">faults</span> <span class="op">&lt;-</span> <span class="va">angelier1990</span><span class="op">$</span><span class="va">TYM</span></span>
 <span></span>
@@ -265,11 +267,11 @@
 <h3 id="fault-slip-inversion">Fault-slip inversion<a class="anchor" aria-label="anchor" href="#fault-slip-inversion"></a>
 </h3>
 <p>Compute deviatoric stress tensor and calculate 95% confidence intervals using bootstrap samples:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20250411</span><span class="op">)</span></span>
 <span><span class="va">faults_stress</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/slip_inversion.html">slip_inversion</a></span><span class="op">(</span><span class="va">faults</span>, boot <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <p>Visualize the slip inversion results (orientation of principal stresses):</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#000004FF"</span>, <span class="st">"#B63679FF"</span>, <span class="st">"#FEC287FF"</span><span class="op">)</span></span>
 <span><span class="va">R_val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">faults_stress</span><span class="op">$</span><span class="va">R</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">R_CI</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">faults_stress</span><span class="op">$</span><span class="va">R_conf</span>, <span class="fl">2</span><span class="op">)</span></span>
@@ -289,7 +291,7 @@
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-stereo_inversion_plot-1.png" width="100%"></p>
 <p>Visualize the accuracy of the slip inversion by showing the deviation angle (β) between the theoretical slip and the actual slip vector:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">beta</span> <span class="op">&lt;-</span> <span class="va">faults_stress</span><span class="op">$</span><span class="va">fault_data</span><span class="op">$</span><span class="va">beta</span></span>
 <span><span class="va">beta_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">faults_stress</span><span class="op">$</span><span class="va">beta</span><span class="op">)</span></span>
 <span><span class="va">beta_CI</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">faults_stress</span><span class="op">$</span><span class="va">beta_CI</span><span class="op">)</span></span>
@@ -306,7 +308,7 @@
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-stereo_inversion_deviation-1.png" width="100%"></p>
 <p>Azimuth of the maximum horizontal stress (in degrees) for the slip inversion result:</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Simply call</span></span>
 <span><span class="co"># faults_stress$SHmax</span></span>
 <span><span class="co"># faults_stress$SHmax_CI # confidence interval</span></span>
@@ -323,7 +325,7 @@
 <h3 id="mohr-circles">Mohr circles<a class="anchor" aria-label="anchor" href="#mohr-circles"></a>
 </h3>
 <p>The Mohr circle for the slip inversion result:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="reference/Mohr_plot.html">Mohr_plot</a></span><span class="op">(</span></span>
 <span>  sigma1 <span class="op">=</span> <span class="va">faults_stress</span><span class="op">$</span><span class="va">principal_vals</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
 <span>  sigma2 <span class="op">=</span> <span class="va">faults_stress</span><span class="op">$</span><span class="va">principal_vals</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>,</span>
@@ -342,7 +344,7 @@
 <h4 id="id_2d-strain">2D Strain<a class="anchor" aria-label="anchor" href="#id_2d-strain"></a>
 </h4>
 <p>Aspect ratio of finite strain ellipses vs orientation of long-axis (Rf/ϕ)</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">ramsay</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
@@ -354,14 +356,14 @@
 <h4 id="id_3d-strain">3D Strain<a class="anchor" aria-label="anchor" href="#id_3d-strain"></a>
 </h4>
 <p>Finite strain ellipsoids plotted in Flinn diagram and Hsu diagram:</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="st">"holst"</span><span class="op">)</span></span>
 <span><span class="va">R_XY</span> <span class="op">&lt;-</span> <span class="va">holst</span><span class="op">[</span>, <span class="st">"R_XY"</span><span class="op">]</span></span>
 <span><span class="va">R_YZ</span> <span class="op">&lt;-</span> <span class="va">holst</span><span class="op">[</span>, <span class="st">"R_YZ"</span><span class="op">]</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/flinn_plot.html">flinn_plot</a></span><span class="op">(</span><span class="va">R_XY</span>, <span class="va">R_YZ</span>, log <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
-<span><span class="fu"><a href="reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">R_XY</span>, <span class="va">R_YZ</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="reference/flinn_plot.html">flinn_plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">R_XY</span>, <span class="va">R_YZ</span><span class="op">)</span>, log <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
+<span><span class="fu"><a href="reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">R_XY</span>, <span class="va">R_YZ</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-strain3D-1.png" width="100%"></p>
 </div>
 </div>
@@ -369,7 +371,7 @@
 <h3 id="vorticity-analysis">Vorticity analysis<a class="anchor" aria-label="anchor" href="#vorticity-analysis"></a>
 </h3>
 <p>Aspect ratio of finite strain ellipses of porphyroclasts vs orientation of long-axis with respect to foliation plotted in the <strong>Rigid Grain Net</strong></p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">shebandowan</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20250411</span><span class="op">)</span></span>
 <span></span>

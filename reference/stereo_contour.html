@@ -143,7 +143,21 @@ the counts, and the density.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="count_points.html">count_points()</a></code>, <a href="density.html">density</a></p></div>
+    <div class="dont-index"><p><code><a href="count_points.html">count_points()</a></code>, <a href="density.html">density</a></p>
+<p>Other stereo-plot:
+<code><a href="fault-plot.html">fault-plot</a></code>,
+<code><a href="lines.spherical.html">lines.spherical</a>()</code>,
+<code><a href="plot-spherical.html">plot-spherical</a></code>,
+<code><a href="points.spherical.html">points.spherical</a>()</code>,
+<code><a href="stereo_arrows.html">stereo_arrows</a>()</code>,
+<code><a href="stereo_cones.html">stereo_cones</a></code>,
+<code><a href="stereo_confidence.html">stereo_confidence</a>()</code>,
+<code><a href="stereo_point.html">stereo_point</a>()</code>,
+<code><a href="stereo_segment.html">stereo_segment</a>()</code>,
+<code><a href="stereoplot.html">stereoplot</a>()</code>,
+<code><a href="stereoplot_guides.html">stereoplot_guides</a>()</code>,
+<code><a href="stereoplot_ticks.html">stereoplot_ticks</a>()</code>,
+<code><a href="text.spherical.html">text.spherical</a>()</code></p></div>
     </div>
 
     <div class="section level2">
@@ -169,7 +183,7 @@ the counts, and the density.</p>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">wp</span> <span class="op">&lt;-</span> <span class="fl">6</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">example_planes_df</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span>, <span class="fl">6</span>, <span class="va">example_planes_df</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">my_planes</span> <span class="op">&lt;-</span> <span class="fu"><a href="classes.html">Plane</a></span><span class="op">(</span><span class="va">example_planes_df</span><span class="op">$</span><span class="va">dipdir</span>, <span class="va">example_planes_df</span><span class="op">$</span><span class="va">dip</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">fabric_p</span> <span class="op">&lt;-</span> <span class="fu"><a href="strain_shape.html">or_shape_params</a></span><span class="op">(</span><span class="va">my_planes</span><span class="op">)</span><span class="op">$</span><span class="va">Vollmer</span><span class="op">[</span><span class="st">"D"</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">fabric_p</span> <span class="op">&lt;-</span> <span class="fu"><a href="strain_shape.html">shape_params</a></span><span class="op">(</span><span class="va">my_planes</span><span class="op">)</span><span class="op">$</span><span class="va">Vollmer</span><span class="op">[</span><span class="st">"D"</span><span class="op">]</span></span></span>
 <span class="r-in"><span><span class="va">my_planes_eig</span> <span class="op">&lt;-</span> <span class="fu"><a href="ot_eigen.html">ot_eigen</a></span><span class="op">(</span><span class="va">my_planes</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"grey96"</span><span class="op">)</span></span></span>
@@ -187,7 +201,7 @@ the counts, and the density.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">my_lines</span> <span class="op">&lt;-</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="va">example_lines_df</span><span class="op">$</span><span class="va">trend</span>, <span class="va">example_lines_df</span><span class="op">$</span><span class="va">plunge</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">wl</span> <span class="op">&lt;-</span> <span class="fl">6</span> <span class="op">/</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">example_lines_df</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span>, <span class="fl">6</span>, <span class="va">example_lines_df</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">fabric_l</span> <span class="op">&lt;-</span> <span class="fu"><a href="strain_shape.html">or_shape_params</a></span><span class="op">(</span><span class="va">my_lines</span><span class="op">)</span><span class="op">$</span><span class="va">Vollmer</span><span class="op">[</span><span class="st">"D"</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">fabric_l</span> <span class="op">&lt;-</span> <span class="fu"><a href="strain_shape.html">shape_params</a></span><span class="op">(</span><span class="va">my_lines</span><span class="op">)</span><span class="op">$</span><span class="va">Vollmer</span><span class="op">[</span><span class="st">"D"</span><span class="op">]</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"grey96"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">my_lines</span>, col <span class="op">=</span> <span class="st">"grey"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span></span>
