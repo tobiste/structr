@@ -8,7 +8,7 @@ fabric_indexes(x)
 }
 \arguments{
 \item{x}{object of class \code{"ortensor"}, \code{"ellipsoid"}, or
-\code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the rows are the
+\code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"} where the rows are the
 observations and the columns are the coordinates.}
 }
 \value{

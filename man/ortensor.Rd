@@ -4,26 +4,42 @@
 \alias{ortensor}
 \alias{is.ortensor}
 \alias{as.ortensor}
-\alias{ortensor.spherical}
+\alias{ortensor.Vec3}
+\alias{ortensor.Line}
+\alias{ortensor.Ray}
+\alias{ortensor.Plane}
+\alias{ortensor.Pair}
 \title{Orientation tensor}
 \usage{
 is.ortensor(object)
 
 as.ortensor(object)
 
-\method{ortensor}{spherical}(x, norm = TRUE, w = NULL)
+ortensor(x, norm, w, shift)
 
-ortensor(x, norm = TRUE, w = NULL)
+\method{ortensor}{Vec3}(x, norm = TRUE, w = NULL, shift = NULL)
+
+\method{ortensor}{Line}(x, norm = TRUE, w = NULL, shift = NULL)
+
+\method{ortensor}{Ray}(x, norm = TRUE, w = NULL, shift = NULL)
+
+\method{ortensor}{Plane}(x, norm = TRUE, w = NULL, shift = NULL)
+
+\method{ortensor}{Pair}(x, norm = TRUE, w = NULL, shift = FALSE)
 }
 \arguments{
 \item{object}{3x3 matrix}
 
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
-rows are the observations and the columns are the coordinates.}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"},
+where the rows are the observations and the columns are the coordinates.}
 
 \item{norm}{logical. Whether the tensor should be normalized or not.}
 
 \item{w}{numeric. weightings}
+
+\item{shift.}{logical. Only for \code{"Pair"} objects: Tensor is by default shifted towards positive
+eigenvalues, so it could be used as Scheidegger orientation tensor for
+plotting. When original Lisle tensor is needed, set shift to \code{FALSE}.}
 }
 \value{
 \code{ortensor()} returns an object of class \code{"ortensor"}
@@ -46,6 +62,9 @@ ortensor(x, w = runif(nrow(x)))
 
 test <- as.ortensor(diag(3))
 is.ortensor(test)
+
+# Orientation tensor for Pairs
+ortensor(angelier1990$TYM)
 }
 \references{
 Watson, G. S. (1966). The Statistics of Orientation Data. The Journal of
@@ -55,6 +74,9 @@ Scheidegger, A. E. (1964). The tectonic stress and tectonic motion direction
 in Europe and Western Asia as calculated from earthquake fault plane solutions.
 Bulletin of the Seismological Society of America, 54(5A), 1519–1528.
 \doi{10.1785/BSSA05405A1519}
+
+Lisle, R. (1989). The Statistical Analysis of Orthogonal Orientation Data.
+The Journal of Geology, 97(3), 360-364.
 }
 \seealso{
 \code{\link[=inertia_tensor]{inertia_tensor()}}

@@ -233,7 +233,7 @@ woodcock_plot <- function(x, labels = NULL, add = FALSE, max = 7, ...) {
 #'
 #' @returns plot and when stored as object, a list containing the Lode parameter `lode` and the natural octahedral strain `es`.
 #' @family fabric-plot
-#' @seealso [ell_lode()] for Lode parameter, and [ell_nadai] for natural octahedral strain.
+#' @seealso [lode()] for Lode parameter, and [nadai] for natural octahedral strain.
 #'
 #' @name hsu_plot
 #'
@@ -288,10 +288,10 @@ hsu_plot.ortensor <- function(x, labels = NULL, add = FALSE, es.max = 3, main = 
   # K <- log(R_XY) / log(R_YZ) # Hossack 1968
   # lode <- (1 - K) / (1 + K)
 
-  es <- ell_nadai(x_eigen)
+  es <- nadai(x_eigen)
   es.max <- if (is.null(es.max)) max(es) else es.max
 
-  lode <- ell_lode(x_eigen)
+  lode <- lode(x_eigen)
 
   if (isFALSE(add)) {
     hsu_plot.default(cbind(0, 0), es.max = es.max)

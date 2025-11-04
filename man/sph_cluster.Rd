@@ -12,8 +12,8 @@ sph_cluster(
 )
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
-rows are the observations and the columns are the coordinates.}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"},
+where the rows are the observations and the columns are the coordinates.}
 
 \item{k}{integer. Number of desired clusters.}
 
@@ -44,6 +44,8 @@ x3 <- rvmf(100, mu = Line(0, 90), k = 20)
 x123 <- rbind(x1, x2, x3)
 cl <- sph_cluster(x123, k = 3)
 plot(x123, col = cl$cluster)
+
+# sph_cluster(simongomez, k = 3)
 }
 \seealso{
 \code{\link[=dist]{dist()}}

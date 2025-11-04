@@ -514,7 +514,7 @@ fisher_ftest <- function(x, y, alpha = 0.05, na.rm = TRUE) {
 #'
 #' Finds k groups of clusters using the angular distance matrix
 #'
-#' @inheritParams sph_mean
+#' @inheritParams geodesic_mean
 #' @param k integer. Number of desired clusters.
 #' @param method character. Clustering method to be applied. Currently implemented are
 #' \describe{
@@ -544,9 +544,11 @@ fisher_ftest <- function(x, y, alpha = 0.05, na.rm = TRUE) {
 #' x123 <- rbind(x1, x2, x3)
 #' cl <- sph_cluster(x123, k = 3)
 #' plot(x123, col = cl$cluster)
+#' 
+#' # sph_cluster(simongomez, k = 3)
 sph_cluster <- function(x, k, method = c("hclust", "kmeans", "diana", "agnes", "pam", "clara", "fanny"), ...) {
   method <- match.arg(method)
-  dmat <- v_dist(x)
+  dmat <- if(is.Pair(x)) dist.Pair(x) else dist.Vec3(Vec3(x))
 
   switch(method,
     hclust = v_hcut(dmat, k = k, FUN = stats::hclust, ...),
@@ -574,18 +576,24 @@ v_hcut <- function(x, k, FUN = stats::hclust, ...) {
   hc
 }
 
-
-v_dist <- function(x, ...) {
-  M <- Vec3(x) |>
-    vnorm()
-
+.dist.helper <- function(M, ...){
   # angular distance matrix (in radians)
   cosine_sim <- abs(tcrossprod(M)) # take absolute value!
   cosine_sim[cosine_sim > 1] <- 1
   angular_dist <- acos(cosine_sim)
-
+  
   # convert to 'dist' object
   stats::as.dist(angular_dist, ...)
+}
+
+v_dist <- function(x, ...) {
+  Vec3(x) |>
+    vnorm() |> 
+    .dist.helper()
+}
+
+rot_dist <- function(x, ...){
+    .dist.helper(x)
 }
 
 #' Angular distance matrix for orientation vectors
@@ -593,17 +601,35 @@ v_dist <- function(x, ...) {
 #' This function computes and returns the distance matrix computed by using the
 #' Cosine similarity to compute the distances between the rows of a data matrix.
 #'
-#' @inheritParams stats
+#' @inheritParams geodesic_mean
 #' @param ... optional parameters passed to [stats::as.dist()]
 #' @returns distance matrix
-#' @exportS3Method stats::dist
+#' @name sph-dist
 #'
 #' @examples
 #' set.seed(20250411)
 #' dist(rvmf(100, mu = Line(90, 0), k = 20))
-dist.spherical <- function(x, ...) v_dist(x, ...)
+NULL
 
+#' @rdname sph-dist
+#' @exportS3Method stats::dist
+dist.Vec3 <- function(x, ...) v_dist(x, ...)
 
+#' @rdname sph-dist
+#' @exportS3Method stats::dist
+dist.Line <- function(x, ...) v_dist(x, ...)
+
+#' @rdname sph-dist
+#' @exportS3Method stats::dist
+dist.Ray <- function(x, ...) v_dist(x, ...)
+
+#' @rdname sph-dist
+#' @exportS3Method stats::dist
+dist.Plane <- function(x, ...) v_dist(x, ...)
+
+#' @rdname sph-dist
+#' @exportS3Method stats::dist
+dist.Pair <- function(x, ...) pair2rot(x) |> rot_dist(...)
 
 #' Summary statistics
 #'

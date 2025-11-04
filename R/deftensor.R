@@ -36,10 +36,20 @@ as.defgrad <- function(object) {
   stopifnot(is.matrix(object))
   structure(
     object,
-    class = append(class(object), "defgrad"),
-    dimnames = list(rownames(object), colnames(object))
+    class = append(class(object), "defgrad")#,
+    #dimnames = list(rownames(object), colnames(object))
   )
 }
+
+#' @exportS3Method base::print
+print.defgrad <- function(x, ...) {
+  n <- nrow(x)
+  cat("Deformation gradient tensor\n")
+  print(unclass(x)[seq_len(n), ]) # avoids printing all the attributes of x
+  
+  return(invisible(x))
+}
+
 
 #' @rdname defgrad
 #' @export
@@ -93,7 +103,7 @@ defgrad_from_vectors <- function(v1, v2) {
   v2 <- Vec3(v2)
 
   defgrad_from_axisangle(
-    axis = crossprod.Vec3(v1, v2),
+    axis = crossprod(v1, v2),
     angle = angle(v1, v2) #* 180 / pi
   )
 }
@@ -137,10 +147,12 @@ defgrad_from_axisangle <- function(axis, angle) {
 #' @export
 defgrad_from_comp <- function(xx = 1, xy = 0, xz = 0, yx = 0, yy = 1, yz = 0,
                               zx = 0, zy = 0, zz = 1) {
-  rbind(
-    c(xx, xy, xz),
-    c(yx, yy, yz),
-    c(zx, zy, zz)
+  matrix(c(
+    xx, xy, xz,
+    yx, yy, yz,
+    zx, zy, zz
+  ),
+    nrow = 3, byrow = TRUE
   ) |> as.defgrad()
 }
 
@@ -207,9 +219,18 @@ as.velgrad <- function(object) {
   stopifnot(is.matrix(object))
   structure(
     object,
-    class = append(class(object), "velgrad"),
-    dimnames = list(rownames(object), colnames(object))
+    class = append(class(object), "velgrad")#,
+    #dimnames = list(rownames(object), colnames(object))
   )
+}
+
+#' @exportS3Method base::print
+print.velgrad <- function(x, ...) {
+  n <- nrow(x)
+  cat("Velocity gradient tensor\n")
+  print(unclass(x)[seq_len(n), ]) # avoids printing all the attributes of x
+  
+  return(invisible(x))
 }
 
 
@@ -260,3 +281,4 @@ velgrad_rate <- function(x) {
 velgrad_spin <- function(x) {
   (x - t(x)) / 2
 }
+

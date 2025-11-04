@@ -42,7 +42,7 @@ shape_params(x, ...)
 }
 \arguments{
 \item{x}{object of class \code{"ortensor"}, \code{"ellipsoid"}, or
-\code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the rows are the
+\code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"} where the rows are the
 observations and the columns are the coordinates.}
 
 \item{...}{optional parameters passed to \code{\link[=ortensor]{ortensor()}}}
@@ -107,8 +107,8 @@ Woodcock, N. H.  (1977): "Specification of fabric shapes using an eigenvalue met
 \seealso{
 \code{\link[=fabric_indexes]{fabric_indexes()}}
 
-More details on shape parameters: \code{\link[=ell_lode]{ell_lode()}}, \code{\link[=ell_nadai]{ell_nadai()}},
-\code{\link[=ell_jelinek]{ell_jelinek()}}, \code{\link[=ell_flinn]{ell_flinn()}}. Details on eigenvectors from orientation
+More details on shape parameters: \code{\link[=lode]{lode()}}, \code{\link[=nadai]{nadai()}},
+\code{\link[=jelinek]{jelinek()}}, \code{\link[=flinn]{flinn()}}. Details on eigenvectors from orientation
 tensors: \code{\link[=ot_eigen]{ot_eigen()}}.
 
 Other ortensor: 

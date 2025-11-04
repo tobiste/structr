@@ -3,9 +3,12 @@
 #' 3D orientation tensor, which characterize data distribution using
 #' eigenvalue method. See (Watson 1966, Scheidegger 1965).
 #'
-#' @inheritParams sph_mean
+#' @inheritParams geodesic_mean
 #' @param norm logical. Whether the tensor should be normalized or not.
 #' @param w numeric. weightings
+#' @param shift. logical. Only for `"Pair"` objects: Tensor is by default shifted towards positive 
+#' eigenvalues, so it could be used as Scheidegger orientation tensor for 
+#' plotting. When original Lisle tensor is needed, set shift to `FALSE`.
 #' @param object 3x3 matrix
 #'
 #' @returns
@@ -29,6 +32,9 @@
 #' in Europe and Western Asia as calculated from earthquake fault plane solutions.
 #' Bulletin of the Seismological Society of America, 54(5A), 1519–1528.
 #' \doi{10.1785/BSSA05405A1519}
+#' 
+#' Lisle, R. (1989). The Statistical Analysis of Orthogonal Orientation Data. 
+#' The Journal of Geology, 97(3), 360-364.
 #'
 #' @examples
 #' set.seed(20250411)
@@ -37,6 +43,9 @@
 #'
 #' test <- as.ortensor(diag(3))
 #' is.ortensor(test)
+#' 
+#' # Orientation tensor for Pairs
+#' ortensor(angelier1990$TYM)
 NULL
 
 #' @rdname ortensor
@@ -49,26 +58,27 @@ as.ortensor <- function(object) {
   stopifnot(is.matrix(object))
   structure(
     object,
-    class = append(class(object), "ortensor"),
-    dimnames = list(rownames(object), colnames(object))
+    class = append(class(object), "ortensor")#,
+    #dimnames = list(rownames(object), colnames(object))
   )
 }
 
-
-#' @rdname ortensor
-#' @export
-ortensor.spherical <- function(x, norm = TRUE, w = NULL) {
-  Vec3(x) |>
-    unclass() |>
-    ortensor.default(norm, w)
+#' @exportS3Method base::print
+print.ortensor <- function(x, ...) {
+  n <- nrow(x)
+  cat("Orientation tensor\n")
+  print(unclass(x)[seq_len(n), ]) # avoids printing all the attributes of x
+  
+  return(invisible(x))
 }
 
+
 #' @rdname ortensor
 #' @export
-ortensor <- function(x, norm = TRUE, w = NULL) UseMethod("ortensor")
+ortensor <- function(x, norm, w, shift) UseMethod("ortensor")
 
 #' @export
-ortensor.default <- function(x, norm = TRUE, w = NULL) {
+ortensor.default <- function(x, norm = TRUE, w = NULL, shift = NULL) {
   w <- if (is.null(w)) {
     rep(1, times = nrow(x))
   } else {
@@ -95,6 +105,49 @@ ortensor.default <- function(x, norm = TRUE, w = NULL) {
   rownames(or) <- colnames(or) <- NULL
   as.ortensor(or)
 }
+
+#' @rdname ortensor
+#' @export
+ortensor.Vec3 <- function(x, norm = TRUE, w = NULL, shift = NULL) {
+  x |>
+    unclass() |>
+    ortensor.default(norm, w)
+}
+
+#' @rdname ortensor
+#' @export
+ortensor.Line <- function(x, norm = TRUE, w = NULL, shift = NULL) {
+  Vec3(x) |>
+    ortensor.Vec3(norm, w)
+}
+
+#' @rdname ortensor
+#' @export
+ortensor.Ray <- function(x, norm = TRUE, w = NULL, shift = NULL) {
+  Vec3(x) |>
+    ortensor.Vec3(norm, w)
+}
+
+#' @rdname ortensor
+#' @export
+ortensor.Plane <- function(x, norm = TRUE, w = NULL, shift = NULL) {
+  Vec3(x) |>
+    ortensor.Vec3(norm, w)
+}
+
+#' @rdname ortensor
+#' @export
+ortensor.Pair <- function(x, norm = TRUE, w = NULL, shift = FALSE) {
+  otl <- ortensor(Line(x), norm, w)
+  otp <- ortensor(Plane(x), norm, w)
+  ot <-  otl - otp
+  if(shift) {
+    ot <- (ot + diag(3)) / 3
+  } 
+  as.ortensor(ot)
+}
+
+
 
 
 
@@ -144,7 +197,8 @@ inertia_tensor.default <- function(x, w = NULL) {
 #'
 #' Decomposition of Orientation Tensor Eigenvectors and Eigenvalues
 #'
-#' @param x either an object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, where the
+#' @param x either an object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, 
+#' `"Pair"`, or `"Fault"` where the
 #'  rows are the observations and the columns are the coordinates, or an `"ortensor"` object.
 #' @param scaled logical. Whether the Eigenvectors should be scaled by the
 #' Eigenvalues (only effective if `x` is in Cartesian coordinates).
@@ -180,14 +234,14 @@ ot_eigen <- function(x, scaled = FALSE, ...) UseMethod("ot_eigen")
 #' @name ot_eigen
 #' @export
 ot_eigen.spherical <- function(x, scaled = FALSE, ...) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  #stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
 
   xeig <- ortensor(x, ...) |>
     ot_eigen.ortensor(scaled = scaled)
 
   xeig$vectors <- Vec3(xeig$vectors)
 
-  if (is.Line(x) | is.Plane(x)) {
+  if (!is.Vec3(x)) {
     xeig$vectors <- Line(xeig$vectors)
   }
 
@@ -240,7 +294,7 @@ projected_mean <- function(x, ...) {
 #' Principal Stretches, Strain and Shape Parameters based on the Orientation Tensor.
 #'
 #' @param x object of class `"ortensor"`, `"ellipsoid"`, or
-#'  `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, where the rows are the
+#'  `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"` where the rows are the
 #'  observations and the columns are the coordinates.
 #' @param ... optional parameters passed to [ortensor()]
 #'
@@ -293,8 +347,8 @@ projected_mean <- function(x, ...) {
 #'
 #' Woodcock, N. H.  (1977): "Specification of fabric shapes using an eigenvalue method." Geological Society of America Bulletin 88.9: 1231-1236.
 #'
-#' @seealso More details on shape parameters: [ell_lode()], [ell_nadai()],
-#' [ell_jelinek()], [ell_flinn()]. Details on eigenvectors from orientation
+#' @seealso More details on shape parameters: [lode()], [nadai()],
+#' [jelinek()], [flinn()]. Details on eigenvectors from orientation
 #' tensors: [ot_eigen()].
 #'
 #' @examples
@@ -407,9 +461,9 @@ shape_params.ortensor <- function(x, ...) {
   goct <- 2 * sqrt(e12^2 + e23^2 + e13^2) / 3 # natural octahedral unit shear (Nadai, 1963)
   eoct <- sqrt(3) * goct / 2 # natural octahedral unit strain (Nadai, 1963)
   Nadai <- c(goct = goct, eoct = eoct)
-  # es <- ell_nadai(s)
+  # es <- nadai(s)
 
-  lode <- ell_lode(s)
+  lode <- lode(s)
   # lode <- ifelse((e[1] - e[3]) > 0, (2 * e[2] - e[1] - e[3]) / (e[1] - e[3]), 0)
 
   kind <- .get_kind(eoct, lode)
@@ -444,8 +498,8 @@ shape_params.ortensor <- function(x, ...) {
   Woodcock <- c(strength = e13, shape = K)
   Watterson_intensity <- Rxy + Ryz - 1
 
-  Flinn <- ell_flinn(s)
-  pj <- ell_jelinek(s) # Jellinek 1981
+  Flinn <- flinn(s)
+  pj <- jelinek(s) # Jellinek 1981
 
   # JPF
   # hom.dens <- projection(hom.cpo, upper.proj(hom.cpo), stereonet)
@@ -482,202 +536,6 @@ shape_params.ellipsoid <- function(x, ...) {
 
 
 
-#' Ellipsoid class
-#'
-#' In deformation analysis, the quadratic forms of the three-dimensional stretches
-#' are represented by the `ellipsoid` class.
-#' It can be used to represents either ellipsoid objects or finite strain ellipsoids.
-#'
-#' @inheritParams is.ortensor
-#'
-#' @name ellipsoid-class
-#' @family ellipsoid
-#' @seealso [ortensor()]
-#'
-#' @returns
-#' `is.ellipsoid` returns `TRUE` if `x` is an `"ellipsoid"` object, and `FALSE` otherwise.
-#'
-#' `as.ellipsoid` coerces a 3x3 matrix into an `"ellipsoid"` object.
-#'
-#' @examples
-#' test <- as.ellipsoid(diag(3))
-#' is.ellipsoid(test)
-NULL
-
-#' @rdname ellipsoid-class
-#' @export
-is.ellipsoid <- function(object) inherits(object, "ellipsoid")
-
-#' @rdname ellipsoid-class
-#' @export
-as.ellipsoid <- function(object) {
-  stopifnot(is.matrix(object))
-  structure(
-    object,
-    class = append(class(object), "ellipsoid"),
-    dimnames = list(rownames(object), colnames(object))
-  )
-}
-
-
-
-
-#' Ellipsoid shape parameters
-#'
-#' @param s numeric. 3-element vector giving the ellipsoid's semi-axis
-#' lengths, in any order (can be the square-roots of eigenvalues).
-#'
-#' @returns positive numeric
-#' @name ellipsoid-params
-#'
-#' @details
-#'
-#' \deqn{e_i = \log s_i} with \eqn{s1 \geq s2 \geq s3} the semi-axis lengths of the ellipsoid.
-#'
-#' Lode's shape parameter:
-#' \deqn{\nu = \frac{2 e_2 - e_1 - e_3}{e_1-e_3}}
-#' with \eqn{e_1 \geq e_2 \geq e_3}. Note that \eqn{\nu}  is undefined for spheres,
-#' but we arbitrarily declare \eqn{\nu=0} for them.
-#' Otherwise \eqn{-1 \geq \nu \geq 1}. \eqn{\nu=-1} for prolate spheroids and \eqn{\nu=1} for oblate spheroids.
-#'
-#' Octahedral shear strain \eqn{e_s} (Nadai 1963):
-#' \deqn{e_s = \sqrt{\frac{(e_1 - e_2)^2 + (e_2 - e_3)^2 + (e_1 - e_3)^2 }{3}}}
-#'
-#' Strain symmetry (Flinn 1963):
-#' \deqn{k = \frac{s_1/s_2 - 1}{s_2/s_3 - 1}}
-#'
-#' and strain intensity (Flinn 1963):
-#' \deqn{d = \sqrt{(s_1/s_2 - 1)^2 + (s_2/s_3 - 1)^2}}
-#'
-#'
-#' Jelinek (1981)'s \eqn{P_j} parameter:
-#' \deqn{P_j = e^{\sqrt{2 \vec{v}\cdot \vec{v}}}}
-#' with \eqn{\vec{v} = e_i - \frac{\sum e_i}{3}}
-#'
-#' @references
-#' Flinn, Derek.(1963): "On the statistical analysis of fabric diagrams."
-#' Geological Journal 3.2: 247-253.
-#'
-#' Lode, Walter (1926): "Versuche über den Einfluß der mittleren Hauptspannung
-#' auf das Fließen der Metalle Eisen, Kupfer und Nickel“
-#'  (*"Experiments on the influence of the mean principal stress on the flow of
-#'  the metals iron, copper and nickel"*], Zeitschrift für Physik, vol. 36 (November),
-#'  pp. 913–939, \doi{10.1007/BF01400222}
-#'
-#' Nadai, A., and Hodge, P. G., Jr. (1963): "Theory of Flow and Fracture of Solids,
-#' vol. II." ASME. J. Appl. Mech. December 1963; 30(4): 640. \doi{10.1115/1.3636654}
-#'
-#' Jelinek, Vit. "Characterization of the magnetic fabric of rocks."
-#' Tectonophysics 79.3-4 (1981): T63-T67.
-#'
-#' @seealso [shape_params()], [ot_eigen()]
-#' @examples
-#' # Generate some random data
-#' set.seed(1)
-#' dat <- rvmf(100, k = 20)
-#' s <- principal_stretch(dat)
-#'
-#' # Volume of ellipsoid
-#' ell_volume(s)
-#'
-#' #  Size-related tensor invariant of ellipsoids
-#' ell_size_invariant(s)
-#'
-#' # Strain-related tensor invariant of ellipsoids
-#' ell_strain_invariant(s)
-#'
-#' # Shape-related tensor invariant of ellipsoids
-#' ell_shape_invariant(s)
-#'
-#' # Lode's shape parameter
-#' ell_lode(s)
-#'
-#' # Nadai's octahedral shear strain
-#' ell_nadai(s)
-#'
-#' # Jelinek Pj parameter
-#' ell_jelinek(s)
-#'
-#' # Flinn's intensity and symmetry parameters
-#' ell_flinn(s)
-NULL
-
-
-#' @rdname ellipsoid-params
-#' @export
-ell_volume <- function(s) {
-  logs <- log(s) |> unname()
-  exp(sum(logs)) * 4 * pi / 3
-}
-
-#' @rdname ellipsoid-params
-#' @export
-ell_lode <- function(s) {
-  logs <- sort(log(s), TRUE) |> unname()
-  if (logs[1] == logs[3]) {
-    0
-  } else {
-    (2 * logs[2] - logs[1] - logs[3]) / (logs[1] - logs[3])
-  }
-}
-
-#' @rdname ellipsoid-params
-#' @export
-ell_nadai <- function(s) {
-  e <- log(s) |> unname()
-
-  exy <- e[1] - e[2]
-  eyz <- e[2] - e[3]
-  exz <- e[1] - e[3]
-
-  temp <- exy^2 + eyz^2 + exz^2
-  sqrt(temp / 3)
-}
-
-#' @rdname ellipsoid-params
-#' @export
-ell_jelinek <- function(s) {
-  logs <- log(s) |> unname()
-  v <- logs - sum(logs) / 3
-  v_dot <- sum(v^2)
-  exp(sqrt(2 * v_dot))
-}
-
-#' @rdname ellipsoid-params
-#' @export
-ell_flinn <- function(s) {
-  a <- sort(s, TRUE) |> unname()
-
-  R_xy <- a[1] / a[2]
-  R_yz <- a[2] / a[3]
-
-  k <- (R_xy - 1) / (R_yz - 1)
-
-  d <- sqrt((R_xy - 1)^2 + (R_yz - 1)^2)
-
-  list(k = k, d = d)
-}
-
-#' @rdname ellipsoid-params
-#' @export
-ell_size_invariant <- function(s) {
-  logs <- log(s) |> unname()
-  sum(logs)
-}
-
-#' @rdname ellipsoid-params
-#' @export
-ell_strain_invariant <- function(s) {
-  logs <- log(s) |> unname()
-  logs[[1]] * logs[[2]] + logs[[2]] * logs[[3]] + logs[[3]] * logs[[1]]
-}
-
-#' @rdname ellipsoid-params
-#' @export
-ell_shape_invariant <- function(s) {
-  logs <- log(s) |> unname()
-  logs[[1]] * logs[[2]] * logs[[3]]
-}
 
 #' Centering vectors
 #'

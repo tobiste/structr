@@ -65,7 +65,7 @@ Hossack, J. R. (1968). Pebble deformation and thrusting in the Bygdin area
 (Southern Norway). Tectonophysics, 5(4), 315–339. \doi{10.1016/0040-1951(68)90035-8}
 }
 \seealso{
-\code{\link[=ell_lode]{ell_lode()}} for Lode parameter, and \link{ell_nadai} for natural octahedral strain.
+\code{\link[=lode]{lode()}} for Lode parameter, and \link{nadai} for natural octahedral strain.
 
 Other fabric-plot: 
 \code{\link{flinn_plot}()},
