@@ -240,12 +240,6 @@
         <dd>MLE of spherical rotational symmetric distributions</dd>
       </dl><dl><dt>
 
-          <code><a href="dist.spherical.html">dist(<i>&lt;spherical&gt;</i>)</a></code>
-
-        </dt>
-        <dd>Angular distance matrix for orientation vectors</dd>
-      </dl><dl><dt>
-
           <code><a href="drillcore.html">drillcore_transformation()</a></code>
 
         </dt>
@@ -258,16 +252,22 @@
         <dd>Add an Ellipse to existing plot</dd>
       </dl><dl><dt>
 
-          <code><a href="ellipsoid-class.html">is.ellipsoid()</a></code> <code><a href="ellipsoid-class.html">as.ellipsoid()</a></code>
+          <code><a href="ellipsoid-class.html">is.ellipsoid()</a></code> <code><a href="ellipsoid-class.html">as.ellipsoid()</a></code> <code><a href="ellipsoid-class.html">ellipsoid()</a></code>
 
         </dt>
         <dd>Ellipsoid class</dd>
       </dl><dl><dt>
 
-          <code><a href="ellipsoid-params.html">ell_volume()</a></code> <code><a href="ellipsoid-params.html">ell_lode()</a></code> <code><a href="ellipsoid-params.html">ell_nadai()</a></code> <code><a href="ellipsoid-params.html">ell_jelinek()</a></code> <code><a href="ellipsoid-params.html">ell_flinn()</a></code> <code><a href="ellipsoid-params.html">ell_size_invariant()</a></code> <code><a href="ellipsoid-params.html">ell_strain_invariant()</a></code> <code><a href="ellipsoid-params.html">ell_shape_invariant()</a></code>
+          <code><a href="ellipsoid-params.html">volume()</a></code> <code><a href="ellipsoid-params.html">lode()</a></code> <code><a href="ellipsoid-params.html">nadai()</a></code> <code><a href="ellipsoid-params.html">jelinek()</a></code> <code><a href="ellipsoid-params.html">flinn()</a></code> <code><a href="ellipsoid-params.html">size_invariant()</a></code> <code><a href="ellipsoid-params.html">strain_invariant()</a></code> <code><a href="ellipsoid-params.html">shape_invariant()</a></code> <code><a href="ellipsoid-params.html">kind()</a></code>
 
         </dt>
         <dd>Ellipsoid shape parameters</dd>
+      </dl><dl><dt>
+
+          <code><a href="ellipsoid_from_stretch.html">ellipsoid_from_stretch()</a></code>
+
+        </dt>
+        <dd>Ellipsoid tensor from principal stretches</dd>
       </dl><dl><dt>
 
           <code><a href="example_lines.html">example_lines</a></code>
@@ -292,12 +292,6 @@
 
         </dt>
         <dd>Planes orientations data</dd>
-      </dl><dl><dt>
-
-          <code><a href="fabric_indexes.html">fabric_indexes()</a></code>
-
-        </dt>
-        <dd>Fabric intensity and shape indices</dd>
       </dl><dl><dt>
 
           <code><a href="failure_criterion.html">failure_criterion()</a></code>
@@ -582,6 +576,12 @@
         <dd>Stress Inversion for Fault-Slip Data</dd>
       </dl><dl><dt>
 
+          <code><a href="sph-dist.html">dist(<i>&lt;Vec3&gt;</i>)</a></code> <code><a href="sph-dist.html">dist(<i>&lt;Line&gt;</i>)</a></code> <code><a href="sph-dist.html">dist(<i>&lt;Ray&gt;</i>)</a></code> <code><a href="sph-dist.html">dist(<i>&lt;Plane&gt;</i>)</a></code> <code><a href="sph-dist.html">dist(<i>&lt;Pair&gt;</i>)</a></code>
+
+        </dt>
+        <dd>Angular distance matrix for orientation vectors</dd>
+      </dl><dl><dt>
+
           <code><a href="sph_cluster.html">sph_cluster()</a></code>
 
         </dt>
@@ -756,10 +756,16 @@
         <dd>Rate and spin of velocity gradient tensor</dd>
       </dl><dl><dt>
 
-          <code><a href="vollmer_plot.html">vollmer_plot()</a></code>
+          <code><a href="vollmer-plot.html">vollmer_plot()</a></code>
 
         </dt>
         <dd>Fabric plot of Vollmer (1990)</dd>
+      </dl><dl><dt>
+
+          <code><a href="vollmer.html">vollmer()</a></code>
+
+        </dt>
+        <dd>Orientation tensor fabric intensity and shape</dd>
       </dl><dl><dt>
 
           <code><a href="vonmises-fisher.html">rvmf()</a></code> <code><a href="vonmises-fisher.html">dvmf()</a></code>

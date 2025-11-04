@@ -63,6 +63,9 @@
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">principal_stretch</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># Default S3 method</span></span>
+<span><span class="fu">principal_stretch</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># S3 method for class 'Vec3'</span></span>
 <span><span class="fu">principal_stretch</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
@@ -85,6 +88,9 @@
 <span></span>
 <span><span class="fu">shape_params</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># Default S3 method</span></span>
+<span><span class="fu">shape_params</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># S3 method for class 'spherical'</span></span>
 <span><span class="fu">shape_params</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
@@ -101,7 +107,7 @@
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
 <dd><p>object of class <code>"ortensor"</code>, <code>"ellipsoid"</code>, or
-<code>"Vec3"</code>, <code>"Line"</code>, <code>"Ray"</code>, or <code>"Plane"</code>, where the rows are the
+<code>"Vec3"</code>, <code>"Line"</code>, <code>"Ray"</code>, <code>"Plane"</code>, <code>"Pair"</code>, or <code>"Fault"</code> where the rows are the
 observations and the columns are the coordinates.</p></dd>
 
 
@@ -131,9 +137,6 @@ observations and the columns are the coordinates.</p></dd>
 <dt><code>Flinn</code></dt>
 <dd><p>Flinn strain intensity</p></dd>
 
-<dt><code>Vollmer</code></dt>
-<dd><p>Point, Girdle, Random, Cylindricity (B), and Uniform Distance (D) Indices (Vollmer 1990; 2020). <code>D</code> is a measure of the "distance" from uniformity, and is linear from R to P, and R to G. End members are: uniform D = 0, girdle D = 0.5, cluster D = 1. The 99% level for a test against uniformity for a sample size of 300 is D = 0.1.</p></dd>
-
 <dt><code>Nadai</code></dt>
 <dd><p>natural octahedral unit strain and shear (Nadai, 1963)</p></dd>
 
@@ -151,9 +154,6 @@ observations and the columns are the coordinates.</p></dd>
 
 <dt><code>MAD</code></dt>
 <dd><p>maximum angular deviation (Kirschvink, 1980)</p></dd>
-
-<dt><code>US</code></dt>
-<dd><p>Uniformity statistic of Mardia (1972)</p></dd>
 
 
 </dl></div>
@@ -175,9 +175,9 @@ observations and the columns are the coordinates.</p></dd>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="fabric_indexes.html">fabric_indexes()</a></code></p>
-<p>More details on shape parameters: <code><a href="ellipsoid-params.html">ell_lode()</a></code>, <code><a href="ellipsoid-params.html">ell_nadai()</a></code>,
-<code><a href="ellipsoid-params.html">ell_jelinek()</a></code>, <code><a href="ellipsoid-params.html">ell_flinn()</a></code>. Details on eigenvectors from orientation
+    <div class="dont-index"><p><code><a href="vollmer.html">vollmer()</a></code> for Vollmer 1990 shape parameters of the orientation tensor</p>
+<p>More details on shape parameters: <code><a href="ellipsoid-params.html">lode()</a></code>, <code><a href="ellipsoid-params.html">nadai()</a></code>,
+<code><a href="ellipsoid-params.html">jelinek()</a></code>, <code><a href="ellipsoid-params.html">flinn()</a></code>. Details on eigenvectors from orientation
 tensors: <code><a href="ot_eigen.html">ot_eigen()</a></code>.</p>
 <p>Other ortensor:
 <code><a href="ortensor.html">ortensor</a>()</code>,
@@ -203,10 +203,6 @@ tensors: <code><a href="ot_eigen.html">ot_eigen()</a></code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $strain_ratios</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        e12        e13        e23 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> 1.45466083 1.49007857 0.03541774 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $Vollmer</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>          P          G          R          B          C          I          D </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 0.85541428 0.00674541 0.13784031 0.86215969 2.98015714 1.51923890 0.85710561 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $Flinn</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $Flinn$k</span>
@@ -242,9 +238,6 @@ tensors: <code><a href="ot_eigen.html">ot_eigen()</a></code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $MAD</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 17.97803</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $US</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 11.01945</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $Jellinek</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.476767</span>

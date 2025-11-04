@@ -44,16 +44,15 @@
 <url><loc>https://tobiste.github.io/structr/reference/density-funs.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/density.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/dist.mle.html</loc></url>
-<url><loc>https://tobiste.github.io/structr/reference/dist.spherical.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/drillcore.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ellipse.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ellipsoid-class.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ellipsoid-params.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/ellipsoid_from_stretch.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/example_lines.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/example_lines_df.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/example_planes.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/example_planes_df.html</loc></url>
-<url><loc>https://tobiste.github.io/structr/reference/fabric_indexes.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/failure_criterion.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/fault-plot.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/fault-tensor.html</loc></url>
@@ -102,6 +101,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/simongomez.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slerp.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/sph-dist.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/sph_cluster.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/split_trailing_letters.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/stats.html</loc></url>
@@ -132,7 +132,8 @@
 <url><loc>https://tobiste.github.io/structr/reference/vec_list.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/vecmath.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/vel_rate.html</loc></url>
-<url><loc>https://tobiste.github.io/structr/reference/vollmer_plot.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/vollmer-plot.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/vollmer.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/vonmises-fisher.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/woodcock_plot.html</loc></url>
 </urlset>

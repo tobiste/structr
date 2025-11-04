@@ -51,7 +51,7 @@
   <main id="main" class="col-md-9"><div class="page-header">
 
       <h1>Ellipsoid shape parameters</h1>
-      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/ortensor.R" class="external-link"><code>R/ortensor.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/ellipsoid.R" class="external-link"><code>R/ellipsoid.R</code></a></small>
       <div class="d-none name"><code>ellipsoid-params.Rd</code></div>
     </div>
 
@@ -61,30 +61,113 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">ell_volume</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">volume</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ell_lode</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span>
+<span><span class="co"># Default S3 method</span></span>
+<span><span class="fu">volume</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ell_nadai</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span>
+<span><span class="co"># S3 method for class 'ellipsoid'</span></span>
+<span><span class="fu">volume</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ell_jelinek</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span>
+<span><span class="co"># S3 method for class 'ortensor'</span></span>
+<span><span class="fu">volume</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ell_flinn</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span>
+<span><span class="fu">lode</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ell_size_invariant</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span>
+<span><span class="co"># Default S3 method</span></span>
+<span><span class="fu">lode</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ell_strain_invariant</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span>
+<span><span class="co"># S3 method for class 'ellipsoid'</span></span>
+<span><span class="fu">lode</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">ell_shape_invariant</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></code></pre></div>
+<span><span class="co"># S3 method for class 'ortensor'</span></span>
+<span><span class="fu">lode</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">nadai</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Default S3 method</span></span>
+<span><span class="fu">nadai</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'ellipsoid'</span></span>
+<span><span class="fu">nadai</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'ortensor'</span></span>
+<span><span class="fu">nadai</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">jelinek</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Default S3 method</span></span>
+<span><span class="fu">jelinek</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'ellipsoid'</span></span>
+<span><span class="fu">jelinek</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'ortensor'</span></span>
+<span><span class="fu">jelinek</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">flinn</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Default S3 method</span></span>
+<span><span class="fu">flinn</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'ortensor'</span></span>
+<span><span class="fu">flinn</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'ellipsoid'</span></span>
+<span><span class="fu">flinn</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">size_invariant</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Default S3 method</span></span>
+<span><span class="fu">size_invariant</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'ortensor'</span></span>
+<span><span class="fu">size_invariant</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'ellipsoid'</span></span>
+<span><span class="fu">size_invariant</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">strain_invariant</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Default S3 method</span></span>
+<span><span class="fu">strain_invariant</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'ortensor'</span></span>
+<span><span class="fu">strain_invariant</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'ellipsoid'</span></span>
+<span><span class="fu">strain_invariant</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">shape_invariant</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Default S3 method</span></span>
+<span><span class="fu">shape_invariant</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'ortensor'</span></span>
+<span><span class="fu">shape_invariant</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'ellipsoid'</span></span>
+<span><span class="fu">shape_invariant</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">kind</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Default S3 method</span></span>
+<span><span class="fu">kind</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'ortensor'</span></span>
+<span><span class="fu">kind</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'ellipsoid'</span></span>
+<span><span class="fu">kind</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-s">s<a class="anchor" aria-label="anchor" href="#arg-s"></a></dt>
-<dd><p>numeric. 3-element vector giving the ellipsoid's semi-axis
-lengths, in any order (can be the square-roots of eigenvalues).</p></dd>
+<dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
+<dd><p>numeric. either a 3-element vector giving the ellipsoid's semi-axis
+lengths (in any order), an object of class <code>"ellipsoid"</code>, or an object of class <code>"ortensor"</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -131,46 +214,49 @@ Tectonophysics 79.3-4 (1981): T63-T67.</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Generate some random data</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20250411</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">100</span>, k <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="strain_shape.html">principal_stretch</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Volume of ellipsoid</span></span></span>
-<span class="r-in"><span><span class="fu">ell_volume</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1896644</span>
+<span class="r-in"><span><span class="fu">volume</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.171276</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#  Size-related tensor invariant of ellipsoids</span></span></span>
-<span class="r-in"><span><span class="fu">ell_size_invariant</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -3.094911</span>
+<span class="r-in"><span><span class="fu">size_invariant</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -3.196891</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Strain-related tensor invariant of ellipsoids</span></span></span>
-<span class="r-in"><span><span class="fu">ell_strain_invariant</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.469887</span>
+<span class="r-in"><span><span class="fu">strain_invariant</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.60509</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Shape-related tensor invariant of ellipsoids</span></span></span>
-<span class="r-in"><span><span class="fu">ell_shape_invariant</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.1160063</span>
+<span class="r-in"><span><span class="fu">shape_invariant</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.1155451</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Lode's shape parameter</span></span></span>
-<span class="r-in"><span><span class="fu">ell_lode</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.9524619</span>
+<span class="r-in"><span><span class="fu">lode</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.63562</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Nadai's octahedral shear strain</span></span></span>
-<span class="r-in"><span><span class="fu">ell_nadai</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.202446</span>
+<span class="r-in"><span><span class="fu">nadai</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.266186</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Jelinek Pj parameter</span></span></span>
-<span class="r-in"><span><span class="fu">ell_jelinek</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.476767</span>
+<span class="r-in"><span><span class="fu">jelinek</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.993392</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Flinn's intensity and symmetry parameters</span></span></span>
-<span class="r-in"><span><span class="fu">ell_flinn</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">flinn</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $k</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 91.0627</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8.243876</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $d</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.283228</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.975821</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">kind</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "LLS"</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -82,7 +82,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-11-03</h4>
+            <h4 data-toc-skip class="date">2025-11-04</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/Plots.Rmd" class="external-link"><code>vignettes/Plots.Rmd</code></a></small>
       <div class="d-none name"><code>Plots.Rmd</code></div>
@@ -171,11 +171,11 @@ plot</em>)[|^hsu].</p>
 <div class="section level3">
 <h3 id="vollmer-plot">Vollmer plot<a class="anchor" aria-label="anchor" href="#vollmer-plot"></a>
 </h3>
-<p><code><a href="../reference/vollmer_plot.html">vollmer_plot()</a></code> creates a triangular plot showing the
+<p><code><a href="../reference/vollmer-plot.html">vollmer_plot()</a></code> creates a triangular plot showing the
 shape of the orientation distribution (after Vollmer, 1990).</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/vollmer_plot.html">vollmer_plot</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/vollmer_plot.html">vollmer_plot</a></span><span class="op">(</span><span class="va">lines</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/vollmer-plot.html">vollmer_plot</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/vollmer-plot.html">vollmer_plot</a></span><span class="op">(</span><span class="va">lines</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Lines"</span>, <span class="st">"Planes"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679"</span>, <span class="st">"#000004"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="fl">1</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Plots_files/figure-html/vollmer-1.png" alt="Diagram showing eigen-vector analysis of some example data plotted in an triangular plot after Vollmer 1990" width="700"></p>
 </div>
@@ -251,8 +251,8 @@ eigenvectors/mean values, and fabric strength.</p>
 <span><span class="va">lines_sd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stats.html">sph_sd</a></span><span class="op">(</span><span class="va">lines</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Fabric strength</span></span>
-<span><span class="va">fabric_p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/strain_shape.html">shape_params</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span><span class="op">$</span><span class="va">Vollmer</span><span class="op">[</span><span class="st">"D"</span><span class="op">]</span></span>
-<span><span class="va">fabric_l</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/strain_shape.html">shape_params</a></span><span class="op">(</span><span class="va">lines</span><span class="op">)</span><span class="op">$</span><span class="va">Vollmer</span><span class="op">[</span><span class="st">"D"</span><span class="op">]</span></span></code></pre></div>
+<span><span class="va">fabric_p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vollmer.html">vollmer</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span><span class="op">[</span><span class="st">"D"</span><span class="op">]</span></span>
+<span><span class="va">fabric_l</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vollmer.html">vollmer</a></span><span class="op">(</span><span class="va">lines</span><span class="op">)</span><span class="op">[</span><span class="st">"D"</span><span class="op">]</span></span></code></pre></div>
 <p>The final plot:</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># two plots side by side</span></span>
