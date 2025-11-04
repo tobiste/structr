@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -159,6 +159,10 @@ the tensor. Identity matrix by default.</p></dd>
 <dt id="arg-k">k<a class="anchor" aria-label="anchor" href="#arg-k"></a></dt>
 <dd><p>numeric. Horizontal pure shear component in the y-direction</p></dd>
 
+
+<dt id="arg-dilation">dilation<a class="anchor" aria-label="anchor" href="#arg-dilation"></a></dt>
+<dd><p>numeric. Volume increase</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -179,6 +183,10 @@ transtension is \(k&gt;1\) and \(\gamma \neq 0\), and transpression is
 \(k&lt;1\) and \(\gamma \neq 0\).</p>
 <p><code>defgrad_from_dilation</code> creates <code>"defgrad"</code> tensor representing the volume change
 in z-direction.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p><code><a href="gradient.html">velgrad()</a></code>, <code><a href="vecmath.html">transform_linear()</a></code> to apply the deformation on an object</p></div>
     </div>
 
     <div class="section level2">
@@ -207,9 +215,12 @@ in z-direction.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.2487928 -0.9331095 -0.2620026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.9285075  0.3060065 -0.2198463</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.2756374 -0.1885752  0.9396926</span>
-<span class="r-in"><span><span class="fu">defgrad_from_shearstrain</span><span class="op">(</span>k <span class="op">=</span> <span class="fl">2</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">tan</a></span><span class="op">(</span><span class="fl">30</span> <span class="op">*</span> <span class="va">pi</span> <span class="op">/</span><span class="fl">180</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in defgrad_from_shearstrain(k = 2, gamma = tan(30 * pi/180)):</span> unused arguments (k = 2, gamma = tan(30 * pi/180))</span>
-<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu">defgrad_from_generalshear</span><span class="op">(</span>k <span class="op">=</span> <span class="fl">2</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">tan</a></span><span class="op">(</span><span class="fl">30</span> <span class="op">*</span> <span class="va">pi</span> <span class="op">/</span><span class="fl">180</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Deformation gradient tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1]      [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]    1 0.8329404  0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0 2.0000000  0.0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0 0.0000000  0.5</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># combine deformation by matrix multiplication</span></span></span>
 <span class="r-in"><span><span class="va">D1</span> <span class="op">&lt;-</span> <span class="fu">defgrad_from_ratio</span><span class="op">(</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span></span></span>

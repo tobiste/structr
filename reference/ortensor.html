@@ -9,7 +9,7 @@ eigenvalue method. See (Watson 1966, Scheidegger 1965)."></head><body>
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9002</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9003</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -148,10 +148,10 @@ The Journal of Geology, 97(3), 360-364.</p>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfb.html">rfb</a></span><span class="op">(</span><span class="fl">100</span>, mu <span class="op">=</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">50</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">1</span>, A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ortensor</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Orientation tensor</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            [,1]        [,2]        [,3]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.1944797 -0.21711940 -0.13757429</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] -0.2171194  0.72621545 -0.01539922</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.1375743 -0.01539922  1.07249588</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            [,1]       [,2]       [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.2233264 -0.2728296 -0.1937687</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] -0.2728296  0.8210149  0.1788567</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.1937687  0.1788567  1.1844109</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">as.ortensor</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">is.ortensor</span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span></span>
