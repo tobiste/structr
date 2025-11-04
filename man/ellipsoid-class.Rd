@@ -17,10 +17,15 @@ ellipsoid(x, left, ...)
 
 \method{ellipsoid}{default}(x, left = NULL, ...)
 
-\method{ellipsoid}{defgrad}(x, left = TRUE)
+\method{ellipsoid}{defgrad}(x, left = TRUE, ...)
 }
 \arguments{
 \item{x}{Either a matrix or a \code{"defgrad"} object}
+
+\item{left}{logical. \code{TRUE}  for left Cauchy–Green deformation tensor (or
+Finger deformation tensor, the default), \code{FALSE} for for right Cauchy–Green deformation tensor (or Green’s deformation tensor)}
+
+\item{...}{optional parameters passed to function call.}
 }
 \value{
 \code{is.ellipsoid} returns \code{TRUE} if \code{x} is an \code{"ellipsoid"} object, and \code{FALSE} otherwise.

@@ -11,19 +11,11 @@ vollmer_plot(x, labels, add, ngrid, ...)
 
 \method{vollmer_plot}{default}(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...)
 
-\method{vollmer_plot}{spherical}(
-  x,
-  labels = NULL,
-  add = FALSE,
-  ngrid = c(5, 5, 5),
-  R = NULL,
-  P = NULL,
-  G = NULL,
-  ...
-)
+\method{vollmer_plot}{spherical}(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...)
 }
 \arguments{
-\item{x}{spherical object or a three-column matrix, where the first column is P, the second is G, and the third one is R of the Vollmer parameters.}
+\item{x}{spherical object or a three-column matrix, where the first column is
+P, the second is G, and the third one is R of the Vollmer parameters.}
 
 \item{labels}{character. text labels}
 
@@ -66,7 +58,7 @@ Vollmer, F. W. (1990). An application of eigenvalue methods to
 structural domain analysis. Geological Society of America Bulletin, 102, 786<U+2013>791.
 }
 \seealso{
-\code{\link[=fabric_indexes]{fabric_indexes()}}
+\code{\link[=vollmer]{vollmer()}}, \code{\link[=ortensor]{ortensor()}}
 
 Other fabric-plot: 
 \code{\link{flinn_plot}()},

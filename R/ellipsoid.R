@@ -5,6 +5,9 @@
 #' It can be used to represents either ellipsoid objects or finite strain ellipsoids.
 #'
 #' @param x Either a matrix or a `"defgrad"` object
+#' @param left logical. `TRUE`  for left Cauchy–Green deformation tensor (or 
+#' Finger deformation tensor, the default), `FALSE` for for right Cauchy–Green deformation tensor (or Green’s deformation tensor)
+#' @param ... optional parameters passed to function call.
 #'
 #' @name ellipsoid-class
 #' @family ellipsoid
@@ -47,7 +50,7 @@ ellipsoid.default <- function(x, left = NULL, ...){
 
 #' @rdname ellipsoid-class
 #' @export
-ellipsoid.defgrad <- function(x, left = TRUE){
+ellipsoid.defgrad <- function(x, left = TRUE, ...){
   if(isTRUE(left)){
     el <- x %*% t(x)
   } else {
@@ -321,7 +324,7 @@ flinn.ortensor <- function(x) {
 
 #' @rdname ellipsoid-params
 #' @export
-flinn.ellipsoid <- function() {
+flinn.ellipsoid <- function(x) {
   x |> 
     principal_stretch() |> 
     flinn()

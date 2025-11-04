@@ -195,8 +195,8 @@ lines_mean <- sph_mean(lines)
 lines_sd <- sph_sd(lines)
 
 # Fabric strength
-fabric_p <- shape_params(planes)$Vollmer["D"]
-fabric_l <- shape_params(lines)$Vollmer["D"]
+fabric_p <- vollmer(planes)["D"]
+fabric_l <- vollmer(lines)["D"]
 ```
 
 The final plot:

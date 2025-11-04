@@ -6,7 +6,7 @@
 #' @inheritParams geodesic_mean
 #' @param norm logical. Whether the tensor should be normalized or not.
 #' @param w numeric. weightings
-#' @param shift. logical. Only for `"Pair"` objects: Tensor is by default shifted towards positive 
+#' @param shift logical. Only for `"Pair"` objects: Tensor is by default shifted towards positive 
 #' eigenvalues, so it could be used as Scheidegger orientation tensor for 
 #' plotting. When original Lisle tensor is needed, set shift to `FALSE`.
 #' @param object 3x3 matrix
@@ -306,18 +306,18 @@ projected_mean <- function(x, ...) {
 #' \item{`Ramsay`}{strain symmetry (Ramsay, 1983)}
 #' \item{`Woodcock`}{Woodcock shape}
 #' \item{`Flinn`}{Flinn strain intensity}
-#' \item{`Vollmer`}{Point, Girdle, Random, Cylindricity (B), and Uniform Distance (D) Indices (Vollmer 1990; 2020). `D` is a measure of the "distance" from uniformity, and is linear from R to P, and R to G. End members are: uniform D = 0, girdle D = 0.5, cluster D = 1. The 99% level for a test against uniformity for a sample size of 300 is D = 0.1.}
+# #' \item{`Vollmer`}{Point, Girdle, Random, Cylindricity (B), and Uniform Distance (D) Indices (Vollmer 1990; 2020). `D` is a measure of the "distance" from uniformity, and is linear from R to P, and R to G. End members are: uniform D = 0, girdle D = 0.5, cluster D = 1. The 99% level for a test against uniformity for a sample size of 300 is D = 0.1.}
 #' \item{`Nadai`}{natural octahedral unit strain and shear (Nadai, 1963)}
 #' \item{`Lisle_intensity`}{Intensity index (Lisle, 1985)}
 #' \item{`Waterson_intensity`}{strain intensity (Watterson, 1968)}
 #' \item{`lode`}{Lode parameter (Lode, 1926)}
 #' \item{`kind`}{Descriptive type of ellipsoid: `"O"` - isotrope, `"L"` - L-tectonite, `"LLS"` - oblate L-tectonite, `"S"` - S-tectonite, `"SSL"` - prolate S-tectonite}
 #' \item{`MAD`}{maximum angular deviation (Kirschvink, 1980)}
-#' \item{`US`}{Uniformity statistic of Mardia (1972)}
+# #' \item{`US`}{Uniformity statistic of Mardia (1972)}
 #' }
 #'
 #' @family ortensor
-#' @seealso [fabric_indexes()]
+#' @seealso [vollmer()] for Vollmer 1990 shape parameters of the orientation tensor
 #'
 #' @returns list
 #'
@@ -366,6 +366,15 @@ principal_stretch <- function(x, ...) UseMethod("principal_stretch")
 
 #' @rdname strain_shape
 #' @export
+principal_stretch.default <- function(x, ...) {
+  x_eigen <- eigen(x, only.values = TRUE)$values
+  s <- sqrt(x_eigen)
+  names(s) <- c("S1", "S2", "S3")
+  return(s)
+}
+
+#' @rdname strain_shape
+#' @export
 principal_stretch.Vec3 <- function(x, ...) {
   x_eigen <- ot_eigen(x, ...)
   s <- sqrt(x_eigen$values)
@@ -394,19 +403,13 @@ principal_stretch.Plane <- function(x, ...) {
 #' @rdname strain_shape
 #' @export
 principal_stretch.ortensor <- function(x, ...) {
-  x_eigen <- eigen(x, only.values = TRUE)$values
-  s <- sqrt(x_eigen)
-  names(s) <- c("S1", "S2", "S3")
-  return(s)
+  principal_stretch.default(x)
 }
 
 #' @rdname strain_shape
 #' @export
 principal_stretch.ellipsoid <- function(x, ...) {
-  x_eigen <- eigen(x, only.values = TRUE)$values
-  s <- sqrt(x_eigen)
-  names(s) <- c("S1", "S2", "S3")
-  return(s)
+  principal_stretch.default(x)
 }
 
 
@@ -432,6 +435,12 @@ principal_strain <- function(x) {
 #' @rdname strain_shape
 #' @export
 shape_params <- function(x, ...) UseMethod("shape_params")
+
+#' @rdname strain_shape
+#' @export
+shape_params.default <- function(x, ...) {
+  shape_params.ortensor(x, ...)
+}
 
 #' @rdname strain_shape
 #' @export
@@ -469,18 +478,18 @@ shape_params.ortensor <- function(x, ...) {
   kind <- .get_kind(eoct, lode)
 
   # Vollmer
-  N <- nrow(x)
-  P <- eig[1] - eig[2] #  Point index (Vollmer, 1990)
-  G <- 2 * (eig[2] - eig[3]) #  Girdle index (Vollmer, 1990)
-  R <- 3 * eig[3] # Random index (Vollmer, 1990)
-  B <- P + G #  Cylindricity index (Vollmer, 1990)
-  C <- log(eig[1] / eig[3])
-  I <- 7.5 * sum((eig / N - 1 / 3)^2)
+  # N <- nrow(x)
+  # P <- eig[1] - eig[2] #  Point index (Vollmer, 1990)
+  # G <- 2 * (eig[2] - eig[3]) #  Girdle index (Vollmer, 1990)
+  # R <- 3 * eig[3] # Random index (Vollmer, 1990)
+  # B <- P + G #  Cylindricity index (Vollmer, 1990)
+  # C <- log(eig[1] / eig[3])
+  #I <- 7.5 * sum((eig / N - 1 / 3)^2)
 
-  us <- (15 * N / 2) * sum((eig - 1 / 3)^2) # Mardia uniformity statistic
-  D <- sqrt(us / (5 * N)) # D of Vollmer 2020
+  #us <- (15 * N / 2) * sum((eig - 1 / 3)^2) # Mardia uniformity statistic
+  #D <- sqrt(us / (5 * N)) # D of Vollmer 2020
 
-  Vollmer <- c(P = P, G = G, R = R, B = B, C = C, I = I, D = D)
+  #Vollmer <- c(P = P, G = G, R = R, B = B, C = C, I = I, D = D)
 
   Lisle_intensity <- 7.5 * sum((eig - 1 / 3)^2)
 
@@ -512,7 +521,7 @@ shape_params.ortensor <- function(x, ...) {
   list(
     stretch_ratios = stretch_ratios,
     strain_ratios = strain_ratios,
-    Vollmer = Vollmer,
+    #Vollmer = Vollmer,
     Flinn = Flinn,
     Ramsay = Ramsay,
     Woodcock = Woodcock,
@@ -523,7 +532,7 @@ shape_params.ortensor <- function(x, ...) {
     kind = kind, # descriptive type of ellipsoid
     # MAD_approx = as.numeric(aMAD), # approximate deviation according to shape
     MAD = as.numeric(MAD), #  maximum angular deviation (MAD)
-    US = us,
+    #US = us,
     Jellinek = pj # Jellinek 1981
   )
 }
@@ -533,7 +542,6 @@ shape_params.ortensor <- function(x, ...) {
 shape_params.ellipsoid <- function(x, ...) {
   as.ortensor(x) |> shape_params()
 }
-
 
 
 

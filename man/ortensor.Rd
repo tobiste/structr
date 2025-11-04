@@ -37,7 +37,7 @@ where the rows are the observations and the columns are the coordinates.}
 
 \item{w}{numeric. weightings}
 
-\item{shift.}{logical. Only for \code{"Pair"} objects: Tensor is by default shifted towards positive
+\item{shift}{logical. Only for \code{"Pair"} objects: Tensor is by default shifted towards positive
 eigenvalues, so it could be used as Scheidegger orientation tensor for
 plotting. When original Lisle tensor is needed, set shift to \code{FALSE}.}
 }

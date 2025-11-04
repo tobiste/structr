@@ -1,8 +1,10 @@
 # Fabric intensities and plots -------------------------------------------------
 
-#' Fabric intensity and shape indices
+#' Orientation tensor fabric intensity and shape
+#' 
+#' Fabric intensity and shape parameters of the orientation tensor based on Vollmer (1990)
 #'
-#' @inheritParams shape_params
+#' @inheritParams geodesic_mean
 #' @returns numeric vector containing the fabric shape and intensity indices:
 #' \describe{
 #' \item{`P`}{Point (Vollmer 1990). Range: (0, 1)}
@@ -15,29 +17,61 @@
 #' (Vollmer 2020). Range: (0, 1). End members are: uniform D = 0, girdle D = 0.5,
 #' cluster D = 1. The 99% level for a test against uniformity for a sample size
 #' of 300 is D = 0.1.}
+#' \item{`U`}{Uniformity statistic of Mardia (1972)}
 #' }
+#' 
+#' @references 
+#' Lisle, Richard J.  (1985): "The use of the orientation tensor for the description and statistical testing of fabrics." Journal of Structural Geology 7.1: 115-117.
+#'
+#' Mardia, Kantilal Varichand. (1975): "Statistics of directional data." Journal of the Royal Statistical Society Series B: Statistical Methodology 37.3: 349-371.
+#'
+#' Vollmer, Frederick W. (1990): "An application of eigenvalue methods to structural domain analysis." Geological Society of America Bulletin 102.6: 786-791.
+#'
+#' Vollmer, Frederick W. (2020): "Representing Progressive Fabric Paths on a Triangular Plot Using a Fabric Density Index and Crystal Axes Eigenvector Barycenters." Geological Society of America Abstracts. Vol. 52.
+#'
+#' Woodcock, N. H.  (1977): "Specification of fabric shapes using an eigenvalue method." Geological Society of America Bulletin 88.9: 1231-1236.
+#' 
 #' @export
 #'
-#' @seealso [shape_params()]
+#' @seealso [shape_params()], [ortensor()], [vollmer_plot()]
 #'
 #' @examples
 #' set.seed(20250411)
 #' mu <- Line(120, 50)
 #' x <- rvmf(100, mu = mu, k = 1)
-#' fabric_indexes(x)
-#' 
-#' data(holst)
-#' holst_R <- lapply(seq_along(holst[, 1]), function(i){
-#' ellipsoid(defgrad_from_ratio(holst[i, 1], holst[i, 2])) 
-#' })
-#' sapply(holst_R, fabric_indexes) |> t()
-fabric_indexes <- function(x) shape_params(x)$Vollmer
+#' vollmer(x)
+#'
+#' # Pair objects:
+#'vollmer(simongomez)
+vollmer <- function(x) {
+  stopifnot(is.spherical(x))
+  ot <- ortensor(x)
+  eig <- eigen(ot, only.values = TRUE)$values #|> sort(decreasing = TRUE)
+  
+  if(is.Pair(x) & any(eig<0)) eig <- abs(eig) |> sort(decreasing = TRUE)
+  
+  
+  # Vollmer
+  N <- nrow(x)
+  P <- eig[1] - eig[2] #  Point index (Vollmer, 1990)
+  G <- 2 * (eig[2] - eig[3]) #  Girdle index (Vollmer, 1990)
+  R <- 3 * eig[3] # Random index (Vollmer, 1990)
+  B <- P + G #  Cylindricity index (Vollmer, 1990)
+  C <- log(eig[1] / eig[3])
+  I <- 7.5 * sum((eig / N - 1 / 3)^2)
+  
+  U <- (15 * N / 2) * sum((eig - 1 / 3)^2) # Mardia uniformity statistic
+  D <- sqrt(U / (5 * N)) # D of Vollmer 2020
+  
+ c(P = P, G = G, R = R, B = B, C = C, I = I, D = D, U = U)
+}
 
 #' Fabric plot of Vollmer (1990)
 #'
 #' Creates a fabric plot using the eigenvalue method
 #'
-#' @param x spherical object or a three-column matrix, where the first column is P, the second is G, and the third one is R of the Vollmer parameters.
+#' @param x spherical object or a three-column matrix, where the first column is 
+#' P, the second is G, and the third one is R of the Vollmer parameters.
 #' @inheritParams woodcock_plot
 #' @param ngrid integer or 3-element vector specifying the amount of gridlines
 #' for the P, G, and G axes. Constant grid spacing when only one integer is given.
@@ -46,7 +80,7 @@ fabric_indexes <- function(x) shape_params(x)$Vollmer
 #' @references Vollmer, F. W. (1990). An application of eigenvalue methods to
 #' structural domain analysis. Geological Society of America Bulletin, 102, 786<U+2013>791.
 #'
-#' @seealso [fabric_indexes()]
+#' @seealso [vollmer()], [ortensor()]
 #' @family fabric-plot
 #' @returns plot and when stored as an object, the `P`, `G`, and `R` values as a numeric vector.
 #' @name vollmer-plot
@@ -147,18 +181,20 @@ vollmer_plot.default <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 
     graphics::points(coords[, 1], coords[, 2], ...)
   }
 
-  invisible(x_vollmer)
+  
 }
 
 #' @rdname vollmer-plot
 #' @export
-vollmer_plot.spherical <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), R = NULL, P = NULL, G = NULL, ...) {
-  x_vollmer <- fabric_indexes(x)
-  R <- x_vollmer["R"]
-  P <- x_vollmer["P"]
-  G <- x_vollmer["G"]
-  
-  vollmer_plot.default(cbind(P=P, G=G, R=R), labels = labels, add = add, ngrid = ngrid, ...)
+vollmer_plot.spherical <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5),  ...) {
+  x_vollmer <- vollmer(x)
+  # P <- x_vollmer["P"]
+  # G <- x_vollmer["G"]
+  # R <- x_vollmer["R"]
+  vollmer_plot.default(  
+    t(x_vollmer[c("P", "G", "R")]), 
+    labels = labels, add = add, ngrid = ngrid, ...)
+  invisible(x_vollmer)
 }
 
 
@@ -174,7 +210,7 @@ vollmer_plot.spherical <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5
 #'
 #' @references Woodcock, N. H. (1977). Specification of fabric shapes using an eigenvalue method. Geological Society of America Bulletin88, 1231<U+2013>1236. http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf
 #'
-#' @seealso [fabric_indexes()], [ot_eigen()]
+#' @seealso [vollmer()], [ot_eigen()]
 #' @family fabric-plot
 #'
 #' @return A plot and when stored as an object, the orientation tensor's

@@ -3,6 +3,7 @@
 \name{strain_shape}
 \alias{strain_shape}
 \alias{principal_stretch}
+\alias{principal_stretch.default}
 \alias{principal_stretch.Vec3}
 \alias{principal_stretch.Line}
 \alias{principal_stretch.Ray}
@@ -11,12 +12,15 @@
 \alias{principal_stretch.ellipsoid}
 \alias{principal_strain}
 \alias{shape_params}
+\alias{shape_params.default}
 \alias{shape_params.spherical}
 \alias{shape_params.ortensor}
 \alias{shape_params.ellipsoid}
 \title{Principal Stretches, Strain and Shape Parameters based on the Orientation Tensor.}
 \usage{
 principal_stretch(x, ...)
+
+\method{principal_stretch}{default}(x, ...)
 
 \method{principal_stretch}{Vec3}(x, ...)
 
@@ -33,6 +37,8 @@ principal_stretch(x, ...)
 principal_strain(x)
 
 shape_params(x, ...)
+
+\method{shape_params}{default}(x, ...)
 
 \method{shape_params}{spherical}(x, ...)
 
@@ -60,14 +66,12 @@ Principal Stretches, Strain and Shape Parameters based on the Orientation Tensor
 \item{\code{Ramsay}}{strain symmetry (Ramsay, 1983)}
 \item{\code{Woodcock}}{Woodcock shape}
 \item{\code{Flinn}}{Flinn strain intensity}
-\item{\code{Vollmer}}{Point, Girdle, Random, Cylindricity (B), and Uniform Distance (D) Indices (Vollmer 1990; 2020). \code{D} is a measure of the "distance" from uniformity, and is linear from R to P, and R to G. End members are: uniform D = 0, girdle D = 0.5, cluster D = 1. The 99\% level for a test against uniformity for a sample size of 300 is D = 0.1.}
 \item{\code{Nadai}}{natural octahedral unit strain and shear (Nadai, 1963)}
 \item{\code{Lisle_intensity}}{Intensity index (Lisle, 1985)}
 \item{\code{Waterson_intensity}}{strain intensity (Watterson, 1968)}
 \item{\code{lode}}{Lode parameter (Lode, 1926)}
 \item{\code{kind}}{Descriptive type of ellipsoid: \code{"O"} - isotrope, \code{"L"} - L-tectonite, \code{"LLS"} - oblate L-tectonite, \code{"S"} - S-tectonite, \code{"SSL"} - prolate S-tectonite}
 \item{\code{MAD}}{maximum angular deviation (Kirschvink, 1980)}
-\item{\code{US}}{Uniformity statistic of Mardia (1972)}
 }
 }
 \examples{
@@ -105,7 +109,7 @@ Watterson, Juan. (1968): "Homogeneous deformation of the gneisses of Vesterland,
 Woodcock, N. H.  (1977): "Specification of fabric shapes using an eigenvalue method." Geological Society of America Bulletin 88.9: 1231-1236.
 }
 \seealso{
-\code{\link[=fabric_indexes]{fabric_indexes()}}
+\code{\link[=vollmer]{vollmer()}} for Vollmer 1990 shape parameters of the orientation tensor
 
 More details on shape parameters: \code{\link[=lode]{lode()}}, \code{\link[=nadai]{nadai()}},
 \code{\link[=jelinek]{jelinek()}}, \code{\link[=flinn]{flinn()}}. Details on eigenvectors from orientation

@@ -78,7 +78,7 @@ flinn(x)
 
 \method{flinn}{ortensor}(x)
 
-\method{flinn}{ellipsoid}()
+\method{flinn}{ellipsoid}(x)
 
 size_invariant(x)
 
