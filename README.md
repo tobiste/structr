@@ -25,6 +25,9 @@ for structural geology. The toolset includes
 - Reconstruction of fabric orientations in **oriented drillcores** by
   transforming the α, β, and γ angles (`drillcore_transformation()`,
 
+- Deform orientation data using deformation and velocity gradient
+  tensors: `defgrad()` and `velgrad()`
+
 - **Stress analysis**: reconstruction of stress orientation and
   magnitudes from fault-slip data (stress inversion based on **Michael,
   1984**: `slip_inversion()`), extracting the **maximum horizontal

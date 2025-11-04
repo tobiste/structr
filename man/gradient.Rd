@@ -7,7 +7,7 @@
 \alias{velgrad}
 \alias{velgrad.default}
 \alias{velgrad.defgrad}
-\title{Velocity gradient and Deformation gradient tensors}
+\title{Velocity gradient gradient tensors}
 \usage{
 is.velgrad(x)
 
@@ -33,12 +33,12 @@ velgrad(x, time, ...)
 of matrices is returned.
 }
 \description{
-Calculates the velocity gradient tensor as the matrix logarithm  of the
+Calculates the velocity gradient tensor as the matrix logarithm of the
 deformation gradient tensor divided by given time, and
 the deformation gradient tensor accumulated after some time.
 }
 \examples{
-d <- defgrad_from_generalshear(k = 2, gamma = .7)
+d <- defgrad_from_generalshear(k = 2.5, gamma = 0.9)
 v <- velgrad(d, time = 10)
 d_steps <- defgrad(v, time = 10, steps = 2)
 
@@ -54,4 +54,7 @@ points(l, col = 'darkgrey')
 cols <- assign_col(seq_along(l_trans))
 lapply(seq_along(l_trans), function(i){points(l_trans[[i]], col = cols[i])})
 points(axes, pch = 15); text(axes, labels = c('x', 'y', 'z'), pos = 1) 
+}
+\seealso{
+\code{\link[=defgrad]{defgrad()}}
 }

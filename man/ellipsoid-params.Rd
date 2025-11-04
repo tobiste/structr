@@ -102,7 +102,7 @@ shape_invariant(x)
 
 \method{shape_invariant}{ortensor}(x)
 
-\method{shape_invariant}{ellipsoid}()
+\method{shape_invariant}{ellipsoid}(x)
 
 kind(x)
 

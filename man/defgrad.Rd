@@ -87,6 +87,8 @@ the tensor. Identity matrix by default.}
 \item{gamma}{numeric. shear strain in x-direction}
 
 \item{k}{numeric. Horizontal pure shear component in the y-direction}
+
+\item{dilation}{numeric. Volume increase}
 }
 \value{
 object of class \code{"defgrad"}, i.e. a 3x3 matrix.
@@ -124,8 +126,7 @@ defgrad_from_ratio(2, 3)
 defgrad_from_axisangle(Line(120, 50), 60)
 defgrad_from_vectors(Line(120, 50), Line(270, 80))
 defgrad(Pair(40, 20, 75, 16))
-defgrad_from_shearstrain(k = 2, gamma = tan(30 * pi /180))
-
+defgrad_from_generalshear(k = 2, gamma = tan(30 * pi /180))
 
 # combine deformation by matrix multiplication
 D1 <- defgrad_from_ratio(5, 1)
@@ -144,4 +145,7 @@ stereoplot(guides = F)
 points(l, col = 'darkgrey')
 points(l_trans, col = 'red')
 points(axes, pch = 15); text(axes, labels = c('x', 'y', 'z'), pos = 1)
+}
+\seealso{
+\code{\link[=velgrad]{velgrad()}}, \code{\link[=transform_linear]{transform_linear()}} to apply the deformation on an object
 }

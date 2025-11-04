@@ -1,5 +1,4 @@
 #' Deformation Gradient Tensor
-#'
 #' 
 #' @param Rxy,Ryz numeric. the XY and YZ strain ratio to create a strain tensor
 #' with axial stretches.Values must be greater than or equal to 1.
@@ -18,6 +17,7 @@
 #' @param object 3x3 `"matrix"`
 #' @param k numeric. Horizontal pure shear component in the y-direction
 #' @param gamma numeric. shear strain in x-direction
+#' @param dilation numeric. Volume increase
 #' @param ... parameters passed to function call
 #'
 #' @return object of class `"defgrad"`, i.e. a 3x3 matrix.
@@ -47,7 +47,7 @@
 #' `defgrad_from_dilation` creates `"defgrad"` tensor representing the volume change 
 #' in z-direction.
 #' 
-#' 
+#' @seealso [velgrad()], [transform_linear()] to apply the deformation on an object
 #' @name defgrad
 #'
 #' @examples
@@ -55,8 +55,7 @@
 #' defgrad_from_axisangle(Line(120, 50), 60)
 #' defgrad_from_vectors(Line(120, 50), Line(270, 80))
 #' defgrad(Pair(40, 20, 75, 16))
-#' defgrad_from_shearstrain(k = 2, gamma = tan(30 * pi /180))
-#' 
+#' defgrad_from_generalshear(k = 2, gamma = tan(30 * pi /180))
 #' 
 #' # combine deformation by matrix multiplication
 #' D1 <- defgrad_from_ratio(5, 1)
@@ -286,9 +285,9 @@ defgrad.velgrad <- function(x, time, steps, ...) {
 
 
 
-#' Velocity gradient and Deformation gradient tensors
+#' Velocity gradient gradient tensors
 #'
-#' Calculates the velocity gradient tensor as the matrix logarithm  of the
+#' Calculates the velocity gradient tensor as the matrix logarithm of the
 #' deformation gradient tensor divided by given time, and
 #' the deformation gradient tensor accumulated after some time.
 #'
@@ -298,6 +297,7 @@ defgrad.velgrad <- function(x, time, steps, ...) {
 #' @param ... parameters passed to function call
 #'
 #' @name gradient
+#' @seealso [defgrad()]
 #'
 #' @return 3x3 matrix. If steps is > 1, then a list
 #' of matrices is returned.
@@ -305,7 +305,7 @@ defgrad.velgrad <- function(x, time, steps, ...) {
 #' @importFrom expm logm expm
 #'
 #' @examples
-#' d <- defgrad_from_generalshear(k = 2, gamma = .7)
+#' d <- defgrad_from_generalshear(k = 2.5, gamma = 0.9)
 #' v <- velgrad(d, time = 10)
 #' d_steps <- defgrad(v, time = 10, steps = 2)
 #' 

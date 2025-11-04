@@ -405,7 +405,7 @@ shape_invariant.ortensor <- function(x) {
 
 #' @rdname ellipsoid-params
 #' @export
-shape_invariant.ellipsoid <- function() {
+shape_invariant.ellipsoid <- function(x) {
   x |>
     principal_stretch() |>
     shape_invariant()
