@@ -76,7 +76,7 @@ Ellipsoid. Geological Magazine, 102(1), 36–45. \doi{10.1017/S0016756800053851}
 \seealso{
 Other fabric-plot: 
 \code{\link{hsu_plot}()},
-\code{\link{vollmer_plot}()},
+\code{\link{vollmer-plot}},
 \code{\link{woodcock_plot}()}
 }
 \concept{fabric-plot}

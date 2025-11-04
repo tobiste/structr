@@ -4,6 +4,7 @@
 \alias{hsu_plot}
 \alias{hsu_plot.ortensor}
 \alias{hsu_plot.spherical}
+\alias{hsu_plot.ellispoid}
 \alias{hsu_plot.default}
 \title{Fabric plot of Hsu (1965)}
 \usage{
@@ -12,6 +13,8 @@ hsu_plot(x, ...)
 \method{hsu_plot}{ortensor}(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...)
 
 \method{hsu_plot}{spherical}(x, ...)
+
+\method{hsu_plot}{ellispoid}(x, ...)
 
 \method{hsu_plot}{default}(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...)
 }
@@ -69,7 +72,7 @@ Hossack, J. R. (1968). Pebble deformation and thrusting in the Bygdin area
 
 Other fabric-plot: 
 \code{\link{flinn_plot}()},
-\code{\link{vollmer_plot}()},
+\code{\link{vollmer-plot}},
 \code{\link{woodcock_plot}()}
 }
 \concept{fabric-plot}

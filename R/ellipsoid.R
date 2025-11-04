@@ -444,3 +444,4 @@ kind.ellipsoid <- function(x) {
     principal_stretch() |> 
     kind()
 }
+

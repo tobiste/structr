@@ -25,15 +25,19 @@
 #' mu <- Line(120, 50)
 #' x <- rvmf(100, mu = mu, k = 1)
 #' fabric_indexes(x)
-fabric_indexes <- function(x) {
-  shape_params(x)$Vollmer
-}
-
+#' 
+#' data(holst)
+#' holst_R <- lapply(seq_along(holst[, 1]), function(i){
+#' ellipsoid(defgrad_from_ratio(holst[i, 1], holst[i, 2])) 
+#' })
+#' sapply(holst_R, fabric_indexes) |> t()
+fabric_indexes <- function(x) shape_params(x)$Vollmer
 
 #' Fabric plot of Vollmer (1990)
 #'
 #' Creates a fabric plot using the eigenvalue method
 #'
+#' @param x spherical object or a three-column matrix, where the first column is P, the second is G, and the third one is R of the Vollmer parameters.
 #' @inheritParams woodcock_plot
 #' @param ngrid integer or 3-element vector specifying the amount of gridlines
 #' for the P, G, and G axes. Constant grid spacing when only one integer is given.
@@ -45,49 +49,50 @@ fabric_indexes <- function(x) {
 #' @seealso [fabric_indexes()]
 #' @family fabric-plot
 #' @returns plot and when stored as an object, the `P`, `G`, and `R` values as a numeric vector.
-#'
-#' @export
+#' @name vollmer-plot
 #'
 #' @examples
+#' # Orientation data
 #' set.seed(20250411)
 #' mu <- Line(120, 50)
-#' a <- rvmf(100, mu = mu, k = 10)
-#' vollmer_plot(a, lab = "VMF")
+#' a <- rvmf(10, mu = mu, k = 10)
+#' vollmer_plot(a, labels = "VMF")
 #'
 #' set.seed(20250411)
 #' b <- rfb(100, mu = mu, k = 1, A = diag(c(10, 0, 0)))
-#' vollmer_plot(b, lab = "FB", add = TRUE, col = "red")
+#' vollmer_plot(b, labels = "FB", add = TRUE, col = "red")
 #'
 #' set.seed(20250411)
 #' c <- runif.spherical(n = 100, "Line", method = "rotasym")
-#' vollmer_plot(c, lab = "UNIF", add = TRUE, col = "green")
+#' vollmer_plot(c, labels = "UNIF", add = TRUE, col = "green")
 #'
 #' set.seed(20250411)
 #' d <- rkent(100, mu = mu, k = 10, b = 4)
-#' vollmer_plot(d, lab = "KENT", add = TRUE, col = "blue")
+#' vollmer_plot(d, labels = "KENT", add = TRUE, col = "blue")
 #' title("Fabric plot of Vollmer (1990)")
-vollmer_plot <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...) {
-  b <- NULL
-  x_vollmer <- fabric_indexes(x)
-  R <- x_vollmer["R"]
-  P <- x_vollmer["P"]
-  G <- x_vollmer["G"]
+NULL
 
-  vec <- c(P = P, G = G, R = R)
+#' @rdname vollmer-plot
+#' @export
+vollmer_plot <- function(x, labels, add, ngrid, ...) UseMethod("vollmer_plot")
 
+#' @rdname vollmer-plot
+#' @export
+vollmer_plot.default <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...) {
   A <- c(0, 0) # left
   B <- c(1, 0) # right
   C <- c(1 / 2, sqrt(3) / 2) # top
   abc <- rbind(A, B, C)
-
-  PGR <- P + G + R
+  coords <- sapply(seq_len(nrow(x)), function(i){
+  vec <- c(P = x[i, 1], G = x[i, 2], R = x[i, 3])
+  PGR <- x[i, 1] + x[i, 3] + x[i, 3]
   PGR <- sum(vec)
-
-  coords <- colSums(vec * abc) / PGR
-
+  colSums(vec * abc) / PGR
+}) |> t()
+  
   if (isFALSE(add)) {
     graphics::par(xpd = TRUE)
-    graphics::plot(1, "n", ylim = c(0, sqrt(3) / 2), xlim = c(0, 1), asp = 1, axes = FALSE, xlab = "", ylab = "")
+    graphics::plot(c(0, 1), c(0, sqrt(3) / 2), "n", asp = 1, axes = FALSE, xlab = "", ylab = "")
 
     if (!is.null(ngrid)) {
       ngrid <- round(ngrid) + 1
@@ -137,13 +142,25 @@ vollmer_plot <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...)
   }
 
   if (!is.null(labels)) {
-    graphics::text(coords[1], coords[2], labels = labels, ...)
+    graphics::text(coords[, 1], coords[, 2], labels = labels, ...)
   } else {
-    graphics::points(coords[1], coords[2], ...)
+    graphics::points(coords[, 1], coords[, 2], ...)
   }
 
   invisible(x_vollmer)
 }
+
+#' @rdname vollmer-plot
+#' @export
+vollmer_plot.spherical <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), R = NULL, P = NULL, G = NULL, ...) {
+  x_vollmer <- fabric_indexes(x)
+  R <- x_vollmer["R"]
+  P <- x_vollmer["P"]
+  G <- x_vollmer["G"]
+  
+  vollmer_plot.default(cbind(P=P, G=G, R=R), labels = labels, add = add, ngrid = ngrid, ...)
+}
+
 
 #' Fabric plot of Woodcock (1977)
 #'
@@ -322,6 +339,15 @@ hsu_plot.spherical <- function(x, ...) {
   ortensor(x) |>
     hsu_plot.ortensor(...)
 }
+
+#' @rdname hsu_plot
+#' @export
+hsu_plot.ellispoid <- function(x, ...) {
+  as.ortensor(x) |>
+    hsu_plot.ortensor(...)
+}
+
+
 
 #' @rdname hsu_plot
 #' @export

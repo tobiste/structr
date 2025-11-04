@@ -531,7 +531,7 @@ shape_params.ortensor <- function(x, ...) {
 #' @rdname strain_shape
 #' @export
 shape_params.ellipsoid <- function(x, ...) {
-  as.ortensor(x) |> shape_params.ortensor()
+  as.ortensor(x) |> shape_params()
 }
 
 

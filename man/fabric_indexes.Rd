@@ -34,6 +34,12 @@ set.seed(20250411)
 mu <- Line(120, 50)
 x <- rvmf(100, mu = mu, k = 1)
 fabric_indexes(x)
+
+data(holst)
+holst_R <- lapply(seq_along(holst[, 1]), function(i){
+ellipsoid(defgrad_from_ratio(holst[i, 1], holst[i, 2])) 
+})
+sapply(holst_R, fabric_indexes) |> t()
 }
 \seealso{
 \code{\link[=shape_params]{shape_params()}}
