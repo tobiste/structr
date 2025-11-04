@@ -5,7 +5,7 @@
 #' It can be used to represents either ellipsoid objects or finite strain ellipsoids.
 #'
 #' @param x Either a matrix or a `"defgrad"` object
-#' @param left logical. `TRUE`  for left Cauchy–Green deformation tensor (or 
+#' @param left logical. `TRUE`  for left Cauchy–Green deformation tensor (or
 #' Finger deformation tensor, the default), `FALSE` for for right Cauchy–Green deformation tensor (or Green’s deformation tensor)
 #' @param ... optional parameters passed to function call.
 #'
@@ -21,7 +21,7 @@
 #' @examples
 #' test <- as.ellipsoid(diag(3))
 #' is.ellipsoid(test)
-#' 
+#'
 #' R <- defgrad_from_ratio(2, 3)
 #' ellipsoid(R)
 NULL
@@ -44,14 +44,14 @@ ellipsoid <- function(x, left, ...) UseMethod("ellipsoid")
 
 #' @rdname ellipsoid-class
 #' @export
-ellipsoid.default <- function(x, left = NULL, ...){
+ellipsoid.default <- function(x, left = NULL, ...) {
   as.matrix(x) |> as.ellipsoid()
 }
 
 #' @rdname ellipsoid-class
 #' @export
-ellipsoid.defgrad <- function(x, left = TRUE, ...){
-  if(isTRUE(left)){
+ellipsoid.defgrad <- function(x, left = TRUE, ...) {
+  if (isTRUE(left)) {
     el <- x %*% t(x)
   } else {
     el <- t(x) %*% x
@@ -64,13 +64,13 @@ print.ellipsoid <- function(x, ...) {
   n <- nrow(x)
   cat("Ellipsoid tensor\n")
   print(unclass(x)[seq_len(n), ]) # avoids printing all the attributes of x
-  
+
   return(invisible(x))
 }
 
 
 #' Ellipsoid tensor from principal stretches
-#' 
+#'
 #' Return diagonal tensor defined by magnitudes of principal stretches
 #'
 #' @param x,y,z numeric. Magnitudes of principal stretches
@@ -81,7 +81,7 @@ print.ellipsoid <- function(x, ...) {
 #' @examples
 #' el <- ellipsoid_from_stretch(4, 3, 1)
 #' principal_stretch(el)
-ellipsoid_from_stretch <- function(x=1, y=1, z=1){
+ellipsoid_from_stretch <- function(x = 1, y = 1, z = 1) {
   el <- matrix(c(
     x^2, 0, 0,
     0, y^2, 0,
@@ -169,14 +169,14 @@ ellipsoid_from_stretch <- function(x=1, y=1, z=1){
 #'
 #' # Flinn's intensity and symmetry parameters
 #' flinn(s)
-#' 
+#'
 #' kind(s)
 NULL
 
 
 #' @rdname ellipsoid-params
 #' @export
-volume <- function(x) UseMethod('volume')
+volume <- function(x) UseMethod("volume")
 
 #' @rdname ellipsoid-params
 #' @export
@@ -188,22 +188,22 @@ volume.default <- function(x) {
 #' @rdname ellipsoid-params
 #' @export
 volume.ellipsoid <- function(x) {
-  x |> 
-    principal_stretch.ellipsoid() |> 
+  x |>
+    principal_stretch.ellipsoid() |>
     volume.default()
 }
 
 #' @rdname ellipsoid-params
 #' @export
 volume.ortensor <- function(x) {
-  x |> 
-    principal_stretch.ortensor(x) |> 
+  x |>
+    principal_stretch.ortensor(x) |>
     volume.default()
 }
 
 #' @rdname ellipsoid-params
 #' @export
-lode <- function(x) UseMethod('lode')
+lode <- function(x) UseMethod("lode")
 
 #' @rdname ellipsoid-params
 #' @export
@@ -219,56 +219,56 @@ lode.default <- function(x) {
 #' @rdname ellipsoid-params
 #' @export
 lode.ellipsoid <- function(x) {
-  x |> 
-    principal_stretch.ellipsoid() |> 
+  x |>
+    principal_stretch.ellipsoid() |>
     lode.default()
 }
 
 #' @rdname ellipsoid-params
 #' @export
 lode.ortensor <- function(x) {
-  x |> 
-    principal_stretch.ortensor() |> 
+  x |>
+    principal_stretch.ortensor() |>
     lode.default()
 }
 
 
 #' @rdname ellipsoid-params
 #' @export
-nadai <- function(x) UseMethod('nadai')
+nadai <- function(x) UseMethod("nadai")
 
 #' @rdname ellipsoid-params
 #' @export
 nadai.default <- function(x) {
   e <- log(x) |> unname()
-  
+
   exy <- e[1] - e[2]
   eyz <- e[2] - e[3]
   exz <- e[1] - e[3]
-  
+
   temp <- exy^2 + eyz^2 + exz^2
   sqrt(temp / 3)
 }
 
 #' @rdname ellipsoid-params
 #' @export
-nadai.ellipsoid<- function(x) {
-  x |> 
-    principal_stretch.ellipsoid() |> 
+nadai.ellipsoid <- function(x) {
+  x |>
+    principal_stretch.ellipsoid() |>
     nadai.default()
 }
 
 #' @rdname ellipsoid-params
 #' @export
 nadai.ortensor <- function(x) {
-  x |> 
-    principal_stretch.ortensor() |> 
+  x |>
+    principal_stretch.ortensor() |>
     nadai.default()
 }
 
 #' @rdname ellipsoid-params
 #' @export
-jelinek <- function(x) UseMethod('jelinek')
+jelinek <- function(x) UseMethod("jelinek")
 
 #' @rdname ellipsoid-params
 #' @export
@@ -281,58 +281,58 @@ jelinek.default <- function(x) {
 
 #' @rdname ellipsoid-params
 #' @export
-jelinek.ellipsoid<- function(x) {
-  x |> 
-    principal_stretch.ellipsoid() |> 
+jelinek.ellipsoid <- function(x) {
+  x |>
+    principal_stretch.ellipsoid() |>
     jelinek.default()
 }
 
 #' @rdname ellipsoid-params
 #' @export
 jelinek.ortensor <- function(x) {
-  x |> 
-    principal_stretch.ortensor() |> 
+  x |>
+    principal_stretch.ortensor() |>
     jelinek.default()
 }
 
 #' @rdname ellipsoid-params
 #' @export
-flinn <- function(x) UseMethod('flinn')
+flinn <- function(x) UseMethod("flinn")
 
 #' @rdname ellipsoid-params
 #' @export
 flinn.default <- function(x) {
   a <- sort(x, TRUE) |> unname()
-  
+
   R_xy <- a[1] / a[2]
   R_yz <- a[2] / a[3]
-  
+
   k <- (R_xy - 1) / (R_yz - 1)
-  
+
   d <- sqrt((R_xy - 1)^2 + (R_yz - 1)^2)
-  
+
   list(k = k, d = d)
 }
 
 #' @rdname ellipsoid-params
 #' @export
 flinn.ortensor <- function(x) {
-  x |> 
-    principal_stretch() |> 
+  x |>
+    principal_stretch() |>
     flinn()
 }
 
 #' @rdname ellipsoid-params
 #' @export
 flinn.ellipsoid <- function(x) {
-  x |> 
-    principal_stretch() |> 
+  x |>
+    principal_stretch() |>
     flinn()
 }
 
 #' @rdname ellipsoid-params
 #' @export
-size_invariant <- function(x) UseMethod('size_invariant')
+size_invariant <- function(x) UseMethod("size_invariant")
 
 #' @rdname ellipsoid-params
 #' @export
@@ -344,22 +344,22 @@ size_invariant.default <- function(x) {
 #' @rdname ellipsoid-params
 #' @export
 size_invariant.ortensor <- function(x) {
-  x |> 
-    principal_stretch() |> 
+  x |>
+    principal_stretch() |>
     size_invariant()
 }
 
 #' @rdname ellipsoid-params
 #' @export
 size_invariant.ellipsoid <- function(x) {
-  x |> 
-    principal_stretch() |> 
+  x |>
+    principal_stretch() |>
     size_invariant()
 }
 
 #' @rdname ellipsoid-params
 #' @export
-strain_invariant <- function(x) UseMethod('strain_invariant')
+strain_invariant <- function(x) UseMethod("strain_invariant")
 
 #' @rdname ellipsoid-params
 #' @export
@@ -371,22 +371,22 @@ strain_invariant.default <- function(x) {
 #' @rdname ellipsoid-params
 #' @export
 strain_invariant.ortensor <- function(x) {
-  x |> 
-    principal_stretch() |> 
+  x |>
+    principal_stretch() |>
     strain_invariant()
 }
 
 #' @rdname ellipsoid-params
 #' @export
 strain_invariant.ellipsoid <- function(x) {
-  x |> 
-    principal_stretch() |> 
+  x |>
+    principal_stretch() |>
     strain_invariant()
 }
 
 #' @rdname ellipsoid-params
 #' @export
-shape_invariant <- function(x) UseMethod('shape_invariant')
+shape_invariant <- function(x) UseMethod("shape_invariant")
 
 #' @rdname ellipsoid-params
 #' @export
@@ -398,35 +398,35 @@ shape_invariant.default <- function(x) {
 #' @rdname ellipsoid-params
 #' @export
 shape_invariant.ortensor <- function(x) {
-  x |> 
-    principal_stretch() |> 
+  x |>
+    principal_stretch() |>
     shape_invariant()
 }
 
 #' @rdname ellipsoid-params
 #' @export
 shape_invariant.ellipsoid <- function() {
-  x |> 
-    principal_stretch() |> 
+  x |>
+    principal_stretch() |>
     shape_invariant()
 }
 
 #' @rdname ellipsoid-params
 #' @export
-kind <- function(x) UseMethod('kind')
+kind <- function(x) UseMethod("kind")
 
 #' @rdname ellipsoid-params
 #' @export
 kind.default <- function(x) {
   e <- log(x) |> unname()
-  
+
   e12 <- e[1] - e[2]
   e13 <- e[1] - e[3]
   e23 <- e[2] - e[3]
-  
+
   goct <- 2 * sqrt(e12^2 + e23^2 + e13^2) / 3 # natural octahedral unit shear (Nadai, 1963)
   eoct <- sqrt(3) * goct / 2 # natural octahedral unit strain (Nadai, 1963)
-  
+
   lode <- lode(x)
 
   .get_kind(eoct, lode)
@@ -435,16 +435,15 @@ kind.default <- function(x) {
 #' @rdname ellipsoid-params
 #' @export
 kind.ortensor <- function(x) {
-  x |> 
-    principal_stretch() |> 
+  x |>
+    principal_stretch() |>
     kind()
 }
 
 #' @rdname ellipsoid-params
 #' @export
 kind.ellipsoid <- function(x) {
-  x |> 
-    principal_stretch() |> 
+  x |>
+    principal_stretch() |>
     kind()
 }
-

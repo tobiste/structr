@@ -544,11 +544,11 @@ fisher_ftest <- function(x, y, alpha = 0.05, na.rm = TRUE) {
 #' x123 <- rbind(x1, x2, x3)
 #' cl <- sph_cluster(x123, k = 3)
 #' plot(x123, col = cl$cluster)
-#' 
+#'
 #' # sph_cluster(simongomez, k = 3)
 sph_cluster <- function(x, k, method = c("hclust", "kmeans", "diana", "agnes", "pam", "clara", "fanny"), ...) {
   method <- match.arg(method)
-  dmat <- if(is.Pair(x)) dist.Pair(x) else dist.Vec3(Vec3(x))
+  dmat <- if (is.Pair(x)) dist.Pair(x) else dist.Vec3(Vec3(x))
 
   switch(method,
     hclust = v_hcut(dmat, k = k, FUN = stats::hclust, ...),
@@ -576,24 +576,24 @@ v_hcut <- function(x, k, FUN = stats::hclust, ...) {
   hc
 }
 
-.dist.helper <- function(M, ...){
+.dist.helper <- function(M, ...) {
   # angular distance matrix (in radians)
   cosine_sim <- abs(tcrossprod(M)) # take absolute value!
   cosine_sim[cosine_sim > 1] <- 1
   angular_dist <- acos(cosine_sim)
-  
+
   # convert to 'dist' object
   stats::as.dist(angular_dist, ...)
 }
 
 v_dist <- function(x, ...) {
   Vec3(x) |>
-    vnorm() |> 
+    vnorm() |>
     .dist.helper()
 }
 
-rot_dist <- function(x, ...){
-    .dist.helper(x)
+rot_dist <- function(x, ...) {
+  .dist.helper(x)
 }
 
 #' Angular distance matrix for orientation vectors

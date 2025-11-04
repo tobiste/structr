@@ -676,7 +676,7 @@ Fault_from_rake <- function(p, rake, sense = NULL, ...) {
     qd <- (rake %% 360) <= 180
     sense <- ifelse(qd, 1, -1)
   } else {
-    #rake <- sense * (rake %% 180)
+    # rake <- sense * (rake %% 180)
   }
 
   l <- rotate(strike, p, rake)
@@ -697,12 +697,12 @@ Fault_from_rake <- function(p, rake, sense = NULL, ...) {
 #' strike given by either right or left-hand rule and the lineation.
 #' The angle is recorded in a clockwise sense (looking down upon the fault plane) and has a range
 #' from 0 to 180%deg;. The quadrant of plunge indicates the direction
-#' of the strike from which the rake angle is measured. The `sense` argument is 
+#' of the strike from which the rake angle is measured. The `sense` argument is
 #' ignored, as it it implied by the sign of the rake.
 #'
 #' `type=="rake"` Rake is the **acute** angle measured in the fault plane between the strike of the fault and the
 #' lineation . Starting from the strike line, the angle is measured in a sense
-#' which is down the dip of the plane. Quadrant of rake indicate the direction of 
+#' which is down the dip of the plane. Quadrant of rake indicate the direction of
 #' the strike  from which the rake angle is measured, i.e. whether right-hand or left-handrule is followed.
 #' Angle ranges from 0 to 90 &deg;. Use `sense` argument to specify the sense of motion.
 #'

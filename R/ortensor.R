@@ -6,8 +6,8 @@
 #' @inheritParams geodesic_mean
 #' @param norm logical. Whether the tensor should be normalized or not.
 #' @param w numeric. weightings
-#' @param shift logical. Only for `"Pair"` objects: Tensor is by default shifted towards positive 
-#' eigenvalues, so it could be used as Scheidegger orientation tensor for 
+#' @param shift logical. Only for `"Pair"` objects: Tensor is by default shifted towards positive
+#' eigenvalues, so it could be used as Scheidegger orientation tensor for
 #' plotting. When original Lisle tensor is needed, set shift to `FALSE`.
 #' @param object 3x3 matrix
 #'
@@ -32,8 +32,8 @@
 #' in Europe and Western Asia as calculated from earthquake fault plane solutions.
 #' Bulletin of the Seismological Society of America, 54(5A), 1519–1528.
 #' \doi{10.1785/BSSA05405A1519}
-#' 
-#' Lisle, R. (1989). The Statistical Analysis of Orthogonal Orientation Data. 
+#'
+#' Lisle, R. (1989). The Statistical Analysis of Orthogonal Orientation Data.
 #' The Journal of Geology, 97(3), 360-364.
 #'
 #' @examples
@@ -43,7 +43,7 @@
 #'
 #' test <- as.ortensor(diag(3))
 #' is.ortensor(test)
-#' 
+#'
 #' # Orientation tensor for Pairs
 #' ortensor(angelier1990$TYM)
 NULL
@@ -58,8 +58,8 @@ as.ortensor <- function(object) {
   stopifnot(is.matrix(object))
   structure(
     object,
-    class = append(class(object), "ortensor")#,
-    #dimnames = list(rownames(object), colnames(object))
+    class = append(class(object), "ortensor") # ,
+    # dimnames = list(rownames(object), colnames(object))
   )
 }
 
@@ -68,7 +68,7 @@ print.ortensor <- function(x, ...) {
   n <- nrow(x)
   cat("Orientation tensor\n")
   print(unclass(x)[seq_len(n), ]) # avoids printing all the attributes of x
-  
+
   return(invisible(x))
 }
 
@@ -140,10 +140,10 @@ ortensor.Plane <- function(x, norm = TRUE, w = NULL, shift = NULL) {
 ortensor.Pair <- function(x, norm = TRUE, w = NULL, shift = FALSE) {
   otl <- ortensor(Line(x), norm, w)
   otp <- ortensor(Plane(x), norm, w)
-  ot <-  otl - otp
-  if(shift) {
+  ot <- otl - otp
+  if (shift) {
     ot <- (ot + diag(3)) / 3
-  } 
+  }
   as.ortensor(ot)
 }
 
@@ -197,7 +197,7 @@ inertia_tensor.default <- function(x, w = NULL) {
 #'
 #' Decomposition of Orientation Tensor Eigenvectors and Eigenvalues
 #'
-#' @param x either an object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, 
+#' @param x either an object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`,
 #' `"Pair"`, or `"Fault"` where the
 #'  rows are the observations and the columns are the coordinates, or an `"ortensor"` object.
 #' @param scaled logical. Whether the Eigenvectors should be scaled by the
@@ -234,7 +234,7 @@ ot_eigen <- function(x, scaled = FALSE, ...) UseMethod("ot_eigen")
 #' @name ot_eigen
 #' @export
 ot_eigen.spherical <- function(x, scaled = FALSE, ...) {
-  #stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  # stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
 
   xeig <- ortensor(x, ...) |>
     ot_eigen.ortensor(scaled = scaled)
@@ -484,12 +484,12 @@ shape_params.ortensor <- function(x, ...) {
   # R <- 3 * eig[3] # Random index (Vollmer, 1990)
   # B <- P + G #  Cylindricity index (Vollmer, 1990)
   # C <- log(eig[1] / eig[3])
-  #I <- 7.5 * sum((eig / N - 1 / 3)^2)
+  # I <- 7.5 * sum((eig / N - 1 / 3)^2)
 
-  #us <- (15 * N / 2) * sum((eig - 1 / 3)^2) # Mardia uniformity statistic
-  #D <- sqrt(us / (5 * N)) # D of Vollmer 2020
+  # us <- (15 * N / 2) * sum((eig - 1 / 3)^2) # Mardia uniformity statistic
+  # D <- sqrt(us / (5 * N)) # D of Vollmer 2020
 
-  #Vollmer <- c(P = P, G = G, R = R, B = B, C = C, I = I, D = D)
+  # Vollmer <- c(P = P, G = G, R = R, B = B, C = C, I = I, D = D)
 
   Lisle_intensity <- 7.5 * sum((eig - 1 / 3)^2)
 
@@ -521,7 +521,7 @@ shape_params.ortensor <- function(x, ...) {
   list(
     stretch_ratios = stretch_ratios,
     strain_ratios = strain_ratios,
-    #Vollmer = Vollmer,
+    # Vollmer = Vollmer,
     Flinn = Flinn,
     Ramsay = Ramsay,
     Woodcock = Woodcock,
@@ -532,7 +532,7 @@ shape_params.ortensor <- function(x, ...) {
     kind = kind, # descriptive type of ellipsoid
     # MAD_approx = as.numeric(aMAD), # approximate deviation according to shape
     MAD = as.numeric(MAD), #  maximum angular deviation (MAD)
-    #US = us,
+    # US = us,
     Jellinek = pj # Jellinek 1981
   )
 }

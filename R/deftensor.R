@@ -36,8 +36,8 @@ as.defgrad <- function(object) {
   stopifnot(is.matrix(object))
   structure(
     object,
-    class = append(class(object), "defgrad")#,
-    #dimnames = list(rownames(object), colnames(object))
+    class = append(class(object), "defgrad") # ,
+    # dimnames = list(rownames(object), colnames(object))
   )
 }
 
@@ -46,7 +46,7 @@ print.defgrad <- function(x, ...) {
   n <- nrow(x)
   cat("Deformation gradient tensor\n")
   print(unclass(x)[seq_len(n), ]) # avoids printing all the attributes of x
-  
+
   return(invisible(x))
 }
 
@@ -139,7 +139,7 @@ defgrad_from_axisangle <- function(axis, angle) {
     c(x * xc + c, xyc - zs, zxc + ys),
     c(xyc + zs, y * yc + c, yzc - xs),
     c(zxc - ys, yzc + xs, z * zc + c)
-  ) |> 
+  ) |>
     as.defgrad()
 }
 
@@ -147,11 +147,12 @@ defgrad_from_axisangle <- function(axis, angle) {
 #' @export
 defgrad_from_comp <- function(xx = 1, xy = 0, xz = 0, yx = 0, yy = 1, yz = 0,
                               zx = 0, zy = 0, zz = 1) {
-  matrix(c(
-    xx, xy, xz,
-    yx, yy, yz,
-    zx, zy, zz
-  ),
+  matrix(
+    c(
+      xx, xy, xz,
+      yx, yy, yz,
+      zx, zy, zz
+    ),
     nrow = 3, byrow = TRUE
   ) |> as.defgrad()
 }
@@ -177,7 +178,7 @@ defgrad.velgrad <- function(x, time, steps, ...) {
   } else {
     R <- as.defgrad(expm::expm(x * time))
   }
-  
+
   return(R)
 }
 
@@ -219,8 +220,8 @@ as.velgrad <- function(object) {
   stopifnot(is.matrix(object))
   structure(
     object,
-    class = append(class(object), "velgrad")#,
-    #dimnames = list(rownames(object), colnames(object))
+    class = append(class(object), "velgrad") # ,
+    # dimnames = list(rownames(object), colnames(object))
   )
 }
 
@@ -229,14 +230,14 @@ print.velgrad <- function(x, ...) {
   n <- nrow(x)
   cat("Velocity gradient tensor\n")
   print(unclass(x)[seq_len(n), ]) # avoids printing all the attributes of x
-  
+
   return(invisible(x))
 }
 
 
 #' @rdname gradient
 #' @export
-velgrad <- function(x, time, ...) UseMethod('velgrad')
+velgrad <- function(x, time, ...) UseMethod("velgrad")
 
 #' @rdname gradient
 #' @export
@@ -281,4 +282,3 @@ velgrad_rate <- function(x) {
 velgrad_spin <- function(x) {
   (x - t(x)) / 2
 }
-

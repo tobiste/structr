@@ -461,7 +461,7 @@ gridHyper <- function(rphi, rmax, kappa, nnodes, normalize = TRUE, proj = "eqd")
 
 
 #' R<sub>f</sub>/&varphi; plot
-#' 
+#'
 #' Plot finite strain ellipse against orientation of finite stretching axes (after Ramsay, 1983)
 #'
 #' @inheritParams mean_strain_ellipse
@@ -602,7 +602,7 @@ Rphi_plot <- function(r, phi,
 #' @param proj character.
 #' @inheritParams Rphi_plot
 #' @returns plot
-#' 
+#'
 #' @note `Rphi_plot()` and `elliot_plot()` are identical.
 #'
 #' @references Elliott, D. (1970). Determination of Finite Strain and Initial

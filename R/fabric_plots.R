@@ -1,7 +1,7 @@
 # Fabric intensities and plots -------------------------------------------------
 
 #' Orientation tensor fabric intensity and shape
-#' 
+#'
 #' Fabric intensity and shape parameters of the orientation tensor based on Vollmer (1990)
 #'
 #' @inheritParams geodesic_mean
@@ -19,8 +19,8 @@
 #' of 300 is D = 0.1.}
 #' \item{`U`}{Uniformity statistic of Mardia (1972)}
 #' }
-#' 
-#' @references 
+#'
+#' @references
 #' Lisle, Richard J.  (1985): "The use of the orientation tensor for the description and statistical testing of fabrics." Journal of Structural Geology 7.1: 115-117.
 #'
 #' Mardia, Kantilal Varichand. (1975): "Statistics of directional data." Journal of the Royal Statistical Society Series B: Statistical Methodology 37.3: 349-371.
@@ -30,7 +30,7 @@
 #' Vollmer, Frederick W. (2020): "Representing Progressive Fabric Paths on a Triangular Plot Using a Fabric Density Index and Crystal Axes Eigenvector Barycenters." Geological Society of America Abstracts. Vol. 52.
 #'
 #' Woodcock, N. H.  (1977): "Specification of fabric shapes using an eigenvalue method." Geological Society of America Bulletin 88.9: 1231-1236.
-#' 
+#'
 #' @export
 #'
 #' @seealso [shape_params()], [ortensor()], [vollmer_plot()]
@@ -42,15 +42,15 @@
 #' vollmer(x)
 #'
 #' # Pair objects:
-#'vollmer(simongomez)
+#' vollmer(simongomez)
 vollmer <- function(x) {
   stopifnot(is.spherical(x))
   ot <- ortensor(x)
   eig <- eigen(ot, only.values = TRUE)$values #|> sort(decreasing = TRUE)
-  
-  if(is.Pair(x) & any(eig<0)) eig <- abs(eig) |> sort(decreasing = TRUE)
-  
-  
+
+  if (is.Pair(x) & any(eig < 0)) eig <- abs(eig) |> sort(decreasing = TRUE)
+
+
   # Vollmer
   N <- nrow(x)
   P <- eig[1] - eig[2] #  Point index (Vollmer, 1990)
@@ -59,18 +59,18 @@ vollmer <- function(x) {
   B <- P + G #  Cylindricity index (Vollmer, 1990)
   C <- log(eig[1] / eig[3])
   I <- 7.5 * sum((eig / N - 1 / 3)^2)
-  
+
   U <- (15 * N / 2) * sum((eig - 1 / 3)^2) # Mardia uniformity statistic
   D <- sqrt(U / (5 * N)) # D of Vollmer 2020
-  
- c(P = P, G = G, R = R, B = B, C = C, I = I, D = D, U = U)
+
+  c(P = P, G = G, R = R, B = B, C = C, I = I, D = D, U = U)
 }
 
 #' Fabric plot of Vollmer (1990)
 #'
 #' Creates a fabric plot using the eigenvalue method
 #'
-#' @param x spherical object or a three-column matrix, where the first column is 
+#' @param x spherical object or a three-column matrix, where the first column is
 #' P, the second is G, and the third one is R of the Vollmer parameters.
 #' @inheritParams woodcock_plot
 #' @param ngrid integer or 3-element vector specifying the amount of gridlines
@@ -117,13 +117,13 @@ vollmer_plot.default <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 
   B <- c(1, 0) # right
   C <- c(1 / 2, sqrt(3) / 2) # top
   abc <- rbind(A, B, C)
-  coords <- sapply(seq_len(nrow(x)), function(i){
-  vec <- c(P = x[i, 1], G = x[i, 2], R = x[i, 3])
-  PGR <- x[i, 1] + x[i, 3] + x[i, 3]
-  PGR <- sum(vec)
-  colSums(vec * abc) / PGR
-}) |> t()
-  
+  coords <- sapply(seq_len(nrow(x)), function(i) {
+    vec <- c(P = x[i, 1], G = x[i, 2], R = x[i, 3])
+    PGR <- x[i, 1] + x[i, 3] + x[i, 3]
+    PGR <- sum(vec)
+    colSums(vec * abc) / PGR
+  }) |> t()
+
   if (isFALSE(add)) {
     graphics::par(xpd = TRUE)
     graphics::plot(c(0, 1), c(0, sqrt(3) / 2), "n", asp = 1, axes = FALSE, xlab = "", ylab = "")
@@ -180,20 +180,19 @@ vollmer_plot.default <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 
   } else {
     graphics::points(coords[, 1], coords[, 2], ...)
   }
-
-  
 }
 
 #' @rdname vollmer-plot
 #' @export
-vollmer_plot.spherical <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5),  ...) {
+vollmer_plot.spherical <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...) {
   x_vollmer <- vollmer(x)
   # P <- x_vollmer["P"]
   # G <- x_vollmer["G"]
   # R <- x_vollmer["R"]
-  vollmer_plot.default(  
-    t(x_vollmer[c("P", "G", "R")]), 
-    labels = labels, add = add, ngrid = ngrid, ...)
+  vollmer_plot.default(
+    t(x_vollmer[c("P", "G", "R")]),
+    labels = labels, add = add, ngrid = ngrid, ...
+  )
   invisible(x_vollmer)
 }
 
@@ -497,7 +496,7 @@ hsu_plot.default <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "
 #' R_XY <- holst[, "R_XY"]
 #' R_YZ <- holst[, "R_YZ"]
 #' flinn_plot(cbind(R_XY, R_YZ), log = FALSE, col = "#B63679", pch = 16)
-#' flinn_plot(cbind(R_XY, R_YZ), log = TRUE, col = "#B63679", pch = 16, type = 'b')
+#' flinn_plot(cbind(R_XY, R_YZ), log = TRUE, col = "#B63679", pch = 16, type = "b")
 #'
 #' set.seed(20250411)
 #' mu <- Line(120, 50)
@@ -511,11 +510,11 @@ NULL
 
 #' @rdname flinn_plot
 #' @export
-flinn_plot <- function(x, main = "Flinn diagram", R.max = NULL, log = FALSE, add = FALSE,  ...) UseMethod("flinn_plot")
+flinn_plot <- function(x, main = "Flinn diagram", R.max = NULL, log = FALSE, add = FALSE, ...) UseMethod("flinn_plot")
 
 #' @rdname flinn_plot
 #' @export
-flinn_plot.default <- function(x, main = "Flinn diagram", R.max = NULL, log = FALSE, add = FALSE,  ...) {
+flinn_plot.default <- function(x, main = "Flinn diagram", R.max = NULL, log = FALSE, add = FALSE, ...) {
   R_XY <- x[, 1]
   R_YZ <- x[, 2]
 
@@ -580,7 +579,7 @@ flinn_plot.default <- function(x, main = "Flinn diagram", R.max = NULL, log = FA
   }
 
   graphics::points(R_YZ, R_XY, ...)
- 
+
   invisible(
     list(
       X = R_XY * R_YZ,
