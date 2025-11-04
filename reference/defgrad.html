@@ -69,6 +69,8 @@
 <span></span>
 <span><span class="fu">defgrad_from_ratio</span><span class="op">(</span>Rxy <span class="op">=</span> <span class="fl">1</span>, Ryz <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">defgrad_from_shearstrain</span><span class="op">(</span>Rxy <span class="op">=</span> <span class="fl">1</span>, Ryz <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># S3 method for class 'Pair'</span></span>
 <span><span class="fu">defgrad</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
@@ -87,6 +89,14 @@
 <span>  zy <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  zz <span class="op">=</span> <span class="fl">1</span></span>
 <span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">defgrad_from_simpleshear</span><span class="op">(</span><span class="va">gamma</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">defgrad_from_pureshear</span><span class="op">(</span><span class="va">k</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">defgrad_from_generalshear</span><span class="op">(</span><span class="va">k</span>, <span class="va">gamma</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">defgrad_from_dilation</span><span class="op">(</span>dilation <span class="op">=</span> <span class="fl">0</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Default S3 method</span></span>
 <span><span class="fu">defgrad</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
@@ -133,17 +143,42 @@ both vectors to rotate <code>v1</code> to <code>v2</code>.</p></dd>
 <dt id="arg-axis-angle">axis, angle<a class="anchor" aria-label="anchor" href="#arg-axis-angle"></a></dt>
 <dd><p>rotation axis and angle, axis can be an object of class <code>"Vec3"</code>,
 <code>"Line"</code>, <code>"Ray"</code>, or <code>"Plane"</code>, or a three-element vector. Angle in
-degrees when axis is a object of class <code>"Line"</code>, <code>"Ray"</code>, or <code>"Plane"</code>, and radians otherwise.</p></dd>
+degrees when axis is a object of class <code>"Line"</code>, <code>"Ray"</code>, or <code>"Plane"</code>, and
+radians otherwise. Counterclockwise rotation for positive angles.</p></dd>
 
 
 <dt id="arg-xx-xy-xz-yx-yy-yz-zx-zy-zz">xx, xy, xz, yx, yy, yz, zx, zy, zz<a class="anchor" aria-label="anchor" href="#arg-xx-xy-xz-yx-yy-yz-zx-zy-zz"></a></dt>
 <dd><p>numeric. Directly specify components of
 the tensor. Identity matrix by default.</p></dd>
 
+
+<dt id="arg-gamma">gamma<a class="anchor" aria-label="anchor" href="#arg-gamma"></a></dt>
+<dd><p>numeric. shear strain in x-direction</p></dd>
+
+
+<dt id="arg-k">k<a class="anchor" aria-label="anchor" href="#arg-k"></a></dt>
+<dd><p>numeric. Horizontal pure shear component in the y-direction</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>3x3 matrix.</p>
+    <p>object of class <code>"defgrad"</code>, i.e. a 3x3 matrix.</p>
+<p>If <code>x</code>  is a Pair object, then <code>defgrad()</code> creates <code>"defgrad"</code> tensor representing rotation defined by <code>"Pair"</code>.
+Rotation brings x-axis to lineation and z-axis to normal to plane</p>
+<p><code>defgrad_by_comp</code> creates an defined by individual components (default is identity tensor)</p>
+<p><code>defgrad_by_ratio()</code> creates an isochoric <code>"defgrad"</code> tensor with axial
+stretches defined by strain ratios (default is identity tensor).</p>
+<p><code>defgrad_from_vectors()</code> creates <code>"defgrad"</code> tensor representing rotation around
+axis perpendicular to both vectors and rotate <code>v1</code> to <code>v2</code>.</p>
+<p><code>defgrad_from_axisangle</code>  creates <code>"defgrad"</code> tensor representing a rotation
+about an axis and an angle.</p>
+<p><code>defgrad_from_pureshear</code> creates an isochoric coaxial <code>"defgrad"</code> tensor.</p>
+<p><code>defgrad_from_simpleshear</code> creates an isochoric non-coaxial <code>"defgrad"</code> tensor.</p>
+<p><code>defgrad_from_generalshear</code> creates an isochoric <code>"defgrad"</code> tensor, where
+transtension is \(k&gt;1\) and \(\gamma \neq 0\), and transpression is
+\(k&lt;1\) and \(\gamma \neq 0\).</p>
+<p><code>defgrad_from_dilation</code> creates <code>"defgrad"</code> tensor representing the volume change
+in z-direction.</p>
     </div>
 
     <div class="section level2">
@@ -156,22 +191,44 @@ the tensor. Identity matrix by default.</p></dd>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.000000 0.000000 0.3815714</span>
 <span class="r-in"><span><span class="fu">defgrad_from_axisangle</span><span class="op">(</span><span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">50</span><span class="op">)</span>, <span class="fl">60</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Deformation gradient tensor</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            [,1]       [,2]      [,3]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.8798642 -0.4069917 0.2453504</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.3590528  0.9075417 0.2178283</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.3113200 -0.1035655 0.9446449</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            [,1]        [,2]      [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.5516470 -0.75286916 0.3589897</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.5739587  0.65494097 0.4915523</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.6051917 -0.06511807 0.7934120</span>
 <span class="r-in"><span><span class="fu">defgrad_from_vectors</span><span class="op">(</span><span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">50</span><span class="op">)</span>, <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">270</span>, <span class="fl">80</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Deformation gradient tensor</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>             [,1]       [,2]       [,3]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.86775875 0.01649708  0.2175641</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.08991349 0.77796344 -0.4437182</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.19880103 0.45243581  0.7540121</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            [,1]       [,2]       [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.8165776 0.03175915  0.2514224</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.1158354 0.69202890 -0.5070905</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.2253975 0.51918204  0.6588077</span>
 <span class="r-in"><span><span class="fu">defgrad</span><span class="op">(</span><span class="fu"><a href="classes.html">Pair</a></span><span class="op">(</span><span class="fl">40</span>, <span class="fl">20</span>, <span class="fl">75</span>, <span class="fl">16</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Deformation gradient tensor</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]       [,2]       [,3]</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.2487928 -0.9331095 -0.2620026</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.9285075  0.3060065 -0.2198463</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.2756374 -0.1885752  0.9396926</span>
+<span class="r-in"><span><span class="fu">defgrad_from_shearstrain</span><span class="op">(</span>k <span class="op">=</span> <span class="fl">2</span>, gamma <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">tan</a></span><span class="op">(</span><span class="fl">30</span> <span class="op">*</span> <span class="va">pi</span> <span class="op">/</span><span class="fl">180</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in defgrad_from_shearstrain(k = 2, gamma = tan(30 * pi/180)):</span> unused arguments (k = 2, gamma = tan(30 * pi/180))</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># combine deformation by matrix multiplication</span></span></span>
+<span class="r-in"><span><span class="va">D1</span> <span class="op">&lt;-</span> <span class="fu">defgrad_from_ratio</span><span class="op">(</span><span class="fl">5</span>, <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">D2</span> <span class="op">&lt;-</span> <span class="fu">defgrad_from_axisangle</span><span class="op">(</span><span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span><span class="op">)</span>, <span class="fl">30</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Matrix multiplication is not commutative!!!!</span></span></span>
+<span class="r-in"><span><span class="va">D12</span> <span class="op">&lt;-</span> <span class="va">D2</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">D1</span> <span class="co"># here: D1 is applied first</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Apply deformation of orientation data</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20250411</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">100</span>, mu <span class="op">=</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span><span class="op">)</span>, k<span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">l_trans</span> <span class="op">&lt;-</span> <span class="fu"><a href="vecmath.html">transform_linear</a></span><span class="op">(</span><span class="va">l</span>, <span class="va">D12</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="va">axes</span> <span class="op">&lt;-</span> <span class="fu"><a href="classes.html">Vec3</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">F</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">l</span>, col <span class="op">=</span> <span class="st">'darkgrey'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">l_trans</span>, col <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">axes</span>, pch <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">axes</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'x'</span>, <span class="st">'y'</span>, <span class="st">'z'</span><span class="op">)</span>, pos <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="defgrad-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
