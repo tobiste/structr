@@ -5,10 +5,15 @@
 \alias{is.defgrad}
 \alias{as.defgrad}
 \alias{defgrad_from_ratio}
+\alias{defgrad_from_shearstrain}
 \alias{defgrad.Pair}
 \alias{defgrad_from_vectors}
 \alias{defgrad_from_axisangle}
 \alias{defgrad_from_comp}
+\alias{defgrad_from_simpleshear}
+\alias{defgrad_from_pureshear}
+\alias{defgrad_from_generalshear}
+\alias{defgrad_from_dilation}
 \alias{defgrad.default}
 \alias{defgrad.velgrad}
 \title{Deformation Gradient Tensor}
@@ -20,6 +25,8 @@ as.defgrad(object)
 defgrad(x, time, steps, ...)
 
 defgrad_from_ratio(Rxy = 1, Ryz = 1)
+
+defgrad_from_shearstrain(Rxy = 1, Ryz = 1)
 
 \method{defgrad}{Pair}(x, ...)
 
@@ -38,6 +45,14 @@ defgrad_from_comp(
   zy = 0,
   zz = 1
 )
+
+defgrad_from_simpleshear(gamma)
+
+defgrad_from_pureshear(k)
+
+defgrad_from_generalshear(k, gamma)
+
+defgrad_from_dilation(dilation = 0)
 
 \method{defgrad}{default}(x, ...)
 
@@ -63,13 +78,43 @@ both vectors to rotate \code{v1} to \code{v2}.}
 
 \item{axis, angle}{rotation axis and angle, axis can be an object of class \code{"Vec3"},
 \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, or a three-element vector. Angle in
-degrees when axis is a object of class \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, and radians otherwise.}
+degrees when axis is a object of class \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, and
+radians otherwise. Counterclockwise rotation for positive angles.}
 
 \item{xx, xy, xz, yx, yy, yz, zx, zy, zz}{numeric. Directly specify components of
 the tensor. Identity matrix by default.}
+
+\item{gamma}{numeric. shear strain in x-direction}
+
+\item{k}{numeric. Horizontal pure shear component in the y-direction}
 }
 \value{
-3x3 matrix.
+object of class \code{"defgrad"}, i.e. a 3x3 matrix.
+
+If \code{x}  is a Pair object, then \code{defgrad()} creates \code{"defgrad"} tensor representing rotation defined by \code{"Pair"}.
+Rotation brings x-axis to lineation and z-axis to normal to plane
+
+\code{defgrad_by_comp} creates an defined by individual components (default is identity tensor)
+
+\code{defgrad_by_ratio()} creates an isochoric \code{"defgrad"} tensor with axial
+stretches defined by strain ratios (default is identity tensor).
+
+\code{defgrad_from_vectors()} creates \code{"defgrad"} tensor representing rotation around
+axis perpendicular to both vectors and rotate \code{v1} to \code{v2}.
+
+\code{defgrad_from_axisangle}  creates \code{"defgrad"} tensor representing a rotation
+about an axis and an angle.
+
+\code{defgrad_from_pureshear} creates an isochoric coaxial \code{"defgrad"} tensor.
+
+\code{defgrad_from_simpleshear} creates an isochoric non-coaxial \code{"defgrad"} tensor.
+
+\code{defgrad_from_generalshear} creates an isochoric \code{"defgrad"} tensor, where
+transtension is \eqn{k>1} and \eqn{\gamma \neq 0}, and transpression is
+\eqn{k<1} and \eqn{\gamma \neq 0}.
+
+\code{defgrad_from_dilation} creates \code{"defgrad"} tensor representing the volume change
+in z-direction.
 }
 \description{
 Deformation Gradient Tensor
@@ -79,4 +124,24 @@ defgrad_from_ratio(2, 3)
 defgrad_from_axisangle(Line(120, 50), 60)
 defgrad_from_vectors(Line(120, 50), Line(270, 80))
 defgrad(Pair(40, 20, 75, 16))
+defgrad_from_shearstrain(k = 2, gamma = tan(30 * pi /180))
+
+
+# combine deformation by matrix multiplication
+D1 <- defgrad_from_ratio(5, 1)
+D2 <- defgrad_from_axisangle(Line(0, 90), 30)
+
+# Matrix multiplication is not commutative!!!!
+D12 <- D2 \%*\% D1 # here: D1 is applied first
+
+# Apply deformation of orientation data
+set.seed(20250411)
+l <- rvmf(100, mu = Line(0, 90), k= 100)
+l_trans <- transform_linear(l, D12)
+
+axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
+stereoplot(guides = F)
+points(l, col = 'darkgrey')
+points(l_trans, col = 'red')
+points(axes, pch = 15); text(axes, labels = c('x', 'y', 'z'), pos = 1)
 }

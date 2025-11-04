@@ -38,9 +38,20 @@ deformation gradient tensor divided by given time, and
 the deformation gradient tensor accumulated after some time.
 }
 \examples{
-D <- defgrad_from_comp(xx = 2, xy = 1, zz = 0.5)
-L <- velgrad(D, time = 10)
-print(L)
+d <- defgrad_from_generalshear(k = 2, gamma = .7)
+v <- velgrad(d, time = 10)
+d_steps <- defgrad(v, time = 10, steps = 2)
 
-defgrad(L, time = 10, steps = 2)
+# apply on orientation data
+set.seed(20250411)
+l <- rvmf(100, mu = Line(0, 90), k= 100)
+l_trans <- lapply(d_steps, function(i){transform_linear(l, i)})
+
+# plot in stereonet
+axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
+stereoplot(guides = F)
+points(l, col = 'darkgrey') 
+cols <- assign_col(seq_along(l_trans))
+lapply(seq_along(l_trans), function(i){points(l_trans[[i]], col = cols[i])})
+points(axes, pch = 15); text(axes, labels = c('x', 'y', 'z'), pos = 1) 
 }
