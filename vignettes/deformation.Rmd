@@ -74,6 +74,7 @@ det(D1)
 ```
 
 The *inverse* of the tensor reverses the deformation. In R, this can be done using `solve()`:
+
 ```{r inverse}
 solve(D1)
 ```
@@ -84,7 +85,6 @@ proportional to the amount of stretch).
 ```{r def_eigen}
 eigen(D1)
 ```
-
 
 Deformation tensors can be combined using *matrix multiplication*.
 The resulting deformation from our general-shear deformation (D1) superimposed by our rotation (D2) is
@@ -144,6 +144,7 @@ W <- velgrad_spin(L)
 ```
 
 The eigenvectors of the stretching gradient tensor give the orientations and lengths of the instantaneous stretching axes: 
+
 ```{r vel_eigenS}
 eigen(S)
 ```
@@ -179,13 +180,15 @@ l_steps <- lapply(D1_steps, function(i){transform_linear(l, i)})
 And plot the paths showing how the orientations change over time
 
 ```{r plot_stereo}
+#The axes of our deformation tensor:
 axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
 
 increments <- seq(0, 10, 2)
+cols <- assign_col(increments)
 
 par(xpd = NA)
 stereo_path(l_steps, type = "l", add = FALSE)
-stereo_path(l_steps, type = "p", col = assign_col(increments), pch = 16, cex = .4)
+stereo_path(l_steps, type = "p", col = cols, pch = 16, cex = .4)
 points(axes, pch = 15); text(axes, labels = c('x', 'y', 'z'), pos = 1)
 
 legend_c(increments, title = "Time")
@@ -195,8 +198,8 @@ We can also monitor how the orientation tensor changes during progressive deform
 
 ```{r plot_ortensors}
 par(mfrow = c(1, 2))
-vollmer_plot(l_steps, type = 'b', col = assign_col(increments))
-hsu_plot(l_steps, type = 'b', col = assign_col(increments))
+vollmer_plot(l_steps, type = 'b', col = cols)
+hsu_plot(l_steps, type = 'b', col = cols)
 ```
 
 ## References
