@@ -82,7 +82,7 @@ data("example_planes")
 data("example_lines")
 
 par(xpd = NA)
-stereoplot(title = "Lambert equal-area projection", sub = "Lower hemisphere")
+stereoplot(title = "Lambert equal-area projection", sub = "Lower hemisphere", ticks = 45, labels = TRUE)
 points(example_lines, col = "#B63679", pch = 19, cex = .5)
 points(example_planes, col = "#000004", pch = 1, cex = .5)
 
@@ -178,7 +178,6 @@ planes and lines can be visualized in two ways:
 par(mfrow = c(1, 2), xpd = NA)
 vollmer_plot(example_planes, col = "#000004", pch = 16)
 vollmer_plot(example_lines, col = "#B63679FF", pch = 16, add = TRUE)
-title("Fabric plot of Vollmer (1990)")
 
 hsu_plot(example_planes, col = "#000004", pch = 16)
 hsu_plot(example_lines, col = "#B63679FF", pch = 16, add = TRUE)
@@ -425,11 +424,31 @@ xl_steps <- lapply(D1_steps, function(i) {
   transform_linear(xl, i)
 })
 
+# instantaneous stretching axes
+axes_ISA <- instantaneous_stretching_axes(L)
+
+# flow apophyses
+flow_apophyses <- flow_apophyses(L)
+
 increments <- seq(0, t, i)
 
 par(xpd = NA)
-stereo_path(xl_steps, type = "l", add = FALSE)
+stereoplot(guides = FALSE)
+stereo_path(xl_steps, type = "l")
 stereo_path(xl_steps, type = "p", col = assign_col(increments), pch = 16, cex = .4)
+
+lines(flow_apophyses, col = c("grey30", "grey70"), lty = c(1, 2))
+points(axes_ISA, pch = 15, col = "#B63679FF")
+text(axes_ISA, labels = c("ISA-1", "ISA-2", "ISA-3"), col = "#B63679FF", pos = 3, font = 2)
+
+# legend
+legend(0, -1.1,
+  xjust = 0.5,
+  legend = c("Flow apophysis 1", "Flow apophysis 2"),
+  col = c("grey30", "grey70"),
+  lty = c(1, 2)
+)
+
 legend_c(increments, title = "Time")
 ```
 

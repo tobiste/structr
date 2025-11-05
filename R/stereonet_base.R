@@ -513,20 +513,22 @@ stereoplot_frame <- function(n = 512L, radius = 1, ...) {
 #'
 #' @family stereo-plot
 #'
-#' @importFrom graphics points
+#' @importFrom graphics plot points title mtext par
 #' @export
 #' @examples
 #' stereoplot(ticks = 30, title = "title", sub = "subtitle", border.col = "purple", labels = TRUE)
 stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = "lightgray",
                        lwd = 1, lty = 1, border.col = "black", title = NULL,
-                       sub = NULL, origin.text = "N", labels = FALSE, ladj = 0.04, centercross = TRUE, ticks = NULL, radius = 1) {
-  plot(radius * c(-1, 1), radius * c(-1, 1),
+                       sub = NULL, origin.text = "N", labels = FALSE, ladj = 0.05, 
+                       centercross = TRUE, ticks = NULL, radius = 1) {
+  graphics::par(xpd = NA)
+  graphics::plot(radius * c(-1, 1), radius * c(-1, 1),
     type = "n", xlab = NULL, ylab = NULL, asp = 1,
-    axes = FALSE, ann = FALSE
+    axes = FALSE, ann = FALSE, xpd = NA
   )
 
   graphics::title(main = title, sub = sub)
-  graphics::mtext(origin.text, col = border.col)
+  graphics::mtext(origin.text, col = border.col, font = 2)
 
   if (guides) stereoplot_guides(d = d, earea = earea, col = col, lwd = lwd, lty = lty, radius = radius)
 

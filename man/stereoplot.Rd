@@ -19,7 +19,7 @@ stereoplot(
   sub = NULL,
   origin.text = "N",
   labels = FALSE,
-  ladj = 0.04,
+  ladj = 0.05,
   centercross = TRUE,
   ticks = NULL,
   radius = 1
