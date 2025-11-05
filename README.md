@@ -81,7 +81,6 @@ Plot orientation data in equal-area, lower hemisphere projection:
 data("example_planes")
 data("example_lines")
 
-par(xpd = NA)
 stereoplot(title = "Lambert equal-area projection", sub = "Lower hemisphere", ticks = 45, labels = TRUE)
 points(example_lines, col = "#B63679", pch = 19, cex = .5)
 points(example_planes, col = "#000004", pch = 1, cex = .5)
@@ -432,7 +431,6 @@ flow_apophyses <- flow_apophyses(L)
 
 increments <- seq(0, t, i)
 
-par(xpd = NA)
 stereoplot(guides = FALSE)
 stereo_path(xl_steps, type = "l")
 stereo_path(xl_steps, type = "p", col = assign_col(increments), pch = 16, cex = .4)
