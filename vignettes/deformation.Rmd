@@ -41,7 +41,7 @@ dimensions.
 
 The deformation matrix can be defined using several ways:
 
--   `defgrad_by_comp` creates an defined by individual components
+-   `defgrad_by_comp()` creates an defined by individual components
     (default is identity tensor)
 -   `defgrad_by_ratio()` creates an isochoric tensor with
     axial stretches defined by strain ratios (default is identity
@@ -49,14 +49,14 @@ The deformation matrix can be defined using several ways:
 -   `defgrad_from_vectors()` creates  tensor representing
     rotation around the axis perpendicular to both vectors and rotate
     `v1` to `v2`.
--   `defgrad_from_axisangle` creates tensor representing a rigid-body
+-   `defgrad_from_axisangle()` creates tensor representing a rigid-body
     rotation about an axis and an angle.
--   `defgrad_from_pureshear` creates an isochoric coaxial tensor.
--   `defgrad_from_simpleshear` creates an isochoric non-coaxial tensor.
--   `defgrad_from_generalshear` creates an isochoric tensor,
+-   `defgrad_from_pureshear()` creates an isochoric coaxial tensor.
+-   `defgrad_from_simpleshear()` creates an isochoric non-coaxial tensor.
+-   `defgrad_from_generalshear()` creates an isochoric tensor,
     where *transtension* is $k>1$ and $\gamma \neq 0$, and
     *transpression* is $k<1$ and $\gamma \neq 0$ ([^1])
--   `defgrad_from_dilation` creates tensor representing the
+-   `defgrad_from_dilation()` creates tensor representing the
     volume change in z-direction.
 
 [^1]: Fossen, H., & Tikoff, B. (1993). The deformation matrix for simultaneous simple shearing, pure shearing and volume change, and its application to transpression-transtension tectonics. Journal of Structural Geology, 15(3–5), 413–422. https://doi.org/10.1016/0191-8141(93)90137-Y
