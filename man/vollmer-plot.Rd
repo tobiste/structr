@@ -5,6 +5,7 @@
 \alias{vollmer_plot}
 \alias{vollmer_plot.default}
 \alias{vollmer_plot.spherical}
+\alias{vollmer_plot.list}
 \title{Fabric plot of Vollmer (1990)}
 \usage{
 vollmer_plot(x, labels, add, ngrid, ...)
@@ -12,6 +13,8 @@ vollmer_plot(x, labels, add, ngrid, ...)
 \method{vollmer_plot}{default}(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...)
 
 \method{vollmer_plot}{spherical}(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...)
+
+\method{vollmer_plot}{list}(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...)
 }
 \arguments{
 \item{x}{spherical object or a three-column matrix, where the first column is

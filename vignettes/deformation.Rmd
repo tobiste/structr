@@ -1,0 +1,138 @@
+---
+title: "Deformation and Velocity Gradient Tensor"
+author: "Tobias Stephan"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+description: >
+  This vignette explains the basic objects used in the package.
+vignette: >
+  %\VignetteIndexEntry{Deformation and Velocity Gradient Tensor}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+This tutorial demonstrates how {structr} can be used to deform
+orientation data using deformation and velocity gradient tensors. This
+can be useful to simulate progressive deformation and change of
+orientation.
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+set.seed(20250411)
+```
+
+```{r setup, warning=FALSE, message=FALSE}
+library(structr)
+```
+
+## Deformation gradient tensor
+
+3D deformation gradient tensor is a matrix that linearly transforms
+points. In other words it describes the changes of points in three
+dimensions.
+
+This deformation matrix can be defined using several ways:
+
+-   `defgrad_by_comp` creates an defined by individual components
+    (default is identity tensor)
+-   `defgrad_by_ratio()` creates an isochoric tensor with
+    axial stretches defined by strain ratios (default is identity
+    tensor).
+-   `defgrad_from_vectors()` creates  tensor representing
+    rotation around the axis perpendicular to both vectors and rotate
+    `v1` to `v2`.
+-   `defgrad_from_axisangle` creates tensor representing a
+    rotation about an axis and an angle.
+-   `defgrad_from_pureshear` creates an isochoric coaxial tensor.
+-   `defgrad_from_simpleshear` creates an isochoric non-coaxial tensor.
+-   `defgrad_from_generalshear` creates an isochoric tensor,
+    where *transtension* is $k>1$ and $\gamma \neq 0$, and
+    *transpression* is $k<1$ and $\gamma \neq 0$.
+-   `defgrad_from_dilation` creates tensor representing the
+    volume change in z-direction.
+
+```{r def1}
+D1 <- defgrad_from_generalshear(k = 2.5, gamma = 0.9)
+print(D1)
+```
+Deformation tensors can be combined using *matrix multiplication*.
+The resulting deformation from our general-shear deformation (D1) superimposed by our rotation (D2) is
+
+```{r def2}
+D2 <- defgrad_from_axisangle(Line(0, 90), 30)
+
+D12 <- D2 %*% D1 # D1 is applied first
+```
+
+> Matrix multiplication is **not commutative**, i.e. $D1 \cdot D2 \neq D2 \cdot D1$
+
+
+The deformation can now be applied on some orientation data using linear
+transformation:
+
+```{r transform1}
+# generate some random lineation
+l <- rvmf(100, mu = Line(0, 90), k= 100)
+
+l_transformed <- transform_linear(l, D1)
+head(l_transformed)
+```
+
+## Velocity gradient tensor
+
+Velocity gradient tensor from deformation gradient tensor
+
+-   The `time` argument specifies the time of deformation, i.e. how many
+    times the Deformation gradient tensor should be applied.
+
+```{r vel}
+vg <- velgrad(D1, time = 10)
+```
+
+Now we can extract the deformation gradient tensor accumulated after a
+given time. Here we extract the deformation gradient tensors for some
+time steps using `defgrad()`
+
+-   The `steps` argument specifies how many increments you would like to
+    extract (this is also is the "resolution" of the deformation path)
+-   The `time`
+
+```{r vel2def}
+D1_steps <- defgrad(vg, time = 10, steps = 2)
+```
+
+Now apply the deformation tensors on some orientation data
+
+```{r transform2}
+# generate some random lineation
+l <- rvmf(100, mu = Line(0, 90), k = 100)
+
+l_trans <- lapply(D1_steps, function(i){transform_linear(l, i)})
+```
+
+And plot the paths
+
+```{r plot_stereo}
+axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
+
+increments <- seq(0, 10, 2)
+
+par(xpd = NA)
+stereo_path(l_trans, type = "l", add = FALSE)
+stereo_path(l_trans, type = "p", col = assign_col(increments), pch = 16, cex = .4)
+points(axes, pch = 15); text(axes, labels = c('x', 'y', 'z'), pos = 1)
+
+legend_c(increments, title = "Deformation increments")
+```
+
+```{r plot_ortensors}
+par(mfrow = c(1, 2))
+vollmer_plot(l_trans, type = 'b', col = assign_col(increments))
+hsu_plot(l_trans, type = 'b', col = assign_col(increments))
+```

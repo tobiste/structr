@@ -6,6 +6,7 @@
 \alias{hsu_plot.spherical}
 \alias{hsu_plot.ellispoid}
 \alias{hsu_plot.default}
+\alias{hsu_plot.list}
 \title{Fabric plot of Hsu (1965)}
 \usage{
 hsu_plot(x, ...)
@@ -17,6 +18,8 @@ hsu_plot(x, ...)
 \method{hsu_plot}{ellispoid}(x, ...)
 
 \method{hsu_plot}{default}(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...)
+
+\method{hsu_plot}{list}(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...)
 }
 \arguments{
 \item{x}{accepts the following objects: a two-column matrix where first column is the ratio of maximum strain and

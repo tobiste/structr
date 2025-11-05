@@ -101,7 +101,7 @@ Rotation brings x-axis to lineation and z-axis to normal to plane
 \code{defgrad_by_ratio()} creates an isochoric \code{"defgrad"} tensor with axial
 stretches defined by strain ratios (default is identity tensor).
 
-\code{defgrad_from_vectors()} creates \code{"defgrad"} tensor representing rotation around
+\code{defgrad_from_vectors()} creates \code{"defgrad"} tensor representing rotation around the
 axis perpendicular to both vectors and rotate \code{v1} to \code{v2}.
 
 \code{defgrad_from_axisangle}  creates \code{"defgrad"} tensor representing a rotation

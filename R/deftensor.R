@@ -30,7 +30,7 @@
 #' `defgrad_by_ratio()` creates an isochoric `"defgrad"` tensor with axial 
 #' stretches defined by strain ratios (default is identity tensor).
 #'  
-#' `defgrad_from_vectors()` creates `"defgrad"` tensor representing rotation around 
+#' `defgrad_from_vectors()` creates `"defgrad"` tensor representing rotation around the 
 #' axis perpendicular to both vectors and rotate `v1` to `v2`.
 #' 
 #' `defgrad_from_axisangle`  creates `"defgrad"` tensor representing a rotation 
@@ -267,18 +267,13 @@ defgrad.default <- function(x, ...) {
 #' @export
 defgrad.velgrad <- function(x, time, steps, ...) {
   if (steps > 1) {
-    R <- list()
-    t <- seq(0, time, steps)
-    for (i in t) {
-      Ri <- as.defgrad(expm::expm(x * i))
-      Ri <- list(Ri)
-      names(Ri) <- i
-      R <- append(R, Ri)
-    }
+    R <- lapply(t, function(i){
+      as.defgrad(expm::expm(x * i))
+    })
+    names(R) <- t
   } else {
     R <- as.defgrad(expm::expm(x * time))
   }
-
   return(R)
 }
 

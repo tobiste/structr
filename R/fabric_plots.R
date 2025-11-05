@@ -124,56 +124,7 @@ vollmer_plot.default <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 
     colSums(vec * abc) / PGR
   }) |> t()
 
-  if (isFALSE(add)) {
-    graphics::par(xpd = TRUE)
-    graphics::plot(c(0, 1), c(0, sqrt(3) / 2), "n", asp = 1, axes = FALSE, xlab = "", ylab = "")
-
-    if (!is.null(ngrid)) {
-      ngrid <- round(ngrid) + 1
-      if (length(ngrid) == 1) ngrid <- rep(ngrid, 3)
-      # horizontal lines
-      bottom <- seq(0, 1, length.out = ngrid[1])
-      bottom <- bottom[2:(length(bottom) - 1)]
-
-      l1 <- rbind(bottom, rep(0, length(bottom))) |> t()
-      rot <- cbind(c(1 / 2, sind(60)), c(-sind(60), 1 / 2))
-      l2 <- t(rot %*% t(l1))
-      l3 <- l2
-      l3[, 1] <- 1 - l2[, 1]
-
-      graphics::segments(l2[, 1], l2[, 2], l3[, 1], l3[, 2], col = "lightgray", lty = 3)
-
-
-      # diagonal lines of left
-      bottom2 <- seq(0, 1, length.out = ngrid[2])
-      bottom2 <- bottom2[2:(length(bottom2) - 1)]
-      l1_2 <- rbind(bottom2, rep(0, length(bottom2))) |> t()
-      rot <- cbind(c(1 / 2, sind(60)), c(-sind(60), 1 / 2))
-      l2_2 <- t(rot %*% t(l1_2))
-      graphics::segments(l1_2[, 1], l1_2[, 2], l2_2[, 1], l2_2[, 2], col = "lightgray", lty = 3)
-
-      # diagonal lines of right
-      l2_3 <- l3
-      l2_3[, 1] <- rev(l3[, 1])
-      l2_3[, 2] <- rev(l3[, 2])
-
-      graphics::segments(l1_2[, 1], l1_2[, 2], l2_3[, 1], l2_3[, 2], col = "lightgray", lty = 3)
-    }
-
-    graphics::polygon(abc)
-
-    l1 <- colSums(c(0, 1, 1) * abc) / 2
-    l2 <- colSums(c(0, 0, 1) * abc) / 2
-    l3 <- c(.5, 0)
-
-    # add axes labels
-    graphics::text(l3[1], l3[2], labels = expression(lambda[3] == 0), pos = 3, offset = -1, col = "grey")
-    graphics::text(l2[1], l2[2], labels = expression(lambda[2] == lambda[3]), pos = 3, srt = 60, offset = 1, col = "grey")
-    graphics::text(l1[1], l1[2], labels = expression(lambda[1] == lambda[2]), pos = 3, srt = -60, offset = 1, col = "grey")
-
-    abc_text <- abc #+ c(-.02, .02, .02)
-    for (t in 1:3) graphics::text(abc_text[t, 1], abc_text[t, 2], labels = c("Point", "Girdle", "Random")[t], pos = c(1, 1, 3)[t], srt = c(-60, 60, 0)[t])
-  }
+  if (isFALSE(add)) .vollmer_plot_blank(ngrid)
 
   if (!is.null(labels)) {
     graphics::text(coords[, 1], coords[, 2], labels = labels, ...)
@@ -194,6 +145,74 @@ vollmer_plot.spherical <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5
     labels = labels, add = add, ngrid = ngrid, ...
   )
   invisible(x_vollmer)
+}
+
+#' @rdname vollmer-plot
+#' @export
+vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...){
+  x_vollmer <- do.call(rbind, lapply(x, vollmer))
+  
+  vollmer_plot.default(
+    x_vollmer[, c("P", "G", "R")],
+    labels = labels, add = add, ngrid = ngrid, ...
+  )
+  invisible(x_vollmer)
+}
+
+.vollmer_plot_blank <- function(ngrid = c(5, 5, 5)){
+  A <- c(0, 0) # left
+  B <- c(1, 0) # right
+  C <- c(1 / 2, sqrt(3) / 2) # top
+  abc <- rbind(A, B, C)
+  
+    graphics::par(xpd = TRUE)
+    graphics::plot(c(0, 1), c(0, sqrt(3) / 2), "n", asp = 1, axes = FALSE, xlab = "", ylab = "")
+    
+    if (!is.null(ngrid)) {
+      ngrid <- round(ngrid) + 1
+      if (length(ngrid) == 1) ngrid <- rep(ngrid, 3)
+      # horizontal lines
+      bottom <- seq(0, 1, length.out = ngrid[1])
+      bottom <- bottom[2:(length(bottom) - 1)]
+      
+      l1 <- rbind(bottom, rep(0, length(bottom))) |> t()
+      rot <- cbind(c(1 / 2, sind(60)), c(-sind(60), 1 / 2))
+      l2 <- t(rot %*% t(l1))
+      l3 <- l2
+      l3[, 1] <- 1 - l2[, 1]
+      
+      graphics::segments(l2[, 1], l2[, 2], l3[, 1], l3[, 2], col = "lightgray", lty = 3)
+      
+      
+      # diagonal lines of left
+      bottom2 <- seq(0, 1, length.out = ngrid[2])
+      bottom2 <- bottom2[2:(length(bottom2) - 1)]
+      l1_2 <- rbind(bottom2, rep(0, length(bottom2))) |> t()
+      rot <- cbind(c(1 / 2, sind(60)), c(-sind(60), 1 / 2))
+      l2_2 <- t(rot %*% t(l1_2))
+      graphics::segments(l1_2[, 1], l1_2[, 2], l2_2[, 1], l2_2[, 2], col = "lightgray", lty = 3)
+      
+      # diagonal lines of right
+      l2_3 <- l3
+      l2_3[, 1] <- rev(l3[, 1])
+      l2_3[, 2] <- rev(l3[, 2])
+      
+      graphics::segments(l1_2[, 1], l1_2[, 2], l2_3[, 1], l2_3[, 2], col = "lightgray", lty = 3)
+    }
+    
+    graphics::polygon(abc)
+    
+    l1 <- colSums(c(0, 1, 1) * abc) / 2
+    l2 <- colSums(c(0, 0, 1) * abc) / 2
+    l3 <- c(.5, 0)
+    
+    # add axes labels
+    graphics::text(l3[1], l3[2], labels = expression(lambda[3] == 0), pos = 3, offset = -1, col = "grey")
+    graphics::text(l2[1], l2[2], labels = expression(lambda[2] == lambda[3]), pos = 3, srt = 60, offset = 1, col = "grey")
+    graphics::text(l1[1], l1[2], labels = expression(lambda[1] == lambda[2]), pos = 3, srt = -60, offset = 1, col = "grey")
+    
+    abc_text <- abc #+ c(-.02, .02, .02)
+    for (t in 1:3) graphics::text(abc_text[t, 1], abc_text[t, 2], labels = c("Point", "Girdle", "Random")[t], pos = c(1, 1, 3)[t], srt = c(-60, 60, 0)[t])
 }
 
 
@@ -383,7 +402,6 @@ hsu_plot.ellispoid <- function(x, ...) {
 }
 
 
-
 #' @rdname hsu_plot
 #' @export
 hsu_plot.default <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...) {
@@ -476,6 +494,37 @@ hsu_plot.default <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "
 
   invisible(list(lode = lode, es = R))
 }
+
+#' @rdname hsu_plot
+#' @export
+hsu_plot.list <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...){
+  x_eigen <- lapply(x, principal_stretch)
+  es <- sapply(x_eigen, nadai)
+  es.max <- if (is.null(es.max)) max(es) else es.max
+  lode <- sapply(x_eigen, lode)
+  
+  if (isFALSE(add)) {
+    hsu_plot.default(cbind(0, 0), es.max = es.max)
+  }
+  
+  # Map Lode parameter (-1..1) to angle in radians (-30°..+30° around vertical)
+  theta <- lode * (pi / 6) # -1 -> -30°, 0 -> 0° (vertical), +1 -> +30°
+  
+  # Shift so plane strain = vertical (pi/2)
+  theta_shift <- theta + pi / 2
+  
+  # Cartesian coordinates
+  x <- es * cos(theta_shift)
+  y <- es * sin(theta_shift)
+  
+  if (!is.null(labels)) {
+    graphics::text(x, y, label = labels, ...)
+  } else {
+    graphics::points(x, y, ...)
+  }
+  invisible(list(lode = lode, es = es))
+}
+
 
 #' Flinn diagram
 #'
