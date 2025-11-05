@@ -38,6 +38,7 @@
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Other</h6></li>
     <li><a class="dropdown-item" href="../articles/Strain_Analysis.html">Strain and Vorticity Analysis</a></li>
+    <li><a class="dropdown-item" href="../articles/deformation.html">Deformation and Velocity Gradient Tensor</a></li>
   </ul></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
@@ -172,10 +173,10 @@ Rotation brings x-axis to lineation and z-axis to normal to plane</p>
 <p><code>defgrad_by_comp</code> creates an defined by individual components (default is identity tensor)</p>
 <p><code>defgrad_by_ratio()</code> creates an isochoric <code>"defgrad"</code> tensor with axial
 stretches defined by strain ratios (default is identity tensor).</p>
-<p><code>defgrad_from_vectors()</code> creates <code>"defgrad"</code> tensor representing rotation around
+<p><code>defgrad_from_vectors()</code> creates <code>"defgrad"</code> tensor representing rotation around the
 axis perpendicular to both vectors and rotate <code>v1</code> to <code>v2</code>.</p>
-<p><code>defgrad_from_axisangle</code>  creates <code>"defgrad"</code> tensor representing a rotation
-about an axis and an angle.</p>
+<p><code>defgrad_from_axisangle</code>  creates <code>"defgrad"</code> tensor representing a rigid-body
+rotation about an axis and an angle.</p>
 <p><code>defgrad_from_pureshear</code> creates an isochoric coaxial <code>"defgrad"</code> tensor.</p>
 <p><code>defgrad_from_simpleshear</code> creates an isochoric non-coaxial <code>"defgrad"</code> tensor.</p>
 <p><code>defgrad_from_generalshear</code> creates an isochoric <code>"defgrad"</code> tensor, where
@@ -183,6 +184,15 @@ transtension is \(k&gt;1\) and \(\gamma \neq 0\), and transpression is
 \(k&lt;1\) and \(\gamma \neq 0\).</p>
 <p><code>defgrad_from_dilation</code> creates <code>"defgrad"</code> tensor representing the volume change
 in z-direction.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
+    <p>Fossen, H., &amp; Tikoff, B. (1993). The deformation matrix for simultaneous
+simple shearing, pure shearing and volume change, and its application to
+transpression-transtension tectonics. Journal of Structural Geology, 15(3–5),
+413–422. <a href="https://doi.org/10.1016/0191-8141%2893%2990137-Y" class="external-link">doi:10.1016/0191-8141(93)90137-Y</a></p>
+<p>Sanderson, D. J., &amp; Marchini, W. R. D. (1984). Transpression. Journal of
+Structural Geology, 6(5), 449–458. <a href="https://doi.org/10.1016/0191-8141%2884%2990058-0" class="external-link">doi:10.1016/0191-8141(84)90058-0</a></p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
