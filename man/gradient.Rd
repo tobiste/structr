@@ -44,18 +44,18 @@ the deformation gradient tensor accumulated after some time.
 }
 \examples{
 d <- defgrad_from_generalshear(k = 2.5, gamma = 0.9)
-v <- velgrad(d, time = 10)
-d_steps <- defgrad(v, time = 10, steps = 2)
+l <- velgrad(d, time = 10)
+d_steps <- defgrad(l, time = 10, steps = 2)
 
 # apply on orientation data
 set.seed(20250411)
-l <- rvmf(100, mu = Line(0, 90), k= 100)
-l_trans <- lapply(d_steps, function(i){transform_linear(l, i)})
+v <- rvmf(100, mu = Line(0, 90), k= 100)
+v_trans <- lapply(d_steps, function(i){transform_linear(v, i)})
 
 # plot in stereonet
 axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
-stereo_path(l_trans, type = "l", add = FALSE)
-stereo_path(l_trans, type = "p", col = assign_col(seq_along(l_trans)), pch = 16, cex = .4)
+stereo_path(v_trans, type = "l", add = FALSE)
+stereo_path(v_trans, type = "p", col = assign_col(seq_along(v_trans)), pch = 16, cex = .4)
 points(axes, pch = 15); text(axes, labels = c('x', 'y', 'z'), pos = 1) 
 }
 \seealso{

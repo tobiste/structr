@@ -76,12 +76,23 @@ is.Fault <- function(x) inherits(x, "Fault")
 
 #' @rdname classes
 #' @export
-as.spherical <- function(x) {
+as.spherical <- function(x, .class = NULL) {
+  if(is.null(.class)){
   structure(
     x,
     class = append(class(x), "spherical"),
     dimnames = list(rownames(x), colnames(x))
   )
+  } else {
+    switch(.class,
+           Vec3 = as.Vec3(x),
+           Line = as.Line(x),
+           Plane = as.Plane(x),
+           Ray = as.Ray(x),
+           Pair = as.Pair(x),
+           Fault = as.Fault(x)
+    )
+  }
 }
 
 #' @rdname classes
@@ -395,9 +406,14 @@ Spherical <- function(x, .class) {
   switch(.class,
     Vec3 = Vec3(x),
     Line = Line(x),
-    Plane = Plane(x)
+    Plane = Plane(x),
+    Ray = Ray(x),
+    Pair = Pair(x),
+    Fault = Fault(x)
   )
 }
+
+
 
 #' @exportS3Method base::print
 print.Vec3 <- function(x, ...) {
@@ -547,6 +563,8 @@ print.Fault <- function(x, ...) {
 #'   runif.spherical("Vec3", n = 5),
 #'   rkent(n = 5, mu = Plane(0, 10), b = 1)
 #' )
+#' 
+#' rbind(example_planes[1, ], example_planes[2, ])
 rbind.spherical <- function(..., .class = NULL) {
   allargs <- list(...)
   allargs <- allargs[lengths(allargs) > 0L]
@@ -559,8 +577,8 @@ rbind.spherical <- function(..., .class = NULL) {
     Spherical(i, .class = .class) |> unclass()
   })
 
-  do.call(rbind, allargs_class) |>
-    Spherical(.class)
+  do.call(rbind, allargs_class) |> 
+    as.spherical(.class)
 }
 
 

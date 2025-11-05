@@ -39,7 +39,7 @@ is.Pair(x)
 
 is.Fault(x)
 
-as.spherical(x)
+as.spherical(x, .class = NULL)
 
 as.Vec3(x)
 
@@ -71,6 +71,8 @@ Spherical(x, .class)
 \item{x, y}{object of class \code{"Line"}, \code{"Ray"}, \code{"Plane"}, and  \code{"Pair"}, and \code{"Fault"}  or
 numeric vector or array containing the spherical coordinates}
 
+\item{.class}{character. Spherical class the object should be coerced to.}
+
 \item{sense}{integer. Sense of the line (e.g.on a fault plane). Either
 \code{1}or \code{-1} for down (normal offset) or up (reverse offset), respectively. The "sense" is the sign
 of the fault's rake (see \code{\link[=Fault_from_rake]{Fault_from_rake()}} for details). Can also be a character with \code{"n"} (for normal) and \code{"r"} for "reverse".}
@@ -80,8 +82,6 @@ of the fault's rake (see \code{\link[=Fault_from_rake]{Fault_from_rake()}} for d
 \item{correction}{logical. If \code{TRUE} (default), both the fault plane and slip
 vector will be rotated so that the slip vector lies on the fault plane by
 minimizing the angle between the slip and the plane normal vector. See \code{\link[=correct_pair]{correct_pair()}} for details.}
-
-\item{.class}{character. Spherical class the object should be coerced to.}
 }
 \description{
 \code{Vec3}, \code{Line}, \code{Ray}, \code{Plane}, \code{"Pair"} and \code{Fault} create or convert a \code{"Vec3"}, \code{"Line"},  \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, and \code{"Fault"}

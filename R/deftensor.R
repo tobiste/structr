@@ -131,7 +131,7 @@ defgrad_from_ratio <- function(Rxy = 1, Ryz = 1) {
 defgrad_from_shearstrain <- function(Rxy = 1, Ryz = 1) {
   # isochoric ``defgrad`` tensor with axial stretches defined by 
   # strain ratios. Default is identity tensor.
-  #
+  
   stopifnot(Rxy >= 1, Ryz >= 1)
   A <- diag(3)
   y <- (Ryz / Rxy)**(1 / 3)
@@ -147,7 +147,6 @@ defgrad.Pair <- function(x, ...) {
   # return `defgrad` tensor representing rotation defined by `"Pair"`.
   # Rotation brings x-axis to lineation and z-axis to normal to plane
   
-  # stopifnot(is.Pair(p))
   pl <- Line(x[, 3], x[, 4]) |> Vec3()
   pp <- Plane(x[, 1], x[, 2]) |> Vec3()
 
@@ -314,18 +313,18 @@ defgrad.velgrad <- function(x, time, steps, ...) {
 #'
 #' @examples
 #' d <- defgrad_from_generalshear(k = 2.5, gamma = 0.9)
-#' v <- velgrad(d, time = 10)
-#' d_steps <- defgrad(v, time = 10, steps = 2)
+#' l <- velgrad(d, time = 10)
+#' d_steps <- defgrad(l, time = 10, steps = 2)
 #' 
 #' # apply on orientation data
 #' set.seed(20250411)
-#' l <- rvmf(100, mu = Line(0, 90), k= 100)
-#' l_trans <- lapply(d_steps, function(i){transform_linear(l, i)})
+#' v <- rvmf(100, mu = Line(0, 90), k= 100)
+#' v_trans <- lapply(d_steps, function(i){transform_linear(v, i)})
 #' 
 #' # plot in stereonet
 #' axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
-#' stereo_path(l_trans, type = "l", add = FALSE)
-#' stereo_path(l_trans, type = "p", col = assign_col(seq_along(l_trans)), pch = 16, cex = .4)
+#' stereo_path(v_trans, type = "l", add = FALSE)
+#' stereo_path(v_trans, type = "p", col = assign_col(seq_along(v_trans)), pch = 16, cex = .4)
 #' points(axes, pch = 15); text(axes, labels = c('x', 'y', 'z'), pos = 1) 
 NULL
 
@@ -407,16 +406,104 @@ NULL
 #' @rdname vel_rate
 #' @export
 velgrad_rate <- function(x) {
+  stopifnot(is.velgrad(x))
   (x + t(x)) / 2
 }
 
 #' @rdname vel_rate
 #' @export
 velgrad_spin <- function(x) {
+  stopifnot(is.velgrad(x))
   (x - t(x)) / 2
 }
 
 kinematic_vorticity <- function(kx, ky, gamma){
   denom <- sqrt( 2 * (log(kx)^2 + log(ky^2)) + gamma^2)
   gamma / denom
+}
+
+
+
+#' Flow Apophyses, Vorticity, and Instantaneous Stretching Axes
+#' 
+#' Computes flow apophyses, vorticity vectors, kinematic vorticity numbers, and 
+#' instantaneous stretching axes from eigenvalues and eigenvectors of velocity 
+#' gradient tensor
+#'
+#' @param x object of class `"velgrad"`
+#'
+#' @returns `vorticity_axis` and `instantaneous_stretching_axes` return `"Vec3"` object;
+#' `"flow_apophyses"` returns `"Plane"` object; `kinematic_vorticity_from_velgrad` and 
+#' `instantaneous_stretching` return numeric.
+#' @name vorticity
+#'
+#' @examples
+#' d <- defgrad_from_generalshear(k = 2.5, gamma = 0.9)
+#' l <- velgrad(d, time = 10)
+#' 
+#' flow_apophyses(l)
+#' vorticity_axis(l)
+#' kinematic_vorticity_from_velgrad(l)
+#' instantaneous_stretching_axes(l)
+#' instantaneous_stretching(l)
+NULL
+
+#' @rdname vorticity
+#' @export
+flow_apophyses <- function(x){
+  stopifnot(is.velgrad(x))
+  L_eig <- eigen(x)
+  
+  # Flow apophyses
+  flow_vectors <- L_eig$vectors |> 
+    t() |> 
+    as.Vec3()
+  
+  flow_apophyses <-  rbind(
+    crossprod(flow_vectors[1,], flow_vectors[2,]),
+    crossprod(flow_vectors[2,], flow_vectors[3,])
+  ) |> Plane()
+}
+
+#' @rdname vorticity
+#' @export
+vorticity_axis <- function(x){
+  stopifnot(is.velgrad(x))
+  L_eig <- eigen(x)
+  L_eig$vectors[, 2] |> 
+    as.Vec3()
+}
+
+#' @rdname vorticity
+#' @export
+kinematic_vorticity_from_velgrad <- function(x){
+  stopifnot(is.velgrad(x))
+  L_eig <- eigen(x)
+  
+  # Flow apophyses
+  flow_vectors <- L_eig$vectors |> 
+    t() |> 
+    as.Vec3()
+  
+  alpha <- angle(flow_vectors[1, ],flow_vectors[3, ])
+  cos(alpha)
+}
+
+#' @rdname vorticity
+#' @export
+instantaneous_stretching <- function(x){
+  S <- velgrad_rate(x)
+  S_eig <- eigen(S, only.values = TRUE)
+  S_eig$values
+}
+
+#' @rdname vorticity
+#' @export
+instantaneous_stretching_axes <- function(x){
+  S <- velgrad_rate(x)
+  S_eig <- eigen(S)
+  
+  # ISA vectors
+  S_eig$vectors |> 
+    as.Vec3()
 }
