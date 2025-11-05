@@ -1200,6 +1200,4 @@ stereo_path <- function(x, type = c("l", "p", "b"), add = TRUE, n = 5, upper.hem
       })
   )
   }
-  
-  
 }

@@ -104,8 +104,8 @@ stretches defined by strain ratios (default is identity tensor).
 \code{defgrad_from_vectors()} creates \code{"defgrad"} tensor representing rotation around the
 axis perpendicular to both vectors and rotate \code{v1} to \code{v2}.
 
-\code{defgrad_from_axisangle}  creates \code{"defgrad"} tensor representing a rotation
-about an axis and an angle.
+\code{defgrad_from_axisangle}  creates \code{"defgrad"} tensor representing a rigid-body
+rotation about an axis and an angle.
 
 \code{defgrad_from_pureshear} creates an isochoric coaxial \code{"defgrad"} tensor.
 
@@ -144,6 +144,15 @@ axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
 plot(l, col = 'darkgrey')
 points(l_trans, col = 'red')
 points(axes, pch = 15); text(axes, labels = c('x', 'y', 'z'), pos = 1)
+}
+\references{
+Fossen, H., & Tikoff, B. (1993). The deformation matrix for simultaneous
+simple shearing, pure shearing and volume change, and its application to
+transpression-transtension tectonics. Journal of Structural Geology, 15(3–5),
+413–422. \doi{10.1016/0191-8141(93)90137-Y}
+
+Sanderson, D. J., & Marchini, W. R. D. (1984). Transpression. Journal of
+Structural Geology, 6(5), 449–458. \doi{10.1016/0191-8141(84)90058-0}
 }
 \seealso{
 \code{\link[=velgrad]{velgrad()}}, \code{\link[=transform_linear]{transform_linear()}} to apply the deformation on an object

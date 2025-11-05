@@ -17,7 +17,20 @@ velgrad_spin(x)
 3x3 matrix
 }
 \description{
-Rate and spin of velocity gradient tensor
+The velocity gradient tensor \strong{L} can be decomposed into a symmetric matrix \strong{S}
+(the rate or stretching tensor) and the skew-symmetric matrix \strong{W} (the spin or
+vorticity tensor).
+}
+\details{
+The velocity gradient tensor\eqn{\mathbf{L}} can be decomposed into the
+sum of a symmetric matrix \eqn{\mathbf{\dot{S}}} and a skew-symmetric matrix \eqn{\mathbf{W}}
+\deqn{\mathbf{L} = \mathbf{\dot{S}} + \mathbf{W}}
+
+where
+\eqn{\mathbf{\dot{S}}} is the stretching tensor (or strain-rate tensor) that describes
+the portion of the deformation that over time produces strain. \eqn{\mathbf{W}}
+is the vorticity or spin tensor and describes the
+internal rotation (rate) during the deformation.
 }
 \examples{
 R <- defgrad_from_comp(xx = 2, xy = 1, zz = 0.5)

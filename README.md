@@ -398,6 +398,50 @@ RGN_plot(shebandowan$r, shebandowan$phi, col = assign_col(log(shebandowan$area))
 
 <img src="man/figures/README-rgn-1.png" width="100%" />
 
+### Deformation and velocity gradient tensors
+
+Define a deformation gradient tensor and deform some orientation data
+over time `t` in `i` increments:
+
+``` r
+# Define deformation time and increments
+t <- 10
+i <- 2
+
+# Define deformation tensor:
+D1 <- defgrad_from_generalshear(k = 2.5, gamma = 0.9)
+
+# Generate some random lineation
+xl <- rvmf(100, mu = Line(0, 90), k= 100)
+
+# Generate the velcity gradient tensor for deformation accumulating over time
+L <- velgrad(D1, time = t)
+
+# Extract deformation increments
+D1_steps <- defgrad(L, time = t, steps = i)
+
+# Transform the lineation for each deformation increment
+xl_steps <- lapply(D1_steps, function(i){transform_linear(xl, i)})
+
+increments <- seq(0, t, i)
+
+par(xpd = NA)
+stereo_path(xl_steps, type = "l", add = FALSE)
+stereo_path(xl_steps, type = "p", col = assign_col(increments), pch = 16, cex = .4)
+legend_c(increments, title = "Time")
+```
+
+<img src="man/figures/README-defgrad1-1.png" width="100%" /> Show how
+the orientation tensor changes during progressive deformation:
+
+``` r
+par(mfrow = c(1, 2))
+vollmer_plot(xl_steps, type = 'b', col = assign_col(increments), pch = 16)
+hsu_plot(xl_steps, type = 'b', col = assign_col(increments), pch = 16)
+```
+
+<img src="man/figures/README-defgrad2-1.png" width="100%" />
+
 ## Author
 
 Tobias Stephan (<tstephan@lakeheadu.ca>)

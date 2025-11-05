@@ -33,7 +33,12 @@ velgrad(x, time, ...)
 of matrices is returned.
 }
 \description{
-Calculates the velocity gradient tensor as the matrix logarithm of the
+The velocity gradient tensor describes the velocity of particles at any
+instant during the deformation. Velocity gradient tensor from deformation
+gradient tensor.
+}
+\details{
+\code{velgrad()} calculates the velocity gradient tensor as the matrix logarithm of the
 deformation gradient tensor divided by given time, and
 the deformation gradient tensor accumulated after some time.
 }

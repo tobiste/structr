@@ -33,8 +33,8 @@
 #' `defgrad_from_vectors()` creates `"defgrad"` tensor representing rotation around the 
 #' axis perpendicular to both vectors and rotate `v1` to `v2`.
 #' 
-#' `defgrad_from_axisangle`  creates `"defgrad"` tensor representing a rotation 
-#' about an axis and an angle.
+#' `defgrad_from_axisangle`  creates `"defgrad"` tensor representing a rigid-body 
+#' rotation about an axis and an angle.
 #' 
 #' `defgrad_from_pureshear` creates an isochoric coaxial `"defgrad"` tensor.
 #' 
@@ -49,6 +49,15 @@
 #' 
 #' @seealso [velgrad()], [transform_linear()] to apply the deformation on an object
 #' @name defgrad
+#' 
+#' @references 
+#' Fossen, H., & Tikoff, B. (1993). The deformation matrix for simultaneous 
+#' simple shearing, pure shearing and volume change, and its application to 
+#' transpression-transtension tectonics. Journal of Structural Geology, 15(3–5), 
+#' 413–422. \doi{10.1016/0191-8141(93)90137-Y}
+#' 
+#' Sanderson, D. J., & Marchini, W. R. D. (1984). Transpression. Journal of 
+#' Structural Geology, 6(5), 449–458. \doi{10.1016/0191-8141(84)90058-0}
 #'
 #' @examples
 #' defgrad_from_ratio(2, 3)
@@ -266,6 +275,7 @@ defgrad.default <- function(x, ...) {
 #' @rdname defgrad
 #' @export
 defgrad.velgrad <- function(x, time, steps, ...) {
+  t <- seq(0, time, steps)
   if (steps > 1) {
     R <- lapply(t, function(i){
       as.defgrad(expm::expm(x * i))
@@ -281,7 +291,11 @@ defgrad.velgrad <- function(x, time, steps, ...) {
 
 #' Velocity gradient gradient tensors
 #'
-#' Calculates the velocity gradient tensor as the matrix logarithm of the
+#' The velocity gradient tensor describes the velocity of particles at any 
+#' instant during the deformation. Velocity gradient tensor from deformation 
+#' gradient tensor.
+#' 
+#' `velgrad()` calculates the velocity gradient tensor as the matrix logarithm of the
 #' deformation gradient tensor divided by given time, and
 #' the deformation gradient tensor accumulated after some time.
 #'
@@ -361,10 +375,24 @@ velgrad.defgrad <- function(x, time = 1, ...) {
 
 
 #' Rate and spin of velocity gradient tensor
+#' 
+#' The velocity gradient tensor **L** can be decomposed into a symmetric matrix **S**
+#' (the rate or stretching tensor) and the skew-symmetric matrix **W** (the spin or 
+#' vorticity tensor).
 #'
 #' @param x 3x3 matrix. Velocity gradient tensor.
 #'
 #' @return 3x3 matrix
+#' 
+#' @details The velocity gradient tensor\eqn{\mathbf{L}} can be decomposed into the 
+#' sum of a symmetric matrix \eqn{\mathbf{\dot{S}}} and a skew-symmetric matrix \eqn{\mathbf{W}}
+#' \deqn{\mathbf{L} = \mathbf{\dot{S}} + \mathbf{W}}
+#' 
+#' where 
+#' \eqn{\mathbf{\dot{S}}} is the stretching tensor (or strain-rate tensor) that describes 
+#' the portion of the deformation that over time produces strain. \eqn{\mathbf{W}}
+#' is the vorticity or spin tensor and describes the 
+#' internal rotation (rate) during the deformation.
 #'
 #' @name vel_rate
 #' @seealso [velgrad()]
@@ -386,4 +414,9 @@ velgrad_rate <- function(x) {
 #' @export
 velgrad_spin <- function(x) {
   (x - t(x)) / 2
+}
+
+kinematic_vorticity <- function(kx, ky, gamma){
+  denom <- sqrt( 2 * (log(kx)^2 + log(ky^2)) + gamma^2)
+  gamma / denom
 }

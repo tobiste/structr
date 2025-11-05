@@ -4,7 +4,7 @@ author: "Tobias Stephan"
 date: "`r Sys.Date()`"
 output: rmarkdown::html_vignette
 description: >
-  This vignette explains the basic objects used in the package.
+ Deforming orientation data over time
 vignette: >
   %\VignetteIndexEntry{Deformation and Velocity Gradient Tensor}
   %\VignetteEngine{knitr::rmarkdown}
@@ -37,7 +37,9 @@ library(structr)
 points. In other words it describes the changes of points in three
 dimensions.
 
-This deformation matrix can be defined using several ways:
+### Define a deformation gradient tensor
+
+The deformation matrix can be defined using several ways:
 
 -   `defgrad_by_comp` creates an defined by individual components
     (default is identity tensor)
@@ -47,20 +49,43 @@ This deformation matrix can be defined using several ways:
 -   `defgrad_from_vectors()` creates  tensor representing
     rotation around the axis perpendicular to both vectors and rotate
     `v1` to `v2`.
--   `defgrad_from_axisangle` creates tensor representing a
+-   `defgrad_from_axisangle` creates tensor representing a rigid-body
     rotation about an axis and an angle.
 -   `defgrad_from_pureshear` creates an isochoric coaxial tensor.
 -   `defgrad_from_simpleshear` creates an isochoric non-coaxial tensor.
 -   `defgrad_from_generalshear` creates an isochoric tensor,
     where *transtension* is $k>1$ and $\gamma \neq 0$, and
-    *transpression* is $k<1$ and $\gamma \neq 0$.
+    *transpression* is $k<1$ and $\gamma \neq 0$ ([^1])
 -   `defgrad_from_dilation` creates tensor representing the
     volume change in z-direction.
+
+[^1]: Fossen, H., & Tikoff, B. (1993). The deformation matrix for simultaneous simple shearing, pure shearing and volume change, and its application to transpression-transtension tectonics. Journal of Structural Geology, 15(3–5), 413–422. https://doi.org/10.1016/0191-8141(93)90137-Y
 
 ```{r def1}
 D1 <- defgrad_from_generalshear(k = 2.5, gamma = 0.9)
 print(D1)
 ```
+### Matrix algebra
+
+An *isochoric* deformation tensor creates deformation without volume change. In that case, the determinant of the matrix must be 1. In R, this can be checked using `det()`:
+
+```{r det}
+det(D1)
+```
+
+The *inverse* of the tensor reverses the deformation. In R, this can be done using `solve()`:
+```{r inverse}
+solve(D1)
+```
+The *eigenvectors* of the tensor describe the orientation of the strain ellipse, and the
+eigenvalues $\lambda$ describe its shape (i.e. length of the principal axes is
+proportional to the amount of stretch).
+
+```{r def_eigen}
+eigen(D1)
+```
+
+
 Deformation tensors can be combined using *matrix multiplication*.
 The resulting deformation from our general-shear deformation (D1) superimposed by our rotation (D2) is
 
@@ -72,6 +97,7 @@ D12 <- D2 %*% D1 # D1 is applied first
 
 > Matrix multiplication is **not commutative**, i.e. $D1 \cdot D2 \neq D2 \cdot D1$
 
+### Transformation using deformation gradient tensor
 
 The deformation can now be applied on some orientation data using linear
 transformation:
@@ -86,14 +112,48 @@ head(l_transformed)
 
 ## Velocity gradient tensor
 
-Velocity gradient tensor from deformation gradient tensor
+The velocity gradient tensor **L** describes the velocity of particles at any instant during the deformation. 
+Velocity gradient tensor from deformation gradient tensor.
 
 -   The `time` argument specifies the time of deformation, i.e. how many
     times the Deformation gradient tensor should be applied.
 
 ```{r vel}
-vg <- velgrad(D1, time = 10)
+L <- velgrad(D1, time = 10)
 ```
+
+### Decomposition
+
+The velocity gradient tensor **L** can be decomposed into a symmetric matrix **S**
+(the rate or stretching tensor) and the skew-symmetric matrix **W** (the spin or 
+vorticity tensor).
+
+The stretching matrix (or tensor) and describes
+the portion of the deformation that over time produces
+strain:
+
+```{r vel_rate}
+S <- velgrad_rate(L)
+```
+
+The vorticity or spin matrix (tensor) and contains information about the internal rotation during
+the deformation: 
+
+```{r vel_spin}
+W <- velgrad_spin(L)
+```
+
+The eigenvectors of the stretching gradient tensor give the orientations and lengths of the instantaneous stretching axes: 
+```{r vel_eigenS}
+eigen(S)
+```
+
+The eigenvectors of the spin gradient tensor describe the flow apophyses:
+
+```{r vel_eigenW}
+eigen(W)
+```
+### Strain increments
 
 Now we can extract the deformation gradient tensor accumulated after a
 given time. Here we extract the deformation gradient tensors for some
@@ -104,19 +164,19 @@ time steps using `defgrad()`
 -   The `time`
 
 ```{r vel2def}
-D1_steps <- defgrad(vg, time = 10, steps = 2)
+D1_steps <- defgrad(L, time = 10, steps = 2)
 ```
 
 Now apply the deformation tensors on some orientation data
 
 ```{r transform2}
-# generate some random lineation
-l <- rvmf(100, mu = Line(0, 90), k = 100)
-
-l_trans <- lapply(D1_steps, function(i){transform_linear(l, i)})
+l_steps <- lapply(D1_steps, function(i){transform_linear(l, i)})
 ```
 
-And plot the paths
+
+### Visualization of deformation over time
+
+And plot the paths showing how the orientations change over time
 
 ```{r plot_stereo}
 axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
@@ -124,15 +184,23 @@ axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
 increments <- seq(0, 10, 2)
 
 par(xpd = NA)
-stereo_path(l_trans, type = "l", add = FALSE)
-stereo_path(l_trans, type = "p", col = assign_col(increments), pch = 16, cex = .4)
+stereo_path(l_steps, type = "l", add = FALSE)
+stereo_path(l_steps, type = "p", col = assign_col(increments), pch = 16, cex = .4)
 points(axes, pch = 15); text(axes, labels = c('x', 'y', 'z'), pos = 1)
 
-legend_c(increments, title = "Deformation increments")
+legend_c(increments, title = "Time")
 ```
+
+We can also monitor how the orientation tensor changes during progressive deformation:
 
 ```{r plot_ortensors}
 par(mfrow = c(1, 2))
-vollmer_plot(l_trans, type = 'b', col = assign_col(increments))
-hsu_plot(l_trans, type = 'b', col = assign_col(increments))
+vollmer_plot(l_steps, type = 'b', col = assign_col(increments))
+hsu_plot(l_steps, type = 'b', col = assign_col(increments))
 ```
+
+## References
+
+Fossen, H., & Tikoff, B. (1993). The deformation matrix for simultaneous simple shearing, pure shearing and volume change, and its application to transpression-transtension tectonics. Journal of Structural Geology, 15(3–5), 413–422. https://doi.org/10.1016/0191-8141(93)90137-Y
+
+Sanderson, D. J., & Marchini, W. R. D. (1984). Transpression. Journal of Structural Geology, 6(5), 449–458. https://doi.org/10.1016/0191-8141(84)90058-0
