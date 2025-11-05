@@ -91,7 +91,7 @@ S3 class object, respectively, from the given set of values.</p>
 <span></span>
 <span><span class="fu">is.Fault</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">as.spherical</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span><span class="fu">as.spherical</span><span class="op">(</span><span class="va">x</span>, .class <span class="op">=</span> <span class="cn">NULL</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">as.Vec3</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
 <span></span>
@@ -129,6 +129,10 @@ S3 class object, respectively, from the given set of values.</p>
 numeric vector or array containing the spherical coordinates</p></dd>
 
 
+<dt id="arg--class">.class<a class="anchor" aria-label="anchor" href="#arg--class"></a></dt>
+<dd><p>character. Spherical class the object should be coerced to.</p></dd>
+
+
 <dt id="arg-sense">sense<a class="anchor" aria-label="anchor" href="#arg-sense"></a></dt>
 <dd><p>integer. Sense of the line (e.g.on a fault plane). Either
 <code>1</code>or <code>-1</code> for down (normal offset) or up (reverse offset), respectively. The "sense" is the sign
@@ -143,10 +147,6 @@ of the fault's rake (see <code><a href="fault_from_rake.html">Fault_from_rake()<
 <dd><p>logical. If <code>TRUE</code> (default), both the fault plane and slip
 vector will be rotated so that the slip vector lies on the fault plane by
 minimizing the angle between the slip and the plane normal vector. See <code><a href="pair_correct.html">correct_pair()</a></code> for details.</p></dd>
-
-
-<dt id="arg--class">.class<a class="anchor" aria-label="anchor" href="#arg--class"></a></dt>
-<dd><p>character. Spherical class the object should be coerced to.</p></dd>
 
 </dl></div>
     <div class="section level2">

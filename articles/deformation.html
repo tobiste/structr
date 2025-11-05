@@ -109,7 +109,7 @@ dimensions.</p>
 <p>The deformation matrix can be defined using several ways:</p>
 <ul>
 <li>
-<code>defgrad_by_comp</code> creates an defined by individual
+<code>defgrad_by_comp()</code> creates an defined by individual
 components (default is identity tensor)</li>
 <li>
 <code>defgrad_by_ratio()</code> creates an isochoric tensor with
@@ -120,17 +120,17 @@ tensor).</li>
 rotation around the axis perpendicular to both vectors and rotate
 <code>v1</code> to <code>v2</code>.</li>
 <li>
-<code>defgrad_from_axisangle</code> creates tensor representing a
+<code><a href="../reference/defgrad.html">defgrad_from_axisangle()</a></code> creates tensor representing a
 rigid-body rotation about an axis and an angle.</li>
 <li>
-<code>defgrad_from_pureshear</code> creates an isochoric coaxial
+<code><a href="../reference/defgrad.html">defgrad_from_pureshear()</a></code> creates an isochoric coaxial
 tensor.</li>
 <li>
-<code>defgrad_from_simpleshear</code> creates an isochoric
+<code><a href="../reference/defgrad.html">defgrad_from_simpleshear()</a></code> creates an isochoric
 non-coaxial tensor.</li>
 <li>
-<code>defgrad_from_generalshear</code> creates an isochoric tensor,
-where <em>transtension</em> is
+<code><a href="../reference/defgrad.html">defgrad_from_generalshear()</a></code> creates an isochoric
+tensor, where <em>transtension</em> is
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>k</mi><mo>&gt;</mo><mn>1</mn></mrow><annotation encoding="application/x-tex">k&gt;1</annotation></semantics></math>
 and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>γ</mi><mo>≠</mo><mn>0</mn></mrow><annotation encoding="application/x-tex">\gamma \neq 0</annotation></semantics></math>,
@@ -143,7 +143,7 @@ matrix for simultaneous simple shearing, pure shearing and volume
 change, and its application to transpression-transtension tectonics.
 Journal of Structural Geology, 15(3–5), 413–422. &lt;a href="https://doi.org/10.1016/0191-8141(93)90137-Y" class="external-link uri"&gt;https://doi.org/10.1016/0191-8141(93)90137-Y&lt;/a&gt;&lt;/p&gt;'><sup>1</sup></a>)</li>
 <li>
-<code>defgrad_from_dilation</code> creates tensor representing the
+<code><a href="../reference/defgrad.html">defgrad_from_dilation()</a></code> creates tensor representing the
 volume change in z-direction.</li>
 </ul>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
@@ -207,10 +207,10 @@ i.e. <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semanti
 linear transformation:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># generate some random lineation</span></span>
-<span><span class="va">l</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">100</span>, mu <span class="op">=</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span><span class="op">)</span>, k<span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
+<span><span class="va">xl</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">100</span>, mu <span class="op">=</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">90</span><span class="op">)</span>, k<span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span>
 <span></span>
-<span><span class="va">l_transformed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vecmath.html">transform_linear</a></span><span class="op">(</span><span class="va">l</span>, <span class="va">D1</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">l_transformed</span><span class="op">)</span></span>
+<span><span class="va">xl_transformed</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vecmath.html">transform_linear</a></span><span class="op">(</span><span class="va">xl</span>, <span class="va">D1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">xl_transformed</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Vector (Vec3) object (n = 6):</span></span>
 <span><span class="co">#&gt;                x           y         z</span></span>
 <span><span class="co">#&gt; [1,] -0.10284016  0.04850097 0.3964546</span></span>
@@ -219,6 +219,20 @@ linear transformation:</p>
 <span><span class="co">#&gt; [4,] -0.12970895 -0.33532970 0.3954535</span></span>
 <span><span class="co">#&gt; [5,] -0.23446654 -0.31984836 0.3962864</span></span>
 <span><span class="co">#&gt; [6,] -0.08260559  0.09628880 0.3957975</span></span></code></pre></div>
+<p>Let’s visualize the deformation:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># The coordinate axes of our deformation tensor:</span></span>
+<span><span class="va">axes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Vec3</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>xpd <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">xl</span>, col <span class="op">=</span> <span class="st">'grey'</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">xl_transformed</span>, col <span class="op">=</span> <span class="st">'#B63679FF'</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">axes</span>, pch <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">axes</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'x'</span>, <span class="st">'y'</span>, <span class="st">'z'</span><span class="op">)</span>, pos <span class="op">=</span> <span class="fl">1</span>, font <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"right"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"D0"</span>, <span class="st">"D1"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"grey"</span>, <span class="st">"#B63679FF"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
+<p><img src="deformation_files/figure-html/transform1_plot-1.png" width="700"></p>
 </div>
 </div>
 <div class="section level2">
@@ -232,7 +246,7 @@ gradient tensor from deformation gradient tensor.</p>
 i.e. how many times the Deformation gradient tensor should be
 applied.</li>
 </ul>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">L</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/gradient.html">velgrad</a></span><span class="op">(</span><span class="va">D1</span>, time <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
 <div class="section level3">
 <h3 id="decomposition">Decomposition<a class="anchor" aria-label="anchor" href="#decomposition"></a>
@@ -243,38 +257,68 @@ tensor) and the skew-symmetric matrix <strong>W</strong> (the spin or
 vorticity tensor).</p>
 <p>The stretching matrix (or tensor) and describes the portion of the
 deformation that over time produces strain:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">S</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vel_rate.html">velgrad_rate</a></span><span class="op">(</span><span class="va">L</span><span class="op">)</span></span></code></pre></div>
 <p>The vorticity or spin matrix (tensor) and contains information about
 the internal rotation during the deformation:</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">W</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vel_rate.html">velgrad_spin</a></span><span class="op">(</span><span class="va">L</span><span class="op">)</span></span></code></pre></div>
 <p>The eigenvectors of the stretching gradient tensor give the
-orientations and lengths of the instantaneous stretching axes:</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html" class="external-link">eigen</a></span><span class="op">(</span><span class="va">S</span><span class="op">)</span></span>
-<span><span class="co">#&gt; eigen() decomposition</span></span>
-<span><span class="co">#&gt; $values</span></span>
-<span><span class="co">#&gt; [1]  0.11003269 -0.01840362 -0.09162907</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $vectors</span></span>
-<span><span class="co">#&gt;           [,1]       [,2] [,3]</span></span>
-<span><span class="co">#&gt; [1,] 0.3785365  0.9255864    0</span></span>
-<span><span class="co">#&gt; [2,] 0.9255864 -0.3785365    0</span></span>
-<span><span class="co">#&gt; [3,] 0.0000000  0.0000000    1</span></span></code></pre></div>
-<p>The eigenvectors of the spin gradient tensor describe the flow
-apophyses:</p>
+orientations and lengths of the <strong>instantaneous stretching
+axes</strong>:</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/eigen.html" class="external-link">eigen</a></span><span class="op">(</span><span class="va">W</span><span class="op">)</span></span>
-<span><span class="co">#&gt; eigen() decomposition</span></span>
-<span><span class="co">#&gt; $values</span></span>
-<span><span class="co">#&gt; [1] 0+0.045i 0-0.045i 0+0.000i</span></span>
-<span><span class="co">#&gt; </span></span>
-<span><span class="co">#&gt; $vectors</span></span>
-<span><span class="co">#&gt;                      [,1]                 [,2] [,3]</span></span>
-<span><span class="co">#&gt; [1,] 0.7071068+0.0000000i 0.7071068+0.0000000i 0+0i</span></span>
-<span><span class="co">#&gt; [2,] 0.0000000+0.7071068i 0.0000000-0.7071068i 0+0i</span></span>
-<span><span class="co">#&gt; [3,] 0.0000000+0.0000000i 0.0000000+0.0000000i 1+0i</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">S_eig</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/eigen.html" class="external-link">eigen</a></span><span class="op">(</span><span class="va">S</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># ISA vectors</span></span>
+<span><span class="va">axes_ISA</span> <span class="op">&lt;-</span> <span class="va">S_eig</span><span class="op">$</span><span class="va">vectors</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/classes.html">as.Vec3</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Amounts of stretching</span></span>
+<span><span class="va">S_eig</span><span class="op">$</span><span class="va">values</span></span>
+<span><span class="co">#&gt; [1]  0.11003269 -0.01840362 -0.09162907</span></span></code></pre></div>
+<blockquote>
+<p>shortcuts: <code>instantaneous_stretching_axes(L)</code> and
+<code>instantaneous_stretching(L)</code></p>
+</blockquote>
+<p>The eigenvectors of the velocity gradient tensor describe the
+<strong>flow apophyses</strong>:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">L_eig</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/eigen.html" class="external-link">eigen</a></span><span class="op">(</span><span class="va">L</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Flow apophyses</span></span>
+<span><span class="va">flow_vectors</span> <span class="op">&lt;-</span> <span class="va">L_eig</span><span class="op">$</span><span class="va">vectors</span> <span class="op">|&gt;</span> <span class="fu"><a href="https://rdrr.io/r/base/t.html" class="external-link">t</a></span><span class="op">(</span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/classes.html">as.Vec3</a></span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">flow_apophyses</span> <span class="op">&lt;-</span>  <span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">rbind</a></span><span class="op">(</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">flow_vectors</span><span class="op">[</span><span class="fl">1</span>,<span class="op">]</span>, <span class="va">flow_vectors</span><span class="op">[</span><span class="fl">2</span>,<span class="op">]</span><span class="op">)</span>,</span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">flow_vectors</span><span class="op">[</span><span class="fl">2</span>,<span class="op">]</span>, <span class="va">flow_vectors</span><span class="op">[</span><span class="fl">3</span>,<span class="op">]</span><span class="op">)</span></span>
+<span>  <span class="op">)</span> <span class="op">|&gt;</span> <span class="fu"><a href="../reference/classes.html">Plane</a></span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
+<blockquote>
+<p>short cut: <code>flow_apophyses(L)</code></p>
+</blockquote>
+<p>The angle α between the apophyses is directly related to how close to
+simple shear or pure shear the deformation is. α is zero for simple
+shear and 90° for simple shear, and the <strong>kinematic vorticity
+number</strong>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>W</mi><mi>k</mi></msub><annotation encoding="application/x-tex">W_k</annotation></semantics></math>
+is given by
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mi>k</mi></msub><mo>=</mo><mo>cos</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">W_k = \cos\alpha</annotation></semantics></math>:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vecmath.html">angle</a></span><span class="op">(</span><span class="va">flow_apophyses</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>, <span class="va">flow_apophyses</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">alpha</span> <span class="op">*</span> <span class="va">pi</span> <span class="op">/</span> <span class="fl">180</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.7007364</span></span></code></pre></div>
+<blockquote>
+<p>short cut: <code>kinematic_vorticity_from_velgrad(L)</code></p>
+</blockquote>
+<p>The <strong>vorticity vector</strong> is the eigenvector
+corresponding to the intermediate eigenvalue of the velocity gradient
+tensor:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="va">flow_vectors</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Line object (n = 1):</span></span>
+<span><span class="co">#&gt; azimuth  plunge </span></span>
+<span><span class="co">#&gt;       0      90</span></span></code></pre></div>
+<blockquote>
+<p>shortcut: <code>vorticity_vector(L)</code></p>
+</blockquote>
 </div>
 <div class="section level3">
 <h3 id="strain-increments">Strain increments<a class="anchor" aria-label="anchor" href="#strain-increments"></a>
@@ -289,34 +333,52 @@ deformation path)</li>
 <li>The <code>time</code>
 </li>
 </ul>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">D1_steps</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/defgrad.html">defgrad</a></span><span class="op">(</span><span class="va">L</span>, time <span class="op">=</span> <span class="fl">10</span>, steps <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></code></pre></div>
 <p>Now apply the deformation tensors on some orientation data</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">l_steps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">D1_steps</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="../reference/vecmath.html">transform_linear</a></span><span class="op">(</span><span class="va">l</span>, <span class="va">i</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">xl_steps</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">D1_steps</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span><span class="op">{</span><span class="fu"><a href="../reference/vecmath.html">transform_linear</a></span><span class="op">(</span><span class="va">xl</span>, <span class="va">i</span><span class="op">)</span><span class="op">}</span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level3">
 <h3 id="visualization-of-deformation-over-time">Visualization of deformation over time<a class="anchor" aria-label="anchor" href="#visualization-of-deformation-over-time"></a>
 </h3>
 <p>And plot the paths showing how the orientations change over time</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">axes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Vec3</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
-<span></span>
-<span><span class="va">increments</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">2</span><span class="op">)</span></span>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">increments</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/colorize.html">assign_col</a></span><span class="op">(</span><span class="va">increments</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>xpd <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/stereo_path.html">stereo_path</a></span><span class="op">(</span><span class="va">l_steps</span>, type <span class="op">=</span> <span class="st">"l"</span>, add <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/stereo_path.html">stereo_path</a></span><span class="op">(</span><span class="va">l_steps</span>, type <span class="op">=</span> <span class="st">"p"</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/colorize.html">assign_col</a></span><span class="op">(</span><span class="va">increments</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">.4</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">axes</span>, pch <span class="op">=</span> <span class="fl">15</span><span class="op">)</span>; <span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">axes</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'x'</span>, <span class="st">'y'</span>, <span class="st">'z'</span><span class="op">)</span>, pos <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># plot the strain increments</span></span>
+<span><span class="fu"><a href="../reference/stereo_path.html">stereo_path</a></span><span class="op">(</span><span class="va">xl_steps</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/stereo_path.html">stereo_path</a></span><span class="op">(</span><span class="va">xl_steps</span>, type <span class="op">=</span> <span class="st">"p"</span>, col <span class="op">=</span> <span class="va">cols</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">.4</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># flow apophyses</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">flow_apophyses</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'grey40'</span>, <span class="st">'grey60'</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># instantaneous stretching axes</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">axes_ISA</span>, pch <span class="op">=</span> <span class="fl">15</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">axes_ISA</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'ISA-1'</span>, <span class="st">'ISA-2'</span>, <span class="st">'ISA-3'</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span>, pos <span class="op">=</span> <span class="fl">3</span>, font <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># cooridiniate axes of def-tensor</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">axes</span>, pch <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">axes</span>, labels <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'x'</span>, <span class="st">'y'</span>, <span class="st">'z'</span><span class="op">)</span>, pos <span class="op">=</span> <span class="fl">1</span>, font <span class="op">=</span> <span class="fl">3</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># legend</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="fl">0</span>, <span class="op">-</span><span class="fl">1.1</span>, xjust <span class="op">=</span> <span class="fl">0.5</span>, </span>
+<span>       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"flow apophysis 1"</span>, <span class="st">"flow apophysis 2"</span><span class="op">)</span>, </span>
+<span>       col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">'grey40'</span>, <span class="st">'grey60'</span><span class="op">)</span>, </span>
+<span>       lty <span class="op">=</span> <span class="fl">2</span></span>
+<span>       <span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/colorize.html">legend_c</a></span><span class="op">(</span><span class="va">increments</span>, title <span class="op">=</span> <span class="st">"Time"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="deformation_files/figure-html/plot_stereo-1.png" width="700"></p>
 <p>We can also monitor how the orientation tensor changes during
 progressive deformation:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/vollmer-plot.html">vollmer_plot</a></span><span class="op">(</span><span class="va">l_steps</span>, type <span class="op">=</span> <span class="st">'b'</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/colorize.html">assign_col</a></span><span class="op">(</span><span class="va">increments</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">l_steps</span>, type <span class="op">=</span> <span class="st">'b'</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/colorize.html">assign_col</a></span><span class="op">(</span><span class="va">increments</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/vollmer-plot.html">vollmer_plot</a></span><span class="op">(</span><span class="va">xl_steps</span>, type <span class="op">=</span> <span class="st">'b'</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">xl_steps</span>, type <span class="op">=</span> <span class="st">'b'</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">)</span></span></code></pre></div>
 <p><img src="deformation_files/figure-html/plot_ortensors-1.png" width="700"></p>
 </div>
 </div>
