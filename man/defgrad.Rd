@@ -141,8 +141,7 @@ l <- rvmf(100, mu = Line(0, 90), k= 100)
 l_trans <- transform_linear(l, D12)
 
 axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
-stereoplot(guides = F)
-points(l, col = 'darkgrey')
+plot(l, col = 'darkgrey')
 points(l_trans, col = 'red')
 points(axes, pch = 15); text(axes, labels = c('x', 'y', 'z'), pos = 1)
 }

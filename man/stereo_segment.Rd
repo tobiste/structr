@@ -43,9 +43,9 @@ set.seed(20250411)
 mu <- Line(45, 10)
 x <- rvmf(100, mu = mu)
 plot(x)
-lapply(seq_len(nrow(x)), FUN = function(i) {
+invisible(lapply(seq_len(nrow(x)), FUN = function(i) {
   stereo_segment(x[i, ], mu, col = i)
-})
+}))
 points(mu, pch = 16, col = "white")
 }
 \seealso{

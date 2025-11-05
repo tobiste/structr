@@ -70,8 +70,7 @@
 #' l_trans <- transform_linear(l, D12)
 #' 
 #' axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
-#' stereoplot(guides = F)
-#' points(l, col = 'darkgrey')
+#' plot(l, col = 'darkgrey')
 #' points(l_trans, col = 'red')
 #' points(axes, pch = 15); text(axes, labels = c('x', 'y', 'z'), pos = 1)
 NULL
@@ -297,7 +296,7 @@ defgrad.velgrad <- function(x, time, steps, ...) {
 #' @param ... parameters passed to function call
 #'
 #' @name gradient
-#' @seealso [defgrad()]
+#' @seealso [defgrad()], [stereo_path()] for plotting
 #'
 #' @return 3x3 matrix. If steps is > 1, then a list
 #' of matrices is returned.
@@ -316,10 +315,8 @@ defgrad.velgrad <- function(x, time, steps, ...) {
 #' 
 #' # plot in stereonet
 #' axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
-#' stereoplot(guides = F)
-#' points(l, col = 'darkgrey') 
-#' cols <- assign_col(seq_along(l_trans))
-#' lapply(seq_along(l_trans), function(i){points(l_trans[[i]], col = cols[i])})
+#' stereo_path(l_trans, type = "l", add = FALSE)
+#' stereo_path(l_trans, type = "p", col = assign_col(seq_along(l_trans)), pch = 16, cex = .4)
 #' points(axes, pch = 15); text(axes, labels = c('x', 'y', 'z'), pos = 1) 
 NULL
 

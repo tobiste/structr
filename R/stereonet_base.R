@@ -390,9 +390,9 @@ stereo_greatcircle <- function(x, ...) {
 #' mu <- Line(45, 10)
 #' x <- rvmf(100, mu = mu)
 #' plot(x)
-#' lapply(seq_len(nrow(x)), FUN = function(i) {
+#' invisible(lapply(seq_len(nrow(x)), FUN = function(i) {
 #'   stereo_segment(x[i, ], mu, col = i)
-#' })
+#' }))
 #' points(mu, pch = 16, col = "white")
 stereo_segment <- function(x, y, upper.hem = FALSE, earea = TRUE, n = 100L, BALL.radius = 1, ...) {
   stopifnot(nrow(x) == 1, nrow(y) == 1)
@@ -448,6 +448,20 @@ stereo_segment <- function(x, y, upper.hem = FALSE, earea = TRUE, n = 100L, BALL
   graphics::lines(Sc[, "x"], Sc[, "y"], ...)
 }
 
+.draw_lines2 <- function(x, upper.hem, earea, BALL.radius = 1, ...){
+  D <- Line(x) |> unclass()
+  n <- nrow(x)
+  
+  Sc <- stereo_coords(D[, 1], D[, 2], upper.hem, earea)
+  
+  diss <- sqrt((Sc[1:(n - 1), "x"] - Sc[2:(n), "x"])^2 + (Sc[1:(n - 1), "y"] - Sc[2:(n), "y"])^2)
+  ww <- which(diss > 0.9 * BALL.radius)
+  if (length(ww) > 0) {
+    Sc[ww, "x"] <- NA
+    Sc[ww, "y"] <- NA
+  }
+  graphics::lines(Sc[, "x"], Sc[, "y"], ...)
+}
 
 #' Stereoplot frame
 #'
@@ -1113,4 +1127,79 @@ stereo_confidence <- function(x, params = list(), .center = TRUE, col = par("col
   graphics::lines(Sc[, "x"], Sc[, "y"], col = col, ...)
 
   invisible(ce)
+}
+
+
+slerp_matrix <- function(M, FUN = slerp, ...) {
+  stopifnot(is.matrix(M), ncol(M) == 3, nrow(M) >= 2)
+  
+  # Interpolate between consecutive row pairs
+  segments <- lapply(seq_len(nrow(M) - 1), function(i) {
+    FUN(M[i, ], M[i + 1, ], ...)
+  })
+  
+  # Stack all interpolated points
+  do.call(rbind, segments)
+}
+
+
+#' Deformation paths in a Steroplot
+#'
+#' Plot the paths of deformed vectors in a equal-area or stereographic projection 
+#'
+#' @param x list of spherical objects.
+#' @param add logical. Whether the paths should be added to a existing plot or a 
+#' new one should be created?
+#' @param n integer. Number of points to be interpolated
+#' @param type character. Type of plotting the path. `"l"`if only the path line 
+#' should be shown, `"p"` if only the vectors should be shown, and `"b"` if both 
+#' should be plotted.
+#' @inheritParams plot.Vec3
+#' @inheritParams graphics::lines
+#' 
+#' @return `NULL`
+#' @export
+#' @seealso [defgrad()] and [velgrad()]
+#'
+#' @examples
+#' d <- defgrad_from_generalshear(k = 2.5, gamma = 0.9)
+#' v <- velgrad(d, time = 10)
+#' d_steps <- defgrad(v, time = 10, steps = 2)
+#' 
+#' # apply on orientation data
+#' set.seed(20250411)
+#' l <- rvmf(100, mu = Line(0, 90), k= 100)
+#' l_trans <- lapply(d_steps, function(i){transform_linear(l, i)})
+#' 
+#' # plot in stereonet
+#' axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
+#' stereo_path(l_trans, type = "l", add = FALSE)
+#' stereo_path(l_trans, type = "p", col = assign_col(seq_along(l_trans)), pch = 16, cex = .4)
+stereo_path <- function(x, type = c("l", "p", "b"), add = TRUE, n = 5, upper.hem = FALSE, earea = TRUE, ...){
+  if(isFALSE(add)){
+    stereoplot(earea = earea)
+  }
+  
+  type <- match.arg(type)
+  
+  xt <- lapply(x, Vec3) |>  
+    transpose_list() |> 
+    lapply(as.Vec3)
+  
+  if(type == "l" | type == "b"){
+  invisible(
+    lapply(xt, function(i){
+      slerp_matrix(i, t = seq(0, 1, length.out = n)) |> 
+        .draw_lines2(upper.hem = upper.hem, earea = earea,...)
+    })
+  )
+  } else if(type == "p" | type == "b"){
+  invisible(
+    lapply(xt, function(i){
+      points(i, upper.hem = upper.hem, earea = earea, ...)
+      })
+  )
+  }
+  
+  
 }
