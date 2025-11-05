@@ -17,7 +17,9 @@ editor_options:
 This tutorial demonstrates how {structr} can be used to deform
 orientation data using deformation and velocity gradient tensors. This
 can be useful to simulate progressive deformation and change of
-orientation.
+orientation. It will also demonstrate how you can combine different
+deformation tensors, and how to extract other flow parameters (such as
+vorticity, stretching, and dilatation).
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -43,51 +45,60 @@ The deformation matrix can be defined using several ways:
 
 -   `defgrad_by_comp()` creates an defined by individual components
     (default is identity tensor)
--   `defgrad_by_ratio()` creates an isochoric tensor with
-    axial stretches defined by strain ratios (default is identity
-    tensor).
--   `defgrad_from_vectors()` creates  tensor representing
-    rotation around the axis perpendicular to both vectors and rotate
-    `v1` to `v2`.
+-   `defgrad_by_ratio()` creates an isochoric tensor with axial
+    stretches defined by strain ratios (default is identity tensor).
+-   `defgrad_from_vectors()` creates tensor representing rotation around
+    the axis perpendicular to both vectors and rotate `v1` to `v2`.
 -   `defgrad_from_axisangle()` creates tensor representing a rigid-body
     rotation about an axis and an angle.
 -   `defgrad_from_pureshear()` creates an isochoric coaxial tensor.
--   `defgrad_from_simpleshear()` creates an isochoric non-coaxial tensor.
--   `defgrad_from_generalshear()` creates an isochoric tensor,
-    where *transtension* is $k>1$ and $\gamma \neq 0$, and
-    *transpression* is $k<1$ and $\gamma \neq 0$ ([^1])
--   `defgrad_from_dilation()` creates tensor representing the
-    volume change in z-direction.
+-   `defgrad_from_simpleshear()` creates an isochoric non-coaxial
+    tensor.
+-   `defgrad_from_generalshear()` creates an isochoric tensor, where
+    *transtension* is $k>1$ and $\gamma \neq 0$, and *transpression* is
+    $k<1$ and $\gamma \neq 0$ ([^1])
+-   `defgrad_from_dilation()` creates tensor representing the volume
+    change in z-direction.
 
-[^1]: Fossen, H., & Tikoff, B. (1993). The deformation matrix for simultaneous simple shearing, pure shearing and volume change, and its application to transpression-transtension tectonics. Journal of Structural Geology, 15(3–5), 413–422. https://doi.org/10.1016/0191-8141(93)90137-Y
+[^1]: Fossen, H., & Tikoff, B. (1993). The deformation matrix for
+    simultaneous simple shearing, pure shearing and volume change, and
+    its application to transpression-transtension tectonics. Journal of
+    Structural Geology, 15(3–5), 413–422.
+    [https://doi.org/10.1016/0191-8141(93)90137-Y](https://doi.org/10.1016/0191-8141(93)90137-Y){.uri}
 
 ```{r def1}
 D1 <- defgrad_from_generalshear(k = 2.5, gamma = 0.9)
 print(D1)
 ```
+
 ### Matrix algebra
 
-An *isochoric* deformation tensor creates deformation without volume change. In that case, the determinant of the matrix must be 1. In R, this can be checked using `det()`:
+An *isochoric* deformation tensor creates deformation without volume
+change. In that case, the determinant of the matrix must be 1. In R,
+this can be checked using `det()`:
 
 ```{r det}
 det(D1)
 ```
 
-The *inverse* of the tensor reverses the deformation. In R, this can be done using `solve()`:
+The *inverse* of the tensor reverses the deformation. In R, this can be
+done using `solve()`:
 
 ```{r inverse}
 solve(D1)
 ```
-The *eigenvectors* of the tensor describe the orientation of the strain ellipse, and the
-eigenvalues $\lambda$ describe its shape (i.e. length of the principal axes is
-proportional to the amount of stretch).
+
+The *eigenvectors* of the tensor describe the orientation of the strain
+ellipse, and the eigenvalues $\lambda$ describe its shape (i.e. length
+of the principal axes is proportional to the amount of stretch).
 
 ```{r def_eigen}
 eigen(D1)
 ```
 
-Deformation tensors can be combined using *matrix multiplication*.
-The resulting deformation from our general-shear deformation (D1) superimposed by our rotation (D2) is
+Deformation tensors can be combined using *matrix multiplication*. The
+resulting deformation from our general-shear deformation (D1)
+superimposed by our rotation (D2) is
 
 ```{r def2}
 D2 <- defgrad_from_axisangle(Line(0, 90), 30)
@@ -95,7 +106,8 @@ D2 <- defgrad_from_axisangle(Line(0, 90), 30)
 D12 <- D2 %*% D1 # D1 is applied first
 ```
 
-> Matrix multiplication is **not commutative**, i.e. $D1 \cdot D2 \neq D2 \cdot D1$
+> Matrix multiplication is **not commutative**, i.e.
+> $D1 \cdot D2 \neq D2 \cdot D1$
 
 ### Transformation using deformation gradient tensor
 
@@ -104,7 +116,7 @@ transformation:
 
 ```{r transform1}
 # generate some random lineation
-xl <- rvmf(100, mu = Line(0, 90), k= 100)
+xl <- rvmf(100, mu = Line(0, 90), k = 100)
 
 xl_transformed <- transform_linear(xl, D1)
 head(xl_transformed)
@@ -118,19 +130,19 @@ axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
 
 par(xpd = NA)
 stereoplot(guides = FALSE)
-points(xl, col = 'grey', pch = 16)
-points(xl_transformed, col = '#B63679FF', pch = 16)
+points(xl, col = "grey", pch = 16)
+points(xl_transformed, col = "#B63679FF", pch = 16)
 points(axes, pch = 15)
-text(axes, labels = c('x', 'y', 'z'), pos = 1, font = 3)
+text(axes, labels = c("x", "y", "z"), pos = 1, font = 3)
 
 legend("right", legend = c("D0", "D1"), col = c("grey", "#B63679FF"), pch = 16)
 ```
 
-
 ## Velocity gradient tensor
 
-The velocity gradient tensor **L** describes the velocity of particles at any instant during the deformation. 
-Velocity gradient tensor from deformation gradient tensor.
+The velocity gradient tensor **L** describes the velocity of particles
+at any instant during the deformation. Velocity gradient tensor from
+deformation gradient tensor.
 
 -   The `time` argument specifies the time of deformation, i.e. how many
     times the Deformation gradient tensor should be applied.
@@ -141,71 +153,81 @@ L <- velgrad(D1, time = 10)
 
 ### Decomposition
 
-The velocity gradient tensor **L** can be decomposed into a symmetric matrix **S**
-(the rate or stretching tensor) and the skew-symmetric matrix **W** (the spin or 
-vorticity tensor).
+The velocity gradient tensor **L** can be decomposed into a symmetric
+matrix **S** (the strain rate or stretching tensor) and the
+skew-symmetric matrix **W** (the spin tensor).
 
-The stretching matrix (or tensor) and describes
-the portion of the deformation that over time produces
-strain:
+The stretching matrix (or tensor) and describes the portion of the
+deformation that over time produces strain:
 
 ```{r vel_rate}
 S <- velgrad_rate(L)
 ```
 
-The vorticity or spin matrix (tensor) and contains information about the internal rotation during
-the deformation: 
+The spin tensor contains information about the internal rotation during
+the deformation:
 
 ```{r vel_spin}
 W <- velgrad_spin(L)
 ```
 
-The eigenvectors of the stretching gradient tensor give the orientations and lengths of the **instantaneous stretching axes**: 
+The eigenvectors of the stretching gradient tensor give the orientations
+and lengths of the **instantaneous stretching axes**:
 
 ```{r vel_eigenS}
 S_eig <- eigen(S)
 
 # ISA vectors
-axes_ISA <- S_eig$vectors |> as.Vec3() |> Line()
+axes_ISA <- S_eig$vectors |>
+  as.Vec3() |>
+  Line()
 
 # Amounts of stretching
 S_eig$values
 ```
-> shortcuts: `instantaneous_stretching_axes(L)` and `instantaneous_stretching(L)`
 
-The eigenvectors of the velocity gradient tensor describe the **flow apophyses**:
+> The shortcut functions `instantaneous_stretching_axes(L)` and
+> `instantaneous_stretching(L)` produce the same results as above.
+
+The eigenvectors of the velocity gradient tensor describe the **flow
+apophyses**:
 
 ```{r vel_eigenL}
 L_eig <- eigen(L)
 
 # Flow apophyses
-flow_vectors <- L_eig$vectors |> t() |> as.Vec3()
+flow_vectors <- L_eig$vectors |>
+  t() |>
+  as.Vec3()
 
-flow_apophyses <-  rbind(
-  crossprod(flow_vectors[1,], flow_vectors[2,]),
-  crossprod(flow_vectors[2,], flow_vectors[3,])
-  ) |> Plane()
+flow_apophyses <- rbind(
+  crossprod(flow_vectors[1, ], flow_vectors[2, ]),
+  crossprod(flow_vectors[2, ], flow_vectors[3, ])
+) |> Plane()
 ```
 
 > short cut: `flow_apophyses(L)`
 
-The angle &alpha; between the apophyses is directly related to how close to simple shear or pure shear the deformation is. &alpha; is zero for simple shear and 90&deg; for simple shear, and the **kinematic vorticity number** $W_k$ is given by $W_k = \cos\alpha$: 
+The angle α between the apophyses is directly related to how close to
+simple shear or pure shear the deformation is. α is zero for simple
+shear and 90° for pure shear. The **kinematic vorticity number** $W_k$
+is given by $W_k = \cos\alpha$:
 
 ```{r vorticity}
 alpha <- angle(flow_apophyses[1, ], flow_apophyses[2, ])
 abs(cos(alpha * pi / 180))
 ```
+
 > short cut: `kinematic_vorticity_from_velgrad(L)`
 
-The **vorticity vector** is the eigenvector corresponding to the intermediate eigenvalue of the velocity gradient tensor:
+The **vorticity vector** is the eigenvector corresponding to the
+intermediate eigenvalue of the velocity gradient tensor:
 
 ```{r vorticity_vector}
 Line(flow_vectors[2, ])
 ```
 
 > shortcut: `vorticity_vector(L)`
-
-
 
 ### Strain increments
 
@@ -224,9 +246,10 @@ D1_steps <- defgrad(L, time = 10, steps = 2)
 Now apply the deformation tensors on some orientation data
 
 ```{r transform2}
-xl_steps <- lapply(D1_steps, function(i){transform_linear(xl, i)})
+xl_steps <- lapply(D1_steps, function(i) {
+  transform_linear(xl, i)
+})
 ```
-
 
 ### Visualization of deformation over time
 
@@ -244,35 +267,43 @@ stereo_path(xl_steps, type = "l")
 stereo_path(xl_steps, type = "p", col = cols, pch = 16, cex = .4)
 
 # flow apophyses
-lines(flow_apophyses, col = c('grey40', 'grey60'), lty = 2)
+lines(flow_apophyses, col = c("grey30", "grey70"), lty = c(1, 2))
 
 # instantaneous stretching axes
 points(axes_ISA, pch = 15, col = "#B63679FF")
-text(axes_ISA, labels = c('ISA-1', 'ISA-2', 'ISA-3'), col = "#B63679FF", pos = 3, font = 2)
+text(axes_ISA, labels = c("ISA-1", "ISA-2", "ISA-3"), col = "#B63679FF", pos = 3, font = 2)
 
-# cooridiniate axes of def-tensor
+# coordinate axes of def-tensor
 points(axes, pch = 15)
-text(axes, labels = c('x', 'y', 'z'), pos = 1, font = 3)
+text(axes, labels = c("x", "y", "z"), pos = 1, font = 3)
 
 # legend
-legend(0, -1.1, xjust = 0.5, 
-       legend = c("flow apophysis 1", "flow apophysis 2"), 
-       col = c('grey40', 'grey60'), 
-       lty = 2
-       )
+legend(0, -1.1,
+  xjust = 0.5,
+  legend = c("Flow apophysis 1", "Flow apophysis 2"),
+  col = c("grey30", "grey70"),
+  lty = c(1, 2)
+)
 legend_c(increments, title = "Time")
 ```
 
-We can also monitor how the orientation tensor changes during progressive deformation:
+We can also monitor how the orientation tensor changes during
+progressive deformation:
 
 ```{r plot_ortensors}
 par(mfrow = c(1, 2))
-vollmer_plot(xl_steps, type = 'b', col = cols)
-hsu_plot(xl_steps, type = 'b', col = cols)
+vollmer_plot(xl_steps, type = "b", col = cols)
+hsu_plot(xl_steps, type = "b", col = cols)
 ```
 
 ## References
 
-Fossen, H., & Tikoff, B. (1993). The deformation matrix for simultaneous simple shearing, pure shearing and volume change, and its application to transpression-transtension tectonics. Journal of Structural Geology, 15(3–5), 413–422. https://doi.org/10.1016/0191-8141(93)90137-Y
+Fossen, H., & Tikoff, B. (1993). The deformation matrix for simultaneous
+simple shearing, pure shearing and volume change, and its application to
+transpression-transtension tectonics. Journal of Structural Geology,
+15(3–5), 413–422.
+[https://doi.org/10.1016/0191-8141(93)90137-Y](https://doi.org/10.1016/0191-8141(93)90137-Y){.uri}
 
-Sanderson, D. J., & Marchini, W. R. D. (1984). Transpression. Journal of Structural Geology, 6(5), 449–458. https://doi.org/10.1016/0191-8141(84)90058-0
+Sanderson, D. J., & Marchini, W. R. D. (1984). Transpression. Journal of
+Structural Geology, 6(5), 449–458.
+[https://doi.org/10.1016/0191-8141(84)90058-0](https://doi.org/10.1016/0191-8141(84)90058-0){.uri}

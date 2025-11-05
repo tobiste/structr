@@ -1,5 +1,5 @@
 #' Deformation Gradient Tensor
-#' 
+#'
 #' @param Rxy,Ryz numeric. the XY and YZ strain ratio to create a strain tensor
 #' with axial stretches.Values must be greater than or equal to 1.
 #' @param x object of class `"Pair"`, `"velgrad"` or 3x3 `"matrix"`
@@ -8,7 +8,7 @@
 #' both vectors to rotate `v1` to `v2`.
 #' @param axis,angle rotation axis and angle, axis can be an object of class `"Vec3"`,
 #' `"Line"`, `"Ray"`, or `"Plane"`, or a three-element vector. Angle in
-#' degrees when axis is a object of class `"Line"`, `"Ray"`, or `"Plane"`, and 
+#' degrees when axis is a object of class `"Line"`, `"Ray"`, or `"Plane"`, and
 #' radians otherwise. Counterclockwise rotation for positive angles.
 #' @param xx,xy,xz,yx,yy,yz,zx,zy,zz numeric. Directly specify components of
 #' the tensor. Identity matrix by default.
@@ -21,42 +21,42 @@
 #' @param ... parameters passed to function call
 #'
 #' @return object of class `"defgrad"`, i.e. a 3x3 matrix.
-#' 
-#' If `x`  is a Pair object, then `defgrad()` creates `"defgrad"` tensor representing rotation defined by `"Pair"`. 
+#'
+#' If `x`  is a Pair object, then `defgrad()` creates `"defgrad"` tensor representing rotation defined by `"Pair"`.
 #' Rotation brings x-axis to lineation and z-axis to normal to plane
-#' 
+#'
 #' `defgrad_by_comp` creates an defined by individual components (default is identity tensor)
-#' 
-#' `defgrad_by_ratio()` creates an isochoric `"defgrad"` tensor with axial 
+#'
+#' `defgrad_by_ratio()` creates an isochoric `"defgrad"` tensor with axial
 #' stretches defined by strain ratios (default is identity tensor).
-#'  
-#' `defgrad_from_vectors()` creates `"defgrad"` tensor representing rotation around the 
+#'
+#' `defgrad_from_vectors()` creates `"defgrad"` tensor representing rotation around the
 #' axis perpendicular to both vectors and rotate `v1` to `v2`.
-#' 
-#' `defgrad_from_axisangle`  creates `"defgrad"` tensor representing a rigid-body 
+#'
+#' `defgrad_from_axisangle`  creates `"defgrad"` tensor representing a rigid-body
 #' rotation about an axis and an angle.
-#' 
+#'
 #' `defgrad_from_pureshear` creates an isochoric coaxial `"defgrad"` tensor.
-#' 
+#'
 #' `defgrad_from_simpleshear` creates an isochoric non-coaxial `"defgrad"` tensor.
-#' 
+#'
 #' `defgrad_from_generalshear` creates an isochoric `"defgrad"` tensor, where
 #' transtension is \eqn{k>1} and \eqn{\gamma \neq 0}, and transpression is
 #' \eqn{k<1} and \eqn{\gamma \neq 0}.
-#' 
-#' `defgrad_from_dilation` creates `"defgrad"` tensor representing the volume change 
+#'
+#' `defgrad_from_dilation` creates `"defgrad"` tensor representing the volume change
 #' in z-direction.
-#' 
+#'
 #' @seealso [velgrad()], [transform_linear()] to apply the deformation on an object
 #' @name defgrad
-#' 
-#' @references 
-#' Fossen, H., & Tikoff, B. (1993). The deformation matrix for simultaneous 
-#' simple shearing, pure shearing and volume change, and its application to 
-#' transpression-transtension tectonics. Journal of Structural Geology, 15(3–5), 
+#'
+#' @references
+#' Fossen, H., & Tikoff, B. (1993). The deformation matrix for simultaneous
+#' simple shearing, pure shearing and volume change, and its application to
+#' transpression-transtension tectonics. Journal of Structural Geology, 15(3–5),
 #' 413–422. \doi{10.1016/0191-8141(93)90137-Y}
-#' 
-#' Sanderson, D. J., & Marchini, W. R. D. (1984). Transpression. Journal of 
+#'
+#' Sanderson, D. J., & Marchini, W. R. D. (1984). Transpression. Journal of
 #' Structural Geology, 6(5), 449–458. \doi{10.1016/0191-8141(84)90058-0}
 #'
 #' @examples
@@ -64,24 +64,25 @@
 #' defgrad_from_axisangle(Line(120, 50), 60)
 #' defgrad_from_vectors(Line(120, 50), Line(270, 80))
 #' defgrad(Pair(40, 20, 75, 16))
-#' defgrad_from_generalshear(k = 2, gamma = tan(30 * pi /180))
-#' 
+#' defgrad_from_generalshear(k = 2, gamma = tan(30 * pi / 180))
+#'
 #' # combine deformation by matrix multiplication
 #' D1 <- defgrad_from_ratio(5, 1)
 #' D2 <- defgrad_from_axisangle(Line(0, 90), 30)
-#' 
+#'
 #' # Matrix multiplication is not commutative!!!!
 #' D12 <- D2 %*% D1 # here: D1 is applied first
-#' 
+#'
 #' # Apply deformation of orientation data
 #' set.seed(20250411)
-#' l <- rvmf(100, mu = Line(0, 90), k= 100)
+#' l <- rvmf(100, mu = Line(0, 90), k = 100)
 #' l_trans <- transform_linear(l, D12)
-#' 
+#'
 #' axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
-#' plot(l, col = 'darkgrey')
-#' points(l_trans, col = 'red')
-#' points(axes, pch = 15); text(axes, labels = c('x', 'y', 'z'), pos = 1)
+#' plot(l, col = "darkgrey")
+#' points(l_trans, col = "red")
+#' points(axes, pch = 15)
+#' text(axes, labels = c("x", "y", "z"), pos = 1)
 NULL
 
 #' @rdname defgrad
@@ -116,7 +117,7 @@ defgrad <- function(x, time, steps, ...) UseMethod("defgrad")
 #' @rdname defgrad
 #' @export
 defgrad_from_ratio <- function(Rxy = 1, Ryz = 1) {
-  # isochoric ``defgrad`` tensor with axial stretches defined by 
+  # isochoric ``defgrad`` tensor with axial stretches defined by
   # strain ratios (coaxial deformation). Default is identity tensor.
   #
   stopifnot(Rxy >= 1, Ryz >= 1)
@@ -129,9 +130,9 @@ defgrad_from_ratio <- function(Rxy = 1, Ryz = 1) {
 #' @rdname defgrad
 #' @export
 defgrad_from_shearstrain <- function(Rxy = 1, Ryz = 1) {
-  # isochoric ``defgrad`` tensor with axial stretches defined by 
+  # isochoric ``defgrad`` tensor with axial stretches defined by
   # strain ratios. Default is identity tensor.
-  
+
   stopifnot(Rxy >= 1, Ryz >= 1)
   A <- diag(3)
   y <- (Ryz / Rxy)**(1 / 3)
@@ -146,7 +147,7 @@ defgrad_from_shearstrain <- function(Rxy = 1, Ryz = 1) {
 defgrad.Pair <- function(x, ...) {
   # return `defgrad` tensor representing rotation defined by `"Pair"`.
   # Rotation brings x-axis to lineation and z-axis to normal to plane
-  
+
   pl <- Line(x[, 3], x[, 4]) |> Vec3()
   pp <- Plane(x[, 1], x[, 2]) |> Vec3()
 
@@ -177,9 +178,9 @@ defgrad.Pair <- function(x, ...) {
 #' @rdname defgrad
 #' @export
 defgrad_from_vectors <- function(v1, v2) {
-  # Returns `defgrad` tensor representing rotation around axis perpendicular 
+  # Returns `defgrad` tensor representing rotation around axis perpendicular
   # to both vectors and rotate v1 to v2.
-  
+
   v1 <- Vec3(v1)
   v2 <- Vec3(v2)
 
@@ -240,27 +241,27 @@ defgrad_from_comp <- function(xx = 1, xy = 0, xz = 0, yx = 0, yy = 1, yz = 0,
 
 #' @rdname defgrad
 #' @export
-defgrad_from_simpleshear <- function(gamma){
-    defgrad_from_comp(xy=gamma)
+defgrad_from_simpleshear <- function(gamma) {
+  defgrad_from_comp(xy = gamma)
 }
 
 #' @rdname defgrad
 #' @export
-defgrad_from_pureshear <- function(k){
-  defgrad_from_comp(xx=k, yy = 1/k, zz = 1/k)
+defgrad_from_pureshear <- function(k) {
+  defgrad_from_comp(xx = k, yy = 1 / k, zz = 1 / k)
 }
 
 #' @rdname defgrad
 #' @export
-defgrad_from_generalshear <- function(k, gamma){
-  G <- (gamma * (1 - k)) / (log(1/k))
-  defgrad_from_comp(xy = G, yy = k, zz = 1/k)
+defgrad_from_generalshear <- function(k, gamma) {
+  G <- (gamma * (1 - k)) / (log(1 / k))
+  defgrad_from_comp(xy = G, yy = k, zz = 1 / k)
 }
 
 
 #' @rdname defgrad
 #' @export
-defgrad_from_dilation <- function(dilation = 0){
+defgrad_from_dilation <- function(dilation = 0) {
   defgrad_from_comp(zz = 1 + dilation)
 }
 
@@ -276,7 +277,7 @@ defgrad.default <- function(x, ...) {
 defgrad.velgrad <- function(x, time, steps, ...) {
   t <- seq(0, time, steps)
   if (steps > 1) {
-    R <- lapply(t, function(i){
+    R <- lapply(t, function(i) {
       as.defgrad(expm::expm(x * i))
     })
     names(R) <- t
@@ -290,10 +291,10 @@ defgrad.velgrad <- function(x, time, steps, ...) {
 
 #' Velocity gradient gradient tensors
 #'
-#' The velocity gradient tensor describes the velocity of particles at any 
-#' instant during the deformation. Velocity gradient tensor from deformation 
+#' The velocity gradient tensor describes the velocity of particles at any
+#' instant during the deformation. Velocity gradient tensor from deformation
 #' gradient tensor.
-#' 
+#'
 #' `velgrad()` calculates the velocity gradient tensor as the matrix logarithm of the
 #' deformation gradient tensor divided by given time, and
 #' the deformation gradient tensor accumulated after some time.
@@ -315,17 +316,20 @@ defgrad.velgrad <- function(x, time, steps, ...) {
 #' d <- defgrad_from_generalshear(k = 2.5, gamma = 0.9)
 #' l <- velgrad(d, time = 10)
 #' d_steps <- defgrad(l, time = 10, steps = 2)
-#' 
+#'
 #' # apply on orientation data
 #' set.seed(20250411)
-#' v <- rvmf(100, mu = Line(0, 90), k= 100)
-#' v_trans <- lapply(d_steps, function(i){transform_linear(v, i)})
-#' 
+#' v <- rvmf(100, mu = Line(0, 90), k = 100)
+#' v_trans <- lapply(d_steps, function(i) {
+#'   transform_linear(v, i)
+#' })
+#'
 #' # plot in stereonet
 #' axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
 #' stereo_path(v_trans, type = "l", add = FALSE)
 #' stereo_path(v_trans, type = "p", col = assign_col(seq_along(v_trans)), pch = 16, cex = .4)
-#' points(axes, pch = 15); text(axes, labels = c('x', 'y', 'z'), pos = 1) 
+#' points(axes, pch = 15)
+#' text(axes, labels = c("x", "y", "z"), pos = 1)
 NULL
 
 #' @rdname gradient
@@ -374,23 +378,23 @@ velgrad.defgrad <- function(x, time = 1, ...) {
 
 
 #' Rate and spin of velocity gradient tensor
-#' 
+#'
 #' The velocity gradient tensor **L** can be decomposed into a symmetric matrix **S**
-#' (the rate or stretching tensor) and the skew-symmetric matrix **W** (the spin or 
+#' (the rate or stretching tensor) and the skew-symmetric matrix **W** (the spin or
 #' vorticity tensor).
 #'
 #' @param x 3x3 matrix. Velocity gradient tensor.
 #'
 #' @return 3x3 matrix
-#' 
-#' @details The velocity gradient tensor\eqn{\mathbf{L}} can be decomposed into the 
+#'
+#' @details The velocity gradient tensor\eqn{\mathbf{L}} can be decomposed into the
 #' sum of a symmetric matrix \eqn{\mathbf{\dot{S}}} and a skew-symmetric matrix \eqn{\mathbf{W}}
 #' \deqn{\mathbf{L} = \mathbf{\dot{S}} + \mathbf{W}}
-#' 
-#' where 
-#' \eqn{\mathbf{\dot{S}}} is the stretching tensor (or strain-rate tensor) that describes 
+#'
+#' where
+#' \eqn{\mathbf{\dot{S}}} is the stretching tensor (or strain-rate tensor) that describes
 #' the portion of the deformation that over time produces strain. \eqn{\mathbf{W}}
-#' is the vorticity or spin tensor and describes the 
+#' is the vorticity or spin tensor and describes the
 #' internal rotation (rate) during the deformation.
 #'
 #' @name vel_rate
@@ -417,30 +421,30 @@ velgrad_spin <- function(x) {
   (x - t(x)) / 2
 }
 
-kinematic_vorticity <- function(kx, ky, gamma){
-  denom <- sqrt( 2 * (log(kx)^2 + log(ky^2)) + gamma^2)
+kinematic_vorticity <- function(kx, ky, gamma) {
+  denom <- sqrt(2 * (log(kx)^2 + log(ky^2)) + gamma^2)
   gamma / denom
 }
 
 
 
 #' Flow Apophyses, Vorticity, and Instantaneous Stretching Axes
-#' 
-#' Computes flow apophyses, vorticity vectors, kinematic vorticity numbers, and 
-#' instantaneous stretching axes from eigenvalues and eigenvectors of velocity 
+#'
+#' Computes flow apophyses, vorticity vectors, kinematic vorticity numbers, and
+#' instantaneous stretching axes from eigenvalues and eigenvectors of velocity
 #' gradient tensor
 #'
 #' @param x object of class `"velgrad"`
 #'
 #' @returns `vorticity_axis` and `instantaneous_stretching_axes` return `"Vec3"` object;
-#' `"flow_apophyses"` returns `"Plane"` object; `kinematic_vorticity_from_velgrad` and 
+#' `"flow_apophyses"` returns `"Plane"` object; `kinematic_vorticity_from_velgrad` and
 #' `instantaneous_stretching` return numeric.
 #' @name vorticity
 #'
 #' @examples
 #' d <- defgrad_from_generalshear(k = 2.5, gamma = 0.9)
 #' l <- velgrad(d, time = 10)
-#' 
+#'
 #' flow_apophyses(l)
 #' vorticity_axis(l)
 #' kinematic_vorticity_from_velgrad(l)
@@ -450,48 +454,48 @@ NULL
 
 #' @rdname vorticity
 #' @export
-flow_apophyses <- function(x){
+flow_apophyses <- function(x) {
   stopifnot(is.velgrad(x))
   L_eig <- eigen(x)
-  
+
   # Flow apophyses
-  flow_vectors <- L_eig$vectors |> 
-    t() |> 
+  flow_vectors <- L_eig$vectors |>
+    t() |>
     as.Vec3()
-  
-  flow_apophyses <-  rbind(
-    crossprod(flow_vectors[1,], flow_vectors[2,]),
-    crossprod(flow_vectors[2,], flow_vectors[3,])
+
+  flow_apophyses <- rbind(
+    crossprod(flow_vectors[1, ], flow_vectors[2, ]),
+    crossprod(flow_vectors[2, ], flow_vectors[3, ])
   ) |> Plane()
 }
 
 #' @rdname vorticity
 #' @export
-vorticity_axis <- function(x){
+vorticity_axis <- function(x) {
   stopifnot(is.velgrad(x))
   L_eig <- eigen(x)
-  L_eig$vectors[, 2] |> 
+  L_eig$vectors[, 2] |>
     as.Vec3()
 }
 
 #' @rdname vorticity
 #' @export
-kinematic_vorticity_from_velgrad <- function(x){
+kinematic_vorticity_from_velgrad <- function(x) {
   stopifnot(is.velgrad(x))
   L_eig <- eigen(x)
-  
+
   # Flow apophyses
-  flow_vectors <- L_eig$vectors |> 
-    t() |> 
+  flow_vectors <- L_eig$vectors |>
+    t() |>
     as.Vec3()
-  
-  alpha <- angle(flow_vectors[1, ],flow_vectors[3, ])
+
+  alpha <- angle(flow_vectors[1, ], flow_vectors[3, ])
   cos(alpha)
 }
 
 #' @rdname vorticity
 #' @export
-instantaneous_stretching <- function(x){
+instantaneous_stretching <- function(x) {
   S <- velgrad_rate(x)
   S_eig <- eigen(S, only.values = TRUE)
   S_eig$values
@@ -499,11 +503,11 @@ instantaneous_stretching <- function(x){
 
 #' @rdname vorticity
 #' @export
-instantaneous_stretching_axes <- function(x){
+instantaneous_stretching_axes <- function(x) {
   S <- velgrad_rate(x)
   S_eig <- eigen(S)
-  
+
   # ISA vectors
-  S_eig$vectors |> 
+  S_eig$vectors |>
     as.Vec3()
 }

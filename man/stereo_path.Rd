@@ -47,8 +47,10 @@ d_steps <- defgrad(v, time = 10, steps = 2)
 
 # apply on orientation data
 set.seed(20250411)
-l <- rvmf(100, mu = Line(0, 90), k= 100)
-l_trans <- lapply(d_steps, function(i){transform_linear(l, i)})
+l <- rvmf(100, mu = Line(0, 90), k = 100)
+l_trans <- lapply(d_steps, function(i) {
+  transform_linear(l, i)
+})
 
 # plot in stereonet
 axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))

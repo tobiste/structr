@@ -8,13 +8,34 @@
 \alias{vollmer_plot.list}
 \title{Fabric plot of Vollmer (1990)}
 \usage{
-vollmer_plot(x, labels, add, ngrid, ...)
+vollmer_plot(x, labels, add, ngrid, main, ...)
 
-\method{vollmer_plot}{default}(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...)
+\method{vollmer_plot}{default}(
+  x,
+  labels = NULL,
+  add = FALSE,
+  ngrid = c(5, 5, 5),
+  main = "Vollmer diagram",
+  ...
+)
 
-\method{vollmer_plot}{spherical}(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...)
+\method{vollmer_plot}{spherical}(
+  x,
+  labels = NULL,
+  add = FALSE,
+  ngrid = c(5, 5, 5),
+  main = "Vollmer diagram",
+  ...
+)
 
-\method{vollmer_plot}{list}(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), ...)
+\method{vollmer_plot}{list}(
+  x,
+  labels = NULL,
+  add = FALSE,
+  ngrid = c(5, 5, 5),
+  main = "Vollmer diagram",
+  ...
+)
 }
 \arguments{
 \item{x}{spherical object or a three-column matrix, where the first column is
@@ -27,6 +48,8 @@ P, the second is G, and the third one is R of the Vollmer parameters.}
 \item{ngrid}{integer or 3-element vector specifying the amount of gridlines
 for the P, G, and G axes. Constant grid spacing when only one integer is given.
 \code{NULL} when no grid.}
+
+\item{main}{character. The main title for the plot.}
 
 \item{...}{optional graphical parameters}
 }
@@ -54,7 +77,6 @@ vollmer_plot(c, labels = "UNIF", add = TRUE, col = "green")
 set.seed(20250411)
 d <- rkent(100, mu = mu, k = 10, b = 4)
 vollmer_plot(d, labels = "KENT", add = TRUE, col = "blue")
-title("Fabric plot of Vollmer (1990)")
 }
 \references{
 Vollmer, F. W. (1990). An application of eigenvalue methods to

@@ -126,7 +126,7 @@ defgrad_from_ratio(2, 3)
 defgrad_from_axisangle(Line(120, 50), 60)
 defgrad_from_vectors(Line(120, 50), Line(270, 80))
 defgrad(Pair(40, 20, 75, 16))
-defgrad_from_generalshear(k = 2, gamma = tan(30 * pi /180))
+defgrad_from_generalshear(k = 2, gamma = tan(30 * pi / 180))
 
 # combine deformation by matrix multiplication
 D1 <- defgrad_from_ratio(5, 1)
@@ -137,13 +137,14 @@ D12 <- D2 \%*\% D1 # here: D1 is applied first
 
 # Apply deformation of orientation data
 set.seed(20250411)
-l <- rvmf(100, mu = Line(0, 90), k= 100)
+l <- rvmf(100, mu = Line(0, 90), k = 100)
 l_trans <- transform_linear(l, D12)
 
 axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
-plot(l, col = 'darkgrey')
-points(l_trans, col = 'red')
-points(axes, pch = 15); text(axes, labels = c('x', 'y', 'z'), pos = 1)
+plot(l, col = "darkgrey")
+points(l_trans, col = "red")
+points(axes, pch = 15)
+text(axes, labels = c("x", "y", "z"), pos = 1)
 }
 \references{
 Fossen, H., & Tikoff, B. (1993). The deformation matrix for simultaneous

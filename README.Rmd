@@ -366,7 +366,7 @@ i <- 2
 D1 <- defgrad_from_generalshear(k = 2.5, gamma = 0.9)
 
 # Generate some random lineation
-xl <- rvmf(100, mu = Line(0, 90), k= 100)
+xl <- rvmf(100, mu = Line(0, 90), k = 100)
 
 # Generate the velcity gradient tensor for deformation accumulating over time
 L <- velgrad(D1, time = t)
@@ -375,7 +375,9 @@ L <- velgrad(D1, time = t)
 D1_steps <- defgrad(L, time = t, steps = i)
 
 # Transform the lineation for each deformation increment
-xl_steps <- lapply(D1_steps, function(i){transform_linear(xl, i)})
+xl_steps <- lapply(D1_steps, function(i) {
+  transform_linear(xl, i)
+})
 
 increments <- seq(0, t, i)
 
@@ -388,8 +390,8 @@ Show how the orientation tensor changes during progressive deformation:
 
 ```{r defgrad2}
 par(mfrow = c(1, 2))
-vollmer_plot(xl_steps, type = 'b', col = assign_col(increments), pch = 16)
-hsu_plot(xl_steps, type = 'b', col = assign_col(increments), pch = 16)
+vollmer_plot(xl_steps, type = "b", col = assign_col(increments), pch = 16)
+hsu_plot(xl_steps, type = "b", col = assign_col(increments), pch = 16)
 ```
 
 

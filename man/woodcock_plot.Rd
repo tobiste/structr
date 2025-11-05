@@ -4,7 +4,14 @@
 \alias{woodcock_plot}
 \title{Fabric plot of Woodcock (1977)}
 \usage{
-woodcock_plot(x, labels = NULL, add = FALSE, max = 7, ...)
+woodcock_plot(
+  x,
+  labels = NULL,
+  add = FALSE,
+  max = 7,
+  main = "Woodcock diagram",
+  ...
+)
 }
 \arguments{
 \item{x}{either an object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"},
@@ -16,6 +23,8 @@ rows are the observations and the columns are the coordinates, or an \code{"orte
 \item{add}{logical. Should data be plotted to an existing plot?}
 
 \item{max}{numeric. Maximum value for x and y axes. If \code{NULL}, it is calculated from the data.}
+
+\item{main}{character. The main title for the plot.}
 
 \item{...}{optional graphical parameters}
 }
@@ -30,7 +39,7 @@ Creates a fabric plot using the eigenvalue method
 set.seed(20250411)
 mu <- Line(120, 50)
 x <- rvmf(100, mu = mu, k = 1)
-woodcock_plot(x, lab = "x", main = "Fabric plot of Woodcock (1977)")
+woodcock_plot(x, lab = "x")
 y <- rvmf(100, mu = mu, k = 20)
 woodcock_plot(y, lab = "y", add = TRUE, col = "red")
 }

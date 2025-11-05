@@ -482,8 +482,8 @@ vec_list <- function(x) {
 
 
 #' List transposition
-#' 
-#' Rearranges a list of n matrices with n rows and 3 columns into a list of n 
+#'
+#' Rearranges a list of n matrices with n rows and 3 columns into a list of n
 #' matrices with n rows and three columns.
 #'
 #' @param x list of 3-column matrices with each same number of rows
@@ -495,34 +495,36 @@ vec_list <- function(x) {
 #' d <- defgrad_from_generalshear(k = 2.5, gamma = 0.9)
 #' v <- velgrad(d, time = 10)
 #' d_steps <- defgrad(v, time = 10, steps = 2)
-#' 
+#'
 #' # apply on orientation data
 #' set.seed(20250411)
-#' l <- rvmf(100, mu = Line(0, 90), k= 100)
-#' l_trans <- lapply(d_steps, function(i){transform_linear(l, i)})
-#' 
+#' l <- rvmf(100, mu = Line(0, 90), k = 100)
+#' l_trans <- lapply(d_steps, function(i) {
+#'   transform_linear(l, i)
+#' })
+#'
 #' transpose_list(l_trans)
-transpose_list <- function(x){
+transpose_list <- function(x) {
   # Check that input is a non-empty list
   stopifnot(is.list(x), length(x) > 0)
-  
+
   # Extract all dimensions
   dims <- lapply(x, dim)
-  
+
   # Check all dimensions are identical
   stopifnot(all(vapply(dims, function(d) all(d == dims[[1]]), logical(1))))
-  
+
   # Extract i (rows) and n (number of matrices)
   i <- dims[[1]][1]
   n <- length(x)
-  
+
   # Transpose list: create i matrices, each with n rows and 3 columns
   x_rearranged <- lapply(seq_len(i), function(r) {
     do.call(rbind, lapply(x, function(M) {
       M <- unclass(M)
-      M[r, , drop = FALSE]}
-      ))
+      M[r, , drop = FALSE]
+    }))
   })
-  
+
   return(x_rearranged)
 }

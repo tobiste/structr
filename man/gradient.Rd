@@ -49,14 +49,17 @@ d_steps <- defgrad(l, time = 10, steps = 2)
 
 # apply on orientation data
 set.seed(20250411)
-v <- rvmf(100, mu = Line(0, 90), k= 100)
-v_trans <- lapply(d_steps, function(i){transform_linear(v, i)})
+v <- rvmf(100, mu = Line(0, 90), k = 100)
+v_trans <- lapply(d_steps, function(i) {
+  transform_linear(v, i)
+})
 
 # plot in stereonet
 axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
 stereo_path(v_trans, type = "l", add = FALSE)
 stereo_path(v_trans, type = "p", col = assign_col(seq_along(v_trans)), pch = 16, cex = .4)
-points(axes, pch = 15); text(axes, labels = c('x', 'y', 'z'), pos = 1) 
+points(axes, pch = 15)
+text(axes, labels = c("x", "y", "z"), pos = 1)
 }
 \seealso{
 \code{\link[=defgrad]{defgrad()}}, \code{\link[=stereo_path]{stereo_path()}} for plotting
