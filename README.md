@@ -1,7 +1,7 @@
 
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
-# structr
+# structr <a href="https://tobiste.github.io/structr/"><img src="man/figures/logo.png" alt="structr website" align="right" height="104"/></a>
 
 <!-- badges: start -->
 
