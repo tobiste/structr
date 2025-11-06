@@ -72,13 +72,13 @@ title(main = "Example data", sub = "Equal angle stereographic, upper hemisphere 
 ### Great and small circles
 Great and small circles can be added using the `lines()` function.
 
-Adding great circles:
+Adding great circles for the first 10 vectors in planes:
 ```{r stereo_greatcircle}
 #| fig.alt: >
 #|   Diagram showing greatcircles
 stereoplot(guides = FALSE) # turn of guides for better visibility
-lines(planes, col = "lightgrey", lty = 1)
-points(planes, col = "#000004", pch = 1, cex = .5)
+lines(planes[1:10, ], col = "lightgrey", lty = 1)
+points(planes[1:10, ], col = "#000004", pch = 1, cex = .5)
 ```
 
 To plot a small circle with, e.g., a 10° radius, you need to specify the `ang` argument in `lines()`:
@@ -86,7 +86,8 @@ To plot a small circle with, e.g., a 10° radius, you need to specify the `ang` 
 #| fig.alt: >
 #|   Diagram showing smallcircles
 stereoplot(guides = FALSE)
-lines(lines[1, ], ang = 10, col = "#B63679", pch = 19, cex = .5)
+points(lines[1:5, ], col = "#B63679", pch = 19, cex = .5)
+lines(lines[1:5, ], ang = 10, col = "#B63679")
 ```
 
 
@@ -111,7 +112,6 @@ Three different diagram are provided by {structr}, namely the triangular *Vollme
 #| fig.alt: >
 #|   Diagram showing eigen-vector analysis of some example data plotted in an
 #|   triangular plot after Vollmer 1990
-
 vollmer_plot(planes, col = "#000004", pch = 1, cex = 2)
 vollmer_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
@@ -124,7 +124,6 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 #| fig.alt: >
 #|   Diagram showing eigen-vector analysis of some example data plotted in an
 #|   biplot plot after Woodcok 1977
-
 woodcock_plot(planes, col = "#000004", pch = 1, cex = 2)
 woodcock_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
@@ -144,8 +143,7 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 ```{r hsu, message=FALSE,warning=FALSE}
 #| fig.alt: >
 #|   Diagram showing eigen-vector analysis of some example data plotted in a
-#|   Hsü plot
-
+#|   Hsu plot
 hsu_plot(planes, col = "#000004", pch = 1, cex = 2)
 hsu_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
@@ -203,7 +201,6 @@ The final plot:
 ```{r synops, message=FALSE,warning=FALSE}
 #| fig.alt: >
 #|   Diagram showing the density distribution, eigenvectors and mean values
-
 # two plots side by side
 par(mfrow = c(1, 2))
 

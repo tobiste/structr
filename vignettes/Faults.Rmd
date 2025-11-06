@@ -272,7 +272,6 @@ visualized in the stereoplot:
 #| fig.alt: >
 #|   Diagram showing deviation of the best-fit principal stress tensor in a
 #|   stereoplot
-
 beta <- test_res$fault_data$beta
 
 stereoplot(

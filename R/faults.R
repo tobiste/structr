@@ -447,7 +447,7 @@ tau2shearnorm <- function(tau, fault, friction) {
 #' f <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
 #' Fault_PT(f)
 Fault_PT <- function(x, ptangle = 90) {
-  ptangle <- deg2rad(ptangle)
+  ptangle <- rep(deg2rad(ptangle), nrow(x))
   x_corr <- misfit_pair(x)
   xp <- x_corr$fvec
   xl <- x_corr$lvec * ifelse(x[, 5] < 0, -1, 1)

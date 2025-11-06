@@ -256,10 +256,10 @@ faults <- angelier1990$TYM
 
 par(mfrow = c(1, 2))
 stereoplot(title = "Angelier plot", guides = FALSE)
-angelier(faults)
+angelier(faults, col = 'grey20')
 
 stereoplot(title = "Hoeppener plot", guides = FALSE)
-hoeppener(faults, points = FALSE)
+hoeppener(faults, points = FALSE, col = 'grey20')
 ```
 
 <img src="man/figures/README-stereo_faults-1.png" width="100%" />
