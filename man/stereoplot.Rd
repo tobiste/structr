@@ -2,7 +2,7 @@
 % Please edit documentation in R/stereonet_base.R
 \name{stereoplot}
 \alias{stereoplot}
-\title{Stereographic projection}
+\title{Stereographic Projection}
 \source{
 Adapted from the \code{RFOC} package
 }
@@ -11,8 +11,8 @@ stereoplot(
   earea = TRUE,
   guides = TRUE,
   d = 10,
-  col = "lightgray",
-  lwd = 1,
+  col = "gray90",
+  lwd = 0.5,
   lty = 1,
   border.col = "black",
   title = NULL,
@@ -21,7 +21,7 @@ stereoplot(
   labels = FALSE,
   ladj = 0.05,
   centercross = TRUE,
-  ticks = NULL,
+  ticks = 90,
   radius = 1
 )
 }
@@ -63,6 +63,8 @@ Initialize the plot for equal-area stereographic projections (Wulff) or Lambert
 Equal-Area projections (Schmidt).
 }
 \examples{
+stereoplot()
+
 stereoplot(ticks = 30, title = "title", sub = "subtitle", border.col = "purple", labels = TRUE)
 }
 \seealso{

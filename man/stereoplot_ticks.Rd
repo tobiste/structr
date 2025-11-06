@@ -2,7 +2,7 @@
 % Please edit documentation in R/stereonet_base.R
 \name{stereoplot_ticks}
 \alias{stereoplot_ticks}
-\title{Stereoplot tickmarks}
+\title{Stereoplot Tickmarks}
 \usage{
 stereoplot_ticks(
   length = 0.02,

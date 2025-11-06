@@ -130,7 +130,7 @@ Plotting a summary of the stats on a equal-area projection:
 #| fig.alt: >
 #|   Diagram showing statistical results of some example data plotted in an
 #|   equal-area projection
-stereoplot(guides = FALSE)
+stereoplot()
 points(lines, col = "lightgrey", pch = 1, cex = .5)
 points(lines_mean, col = "#B63679", pch = 19, cex = 1)
 lines(lines_mean, ang = lines_confangle, col = "#E65164FF")
@@ -197,7 +197,7 @@ distributions such as the *Kent* or *Bingham distributions*.
 #|  Equal area projections showing the different estimators of the mean
 
 par(mfrow = c(1, 2))
-stereoplot(guides = FALSE)
+stereoplot()
 points(example_lines, col = "grey", pch = 16, cex = .7)
 points(sph_mean(example_lines), col = "#1D1147FF", pch = 16)
 points(geodesic_mean(example_lines), col = "#B63679FF", pch = 16)
@@ -211,7 +211,7 @@ legend("bottomleft",
   bg = "white"
 )
 
-stereoplot(guides = FALSE)
+stereoplot()
 points(example_planes, col = "grey", pch = 16, cex = .7)
 points(sph_mean(example_planes), col = "#1D1147FF", pch = 16)
 points(geodesic_mean(example_planes), col = "#B63679FF", pch = 16)

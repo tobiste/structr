@@ -2,7 +2,7 @@
 % Please edit documentation in R/stereonet_base.R
 \name{stereo_path}
 \alias{stereo_path}
-\title{Deformation paths in a Steroplot}
+\title{Deformation Paths in Steroplot}
 \usage{
 stereo_path(
   x,

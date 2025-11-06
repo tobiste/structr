@@ -5,7 +5,7 @@
 \alias{fault_plot}
 \alias{hoeppener}
 \alias{angelier}
-\title{Add fault data to existing plot}
+\title{Add Fault Data to Existing Plot}
 \usage{
 fault_plot(x, type = c("angelier", "hoeppener"), ...)
 
@@ -35,7 +35,7 @@ angelier(
 \item{lty, lwd, cex, pch, col, bg}{plotting parameters}
 }
 \description{
-Add fault data to existing plot
+Add Fault Data to Existing Plot
 }
 \details{
 \strong{Angelier plot} shows all planes as \emph{great circles} and lineations as points. Fault striae are plotted as vectors on top of the lineation pointing in the movement direction of the hangingwall. Easy to read in case of homogeneous or small datasets.

@@ -2,7 +2,7 @@
 % Please edit documentation in R/stereonet_base.R
 \name{stereo_segment}
 \alias{stereo_segment}
-\title{Great-circle segment between two vectors}
+\title{Great-circle Segment Between Two Vectors}
 \usage{
 stereo_segment(
   x,

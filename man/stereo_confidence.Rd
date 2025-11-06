@@ -2,7 +2,7 @@
 % Please edit documentation in R/stereonet_base.R
 \name{stereo_confidence}
 \alias{stereo_confidence}
-\title{Plot the bootstrapped confidence ellipse}
+\title{Plot Bootstrapped Confidence Ellipse}
 \usage{
 stereo_confidence(
   x,

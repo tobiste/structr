@@ -60,11 +60,11 @@ stereoplot()
 
 # plot the core axis' azimuth and inclination)
 points(Line(azi, inc))
-text(Line(azi, inc), lab = "core-axis")
+text(Line(azi, inc), lab = "core-axis", pos = 1, font = 3)
 
 # plot the plane orientations as poles...
 points(planes_AB, col = c("#B63679FF", "#FB8861FF"))
-text(planes_AB, lab = c("A", "B"), col = c("#B63679FF", "#FB8861FF"))
+text(planes_AB, lab = c("A", "B"), col = c("#B63679FF", "#FB8861FF"), pos = 1, font = 3)
 
 # ... and as great circles
 lines(planes_AB, col = c("#B63679FF", "#FB8861FF"))

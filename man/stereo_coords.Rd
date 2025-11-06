@@ -2,7 +2,7 @@
 % Please edit documentation in R/stereonet_base.R
 \name{stereo_coords}
 \alias{stereo_coords}
-\title{Stereographic projection}
+\title{Stereographic Projection}
 \usage{
 stereo_coords(az, inc, upper.hem = FALSE, earea = TRUE, r = 1)
 }

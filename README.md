@@ -73,24 +73,33 @@ These are some basic examples which shows you what you can do with
 library(structr)
 ```
 
-### Stereographic and equal-area projection
+### Stereographic and Equal-Area Projection
 
 Plot orientation data in equal-area, lower hemisphere projection:
 
 ``` r
+# load some example data
 data("example_planes")
 data("example_lines")
 
-stereoplot(title = "Lambert equal-area projection", sub = "Lower hemisphere", ticks = 45, labels = TRUE)
+#initialize the stereoplot
+stereoplot(
+  title = "Lambert equal-area projection", 
+  sub = "Lower hemisphere", 
+  ticks = 45, labels = TRUE
+  )
+
+# add vectors as points
 points(example_lines, col = "#B63679", pch = 19, cex = .5)
 points(example_planes, col = "#000004", pch = 1, cex = .5)
 
+# add a legend
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```
 
 <img src="man/figures/README-stereo-1.png" width="100%" />
 
-### Density
+### Density on a Sphere
 
 Density shown by contour lines…
 
@@ -122,7 +131,7 @@ title(main = "Lines")
 
 <img src="man/figures/README-stereo_density_img-1.png" width="100%" />
 
-### Spherical statistics
+### Spherical Statistics
 
 Calculation of arithmetic mean, geodesic mean, confidence cones and
 eigenvectors… and plotting them in the equal-area projection:
@@ -168,7 +177,7 @@ legend(
 
 <img src="man/figures/README-stats-1.png" width="100%" />
 
-### Orientation tensor and fabric plots
+### Orientation Tensor and Fabric Plots
 
 The shape parameters of the orientation tensor of the above examples
 planes and lines can be visualized in two ways:
@@ -190,7 +199,7 @@ legend(
 
 <img src="man/figures/README-stereo_ortensor-1.png" width="100%" />
 
-#### Best-fit great and small-circles (geodesic regression)
+### Best-fit Great- and Small-Circles (Geodesic Regression)
 
 Finds the best-fit great or small-circle for a given set of vectors by
 applying geodesic regression:
@@ -235,7 +244,7 @@ legend(0, -1.1,
 
 <img src="man/figures/README-bestfit-1.png" width="100%" />
 
-### Fault plots
+### Fault Plots
 
 Graphical representation of fault-slip data using Angelier plot (slip
 vector on fault plane great circle) and Hoeppener plot (fault slip
@@ -255,7 +264,7 @@ hoeppener(faults, points = FALSE)
 
 <img src="man/figures/README-stereo_faults-1.png" width="100%" />
 
-### Fault-slip inversion
+### Fault-Slip Inversion
 
 Compute deviatoric stress tensor and calculate 95% confidence intervals
 using bootstrap samples:
@@ -329,7 +338,7 @@ SH(
 #> [1] 60.80844
 ```
 
-### Mohr circles
+### Mohr Circle
 
 The Mohr circle for the slip inversion result:
 
@@ -347,7 +356,7 @@ points(faults_stress$fault_data$sigma_n, abs(faults_stress$fault_data$sigma_s),
 
 <img src="man/figures/README-stereo_inversion_mohr-1.png" width="100%" />
 
-### Strain analysis
+### Strain Analysis
 
 #### 2D Strain
 
@@ -380,7 +389,7 @@ hsu_plot(cbind(R_XY, R_YZ), col = "#B63679", pch = 16)
 
 <img src="man/figures/README-strain3D-1.png" width="100%" />
 
-### Vorticity analysis
+### Vorticity Analysis
 
 Aspect ratio of finite strain ellipses of porphyroclasts vs orientation
 of long-axis with respect to foliation plotted in the **Rigid Grain
@@ -396,7 +405,7 @@ RGN_plot(shebandowan$r, shebandowan$phi, col = assign_col(log(shebandowan$area))
 
 <img src="man/figures/README-rgn-1.png" width="100%" />
 
-### Deformation and velocity gradient tensors
+### Deformation and Velocity Gradient Tensors
 
 Define a deformation gradient tensor and deform some orientation data
 over time `t` in `i` increments:

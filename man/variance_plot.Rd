@@ -2,7 +2,7 @@
 % Please edit documentation in R/stereonet_base.R
 \name{variance_plot}
 \alias{variance_plot}
-\title{Variance visualization}
+\title{Variance Plot}
 \usage{
 variance_plot(
   x,

@@ -4,7 +4,7 @@
 \alias{stereo_cones}
 \alias{stereo_smallcircle}
 \alias{stereo_greatcircle}
-\title{Stereographic projection of cones}
+\title{Stereographic Projection of Cones}
 \usage{
 stereo_smallcircle(
   x,

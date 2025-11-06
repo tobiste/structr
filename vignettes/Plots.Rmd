@@ -208,7 +208,7 @@ The final plot:
 par(mfrow = c(1, 2))
 
 # Planes
-stereoplot(guides = TRUE, col = "grey96")
+stereoplot()
 points(planes, col = "grey", pch = 16, cex = .5)
 contour(planes, add = TRUE, weights = plane_weightings)
 points(planes_eigen3, col = "black", pch = 16)
@@ -222,7 +222,7 @@ title(
 )
 
 # Lines
-stereoplot(guides = TRUE, col = "grey96")
+stereoplot()
 points(lines, col = "grey", pch = 16, cex = .5)
 contour(lines, add = TRUE, weights = line_weightings)
 points(lines_mean, col = "black", pch = 16)

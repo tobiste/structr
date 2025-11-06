@@ -2,7 +2,7 @@
 % Please edit documentation in R/stereonet_base.R
 \name{stereoplot_guides}
 \alias{stereoplot_guides}
-\title{Stereoplot gridlines}
+\title{Stereoplot Gridlines}
 \usage{
 stereoplot_guides(d = 10, earea = TRUE, radius = 1, ...)
 }

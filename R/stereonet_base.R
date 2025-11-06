@@ -52,7 +52,7 @@ rotz3 <- function(deg) {
 
 
 
-#' Stereographic projection
+#' Stereographic Projection
 #'
 #' Transformation of spherical coordinates into the stereographic projection
 #'
@@ -107,7 +107,7 @@ stereo_coords <- function(az, inc, upper.hem = FALSE, earea = TRUE, r = 1) {
 }
 
 
-#' Stereographic projection of lines and planes
+#' Stereographic Projection of Lines and Planes
 #'
 #' Visualization of lines, planes in a stereographic projection.
 #'
@@ -154,7 +154,7 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1
 }
 
 
-#' Stereographic projection of pairs
+#' Stereographic Projection of Pairs
 #'
 #' Visualization of pairs (planes and lines) in a stereographic projection.
 #'
@@ -270,7 +270,7 @@ stereo_pair <- function(x, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex 
 }
 
 
-#' Stereographic projection of cones
+#' Stereographic Projection of Cones
 #'
 #' Visualization of smallcircles and greatcircles in a stereographic projection.
 #'
@@ -363,7 +363,7 @@ stereo_greatcircle <- function(x, ...) {
 }
 
 
-#' Great-circle segment between two vectors
+#' Great-circle Segment Between Two Vectors
 #'
 #' Plots the great-circle segment between two vectors
 #'
@@ -485,7 +485,7 @@ stereoplot_frame <- function(n = 512L, radius = 1, ...) {
 }
 
 
-#' Stereographic projection
+#' Stereographic Projection
 #'
 #' Initialize the plot for equal-area stereographic projections (Wulff) or Lambert
 #' Equal-Area projections (Schmidt).
@@ -516,11 +516,13 @@ stereoplot_frame <- function(n = 512L, radius = 1, ...) {
 #' @importFrom graphics plot points title mtext par
 #' @export
 #' @examples
+#' stereoplot()
+#' 
 #' stereoplot(ticks = 30, title = "title", sub = "subtitle", border.col = "purple", labels = TRUE)
-stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = "lightgray",
-                       lwd = 1, lty = 1, border.col = "black", title = NULL,
+stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = "gray90",
+                       lwd = 0.5, lty = 1, border.col = "black", title = NULL,
                        sub = NULL, origin.text = "N", labels = FALSE, ladj = 0.05, 
-                       centercross = TRUE, ticks = NULL, radius = 1) {
+                       centercross = TRUE, ticks = 90, radius = 1) {
   graphics::par(xpd = NA)
   graphics::plot(radius * c(-1, 1), radius * c(-1, 1),
     type = "n", xlab = NULL, ylab = NULL, asp = 1,
@@ -539,7 +541,7 @@ stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = "lightgray",
   stereoplot_frame(col = border.col, radius = radius)
 }
 
-#' Stereoplot tickmarks
+#' Stereoplot Tickmarks
 #'
 #' Adds stereoplot rickmarks to an existing plot
 #'
@@ -672,7 +674,7 @@ stereo_guides_wulff <- function(d = 9, n = 512, r = 1, rotation = 0, ...) {
   graphics::lines(c(-1, 1), c(0, 0), ...)
 }
 
-#' Stereoplot gridlines
+#' Stereoplot Gridlines
 #'
 #' Adds equal-area or equal-angle projection gridlines to an existing stereoplot.
 #'
@@ -699,7 +701,7 @@ stereoplot_guides <- function(d = 10, earea = TRUE, radius = 1, ...) {
 }
 
 
-#' Plot spherical objects
+#' Plot Spherical Objects
 #'
 #' @inheritParams stereo_point
 #' @inheritParams stereoplot
@@ -940,7 +942,7 @@ stereo_arrows <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.
 }
 
 
-#' Add fault data to existing plot
+#' Add Fault Data to Existing Plot
 #'
 #' @inheritParams slip_inversion
 #' @param type character. One of `"angelier"` (for "Angelier plot") or `"hoeppener"` (for "Hoeppener plot"). See details.
@@ -1011,7 +1013,7 @@ angelier <- function(x, pch = 1, lwd = 1, lty = 1, col = "black", cex = 1, point
 
 
 
-#' Variance visualization
+#' Variance Plot
 #'
 #' Shows the greatcircle of the shortest distance between a set of vectors to a
 #' specified vector in a stereoplot.
@@ -1082,7 +1084,7 @@ variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "proj
 }
 
 
-#' Plot the bootstrapped confidence ellipse
+#' Plot Bootstrapped Confidence Ellipse
 #'
 #' Adds an ellipse marking the bootstrapped confidence interval of the arithmetic mean to an existing plot
 #'
@@ -1145,7 +1147,7 @@ slerp_matrix <- function(M, FUN = slerp, ...) {
 }
 
 
-#' Deformation paths in a Steroplot
+#' Deformation Paths in Steroplot
 #'
 #' Plot the paths of deformed vectors in a equal-area or stereographic projection
 #'

@@ -3,7 +3,7 @@
 \name{stereo-pair}
 \alias{stereo-pair}
 \alias{stereo_pair}
-\title{Stereographic projection of pairs}
+\title{Stereographic Projection of Pairs}
 \usage{
 stereo_pair(
   x,

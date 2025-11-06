@@ -2,7 +2,7 @@
 % Please edit documentation in R/stereonet_base.R
 \name{stereo_point}
 \alias{stereo_point}
-\title{Stereographic projection of lines and planes}
+\title{Stereographic Projection of Lines and Planes}
 \usage{
 stereo_point(
   x,

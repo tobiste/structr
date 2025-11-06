@@ -128,8 +128,7 @@ Let's visualize the deformation:
 # The coordinate axes of our deformation tensor:
 axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
 
-par(xpd = NA)
-stereoplot(guides = FALSE)
+stereoplot(guides = FALSE) # turn off guidelines for better visibility
 points(xl, col = "grey", pch = 16)
 points(xl_transformed, col = "#B63679FF", pch = 16)
 points(axes, pch = 15)
@@ -259,8 +258,7 @@ And plot the paths showing how the orientations change over time
 increments <- seq(0, 10, 2)
 cols <- assign_col(increments)
 
-par(xpd = NA)
-stereoplot(guides = FALSE)
+stereoplot(guides = FALSE) # turn off guidelines for better visibility
 
 # plot the strain increments
 stereo_path(xl_steps, type = "l")

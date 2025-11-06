@@ -8,7 +8,7 @@
 \alias{plot.Plane}
 \alias{plot.Pair}
 \alias{plot.Fault}
-\title{Plot spherical objects}
+\title{Plot Spherical Objects}
 \usage{
 \method{plot}{Line}(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...)
 
@@ -37,7 +37,7 @@ hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
 \item{...}{parameters passed to \code{\link[=stereo_point]{stereo_point()}}, \code{\link[=stereo_smallcircle]{stereo_smallcircle()}}, \code{\link[=stereo_greatcircle]{stereo_greatcircle()}}, or \code{\link[=fault_plot]{fault_plot()}}}
 }
 \description{
-Plot spherical objects
+Plot Spherical Objects
 }
 \details{
 If \code{x} is a Ray, than solid symbols show rays pointing in the lower hemisphere,
