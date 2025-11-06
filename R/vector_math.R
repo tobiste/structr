@@ -4,8 +4,6 @@
 #'
 #' @param x,y objects of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, where the
 #'  rows are the observations and the columns are the coordinates.
-#' @param rotaxis Axis of rotation given as object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`.
-#' @param rotangle Angle of rotation in radians for `"Vec3"` objects and in degrees for `"Line"`, `"Ray"` and `"Plane"` objects.
 #' @param A numeric 3x3 matrix. Transformation matrix.
 #' @param norm logical. If `TRUE`, the transformed vectors are normalized to unit length.
 #' @param ... arguments passed to function call
@@ -34,7 +32,6 @@
 #' vector_length(vec1) # length of a vector
 #' crossprod(vec1, vec2) # cross product
 #' dotprod(vec1, vec2) # dot product
-#' rotate(vec1, vec2, pi / 2) # rotation
 #' angle(vec1, vec2) # angle between vectors
 #' project(vec1, vec2) # projection of a vector
 #' transform_linear(vec1, matrix(runif(9), 3, 3)) # linear transformation
@@ -150,34 +147,7 @@ vrotate <- function(x, rotaxis, rotangle) {
   x + vax * sin(rotangle) + vcross(rotaxis, vax) * 2 * (sin(rotangle / 2))^2 # Helmut
 }
 
-#' @export
-#' @rdname vecmath
-rotate <- function(x, rotaxis, rotangle) UseMethod("rotate")
 
-#' @export
-rotate.default <- function(x, rotaxis, rotangle) vrotate(x, rotaxis, rotangle)
-
-#' @export
-#' @rdname vecmath
-#' @method rotate spherical
-rotate.spherical <- function(x, rotaxis, rotangle) {
-  x3 <- Vec3(x) |> unclass()
-  rotaxis3 <- Vec3(rotaxis) |> unclass()
-
-  if (is.Line(x) | is.Plane(x)) {
-    rotangle <- deg2rad(rotangle)
-  }
-
-  x_rot <- vrotate(x3, rotaxis3, rotangle) |>
-    Vec3()
-
-  if (is.Line(x)) {
-    x_rot <- Line(x_rot)
-  } else if (is.Plane(x)) {
-    x_rot <- Plane(x_rot)
-  }
-  x_rot
-}
 
 #' @keywords internal
 vangle <- function(x, y) {
@@ -345,6 +315,108 @@ transform_linear <- function(x, A, norm = FALSE) {
 v_antipode <- function(x) {
   -x
 }
+
+#' Vector Rotation
+#'
+#' @inheritParams geodesic-mean
+#' @param rotaxis Axis of rotation given as object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`.
+#' @param rotangle Angle of rotation in radians for `"Vec3"` objects and in degrees for `"Line"`, `"Ray"` and `"Plane"` objects.
+#'
+#' @seealso [defgrad_from_axisangle()]; [transform_linear()]
+#'
+#' @returns objects of same class as `x`
+#' @name rotate
+#'
+#' @examples
+#' vec1 <- Vec3(1, 0, 0)
+#' vec2 <- Vec3(0, 0, 1)
+#' rotate(vec1, vec2, pi / 2)
+#' 
+#' # rotate Fault data (sense of motion changes!)
+#' rotate(simongomez[1:5, ], Ray(90, 10), 80)
+NULL
+
+#' @export
+#' @rdname rotate
+rotate <- function(x, rotaxis, rotangle) UseMethod("rotate")
+
+#' @export
+rotate.default <- function(x, rotaxis, rotangle) vrotate(x, rotaxis, rotangle)
+
+rotate_Vec3_helper <- function(x, rotaxis, rotangle){
+  rot <- defgrad_from_axisangle(rotaxis, rotangle)
+  transform_linear(x, rot)
+}
+
+#' @export
+#' @rdname rotate
+#' @method rotate Vec3
+rotate.Vec3 <- function(x, rotaxis, rotangle) {
+  n <- length(rotangle)
+  stopifnot(nrow(rotaxis) == n)
+  if(n>1) {
+     rot_list <- lapply(seq_len(n), function(i){
+         rotate_Vec3_helper(x[i, ], rotaxis[i, ], rotangle[i])
+       }
+     )
+     do.call(rbind, rot_list)
+  } else {
+    rotate_Vec3_helper(x, rotaxis, rotangle)
+  }
+}
+
+#' @export
+#' @rdname rotate
+#' @method rotate Ray
+rotate.Ray <- function(x, rotaxis, rotangle) {
+  Vec3(x) |> 
+    rotate.Vec3(rotaxis, rotangle) |> 
+    Ray()
+}
+
+#' @export
+#' @rdname rotate
+#' @method rotate Line
+rotate.Line <- function(x, rotaxis, rotangle) {
+  Vec3(x) |> 
+    rotate.Vec3(rotaxis, rotangle) |> 
+    Line()
+}
+
+#' @export
+#' @rdname rotate
+#' @method rotate Plane
+rotate.Plane <- function(x, rotaxis, rotangle) {
+  Vec3(x) |> 
+    rotate.Vec3(rotaxis, rotangle) |> 
+    Plane()
+}
+
+#' @export
+#' @rdname rotate
+#' @method rotate Pair
+rotate.Pair <- function(x, rotaxis, rotangle){
+  p_rot <- rotate.Plane(Plane(x), rotaxis, rotangle) |> 
+    Plane()
+  dipdir <- p_rot[, 1] %% 360
+  dip <- p_rot[, 2] %% 360
+  
+  slip <- Ray(x) |> Vec3()
+  slip_rot <- rotate.Vec3(slip, rotaxis, rotangle)
+  
+  r <- Ray(slip_rot)
+  l <- Line(r)
+  
+  if(is.Fault(x)){
+    sense <- ifelse(slip_rot[, 3] > 0, -1, 1)
+    Fault(dipdir, dip, l[, 1], l[, 2], sense)
+  } else {
+    Pair(dipdir, dip, l[, 1], l[, 2])
+  }
+}
+
+
+
 
 #' Antipode vector
 #'

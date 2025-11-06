@@ -669,7 +669,7 @@ Fault_sense <- function(x, steps = 8) {
 #' legend("topleft", legend = Fault_sense(fr2, 8), col = 1:3, pch = 16)
 Fault_from_rake <- function(p, rake, sense = NULL, ...) {
   stopifnot(is.Plane(p))
-  strike <- Line(dd2rhr(p[, 1]), rep(0, nrow(p)))
+  strike <- Ray(dd2rhr(p[, 1]), rep(0, nrow(p)))
   # rake_mod <- rake %% 360
   # rake <- ifelse(rake > 180, rake - 360, rake)
   if (is.null(sense)) {

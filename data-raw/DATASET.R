@@ -128,7 +128,7 @@ gr <- tibble::tribble(
   mutate(sense = ifelse(facing == "L", 1, -1))
 
 # gray_example <- Ray(gr$dipdir, gr$dip, sense = gr$sense) |> Line() |> as.Plane()
-gray_example <- Plane(gr$dipdir, gr$dip, sense = gr$sense)
+gray_example <- Plane(gr$dipdir, gr$dip)
 rownames(gray_example) <- gr$type
 usethis::use_data(gray_example, overwrite = TRUE)
 

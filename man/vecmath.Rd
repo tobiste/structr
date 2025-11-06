@@ -9,8 +9,6 @@
 \alias{crossprod.Ray}
 \alias{crossprod.Plane}
 \alias{dotprod}
-\alias{rotate}
-\alias{rotate.spherical}
 \alias{angle}
 \alias{angle.spherical}
 \alias{project}
@@ -34,10 +32,6 @@ vector_norm(x)
 
 dotprod(x, y)
 
-rotate(x, rotaxis, rotangle)
-
-\method{rotate}{spherical}(x, rotaxis, rotangle)
-
 angle(x, y)
 
 \method{angle}{spherical}(x, y)
@@ -57,10 +51,6 @@ transform_linear(x, A, norm = FALSE)
 rows are the observations and the columns are the coordinates.}
 
 \item{...}{arguments passed to function call}
-
-\item{rotaxis}{Axis of rotation given as object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}.}
-
-\item{rotangle}{Angle of rotation in radians for \code{"Vec3"} objects and in degrees for \code{"Line"}, \code{"Ray"} and \code{"Plane"} objects.}
 
 \item{A}{numeric 3x3 matrix. Transformation matrix.}
 
@@ -93,7 +83,6 @@ vec2 <- Vec3(0, 0, 1)
 vector_length(vec1) # length of a vector
 crossprod(vec1, vec2) # cross product
 dotprod(vec1, vec2) # dot product
-rotate(vec1, vec2, pi / 2) # rotation
 angle(vec1, vec2) # angle between vectors
 project(vec1, vec2) # projection of a vector
 transform_linear(vec1, matrix(runif(9), 3, 3)) # linear transformation
