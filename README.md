@@ -255,10 +255,10 @@ data("angelier1990")
 faults <- angelier1990$TYM
 
 par(mfrow = c(1, 2))
-stereoplot(title = "Angelier plot")
+stereoplot(title = "Angelier plot", guides = FALSE)
 angelier(faults)
 
-stereoplot(title = "Hoeppener plot")
+stereoplot(title = "Hoeppener plot", guides = FALSE)
 hoeppener(faults, points = FALSE)
 ```
 

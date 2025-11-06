@@ -5,8 +5,8 @@ Version: 0.2.2.9003
 Authors@R: 
     person("Tobias", "Stephan", , "tobias.stephan1@yahoo.com", role = c("aut", "cre"),
            comment = c(ORCID = "0000-0002-9290-014X"))
-Description: Free and open-source R package for analyzing and visualizing
-    orientation and stress data for structural geology.
+Description: Free and open-source R package for structural geology to analyze 
+    and visualize orientation, strain and stress data
 License: MIT + file LICENSE
 URL: https://tobiste.github.io/structr/
 BugReports: https://github.com/tobiste/structr/issues
