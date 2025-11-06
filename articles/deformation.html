@@ -83,7 +83,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-11-05</h4>
+            <h4 data-toc-skip class="date">2025-11-06</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/deformation.Rmd" class="external-link"><code>vignettes/deformation.Rmd</code></a></small>
       <div class="d-none name"><code>deformation.Rmd</code></div>
@@ -226,8 +226,7 @@ linear transformation:</p>
 <code class="sourceCode R"><span><span class="co"># The coordinate axes of our deformation tensor:</span></span>
 <span><span class="va">axes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Vec3</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>xpd <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># turn off guidelines for better visibility</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">xl</span>, col <span class="op">=</span> <span class="st">"grey"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">xl_transformed</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">axes</span>, pch <span class="op">=</span> <span class="fl">15</span><span class="op">)</span></span>
@@ -356,8 +355,7 @@ deformation path)</li>
 <code class="sourceCode R"><span><span class="va">increments</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">10</span>, <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/colorize.html">assign_col</a></span><span class="op">(</span><span class="va">increments</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>xpd <span class="op">=</span> <span class="cn">NA</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># turn off guidelines for better visibility</span></span>
 <span></span>
 <span><span class="co"># plot the strain increments</span></span>
 <span><span class="fu"><a href="../reference/stereo_path.html">stereo_path</a></span><span class="op">(</span><span class="va">xl_steps</span>, type <span class="op">=</span> <span class="st">"l"</span><span class="op">)</span></span>
