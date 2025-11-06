@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9005</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -115,7 +115,7 @@ plotting setting.</p>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Lines"</span>, <span class="st">"Planes"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679"</span>, <span class="st">"#000004"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="fl">1</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Example data"</span>, sub <span class="op">=</span> <span class="st">"Lambert equal area, lower hemisphere projection"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Plots_files/figure-html/stereo_earea-1.png" alt="Diagram showing the equal-area Lambert projection of some example data" width="700"></p>
+<p><img src="Plots_files/figure-html/stereo_earea-1.png" class="r-plt" alt="Diagram showing the equal-area Lambert projection of some example data" width="700"></p>
 <blockquote>
 <p>Points can be added using the <code><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points()</a></code> function.</p>
 </blockquote>
@@ -133,24 +133,25 @@ just set the <code>earea</code> argument to <code>FALSE</code>, and the
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Lines"</span>, <span class="st">"Planes"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679"</span>, <span class="st">"#000004"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="fl">1</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Example data"</span>, sub <span class="op">=</span> <span class="st">"Equal angle stereographic, upper hemisphere projection"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Plots_files/figure-html/stereo_eangle-1.png" alt="Diagram showing the equal-angle stereographic projection of some example data" width="700"></p>
+<p><img src="Plots_files/figure-html/stereo_eangle-1.png" class="r-plt" alt="Diagram showing the equal-angle stereographic projection of some example data" width="700"></p>
 <div class="section level3">
 <h3 id="great-and-small-circles">Great and small circles<a class="anchor" aria-label="anchor" href="#great-and-small-circles"></a>
 </h3>
 <p>Great and small circles can be added using the <code><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines()</a></code>
 function.</p>
-<p>Adding great circles:</p>
+<p>Adding great circles for the first 10 vectors in planes:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span> <span class="co"># turn of guides for better visibility</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"lightgrey"</span>, lty <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Plots_files/figure-html/stereo_greatcircle-1.png" alt="Diagram showing greatcircles" width="700"></p>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">planes</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span>, col <span class="op">=</span> <span class="st">"lightgrey"</span>, lty <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">planes</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>, <span class="op">]</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Plots_files/figure-html/stereo_greatcircle-1.png" class="r-plt" alt="Diagram showing greatcircles" width="700"></p>
 <p>To plot a small circle with, e.g., a 10° radius, you need to specify
 the <code>ang</code> argument in <code><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines()</a></code>:</p>
 <div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">lines</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>, ang <span class="op">=</span> <span class="fl">10</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Plots_files/figure-html/stereo_smallcircle-1.png" alt="Diagram showing smallcircles" width="700"></p>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">lines</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">lines</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span>, ang <span class="op">=</span> <span class="fl">10</span>, col <span class="op">=</span> <span class="st">"#B63679"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Plots_files/figure-html/stereo_smallcircle-1.png" class="r-plt" alt="Diagram showing smallcircles" width="700"></p>
 </div>
 </div>
 <div class="section level2">
@@ -178,7 +179,7 @@ shape of the orientation distribution (after Vollmer, 1990).</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/vollmer-plot.html">vollmer_plot</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/vollmer-plot.html">vollmer_plot</a></span><span class="op">(</span><span class="va">lines</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Lines"</span>, <span class="st">"Planes"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679"</span>, <span class="st">"#000004"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="fl">1</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Plots_files/figure-html/vollmer-1.png" alt="Diagram showing eigen-vector analysis of some example data plotted in an triangular plot after Vollmer 1990" width="700"></p>
+<p><img src="Plots_files/figure-html/vollmer-1.png" class="r-plt" alt="Diagram showing eigen-vector analysis of some example data plotted in an triangular plot after Vollmer 1990" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="woodcock-plot">Woodcock plot<a class="anchor" aria-label="anchor" href="#woodcock-plot"></a>
@@ -189,7 +190,7 @@ shape of the orientation distribution (after Woodcock, 1977).</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/woodcock_plot.html">woodcock_plot</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/woodcock_plot.html">woodcock_plot</a></span><span class="op">(</span><span class="va">lines</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Lines"</span>, <span class="st">"Planes"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679"</span>, <span class="st">"#000004"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="fl">1</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Plots_files/figure-html/woodcock-1.png" alt="Diagram showing eigen-vector analysis of some example data plotted in an biplot plot after Woodcok 1977" width="700"></p>
+<p><img src="Plots_files/figure-html/woodcock-1.png" class="r-plt" alt="Diagram showing eigen-vector analysis of some example data plotted in an biplot plot after Woodcok 1977" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="hsu-plot">Hsu plot<a class="anchor" aria-label="anchor" href="#hsu-plot"></a>
@@ -205,7 +206,7 @@ diagram showing the shape of the orientation distribution (after Hsu,
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">lines</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Lines"</span>, <span class="st">"Planes"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679"</span>, <span class="st">"#000004"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="fl">1</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Plots_files/figure-html/hsu-1.png" alt="Diagram showing eigen-vector analysis of some example data plotted in a Hsü plot" width="700"></p>
+<p><img src="Plots_files/figure-html/hsu-1.png" class="r-plt" alt="Diagram showing eigen-vector analysis of some example data plotted in a Hsu plot" width="700"></p>
 </div>
 </div>
 <div class="section level2">
@@ -224,7 +225,7 @@ useful when the orientation measurements have different accuracies.</p>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"grey"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/stereo_contour.html">contour</a></span><span class="op">(</span><span class="va">planes</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, density.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>weights <span class="op">=</span> <span class="va">plane_weightings</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Plots_files/figure-html/dens_contour-1.png" alt="Diagram showing the density distribution some example data plotted in an equal-area projection" width="700"></p>
+<p><img src="Plots_files/figure-html/dens_contour-1.png" class="r-plt" alt="Diagram showing the density distribution some example data plotted in an equal-area projection" width="700"></p>
 <p><code><a href="../reference/stereo_contour.html">contour()</a></code> adds contour lines, while
 <code><a href="../reference/stereo_contour.html">contourf()</a></code> adds filled contours and <code><a href="../reference/stereo_contour.html">image()</a></code>
 adds a density image (i.e. a dense grid of colored rectangles). See
@@ -234,7 +235,7 @@ for more information.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"grey"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/stereo_contour.html">contourf</a></span><span class="op">(</span><span class="va">planes</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, density.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>weights <span class="op">=</span> <span class="va">plane_weightings</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Plots_files/figure-html/dens_filled-1.png" alt="Diagram showing the density distribution some example data plotted in an equal-area projection" width="700"></p>
+<p><img src="Plots_files/figure-html/dens_filled-1.png" class="r-plt" alt="Diagram showing the density distribution some example data plotted in an equal-area projection" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="synopsis">Synopsis<a class="anchor" aria-label="anchor" href="#synopsis"></a>
@@ -286,7 +287,7 @@ eigenvectors/mean values, and fabric strength.</p>
 <span>    <span class="st">"\nLambert equal area, lower hemisphere projection"</span></span>
 <span>  <span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="Plots_files/figure-html/synops-1.png" alt="Diagram showing the density distribution, eigenvectors and mean values" width="700"></p>
+<p><img src="Plots_files/figure-html/synops-1.png" class="r-plt" alt="Diagram showing the density distribution, eigenvectors and mean values" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="fault-plots">Fault plots<a class="anchor" aria-label="anchor" href="#fault-plots"></a>
@@ -315,7 +316,7 @@ homogeneous or small datasets.</p>
 <span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Angelier plot"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/fault-plot.html">angelier</a></span><span class="op">(</span><span class="va">f</span>, col <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">magma</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>, end <span class="op">=</span> <span class="fl">.9</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Plots_files/figure-html/faults1-1.png" alt="Diagram showing example fault data plotted in an equal-area projection" width="700"></p>
+<p><img src="Plots_files/figure-html/faults1-1.png" class="r-plt" alt="Diagram showing example fault data plotted in an equal-area projection" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="hoeppener-plot">Hoeppener plot<a class="anchor" aria-label="anchor" href="#hoeppener-plot"></a>
@@ -329,7 +330,7 @@ heterogeneous datasets.</p>
 <div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Hoeppener plot"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/fault-plot.html">hoeppener</a></span><span class="op">(</span><span class="va">f</span>, col <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">magma</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>, end <span class="op">=</span> <span class="fl">.9</span><span class="op">)</span>, points <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Plots_files/figure-html/faults2-1.png" alt="Diagram showing example fault data plotted in an equal-area projection" width="700"></p>
+<p><img src="Plots_files/figure-html/faults2-1.png" class="r-plt" alt="Diagram showing example fault data plotted in an equal-area projection" width="700"></p>
 <p>The <code>points</code> argument disables plotting the points at the
 start of the arrows.</p>
 <blockquote>
@@ -351,7 +352,7 @@ argument. See <code><a href="../reference/fault-plot.html">?fault_plot</a></code
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

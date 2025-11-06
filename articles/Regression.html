@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9005</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -128,7 +128,7 @@ vectors.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">bedding</span>, col <span class="op">=</span> <span class="st">"#E65164"</span>, pch <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#1D1147"</span>, <span class="st">"#E65164"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">4</span><span class="op">)</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Poles to cleavage"</span>, <span class="st">"Poles to bedding"</span><span class="op">)</span>, bg <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Regression_files/figure-html/plot_data-1.png" alt="Diagram showing some data in a stereoplot" width="700"></p>
+<p><img src="Regression_files/figure-html/plot_data-1.png" class="r-plt" alt="Diagram showing some data in a stereoplot" width="700"></p>
 <p>The diagram suggests that both the cleavage and the bedding poles are
 oriented along great-circles or small-circles. To find out the
 orientation of these axes and decide whether the orientation better fit
@@ -179,7 +179,7 @@ quality of the fit using the R<sup>2</sup>:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">bedding</span>, col <span class="op">=</span> <span class="st">"#E65164"</span>, pch <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"bottomright"</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#000004FF"</span>, <span class="st">"#B63679"</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Cleavage best greatcircle"</span>, <span class="st">"Bedding best greatcircle"</span><span class="op">)</span>, bg <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Regression_files/figure-html/plot_greatcircle-1.png" alt="Diagram showing the great-circle regression result in a stereoplot" width="700"></p>
+<p><img src="Regression_files/figure-html/plot_greatcircle-1.png" class="r-plt" alt="Diagram showing the great-circle regression result in a stereoplot" width="700"></p>
 <div class="section level4">
 <h4 id="summary">Summary<a class="anchor" aria-label="anchor" href="#summary"></a>
 </h4>
@@ -222,7 +222,7 @@ cleavage planes.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">bedding</span>, col <span class="op">=</span> <span class="st">"#E65164"</span>, pch <span class="op">=</span> <span class="fl">4</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"bottomright"</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#000004FF"</span>, <span class="st">"#B63679"</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Cleavage best smallcircle"</span>, <span class="st">"Bedding best smallcircle"</span><span class="op">)</span>, bg <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Regression_files/figure-html/plot_smallcircle-1.png" alt="Diagram showing the small-circle regression result in a stereoplot" width="700"></p>
+<p><img src="Regression_files/figure-html/plot_smallcircle-1.png" class="r-plt" alt="Diagram showing the small-circle regression result in a stereoplot" width="700"></p>
 <div class="section level4">
 <h4 id="summary-1">Summary<a class="anchor" aria-label="anchor" href="#summary-1"></a>
 </h4>
@@ -260,7 +260,7 @@ McGraw-Hill.</p>
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

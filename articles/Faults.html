@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9005</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -135,12 +135,12 @@ the measurements so that this will not be the case:</p>
 <pre><code><span><span class="co">## $fvec</span></span>
 <span><span class="co">## Vector (Vec3) object (n = 1):</span></span>
 <span><span class="co">##          x          y          z </span></span>
-<span><span class="co">##  0.4306074 -0.7432627  0.5119940 </span></span>
+<span><span class="co">##  0.4306083 -0.7432653  0.5119893 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $lvec</span></span>
 <span><span class="co">## Vector (Vec3) object (n = 1):</span></span>
 <span><span class="co">##          x          y          z </span></span>
-<span><span class="co">## -0.1752467  0.4876291  0.8552815 </span></span>
+<span><span class="co">## -0.1752490  0.4876331  0.8552787 </span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $misfit</span></span>
 <span><span class="co">## [1] 0.02793105</span></span></code></pre>
@@ -148,7 +148,7 @@ the measurements so that this will not be the case:</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/pair_correct.html">correct_pair</a></span><span class="op">(</span><span class="va">p</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## Pair object (n = 1):</span></span>
 <span><span class="co">## dip_direction           dip       azimuth        plunge </span></span>
-<span><span class="co">##     120.08575      59.20326     109.76769      58.79085</span></span></code></pre>
+<span><span class="co">##     120.08572      59.20357     109.76778      58.79054</span></span></code></pre>
 <blockquote>
 <p>A <code>"Pair"</code> object is a container of associated plane and
 line measurements. Basically like a fault without the sense of
@@ -186,7 +186,7 @@ heterogeneous datasets.</li>
 <span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Hoeppener plot"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/fault-plot.html">hoeppener</a></span><span class="op">(</span><span class="va">simongomez</span>, col <span class="op">=</span> <span class="va">fault_cols</span>, points <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Faults_files/figure-html/faults_plotting-1.png" alt="Diagram showing some fault data in equa-area projection using the Angelier and Hoeppener representation of fault-slip" width="700"></p>
+<p><img src="Faults_files/figure-html/faults_plotting-1.png" class="r-plt" alt="Diagram showing some fault data in equa-area projection using the Angelier and Hoeppener representation of fault-slip" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="fault-stress-analysis">Fault stress analysis<a class="anchor" aria-label="anchor" href="#fault-stress-analysis"></a>
@@ -259,7 +259,7 @@ inversion method by analytical means. Geophys. J. Int, 103, 363–376. &lt;a hre
 <span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679FF"</span>, <span class="st">"#FEC287FF"</span>, <span class="st">"grey40"</span>, <span class="st">"grey80"</span><span class="op">)</span>,</span>
 <span>  pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">16</span>, <span class="fl">18</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="Faults_files/figure-html/faults_pt_plot-1.png" alt="Diagram showing some fault-slip data and the PT axes in a stereoplot" width="700"></p>
+<p><img src="Faults_files/figure-html/faults_pt_plot-1.png" class="r-plt" alt="Diagram showing some fault-slip data and the PT axes in a stereoplot" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="fault-slip-inversion">Fault slip inversion<a class="anchor" aria-label="anchor" href="#fault-slip-inversion"></a>
@@ -292,7 +292,7 @@ inversion method by analytical means. Geophys. J. Int, 103, 363–376. &lt;a hre
 <span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Test data"</span>, guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">test_data</span>, col <span class="op">=</span> <span class="st">"grey30"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Faults_files/figure-html/slip_inversion1-1.png" alt="Diagram showing some fault-slip data in a stereoplot" width="700"></p>
+<p><img src="Faults_files/figure-html/slip_inversion1-1.png" class="r-plt" alt="Diagram showing some fault-slip data in a stereoplot" width="700"></p>
 <p>The stress inversion with 10 bootstraps:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slip_inversion.html">slip_inversion</a></span><span class="op">(</span><span class="va">test_data</span>, boot <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
@@ -331,7 +331,7 @@ from {structr}</p>
 <span>  col <span class="op">=</span> <span class="va">cols</span>,</span>
 <span>  legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="Faults_files/figure-html/slip_inversion_plot-1.png" alt="Diagram showing principal stress vector results in a stereoplot" width="700"></p>
+<p><img src="Faults_files/figure-html/slip_inversion_plot-1.png" class="r-plt" alt="Diagram showing principal stress vector results in a stereoplot" width="700"></p>
 <p>The stress shape ratio Φ (Angelier 1979)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Angelier, J. (1979). Determination of the mean principal
 directions of stresses for a given fault population. Tectonophysics,
 56(3–4), T17–T26. &lt;a href="https://doi.org/10.1016/0040-1951(79)90081-7" class="external-link uri"&gt;https://doi.org/10.1016/0040-1951(79)90081-7&lt;/a&gt;&lt;/p&gt;'><sup>4</sup></a></p>
@@ -361,7 +361,7 @@ visualized in the stereoplot:</p>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">min</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html" class="external-link">max</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span>, <span class="fl">10</span><span class="op">)</span>,</span>
 <span>  title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/bquote.html" class="external-link">bquote</a></span><span class="op">(</span><span class="st">"Deviation angle"</span> <span class="op">~</span> <span class="va">beta</span> <span class="op">~</span> <span class="st">"("</span> <span class="op">*</span> <span class="va">degree</span> <span class="op">*</span> <span class="st">")"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="Faults_files/figure-html/slip_inversion_beta-1.png" alt="Diagram showing deviation of the best-fit principal stress tensor in a stereoplot" width="700"></p>
+<p><img src="Faults_files/figure-html/slip_inversion_beta-1.png" class="r-plt" alt="Diagram showing deviation of the best-fit principal stress tensor in a stereoplot" width="700"></p>
 <div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Mohr_plot.html">Mohr_plot</a></span><span class="op">(</span></span>
 <span>  sigma1 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_vals</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
@@ -372,7 +372,7 @@ visualized in the stereoplot:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">fault_data</span><span class="op">$</span><span class="va">sigma_n</span>, <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">fault_data</span><span class="op">$</span><span class="va">sigma_s</span><span class="op">)</span>,</span>
 <span>  col <span class="op">=</span> <span class="fu"><a href="../reference/colorize.html">assign_col</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span></span>
 <span><span class="op">)</span></span></code></pre></div>
-<p><img src="Faults_files/figure-html/slip_inversion_mohr-1.png" alt="Diagram showing the Mohr circle, and the normal and shear stresses for the slip inversion result" width="700"></p>
+<p><img src="Faults_files/figure-html/slip_inversion_mohr-1.png" class="r-plt" alt="Diagram showing the Mohr circle, and the normal and shear stresses for the slip inversion result" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="maximum-horizontal-stress">Maximum horizontal stress<a class="anchor" aria-label="anchor" href="#maximum-horizontal-stress"></a>
@@ -879,7 +879,7 @@ and folds. Journal of Geophysical Research: Solid Earth, 89(B13),
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

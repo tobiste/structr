@@ -1,0 +1,49 @@
+# Direction of maximum horizontal stress from the stress tensor (full knowledge)
+
+Direction of maximum horizontal stress from the stress tensor (full
+knowledge)
+
+## Usage
+
+``` r
+SH_from_tensor(S)
+```
+
+## Arguments
+
+- S:
+
+  3x3 matrix where the columns are the principal stress axes and the
+  rows are the coordinates.
+
+## Value
+
+numeric angle in degrees. The direction of SH from North.
+
+## References
+
+Lund and Townend, (2007). Calculating horizontal stress orientations
+with full or partial knowledge of the tectonic stress tensor, Geophys.
+J. Int.,
+doi:[doi:10.1111/j.1365-246X.2007.03468.x](https://doi.org/10.1111/j.1365-246X.2007.03468.x)
+.
+
+## See also
+
+[`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md)
+for stress inversion of fault slip data.
+
+Other SH-from-tensor:
+[`SH()`](https://tobiste.github.io/structr/reference/SH.md)
+
+## Examples
+
+``` r
+S1 <- c(-0.11163471165673433, -0.32215903156083286, 0.94008044843891103)
+S2 <- c(0.97015303285724142, 0.16959307992318776, 0.17332420511879815)
+S3 <- c(-0.21526909669344957, 0.93137089584437482, 0.29361108695489119)
+
+S <- cbind(S1, S2, S3) * cbind(rep(3, 3), rep(2, 3), rep(1, 3)) / 3
+SH_from_tensor(S)
+#> [1] 18.95383
+```

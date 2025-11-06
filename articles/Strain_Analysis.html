@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9005</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -139,13 +139,13 @@ of Modern Structural Geology: Strain Analyses (Vol. 1). London: Academic
 Press.&lt;/p&gt;"><sup>3</sup></a>:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Rphi_plot.html">Rphi_plot</a></span><span class="op">(</span>r <span class="op">=</span> <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, phi <span class="op">=</span> <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Strain_Analysis_files/figure-html/rphi-1.png" alt="Rf-phi plot" width="700"></p>
+<p><img src="Strain_Analysis_files/figure-html/rphi-1.png" class="r-plt" alt="Rf-phi plot" width="700"></p>
 <p>or in an <strong>Equidistant polar plot</strong><a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Elliott, D. (1970). Determination of Finite Strain and
 Initial Shape from Deformed Elliptical Objects. GSA Bulletin, 81(8),
 2221–2236. &lt;a href="https://doi.org/https://doi.org/10.1130/0016-7606(1970)81%5B2221:DOFSAI%5D2.0.CO;2" class="external-link uri"&gt;https://doi.org/https://doi.org/10.1130/0016-7606(1970)81[2221:DOFSAI]2.0.CO;2&lt;/a&gt;&lt;/p&gt;'><sup>4</sup></a>:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/Rphi_polar_plot.html">Rphi_polar_plot</a></span><span class="op">(</span><span class="va">ramsay</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span>, <span class="va">ramsay</span><span class="op">[</span>, <span class="fl">2</span><span class="op">]</span>, proj <span class="op">=</span> <span class="st">"eqd"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Strain_Analysis_files/figure-html/plot2-1.png" alt="R/phi data in polar plot" width="700"></p>
+<p><img src="Strain_Analysis_files/figure-html/plot2-1.png" class="r-plt" alt="R/phi data in polar plot" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="d-strain">3D Strain<a class="anchor" aria-label="anchor" href="#d-strain"></a>
@@ -162,7 +162,7 @@ linear or logarithmic.</p>
 <span><span class="va">R_YZ</span> <span class="op">&lt;-</span> <span class="va">holst</span><span class="op">[</span>, <span class="st">"R_YZ"</span><span class="op">]</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/flinn_plot.html">flinn_plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">R_XY</span>, <span class="va">R_YZ</span><span class="op">)</span>, log <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Strain_Analysis_files/figure-html/flinn-1.png" alt="Flinn diagram" width="700"></p>
+<p><img src="Strain_Analysis_files/figure-html/flinn-1.png" class="r-plt" alt="Flinn diagram" width="700"></p>
 <p>or the <strong>Hsu diagram</strong><a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Hsu, T. C. (1966). The characteristics of coaxial and
 non-coaxial strain paths. Journal of Strain Analysis, 1(3), 216–222. &lt;a href="https://doi.org/10.1243/03093247V013216" class="external-link uri"&gt;https://doi.org/10.1243/03093247V013216&lt;/a&gt;&lt;/p&gt;'><sup>6</sup></a> using the natural
 octahedral unit strain<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Nádai, A. (1950). Theory of flow and fracture of solids.
@@ -174,7 +174,7 @@ Zeitschrift Für Physik, 36(11–12), 913–939. &lt;a href="https://doi.org/10.
 (<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>ν</mi><annotation encoding="application/x-tex">\nu</annotation></semantics></math>):</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">R_XY</span>, <span class="va">R_YZ</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Strain_Analysis_files/figure-html/hsu-1.png" alt="Hsu diagram" width="700"></p>
+<p><img src="Strain_Analysis_files/figure-html/hsu-1.png" class="r-plt" alt="Hsu diagram" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="vorticity-analysis">Vorticity analysis<a class="anchor" aria-label="anchor" href="#vorticity-analysis"></a>
@@ -201,7 +201,7 @@ of Structural Geology, 201(September), 105542. &lt;a href="https://doi.org/10.10
 <span></span>
 <span><span class="co"># Color code porphyroclasts by size of clast (area in log-scale):</span></span>
 <span><span class="fu"><a href="../reference/RGN_plot.html">RGN_plot</a></span><span class="op">(</span><span class="va">shebandowan</span><span class="op">$</span><span class="va">r</span>, <span class="va">shebandowan</span><span class="op">$</span><span class="va">phi</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/colorize.html">assign_col</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Log.html" class="external-link">log</a></span><span class="op">(</span><span class="va">shebandowan</span><span class="op">$</span><span class="va">area</span><span class="op">)</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Strain_Analysis_files/figure-html/vorticity-1.png" alt="Rigid grain net" width="700"></p>
+<p><img src="Strain_Analysis_files/figure-html/vorticity-1.png" class="r-plt" alt="Rigid grain net" width="700"></p>
 </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
@@ -215,7 +215,7 @@ of Structural Geology, 201(September), 105542. &lt;a href="https://doi.org/10.10
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>

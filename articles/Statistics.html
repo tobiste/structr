@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9003</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9005</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -180,7 +180,7 @@ and the 95% confidence cone around the mean:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">lines_mean</span>, ang <span class="op">=</span> <span class="va">lines_confangle</span>, col <span class="op">=</span> <span class="st">"#E65164FF"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">lines_mean</span>, ang <span class="op">=</span> <span class="va">lines_delta</span>, col <span class="op">=</span> <span class="st">"#FB8861FF"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Mean line"</span>, <span class="st">"95% confidence cone"</span>, <span class="st">"63% data cone"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679"</span>, <span class="st">"#E65164FF"</span>, <span class="st">"#FB8861FF"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">.75</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Statistics_files/figure-html/stat_plot-1.png" alt="Diagram showing statistical results of some example data plotted in an equal-area projection" width="700"></p>
+<p><img src="Statistics_files/figure-html/stat_plot-1.png" class="r-plt" alt="Diagram showing statistical results of some example data plotted in an equal-area projection" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="geodesic-mean-and-variance">Geodesic mean and variance<a class="anchor" aria-label="anchor" href="#geodesic-mean-and-variance"></a>
@@ -195,7 +195,7 @@ showing the (geodesic) angle distances between all lines and the first
 line in the same data set:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/variance_plot.html">variance_plot</a></span><span class="op">(</span><span class="va">lines</span>, y <span class="op">=</span> <span class="va">lines</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Statistics_files/figure-html/variance-1.png" alt="Diagram showing the distances of a set of vectors to a specified vector" width="700"></p>
+<p><img src="Statistics_files/figure-html/variance-1.png" class="r-plt" alt="Diagram showing the distances of a set of vectors to a specified vector" width="700"></p>
 <blockquote>
 <p>The Fréchet mean is the vector that minimizes the sum of the squared
 angle distances to all data vectors. The Fréchet variance about this
@@ -258,7 +258,7 @@ distributions</em>.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="fu"><a href="../reference/geodesic-mean.html">geodesic_mean</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="fu"><a href="../reference/projected_mean.html">projected_mean</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#FEC287FF"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Planes"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Statistics_files/figure-html/mean_plot-1.png" alt="Equal area projections showing the different estimators of the mean" width="700"></p>
+<p><img src="Statistics_files/figure-html/mean_plot-1.png" class="r-plt" alt="Equal area projections showing the different estimators of the mean" width="700"></p>
 </div>
 <div class="section level3">
 <h3 id="hypothesis-testing">Hypothesis testing<a class="anchor" aria-label="anchor" href="#hypothesis-testing"></a>
@@ -278,7 +278,7 @@ towards 70° is the mean for our lineations.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lines</span>, col <span class="op">=</span> <span class="st">"grey"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">ce</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">line_NULL</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Statistics_files/figure-html/test2-1.png" alt="Diagram showing the confidence region of a mean" width="700"></p>
+<p><img src="Statistics_files/figure-html/test2-1.png" class="r-plt" alt="Diagram showing the confidence region of a mean" width="700"></p>
 <p>The p-value for our hypothesis line:</p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">ce</span><span class="op">$</span><span class="fu">pvalue.FUN</span><span class="op">(</span><span class="va">line_NULL</span><span class="op">)</span></span>
@@ -377,7 +377,7 @@ the orientation tensor:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x123</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/colorize.html">assign_col_d</a></span><span class="op">(</span><span class="va">cl</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/colorize.html">legend_d</a></span><span class="op">(</span><span class="fu"><a href="../reference/colorize.html">assign_col_d</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">cl</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span><span class="op">)</span>, title <span class="op">=</span> <span class="st">"Cluster"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Statistics_files/figure-html/cluster-1.png" alt="Stereoplot showing the the cluster result of an example dataset" width="700"></p>
+<p><img src="Statistics_files/figure-html/cluster-1.png" class="r-plt" alt="Stereoplot showing the the cluster result of an example dataset" width="700"></p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
@@ -408,7 +408,7 @@ plane solutions. Bulletin of the Seismological Society of America,
 </div>
 
 <div class="pkgdown-footer-right">
-  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.1.3.</p>
+  <p>Site built with <a href="https://pkgdown.r-lib.org/" class="external-link">pkgdown</a> 2.2.0.</p>
 </div>
 
     </footer>
