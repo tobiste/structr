@@ -24,7 +24,7 @@ on your computer:
     your terminal only.
 
 3.  Open your IDE and now you can install the {structr} package by
-    typing into the commando console the following code. Thus will
+    typing into the commando console the following code. This will
     install the package and every required library as well.
 
 4.  Next you must “load” the library to use the functions of {structr}:
