@@ -122,7 +122,7 @@ rake angle, which is the angle between the fault strike and the
 lineation. Unfortunately, there are several different ways how to
 indicate the proper orientation of the lineation.
 
-1.  Fault plane and rake (or pitch)
+##### Fault plane and rake (or pitch)
 
 This is the standard notation. Here, the rake is the angle between
 lineation and the right-handrule strike of the fault plane. The angle is
@@ -145,7 +145,7 @@ Fault_from_rake(fault_plane, rake = fault_pitch)
 #> [4,]             0  40  90.00000 1.487542e-14     1
 ```
 
-2.  Fault plane, rake angle and plunge quadrant
+##### Fault plane, rake angle and plunge quadrant
 
 Here, the rake angle is measured in the fault plane between the strike
 given by either right or left-hand rule and the lineation. The angle is
@@ -176,15 +176,15 @@ Fault_from_rake_quadrant(Plane(dip_dir, dip), rake1, plunge_quadrant, type = "pl
 #>  [9,]           135  90 225.000000 7.016709e-15     1
 ```
 
-3.  Fault plane, rake angle and rake quadrant
+##### Fault plane, rake angle and rake quadrant
 
 Here, the rake is the **acute** angle measured in the fault plane
 between the strike of the fault and the lineation. Starting from the
 strike line, the angle is measured in a sense which is down the dip of
 the plane. Quadrant of rake indicate the direction of the strike from
-which the rake angle is measured, i.e. whether right-hand or
-left-handrule is followed. Angle ranges from 0 to 90 °. Use `sense`
-argument to specify the sense of motion.
+which the rake angle is measured, i.e. whether right-hand or left-hand
+rule is followed. Angle ranges from 0 to 90 °. Use `sense` argument to
+specify the sense of motion.
 
 If this is the notation used, call the function
 [`Fault_from_rake_quadrant()`](https://tobiste.github.io/structr/reference/Fault_from_rake_quadrant.md)

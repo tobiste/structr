@@ -17,9 +17,9 @@ in structural geology are Rays, Lines, Planes, Pairs, and Faults.
 of the normal distribution (on the line). Modified after Davis, J. R.
 “The geologyGeometry library for R” (README file).](images/types.png)
 
-General types of orientation data and their common spherical analogues
+*General types of orientation data and their common spherical analogues
 of the normal distribution (on the line). Modified after Davis, J. R.
-“The geologyGeometry library for R” (README file).
+“The geologyGeometry library for R” (README file).*
 
 Distinguishing these data types is important each the different
 symmetries imply different statistical assumption for their

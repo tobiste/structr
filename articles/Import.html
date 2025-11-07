@@ -214,9 +214,9 @@ sometimes the Line or Ray component is given by the rake angle, which is
 the angle between the fault strike and the lineation. Unfortunately,
 there are several different ways how to indicate the proper orientation
 of the lineation.</p>
-<ol style="list-style-type: decimal">
-<li>Fault plane and rake (or pitch)</li>
-</ol>
+<div class="section level5">
+<h5 id="fault-plane-and-rake-or-pitch">Fault plane and rake (or pitch)<a class="anchor" aria-label="anchor" href="#fault-plane-and-rake-or-pitch"></a>
+</h5>
 <p>This is the standard notation. Here, the rake is the angle between
 lineation and the right-handrule strike of the fault plane. The angle is
 measured on the fault plane, clockwise from the strike, where
@@ -234,9 +234,10 @@ down-plunging is positive. Rake values range between 0 and 360° (or
 <span><span class="co">#&gt; [2,]           120  60 204.96163 8.649165e+00    -1</span></span>
 <span><span class="co">#&gt; [3,]           100  50  30.36057 2.252101e+01     1</span></span>
 <span><span class="co">#&gt; [4,]             0  40  90.00000 1.487542e-14     1</span></span></code></pre></div>
-<ol start="2" style="list-style-type: decimal">
-<li>Fault plane, rake angle and plunge quadrant</li>
-</ol>
+</div>
+<div class="section level5">
+<h5 id="fault-plane-rake-angle-and-plunge-quadrant">Fault plane, rake angle and plunge quadrant<a class="anchor" aria-label="anchor" href="#fault-plane-rake-angle-and-plunge-quadrant"></a>
+</h5>
 <p>Here, the rake angle is measured in the fault plane between the
 strike given by either right or left-hand rule and the lineation. The
 angle is recorded in a clockwise sense (looking down upon the fault
@@ -263,15 +264,16 @@ measured.</p>
 <span><span class="co">#&gt;  [7,]            45  65  45.000000 6.500000e+01     1</span></span>
 <span><span class="co">#&gt;  [8,]            90  75 165.489181 4.307952e+01     1</span></span>
 <span><span class="co">#&gt;  [9,]           135  90 225.000000 7.016709e-15     1</span></span></code></pre></div>
-<ol start="3" style="list-style-type: decimal">
-<li>Fault plane, rake angle and rake quadrant</li>
-</ol>
+</div>
+<div class="section level5">
+<h5 id="fault-plane-rake-angle-and-rake-quadrant">Fault plane, rake angle and rake quadrant<a class="anchor" aria-label="anchor" href="#fault-plane-rake-angle-and-rake-quadrant"></a>
+</h5>
 <p>Here, the rake is the <strong>acute</strong> angle measured in the
 fault plane between the strike of the fault and the lineation. Starting
 from the strike line, the angle is measured in a sense which is down the
 dip of the plane. Quadrant of rake indicate the direction of the strike
 from which the rake angle is measured, i.e. whether right-hand or
-left-handrule is followed. Angle ranges from 0 to 90 °. Use
+left-hand rule is followed. Angle ranges from 0 to 90 °. Use
 <code>sense</code> argument to specify the sense of motion.</p>
 <p>If this is the notation used, call the function
 <code><a href="../reference/Fault_from_rake_quadrant.html">Fault_from_rake_quadrant()</a></code> and set
@@ -291,6 +293,7 @@ left-handrule is followed. Angle ranges from 0 to 90 °. Use
 <span><span class="co">#&gt;  [7,]            45  65  45.000000 65.000000     1</span></span>
 <span><span class="co">#&gt;  [8,]            90  75 165.489181 43.079517     1</span></span>
 <span><span class="co">#&gt;  [9,]           135  90  45.000000  0.000000     1</span></span></code></pre></div>
+</div>
 </div>
 </div>
 </div>
