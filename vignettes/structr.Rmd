@@ -162,7 +162,7 @@ ortensor(example_lines)
 
 Eigenvalues and eigenvectors of this tensor describe the distribution.
 
-```{r ortensor}
+```{r eigen}
 lines_eigen <- ot_eigen(example_lines)
 print(lines_eigen)
 ```
