@@ -15,13 +15,15 @@
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/structr.html">Get started</a></li>
+<li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Basics and Import</h6></li>
-    <li><a class="dropdown-item" href="../articles/Basics.html">Basics</a></li>
     <li><a class="dropdown-item" href="../articles/Import.html">Import Data</a></li>
+    <li><a class="dropdown-item" href="../articles/Data_types.html">Data types</a></li>
+    <li><a class="dropdown-item" href="../articles/Basics.html">Vector Algebra</a></li>
     <li><a class="dropdown-item" href="../articles/Oriented_Drill_Cores.html">Oriented Drill Cores</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Plotting</h6></li>
@@ -99,9 +101,9 @@ where the rows are the observations and the columns are the coordinates.</p></dd
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfb.html">rfb</a></span><span class="op">(</span><span class="fl">100</span>, mu <span class="op">=</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">50</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">1</span>, A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">inertia_tensor</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           [,1]      [,2]      [,3]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  91.46599 111.21608 105.79249</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 111.21608  62.81247 101.99412</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 105.79249 101.99412  45.72154</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  90.61781 111.59994 106.30617</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 111.59994  62.32586 100.39076</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 106.30617 100.39076  47.05633</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

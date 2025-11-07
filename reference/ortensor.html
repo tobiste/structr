@@ -17,13 +17,15 @@ eigenvalue method. See (Watson 1966, Scheidegger 1965)."><meta property="og:imag
     </button>
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
-      <ul class="navbar-nav me-auto"><li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
+      <ul class="navbar-nav me-auto"><li class="nav-item"><a class="nav-link" href="../articles/structr.html">Get started</a></li>
+<li class="active nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles"><li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Basics and Import</h6></li>
-    <li><a class="dropdown-item" href="../articles/Basics.html">Basics</a></li>
     <li><a class="dropdown-item" href="../articles/Import.html">Import Data</a></li>
+    <li><a class="dropdown-item" href="../articles/Data_types.html">Data types</a></li>
+    <li><a class="dropdown-item" href="../articles/Basics.html">Vector Algebra</a></li>
     <li><a class="dropdown-item" href="../articles/Oriented_Drill_Cores.html">Oriented Drill Cores</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Plotting</h6></li>
@@ -149,9 +151,9 @@ The Journal of Geology, 97(3), 360-364.</p>
 <span class="r-in"><span><span class="fu">ortensor</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Orientation tensor</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>            [,1]        [,2]        [,3]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.2044240 -0.24854977 -0.13551151</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] -0.2485498  0.84447354 -0.05313473</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.1355115 -0.05313473  1.25756387</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.2008409 -0.23268161 -0.11799181</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] -0.2326816  0.87742582 -0.05601183</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.1179918 -0.05601183  1.22819460</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">as.ortensor</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">is.ortensor</span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span></span>

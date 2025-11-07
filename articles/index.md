@@ -2,13 +2,19 @@
 
 ### Basics and Data Imports
 
-- [Basics](https://tobiste.github.io/structr/articles/Basics.md):
-
-  This vignette explains the basic objects used in the package.
-
 - [Import Data](https://tobiste.github.io/structr/articles/Import.md):
 
   How do you import data into R and structr?
+
+- [Data
+  types](https://tobiste.github.io/structr/articles/Data_types.md):
+
+  This vignette explains the basic objects used in the package.
+
+- [Vector
+  Algebra](https://tobiste.github.io/structr/articles/Basics.md):
+
+  This vignette explains the basic objects used in the package.
 
 - [Oriented Drill
   Cores](https://tobiste.github.io/structr/articles/Oriented_Drill_Cores.md):

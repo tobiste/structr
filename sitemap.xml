@@ -3,6 +3,7 @@
 <url><loc>https://tobiste.github.io/structr/LICENSE-text.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/LICENSE.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/articles/Basics.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/articles/Data_types.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/articles/Faults.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/articles/Import.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/articles/Mohr_Circle.html</loc></url>
@@ -14,6 +15,7 @@
 <url><loc>https://tobiste.github.io/structr/articles/Strain_Analysis.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/articles/deformation.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/articles/index.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/articles/structr.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/authors.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/index.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/Fault_PT.html</loc></url>
@@ -105,7 +107,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/sph-dist.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/sph_cluster.html</loc></url>
-<url><loc>https://tobiste.github.io/structr/reference/split_trailing_letters.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/split.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/stats.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/stereo-pair.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/stereo_arrows.html</loc></url>

@@ -34,14 +34,16 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../articles/structr.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Basics and Import</h6></li>
-    <li><a class="dropdown-item" href="../articles/Basics.html">Basics</a></li>
     <li><a class="dropdown-item" href="../articles/Import.html">Import Data</a></li>
+    <li><a class="dropdown-item" href="../articles/Data_types.html">Data types</a></li>
+    <li><a class="dropdown-item" href="../articles/Basics.html">Vector Algebra</a></li>
     <li><a class="dropdown-item" href="../articles/Oriented_Drill_Cores.html">Oriented Drill Cores</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Plotting</h6></li>
@@ -83,7 +85,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-11-06</h4>
+            <h4 data-toc-skip class="date">2025-11-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/Oriented_Drill_Cores.Rmd" class="external-link"><code>vignettes/Oriented_Drill_Cores.Rmd</code></a></small>
       <div class="d-none name"><code>Oriented_Drill_Cores.Rmd</code></div>
@@ -97,13 +99,19 @@ using the <code><a href="../reference/drillcore.html">drillcore_transformation()
 {structr} package.</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tobiste.github.io/structr/">structr</a></span><span class="op">)</span></span></code></pre></div>
-<p>The function <code><a href="../reference/drillcore.html">drillcore_transformation()</a></code> calculates the
-orientation of a plane or line from internal core angles
-(<strong>α</strong>, <strong>β</strong>, and <strong>γ</strong>) of
-oriented drill cores.</p>
-<p><code>azi</code> is the azimuth of drill core axis orientation (in
-degrees, measured clockwise from North), and <code>inc</code> is the
-inclination of drill core axis (in degrees).</p>
+<p>Orientations in drill-cores are usually given by α and β angles
+(lineations on a plane additionally have a γ angle) which describe
+orientations with respect to the drill orientation. To convert these
+angles from the “drillcore coordinate reference system” to our
+geographical reference system, you can use the function
+<code><a href="../reference/drillcore.html">drillcore_transformation()</a></code>.</p>
+<p>This function calculates the orientation of a plane or line from
+internal core angles (<strong>α</strong>, <strong>β</strong>, and
+<strong>γ</strong>) of oriented drill cores, using the the azimuth of
+drill core axis orientation (<code>azi</code> given in degrees, measured
+clockwise from North), and the inclination of drill core axis
+(<code>inc</code> in degrees, measured anticlockwise from the horizontal
+plane).</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">azi</span> <span class="op">&lt;-</span> <span class="fl">225</span></span>
 <span><span class="va">inc</span> <span class="op">&lt;-</span> <span class="fl">45</span></span></code></pre></div>

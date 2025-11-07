@@ -34,14 +34,16 @@
 
     <div id="navbar" class="collapse navbar-collapse ms-3">
       <ul class="navbar-nav me-auto">
+<li class="nav-item"><a class="nav-link" href="../articles/structr.html">Get started</a></li>
 <li class="nav-item"><a class="nav-link" href="../reference/index.html">Reference</a></li>
 <li class="active nav-item dropdown">
   <button class="nav-link dropdown-toggle" type="button" id="dropdown-articles" data-bs-toggle="dropdown" aria-expanded="false" aria-haspopup="true">Articles</button>
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Basics and Import</h6></li>
-    <li><a class="dropdown-item" href="../articles/Basics.html">Basics</a></li>
     <li><a class="dropdown-item" href="../articles/Import.html">Import Data</a></li>
+    <li><a class="dropdown-item" href="../articles/Data_types.html">Data types</a></li>
+    <li><a class="dropdown-item" href="../articles/Basics.html">Vector Algebra</a></li>
     <li><a class="dropdown-item" href="../articles/Oriented_Drill_Cores.html">Oriented Drill Cores</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Plotting</h6></li>
@@ -83,7 +85,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-11-06</h4>
+            <h4 data-toc-skip class="date">2025-11-07</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/Import.Rmd" class="external-link"><code>vignettes/Import.Rmd</code></a></small>
       <div class="d-none name"><code>Import.Rmd</code></div>
@@ -98,7 +100,7 @@ Stephan</h4>
 </h2>
 <p>Data can be imported with already in R implemented functions such as
 <code><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table()</a></code>, <code><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv()</a></code> or from other
-packages functions (e.g. <a href="https://readr.tidyverse.org/" class="external-link">{readr}</a> and <a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link">{data.table}</a>).
+packages functions (e.g. <a href="https://readr.tidyverse.org/" class="external-link">{readr}</a> and <a href="https://cran.r-project.org/web/packages/data.table/index.html" class="external-link">{data.table}</a>).
 Just make sure that the import produces a matrix or data.frame like
 object with each measurement stored in a row, and columns representing
 dip directions, dip angles, plunge, etc.</p>
@@ -152,13 +154,145 @@ use <code><a href="../reference/classes.html">as.Pair()</a></code> or <code><a h
 object into {structr}.</p>
 <blockquote>
 <p>Note that the <strong>dip direction</strong> is the preferred
-notation for plane measurements in {structr}. To convert from
-right-hand-rule strike measurements to dip directions, you can simply
-use the <code><a href="../reference/rhr.html">rhr2dd()</a></code> function for that column:</p>
+notation for plane measurements in {structr} as it undoubtly indicates
+the orientation by using only 2 parameters.</p>
 </blockquote>
+<div class="section level3">
+<h3 id="some-helpers">Some helpers<a class="anchor" aria-label="anchor" href="#some-helpers"></a>
+</h3>
+<p>There are several other conventions for the notation of plane and
+line orientations from compass measurements. Here are some functions for
+you to correctly convert your measurements into the notation required
+for the use in {structr}.</p>
+<div class="section level4">
+<h4 id="right-hand-rule">Right-hand rule<a class="anchor" aria-label="anchor" href="#right-hand-rule"></a>
+</h4>
+<p>To converts strike measurements into dip directions using right-hand
+rule:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">imported_data</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/rhr.html">rhr2dd</a></span><span class="op">(</span><span class="va">imported_data</span><span class="op">[</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/classes.html">as.Plane</a></span><span class="op">(</span><span class="va">imported_data</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">strike_measurements</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">270</span>, <span class="fl">315</span>, <span class="fl">0</span>, <span class="fl">45</span>, <span class="fl">90</span>, <span class="fl">135</span>, <span class="fl">180</span>, <span class="fl">225</span>, <span class="fl">270</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/rhr.html">rhr2dd</a></span><span class="op">(</span><span class="va">strike_measurements</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]   0  45  90 135 180 225 270 315   0</span></span>
+<span></span>
+<span><span class="co"># or from dip direction to strike (using right-hand rule):</span></span>
+<span><span class="va">dip_directions</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">45</span>, <span class="fl">90</span>, <span class="fl">135</span>, <span class="fl">180</span>, <span class="fl">225</span>, <span class="fl">270</span>, <span class="fl">315</span>, <span class="fl">360</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/rhr.html">dd2rhr</a></span><span class="op">(</span><span class="va">dip_directions</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 270 315   0  45  90 135 180 225 270</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="quadrant-notation">Quadrant notation<a class="anchor" aria-label="anchor" href="#quadrant-notation"></a>
+</h4>
+<p>Sometimes, strike notation doesn’t follow the right hand rule.
+Instead the quadrant of the dip direction is indicated by a Cardinal
+letter, i.e. “N”, “E”, “S”, and “W”. In that case you can use the
+function <code><a href="../reference/quadrant2dd.html">quadrant2dd()</a></code></p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">strike_direction</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">270</span>, <span class="fl">315</span>, <span class="fl">0</span>, <span class="fl">45</span>, <span class="fl">90</span>, <span class="fl">135</span>, <span class="fl">180</span>, <span class="fl">225</span>, <span class="fl">270</span><span class="op">)</span> <span class="co"># strike in left-hand-rule</span></span>
+<span><span class="va">dip_quadrtant</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"N"</span>, <span class="st">"E"</span>, <span class="st">"E"</span>, <span class="st">"S"</span>, <span class="st">"S"</span>, <span class="st">"W"</span>, <span class="st">"W"</span>, <span class="st">"N"</span>, <span class="st">"N"</span><span class="op">)</span> <span class="co"># dip quadrant</span></span>
+<span><span class="fu"><a href="../reference/quadrant2dd.html">quadrant2dd</a></span><span class="op">(</span><span class="va">strike_direction</span>, <span class="va">dip_quadrtant</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1]   0  45  90 135 180 225 270 315   0</span></span></code></pre></div>
+<p>If your table contains the strike and dip-quadrant measurement in a
+single column, e.g. “270N”, you can conveniently split the column into
+two by using <code><a href="../reference/split.html">split_strike()</a></code></p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/split.html">split_strike</a></span><span class="op">(</span><span class="st">"270N"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; $measurement</span></span>
+<span><span class="co">#&gt; 270N </span></span>
+<span><span class="co">#&gt;  270 </span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $direction</span></span>
+<span><span class="co">#&gt; 270N </span></span>
+<span><span class="co">#&gt;  "N"</span></span></code></pre></div>
+</div>
+<div class="section level4">
+<h4 id="fault-notation">Fault notation<a class="anchor" aria-label="anchor" href="#fault-notation"></a>
+</h4>
+<p>Fault (and Pair) measurements are usually a combination of Plane and
+Ray or Line measurements. Then they can be defined using the
+<code><a href="../reference/classes.html">Fault()</a></code> and <code><a href="../reference/classes.html">Pair()</a></code> functions. However,
+sometimes the Line or Ray component is given by the rake angle, which is
+the angle between the fault strike and the lineation. Unfortunately,
+there are several different ways how to indicate the proper orientation
+of the lineation.</p>
+<ol style="list-style-type: decimal">
+<li>Fault plane and rake (or pitch)</li>
+</ol>
+<p>This is the standard notation. Here, the rake is the angle between
+lineation and the right-handrule strike of the fault plane. The angle is
+measured on the fault plane, clockwise from the strike, where
+down-plunging is positive. Rake values range between 0 and 360° (or
+−180° and 180°).</p>
+<p>If your datra follows this convention, use the function
+<code><a href="../reference/fault_from_rake.html">Fault_from_rake()</a></code></p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">fault_plane</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Plane</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">120</span>, <span class="fl">100</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">60</span>, <span class="fl">50</span>, <span class="fl">40</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">fault_pitch</span>  <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">84.7202</span>, <span class="op">-</span><span class="fl">10</span>, <span class="fl">30</span>, <span class="fl">180</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/fault_from_rake.html">Fault_from_rake</a></span><span class="op">(</span><span class="va">fault_plane</span>, rake <span class="op">=</span> <span class="va">fault_pitch</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Fault object (n = 4):</span></span>
+<span><span class="co">#&gt;      dip_direction dip   azimuth       plunge sense</span></span>
+<span><span class="co">#&gt; [1,]           120  60 109.52858 5.958159e+01     1</span></span>
+<span><span class="co">#&gt; [2,]           120  60 204.96163 8.649165e+00    -1</span></span>
+<span><span class="co">#&gt; [3,]           100  50  30.36057 2.252101e+01     1</span></span>
+<span><span class="co">#&gt; [4,]             0  40  90.00000 1.487542e-14     1</span></span></code></pre></div>
+<ol start="2" style="list-style-type: decimal">
+<li>Fault plane, rake angle and plunge quadrant</li>
+</ol>
+<p>Here, the rake angle is measured in the fault plane between the
+strike given by either right or left-hand rule and the lineation. The
+angle is recorded in a clockwise sense (looking down upon the fault
+plane) and has a range from 0 to 180%deg;. The quadrant of plunge
+indicates the direction of the strike from which the rake angle is
+measured.</p>
+<p>If this is the notation used, call the function
+<code><a href="../reference/Fault_from_rake_quadrant.html">Fault_from_rake_quadrant()</a></code> and set
+<code>type="plunge"</code></p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">dip</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">10</span>, <span class="fl">15</span>, <span class="fl">30</span>, <span class="fl">40</span>, <span class="fl">55</span>, <span class="fl">65</span>, <span class="fl">75</span>, <span class="fl">90</span><span class="op">)</span></span>
+<span><span class="va">dip_dir</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">180</span>, <span class="fl">225</span>, <span class="fl">270</span>, <span class="fl">315</span>, <span class="fl">360</span>, <span class="fl">0</span>, <span class="fl">45</span>, <span class="fl">90</span>, <span class="fl">135</span><span class="op">)</span></span>
+<span><span class="va">rake1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">45</span>, <span class="fl">90</span>, <span class="fl">135</span>, <span class="fl">180</span>, <span class="fl">45</span>, <span class="fl">90</span>, <span class="fl">135</span>, <span class="fl">180</span><span class="op">)</span></span>
+<span><span class="va">plunge_quadrant</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"E"</span>, <span class="st">"S"</span>, <span class="st">"W"</span>, <span class="st">"N"</span>, <span class="st">"E"</span>, <span class="st">"W"</span>, <span class="st">"E"</span>, <span class="st">"S"</span>, <span class="st">"W"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/Fault_from_rake_quadrant.html">Fault_from_rake_quadrant</a></span><span class="op">(</span><span class="fu"><a href="../reference/classes.html">Plane</a></span><span class="op">(</span><span class="va">dip_dir</span>, <span class="va">dip</span><span class="op">)</span>, <span class="va">rake1</span>, <span class="va">plunge_quadrant</span>, type <span class="op">=</span> <span class="st">"plunge"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Fault object (n = 9):</span></span>
+<span><span class="co">#&gt;       dip_direction dip    azimuth       plunge sense</span></span>
+<span><span class="co">#&gt;  [1,]           180   5  90.000000 0.000000e+00     1</span></span>
+<span><span class="co">#&gt;  [2,]           225  10 179.561451 7.053022e+00     1</span></span>
+<span><span class="co">#&gt;  [3,]           270  15 270.000000 1.500000e+01     1</span></span>
+<span><span class="co">#&gt;  [4,]           315  30   4.106605 2.070481e+01     1</span></span>
+<span><span class="co">#&gt;  [5,]             0  40  90.000000 1.487542e-14     1</span></span>
+<span><span class="co">#&gt;  [6,]             0  55 299.837566 3.539626e+01     1</span></span>
+<span><span class="co">#&gt;  [7,]            45  65  45.000000 6.500000e+01     1</span></span>
+<span><span class="co">#&gt;  [8,]            90  75 165.489181 4.307952e+01     1</span></span>
+<span><span class="co">#&gt;  [9,]           135  90 225.000000 7.016709e-15     1</span></span></code></pre></div>
+<ol start="3" style="list-style-type: decimal">
+<li>Fault plane, rake angle and rake quadrant</li>
+</ol>
+<p>Here, the rake is the <strong>acute</strong> angle measured in the
+fault plane between the strike of the fault and the lineation. Starting
+from the strike line, the angle is measured in a sense which is down the
+dip of the plane. Quadrant of rake indicate the direction of the strike
+from which the rake angle is measured, i.e. whether right-hand or
+left-handrule is followed. Angle ranges from 0 to 90 °. Use
+<code>sense</code> argument to specify the sense of motion.</p>
+<p>If this is the notation used, call the function
+<code><a href="../reference/Fault_from_rake_quadrant.html">Fault_from_rake_quadrant()</a></code> and set
+<code>type="rake"</code></p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">rake2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">45</span>, <span class="fl">90</span>, <span class="fl">45</span>, <span class="fl">0</span>, <span class="fl">45</span>, <span class="fl">90</span>, <span class="fl">45</span>, <span class="fl">0</span><span class="op">)</span></span>
+<span><span class="va">rake_quadrant</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"E"</span>, <span class="st">"S"</span>, <span class="st">"S"</span>, <span class="st">"E"</span>, <span class="st">"E"</span>, <span class="st">"W"</span>, <span class="st">"N"</span>, <span class="st">"S"</span>, <span class="st">"W"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/Fault_from_rake_quadrant.html">Fault_from_rake_quadrant</a></span><span class="op">(</span><span class="fu"><a href="../reference/classes.html">Plane</a></span><span class="op">(</span><span class="va">dip_dir</span>, <span class="va">dip</span><span class="op">)</span>, <span class="va">rake2</span>, <span class="va">rake_quadrant</span>, type <span class="op">=</span> <span class="st">"rake"</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Fault object (n = 9):</span></span>
+<span><span class="co">#&gt;       dip_direction dip    azimuth    plunge sense</span></span>
+<span><span class="co">#&gt;  [1,]           180   5  90.000000  0.000000     1</span></span>
+<span><span class="co">#&gt;  [2,]           225  10 179.561451  7.053022     1</span></span>
+<span><span class="co">#&gt;  [3,]           270  15 270.000000 15.000000     1</span></span>
+<span><span class="co">#&gt;  [4,]           315  30   4.106605 20.704811     1</span></span>
+<span><span class="co">#&gt;  [5,]             0  40 270.000000  0.000000     1</span></span>
+<span><span class="co">#&gt;  [6,]             0  55 299.837566 35.396260     1</span></span>
+<span><span class="co">#&gt;  [7,]            45  65  45.000000 65.000000     1</span></span>
+<span><span class="co">#&gt;  [8,]            90  75 165.489181 43.079517     1</span></span>
+<span><span class="co">#&gt;  [9,]           135  90  45.000000  0.000000     1</span></span></code></pre></div>
+</div>
+</div>
 </div>
 <div class="section level2">
 <h2 id="strabospot">StraboSpot<a class="anchor" aria-label="anchor" href="#strabospot"></a>
@@ -171,7 +305,7 @@ scroll down to your project &gt; click on <strong>Options…</strong> &gt;
 <strong>Download Project in Strabo JSON Format</strong></p>
 <p>Now you can import the downloaded file via
 <code><a href="../reference/strabo.html">read_strabo_JSON()</a></code>:</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">strabo_data</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/strabo.html">read_strabo_JSON</a></span><span class="op">(</span><span class="st">"path/to/my/file.json"</span><span class="op">)</span></span></code></pre></div>
 <p>The import function produces a <code>list</code> object with all the
 meta data (<code>data</code>), the geographic locations
@@ -196,6 +330,21 @@ lost…</p>
 <code><a href="../reference/strabo.html">read_strabo_mobile()</a></code> provide import of <code>.xls</code>
 and any character-separated table files (e.g. <code>.csv</code> or
 <code>.txt</code>).</p>
+<p>Keep in mind that these import options do not properly identify
+whether your lineation measurements are ray-like or line-like vectors,
+nor does it combine simultaneously lineation-plane measurements to
+either pairs or faults. Thus, you’ll need to carefully convert these
+data dataypes after the import to move forward.</p>
+</div>
+<div class="section level2">
+<h2 id="drill-core-data">Drill core data<a class="anchor" aria-label="anchor" href="#drill-core-data"></a>
+</h2>
+<p>Orientations in drill-cores are usually given by α and β angles
+(lineations on a plane additionally have a γ angle) which describe
+orientations with respect to the drill orientation. To convert these
+angles from the “drillcore coordinate reference system” to our
+geographical reference system, you may use the function
+<code><a href="../reference/drillcore.html">drillcore_transformation()</a></code>. Learn more about it in this <a href="https://tobiste.github.io/structr/articles/Oriented_Drill_Cores.html">tutorial</a>.</p>
 </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>

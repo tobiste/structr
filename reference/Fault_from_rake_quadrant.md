@@ -53,7 +53,7 @@ measured. The `sense` argument is ignored, as it it implied by the sign
 of the rake.
 
 `type=="rake"` Rake is the **acute** angle measured in the fault plane
-between the strike of the fault and the lineation . Starting from the
+between the strike of the fault and the lineation. Starting from the
 strike line, the angle is measured in a sense which is down the dip of
 the plane. Quadrant of rake indicate the direction of the strike from
 which the rake angle is measured, i.e. whether right-hand or
@@ -66,7 +66,7 @@ Other parse-orientations:
 [`azimuth_to_cardinal()`](https://tobiste.github.io/structr/reference/azimuth_to_cardinal.md),
 [`quadrant2dd()`](https://tobiste.github.io/structr/reference/quadrant2dd.md),
 [`sense_from_strikeslip()`](https://tobiste.github.io/structr/reference/sense_from_strikeslip.md),
-[`split_trailing_letters()`](https://tobiste.github.io/structr/reference/split_trailing_letters.md),
+[`split()`](https://tobiste.github.io/structr/reference/split.md),
 [`strikeslip_kinematics()`](https://tobiste.github.io/structr/reference/strikeslip_kinematics.md)
 
 ## Examples

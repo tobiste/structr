@@ -359,7 +359,8 @@
 - [`sph_cluster()`](https://tobiste.github.io/structr/reference/sph_cluster.md)
   : Cluster spherical data
 
-- [`split_trailing_letters()`](https://tobiste.github.io/structr/reference/split_trailing_letters.md)
+- [`split_trailing_letters()`](https://tobiste.github.io/structr/reference/split.md)
+  [`split_strike()`](https://tobiste.github.io/structr/reference/split.md)
   : Parse measurement and direction strings
 
 - [`sph_mean()`](https://tobiste.github.io/structr/reference/stats.md)

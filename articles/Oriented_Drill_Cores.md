@@ -9,14 +9,19 @@ function of the {structr} package.
 library(structr)
 ```
 
-The function
-[`drillcore_transformation()`](https://tobiste.github.io/structr/reference/drillcore.md)
-calculates the orientation of a plane or line from internal core angles
-(**α**, **β**, and **γ**) of oriented drill cores.
+Orientations in drill-cores are usually given by α and β angles
+(lineations on a plane additionally have a γ angle) which describe
+orientations with respect to the drill orientation. To convert these
+angles from the “drillcore coordinate reference system” to our
+geographical reference system, you can use the function
+[`drillcore_transformation()`](https://tobiste.github.io/structr/reference/drillcore.md).
 
-`azi` is the azimuth of drill core axis orientation (in degrees,
-measured clockwise from North), and `inc` is the inclination of drill
-core axis (in degrees).
+This function calculates the orientation of a plane or line from
+internal core angles (**α**, **β**, and **γ**) of oriented drill cores,
+using the the azimuth of drill core axis orientation (`azi` given in
+degrees, measured clockwise from North), and the inclination of drill
+core axis (`inc` in degrees, measured anticlockwise from the horizontal
+plane).
 
 ``` r
 azi <- 225

@@ -34,7 +34,7 @@ Other parse-orientations:
 [`Fault_from_rake_quadrant()`](https://tobiste.github.io/structr/reference/Fault_from_rake_quadrant.md),
 [`azimuth_to_cardinal()`](https://tobiste.github.io/structr/reference/azimuth_to_cardinal.md),
 [`quadrant2dd()`](https://tobiste.github.io/structr/reference/quadrant2dd.md),
-[`split_trailing_letters()`](https://tobiste.github.io/structr/reference/split_trailing_letters.md),
+[`split()`](https://tobiste.github.io/structr/reference/split.md),
 [`strikeslip_kinematics()`](https://tobiste.github.io/structr/reference/strikeslip_kinematics.md)
 
 ## Examples
