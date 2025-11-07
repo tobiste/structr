@@ -1,0 +1,194 @@
+---
+title: "Data types"
+author: "Tobias Stephan"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+description: >
+  This vignette explains the basic objects used in the package.
+vignette: >
+  %\VignetteIndexEntry{Data types}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+This tutorial introduces the different data types existing in spherical
+geometry (in particular those used in structural geology).
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r setup, warning=FALSE, message=FALSE}
+library(structr)
+```
+
+## Data types
+
+Depending on the symmetry of the orientation data, different data types
+are used to represent orientations in 3D space. The main data types used
+in structural geology are Rays, Lines, Planes, Pairs, and Faults.
+
+![General types of orientation data and their common spherical analogues
+of the normal distribution (on the line). Modified after Davis, J. R.
+"The geologyGeometry library for R" (README file).](images/types.png)
+
+Distinguishing these data types is important each the different symmetries 
+imply different statistical assumption for their distribution. In other words the different data types require different statistical "treatments".
+
+Don't worry, once you decided on the symmetry nature of your data, {structr} does the heavy lifting and will (mostly) automatically decide which math operations are 
+appropriate to deal with your data. 
+Below are some more details on the different data types to help you with this important decisions.
+
+### Rays (vectorial data)
+
+A `Ray` is a line with a preferred direction along that line, i.e. a line
+with a single start point extending indefinitely in only one direction
+(equivalent to a direction in 2D). Examples of ray-like data include a
+slip direction, paleomagnetic direction (unless magnetic reversals are
+involved), a vorticity vector describing the sense of slip on a fault,
+etc.
+
+```{r ray}
+Ray(120, 30, sense = -1)
+```
+
+### Lines (axial data)
+
+A `Line` extends infinitely in both directions (equivalent to an axis in
+2D). Examples of line-like data include a principal stress directions,
+strain ellipsoid directions (e.g. stretching lineation), intersection,
+fault striae, and crystallographic axes.
+
+```{r line}
+Line(120, 30)
+```
+
+### Poles to planes
+
+A `Plane` orientation is described by the normal vector to a plane. This vector 
+is usually a `Line`, but can be a `Ray` if the younging direction of planes is known. 
+Examples include the pole to a bedding plane, the pole to a foliation, etc.
+
+```{r plane}
+Plane(120, 30)
+```
+
+### Pairs and Faults (Plane + Line)
+
+A `Pair` consists of a `Plane` and a `Line` contained in that plane. Examples
+are stretching lineations on a foliation plane.
+
+```{r pair}
+Pair(120, 30, 75, 15)
+```
+
+### Fault (Plane + Ray)
+
+A `Fault` is a special case of a Pair, when the line component is a `Ray`
+object. In other words, a combination of a plane and a line where the slip direction or sense of motion is known.
+
+```{r fault}
+Fault(120, 30, 75, 15, sense = -1)
+```
+
+### Cartesian coordinates
+
+In general orientation data are expressed in Cartesian Coordinates, that 
+are three-element vectors that represent points or
+directions in a 3D Cartesian coordinate system given by the direction
+cosines along the X, Y, and Z axes.
+
+```{r vec3}
+Vec3(1, 0, 0)
+```
+
+> Summary: All data types can be generated using the object creator functions: 
+`Vec3()`, `Line()`, `Plane()`, `Ray()`, `Pair()`, and `Fault()`
+
+### Conversions
+
+Any of the spherical objects (Ray, Line, Plane, Pair, Fault) can be
+transformed to Cartesian coordinates, or into any other spherical data type,
+using the object creator function `Vec3()`, `Line()`, `Plane()`, `Ray()`, `Pair()`, or `Fault()`
+functions. For example:
+
+```{r conversion}
+Line(120, 30) |> Vec3()
+Plane(120, 30) |> Line()
+
+# Combing a plane and a line to a pair:
+Pair(Plane(120, 30), Line(120, 30))
+```
+
+
+
+```{r conversion_pair}
+v <- Pair(Plane(120, 30), Line(120, 30))
+
+Plane(v)
+Line(v)
+```
+
+
+You can also convert into other data types without transformation, using
+`as.<data type>()` functions. For example, converting a Line into a
+Plane:
+
+```{r conversion2}
+Line(120, 30) |> as.Plane()
+```
+
+> The functions `as.Vec3()`, `as.Ray()`, `as.Line()`, `as.Plane()` `as.Pair()`, and `as.Fault()`
+force a spherical object yo bve coerced into another data type without transformation.
+
+## Example
+
+Usually orientation data is stored in a table containing the column dip
+direction (or strike) and the dip angle of a measured plane...
+
+```{r example_p}
+data(example_planes_df)
+head(example_planes_df)
+```
+
+or the trend (azimuth) and plunge (inclination) of a measured line...
+
+```{r example_l}
+data(example_lines_df)
+head(example_lines_df)
+```
+
+To convert these data frames to spherical objects, use the `Plane()` and
+`Line()` functions from the `structr` package. These functions take the
+dip direction and dip angle for planes, and the trend and plunge for
+lines as arguments.
+
+```{r example_conversion}
+data(example_planes)
+planes <- Plane(example_planes_df$dipdir, example_planes_df$dip)
+lines <- Line(example_lines_df$trend, example_lines_df$plunge)
+```
+
+> If the raw data was imported using `read_strabo_JSON()` this step is
+> not necessary as the data will come already in the correct format.
+
+The spherical objects can be easily converted into Cartesian coordinate
+vectors using the function `Vec3()`:
+
+```{r example_transformation}
+lines_vector <- Vec3(lines)
+head(lines_vector)
+```
+
+Convert a Plane's pole to a Line:
+
+```{r example_transformation2}
+planes_as_line <- Line(planes)
+head(planes_as_line)
+```

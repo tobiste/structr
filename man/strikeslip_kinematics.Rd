@@ -26,6 +26,6 @@ Other parse-orientations:
 \code{\link{azimuth_to_cardinal}()},
 \code{\link{quadrant2dd}()},
 \code{\link{sense_from_strikeslip}()},
-\code{\link{split_trailing_letters}()}
+\code{\link{split}()}
 }
 \concept{parse-orientations}

@@ -46,11 +46,15 @@ parse_strike_dip <- function(strike, dip) {
 #'
 #' @return list
 #' @family parse-orientations
-#' @export
+#' @name split
 #'
 #' @examples
 #' test <- c("45NW", "4SE")
-#' split_trailing_letters(test)
+#' split_strike(test)
+NULL
+
+#' @rdname split
+#' @export
 split_trailing_letters <- function(x) {
   result <- sapply(x, function(x) {
     if (grepl("[NESWnesw]", x)) {
@@ -71,6 +75,10 @@ split_trailing_letters <- function(x) {
   # Return as a list
   list(measurement = number_vector, direction = alpha_vector)
 }
+
+#' @rdname split
+#' @export
+split_strike <- function(x) split_trailing_letters(x)
 
 #' @keywords internal
 #' @noRd
@@ -158,7 +166,7 @@ azimuth_to_cardinal <- function(x, n_directions = 8) {
 #' @returns Dip direction in degrees
 #' @family parse-orientations
 #' @export
-#'
+#' 
 #' @examples
 #' s <- c(270, 315, 0, 45, 90, 135, 180, 225, 270) # strike in left-hand-rule
 #' q <- c("N", "E", "E", "S", "S", "W", "W", "N", "N") # dip quadrant

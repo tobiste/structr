@@ -12,8 +12,9 @@ articles:
 - title: Basics and Data Imports
   navbar: "Basics and Import"
   contents:
-  - Basics
   - Import
+  - Data_types
+  - Basics
   - Oriented_Drill_Cores
 
 - title: Plotting

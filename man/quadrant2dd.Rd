@@ -29,7 +29,7 @@ Other parse-orientations:
 \code{\link{Fault_from_rake_quadrant}()},
 \code{\link{azimuth_to_cardinal}()},
 \code{\link{sense_from_strikeslip}()},
-\code{\link{split_trailing_letters}()},
+\code{\link{split}()},
 \code{\link{strikeslip_kinematics}()}
 }
 \concept{parse-orientations}

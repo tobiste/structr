@@ -1,0 +1,186 @@
+---
+title: "structr"
+author: "Tobias Stephan"
+date: "`r Sys.Date()`"
+output: rmarkdown::html_vignette
+description: >
+  Start here if this is your first time using structr.
+vignette: >
+  %\VignetteIndexEntry{structr}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+editor_options: 
+  markdown: 
+    wrap: 72
+---
+
+When working with orientation data you must:
+
+-   Define the type of orientation data you have measured
+-   Figure out what you want to do
+-   Describe the orientation data
+-   Visualize your findings
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Prerequisites
+
+Before you start you need to have R and and R-compatible IDE installed
+on your computer:
+
+1.  You will need R installed on your computer. You can download R from
+    the CRAN website: <https://cran.r-project.org/>
+
+2.  Once you downloaded and successfully installed R, you can use R in
+    your preferred IDE. I recommend installing and using
+    [RStudio](https://posit.co/download/rstudio-desktop/). However,
+    Positron and VisualStudio are also great alternatives. You are also
+    allowed to use R's native GUI or use R in your terminal only.
+
+3.  Open your IDE and now you can install the {structr} package by
+    typing into the commando console the following code. Thus will
+    install the package and every required library as well.
+
+```{r installl, echo=FALSE, eval=FALSE}
+devtools::install_github("tobiste/structr")
+```
+
+4.  Next you must "load" the library to use the functions of {structr}:
+
+```{r setup, warning=FALSE, message=FALSE}
+library(structr)
+```
+
+## Import
+
+The first thing you usually need to do is importing your orientation data. This can be done in several different ways depending on your preferences.
+For example, RStudio has a GUI that allows to import data without using R commandos (File > Import Datasets).
+
+You can also use one of the below functions to import data:
+
+```{r read_csv, echo=FALSE, eval=FALSE}
+read.table("path/to/my/file.txt", header = TRUE, sep = "\t")
+read.csv("path/to/my/file.csv")
+readxl::read_xlsx("path/to/my/file.xlsx")
+```
+
+To use your data directly from a Strabospot project, download the json
+file and import it using the `read_strabo_JSON()` function.
+
+```{r read_json, echo=FALSE, eval=FALSE}
+read_strabo_JSON("path/to/my/file.json")
+```
+
+This returns a list which contains all the information and metadata
+(including coordinates, descriptions etc) extracted from the
+*StraboSpot* project in the list element `data`, the tags used for the
+project in the list element `tags`, and the linear and planar
+orientation measurements in the list elements `lines` and `planes`,
+respectively.
+
+## Data type declaration
+
+Depending on the symmetry of the orientation data, different data types
+are used to represent orientations in 3D space. The main data types used
+in structural geology are Rays, Lines, Planes, Pairs, and Faults.
+Distinguishing these data types is important each the different
+symmetries imply different statistical assumption for their
+distribution. In other words the different data types require different
+statistical "treatments". To learn more about it, follow this
+[tutorial](https://tobiste.github.io/structr/articles/Data_types.html).
+
+The data types can be generated using the object creator functions:
+`Vec3()`, `Line()`, `Plane()`, `Ray()`, `Pair()`, and `Fault()`. These
+functions create spherical object, and {structr} will identify the
+symmetry nature of the data in further function calls.
+
+```{r define}
+plunge_direction <- c(54, 61, 74, 80, 63)
+plunge <- c(13, 15, 14, 19, 17)
+
+lines <- Line(plunge_direction, plunge)
+print(lines)
+```
+
+## Equal-area projections
+
+The spherical objects can be plotted in equal-area projections using R's
+primitive plotting functions, e.g. `plot`, `points()`, and `lines()`,
+....
+
+```{r plot}
+#  import some example lines
+data(example_lines)
+
+# plot lines in a equal-area projection
+plot(example_lines)
+```
+
+More details on plotting spherical data in
+<https://tobiste.github.io/structr/articles/Plots.html>
+
+## Statistical estimators
+
+There are plenty of different statistical parameters, which
+meaningfulness depend on the underlying distribution of the orientation
+data (and hence also on the symmetry of the data).
+
+```{r stats}
+# Spherical arithmetic mean
+lines_mean <- sph_mean(example_lines)
+print(lines_mean)
+
+# Spherical arithmetic variance
+sph_mean(example_lines)
+
+# Spherical standard deviation
+lines_sd <- sph_sd(example_lines)
+print(lines_sd)
+```
+
+Here, the spherical arithmetic mean and variance are computed. These
+values conveniently describe the distribution if we assume a von
+Mises-Fisher distribution of the data, which is the normal distribution
+analogue for line-like data. In many cases the geodesic mean and
+variance better describe the distribution of vectors. More details in
+the [statistics
+tutorial](https://tobiste.github.io/structr/articles/Statistics.html).
+
+## Orientation tensor
+
+The orientation tensor describes the distribution of all vectors in your
+dataset.
+
+```{r ortensor}
+ortensor(example_lines)
+```
+
+Eigenvalues and eigenvectors of this tensor describe the distribution.
+
+```{r ortensor}
+lines_eigen <- ot_eigen(example_lines)
+print(lines_eigen)
+```
+
+Summarize the statistical parameters in a equal-area projection:
+
+```{r plot2}
+# plot the data
+plot(example_lines, col = "grey30")
+
+# greatcircles associated with the eigenvectors
+lines(lines_eigen$vectors, col = c("#000004FF", "#B63679FF", "#FE9F6DFF"))
+
+# spherical mean and standard deviation cone
+points(lines_mean, pch = 16, cex = 1.5, col = "#35B779FF")
+lines(lines_mean, ang = lines_sd, col = "#35B779FF")
+```
+
+Here, the eigenvector are the intersection of the great-circles. Note
+how the spherical mean is quite similar to one eigenvector (the one
+associated with the greatest eigenvalue).
