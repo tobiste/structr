@@ -39,8 +39,10 @@ on your computer:
 2.  Once you downloaded and successfully installed R, you can use R in
     your preferred IDE. I recommend installing and using
     [RStudio](https://posit.co/download/rstudio-desktop/). However,
-    Positron and VisualStudio are also great alternatives. You are also
-    allowed to use R's native GUI or use R in your terminal only.
+    [Positron](https://positron.posit.co/) and
+    [VisualStudio](https://visualstudio.microsoft.com/) are also great
+    alternatives. You are also allowed to use R's native GUI or use R in
+    your terminal only.
 
 3.  Open your IDE and now you can install the {structr} package by
     typing into the commando console the following code. Thus will
