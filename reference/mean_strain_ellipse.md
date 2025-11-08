@@ -7,7 +7,7 @@ the mean shape matrix and its eigenvalues (Shimamoto and Ikeda, 1976).
 ## Usage
 
 ``` r
-mean_strain_ellipse(r, phi, boot = TRUE, resamples = 1000, boot.values = FALSE)
+mean_strain_ellipse(r, phi, boot = TRUE, n_iter = 1000, boot.values = FALSE)
 ```
 
 ## Arguments
@@ -25,7 +25,7 @@ mean_strain_ellipse(r, phi, boot = TRUE, resamples = 1000, boot.values = FALSE)
   logical. Whether a 95% confidence interval from on bootstrapping
   should be calculated. `TRUE` by default.
 
-- resamples:
+- n_iter:
 
   integer. Number of bootstrap resamples (`1000` by default). Ignored
   when `boot = FALSE`.

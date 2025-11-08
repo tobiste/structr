@@ -85,7 +85,7 @@
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">res_TYM</span> <span class="op">&lt;-</span> <span class="fu"><a href="slip_inversion.html">slip_inversion</a></span><span class="op">(</span><span class="va">angelier1990</span><span class="op">$</span><span class="va">TYM</span>, boot <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">res_TYM</span> <span class="op">&lt;-</span> <span class="fu"><a href="slip_inversion.html">slip_inversion</a></span><span class="op">(</span><span class="va">angelier1990</span><span class="op">$</span><span class="va">TYM</span>, n_iter <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">pr_TYM</span> <span class="op">&lt;-</span> <span class="fu">principal_fault</span><span class="op">(</span><span class="va">res_TYM</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>, <span class="va">res_TYM</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">3</span>, <span class="op">]</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="stereoplot.html">stereoplot</a></span><span class="op">(</span><span class="op">)</span></span></span>

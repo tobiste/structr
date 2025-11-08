@@ -25,7 +25,7 @@ principal_fault(s1, s3, friction = 0.6)
 ## Examples
 
 ``` r
-res_TYM <- slip_inversion(angelier1990$TYM, boot = 10)
+res_TYM <- slip_inversion(angelier1990$TYM, n_iter = 10)
 pr_TYM <- principal_fault(res_TYM$principal_axes[1, ], res_TYM$principal_axes[3, ])
 
 stereoplot()

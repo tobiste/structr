@@ -85,7 +85,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-11-07</h4>
+            <h4 data-toc-skip class="date">2025-11-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/Faults.Rmd" class="external-link"><code>vignettes/Faults.Rmd</code></a></small>
       <div class="d-none name"><code>Faults.Rmd</code></div>
@@ -297,7 +297,7 @@ inversion method by analytical means. Geophys. J. Int, 103, 363–376. &lt;a hre
 <p><img src="Faults_files/figure-html/slip_inversion1-1.png" class="r-plt" alt="Diagram showing some fault-slip data in a stereoplot" width="700"></p>
 <p>The stress inversion with 10 bootstraps:</p>
 <div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">test_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slip_inversion.html">slip_inversion</a></span><span class="op">(</span><span class="va">test_data</span>, boot <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="va">test_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slip_inversion.html">slip_inversion</a></span><span class="op">(</span><span class="va">test_data</span>, n_iter <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Average beta angle</span></span>
 <span><span class="va">test_res</span><span class="op">$</span><span class="va">beta</span></span></code></pre></div>

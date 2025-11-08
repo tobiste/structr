@@ -275,7 +275,7 @@ using bootstrap samples:
 
 ``` r
 set.seed(20250411)
-faults_stress <- slip_inversion(faults, boot = 10)
+faults_stress <- slip_inversion(faults, n_iter = 10)
 ```
 
 Visualize the slip inversion results (orientation of principal

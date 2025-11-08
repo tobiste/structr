@@ -51,6 +51,10 @@
   : Direction of maximum horizontal stress from the stress tensor (full
   knowledge)
 
+- [`Wellner_inference_ray()`](https://tobiste.github.io/structr/reference/Wellner_inference_ray.md)
+  : Two-sample test, based on permutations and Wellner's Rayleigh-style
+  T-statistic (Wellner, 1979, Example 1a).
+
 - [`angelier1990`](https://tobiste.github.io/structr/reference/angelier1990.md)
   : Fault-Slip Data
 
@@ -498,6 +502,14 @@
   [`instantaneous_stretching()`](https://tobiste.github.io/structr/reference/vorticity.md)
   [`instantaneous_stretching_axes()`](https://tobiste.github.io/structr/reference/vorticity.md)
   : Flow Apophyses, Vorticity, and Instantaneous Stretching Axes
+
+- [`wellner()`](https://tobiste.github.io/structr/reference/wellner.md)
+  [`wellner_inference()`](https://tobiste.github.io/structr/reference/wellner.md)
+  : Wellner's Two-Sample Test
+
+- [`wellner_exact_inference_ray()`](https://tobiste.github.io/structr/reference/wellner_exact_inference_ray.md)
+  : Two-sample test, based on permutations and Wellner's Rayleigh-style
+  T-statistic (Wellner, 1979, Example 1a).
 
 - [`woodcock_plot()`](https://tobiste.github.io/structr/reference/woodcock_plot.md)
   : Fabric plot of Woodcock (1977)

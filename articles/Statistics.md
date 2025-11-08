@@ -203,6 +203,8 @@ mean](Statistics_files/figure-html/mean_plot-1.png)
 
 ### Hypothesis testing
 
+#### Confidence region
+
 To test if a line represents the population mean of a given set of
 lineations, we need to calculate the confidence region of our
 population.
@@ -231,7 +233,7 @@ points(line_NULL, col = "#000004", pch = 16)
 ![Diagram showing the confidence region of a
 mean](Statistics_files/figure-html/test2-1.png)
 
-The p-value for our hypothesis line:
+The $p$-value for our hypothesis line:
 
 ``` r
 ce$pvalue.FUN(line_NULL)
@@ -241,11 +243,36 @@ ce$pvalue.FUN(line_NULL)
 With (95% confidence) we rejected the Null Hypothesis that the given
 line represents the population mean as the p-value is smaller than 5%.
 
+#### Two-sample T-Test
+
+Wellner’s Rayleigh-style T-statistic[⁴](#fn4) measures how different two
+sets of vectors are. The test statistic T is a non-negative measure of
+dissimilarity between two datasets. The value is zero when the datasets
+are identical.
+
+``` r
+wellner(lines, line_NULL)
+#> [1] 0.9585258
+```
+
+A $p$-value for this test-statistic can be estimated using permutations.
+The fraction of tests in the computed T-statistic exceeds the observed T
+for the original data (a number between 0 and 1 inclusive) can be
+interpreted as a $p$-value for the null hypothesis that the two
+populations are identical (not merely that their means coincide). Thus,
+smaller p-values indicate stronger evidence that the two populations
+differ significantly.
+
+``` r
+wellner_inference(lines, line_NULL, n_perm = 1000)
+#> [1] 0.43
+```
+
 ## Orientation tensor
 
 ### Eigenvectors
 
-The orientation tensor[⁴](#fn4) is a matrix comprising the mean
+The orientation tensor[⁵](#fn5) is a matrix comprising the mean
 direction cosines of the orientation vectors. In case of a Bingham
 distribution, the **Eigenvectors** of this tensor describe the
 orientation of the most dense, intermediate and least dense orientation,
@@ -352,6 +379,9 @@ direction in Europe and Western Asia as calculated from earthquake fault
 plane solutions. Bulletin of the Seismological Society of America,
 54(5A), 1519–1528. <https://doi.org/10.1785/BSSA05405A1519>
 
+Wellner, J. A. (1979) “Permutation Tests for Directional Data.” Ann.
+Statist. 7(5) 929-943. <https://doi.org/10.1214/aos/1176344779>
+
 ------------------------------------------------------------------------
 
 1.  Mardia, K. V., & Jupp, P. E. (2000). Directional Statistics. (K. V.
@@ -368,7 +398,10 @@ plane solutions. Bulletin of the Seismological Society of America,
     three-dimensional orientational data. Journal of Structural Geology,
     96, 65–89. <https://doi.org/10.1016/j.jsg.2017.01.002>
 
-4.  Scheidegger, A. E. (1964). The tectonic stress and tectonic motion
+4.  Wellner, J. A. (1979) “Permutation Tests for Directional Data.” Ann.
+    Statist. 7 (5) 929-943. <https://doi.org/10.1214/aos/1176344779>
+
+5.  Scheidegger, A. E. (1964). The tectonic stress and tectonic motion
     direction in Europe and Western Asia as calculated from earthquake
     fault plane solutions. Bulletin of the Seismological Society of
     America, 54(5A), 1519–1528. <https://doi.org/10.1785/BSSA05405A1519>

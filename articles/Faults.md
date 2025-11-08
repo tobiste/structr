@@ -234,7 +234,7 @@ stereoplot](Faults_files/figure-html/slip_inversion1-1.png)
 The stress inversion with 10 bootstraps:
 
 ``` r
-test_res <- slip_inversion(test_data, boot = 10)
+test_res <- slip_inversion(test_data, n_iter = 10)
 
 # Average beta angle
 test_res$beta

@@ -9,7 +9,7 @@ mean_strain_ellipse_ramsay(
   r,
   phi = NULL,
   boot = TRUE,
-  resamples = 1000,
+  n_iter = 1000,
   boot.values = FALSE
 )
 ```
@@ -29,7 +29,7 @@ mean_strain_ellipse_ramsay(
   logical. Whether a 95% confidence interval from on bootstrapping
   should be calculated. `TRUE` by default.
 
-- resamples:
+- n_iter:
 
   integer. Number of bootstrap resamples (`1000` by default). Ignored
   when `boot = FALSE`.

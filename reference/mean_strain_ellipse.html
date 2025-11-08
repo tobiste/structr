@@ -69,7 +69,7 @@ mean shape matrix and its eigenvalues (Shimamoto and Ikeda, 1976).</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mean_strain_ellipse</span><span class="op">(</span><span class="va">r</span>, <span class="va">phi</span>, boot <span class="op">=</span> <span class="cn">TRUE</span>, resamples <span class="op">=</span> <span class="fl">1000</span>, boot.values <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">mean_strain_ellipse</span><span class="op">(</span><span class="va">r</span>, <span class="va">phi</span>, boot <span class="op">=</span> <span class="cn">TRUE</span>, n_iter <span class="op">=</span> <span class="fl">1000</span>, boot.values <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -88,7 +88,7 @@ mean shape matrix and its eigenvalues (Shimamoto and Ikeda, 1976).</p>
 <dd><p>logical. Whether a 95% confidence interval from on bootstrapping should be calculated. <code>TRUE</code> by default.</p></dd>
 
 
-<dt id="arg-resamples">resamples<a class="anchor" aria-label="anchor" href="#arg-resamples"></a></dt>
+<dt id="arg-n-iter">n_iter<a class="anchor" aria-label="anchor" href="#arg-n-iter"></a></dt>
 <dd><p>integer. Number of bootstrap resamples (<code>1000</code> by default). Ignored when <code>boot = FALSE</code>.</p></dd>
 
 

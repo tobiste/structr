@@ -6,7 +6,13 @@ hypothesis tests
 ## Usage
 
 ``` r
-confidence_ellipse(x, n = 10000L, alpha = 0.05, res = 512L, isotropic = FALSE)
+confidence_ellipse(
+  x,
+  n_iter = 10000L,
+  alpha = 0.05,
+  res = 512L,
+  isotropic = FALSE
+)
 ```
 
 ## Source
@@ -20,7 +26,7 @@ geologyGeometry (J.R. Davis)
   object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, where the
   rows are the observations and the columns are the coordinates.
 
-- n:
+- n_iter:
 
   integer (10000 by default).
 
@@ -100,7 +106,7 @@ three-dimensional orientational data. Journal of Structural Geology, 96,
 
 ``` r
 set.seed(20250411)
-ce <- confidence_ellipse(example_lines, n = 1000, res = 10)
+ce <- confidence_ellipse(example_lines, n_iter = 1000, res = 10)
 # print(ce)
 
 # Check how many vectors lie outside quantiles:

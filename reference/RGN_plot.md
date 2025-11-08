@@ -16,7 +16,7 @@ RGN_plot(
   r,
   theta,
   angle_error = 3,
-  boot = 100L,
+  n_iter = 100L,
   probs = 0.975,
   grid = 0.05,
   main = "Rigid-Grain-Net",
@@ -38,7 +38,7 @@ RGN_plot(
 
   numeric. Uncertainty of angle measurement. `3` by default.
 
-- boot:
+- n_iter:
 
   integer. Number of bootstrap resamples
 
