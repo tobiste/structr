@@ -123,7 +123,7 @@ vollmer_plot.default <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 
     colSums(vec * abc) / PGR
   }) |> t()
 
-  if (isFALSE(add)) .vollmer_plot_blank(ngrid, main)
+  if (isFALSE(add)) .vollmer_plot_blank(ngrid, main = main)
 
   if (!is.null(labels)) {
     graphics::text(coords[, 1], coords[, 2], labels = labels, ...)
@@ -510,7 +510,7 @@ hsu_plot.list <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu
   lode <- sapply(x_eigen, lode)
 
   if (isFALSE(add)) {
-    hsu_plot.default(cbind(0, 0), es.max = es.max)
+    hsu_plot.default(cbind(0, 0), es.max = es.max, main = main)
   }
 
   # Map Lode parameter (-1..1) to angle in radians (-30°..+30° around vertical)
