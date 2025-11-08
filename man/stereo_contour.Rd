@@ -7,11 +7,24 @@
 \alias{density-plot}
 \alias{density_plot}
 \alias{contour.spherical}
+\alias{contour.sph_density}
 \alias{contourf}
 \alias{image.spherical}
+\alias{image.sph_density}
 \title{Plot spherical densities in a stereonet}
 \usage{
 \method{contour}{spherical}(
+  x,
+  add = FALSE,
+  density.params = list(),
+  nlevels = 10L,
+  col.palette = viridis::viridis,
+  col = NULL,
+  col.params = list(),
+  ...
+)
+
+\method{contour}{sph_density}(
   x,
   add = FALSE,
   density.params = list(),
@@ -40,9 +53,19 @@ contourf(
   col.params = list(),
   ...
 )
+
+\method{image}{sph_density}(
+  x,
+  add = FALSE,
+  density.params = list(),
+  nlevels = 10L,
+  col.palette = viridis::viridis,
+  col.params = list(),
+  ...
+)
 }
 \arguments{
-\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"} or \code{'spherical.density'} (for plotting only).}
+\item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"} or \code{'sph_density'} (for plotting only).}
 
 \item{add}{logical. Whether the contours should be added to an existing plot.}
 

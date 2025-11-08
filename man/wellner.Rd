@@ -53,7 +53,7 @@ Thus, smaller p-values indicate stronger evidence that the two populations
 differ in a meaningful way.
 }
 \description{
-Implements Wellner's (1979, Example 1a) Rayleigh-style T-statistic, which
+Wellner's (1979, Example 1a) Rayleigh-style T-statistic, which
 quantifies the dissimilarity between two sets of vectors. The statistic
 increases with the degree of difference between the datasets.
 }
@@ -69,5 +69,5 @@ wellner_inference(test, Line(120, 50))
 }
 \references{
 Jon A. Wellner. "Permutation Tests for Directional Data."
-Ann. Statist. 7 (5) 929-943, September, 1979. \doi{10.1214/aos/1176344779}
+Ann. Statist. 7(5) 929-943, September, 1979. \doi{10.1214/aos/1176344779}
 }

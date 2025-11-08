@@ -4,7 +4,7 @@
 #' `contourf` displays a contour plot with the areas between the contours filled,
 #' and `image` creates a dense grid of colored rectangles.
 #'
-#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"` or `'spherical.density'` (for plotting only).
+#' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"` or `'sph_density'` (for plotting only).
 #' @param density.params list of parameters passed to [density.spherical]
 #' @param nlevels integer. Number of contour levels for plotting
 # #' @param type character. Type of plot: `'contour'` for contour lines,
@@ -147,7 +147,7 @@ stereo_density <- function(x,
                            ...) {
   type <- match.arg(type)
 
-  if (inherits(x, "spherical.density")) {
+  if (inherits(x, "sph_density")) {
     d <- x
   } else {
     # d <- density.spherical(x,
@@ -278,6 +278,24 @@ contour.spherical <- function(x, add = FALSE, density.params = list(),
 }
 
 #' @rdname stereo_contour
+#' @exportS3Method stats::contour
+contour.sph_density <- function(x, add = FALSE, density.params = list(),
+                              nlevels = 10L, col.palette = viridis::viridis, col = NULL,
+                              col.params = list(), ...) {
+  stereo_density(x,
+                 type = "contour",
+                 add = add,
+                 density.params = density.params,
+                 nlevels = nlevels,
+                 col = col,
+                 col.palette = col.palette,
+                 col.params = col.params,
+                 ...
+  )
+}
+
+
+#' @rdname stereo_contour
 #' @export
 contourf <- function(x, add = FALSE, density.params = list(),
                      nlevels = 10L, col.palette = viridis::viridis,
@@ -305,5 +323,21 @@ image.spherical <- function(x, add = FALSE, density.params = list(),
     col.palette = col.palette,
     col.params = col.params,
     ...
+  )
+}
+
+#' @rdname stereo_contour
+#' @exportS3Method stats::image
+image.sph_density <- function(x, add = FALSE, density.params = list(),
+                            nlevels = 10L, col.palette = viridis::viridis,
+                            col.params = list(), ...) {
+  stereo_density(x,
+                 type = "image",
+                 add = add,
+                 density.params = density.params,
+                 nlevels = nlevels,
+                 col.palette = col.palette,
+                 col.params = col.params,
+                 ...
   )
 }

@@ -427,7 +427,7 @@ density_calc <- function(x,
     x = x_grid, y = y_grid,
     density = density_matrix
   )
-  class(res) <- append(class(res), "spherical.density")
+  class(res) <- append(class(res), "sph_density")
   return(res)
 }
 
