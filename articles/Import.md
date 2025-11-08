@@ -135,7 +135,7 @@ If your datra follows this convention, use the function
 
 ``` r
 fault_plane <- Plane(c(120, 120, 100, 0), c(60, 60, 50, 40))
-fault_pitch  <- c(84.7202, -10, 30, 180)
+fault_pitch <- c(84.7202, -10, 30, 180)
 Fault_from_rake(fault_plane, rake = fault_pitch)
 #> Fault object (n = 4):
 #>      dip_direction dip   azimuth       plunge sense

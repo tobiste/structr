@@ -19,6 +19,18 @@ contour(
   ...
 )
 
+# S3 method for class 'sph_density'
+contour(
+  x,
+  add = FALSE,
+  density.params = list(),
+  nlevels = 10L,
+  col.palette = viridis::viridis,
+  col = NULL,
+  col.params = list(),
+  ...
+)
+
 contourf(
   x,
   add = FALSE,
@@ -38,6 +50,17 @@ image(
   col.params = list(),
   ...
 )
+
+# S3 method for class 'sph_density'
+image(
+  x,
+  add = FALSE,
+  density.params = list(),
+  nlevels = 10L,
+  col.palette = viridis::viridis,
+  col.params = list(),
+  ...
+)
 ```
 
 ## Arguments
@@ -45,7 +68,7 @@ image(
 - x:
 
   object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"` or
-  `'spherical.density'` (for plotting only).
+  `'sph_density'` (for plotting only).
 
 - add:
 

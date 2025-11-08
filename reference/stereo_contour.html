@@ -81,6 +81,18 @@ and <code>image</code> creates a dense grid of colored rectangles.</p>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
+<span><span class="co"># S3 method for class 'sph_density'</span></span>
+<span><span class="fu">contour</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  add <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  density.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  nlevels <span class="op">=</span> <span class="fl">10L</span>,</span>
+<span>  col.palette <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="va"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">viridis</a></span>,</span>
+<span>  col <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  col.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
 <span><span class="fu">contourf</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  add <span class="op">=</span> <span class="cn">FALSE</span>,</span>
@@ -99,6 +111,17 @@ and <code>image</code> creates a dense grid of colored rectangles.</p>
 <span>  col.palette <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="va"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">viridis</a></span>,</span>
 <span>  col.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># S3 method for class 'sph_density'</span></span>
+<span><span class="fu">image</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  add <span class="op">=</span> <span class="cn">FALSE</span>,</span>
+<span>  density.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  nlevels <span class="op">=</span> <span class="fl">10L</span>,</span>
+<span>  col.palette <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="va"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">viridis</a></span>,</span>
+<span>  col.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -107,7 +130,7 @@ and <code>image</code> creates a dense grid of colored rectangles.</p>
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p>object of class <code>"Vec3"</code>, <code>"Line"</code>, <code>"Ray"</code>, <code>"Plane"</code> or <code>'spherical.density'</code> (for plotting only).</p></dd>
+<dd><p>object of class <code>"Vec3"</code>, <code>"Line"</code>, <code>"Ray"</code>, <code>"Plane"</code> or <code>'sph_density'</code> (for plotting only).</p></dd>
 
 
 <dt id="arg-add">add<a class="anchor" aria-label="anchor" href="#arg-add"></a></dt>

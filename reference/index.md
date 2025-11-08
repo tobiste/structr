@@ -391,8 +391,10 @@
   : Plot Bootstrapped Confidence Ellipse
 
 - [`contour(`*`<spherical>`*`)`](https://tobiste.github.io/structr/reference/stereo_contour.md)
+  [`contour(`*`<sph_density>`*`)`](https://tobiste.github.io/structr/reference/stereo_contour.md)
   [`contourf()`](https://tobiste.github.io/structr/reference/stereo_contour.md)
   [`image(`*`<spherical>`*`)`](https://tobiste.github.io/structr/reference/stereo_contour.md)
+  [`image(`*`<sph_density>`*`)`](https://tobiste.github.io/structr/reference/stereo_contour.md)
   : Plot spherical densities in a stereonet
 
 - [`stereo_coords()`](https://tobiste.github.io/structr/reference/stereo_coords.md)
