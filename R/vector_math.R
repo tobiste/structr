@@ -331,7 +331,7 @@ v_antipode <- function(x) {
 #' vec1 <- Vec3(1, 0, 0)
 #' vec2 <- Vec3(0, 0, 1)
 #' rotate(vec1, vec2, pi / 2)
-#' 
+#'
 #' # rotate Fault data (sense of motion changes!)
 #' rotate(simongomez[1:5, ], Ray(90, 10), 80)
 NULL
@@ -343,7 +343,7 @@ rotate <- function(x, rotaxis, rotangle) UseMethod("rotate")
 #' @export
 rotate.default <- function(x, rotaxis, rotangle) vrotate(x, rotaxis, rotangle)
 
-rotate_Vec3_helper <- function(x, rotaxis, rotangle){
+rotate_Vec3_helper <- function(x, rotaxis, rotangle) {
   rot <- defgrad_from_axisangle(rotaxis, rotangle)
   transform_linear(x, rot)
 }
@@ -354,12 +354,11 @@ rotate_Vec3_helper <- function(x, rotaxis, rotangle){
 rotate.Vec3 <- function(x, rotaxis, rotangle) {
   n <- length(rotangle)
   stopifnot(nrow(rotaxis) == n)
-  if(n>1) {
-     rot_list <- lapply(seq_len(n), function(i){
-         rotate_Vec3_helper(x[i, ], rotaxis[i, ], rotangle[i])
-       }
-     )
-     do.call(rbind, rot_list)
+  if (n > 1) {
+    rot_list <- lapply(seq_len(n), function(i) {
+      rotate_Vec3_helper(x[i, ], rotaxis[i, ], rotangle[i])
+    })
+    do.call(rbind, rot_list)
   } else {
     rotate_Vec3_helper(x, rotaxis, rotangle)
   }
@@ -369,8 +368,8 @@ rotate.Vec3 <- function(x, rotaxis, rotangle) {
 #' @rdname rotate
 #' @method rotate Ray
 rotate.Ray <- function(x, rotaxis, rotangle) {
-  Vec3(x) |> 
-    rotate.Vec3(rotaxis, rotangle) |> 
+  Vec3(x) |>
+    rotate.Vec3(rotaxis, rotangle) |>
     Ray()
 }
 
@@ -378,8 +377,8 @@ rotate.Ray <- function(x, rotaxis, rotangle) {
 #' @rdname rotate
 #' @method rotate Line
 rotate.Line <- function(x, rotaxis, rotangle) {
-  Vec3(x) |> 
-    rotate.Vec3(rotaxis, rotangle) |> 
+  Vec3(x) |>
+    rotate.Vec3(rotaxis, rotangle) |>
     Line()
 }
 
@@ -387,27 +386,27 @@ rotate.Line <- function(x, rotaxis, rotangle) {
 #' @rdname rotate
 #' @method rotate Plane
 rotate.Plane <- function(x, rotaxis, rotangle) {
-  Vec3(x) |> 
-    rotate.Vec3(rotaxis, rotangle) |> 
+  Vec3(x) |>
+    rotate.Vec3(rotaxis, rotangle) |>
     Plane()
 }
 
 #' @export
 #' @rdname rotate
 #' @method rotate Pair
-rotate.Pair <- function(x, rotaxis, rotangle){
-  p_rot <- rotate.Plane(Plane(x), rotaxis, rotangle) |> 
+rotate.Pair <- function(x, rotaxis, rotangle) {
+  p_rot <- rotate.Plane(Plane(x), rotaxis, rotangle) |>
     Plane()
   dipdir <- p_rot[, 1] %% 360
   dip <- p_rot[, 2] %% 360
-  
+
   slip <- Ray(x) |> Vec3()
   slip_rot <- rotate.Vec3(slip, rotaxis, rotangle)
-  
+
   r <- Ray(slip_rot)
   l <- Line(r)
-  
-  if(is.Fault(x)){
+
+  if (is.Fault(x)) {
     sense <- ifelse(slip_rot[, 3] > 0, -1, 1)
     Fault(dipdir, dip, l[, 1], l[, 2], sense)
   } else {

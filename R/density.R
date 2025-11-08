@@ -4,9 +4,6 @@ blank_grid_regular <- function(n, r = 1) {
   y_grid <- seq(-1, 1, length.out = n)
   grid_schmidt <- expand.grid(x_grid, y_grid) |> as.matrix()
 
-  # inside <- grid_schmidt[, 1]^2 + grid_schmidt[, 2]^2 <= r^
-  # grid_schmidt <- grid_schmidt[inside, ]
-
   grid_cart <- .schmidt2cart(grid_schmidt[, 1], grid_schmidt[, 2])
   values <- rep(0, times = nrow(grid_cart))
   list(grid = grid_cart, density = values)
@@ -71,12 +68,6 @@ count_points <- function(azi, inc, FUN, sigma, ngrid, weights, r) {
     Vec3() |>
     unclass()
 
-  # cos_dist_matrix <- abs(grid_coords %*% t(xyz_points))
-
-  # for(i in 1:ncol(cos_dist_matrix)){
-  #   density_scale <- FUN(cos_dist_matrix[, i], sigma)
-  # }
-
   for (i in seq_along(grid_coords[, 1])) {
     cos_dist <- abs(grid_coords[i, ] %*% t(xyz_points))
     density_scale <- FUN(cos_dist, sigma)
@@ -90,37 +81,6 @@ count_points <- function(azi, inc, FUN, sigma, ngrid, weights, r) {
   grid
 }
 
-# count_points_fast <- function(azi, inc, FUN, sigma, n, weights, r) {
-#   # Grid setup
-#   grid <- blank_grid_regular(n = n, r = r)
-#   grid_coords <- grid$grid
-#
-#   # Convert spherical to cartesian coordinates
-#   xyz_points <- lin2vec0(azi, inc)
-#
-#   # Matrix multiplication: each row in grid_coords with all xyz_points
-#   # t(grid_coords) %*% xyz_points computes all dot products efficiently
-#   cos_dist_matrix <- abs(grid_coords %*% t(xyz_points)) # n_grid x n_points
-#
-#   # Apply FUN to entire matrix
-#   density_scale <- FUN(cos_dist_matrix, sigma)
-#
-#   # Ensure weights are correctly recycled to n_points length
-#   weights <- rep(weights, length.out = ncol(cos_dist_matrix))
-#
-#   # Compute weighted density sums across columns
-#   weighted_density <- sweep(density_scale$count, 2, weights, "*")
-#   density_sums <- rowSums(weighted_density)
-#
-#   # Compute final densities
-#   densities <- (density_sums - 0.5) / density_scale$units
-#   densities[densities < 0] <- 0
-#
-#   # Insert densities into grid
-#   grid$density <- densities
-#
-#   grid
-# }
 
 #' Estimates point density
 #'
@@ -150,8 +110,6 @@ count_points <- function(azi, inc, FUN, sigma, ngrid, weights, r) {
 #' res2 <- density_grid(x, kamb = FALSE, kernel_method = "cross")
 #' lapply(res2, head)
 density_grid <- function(x, weights = NULL, upper.hem = FALSE, kamb = TRUE, ...) {
-  # if (!is.spherical(x)) x <- to_spherical(x)
-
   if (!is.Line(x)) x <- Line(x)
 
   azi <- x[, 1]
@@ -180,7 +138,6 @@ density_grid <- function(x, weights = NULL, upper.hem = FALSE, kamb = TRUE, ...)
   }
 }
 
-
 #' @keywords internal
 kamb_radius <- function(n, sigma) {
   a <- sigma^2 / (n + sigma^2)
@@ -191,7 +148,6 @@ kamb_radius <- function(n, sigma) {
 kamb_units <- function(n, radius) {
   return(sqrt(n * radius * (1 - radius)))
 }
-
 
 #' Density estimation
 #'
@@ -291,8 +247,6 @@ schmidt_count <- function(cos_dist, sigma = NULL) {
   return(list(count = count, units = length(cos_dist) * radius))
 }
 
-
-
 #' @keywords internal
 vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngrid = 100) {
   n <- nrow(u)
@@ -338,7 +292,6 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 }
 
 
-
 #' Spherical density estimation
 #'
 #' @inheritParams sph_mean
@@ -368,15 +321,9 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #' density(x = test, n = 100, sigma = 3, weights = runif(100))
 NULL
 
-# #' @rdname density
-# #' @export
-# density <- function(x, n, weights = NULL, ...) UseMethod("density")
-
-
 #' @rdname density
 #' @exportS3Method stats::density
 density.spherical <- function(x, ...) density_calc(x, ...)
-
 
 #' @name density
 #' @export
@@ -388,41 +335,15 @@ density_calc <- function(x,
                          weights = NULL, upper.hem = FALSE, r = 1) {
   x_grid <- y_grid <- seq(-1, 1, length.out = n)
 
-  grid <- expand.grid(x_grid, y_grid) |> as.matrix()
-
+  grid <- expand.grid(x_grid, y_grid) |> 
+    as.matrix()
   dg <- density_grid(x, weights = weights, upper.hem = upper.hem, kamb = TRUE, FUN = FUN, sigma = sigma, ngrid = n, r = r)
-
-  # dg <- if (kamb) {
-  #   density_grid(x, weights = weights, upper.hem = upper.hem, kamb = TRUE, FUN = FUN, sigma = sigma, ngrid = ngrid, r = r)
-  # } else {
-  #   stop("vmf not supported at the moment")
-  #   # density_grid(x, weights = NULL, upper.hem = upper.hem, kamb = FALSE, ngrid = ngrid, hw = vmf_hw, kernel_method = vmf_optimal)
-  # }
-
-
-  # if(!kamb){
-  #   grd_lines <- dg$grid |> vec2line()
-  #   grid <- .schmidt_crds(deg2rad(grd_lines[, 1]), deg2rad(grd_lines[, 2]), r = r)
-  #
-  #   grid <- cbind(grid, dg$density)
-  #   grid <- grid[order(grid[, 1], grid[, 2]), ]
-  #
-  #   x_grid <- unique(grid[, 1])
-  #   y_grid <- unique(grid[, 2])
-  #   density_matrix <- matrix(grid[, 3], nrow = ngrid, byrow = FALSE)
-  #
-  # } else{
   density_matrix <- matrix(dg$density, nrow = n, byrow = FALSE)
-  # }
-
   dist_matrix <- grid[, 1]^2 + grid[, 2]^2
-
 
   # Create a logical mask where TRUE if outside the unit circle
   outside <- dist_matrix > r^2
-
   density_matrix[outside] <- NA
-
   res <- list(
     x = x_grid, y = y_grid,
     density = density_matrix
@@ -430,8 +351,3 @@ density_calc <- function(x,
   class(res) <- append(class(res), "sph_density")
   return(res)
 }
-
-# #' @export
-# #' @noRd
-# #' @importFrom stats density
-# density.default <- function(x, n, weights, ...) stats::density(x, n, weights, ...)

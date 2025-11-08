@@ -517,11 +517,11 @@ stereoplot_frame <- function(n = 512L, radius = 1, ...) {
 #' @export
 #' @examples
 #' stereoplot()
-#' 
+#'
 #' stereoplot(ticks = 30, title = "title", sub = "subtitle", border.col = "purple", labels = TRUE)
 stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = "gray90",
                        lwd = 0.5, lty = 1, border.col = "black", title = NULL,
-                       sub = NULL, origin.text = "N", labels = FALSE, ladj = 0.05, 
+                       sub = NULL, origin.text = "N", labels = FALSE, ladj = 0.05,
                        centercross = TRUE, ticks = 90, radius = 1) {
   graphics::par(xpd = NA)
   graphics::plot(radius * c(-1, 1), radius * c(-1, 1),

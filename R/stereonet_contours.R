@@ -78,61 +78,6 @@
 #' )
 NULL
 
-
-# #' @rdname stereo_contour
-# #' @export
-# projected_density <- function(x, ngrid = 128L, sigma = 3, weights = NULL, upper.hem = FALSE, r = 1) {
-#   if (is.plane(x) | is.fault(x)) {
-#     x[, 1] <- 180 + x[, 1]
-#     x[, 2] <- 90 - x[, 2]
-#   }
-#
-#   crds <- stereo_coords(
-#     x[, 1],
-#     x[, 2],
-#     upper.hem,
-#     earea = TRUE
-#   )
-#
-#
-#   # prepare the grid
-#   x_grid <- y_grid <- seq(-1, 1, length.out = ngrid)
-#   grid <- expand.grid(x_grid, y_grid) |> as.matrix()
-#
-#   # Compute distance from origin
-#   dist_matrix <- sqrt(grid[, 1]^2 + grid[, 2]^2)
-#
-#   # Create a logical mask where TRUE if outside the unit circle
-#   mask_outside <- dist_matrix > r
-#
-#   N <- nrow(crds)
-#
-#   if (is.null(weights)) {
-#     weights <- rep(1, N)
-#   }
-#
-#
-#   # f <- sigma^2 / (sigma^2 + N)
-#   counter_radius <- sigma * r / sqrt(N + sigma^2)
-#
-#   counts <- .count_points_within_radius(crds, grid, counter_radius)
-#
-#
-#   counts_matrix <- matrix(counts, nrow = n, byrow = FALSE)
-#   counts_matrix[mask_outside] <- NA # replace cells outside of unit circle with NA
-#
-#   density_matrix <- counts_matrix / max(counts_matrix, na.rm = TRUE)
-#
-#   res <- list(
-#     x = x_grid, y = y_grid,
-#     grid = grid,
-#     counts = counts_matrix,
-#     density = density_matrix
-#   )
-#   class(res) <- append(class(res), "spherical.density")
-#   return(res)
-# }
-
 #' @keywords internal
 #' @rdname stereo_contour
 #' @noRd
@@ -150,20 +95,11 @@ stereo_density <- function(x,
   if (inherits(x, "sph_density")) {
     d <- x
   } else {
-    # d <- density.spherical(x,
-    #                        ngrid = ngrid,
-    #                        kamb = kamb,
-    #                        upper.hem = upper.hem, r = r,
-    #                        sigma = sigma, FUN = FUN, weights = weights,
-    #                        vmf_hw = vmf_hw, vmf_optimal = vmf_optimal
-    # )
     d <- do.call(density.spherical, append(list(x = x), density.params))
   }
   densities <- d$density
 
-  if (isFALSE(add)) {
-    stereoplot(guides = FALSE)
-  }
+  if (isFALSE(add)) stereoplot(guides = FALSE)
 
   if (type == "image") {
     col.params <- append(list(n = nlevels), col.params)
@@ -179,15 +115,6 @@ stereo_density <- function(x,
       add = TRUE,
       ...
     )
-
-    # if(isTRUE(legend)){
-    #   if(isTRUE(add)){
-    #     graphics::par(new = TRUE, xpd = NA)
-    #     graphics::layout(matrix(1, 1))
-    #   }
-    #   graphics::image(1, nlevels, t(seq_len(nlevels)), col=col, axes=FALSE)
-    #   graphics::axis(4)
-    # }
   } else if (type == "contour") {
     if (is.null(col)) {
       levels <- pretty(range(densities, na.rm = TRUE), nlevels)
@@ -206,14 +133,6 @@ stereo_density <- function(x,
       add = TRUE,
       ...
     )
-    # if(isTRUE(legend)){
-    #   if(isTRUE(add)){
-    #     graphics::par(new = TRUE, xpd = NA)
-    #     graphics::layout(matrix(1, 1))
-    #   }
-    #   graphics::image(1, levels, t(seq_along(levels)), col=col, axes=FALSE)
-    #   graphics::axis(4)
-    # }
   } else {
     levels <- pretty(range(densities, na.rm = TRUE), nlevels)
     col.params <- append(list(n = length(levels) - 1), col.params)
@@ -225,40 +144,10 @@ stereo_density <- function(x,
       levels = levels,
       col = col
     )
-    # if(isTRUE(legend)){
-    #   if(isTRUE(add)){
-    #     graphics::par(new = TRUE, xpd = NA)
-    #     graphics::layout(matrix(1, 1))
-    #   }
-    #   graphics::image(1, levels, t(seq_along(levels)), col=col, axes=FALSE)
-    #   graphics::axis(4)
-    # }
   }
 
   invisible(densities)
 }
-
-
-# .count_points_within_radius <- function(A, B, r) {
-#   # Compute squared distances efficiently
-#   d2 <- (outer(A[, 1], B[, 1], "-"))^2 +
-#     (outer(A[, 2], B[, 2], "-"))^2
-#
-#   # Logical matrix where TRUE if within radius
-#   within <- d2 <= r^2
-#
-#   # Count per column (i.e., per grid point)
-#   counts <- colSums(within)
-#
-#   return(counts)
-# }
-
-#
-# .fix_symm <- function(x) {
-#   x[x[, 3] < 0, ] <- v_antipode(x[x[, 3] < 0, ])
-#   x
-# }
-
 
 #' @rdname stereo_contour
 #' @exportS3Method stats::contour
@@ -280,17 +169,17 @@ contour.spherical <- function(x, add = FALSE, density.params = list(),
 #' @rdname stereo_contour
 #' @exportS3Method stats::contour
 contour.sph_density <- function(x, add = FALSE, density.params = list(),
-                              nlevels = 10L, col.palette = viridis::viridis, col = NULL,
-                              col.params = list(), ...) {
+                                nlevels = 10L, col.palette = viridis::viridis, col = NULL,
+                                col.params = list(), ...) {
   stereo_density(x,
-                 type = "contour",
-                 add = add,
-                 density.params = density.params,
-                 nlevels = nlevels,
-                 col = col,
-                 col.palette = col.palette,
-                 col.params = col.params,
-                 ...
+    type = "contour",
+    add = add,
+    density.params = density.params,
+    nlevels = nlevels,
+    col = col,
+    col.palette = col.palette,
+    col.params = col.params,
+    ...
   )
 }
 
@@ -329,15 +218,15 @@ image.spherical <- function(x, add = FALSE, density.params = list(),
 #' @rdname stereo_contour
 #' @exportS3Method stats::image
 image.sph_density <- function(x, add = FALSE, density.params = list(),
-                            nlevels = 10L, col.palette = viridis::viridis,
-                            col.params = list(), ...) {
+                              nlevels = 10L, col.palette = viridis::viridis,
+                              col.params = list(), ...) {
   stereo_density(x,
-                 type = "image",
-                 add = add,
-                 density.params = density.params,
-                 nlevels = nlevels,
-                 col.palette = col.palette,
-                 col.params = col.params,
-                 ...
+    type = "image",
+    add = add,
+    density.params = density.params,
+    nlevels = nlevels,
+    col.palette = col.palette,
+    col.params = col.params,
+    ...
   )
 }

@@ -166,7 +166,7 @@ azimuth_to_cardinal <- function(x, n_directions = 8) {
 #' @returns Dip direction in degrees
 #' @family parse-orientations
 #' @export
-#' 
+#'
 #' @examples
 #' s <- c(270, 315, 0, 45, 90, 135, 180, 225, 270) # strike in left-hand-rule
 #' q <- c("N", "E", "E", "S", "S", "W", "W", "N", "N") # dip quadrant

@@ -2,35 +2,35 @@
 
 #' Wellner's Two-Sample Test
 #'
-#' Wellner's (1979, Example 1a) Rayleigh-style T-statistic, which 
-#' quantifies the dissimilarity between two sets of vectors. The statistic 
+#' Wellner's (1979, Example 1a) Rayleigh-style T-statistic, which
+#' quantifies the dissimilarity between two sets of vectors. The statistic
 #' increases with the degree of difference between the datasets.
 #'
-#' `wellner_inference()` performs a permutation-based inference using 
-#' Wellner's T-statistic to assess whether the two datasets are drawn from 
+#' `wellner_inference()` performs a permutation-based inference using
+#' Wellner's T-statistic to assess whether the two datasets are drawn from
 #' the same population.
 #'
 #' @inheritParams reject
 #' @param n_perm integer. Number of permutations.
-#' 
-#' @return 
-#' `wellner()` computes Wellner's T-statistic, a non-negative measure of 
-#' dissimilarity between two datasets. The value is zero when the datasets 
+#'
+#' @return
+#' `wellner()` computes Wellner's T-statistic, a non-negative measure of
+#' dissimilarity between two datasets. The value is zero when the datasets
 #' are identical.
 #'
-#' `wellner_inference()` estimates the fraction of permutation tests in which 
-#' the computed T-statistic exceeds the observed T for the original data 
-#' (a number between 0 and 1). This value can be interpreted as a p-value 
-#' for the null hypothesis that the two populations are identical 
-#' (not merely that their means coincide). 
-#' Thus, smaller p-values indicate stronger evidence that the two populations 
+#' `wellner_inference()` estimates the fraction of permutation tests in which
+#' the computed T-statistic exceeds the observed T for the original data
+#' (a number between 0 and 1). This value can be interpreted as a p-value
+#' for the null hypothesis that the two populations are identical
+#' (not merely that their means coincide).
+#' Thus, smaller p-values indicate stronger evidence that the two populations
 #' differ in a meaningful way.
-#' 
-#' @references  Jon A. Wellner. "Permutation Tests for Directional Data." 
+#'
+#' @references  Jon A. Wellner. "Permutation Tests for Directional Data."
 #' Ann. Statist. 7(5) 929-943, September, 1979. \doi{10.1214/aos/1176344779}
-#' 
+#'
 #' @name wellner
-#' 
+#'
 #' @examples
 #' test <- rvmf(100)
 #' wellner(test, Line(120, 50))
@@ -41,13 +41,13 @@ NULL
 #' @rdname wellner
 #' @export
 wellner <- function(x, y) UseMethod("wellner")
-  
+
 #' @rdname wellner
 #' @export
 wellner.Ray <- function(x, y) {
   xs <- vec_list(x)
   ys <- vec_list(y)
-  
+
   # The number of xs, the number of ys, and the dimension of the hypersphere.
   m <- length(xs)
   n <- length(ys)
@@ -62,7 +62,7 @@ wellner.Ray <- function(x, y) {
 wellner.Line <- function(x, y) {
   xs <- vec_list(x)
   ys <- vec_list(y)
-  
+
   # The number of xs, the number of ys, and the dimension of the hypersphere.
   m <- length(xs)
   n <- length(ys)
@@ -186,7 +186,7 @@ wellner_inference.Vec3 <- function(x, y, n_perm = 1000) wellner_inference.Line(x
 wellner_inference.Line <- function(x, y, n_perm = 1000) {
   xs <- vec_list(x)
   ys <- vec_list(y)
-  
+
   # Precompute.
   m <- length(xs)
   n <- length(ys)
@@ -212,7 +212,7 @@ wellner_inference.Line <- function(x, y, n_perm = 1000) {
 wellner_inference.Ray <- function(x, y, n_perm = 1000) {
   xs <- vec_list(x)
   ys <- vec_list(y)
-  
+
   # Precompute.
   m <- length(xs)
   n <- length(ys)

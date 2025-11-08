@@ -82,12 +82,12 @@ Plot orientation data in equal-area, lower hemisphere projection:
 data("example_planes")
 data("example_lines")
 
-#initialize the stereoplot
+# initialize the stereoplot
 stereoplot(
-  title = "Lambert equal-area projection", 
-  sub = "Lower hemisphere", 
+  title = "Lambert equal-area projection",
+  sub = "Lower hemisphere",
   ticks = 45, labels = TRUE
-  )
+)
 
 # add vectors as points
 points(example_lines, col = "#B63679", pch = 19, cex = .5)
@@ -256,10 +256,10 @@ faults <- angelier1990$TYM
 
 par(mfrow = c(1, 2))
 stereoplot(title = "Angelier plot", guides = FALSE)
-angelier(faults, col = 'grey20')
+angelier(faults, col = "grey20")
 
 stereoplot(title = "Hoeppener plot", guides = FALSE)
-hoeppener(faults, points = FALSE, col = 'grey20')
+hoeppener(faults, points = FALSE, col = "grey20")
 ```
 
 <img src="man/figures/README-stereo_faults-1.png" width="100%" />
