@@ -245,7 +245,7 @@ Compute deviatoric stress tensor and calculate 95% confidence intervals using bo
 
 ```{r stereo_inversion1, warning=FALSE,message=FALSE}
 set.seed(20250411)
-faults_stress <- slip_inversion(faults, boot = 10)
+faults_stress <- slip_inversion(faults, n_iter = 10)
 ```
 
 Visualize the slip inversion results (orientation of principal stresses):

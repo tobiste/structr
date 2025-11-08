@@ -208,7 +208,7 @@ fault_plot(test_data, col = "grey30")
 The stress inversion with 10 bootstraps:
 
 ```{r slip_inversion_check}
-test_res <- slip_inversion(test_data, boot = 10)
+test_res <- slip_inversion(test_data, n_iter = 10)
 
 # Average beta angle
 test_res$beta

@@ -7,13 +7,19 @@
 geologyGeometry (J.R. Davis)
 }
 \usage{
-confidence_ellipse(x, n = 10000L, alpha = 0.05, res = 512L, isotropic = FALSE)
+confidence_ellipse(
+  x,
+  n_iter = 10000L,
+  alpha = 0.05,
+  res = 512L,
+  isotropic = FALSE
+)
 }
 \arguments{
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
 rows are the observations and the columns are the coordinates.}
 
-\item{n}{integer (10000 by default).}
+\item{n_iter}{integer (10000 by default).}
 
 \item{alpha}{numeric (0.05 by default).}
 
@@ -46,7 +52,7 @@ region seriously.
 }
 \examples{
 set.seed(20250411)
-ce <- confidence_ellipse(example_lines, n = 1000, res = 10)
+ce <- confidence_ellipse(example_lines, n_iter = 1000, res = 10)
 # print(ce)
 
 # Check how many vectors lie outside quantiles:

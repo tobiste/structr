@@ -26,14 +26,14 @@
 #' @examples
 #' data(ramsay)
 #' mean_strain_ellipse_ramsay(ramsay[, "R"], ramsay[, "phi"])
-mean_strain_ellipse_ramsay <- function(r, phi = NULL, boot = TRUE, resamples = 1000, boot.values = FALSE) {
+mean_strain_ellipse_ramsay <- function(r, phi = NULL, boot = TRUE, n_iter = 1000, boot.values = FALSE) {
   res <- mean_strain_ellipse_ramsay0(r, phi)
 
   if (boot) {
     n <- length(r)
-    boot_mat <- matrix(NA_real_, nrow = resamples, ncol = 4)
+    boot_mat <- matrix(NA_real_, nrow = n_iter, ncol = 4)
 
-    for (i in seq_len(resamples)) {
+    for (i in seq_len(n_iter)) {
       idx <- sample.int(n, n, replace = TRUE)
       boot_mat[i, ] <- unlist(mean_strain_ellipse_ramsay0(r[idx], phi[idx]))
     }
@@ -89,7 +89,7 @@ mean_strain_ellipse_ramsay0 <- function(r, phi = NULL) {
 #' @param r numeric. Aspect ratio of deformed object (long axis / short axis)
 #' @param phi numeric. Orientation of long axis of deformed object (in degrees)
 #' @param boot logical. Whether a 95% confidence interval from on bootstrapping should be calculated. `TRUE` by default.
-#' @param resamples integer. Number of bootstrap resamples (`1000` by default). Ignored when `boot = FALSE`.
+#' @param n_iter integer. Number of bootstrap resamples (`1000` by default). Ignored when `boot = FALSE`.
 #' @param boot.values logical. Whether the bootstrapped R and phi values should be added to the output. `FALSE` by default.
 #'
 #' @returns list. `R` gives the mean aspect ratio of the strain ellipse,
@@ -110,14 +110,14 @@ mean_strain_ellipse_ramsay0 <- function(r, phi = NULL) {
 #' set.seed(20250411)
 #' data(ramsay)
 #' mean_strain_ellipse(ramsay[, "R"], ramsay[, "phi"])
-mean_strain_ellipse <- function(r, phi, boot = TRUE, resamples = 1000, boot.values = FALSE) {
+mean_strain_ellipse <- function(r, phi, boot = TRUE, n_iter = 1000, boot.values = FALSE) {
   res <- mean_strain_ellipse0(r, phi)
 
   if (boot) {
     n <- length(r)
-    boot_mat <- matrix(NA_real_, nrow = resamples, ncol = 2)
+    boot_mat <- matrix(NA_real_, nrow = n_iter, ncol = 2)
 
-    for (i in seq_len(resamples)) {
+    for (i in seq_len(n_iter)) {
       idx <- sample.int(n, n, replace = TRUE)
       boot_mat[i, ] <- unlist(mean_strain_ellipse0(r[idx], phi[idx]))
     }
@@ -778,7 +778,7 @@ vorticity_boot <- function(B, R = 100, probs = 0.975) {
 #' @param probs integer. Probability with values in \eqn{[0, 1]} to estimate
 #' critical shape factor, i.e. the largest shape factor of measurements outside
 #' of critical hyperbole.
-#' @param boot integer. Number of bootstrap resamples
+#' @param n_iter integer. Number of bootstrap resamples
 #' @param grid numeric. Spacing of hyperboles.
 #' @inheritParams Rphi_plot
 #' @param ... plotting arguments passed to [graphics::points()]
@@ -804,7 +804,7 @@ vorticity_boot <- function(B, R = 100, probs = 0.975) {
 #' data(shebandowan)
 #' set.seed(20250411)
 #' RGN_plot(shebandowan$r, shebandowan$phi, col = "darkred")
-RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.975, grid = 0.05, main = "Rigid-Grain-Net", ...) {
+RGN_plot <- function(r, theta, angle_error = 3, n_iter = 100L, probs = 0.975, grid = 0.05, main = "Rigid-Grain-Net", ...) {
   R_val <- r
   theta <- theta %% 180
   theta <- ifelse(theta > 90, theta - 180, theta)
@@ -817,7 +817,7 @@ RGN_plot <- function(r, theta, angle_error = 3, boot = 100L, probs = 0.975, grid
   infinite_rot_neg <- theta + angle_error < crit_angleB
   crit <- abs(theta) - angle_error > crit_angleB
 
-  bmax_r <- vorticity_boot(B_val[crit], R = boot, probs = probs)
+  bmax_r <- vorticity_boot(B_val[crit], R = n_iter, probs = probs)
   bmax_log <- log(bmax_r)
 
   bmax_geomean <- exp(base::mean(bmax_log, na.rm = TRUE))

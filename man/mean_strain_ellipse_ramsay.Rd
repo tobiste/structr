@@ -8,7 +8,7 @@ mean_strain_ellipse_ramsay(
   r,
   phi = NULL,
   boot = TRUE,
-  resamples = 1000,
+  n_iter = 1000,
   boot.values = FALSE
 )
 }
@@ -19,7 +19,7 @@ mean_strain_ellipse_ramsay(
 
 \item{boot}{logical. Whether a 95\% confidence interval from on bootstrapping should be calculated. \code{TRUE} by default.}
 
-\item{resamples}{integer. Number of bootstrap resamples (\code{1000} by default). Ignored when \code{boot = FALSE}.}
+\item{n_iter}{integer. Number of bootstrap resamples (\code{1000} by default). Ignored when \code{boot = FALSE}.}
 
 \item{boot.values}{logical. Whether the bootstrapped R and phi values should be added to the output. \code{FALSE} by default.}
 }

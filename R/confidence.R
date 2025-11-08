@@ -8,7 +8,7 @@
 #' region seriously.
 #'
 #' @inheritParams geodesic_meanvariance_line
-#' @param n integer (10000 by default).
+#' @param n_iter integer (10000 by default).
 #' @param alpha numeric (0.05 by default).
 #' @param res integer. The resolution with which to sample the boundary curve of the (1 - `alpha`) * 100% percentile region.
 #' @param isotropic logical. If `TRUE`, forces the inverse covariance to the identity matrix and hence the region to be circular.
@@ -34,7 +34,7 @@
 #'
 #' @examples
 #' set.seed(20250411)
-#' ce <- confidence_ellipse(example_lines, n = 1000, res = 10)
+#' ce <- confidence_ellipse(example_lines, n_iter = 1000, res = 10)
 #' # print(ce)
 #'
 #' # Check how many vectors lie outside quantiles:
@@ -42,17 +42,17 @@
 #'
 #' # Hypothesis testing (reject if p-value < alpha):
 #' ce$pvalue.FUN((Line(90, 0)))
-confidence_ellipse <- function(x, n = 10000L, alpha = 0.05, res = 512L, isotropic = FALSE) {
+confidence_ellipse <- function(x, n_iter = 10000L, alpha = 0.05, res = 512L, isotropic = FALSE) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Ray(x) | is.Plane(x))
 
   xl <- vec_list(x)
 
   if (is.Ray(x)) {
-    ce <- rayBootstrapInference(xl, numBoots = n, alpha = alpha, numPoints = res, doIsotropic = isotropic)
+    ce <- rayBootstrapInference(xl, numBoots = n_iter, alpha = alpha, numPoints = res, doIsotropic = isotropic)
     pvalues <- sapply(ce$us, ce$pvalue)
     pvalue.FUN <- ce$pvalue
   } else {
-    ce <- lineBootstrapInference(xl, numBoots = n, alpha = alpha, numPoints = res, doIsotropic = isotropic)
+    ce <- lineBootstrapInference(xl, numBoots = n_iter, alpha = alpha, numPoints = res, doIsotropic = isotropic)
     pvalues <- sapply(ce$us, ce$pvalueLine)
     pvalue.FUN <- ce$pvalueLine
   }

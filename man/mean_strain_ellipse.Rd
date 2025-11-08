@@ -4,7 +4,7 @@
 \alias{mean_strain_ellipse}
 \title{Mean strain ellipse}
 \usage{
-mean_strain_ellipse(r, phi, boot = TRUE, resamples = 1000, boot.values = FALSE)
+mean_strain_ellipse(r, phi, boot = TRUE, n_iter = 1000, boot.values = FALSE)
 }
 \arguments{
 \item{r}{numeric. Aspect ratio of deformed object (long axis / short axis)}
@@ -13,7 +13,7 @@ mean_strain_ellipse(r, phi, boot = TRUE, resamples = 1000, boot.values = FALSE)
 
 \item{boot}{logical. Whether a 95\% confidence interval from on bootstrapping should be calculated. \code{TRUE} by default.}
 
-\item{resamples}{integer. Number of bootstrap resamples (\code{1000} by default). Ignored when \code{boot = FALSE}.}
+\item{n_iter}{integer. Number of bootstrap resamples (\code{1000} by default). Ignored when \code{boot = FALSE}.}
 
 \item{boot.values}{logical. Whether the bootstrapped R and phi values should be added to the output. \code{FALSE} by default.}
 }

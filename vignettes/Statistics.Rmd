@@ -58,10 +58,13 @@ vector[^1]:
     V. Mardia & P. E. Jupp, Eds.). Hoboken, NJ, USA: Wiley.
     <https://doi.org/10.1002/9780470316979>
 
-This involves the resultant vector of a set of $n$ vectors $x_1, \ldots, x_n$, given by $\bar{\mathbf{x}} = \sum_{i=1}^{n} \mathbf{x}_i$,
-and the resultant length defined as $\bar{\mathbf{R}} = \sqrt{x_x^2 + x_y^2 + x_z^2}$.
+This involves the resultant vector of a set of $n$ vectors
+$x_1, \ldots, x_n$, given by
+$\bar{\mathbf{x}} = \sum_{i=1}^{n} \mathbf{x}_i$, and the resultant
+length defined as $\bar{\mathbf{R}} = \sqrt{x_x^2 + x_y^2 + x_z^2}$.
 
-The arithmetic mean of the vector components is the mean resultant vector, i.e the resultant vector normalized by its length
+The arithmetic mean of the vector components is the mean resultant
+vector, i.e the resultant vector normalized by its length
 $$\mu = \frac{\bar{\mathbf{x}}}{\bar{\mathbf{R}}}$$
 
 In geology, the statistical estimators are useful for **vectorial data**
@@ -221,6 +224,8 @@ title(main = "Planes")
 
 ### Hypothesis testing
 
+#### Confidence region
+
 To test if a line represents the population mean of a given set of
 lineations, we need to calculate the confidence region of our
 population.
@@ -247,7 +252,7 @@ stereo_confidence(ce, col = "#B63679FF")
 points(line_NULL, col = "#000004", pch = 16)
 ```
 
-The p-value for our hypothesis line:
+The $p$-value for our hypothesis line:
 
 ```{r test3}
 ce$pvalue.FUN(line_NULL)
@@ -256,18 +261,44 @@ ce$pvalue.FUN(line_NULL)
 With (95% confidence) we rejected the Null Hypothesis that the given
 line represents the population mean as the p-value is smaller than 5%.
 
+#### Two-sample T-Test
+
+Wellner's Rayleigh-style T-statistic[^4] measures how different two sets
+of vectors are. The test statistic T is a non-negative measure of dissimilarity between
+two datasets. The value is zero when the datasets are identical.
+
+[^4]: Wellner, J. A. (1979) "Permutation Tests for Directional Data."
+    Ann. Statist. 7 (5) 929-943.
+    <https://doi.org/10.1214/aos/1176344779>
+
+```{R wellner}
+wellner(lines, line_NULL)
+```
+
+A $p$-value for this test-statistic can be estimated using permutations.
+The fraction of tests in the computed T-statistic exceeds the observed T
+for the original data (a number between 0 and 1 inclusive) can be
+interpreted as a $p$-value for the null hypothesis that the two
+populations are identical (not merely that their means coincide). Thus,
+smaller p-values indicate stronger evidence that the two populations
+differ significantly.
+
+```{R wellner_inference}
+wellner_inference(lines, line_NULL, n_perm = 1000)
+```
+
 ## Orientation tensor
 
 ### Eigenvectors
 
-The orientation tensor[^4] is a matrix comprising the mean direction
+The orientation tensor[^5] is a matrix comprising the mean direction
 cosines of the orientation vectors. In case of a Bingham distribution,
 the **Eigenvectors** of this tensor describe the orientation of the most
 dense, intermediate and least dense orientation, and thus, are used to
 determine the orientation of girdle-distributed vectors (e.g. folded
 planes).
 
-[^4]: Scheidegger, A. E. (1964). The tectonic stress and tectonic motion
+[^5]: Scheidegger, A. E. (1964). The tectonic stress and tectonic motion
     direction in Europe and Western Asia as calculated from earthquake
     fault plane solutions. Bulletin of the Seismological Society of
     America, 54(5A), 1519–1528. <https://doi.org/10.1785/BSSA05405A1519>
@@ -325,3 +356,6 @@ Scheidegger, A. E. (1964). The tectonic stress and tectonic motion
 direction in Europe and Western Asia as calculated from earthquake fault
 plane solutions. Bulletin of the Seismological Society of America,
 54(5A), 1519–1528. <https://doi.org/10.1785/BSSA05405A1519>
+
+Wellner, J. A. (1979) "Permutation Tests for Directional Data." Ann.
+Statist. 7(5) 929-943. <https://doi.org/10.1214/aos/1176344779>

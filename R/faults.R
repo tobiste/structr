@@ -7,7 +7,7 @@
 #' tangential traction on the various fault planes, at the time of rupture, is similar.
 #'
 #' @param x `"Fault"` object where the rows are the observations, and the columns the coordinates.
-#' @param boot integer. Number of bootstrap samples (10 by default)
+#' @param n_iter integer. Number of bootstrap samples (10 by default)
 #' @param conf.level numeric. Confidence level of the interval (0.95 by default)
 #' @param friction numeric. Coefficient of friction (0.6 by default)
 #' @param ... optional parameters passed to [confidence_ellipse()]
@@ -61,7 +61,7 @@
 #' @examples
 #' set.seed(20250411)
 #' # Use Angelier examples:
-#' res_TYM <- slip_inversion(angelier1990$TYM, boot = 100, n = 1000, res = 100)
+#' res_TYM <- slip_inversion(angelier1990$TYM, n_iter = 100, n = 1000, res = 100)
 #'
 #' # Plot the faults (color-coded by beta angle) and show the principal stress axes
 #' stereoplot(title = "Tymbaki, Crete, Greece", guides = FALSE)
@@ -72,7 +72,7 @@
 #' text(res_TYM$principal_axes, label = rownames(res_TYM$principal_axes), col = 2:4, adj = -.25)
 #' legend("topleft", col = 2:4, legend = rownames(res_TYM$principal_axes), pch = 16)
 #'
-#' res_AVB <- slip_inversion(angelier1990$AVB, boot = 100, n = 1000, res = 100)
+#' res_AVB <- slip_inversion(angelier1990$AVB, n_iter = 100, n = 1000, res = 100)
 #' stereoplot(title = "Agia Varvara, Crete, Greece", guides = FALSE)
 #' fault_plot(angelier1990$AVB, col = "gray80")
 #' stereo_confidence(res_AVB$principal_axes_conf$sigma1, col = 2)
@@ -80,13 +80,13 @@
 #' stereo_confidence(res_AVB$principal_axes_conf$sigma3, col = 4)
 #' text(res_AVB$principal_axes, label = rownames(res_AVB$principal_axes), col = 2:4, adj = -.25)
 #' legend("topleft", col = 2:4, legend = rownames(res_AVB$principal_axes), pch = 16)
-slip_inversion <- function(x, boot = 100L, conf.level = 0.95, friction = 0.6, ...) {
+slip_inversion <- function(x, n_iter = 100L, conf.level = 0.95, friction = 0.6, ...) {
   best.fit <- slip_inversion0(x, friction)
   fault_df <- best.fit$fault_data
   nx <- nrow(x)
 
   # bootstrap results
-  boot_results <- lapply(1:boot, function(i) {
+  boot_results <- lapply(1:n_iter, function(i) {
     idx <- sample.int(nx, replace = TRUE)
     x_sample <- x[idx, ]
     slip_inversion0(x_sample)
@@ -350,7 +350,7 @@ fault_instability_criterion <- function(x, R, mu = 0.6) {
 #' @export
 #'
 #' @examples
-#' res_TYM <- slip_inversion(angelier1990$TYM, boot = 10)
+#' res_TYM <- slip_inversion(angelier1990$TYM, n_iter = 10)
 #' pr_TYM <- principal_fault(res_TYM$principal_axes[1, ], res_TYM$principal_axes[3, ])
 #'
 #' stereoplot()
