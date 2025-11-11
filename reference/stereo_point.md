@@ -61,6 +61,10 @@ stereo_point(
 
   optional graphical parameters
 
+## Value
+
+two-column matrix of the stereographic or equal-area coordinates
+
 ## Note
 
 `"Plane"` and `"Fault"` objects will be displayed as pole to the plane
@@ -77,6 +81,7 @@ Other stereo-plot:
 [`stereo_cones`](https://tobiste.github.io/structr/reference/stereo_cones.md),
 [`stereo_confidence()`](https://tobiste.github.io/structr/reference/stereo_confidence.md),
 [`stereo_contour`](https://tobiste.github.io/structr/reference/stereo_contour.md),
+[`stereo_lines()`](https://tobiste.github.io/structr/reference/stereo_lines.md),
 [`stereo_segment()`](https://tobiste.github.io/structr/reference/stereo_segment.md),
 [`stereoplot()`](https://tobiste.github.io/structr/reference/stereoplot.md),
 [`stereoplot_guides()`](https://tobiste.github.io/structr/reference/stereoplot_guides.md),

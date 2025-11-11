@@ -9,6 +9,10 @@ numPerms. For small sample sizes, see rayWellnerExactInference.
 Wellner_inference_ray(xs, ys, numPerms)
 ```
 
+## Source
+
+`geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
+
 ## Arguments
 
 - xs:

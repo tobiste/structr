@@ -36,6 +36,11 @@ wellner_inference(x, y, n_perm = 1000)
 wellner_inference(x, y, n_perm = 1000)
 ```
 
+## Source
+
+modified after `geologyGeometry` (J.R. Davis):
+http://www.joshuadavis.us/software/
+
 ## Arguments
 
 - x, y:

@@ -108,6 +108,10 @@
     </div>
 
     <div class="section level2">
+    <h2 id="source">Source<a class="anchor" aria-label="anchor" href="#source"></a></h2>
+    <p><code>apsg</code> by O. Lexa: https://apsg.readthedocs.io/</p>
+    </div>
+    <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
@@ -168,24 +172,23 @@ the tensor. Identity matrix by default.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>object of class <code>"defgrad"</code>, i.e. a 3x3 matrix.</p>
-<p>If <code>x</code>  is a Pair object, then <code>defgrad()</code> creates <code>"defgrad"</code> tensor representing rotation defined by <code>"Pair"</code>.
-Rotation brings x-axis to lineation and z-axis to normal to plane</p>
-<p><code>defgrad_by_comp</code> creates an defined by individual components (default is identity tensor)</p>
-<p><code>defgrad_by_ratio()</code> creates an isochoric <code>"defgrad"</code> tensor with axial
-stretches defined by strain ratios (default is identity tensor).</p>
-<p><code>defgrad_from_vectors()</code> creates <code>"defgrad"</code> tensor representing rotation around the
-axis perpendicular to both vectors and rotate <code>v1</code> to <code>v2</code>.</p>
-<p><code>defgrad_from_axisangle</code>  creates <code>"defgrad"</code> tensor representing a rigid-body
-rotation about an axis and an angle.</p>
-<p><code>defgrad_from_pureshear</code> creates an isochoric coaxial <code>"defgrad"</code> tensor.</p>
-<p><code>defgrad_from_simpleshear</code> creates an isochoric non-coaxial <code>"defgrad"</code> tensor.</p>
-<p><code>defgrad_from_generalshear</code> creates an isochoric <code>"defgrad"</code> tensor, where
+    <p>object of class <code>"defgrad"</code>, i.e. a 3x3 matrix.</p><ul><li><p>If <code>x</code>  is a Pair object, then <code>defgrad()</code> creates <code>"defgrad"</code> tensor representing rotation defined by <code>"Pair"</code>.
+Rotation brings x-axis to lineation and z-axis to normal to plane</p></li>
+<li><p><code>defgrad_by_comp</code> creates an defined by individual components (default is identity tensor)</p></li>
+<li><p><code>defgrad_by_ratio()</code> creates an isochoric <code>"defgrad"</code> tensor with axial
+stretches defined by strain ratios (default is identity tensor).</p></li>
+<li><p><code>defgrad_from_vectors()</code> creates <code>"defgrad"</code> tensor representing rotation around the
+axis perpendicular to both vectors and rotate <code>v1</code> to <code>v2</code>.</p></li>
+<li><p><code>defgrad_from_axisangle</code>  creates <code>"defgrad"</code> tensor representing a rigid-body
+rotation about an axis and an angle.</p></li>
+<li><p><code>defgrad_from_pureshear</code> creates an isochoric coaxial <code>"defgrad"</code> tensor.</p></li>
+<li><p><code>defgrad_from_simpleshear</code> creates an isochoric non-coaxial <code>"defgrad"</code> tensor.</p></li>
+<li><p><code>defgrad_from_generalshear</code> creates an isochoric <code>"defgrad"</code> tensor, where
 transtension is \(k&gt;1\) and \(\gamma \neq 0\), and transpression is
-\(k&lt;1\) and \(\gamma \neq 0\).</p>
-<p><code>defgrad_from_dilation</code> creates <code>"defgrad"</code> tensor representing the volume change
-in z-direction.</p>
-    </div>
+\(k&lt;1\) and \(\gamma \neq 0\).</p></li>
+<li><p><code>defgrad_from_dilation</code> creates <code>"defgrad"</code> tensor representing the volume change
+in z-direction.</p></li>
+</ul></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Fossen, H., &amp; Tikoff, B. (1993). The deformation matrix for simultaneous

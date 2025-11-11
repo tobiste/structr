@@ -891,6 +891,9 @@ MIT License
 - [`stereo_coords()`](https://tobiste.github.io/structr/reference/stereo_coords.md)
   : Stereographic Projection
 
+- [`stereo_lines()`](https://tobiste.github.io/structr/reference/stereo_lines.md)
+  : Lines in a Stereoplot
+
 - [`stereo_path()`](https://tobiste.github.io/structr/reference/stereo_path.md)
   : Deformation Paths in Steroplot
 

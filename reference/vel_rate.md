@@ -12,6 +12,10 @@ velgrad_rate(x)
 velgrad_spin(x)
 ```
 
+## Source
+
+`apsg` by O. Lexa
+
 ## Arguments
 
 - x:

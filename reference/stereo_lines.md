@@ -1,12 +1,12 @@
-# Add Points to a Plot
+# Lines in a Stereoplot
 
-Add Points to a Plot
+Draws simple lines between vector points in stereographic or equal-area
+projection
 
 ## Usage
 
 ``` r
-# S3 method for class 'spherical'
-points(x, upper.hem = FALSE, earea = TRUE, ...)
+stereo_lines(x, upper.hem = FALSE, earea = TRUE, BALL.radius = 1, ...)
 ```
 
 ## Arguments
@@ -28,22 +28,35 @@ points(x, upper.hem = FALSE, earea = TRUE, ...)
   the default), or `FALSE` for meridional stereographic projection (also
   "Wulff net" or "Stereonet").
 
+- BALL.radius:
+
+  numeric size of sphere
+
 - ...:
 
-  arguments passed to
-  [`graphics::points()`](https://rdrr.io/r/graphics/points.html)
+  optional graphical parameters passed to
+  [`graphics::lines()`](https://rdrr.io/r/graphics/lines.html)
+
+## Value
+
+two-column matrix of the stereographic or equal-area coordinates
 
 ## See also
+
+[`slerp()`](https://tobiste.github.io/structr/reference/slerp.md),
+[stereo_greatcircle](https://tobiste.github.io/structr/reference/stereo_cones.md),
+`stereo_lines()`,
+[`stereo_segment()`](https://tobiste.github.io/structr/reference/stereo_segment.md)
 
 Other stereo-plot:
 [`fault-plot`](https://tobiste.github.io/structr/reference/fault-plot.md),
 [`lines.spherical()`](https://tobiste.github.io/structr/reference/lines.spherical.md),
 [`plot-spherical`](https://tobiste.github.io/structr/reference/plot-spherical.md),
+[`points.spherical()`](https://tobiste.github.io/structr/reference/points.spherical.md),
 [`stereo_arrows()`](https://tobiste.github.io/structr/reference/stereo_arrows.md),
 [`stereo_cones`](https://tobiste.github.io/structr/reference/stereo_cones.md),
 [`stereo_confidence()`](https://tobiste.github.io/structr/reference/stereo_confidence.md),
 [`stereo_contour`](https://tobiste.github.io/structr/reference/stereo_contour.md),
-[`stereo_lines()`](https://tobiste.github.io/structr/reference/stereo_lines.md),
 [`stereo_point()`](https://tobiste.github.io/structr/reference/stereo_point.md),
 [`stereo_segment()`](https://tobiste.github.io/structr/reference/stereo_segment.md),
 [`stereoplot()`](https://tobiste.github.io/structr/reference/stereoplot.md),
@@ -54,7 +67,6 @@ Other stereo-plot:
 ## Examples
 
 ``` r
-stereoplot()
-points(rvmf(n = 100))
-points(Plane(120, 30), col = "red", pch = 19)
+plot(example_lines, col= 'grey')
+stereo_lines(example_lines[1:2, ], col = 'red')
 ```

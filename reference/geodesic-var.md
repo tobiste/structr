@@ -26,7 +26,7 @@ geodesic_var(x, y = NULL, group = NULL, ...)
 
 ## Source
 
-geologyGeometry (J.R. Davis)
+`geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
 
 ## Arguments
 

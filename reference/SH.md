@@ -2,7 +2,8 @@
 
 Calculates the direction of maximum horizontal stress using only the
 directions of the principal stress and \\R = \frac{S1 - S2}{S1 - S3}\\.
-This function Equations 11 and 10 from Lund and Townend (2007).
+This function implements equations 11 and 10 from Lund and Townend
+(2007).
 
 ## Usage
 

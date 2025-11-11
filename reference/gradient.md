@@ -20,6 +20,10 @@ velgrad(x, ...)
 velgrad(x, time = 1, ...)
 ```
 
+## Source
+
+`apsg` by O. Lexa: https://apsg.readthedocs.io/
+
 ## Arguments
 
 - x:

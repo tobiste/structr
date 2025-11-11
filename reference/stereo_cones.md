@@ -59,9 +59,14 @@ stereo_greatcircle(x, ...)
 
 - ...:
 
-  optional graphical parameters
+  optional graphical parameters passed to
+  [`graphics::lines()`](https://rdrr.io/r/graphics/lines.html)
 
 ## See also
+
+[`lines.spherical()`](https://tobiste.github.io/structr/reference/lines.spherical.md),
+[`stereo_segment()`](https://tobiste.github.io/structr/reference/stereo_segment.md),
+[`stereo_lines()`](https://tobiste.github.io/structr/reference/stereo_lines.md)
 
 Other stereo-plot:
 [`fault-plot`](https://tobiste.github.io/structr/reference/fault-plot.md),
@@ -71,6 +76,7 @@ Other stereo-plot:
 [`stereo_arrows()`](https://tobiste.github.io/structr/reference/stereo_arrows.md),
 [`stereo_confidence()`](https://tobiste.github.io/structr/reference/stereo_confidence.md),
 [`stereo_contour`](https://tobiste.github.io/structr/reference/stereo_contour.md),
+[`stereo_lines()`](https://tobiste.github.io/structr/reference/stereo_lines.md),
 [`stereo_point()`](https://tobiste.github.io/structr/reference/stereo_point.md),
 [`stereo_segment()`](https://tobiste.github.io/structr/reference/stereo_segment.md),
 [`stereoplot()`](https://tobiste.github.io/structr/reference/stereoplot.md),

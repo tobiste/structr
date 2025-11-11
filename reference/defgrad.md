@@ -49,6 +49,10 @@ defgrad(x, ...)
 defgrad(x, time, steps, ...)
 ```
 
+## Source
+
+`apsg` by O. Lexa: https://apsg.readthedocs.io/
+
 ## Arguments
 
 - x:
@@ -110,35 +114,35 @@ defgrad(x, time, steps, ...)
 
 object of class `"defgrad"`, i.e. a 3x3 matrix.
 
-If `x` is a Pair object, then `defgrad()` creates `"defgrad"` tensor
-representing rotation defined by `"Pair"`. Rotation brings x-axis to
-lineation and z-axis to normal to plane
+- If `x` is a Pair object, then `defgrad()` creates `"defgrad"` tensor
+  representing rotation defined by `"Pair"`. Rotation brings x-axis to
+  lineation and z-axis to normal to plane
 
-`defgrad_by_comp` creates an defined by individual components (default
-is identity tensor)
+- `defgrad_by_comp` creates an defined by individual components (default
+  is identity tensor)
 
-`defgrad_by_ratio()` creates an isochoric `"defgrad"` tensor with axial
-stretches defined by strain ratios (default is identity tensor).
+- `defgrad_by_ratio()` creates an isochoric `"defgrad"` tensor with
+  axial stretches defined by strain ratios (default is identity tensor).
 
-`defgrad_from_vectors()` creates `"defgrad"` tensor representing
-rotation around the axis perpendicular to both vectors and rotate `v1`
-to `v2`.
+- `defgrad_from_vectors()` creates `"defgrad"` tensor representing
+  rotation around the axis perpendicular to both vectors and rotate `v1`
+  to `v2`.
 
-`defgrad_from_axisangle` creates `"defgrad"` tensor representing a
-rigid-body rotation about an axis and an angle.
+- `defgrad_from_axisangle` creates `"defgrad"` tensor representing a
+  rigid-body rotation about an axis and an angle.
 
-`defgrad_from_pureshear` creates an isochoric coaxial `"defgrad"`
-tensor.
+- `defgrad_from_pureshear` creates an isochoric coaxial `"defgrad"`
+  tensor.
 
-`defgrad_from_simpleshear` creates an isochoric non-coaxial `"defgrad"`
-tensor.
+- `defgrad_from_simpleshear` creates an isochoric non-coaxial
+  `"defgrad"` tensor.
 
-`defgrad_from_generalshear` creates an isochoric `"defgrad"` tensor,
-where transtension is \\k\>1\\ and \\\gamma \neq 0\\, and transpression
-is \\k\<1\\ and \\\gamma \neq 0\\.
+- `defgrad_from_generalshear` creates an isochoric `"defgrad"` tensor,
+  where transtension is \\k\>1\\ and \\\gamma \neq 0\\, and
+  transpression is \\k\<1\\ and \\\gamma \neq 0\\.
 
-`defgrad_from_dilation` creates `"defgrad"` tensor representing the
-volume change in z-direction.
+- `defgrad_from_dilation` creates `"defgrad"` tensor representing the
+  volume change in z-direction.
 
 ## References
 

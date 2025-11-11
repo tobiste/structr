@@ -26,7 +26,9 @@ geodesic_mean(x, ...)
 
 ## Source
 
-geologyGeometry (J.R. Davis)
+`geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
+
+`geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
 
 ## Arguments
 

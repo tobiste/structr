@@ -17,7 +17,7 @@ confidence_ellipse(
 
 ## Source
 
-geologyGeometry (J.R. Davis)
+`geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
 
 ## Arguments
 
