@@ -38,6 +38,9 @@ hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
 
 \item{...}{optional graphical parameters}
 }
+\value{
+two-column matrix of the stereographic or equal-area coordinates
+}
 \description{
 Visualization of lines, planes in a stereographic projection.
 }
@@ -59,6 +62,7 @@ Other stereo-plot:
 \code{\link{stereo_cones}},
 \code{\link{stereo_confidence}()},
 \code{\link{stereo_contour}},
+\code{\link{stereo_lines}()},
 \code{\link{stereo_segment}()},
 \code{\link{stereoplot}()},
 \code{\link{stereoplot_guides}()},

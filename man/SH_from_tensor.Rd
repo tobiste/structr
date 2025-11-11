@@ -7,7 +7,8 @@
 SH_from_tensor(S)
 }
 \arguments{
-\item{S}{3x3 matrix where the columns are the principal stress axes and the rows are the coordinates.}
+\item{S}{3x3 matrix where the columns are the principal stress axes and the
+rows are the coordinates.}
 }
 \value{
 numeric angle in degrees. The direction of SH from North.
@@ -24,6 +25,10 @@ S <- cbind(S1, S2, S3) * cbind(rep(3, 3), rep(2, 3), rep(1, 3)) / 3
 SH_from_tensor(S)
 }
 \references{
+Lund and Townend, (2007). Calculating horizontal stress
+orientations with full or partial knowledge of the tectonic stress tensor,
+Geophys. J. Int., doi:\doi{10.1111/j.1365-246X.2007.03468.x}.
+
 Lund and Townend, (2007). Calculating horizontal stress
 orientations with full or partial knowledge of the tectonic stress tensor,
 Geophys. J. Int., doi:\doi{10.1111/j.1365-246X.2007.03468.x}.

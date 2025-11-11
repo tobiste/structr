@@ -10,7 +10,7 @@
 \alias{geodesic_var.Pair}
 \title{The Fréchet (geodesic \eqn{L^2}) variance}
 \source{
-geologyGeometry (J.R. Davis)
+\code{geologyGeometry} (J.R. Davis): http://www.joshuadavis.us/software/
 }
 \usage{
 geodesic_var(x, ...)

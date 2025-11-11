@@ -21,34 +21,36 @@
 #' @param ... parameters passed to function call
 #'
 #' @return object of class `"defgrad"`, i.e. a 3x3 matrix.
+#' \itemize{
+#' \item{If `x`  is a Pair object, then `defgrad()` creates `"defgrad"` tensor representing rotation defined by `"Pair"`.
+#' Rotation brings x-axis to lineation and z-axis to normal to plane}
 #'
-#' If `x`  is a Pair object, then `defgrad()` creates `"defgrad"` tensor representing rotation defined by `"Pair"`.
-#' Rotation brings x-axis to lineation and z-axis to normal to plane
+#' \item{`defgrad_by_comp` creates an defined by individual components (default is identity tensor)}
 #'
-#' `defgrad_by_comp` creates an defined by individual components (default is identity tensor)
+#' \item{`defgrad_by_ratio()` creates an isochoric `"defgrad"` tensor with axial
+#' stretches defined by strain ratios (default is identity tensor).}
 #'
-#' `defgrad_by_ratio()` creates an isochoric `"defgrad"` tensor with axial
-#' stretches defined by strain ratios (default is identity tensor).
+#' \item{`defgrad_from_vectors()` creates `"defgrad"` tensor representing rotation around the
+#' axis perpendicular to both vectors and rotate `v1` to `v2`.}
+#' 
+#' \item{`defgrad_from_axisangle`  creates `"defgrad"` tensor representing a rigid-body
+#' rotation about an axis and an angle.}
 #'
-#' `defgrad_from_vectors()` creates `"defgrad"` tensor representing rotation around the
-#' axis perpendicular to both vectors and rotate `v1` to `v2`.
+#' \item{`defgrad_from_pureshear` creates an isochoric coaxial `"defgrad"` tensor.}
 #'
-#' `defgrad_from_axisangle`  creates `"defgrad"` tensor representing a rigid-body
-#' rotation about an axis and an angle.
+#' \item{`defgrad_from_simpleshear` creates an isochoric non-coaxial `"defgrad"` tensor.}
 #'
-#' `defgrad_from_pureshear` creates an isochoric coaxial `"defgrad"` tensor.
-#'
-#' `defgrad_from_simpleshear` creates an isochoric non-coaxial `"defgrad"` tensor.
-#'
-#' `defgrad_from_generalshear` creates an isochoric `"defgrad"` tensor, where
+#' \item{`defgrad_from_generalshear` creates an isochoric `"defgrad"` tensor, where
 #' transtension is \eqn{k>1} and \eqn{\gamma \neq 0}, and transpression is
-#' \eqn{k<1} and \eqn{\gamma \neq 0}.
+#' \eqn{k<1} and \eqn{\gamma \neq 0}.}
 #'
-#' `defgrad_from_dilation` creates `"defgrad"` tensor representing the volume change
-#' in z-direction.
+#' \item{`defgrad_from_dilation` creates `"defgrad"` tensor representing the volume change
+#' in z-direction.}
+#' }
 #'
 #' @seealso [velgrad()], [transform_linear()] to apply the deformation on an object
 #' @name defgrad
+#' @source `apsg` by O. Lexa: https://apsg.readthedocs.io/
 #'
 #' @references
 #' Fossen, H., & Tikoff, B. (1993). The deformation matrix for simultaneous
@@ -306,6 +308,7 @@ defgrad.velgrad <- function(x, time, steps, ...) {
 #'
 #' @name gradient
 #' @seealso [defgrad()], [stereo_path()] for plotting
+#' @source `apsg` by O. Lexa: https://apsg.readthedocs.io/
 #'
 #' @return 3x3 matrix. If steps is > 1, then a list
 #' of matrices is returned.
@@ -399,6 +402,7 @@ velgrad.defgrad <- function(x, time = 1, ...) {
 #'
 #' @name vel_rate
 #' @seealso [velgrad()]
+#' @source `apsg` by O. Lexa
 #'
 #' @examples
 #' R <- defgrad_from_comp(xx = 2, xy = 1, zz = 0.5)
@@ -463,7 +467,7 @@ flow_apophyses <- function(x) {
     t() |>
     as.Vec3()
 
-  flow_apophyses <- rbind(
+  rbind(
     crossprod(flow_vectors[1, ], flow_vectors[2, ]),
     crossprod(flow_vectors[2, ], flow_vectors[3, ])
   ) |> Plane()

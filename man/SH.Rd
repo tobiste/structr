@@ -26,7 +26,7 @@ The direction of SH from North as numeric angle in degrees (radians if all princ
 \description{
 Calculates the direction of maximum horizontal stress using only the
 directions of the principal stress and \eqn{R = \frac{S1 - S2}{S1 - S3}}.
-This function Equations 11 and 10 from Lund and Townend (2007).
+This function implements equations 11 and 10 from Lund and Townend (2007).
 }
 \examples{
 # first example from https://www.snsn.se/SH/SHcode/benchmark.out

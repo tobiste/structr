@@ -12,6 +12,9 @@
 \alias{wellner_inference.Ray}
 \alias{wellner_inference.Plane}
 \title{Wellner's Two-Sample Test}
+\source{
+modified after \code{geologyGeometry} (J.R. Davis): http://www.joshuadavis.us/software/
+}
 \usage{
 wellner(x, y)
 

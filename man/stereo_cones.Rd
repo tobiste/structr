@@ -39,7 +39,7 @@ hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
 
 \item{BALL.radius}{numeric size of sphere}
 
-\item{...}{optional graphical parameters}
+\item{...}{optional graphical parameters passed to \code{\link[graphics:lines]{graphics::lines()}}}
 }
 \description{
 Visualization of smallcircles and greatcircles in a stereographic projection.
@@ -56,6 +56,8 @@ stereo_point(Line(c(129, 90), c(30, 5)), lab = c("L1", "L2"))
 stereo_smallcircle(Line(c(129, 90), c(30, 5)), d = c(10, 5), col = 1:2, lty = 1:2, lwd = 1:2)
 }
 \seealso{
+\code{\link[=lines.spherical]{lines.spherical()}}, \code{\link[=stereo_segment]{stereo_segment()}}, \code{\link[=stereo_lines]{stereo_lines()}}
+
 Other stereo-plot: 
 \code{\link{fault-plot}},
 \code{\link{lines.spherical}()},
@@ -64,6 +66,7 @@ Other stereo-plot:
 \code{\link{stereo_arrows}()},
 \code{\link{stereo_confidence}()},
 \code{\link{stereo_contour}},
+\code{\link{stereo_lines}()},
 \code{\link{stereo_point}()},
 \code{\link{stereo_segment}()},
 \code{\link{stereoplot}()},

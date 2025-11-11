@@ -30,7 +30,7 @@
 #' @references Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis
 #' for three-dimensional orientational data. Journal of Structural Geology,
 #' 96, 65–89. \doi{10.1016/j.jsg.2017.01.002}
-#' @source geologyGeometry (J.R. Davis)
+#' @source `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
 #'
 #' @examples
 #' set.seed(20250411)
@@ -81,6 +81,7 @@ confidence_ellipse <- function(x, n_iter = 10000L, alpha = 0.05, res = 512L, iso
 }
 
 
+#' @source `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
 lineBootstrapInference <- function(ls, numBoots, ...) {
   boots <- replicate(numBoots, lineProjectedMean(sample(ls,
     length(ls),
@@ -107,6 +108,7 @@ lineBootstrapInference <- function(ls, numBoots, ...) {
   inf
 }
 
+#' @source `geologyGeometry` by Davis, J.R.
 rayBootstrapInference <- function(ls, numBoots, ...) {
   boots <- replicate(numBoots, rayProjectedMean(sample(ls,
     length(ls),
@@ -117,15 +119,18 @@ rayBootstrapInference <- function(ls, numBoots, ...) {
 }
 
 
+#' @source `geologyGeometry` by Davis, J.R.
 lineProjectedMean <- function(us) {
   eig <- lineMeanScatter(us)
   eig$vectors[, 1]
 }
 
 
+#' @source `geologyGeometry` by Davis, J.R.
 rayProjectedMean <- function(us) rayNormalized(arithmeticMean(us))
 
 
+#' @source `geologyGeometry` by Davis, J.R.
 lineMeanScatter <- function(us) {
   tMatrices <- lapply(us, function(u) outer(u, u))
   tMatrix <- arithmeticMean(tMatrices)
@@ -133,6 +138,7 @@ lineMeanScatter <- function(us) {
   eig
 }
 
+#' @source `geologyGeometry` by Davis, J.R.
 arithmeticMean <- function(xs, weights = NULL) {
   if (is.null(weights)) {
     Reduce("+", xs) / length(xs)
@@ -144,7 +150,7 @@ arithmeticMean <- function(xs, weights = NULL) {
   }
 }
 
-
+#' @source `geologyGeometry` by Davis, J.R.
 rayMahalanobisPercentiles <- function(us, center, alpha = 0.05, numPoints = 0, doIsotropic = FALSE) {
   perp <- rayOrthogonalUniform(center)
   rot <- rbind(center, perp, cross(center, perp))
@@ -204,12 +210,14 @@ rayMahalanobisPercentiles <- function(us, center, alpha = 0.05, numPoints = 0, d
   result
 }
 
+#' @source `geologyGeometry` by Davis, J.R.
 rayTangentVectorFromPoint <- function(q, rotation) {
   v <- rayLog(rotation[1, ], q)
   w <- as.numeric(rotation %*% v)[2:3]
   w
 }
 
+#' @source `geologyGeometry` by Davis, J.R.
 rayLog <- function(p, q) {
   normV <- arcCos(dot(p, q))
   w <- rayNormalized(cross(p, q))
@@ -222,12 +230,16 @@ rayLog <- function(p, q) {
 }
 
 # vnorm
+#' @source `geologyGeometry` by Davis, J.R.
 rayNormalized <- function(v) v / sqrt(sum(v^2))
 
+#' @source `geologyGeometry` by Davis, J.R.
 rayOrthogonalUniform <- function(v) rayOrthogonalProjection(v, rayUniform())
 
+#' @source `geologyGeometry` by Davis, J.R.
 rayOrthogonalProjection <- function(pole, v) rayNormalized(v - pole * dot(v, pole) / dot(pole, pole))
 
+#' @source `geologyGeometry` by Davis, J.R.
 rayUniform <- function(n = NULL) {
   if (is.null(n)) {
     cartesianFromHorizontal(c(stats::runif(1, 0, 2 * pi), stats::runif(
@@ -239,13 +251,14 @@ rayUniform <- function(n = NULL) {
   }
 }
 
-
+#' @source `geologyGeometry` by Davis, J.R.
 rayPointFromTangentVector <- function(w, rotation) {
   v <- as.numeric(t(rotation) %*% c(0, w))
   q <- rayExp(rotation[1, ], v)
   q
 }
 
+#' @source `geologyGeometry` by Davis, J.R.
 rayExp <- function(p, v) {
   normV <- sqrt(dot(v, v))
   if (normV == 0) {

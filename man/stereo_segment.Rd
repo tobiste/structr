@@ -23,11 +23,11 @@ hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
 \item{earea}{logical \code{TRUE} for Lambert equal-area projection (also "Schmidt net"; the default), or
 \code{FALSE} for meridional stereographic projection (also "Wulff net" or "Stereonet").}
 
-\item{n}{integer. number of points along greatcircle (100 by default)}
+\item{n}{integer. number of points along great-circle (100 by default)}
 
 \item{BALL.radius}{numeric size of sphere}
 
-\item{...}{graphical parameters passed to \code{\link[graphics:lines]{graphics::lines()}}}
+\item{...}{optional graphical parameters passed to \code{\link[graphics:lines]{graphics::lines()}}}
 }
 \description{
 Plots the great-circle segment between two vectors
@@ -49,7 +49,7 @@ invisible(lapply(seq_len(nrow(x)), FUN = function(i) {
 points(mu, pch = 16, col = "white")
 }
 \seealso{
-\code{\link[=slerp]{slerp()}}, \link{stereo_greatcircle}
+\code{\link[=slerp]{slerp()}}, \link{stereo_greatcircle}, \code{\link[=stereo_lines]{stereo_lines()}}
 
 Other stereo-plot: 
 \code{\link{fault-plot}},
@@ -60,6 +60,7 @@ Other stereo-plot:
 \code{\link{stereo_cones}},
 \code{\link{stereo_confidence}()},
 \code{\link{stereo_contour}},
+\code{\link{stereo_lines}()},
 \code{\link{stereo_point}()},
 \code{\link{stereoplot}()},
 \code{\link{stereoplot_guides}()},

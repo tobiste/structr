@@ -8,6 +8,9 @@
 \alias{velgrad.default}
 \alias{velgrad.defgrad}
 \title{Velocity gradient gradient tensors}
+\source{
+\code{apsg} by O. Lexa: https://apsg.readthedocs.io/
+}
 \usage{
 is.velgrad(x)
 

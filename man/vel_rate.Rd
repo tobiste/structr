@@ -5,6 +5,9 @@
 \alias{velgrad_rate}
 \alias{velgrad_spin}
 \title{Rate and spin of velocity gradient tensor}
+\source{
+\code{apsg} by O. Lexa
+}
 \usage{
 velgrad_rate(x)
 

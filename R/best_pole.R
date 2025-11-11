@@ -387,7 +387,7 @@ regression_cone_ramsay2 <- function(x) {
 #' }
 #' @name best_fit
 #'
-#' @references Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis
+#' @references Davis, J.R. and Titus, S.J. (2017). Modern methods of analysis
 #' for three-dimensional orientational data. Journal of Structural Geology, 96,
 #' 65–89. \doi{10.1016/j.jsg.2017.01.002}
 #'
@@ -471,7 +471,8 @@ regression_greatcircle <- function(x, val = seq_len(nrow(x)), iterations = 1000L
 
 
   result$prediction <- function(x) {
-    as.numeric(rot %*% c(cos(a * x), sin(a * x), 0))
+    pts <- as.numeric(rot %*% c(cos(a * x), sin(a * x), 0))
+    as.Vec3(pts)
   }
 
   if (n_points >= 1) {

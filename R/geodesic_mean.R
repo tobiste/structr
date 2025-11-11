@@ -23,7 +23,7 @@
 #' @references Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis
 #' for three-dimensional orientational data. Journal of Structural Geology,
 #' 96, 65–89. \doi{10.1016/j.jsg.2017.01.002}
-#' @source geologyGeometry (J.R. Davis)
+#' @source `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
 #'
 #' @seealso [geodesic_mean()] for the Fr&#233;chet mean, [sph_mean()] for the arithmetic mean, [projected_mean()] for projected mean
 #'
@@ -114,10 +114,10 @@ geodesic_var.Pair <- function(x, y = NULL, group = NULL, ...) {
 #' @references Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis
 #' for three-dimensional orientational data. Journal of Structural Geology,
 #' 96, 65–89. \doi{10.1016/j.jsg.2017.01.002}
-#' @source geologyGeometry (J.R. Davis)
+#' @source `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
 #'
 #' @seealso [geodesic_var()] for Fr&#233;chet variance, [sph_mean()] for the arithmetic mean, [projected_mean()] for projected mean
-#'
+#' @source `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
 #' @examples
 #' set.seed(20250411)
 #' geodesic_mean(example_planes)

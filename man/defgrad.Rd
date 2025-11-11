@@ -17,6 +17,9 @@
 \alias{defgrad.default}
 \alias{defgrad.velgrad}
 \title{Deformation Gradient Tensor}
+\source{
+\code{apsg} by O. Lexa: https://apsg.readthedocs.io/
+}
 \usage{
 is.defgrad(x)
 
@@ -92,31 +95,32 @@ the tensor. Identity matrix by default.}
 }
 \value{
 object of class \code{"defgrad"}, i.e. a 3x3 matrix.
+\itemize{
+\item{If \code{x}  is a Pair object, then \code{defgrad()} creates \code{"defgrad"} tensor representing rotation defined by \code{"Pair"}.
+Rotation brings x-axis to lineation and z-axis to normal to plane}
 
-If \code{x}  is a Pair object, then \code{defgrad()} creates \code{"defgrad"} tensor representing rotation defined by \code{"Pair"}.
-Rotation brings x-axis to lineation and z-axis to normal to plane
+\item{\code{defgrad_by_comp} creates an defined by individual components (default is identity tensor)}
 
-\code{defgrad_by_comp} creates an defined by individual components (default is identity tensor)
+\item{\code{defgrad_by_ratio()} creates an isochoric \code{"defgrad"} tensor with axial
+stretches defined by strain ratios (default is identity tensor).}
 
-\code{defgrad_by_ratio()} creates an isochoric \code{"defgrad"} tensor with axial
-stretches defined by strain ratios (default is identity tensor).
+\item{\code{defgrad_from_vectors()} creates \code{"defgrad"} tensor representing rotation around the
+axis perpendicular to both vectors and rotate \code{v1} to \code{v2}.}
 
-\code{defgrad_from_vectors()} creates \code{"defgrad"} tensor representing rotation around the
-axis perpendicular to both vectors and rotate \code{v1} to \code{v2}.
+\item{\code{defgrad_from_axisangle}  creates \code{"defgrad"} tensor representing a rigid-body
+rotation about an axis and an angle.}
 
-\code{defgrad_from_axisangle}  creates \code{"defgrad"} tensor representing a rigid-body
-rotation about an axis and an angle.
+\item{\code{defgrad_from_pureshear} creates an isochoric coaxial \code{"defgrad"} tensor.}
 
-\code{defgrad_from_pureshear} creates an isochoric coaxial \code{"defgrad"} tensor.
+\item{\code{defgrad_from_simpleshear} creates an isochoric non-coaxial \code{"defgrad"} tensor.}
 
-\code{defgrad_from_simpleshear} creates an isochoric non-coaxial \code{"defgrad"} tensor.
-
-\code{defgrad_from_generalshear} creates an isochoric \code{"defgrad"} tensor, where
+\item{\code{defgrad_from_generalshear} creates an isochoric \code{"defgrad"} tensor, where
 transtension is \eqn{k>1} and \eqn{\gamma \neq 0}, and transpression is
-\eqn{k<1} and \eqn{\gamma \neq 0}.
+\eqn{k<1} and \eqn{\gamma \neq 0}.}
 
-\code{defgrad_from_dilation} creates \code{"defgrad"} tensor representing the volume change
-in z-direction.
+\item{\code{defgrad_from_dilation} creates \code{"defgrad"} tensor representing the volume change
+in z-direction.}
+}
 }
 \description{
 Deformation Gradient Tensor

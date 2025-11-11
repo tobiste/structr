@@ -3,6 +3,9 @@
 \name{Wellner_inference_ray}
 \alias{Wellner_inference_ray}
 \title{Two-sample test, based on permutations and Wellner's Rayleigh-style T-statistic (Wellner, 1979, Example 1a).}
+\source{
+\code{geologyGeometry} (J.R. Davis): http://www.joshuadavis.us/software/
+}
 \usage{
 Wellner_inference_ray(xs, ys, numPerms)
 }

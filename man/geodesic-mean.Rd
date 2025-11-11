@@ -10,7 +10,9 @@
 \alias{geodesic_mean.Pair}
 \title{The Fréchet (geodesic \eqn{L^2}) mean}
 \source{
-geologyGeometry (J.R. Davis)
+\code{geologyGeometry} (J.R. Davis): http://www.joshuadavis.us/software/
+
+\code{geologyGeometry} (J.R. Davis): http://www.joshuadavis.us/software/
 }
 \usage{
 geodesic_mean(x, ...)

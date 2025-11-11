@@ -4,7 +4,7 @@
 \alias{confidence_ellipse}
 \title{Confidence ellipse}
 \source{
-geologyGeometry (J.R. Davis)
+\code{geologyGeometry} (J.R. Davis): http://www.joshuadavis.us/software/
 }
 \usage{
 confidence_ellipse(
