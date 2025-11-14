@@ -329,6 +329,10 @@
 - [`rkent()`](https://tobiste.github.io/structr/reference/rkent.md) :
   Kent distribution
 
+- [`rotLeftCovariance()`](https://tobiste.github.io/structr/reference/rotLeftCovariance.md)
+  : Sample covariance matrix, approximated in the tangent space at a
+  given rotation.
+
 - [`rotate()`](https://tobiste.github.io/structr/reference/rotate.md) :
   Vector Rotation
 
@@ -359,6 +363,13 @@
   [`dist(`*`<Plane>`*`)`](https://tobiste.github.io/structr/reference/sph-dist.md)
   [`dist(`*`<Pair>`*`)`](https://tobiste.github.io/structr/reference/sph-dist.md)
   : Angular distance matrix for orientation vectors
+
+- [`prcomp(`*`<Vec3>`*`)`](https://tobiste.github.io/structr/reference/sph-prcomp.md)
+  [`prcomp(`*`<Ray>`*`)`](https://tobiste.github.io/structr/reference/sph-prcomp.md)
+  [`prcomp(`*`<Line>`*`)`](https://tobiste.github.io/structr/reference/sph-prcomp.md)
+  [`prcomp(`*`<Plane>`*`)`](https://tobiste.github.io/structr/reference/sph-prcomp.md)
+  [`prcomp(`*`<Pair>`*`)`](https://tobiste.github.io/structr/reference/sph-prcomp.md)
+  : Principal component (geodesic) analysis in the tangent space.
 
 - [`sph_cluster()`](https://tobiste.github.io/structr/reference/sph_cluster.md)
   : Cluster spherical data
@@ -471,7 +482,8 @@
 - [`variance_plot()`](https://tobiste.github.io/structr/reference/variance_plot.md)
   : Variance Plot
 
-- [`vec_list()`](https://tobiste.github.io/structr/reference/vec_list.md)
+- [`vec_list()`](https://tobiste.github.io/structr/reference/vec-list.md)
+  [`list_vec()`](https://tobiste.github.io/structr/reference/vec-list.md)
   : List of vectors
 
 - [`vector_length()`](https://tobiste.github.io/structr/reference/vecmath.md)

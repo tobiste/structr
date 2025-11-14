@@ -92,6 +92,7 @@ three-dimensional orientational data. Journal of Structural Geology, 96,
 ## Examples
 
 ``` r
+set.seed(20250411)
 data("gray_example")
 bestgc_clea <- regression_greatcircle(gray_example[1:8, ])
 bestgc_bedd <- regression_greatcircle(gray_example[9:16, ])
