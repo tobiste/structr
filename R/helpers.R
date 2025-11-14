@@ -471,15 +471,33 @@ modes <- function(kde) {
 #' function to link with the package `geologyGeometry` by J. R. Davis
 #'
 #' @inheritParams sph_mean
+#' @param ls list of 3-element vectors (Cartesian coordinates x, y, z)
 #'
-#' @returns list
-#' @export
+#' @returns `vec_list` returns a list of 3-element vectors (Cartesian coordinates x, y, z). 
+#' `list_vec` returns a `"Vec3"` object
 #'
+#' @name vec-list
+# #' @seealso [rot2pair()] and [pair2rot()]
+#' 
 #' @examples
-#' vec_list(example_lines)
+#' ls <- vec_list(example_lines[1:5, ])
+#' print(ls)
+#' 
+#' list_vec(ls)
+NULL
+
+#' @rdname vec-list
+#' @export
 vec_list <- function(x) {
   Vec3(x) |>
     asplit(MARGIN = 1)
+}
+
+#' @rdname vec-list
+#' @export
+list_vec <- function(ls) {
+  do.call(rbind, ls) |> 
+    as.Vec3()
 }
 
 # Confidence margin for scalar values

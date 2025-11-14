@@ -48,6 +48,7 @@ list. \describe{
 Fits a great circle arc to a set of lines, based on an independent scalar variable.
 }
 \examples{
+set.seed(20250411)
 data("gray_example")
 bestgc_clea <- regression_greatcircle(gray_example[1:8, ])
 bestgc_bedd <- regression_greatcircle(gray_example[9:16, ])
