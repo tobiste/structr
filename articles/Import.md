@@ -34,6 +34,10 @@ imported_data <- read.table(
 )
 ```
 
+> You can also use
+> [`file.choose()`](https://rdrr.io/r/base/file.choose.html) to open the
+> explorer window and navigate to your file.
+
 This imports the tab-separated file as an `"data.frame"` object with the
 first column representing the row names, and the two other columns the
 headers of the table. Say these measurements represent plane
