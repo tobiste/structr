@@ -42,17 +42,24 @@ on your computer:
     [Positron](https://positron.posit.co/) and
     [VisualStudio](https://visualstudio.microsoft.com/) are also great
     alternatives. You are also allowed to use R's native GUI or use R in
-    your terminal only.
+    your terminal only. s
 
-3.  Open your IDE and now you can install the {structr} package by
-    typing into the commando console the following code. This will
-    install the package and every required library as well.
+3.  Open your IDE and first install the {devtools} package to later
+    install {structr} from my github repository:
 
-```{r installl, echo=FALSE, eval=FALSE}
+```{r install1, echo=FALSE, eval=FALSE}
+install.packages("devtools")
+```
+
+4.  Now you can install the {structr} package by typing into the
+    commando console the following code. This will install the package
+    and every required library as well.
+
+```{r install2, echo=FALSE, eval=FALSE}
 devtools::install_github("tobiste/structr")
 ```
 
-4.  Next you must "load" the library to use the functions of {structr}:
+5.  Next you must "load" the library to use the functions of {structr}:
 
 ```{r setup, warning=FALSE, message=FALSE}
 library(structr)
@@ -60,8 +67,10 @@ library(structr)
 
 ## Import
 
-The first thing you usually need to do is importing your orientation data. This can be done in several different ways depending on your preferences.
-For example, RStudio has a GUI that allows to import data without using R commandos (File > Import Datasets).
+The first thing you usually need to do is importing your orientation
+data. This can be done in several different ways depending on your
+preferences. For example, RStudio has a GUI that allows to import data
+without using R commandos (File \> Import Datasets).
 
 You can also use one of the below functions to import data:
 
