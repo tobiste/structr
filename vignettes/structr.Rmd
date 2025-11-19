@@ -42,7 +42,7 @@ on your computer:
     [Positron](https://positron.posit.co/) and
     [VisualStudio](https://visualstudio.microsoft.com/) are also great
     alternatives. You are also allowed to use R's native GUI or use R in
-    your terminal only. s
+    your terminal only.
 
 3.  Open your IDE and first install the {devtools} package to later
     install {structr} from my github repository:
