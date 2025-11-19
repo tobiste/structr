@@ -21,13 +21,16 @@ on your computer:
     [Positron](https://positron.posit.co/) and
     [VisualStudio](https://visualstudio.microsoft.com/) are also great
     alternatives. You are also allowed to use R’s native GUI or use R in
-    your terminal only.
+    your terminal only. s
 
-3.  Open your IDE and now you can install the {structr} package by
-    typing into the commando console the following code. This will
-    install the package and every required library as well.
+3.  Open your IDE and first install the {devtools} package to later
+    install {structr} from my github repository:
 
-4.  Next you must “load” the library to use the functions of {structr}:
+4.  Now you can install the {structr} package by typing into the
+    commando console the following code. This will install the package
+    and every required library as well.
+
+5.  Next you must “load” the library to use the functions of {structr}:
 
 ``` r
 library(structr)
