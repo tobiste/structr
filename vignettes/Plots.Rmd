@@ -14,7 +14,9 @@ editor_options:
     wrap: 72
 ---
 
-This tutorial shows how to create various orientation plots using the {structr} package, including stereographic and equal-area projections, fabric plots, density plots, and fault plots.
+This tutorial shows how to create various orientation plots using the
+{structr} package, including stereographic and equal-area projections,
+fabric plots, density plots, and fault plots.
 
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
@@ -27,8 +29,8 @@ knitr::opts_chunk$set(
 library(structr)
 ```
 
-
 Import and convert to spherical objects:
+
 ```{r example}
 data(example_planes_df)
 data(example_lines_df)
@@ -38,7 +40,9 @@ lines <- Line(example_lines_df$trend, example_lines_df$plunge)
 ```
 
 ## Equal-area projection
-Lambert equal area, lower hemisphere projection is the default plotting setting.
+
+Lambert equal area, lower hemisphere projection is the default plotting
+setting.
 
 ```{r stereo_earea}
 #| fig.alt: >
@@ -53,10 +57,11 @@ title(main = "Example data", sub = "Lambert equal area, lower hemisphere project
 
 > Points can be added using the `points()` function.
 
-
 ## Stereographic projection
 
-To change to equal angle stereographic, upper hemisphere projection, just set the `earea` argument to `FALSE`, and the `upper.hem` argument to `TRUE`:
+To change to equal angle stereographic, upper hemisphere projection,
+just set the `earea` argument to `FALSE`, and the `upper.hem` argument
+to `TRUE`:
 
 ```{r stereo_eangle}
 #| fig.alt: >
@@ -70,9 +75,11 @@ title(main = "Example data", sub = "Equal angle stereographic, upper hemisphere 
 ```
 
 ### Great and small circles
+
 Great and small circles can be added using the `lines()` function.
 
 Adding great circles for the first 10 vectors in planes:
+
 ```{r stereo_greatcircle}
 #| fig.alt: >
 #|   Diagram showing greatcircles
@@ -81,7 +88,9 @@ lines(planes[1:10, ], col = "lightgrey", lty = 1)
 points(planes[1:10, ], col = "#000004", pch = 1, cex = .5)
 ```
 
-To plot a small circle with, e.g., a 10° radius, you need to specify the `ang` argument in `lines()`:
+To plot a small circle with, e.g., a 10° radius, you need to specify the
+`ang` argument in `lines()`:
+
 ```{r stereo_smallcircle}
 #| fig.alt: >
 #|   Diagram showing smallcircles
@@ -90,23 +99,31 @@ points(lines[1:5, ], col = "#B63679", pch = 19, cex = .5)
 lines(lines[1:5, ], ang = 10, col = "#B63679")
 ```
 
-
 ## Fabric plots
-The **Eigenvalues** of the orientation tensor describe the shape of the distribution of these vectors, that is who clustered, cylindrical or random these vectors are distributed.
 
-A Fabric plot visualizes the shape of the distribution by plotting the eigenvalues of the orientation tensor.
-Three different diagram are provided by {structr}, namely the triangular *Vollmer plot*[^vollmer], the logarithmic biplot (*Woodcock plot*)[^woodcock], and the  Lode parameter vs. natural octahedral strain  diagram (*Hsu plot*)[|^hsu].
+The **Eigenvalues** of the orientation tensor describe the shape of the
+distribution of these vectors, that is who clustered, cylindrical or
+random these vectors are distributed.
 
-[^vollmer]: Vollmer, F. W. (1990). An application of eigenvalue methods to structural domain analysis. Geological Society of America Bulletin, 102, 786–791.
+A Fabric plot visualizes the shape of the distribution by plotting the
+eigenvalues of the orientation tensor. Three different diagram are
+provided by {structr}, namely the triangular *Vollmer plot*[^1], the
+logarithmic biplot (*Woodcock plot*)[^2], and the Lode parameter vs.
+natural octahedral strain diagram (*Hsu plot*)[\|\^hsu].
 
-[^woodcock]: Woodcock, N. H. (1977). Specification of fabric shapes using an eigenvalue method. Geological Society of America Bulletin88, 1231–1236. Retrieved from http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf
+[^1]: Vollmer, F. W. (1990). An application of eigenvalue methods to
+    structural domain analysis. Geological Society of America Bulletin,
+    102, 786–791.
 
-[^hsu]: Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial
-    strain paths. Journal of Strain Analysis, 1(3), 216–222.
-    <https://doi.org/10.1243/03093247V013216>
+[^2]: Woodcock, N. H. (1977). Specification of fabric shapes using an
+    eigenvalue method. Geological Society of America Bulletin88,
+    1231–1236. Retrieved from
+    <http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf>
 
 ### Vollmer plot
-`vollmer_plot()` creates a triangular plot showing the shape of the orientation distribution (after Vollmer, 1990).
+
+`vollmer_plot()` creates a triangular plot showing the shape of the
+orientation distribution (after Vollmer, 1990).
 
 ```{r vollmer, message=FALSE,warning=FALSE}
 #| fig.alt: >
@@ -117,8 +134,10 @@ vollmer_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```
 
-### Woodcock plot 
-`woodcock_plot()` creates a logarithmic biplot showing the shape of the orientation distribution (after Woodcock, 1977).
+### Woodcock plot
+
+`woodcock_plot()` creates a logarithmic biplot showing the shape of the
+orientation distribution (after Woodcock, 1977).
 
 ```{r woodcock, message=FALSE,warning=FALSE}
 #| fig.alt: >
@@ -130,15 +149,18 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 ```
 
 ### Hsu plot
-`hsu_plot()` creates a Lode parameter[^lode] vs. natural octahedral strain[^nadai] diagram showing the shape of the orientation distribution (after Hsu, 1965).
 
-[^nadai]: Nádai, A. (1950). Theory of flow and fracture of solids.
-    McGraw-Hill.
+`hsu_plot()` creates a Lode parameter[^3] vs. natural octahedral
+strain[^4] diagram showing the shape of the orientation distribution
+(after Hsu, 1965).
 
-[^lode]: Lode, W. (1926). Versuche über den Einfluß der mittleren
+[^3]: Lode, W. (1926). Versuche über den Einfluß der mittleren
     Hauptspannung auf das Fließen der Metalle Eisen. Kupfer und Nickel.
     Zeitschrift Für Physik, 36(11–12), 913–939.
     <https://doi.org/10.1007/BF01400222>
+
+[^4]: Nádai, A. (1950). Theory of flow and fracture of solids.
+    McGraw-Hill.
 
 ```{r hsu, message=FALSE,warning=FALSE}
 #| fig.alt: >
@@ -151,10 +173,14 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 
 ## Density plots
 
-**Kamb** contours[^kamb] and densities can be added to an existing projection plot using the `contour` functions. 
-Weighted densities can be controlled by the `weights` argument and are useful when the orientation measurements have different accuracies.
+**Kamb** contours[^5] and densities can be added to an existing
+projection plot using the `contour` functions. Weighted densities can be
+controlled by the `weights` argument and are useful when the orientation
+measurements have different accuracies.
 
-[^kamb]: Kamb, W. B. (1959). Ice Petrofabric Observations from Blue Glacier, Washington, in Relation to Theory and Experiment. Journal of Geophysical Research, 54(11).
+[^5]: Kamb, W. B. (1959). Ice Petrofabric Observations from Blue
+    Glacier, Washington, in Relation to Theory and Experiment. Journal
+    of Geophysical Research, 54(11).
 
 ```{r dens_contour, message=FALSE,warning=FALSE}
 #| fig.alt: >
@@ -168,7 +194,10 @@ points(planes, col = "grey", pch = 16, cex = .5)
 contour(planes, add = TRUE, density.params = list(weights = plane_weightings))
 ```
 
-`contour()` adds contour lines, while `contourf()` adds filled contours and `image()` adds a density image (i.e. a dense grid of colored rectangles). See `?contour`, `?contourf`, and `?image` for more information.
+`contour()` adds contour lines, while `contourf()` adds filled contours
+and `image()` adds a density image (i.e. a dense grid of colored
+rectangles). See `?contour`, `?contourf`, and `?image` for more
+information.
 
 ```{r dens_filled, message=FALSE,warning=FALSE}
 #| fig.alt: >
@@ -181,7 +210,9 @@ contourf(planes, add = TRUE, density.params = list(weights = plane_weightings))
 
 ## Synopsis
 
-Let's create a publication ready synoptical plot for the line and plane orientation data, showing the density distribution, eigenvectors/mean values, and fabric strength.
+Let's create a publication ready synoptical plot for the line and plane
+orientation data, showing the density distribution, eigenvectors/mean
+values, and fabric strength.
 
 ```{r synops1}
 # Minimum eigenvector of plane's orientation tensor:
@@ -198,6 +229,7 @@ fabric_l <- vollmer(lines)["D"]
 ```
 
 The final plot:
+
 ```{r synops, message=FALSE,warning=FALSE}
 #| fig.alt: >
 #|   Diagram showing the density distribution, eigenvectors and mean values
@@ -235,13 +267,19 @@ title(
 
 ## Fault plots
 
-Fault objects consist of planes (fault plane), lines (e.g. striae), and the sense of movement. There are two ways how these combined features can be visualized, namely the Angelier and the Hoeppener plot.
+Fault objects consist of planes (fault plane), lines (e.g. striae), and
+the sense of movement. There are two ways how these combined features
+can be visualized, namely the Angelier and the Hoeppener plot.
 
 ### Angelier plot
-The **Angelier plot** shows all planes as *great circles* and lineations as points (after Angelier, 1984)[^angelier]. Fault striae are plotted as vectors on top of the lineation pointing in the movement direction of the hanging wall. Easy to read in case of homogeneous or small datasets. 
 
-[^angelier]: Angelier, J. Tectonic analysis of fault slip data sets, J. Geophys. Res. 89 (B7), 5835-5848 (1984)
+The **Angelier plot** shows all planes as *great circles* and lineations
+as points (after Angelier, 1984)[^6]. Fault striae are plotted as
+vectors on top of the lineation pointing in the movement direction of
+the hanging wall. Easy to read in case of homogeneous or small datasets.
 
+[^6]: Angelier, J. Tectonic analysis of fault slip data sets, J.
+    Geophys. Res. 89 (B7), 5835-5848 (1984)
 
 ```{r faults1}
 #| fig.alt: >
@@ -261,10 +299,13 @@ angelier(f, col = viridis::magma(nrow(f), end = .9))
 
 ### Hoeppener plot
 
-The **Hoeppener plot** shows all planes as *poles* while lineations are not shown (after Hoeppener, 1955)[^hoeppener]. Instead, fault striae are plotted as vectors on top of poles pointing in the movement direction of the hanging wall. Useful in case of large or heterogeneous datasets. 
+The **Hoeppener plot** shows all planes as *poles* while lineations are
+not shown (after Hoeppener, 1955)[^7]. Instead, fault striae are plotted
+as vectors on top of poles pointing in the movement direction of the
+hanging wall. Useful in case of large or heterogeneous datasets.
 
-[^hoeppener]: Hoeppener, R. Tektonik im Schiefergebirge. Geol Rundsch 44, 26-58 (1955). https://doi.org/10.1007/BF01802903
-
+[^7]: Hoeppener, R. Tektonik im Schiefergebirge. Geol Rundsch 44, 26-58
+    (1955). <https://doi.org/10.1007/BF01802903>
 
 ```{r faults2}
 #| fig.alt: >
@@ -274,8 +315,48 @@ stereoplot(title = "Hoeppener plot")
 hoeppener(f, col = viridis::magma(nrow(f), end = .9), points = FALSE)
 ```
 
-The `points` argument disables plotting the points at the start of the arrows.
+The `points` argument disables plotting the points at the start of the
+arrows.
 
+> `fault_plot()` is a wrapper function that allows to switch between
+> Angelier and Hoeppener plot using the `type` argument. See
+> `?fault_plot` for details.
 
-> `fault_plot()` is a wrapper function that allows to switch between Angelier and Hoeppener plot using the `type` argument. See `?fault_plot` for details.
+## Assign plotting parameters based on data
 
+{structr} offers some convenience functions to help your to map certain
+plotting parameters such as color, size, and symbol based on
+vector values:
+
+-   `assign_col()` for color
+
+-   `assign_cex()` for marker size (character expansion)
+
+-   `assign_pch()` for marker symbols (plotting character)
+
+The following example assigns the `col` (color), the `cex` (size), and the `pch` (symbol) based 
+on three different properties:
+
+```{r assign}
+# define three random properties
+prop_continuous1 <- runif(nrow(planes))
+prop_continuous2 <- runif(nrow(planes))
+prop_discrete <- sort(letters[sample(1:3, size = nrow(planes), replace = TRUE)])
+
+stereoplot()
+points(planes, 
+       col = assign_col(prop_continuous1), 
+       cex = assign_cex(prop_continuous2, area = TRUE),
+       pch = assign_pch(prop_discrete)
+       )
+
+# Add legends
+legend_cex(plane_weightings, area = TRUE, title = 'A continuous property', position = 'bottomleft')
+legend_pch(prop_discrete, title = 'A discrete property', position = 'topleft')
+legend_col(pretty(plane_weightings), title = 'Another continuous property')
+```
+The legend for these plotting parameters can be created using the `legend_*` functions.
+
+All these `assign_*` functions can be applied on continuous as well as discrete values using `assign_*_d`. 
+Also there are binned mapping options through `assign_*_binnned`. 
+See `?assign_cex()` for more information.

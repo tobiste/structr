@@ -220,20 +220,9 @@ parse_quadrant_measurement <- function(x) {
   }, simplify = TRUE)
 }
 
-#' @keywords internal
-#' @noRd
-.scale <- function(x, from = range(x), to) {
-  original_min <- from[1]
-  original_max <- from[2]
-
-  target_min <- to[1]
-  target_max <- to[2]
-
-  target_min + (x - original_min) * (target_max - target_min) / (original_max - original_min)
-}
 
 
-# Color assignment helper functions --------------------------------------------
+# Color, shape, and size assignment helper for plotting --------------------------------------------
 
 #' @keywords internal
 #' @noRd
@@ -241,40 +230,58 @@ parse_quadrant_measurement <- function(x) {
   (x - min(x, na.rm = TRUE)) / (max(x, na.rm = TRUE) - min(x, na.rm = TRUE))
 }
 
-#' Helper functions for color assignment and legends
+#' @keywords internal
+#' @noRd
+.scale <- function(x, from = range(x), to) {
+  original_min <- from[1]
+  original_max <- from[2]
+  
+  to <- sort(to)
+  
+  target_min <- to[1]
+  target_max <- to[2]
+  
+  target_min + (x - original_min) * (target_max - target_min) / (original_max - original_min)
+}
+
+
+#' Helper functions to assign plotting colors to a vector
 #'
 #' @param x vector to colorize
-#' @param breaks numeric.
-#' @param n integer.
+#' @param breaks integer giving the desired number of intervals. Non-integer values are rounded down.
+#' @param n integer. The number of colors (\eqn{\ge}1) to be in the palette.
 #' @param title character. Legend title
 #' @param pal color function; Default is [viridis::viridis()]
 #' @param fill color vector
-#' @param labels character.vector. Names of discrete colors.
+#' @param legend character vector. Names of discrete colors.
 #' Can be ignored when `cols` is a named vector.
-#' @param position Legend position
+#' @param position Legend position. Either a two-column vector of the x and y coordinates, or a
+#' keyword from the list `"bottomright"`, `"bottom"`, `"bottomleft"`, `"left"`, 
+#' `"topleft"`, `"top"`, `"topright"`, `"right"` and `"center"`.
 #' @param ... arguments passed to color function
 #'
-#' @return .
+#' @return character vector of colors in hexadecimal code
 #' @import viridis
 #' @importFrom grDevices colorRamp
-#' @name colorize
+#' @family assign
+#' @name assign-color
 #'
 #' @examples
-#' set.seed(1234)
+#' set.seed(20250411)
 #'
 #' # example for discrete colors
 #' x <- rvmf(5, mu = Line(120, 50), k = 5)
 #' key <- letters[round(runif(5, 1, 26))]
 #' plot(x, col = assign_col_d(key), grid.params = list(guides = FALSE))
-#' legend_d(assign_col_d(key))
+#' legend_col_d(assign_col_d(key))
 #'
 #' # example for continuous colors:
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)
 #' plot(x, col = assign_col(runif(100)), grid.params = list(guides = FALSE))
-#' legend_c(seq(0, 1, .1), title = "test")
+#' legend_col(seq(0, 1, .1), title = "test")
 NULL
 
-#' @rdname colorize
+#' @rdname assign-color
 #' @export
 assign_col_d <- function(x, pal = viridis::viridis, ...) {
   groups <- unique(x)
@@ -284,7 +291,7 @@ assign_col_d <- function(x, pal = viridis::viridis, ...) {
   named_cols[x]
 }
 
-#' @rdname colorize
+#' @rdname assign-color
 #' @export
 assign_col <- function(x, n = length(x), pal = viridis::viridis, ...) {
   normalized_data <- .normalize(x)
@@ -292,9 +299,9 @@ assign_col <- function(x, n = length(x), pal = viridis::viridis, ...) {
   colors[as.numeric(cut(normalized_data, breaks = n))]
 }
 
-#' @rdname colorize
+#' @rdname assign-color
 #' @export
-assign_col_binned <- function(x, breaks, pal = viridis::viridis, ...) {
+assign_col_binned <- function(x, breaks = 5, pal = viridis::viridis, ...) {
   breaks <- pretty(x, n = breaks)
   n2 <- length(breaks) - 1
   cols <- do.call(pal, args = list(n2, ...)) # [order]
@@ -311,9 +318,9 @@ color_func <- function(x, pal = viridis::viridis, ...) {
   grDevices::rgb(color_func0(x, ...) / 255)
 }
 
-#' @rdname colorize
+#' @rdname assign-color
 #' @export
-legend_c <- function(breaks, title = NULL, pal = viridis::viridis, ...) {
+legend_col <- function(breaks, title = NULL, pal = viridis::viridis, ...) {
   label_pos <- .normalize(breaks)
   legend_image <- grDevices::as.raster(
     matrix(
@@ -331,13 +338,225 @@ legend_c <- function(breaks, title = NULL, pal = viridis::viridis, ...) {
   graphics::rasterImage(legend_image, .95, 1, 1, 0)
 }
 
-#' @rdname colorize
+#' @rdname assign-color
 #' @export
-legend_d <- function(fill, labels = names(fill), position = "topright", ...) {
+legend_col_d <- function(fill, legend = names(fill), position = "topright", ...) {
+  if(length(position)==1){
+    xpos <- position
+    ypos <- NULL
+  } else {
+    xpos <- position[1]
+    ypos <- position[2]
+  }
+  
   graphics::legend(position,
-    legend = labels,
+    legend = legend,
     fill = fill,
     ...
+  )
+}
+
+
+
+#' Assign plotting size (cex values) to a vector
+#' 
+#' `assign_cex()` maps the character expansion (size). 
+#'  The cex is most commonly used for points and text, and humans perceive the 
+#'  area of points (not their radius), so this provides for optimal perception. 
+#'  The argument `area` ensures that a value of `0` is mapped to a size of `0`; 
+#' `assign_cex_binned()` is a binned version, and `assign_cex_d()` assigns 
+#' cex values to discrete values.
+#' 
+#' @details The character expansion `cex` is a number indicating the amount by 
+#' which plotting text and symbols 
+#' should be scaled relative to the default. `1`=default, `1.5` is 50% larger, 
+#' `0.5` is 50% smaller, etc.
+#'
+#' @param x vector
+#' @param range numeric 2-element vector. Output range of `cex` values. Minimum 
+#' value must be greater than 0.
+#' @param pch plotting character to be used in legend.
+#' @param area logical. Whether `cex` should be proportional to the area (`TRUE`) 
+#' or the radius (`FALSE`, the default) of the plotting character.
+#' @param values numeric. `cex` values to manually assign to `x`. Must be at least 
+#' the number of unique values in `x`.
+#' @inheritParams assign_col
+#' @param ... arguments passed to `graphics::legend()`
+#' 
+#' @family assign
+#'
+#' @returns numeric vector
+#' @name assign-cex
+#'
+#' @examples
+#' set.seed(20250411)
+#'
+#' # example for continuous colors:
+#' x <- rvmf(100, mu = Line(120, 50), k = 5)
+#' key <- runif(100)
+#' plot(x, cex = assign_cex(key), grid.params = list(guides = FALSE))
+#' legend_cex(key, position = 'topright', area = TRUE)
+NULL
+
+#' @rdname assign-cex
+#' @export
+assign_cex <- function(x, range = c(0.25, 2), area = FALSE){
+  stopifnot(is.numeric(x))
+  stopifnot(min(range) > 0)
+  
+  if(isTRUE(area)) x <- .scale(sqrt(abs(x)), c(0, max(x)), c(0, 1))
+  .scale(x, to = range)
+}
+
+#' @rdname assign-cex
+#' @export
+assign_cex_binned <- function(x, range = c(0.25, 2), breaks = 5, area = FALSE){
+  x_breaks <- pretty(x, n = breaks)
+  n2 <- length(breaks) - 1
+  cexs <- assign_cex(seq_len(n2), range, area)
+  named_cexs <- cut(x, breaks = x_breaks, labels = cexs, include.lowest = TRUE) 
+  names(named_cexs) <- cut(x, breaks = x_breaks, include.lowest = TRUE)
+  named_cexs
+}
+
+#' @rdname assign-cex
+#' @export
+assign_cex_d <- function(x, values = NULL, range = c(0.25, 2)){
+  xf <- as.factor(x)
+  n <- nlevels(xf)
+  
+  range <- sort(range)
+  
+  # If user provides custom values:
+  if (!is.null(values)) {
+    if (length(values) < n) {
+      stop("Length of 'values' must be at least the number of unique values in 'x'.")
+    }
+    # Use first n values
+    cex_vals <- values[seq_len(n)]
+  } else {
+    # Otherwise generate cex values across default_range
+    cex_vals <- seq(range[1], range[2], length.out = n)
+  }
+  
+  # Assign to each element of x based on factor indexing
+  assigned <- cex_vals[as.integer(xf)]
+  names(assigned) <- values
+  return(assigned)
+}
+
+#' @rdname assign-cex
+#' @export
+legend_cex <- function(x, range = c(0.25, 2), breaks = 5, values = NULL, area = FALSE, position = "topright", pch = 16, ...){
+    if(!is.null(values)) {
+      cexs <- assign_cex_d(x, values, range, area)
+    } else {
+      x_breaks <- pretty(x, n = breaks)
+      n2 <- length(x_breaks) - 1
+      cexs <- assign_cex(seq_len(n2), range, area)
+      names(cexs) <- cut(x, breaks = x_breaks, include.lowest = TRUE, ordered_result = TRUE) |> 
+        unique()
+    }
+  
+  if(length(position)==1){
+    xpos <- position
+    ypos <- NULL
+  } else {
+    xpos <- position[1]
+    ypos <- position[2]
+    }
+  
+  graphics::legend(x = xpos, y = xpos,
+                   legend = unique(names(cexs)),
+                   pt.cex = unique(cexs),
+                   pch = pch,
+                   ...
+  )
+}
+
+
+#' Assigns plotting characters (pch values) to a vector
+#' 
+#' `assign_pch()` maps discrete variables to six easily discernible shapes. If you have more 
+#' than six levels, you will get a warning message, and the seventh and 
+#' subsequent levels will not appear on the plot. 
+#' You can not map a continuous variable to shape unless `assign_pch_binned()` is 
+#' used.
+#'
+#' @param x vector.
+#' @param solid Should the plotting character be solid, `TRUE` (the default), or hollow, `FALSE`?
+#' @inheritParams assign_col
+#' @param ... arguments passed to `graphics::legend()`
+#' 
+#' @family assign
+#'
+#' @returns named integer vector
+#' @name assign-pch
+#'
+#' @examples
+#' set.seed(20250411)
+#'
+#' # example for discrete colors
+#' x <- rvmf(5, mu = Line(120, 50), k = 5)
+#' key <- sample(letters, 5, replace = TRUE)
+#' plot(x, pch = assign_pch(key), grid.params = list(guides = FALSE))
+#' legend_pch(key)
+NULL
+
+#' @rdname assign-pch
+#' @export
+assign_pch <- function(x, solid = TRUE){
+  x_unique <- unique(x) |> sort()
+  xn <- length(x_unique) 
+  if(isTRUE(solid)){
+    shapes <- c(16, 17, 15, 3, 7, 8)
+  } else {
+    shapes <- c(1, 2, 0, 3, 7, 8)
+  }
+  
+  if(length(x_unique) > length(shapes)) warning(
+    paste0(
+      "The shape palette can deal with a maximum of 6 discrete values because more than 6 becomes difficult to discriminate.\n You have requested ", xn, " values. Consider specifying shapes manually if you need that many of them.")
+    )
+  
+  xf <- as.factor(x)
+  assigned <- shapes[(as.integer(xf) - 1) %% length(shapes) + 1]
+  names(assigned) <- xf
+  
+  return(assigned)
+}
+
+#' @rdname assign-pch
+#' @export
+assign_pch_binned <- function(x, solid = TRUE, breaks = 6){
+  breaks <- pretty(x, n = breaks)
+  n2 <- length(breaks) - 1
+  
+  pchs <- assign_pch(seq_len(n2), solid)
+  
+  named_pchs <- cut(x, breaks = breaks, labels = pchs, include.lowest = TRUE) |>
+    as.character()
+  names(named_pchs) <- cut(x, breaks = breaks, include.lowest = TRUE)
+  named_pchs
+}
+
+#' @rdname assign-pch
+#' @export
+legend_pch <- function(x, solid = TRUE, breaks = NULL, position = "topright", ...){
+  pchs <- if(is.null(breaks)) assign_pch(x, solid) else assign_pch_binned(x, solid, breaks)
+  
+  if(length(position)==1){
+    xpos <- position
+    ypos <- NULL
+  } else {
+    xpos <- position[1]
+    ypos <- position[2]
+  }
+  
+  graphics::legend(position,
+                   legend = unique(names(pchs)),
+                   pch = unique(pchs),
+                   ...
   )
 }
 
