@@ -135,6 +135,7 @@ Wellner_inference_ray <- function(xs, ys, numPerms) {
 #' Assumes small sample sizes. Deterministically generates all choose(nx + ny, nx) reassignments of the data to the two groups. For large sample sizes, see rayWellnerInference.
 #' @param xs A list of rays.
 #' @param ys A list of rays.
+#' @importFrom pracma combs
 #' @return A real number, between 0 and 1 inclusive. The fraction of tests in which T exceeds the original T for the data. You can interpret this as a p-value for the null hypothesis that the two populations are identical (not just that their means are identical). In other words, small values of p indicate that the distinction between the two populations is meaningful.
 wellner_exact_inference_ray <- function(xs, ys) {
   # Precompute.
@@ -145,7 +146,7 @@ wellner_exact_inference_ray <- function(xs, ys) {
   # Compute Wellner's statistic for the actual data.
   t <- wellner_shortcut_ray(xys, 1:m, rxPlusRy)
   # Compute Wellner's statistic for all possible data permutations.
-  rows <- combs(1:(m + n), m)
+  rows <- pracma::combs(1:(m + n), m)
   ts <- sapply(
     1:nrow(rows),
     function(i) wellner_shortcut_ray(xys, rows[i, ], rxPlusRy)

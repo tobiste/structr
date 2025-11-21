@@ -69,7 +69,7 @@ prcomp.Vec3 <- function(x, center = geodesic_mean(x), n = 0L) {
 #' @rdname sph-prcomp
 #' @exportS3Method stats::prcomp
 prcomp.Ray <- function(x, center = geodesic_mean(x), n = 0L) {
-  res <- pcomp.Vec3(x)
+  res <- prcomp.Vec3(x)
 
   # res$direction <- Ray(res$direction)
   # if(n > 0) res$curves <- lapply(res$curves, Ray)
@@ -112,7 +112,7 @@ prcomp.Line <- function(x, center = geodesic_mean(x), n = 0L) {
 #' @rdname sph-prcomp
 #' @exportS3Method stats::prcomp
 prcomp.Plane <- function(x, center = geodesic_mean(x), n = 0L) {
-  res <- pcomp.Line(x)
+  res <- prcomp.Line(x)
 
   # res$direction <- Ray(res$direction)
   # if(n > 0) res$curves <- lapply(res$curves, Ray)

@@ -1,13 +1,13 @@
-deg2rad <- function(x) x * pi / 180
-rad2deg <- function(x) x * 180 / pi
-
-sind <- function(x) sin(deg2rad(x))
-cosd <- function(x) cos(deg2rad(x))
-tand <- function(x) tan(deg2rad(x))
-asind <- function(x) rad2deg(asin(x))
-acosd <- function(x) rad2deg(acos(x))
-atand <- function(x) rad2deg(atan(x))
-atan2d <- function(y, x) rad2deg(atan2(y, x)) %% 360
+# deg2rad <- function(x) x * pi / 180
+# rad2deg <- function(x) x * 180 / pi
+# 
+# sind <- function(x) sin(deg2rad(x))
+# cosd <- function(x) cos(deg2rad(x))
+# tand <- function(x) tan(deg2rad(x))
+# asind <- function(x) rad2deg(asin(x))
+# acosd <- function(x) rad2deg(acos(x))
+# atand <- function(x) rad2deg(atan(x))
+# atan2d <- function(y, x) rad2deg(atan2(y, x)) %% 360
 
 
 
@@ -449,7 +449,7 @@ assign_cex_d <- function(x, values = NULL, range = c(0.25, 2)){
 #' @export
 legend_cex <- function(x, range = c(0.25, 2), breaks = 5, values = NULL, area = FALSE, position = "topright", pch = 16, ...){
     if(!is.null(values)) {
-      cexs <- assign_cex_d(x, values, range, area)
+      cexs <- assign_cex_d(x, values, range)
     } else {
       x_breaks <- pretty(x, n = breaks)
       n2 <- length(x_breaks) - 1
