@@ -303,6 +303,36 @@ planes).
     fault plane solutions. Bulletin of the Seismological Society of
     America, 54(5A), 1519–1528. <https://doi.org/10.1785/BSSA05405A1519>
 
+The orientation tensor of orientation tensor is calculated by `ortensor()`:
+
+```{r ort}
+ortensor(planes)
+```
+
+The Eigenvalues from orientation data can be computed through `ot_eigen()`
+
+```{r oteigen}
+planes_eigen <- ot_eigen(planes)
+print(planes_eigen)
+```
+To visualize the orientation of the Eigen-vectors and their -values, you can call the vectors and values of the object returned by `ot_eigen()`:
+
+```{r oteigen}
+stereoplot()
+points(example_planes, col = "grey", pch = 16, cex = .7)
+lines(planes_eigen$vectors, 
+       col = c("#000004", "#B63679FF", "#FEC287FF"), 
+       lwd = rev(assign_cex(planes_eigen$values, range = c(.5, 2))))
+points(planes_eigen$vectors, 
+       col = c("#000004", "#B63679FF", "#FEC287FF"), 
+       cex = assign_cex(planes_eigen$values, range = c(.5, 2)), 
+       pch = 16)
+legend('right', 
+       legend = c("Eigen-1", "Eigen-2", "Eigen-3"), 
+       col = c("#000004", "#B63679FF", "#FEC287FF"), pch = 16, lty = 1)
+```
+
+
 #### Shape parameters
 
 There are more shape parameters using different algorithms based on the
