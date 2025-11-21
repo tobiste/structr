@@ -93,7 +93,7 @@ center.
 ``` r
 res <- prcomp(example_lines, n = 10)
 
-stereoplot(sub = paste("SD1:", round(res$magnitudes[1], 2), "| SD2:",round(res$magnitudes[2], 2)))
+stereoplot(sub = paste("SD1:", round(res$magnitudes[1], 2), "| SD2:", round(res$magnitudes[2], 2)))
 points(example_lines, pch = 16, cex = .8)
 invisible(lapply(res$curves, stereo_lines, col = "red", lwd = 1.5))
 ```

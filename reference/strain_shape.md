@@ -163,7 +163,9 @@ eigenvalue method." Geological Society of America Bulletin 88.9:
 ## See also
 
 [`vollmer()`](https://tobiste.github.io/structr/reference/vollmer.md)
-for Vollmer 1990 shape parameters of the orientation tensor
+for Vollmer 1990 shape parameters of the orientation tensor.
+[`ellipsoid()`](https://tobiste.github.io/structr/reference/ellipsoid-class.md)
+class
 
 More details on shape parameters:
 [`lode()`](https://tobiste.github.io/structr/reference/ellipsoid-params.md),

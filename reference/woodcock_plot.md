@@ -1,4 +1,4 @@
-# Fabric plot of Woodcock (1977)
+# Fabric Plot of Woodcock (1977)
 
 Creates a fabric plot using the eigenvalue method
 

@@ -210,7 +210,7 @@
   : Fisher's statistics
 
 - [`flinn_plot()`](https://tobiste.github.io/structr/reference/flinn_plot.md)
-  : Flinn diagram
+  : Flinn Diagram
 
 - [`geodesic_mean_line()`](https://tobiste.github.io/structr/reference/geodesic-line.md)
   [`geodesic_mean_ray()`](https://tobiste.github.io/structr/reference/geodesic-line.md)
@@ -252,10 +252,13 @@
   : Return the First or Last Parts of an Object
 
 - [`holst`](https://tobiste.github.io/structr/reference/holst.md) : 3D
-  Strain Data
+  Strain Data I
+
+- [`hossack1968`](https://tobiste.github.io/structr/reference/hossack1968.md)
+  : 3D Strain Data II
 
 - [`hsu_plot()`](https://tobiste.github.io/structr/reference/hsu_plot.md)
-  : Fabric plot of Hsu (1965)
+  : Fabric Plot of Hsu (1965)
 
 - [`hypercontour()`](https://tobiste.github.io/structr/reference/hypercontour.md)
   : Calculates densities for fabric and strain data
@@ -504,10 +507,10 @@
   : Rate and spin of velocity gradient tensor
 
 - [`vollmer_plot()`](https://tobiste.github.io/structr/reference/vollmer-plot.md)
-  : Fabric plot of Vollmer (1990)
+  : Fabric Plot of Vollmer (1990)
 
 - [`vollmer()`](https://tobiste.github.io/structr/reference/vollmer.md)
-  : Orientation tensor fabric intensity and shape
+  : Fabric Intensity and Shape of Orientation Tensor
 
 - [`rvmf()`](https://tobiste.github.io/structr/reference/vonmises-fisher.md)
   [`dvmf()`](https://tobiste.github.io/structr/reference/vonmises-fisher.md)
@@ -529,4 +532,4 @@
   T-statistic (Wellner, 1979, Example 1a).
 
 - [`woodcock_plot()`](https://tobiste.github.io/structr/reference/woodcock_plot.md)
-  : Fabric plot of Woodcock (1977)
+  : Fabric Plot of Woodcock (1977)

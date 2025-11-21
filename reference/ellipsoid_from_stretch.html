@@ -78,6 +78,17 @@
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
     <p>object of class <code>"ellipsoid"</code></p>
     </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>The eigenvalues \(\lambda\) of the deformation matrix are the quadratic
+forms of the principal stretches \(s\) (\(s = 1 + \epsilon = l/l_0\)).</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other ellipsoid:
+<code><a href="ellipsoid-class.html">ellipsoid-class</a></code>,
+<code><a href="ellipsoid-params.html">ellipsoid-params</a></code></p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -85,6 +96,577 @@
 <span class="r-in"><span><span class="fu"><a href="strain_shape.html">principal_stretch</a></span><span class="op">(</span><span class="va">el</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> S1 S2 S3 </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  4  3  1 </span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq.int</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">hossack1968</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu">ellipsoid_from_stretch</span><span class="op">(</span><span class="va">hossack1968</span><span class="op">[</span><span class="va">i</span>, <span class="fl">3</span><span class="op">]</span>, <span class="va">hossack1968</span><span class="op">[</span><span class="va">i</span>, <span class="fl">2</span><span class="op">]</span>, <span class="va">hossack1968</span><span class="op">[</span><span class="va">i</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[1]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]   [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 334.89   0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 123.21    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00   0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[2]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1024  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0 17.64    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[3]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  900 0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0 5.29    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0 0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[4]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 275.56    0    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00   16    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00    0    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[5]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 2948.49  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0.00 56.25    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[6]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 912.04  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 54.76    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[7]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1024 0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0 4.41    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0 0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[8]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         [,1]   [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1592.01   0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0.00 249.64    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0.00   0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[9]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1288.81  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0.00 11.56    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[10]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  196  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0 23.04    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[11]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1317.69  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0.00 17.64    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[12]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1190.25  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0.00 67.24    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[13]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 556.96  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 20.25    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[14]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1505.44  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0.00 10.24    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[15]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1361.61 0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0.00 6.25    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0.00 0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[16]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  625 0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0 4.41    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0 0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[17]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 590.49 0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 4.41    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00 0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[18]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 148.84 0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 6.76    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00 0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[19]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 453.69  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 32.49    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[20]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  676 0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0 8.41    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0 0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[21]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  625 0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0 5.29    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0 0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[22]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  484  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0 34.81    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[23]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]   [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 357.21   0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 327.61    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00   0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[24]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 392.04 0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 8.41    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00 0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[25]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 262.44  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 19.36    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[26]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 492.84  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 24.01    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[27]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 237.16    0    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00    9    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00    0    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[28]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  729  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0 19.36    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[29]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 268.96  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 14.44    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[30]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 404.01 0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 7.29    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00 0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[31]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 2237.29  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0.00 10.89    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[32]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 470.89  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 12.25    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[33]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 187.69  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 37.21    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[34]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 313.29  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 47.61    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[35]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 712.89  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 60.84    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[36]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 313.29    0    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00   16    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00    0    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[37]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1681    0    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0   16    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0    0    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[38]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 3708.81  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0.00 19.36    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[39]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 424.36  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 12.96    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[40]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 610.09  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 10.24    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[41]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         [,1]   [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1183.36   0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0.00 268.96    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0.00   0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[42]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]   [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 466.56   0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 184.96    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00   0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[43]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         [,1]   [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1049.76   0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0.00 309.76    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0.00   0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[44]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 457.96  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 32.49    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[45]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 630.01  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 20.25    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[46]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 231.04  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 43.56    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[47]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 1036.84  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0.00 24.01    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[48]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 571.21  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 33.64    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[49]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  256  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0 59.29    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[50]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 789.61  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 29.16    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[51]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 432.64  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 31.36    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[52]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 77.44 0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.00 8.41    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.00 0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[53]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 16.81    0    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.00   16    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.00    0    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[54]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 26.01  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.00 17.64    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[55]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 50.41  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.00 12.25    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[56]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 39.69 0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.00 9.61    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.00 0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[57]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 33.64 0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.00 7.84    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.00 0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[58]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 59.29  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.00 14.44    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[59]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 88.36    0    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.00   16    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.00    0    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[60]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 342.25  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 34.81    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[61]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 46.24  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.00 12.96    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[62]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 50.41  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.00 15.21    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[63]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 112.36  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 20.25    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[64]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]   64    0    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0   16    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0    0    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[65]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 51.84  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.00 17.64    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[66]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 98.01    0    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.00   16    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.00    0    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[67]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]   16  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]    0 12.25    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]    0  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[68]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1] [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 40.96 0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.00 7.29    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.00 0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[69]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 67.24  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.00 12.96    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[70]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 118.81  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 18.49    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[71]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 59.29  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.00 14.44    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[72]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 88.36  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.00 16.81    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[73]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 72.25  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.00 12.96    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[74]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 72.25  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]  0.00 17.64    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]  0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[75]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 163.84  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 21.16    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[76]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 158.76  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 15.21    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[77]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 182.25  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 20.25    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[78]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 204.49  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 27.04    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[79]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 262.44  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 17.64    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[80]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 201.64  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 70.56    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [[81]]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Ellipsoid tensor</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        [,1]  [,2] [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 102.01  0.00    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]   0.00 26.01    0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]   0.00  0.00    1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

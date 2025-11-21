@@ -67,6 +67,6 @@ Other stereo-plot:
 ## Examples
 
 ``` r
-plot(example_lines, col= 'grey')
-stereo_lines(example_lines[1:2, ], col = 'red')
+plot(example_lines, col = "grey")
+stereo_lines(example_lines[1:2, ], col = "red")
 ```

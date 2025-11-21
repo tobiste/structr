@@ -43,9 +43,18 @@ ellipsoid(x, left = TRUE, ...)
 
 `as.ellipsoid` coerces a 3x3 matrix into an `"ellipsoid"` object.
 
+## Details
+
+The eigenvalues \\\lambda\\ of the deformation matrix are the quadratic
+forms of the principal stretches \\s\\ (\\s = 1 + \epsilon = l/l_0\\).
+
 ## See also
 
 [`ortensor()`](https://tobiste.github.io/structr/reference/ortensor.md)
+
+Other ellipsoid:
+[`ellipsoid-params`](https://tobiste.github.io/structr/reference/ellipsoid-params.md),
+[`ellipsoid_from_stretch()`](https://tobiste.github.io/structr/reference/ellipsoid_from_stretch.md)
 
 ## Examples
 

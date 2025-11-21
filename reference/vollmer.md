@@ -1,4 +1,4 @@
-# Orientation tensor fabric intensity and shape
+# Fabric Intensity and Shape of Orientation Tensor
 
 Fabric intensity and shape parameters of the orientation tensor based on
 Vollmer (1990)

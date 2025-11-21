@@ -1,4 +1,4 @@
-# Fabric plot of Vollmer (1990)
+# Fabric Plot of Vollmer (1990)
 
 Creates a fabric plot using the eigenvalue method
 

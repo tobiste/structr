@@ -178,21 +178,27 @@ lengths (in any order), an object of class <code>"ellipsoid"</code>, or an objec
     </div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>$$e_i = \log s_i$$ with \(s1 \geq s2 \geq s3\) the semi-axis lengths of the ellipsoid.</p>
-<p>Lode's shape parameter:
-$$\nu = \frac{2 e_2 - e_1 - e_3}{e_1-e_3}$$
-with \(e_1 \geq e_2 \geq e_3\). Note that \(\nu\)  is undefined for spheres,
-but we arbitrarily declare \(\nu=0\) for them.
-Otherwise \(-1 \geq \nu \geq 1\). \(\nu=-1\) for prolate spheroids and \(\nu=1\) for oblate spheroids.</p>
-<p>Octahedral shear strain \(e_s\) (Nadai 1963):
-$$e_s = \sqrt{\frac{(e_1 - e_2)^2 + (e_2 - e_3)^2 + (e_1 - e_3)^2 }{3}}$$</p>
-<p>Strain symmetry (Flinn 1963):
-$$k = \frac{s_1/s_2 - 1}{s_2/s_3 - 1}$$</p>
-<p>and strain intensity (Flinn 1963):
-$$d = \sqrt{(s_1/s_2 - 1)^2 + (s_2/s_3 - 1)^2}$$</p>
+    <p>The natural strain is
+$$\bar{\epsilon}_i = \log s_i = \log(1 + \epsilon_i)$$ with \(s_1 \geq s_2 \geq s_3\) the semi-axis lengths of the ellipsoid, or
+\(\epsilon_i\) the strains (elongation) given by \(\epsilon = \frac{l-l_0}{l_0}\) (hence \(s = \frac{l}{l_0}\)).</p>
+<p>Lode's parameter for <strong>strain symmetry</strong>:
+$$\nu = \frac{2 \bar{\epsilon}_2 - \bar{\epsilon}_1 - \bar{\epsilon}_3}{\bar{\epsilon}_1-\bar{\epsilon}_3}$$
+with \(\bar{\epsilon}_1 \geq \bar{\epsilon}_2 \geq \bar{\epsilon}_3\). Note that \(\nu\) is undefined for spheres,
+but we arbitrarily declare \(\nu=0\) for them (plane strain).
+Otherwise \(-1 \geq \nu \geq 1\). \(\nu=-1\) for prolate spheroids (constriction) and \(\nu=1\) for oblate spheroids (flattening).</p>
+<p><strong>Octahedral shear strain</strong> \(\bar{\epsilon}_s\) (Nádai 1963):
+$$\bar{\epsilon}_s = \sqrt{\frac{(\bar{\epsilon}_1 - \bar{\epsilon}_2)^2 + (\bar{\epsilon}_2 - \bar{\epsilon}_3)^2 + (\bar{\epsilon}_1 - \bar{\epsilon}_3)^2 }{3}}$$
+This is the amount of strain assuming coaxial deformation (pure-shear).</p>
+<p><strong>Strain symmetry</strong> (Flinn 1963):
+$$k = \frac{s_1/s_2 - 1}{s_2/s_3 - 1}$$
+The value ranges from 0 to \(\infty\), and is 0 for oblate ellipsoids
+(flattening), 1 for plane strain and  \(\infty\) for prolate ellipsoids (constriction).</p>
+<p>and <strong>strain intensity</strong> (Flinn 1963):
+$$d = \sqrt{(s_1/s_2 - 1)^2 + (s_2/s_3 - 1)^2}$$
+This is analogous to Nadai's strain parameter.</p>
 <p>Jelinek (1981)'s \(P_j\) parameter:
-$$P_j = e^{\sqrt{2 \vec{v}\cdot \vec{v}}}$$
-with \(\vec{v} = e_i - \frac{\sum e_i}{3}\)</p>
+$$P_j = \bar{\epsilon}^{\sqrt{2 \vec{v}\cdot \vec{v}}}$$
+with \(\vec{v} = \bar{\epsilon}_i - \frac{\sum \bar{\epsilon}_i}{3}\)</p>
     </div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
@@ -203,19 +209,22 @@ auf das Fließen der Metalle Eisen, Kupfer und Nickel“
 (<em>"Experiments on the influence of the mean principal stress on the flow of
 the metals iron, copper and nickel"</em>], Zeitschrift für Physik, vol. 36 (November),
 pp. 913–939, <a href="https://doi.org/10.1007/BF01400222" class="external-link">doi:10.1007/BF01400222</a></p>
-<p>Nadai, A., and Hodge, P. G., Jr. (1963): "Theory of Flow and Fracture of Solids,
+<p>Nádai, A., and Hodge, P. G., Jr. (1963): "Theory of Flow and Fracture of Solids,
 vol. II." ASME. J. Appl. Mech. December 1963; 30(4): 640. <a href="https://doi.org/10.1115/1.3636654" class="external-link">doi:10.1115/1.3636654</a></p>
 <p>Jelinek, Vit. "Characterization of the magnetic fabric of rocks."
 Tectonophysics 79.3-4 (1981): T63-T67.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="strain_shape.html">shape_params()</a></code>, <code><a href="ot_eigen.html">ot_eigen()</a></code></p></div>
+    <div class="dont-index"><p><code><a href="strain_shape.html">shape_params()</a></code>, <code><a href="ot_eigen.html">ot_eigen()</a></code>, <code><a href="hsu_plot.html">hsu_plot()</a></code>, <code><a href="flinn_plot.html">flinn_plot()</a></code></p>
+<p>Other ellipsoid:
+<code><a href="ellipsoid-class.html">ellipsoid-class</a></code>,
+<code><a href="ellipsoid_from_stretch.html">ellipsoid_from_stretch()</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Generate some random data</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co"># Generate some random orientation data</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20250411</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">dat</span> <span class="op">&lt;-</span> <span class="fu"><a href="vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">100</span>, k <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="strain_shape.html">principal_stretch</a></span><span class="op">(</span><span class="va">dat</span><span class="op">)</span></span></span>
@@ -236,7 +245,7 @@ Tectonophysics 79.3-4 (1981): T63-T67.</p>
 <span class="r-in"><span><span class="fu">shape_invariant</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.1155451</span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Lode's shape parameter</span></span></span>
+<span class="r-in"><span><span class="co"># Lode's shape parameter for the strain symmetry ratio</span></span></span>
 <span class="r-in"><span><span class="fu">lode</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.63562</span>
 <span class="r-in"><span></span></span>
@@ -259,6 +268,23 @@ Tectonophysics 79.3-4 (1981): T63-T67.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">kind</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "LLS"</span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co"># Ellipsoid data</span></span></span>
+<span class="r-in"><span><span class="va">hossack_ell</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq.int</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">hossack1968</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="ellipsoid_from_stretch.html">ellipsoid_from_stretch</a></span><span class="op">(</span><span class="va">hossack1968</span><span class="op">[</span><span class="va">i</span>, <span class="fl">3</span><span class="op">]</span>, <span class="va">hossack1968</span><span class="op">[</span><span class="va">i</span>, <span class="fl">2</span><span class="op">]</span>, <span class="va">hossack1968</span><span class="op">[</span><span class="va">i</span>, <span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">}</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">sapply</a></span><span class="op">(</span><span class="va">hossack_ell</span>, <span class="va">nadai</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 2.197985 2.462677 2.507189 1.986605 2.824592 2.421925 2.580754 2.712021</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 2.573880 1.877145 2.556829 2.518613 2.236213 2.643440 2.652371 2.383755</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [17] 2.361141 1.785130 2.169690 2.349450 2.362748 2.193710 2.382355 2.139940</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [25] 1.970644 2.192330 1.945885 2.334462 1.978659 2.161851 2.792102 2.188473</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [33] 1.895198 2.071682 2.346818 2.032335 2.653843 2.943093 2.147554 2.295867</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [41] 2.638900 2.342928 2.626458 2.172841 2.280597 1.971667 2.457973 2.248606</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [49] 2.032136 2.358794 2.152572 1.537893 1.142119 1.258516 1.403769 1.312832</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [57] 1.249068 1.466010 1.599231 2.079253 1.380805 1.420466 1.690162 1.497369</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [65] 1.443027 1.632871 1.081520 1.313677 1.499537 1.702833 1.466010 1.602093</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [73] 1.523021 1.542330 1.814373 1.793242 1.847809 1.898982 1.969607 1.987016</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [81] 1.680192</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
