@@ -561,14 +561,14 @@ displacement_tensor_decomposition(Fg, dip_direction = 45)
 
     ## $displacements
     ##           dip    delta     rake verticalthrow horizontalthrow heave  dipslip
-    ## [1,] 300.9638 56.30993 71.06818            -5        3.605551     3 5.830952
+    ## [1,] 59.03624 56.30993 71.06818            -5        3.605551     3 5.830952
     ##      strikeslip  netslip
     ## [1,]          2 6.164414
     ## 
     ## $fault
     ## Fault object (n = 1):
     ## dip_direction           dip       azimuth        plunge         sense 
-    ##      45.00000     300.96376     258.69007      54.20424      -1.00000 
+    ##      45.00000      59.03624      78.69007      54.20424      -1.00000 
     ## 
     ## $strain_tensor
     ##      [,1] [,2] [,3]
