@@ -351,10 +351,11 @@ points(planes,
        )
 
 # Add legends
-legend_cex(plane_weightings, area = TRUE, title = 'A continuous property', position = 'bottomleft')
-legend_pch(prop_discrete, title = 'A discrete property', position = 'topleft')
-legend_col(pretty(plane_weightings), title = 'Another continuous property')
+legend_cex(prop_continuous2, area = TRUE, title = 'A continuous property', position = 'bottomleft', cex = .8)
+legend_pch(prop_discrete, title = 'A discrete property', position = 'topleft', cex = .8)
+legend_col(pretty(prop_continuous1), title = 'Another continuous property')
 ```
+
 The legend for these plotting parameters can be created using the `legend_*` functions.
 
 All these `assign_*` functions can be applied on continuous as well as discrete values using `assign_*_d`. 

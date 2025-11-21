@@ -253,6 +253,8 @@ parse_quadrant_measurement <- function(x) {
 #' @param title character. Legend title
 #' @param pal color function; Default is [viridis::viridis()]
 #' @param fill color vector
+#' @param cex character expansion factor relative to current par("cex"). 
+#' Used for text in legend.
 #' @param legend character vector. Names of discrete colors.
 #' Can be ignored when `cols` is a named vector.
 #' @param position Legend position. Either a two-column vector of the x and y coordinates, or a
@@ -320,7 +322,7 @@ color_func <- function(x, pal = viridis::viridis, ...) {
 
 #' @rdname assign-color
 #' @export
-legend_col <- function(breaks, title = NULL, pal = viridis::viridis, ...) {
+legend_col <- function(breaks, title = NULL, pal = viridis::viridis, cex = 1, ...) {
   label_pos <- .normalize(breaks)
   legend_image <- grDevices::as.raster(
     matrix(
@@ -333,8 +335,8 @@ legend_col <- function(breaks, title = NULL, pal = viridis::viridis, ...) {
   graphics::layout(matrix(1, 1))
 
   plot(c(0, 1), c(0, 1), type = "n", axes = FALSE, xlab = NA, ylab = NA, main = NA)
-  graphics::text(x = 0.9 + (0.1 * 1.1), y = label_pos, labels = round(breaks, 2), adj = 0, cex = .8)
-  graphics::text(x = .925, y = .5, labels = title, adj = 0.5, srt = 90, font = 2)
+  graphics::text(x = 0.9 + (0.1 * 1.1), y = label_pos, labels = round(breaks, 2), adj = 0, cex = .8 * cex * par("cex"))
+  graphics::text(x = .925, y = .5, labels = title, adj = 0.5, srt = 90, font = 2, cex = cex * par("cex"))
   graphics::rasterImage(legend_image, .95, 1, 1, 0)
 }
 
@@ -455,7 +457,7 @@ legend_cex <- function(x, range = c(0.25, 2), breaks = 5, values = NULL, area = 
       n2 <- length(x_breaks) - 1
       cexs <- assign_cex(seq_len(n2), range, area)
       names(cexs) <- cut(x, breaks = x_breaks, include.lowest = TRUE, ordered_result = TRUE) |> 
-        unique()
+       levels()
     }
   
   if(length(position)==1){

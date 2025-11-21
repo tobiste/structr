@@ -15,7 +15,7 @@ assign_col(x, n = length(x), pal = viridis::viridis, ...)
 
 assign_col_binned(x, breaks = 5, pal = viridis::viridis, ...)
 
-legend_col(breaks, title = NULL, pal = viridis::viridis, ...)
+legend_col(breaks, title = NULL, pal = viridis::viridis, cex = 1, ...)
 
 legend_col_d(fill, legend = names(fill), position = "topright", ...)
 }
@@ -31,6 +31,9 @@ legend_col_d(fill, legend = names(fill), position = "topright", ...)
 \item{breaks}{integer giving the desired number of intervals. Non-integer values are rounded down.}
 
 \item{title}{character. Legend title}
+
+\item{cex}{character expansion factor relative to current par("cex").
+Used for text in legend.}
 
 \item{fill}{color vector}
 
