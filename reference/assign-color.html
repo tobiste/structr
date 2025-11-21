@@ -69,7 +69,7 @@
 <span></span>
 <span><span class="fu">assign_col_binned</span><span class="op">(</span><span class="va">x</span>, breaks <span class="op">=</span> <span class="fl">5</span>, pal <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="va"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">viridis</a></span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu">legend_col</span><span class="op">(</span><span class="va">breaks</span>, title <span class="op">=</span> <span class="cn">NULL</span>, pal <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="va"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">viridis</a></span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">legend_col</span><span class="op">(</span><span class="va">breaks</span>, title <span class="op">=</span> <span class="cn">NULL</span>, pal <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="va"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">viridis</a></span>, cex <span class="op">=</span> <span class="fl">1</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">legend_col_d</span><span class="op">(</span><span class="va">fill</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">fill</span><span class="op">)</span>, position <span class="op">=</span> <span class="st">"topright"</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -100,6 +100,11 @@
 
 <dt id="arg-title">title<a class="anchor" aria-label="anchor" href="#arg-title"></a></dt>
 <dd><p>character. Legend title</p></dd>
+
+
+<dt id="arg-cex">cex<a class="anchor" aria-label="anchor" href="#arg-cex"></a></dt>
+<dd><p>character expansion factor relative to current par("cex").
+Used for text in legend.</p></dd>
 
 
 <dt id="arg-fill">fill<a class="anchor" aria-label="anchor" href="#arg-fill"></a></dt>
