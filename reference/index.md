@@ -64,6 +64,24 @@
 - [`apparent_dip_direction()`](https://tobiste.github.io/structr/reference/apparent_dip_direction.md)
   : Apparent dip direction
 
+- [`assign_cex()`](https://tobiste.github.io/structr/reference/assign-cex.md)
+  [`assign_cex_binned()`](https://tobiste.github.io/structr/reference/assign-cex.md)
+  [`assign_cex_d()`](https://tobiste.github.io/structr/reference/assign-cex.md)
+  [`legend_cex()`](https://tobiste.github.io/structr/reference/assign-cex.md)
+  : Assign plotting size (cex values) to a vector
+
+- [`assign_col_d()`](https://tobiste.github.io/structr/reference/assign-color.md)
+  [`assign_col()`](https://tobiste.github.io/structr/reference/assign-color.md)
+  [`assign_col_binned()`](https://tobiste.github.io/structr/reference/assign-color.md)
+  [`legend_col()`](https://tobiste.github.io/structr/reference/assign-color.md)
+  [`legend_col_d()`](https://tobiste.github.io/structr/reference/assign-color.md)
+  : Helper functions to assign plotting colors to a vector
+
+- [`assign_pch()`](https://tobiste.github.io/structr/reference/assign-pch.md)
+  [`assign_pch_binned()`](https://tobiste.github.io/structr/reference/assign-pch.md)
+  [`legend_pch()`](https://tobiste.github.io/structr/reference/assign-pch.md)
+  : Assigns plotting characters (pch values) to a vector
+
 - [`azimuth_to_cardinal()`](https://tobiste.github.io/structr/reference/azimuth_to_cardinal.md)
   : Converts azimuth angles into Cardinal directions
 
@@ -105,13 +123,6 @@
   [`Fault()`](https://tobiste.github.io/structr/reference/classes.md)
   [`Spherical()`](https://tobiste.github.io/structr/reference/classes.md)
   : Structure classes
-
-- [`assign_col_d()`](https://tobiste.github.io/structr/reference/colorize.md)
-  [`assign_col()`](https://tobiste.github.io/structr/reference/colorize.md)
-  [`assign_col_binned()`](https://tobiste.github.io/structr/reference/colorize.md)
-  [`legend_c()`](https://tobiste.github.io/structr/reference/colorize.md)
-  [`legend_d()`](https://tobiste.github.io/structr/reference/colorize.md)
-  : Helper functions for color assignment and legends
 
 - [`confidence_ellipse()`](https://tobiste.github.io/structr/reference/confidence_ellipse.md)
   : Confidence ellipse

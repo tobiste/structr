@@ -317,7 +317,7 @@ stereoplot(
   guides = FALSE
 )
 angelier(faults, col = assign_col(beta))
-legend_c(
+legend_col(
   seq(min(beta), max(beta), 10),
   title = bquote("Deviation angle" ~ beta ~ "(" * degree * ")")
 )
@@ -460,7 +460,7 @@ legend(0, -1.1,
   lty = c(1, 2)
 )
 
-legend_c(increments, title = "Time")
+legend_col(increments, title = "Time")
 ```
 
 ![](reference/figures/README-defgrad1-1.png) Show how the orientation
@@ -555,6 +555,24 @@ MIT License
 - [`apparent_dip_direction()`](https://tobiste.github.io/structr/reference/apparent_dip_direction.md)
   : Apparent dip direction
 
+- [`assign_cex()`](https://tobiste.github.io/structr/reference/assign-cex.md)
+  [`assign_cex_binned()`](https://tobiste.github.io/structr/reference/assign-cex.md)
+  [`assign_cex_d()`](https://tobiste.github.io/structr/reference/assign-cex.md)
+  [`legend_cex()`](https://tobiste.github.io/structr/reference/assign-cex.md)
+  : Assign plotting size (cex values) to a vector
+
+- [`assign_col_d()`](https://tobiste.github.io/structr/reference/assign-color.md)
+  [`assign_col()`](https://tobiste.github.io/structr/reference/assign-color.md)
+  [`assign_col_binned()`](https://tobiste.github.io/structr/reference/assign-color.md)
+  [`legend_col()`](https://tobiste.github.io/structr/reference/assign-color.md)
+  [`legend_col_d()`](https://tobiste.github.io/structr/reference/assign-color.md)
+  : Helper functions to assign plotting colors to a vector
+
+- [`assign_pch()`](https://tobiste.github.io/structr/reference/assign-pch.md)
+  [`assign_pch_binned()`](https://tobiste.github.io/structr/reference/assign-pch.md)
+  [`legend_pch()`](https://tobiste.github.io/structr/reference/assign-pch.md)
+  : Assigns plotting characters (pch values) to a vector
+
 - [`azimuth_to_cardinal()`](https://tobiste.github.io/structr/reference/azimuth_to_cardinal.md)
   : Converts azimuth angles into Cardinal directions
 
@@ -596,13 +614,6 @@ MIT License
   [`Fault()`](https://tobiste.github.io/structr/reference/classes.md)
   [`Spherical()`](https://tobiste.github.io/structr/reference/classes.md)
   : Structure classes
-
-- [`assign_col_d()`](https://tobiste.github.io/structr/reference/colorize.md)
-  [`assign_col()`](https://tobiste.github.io/structr/reference/colorize.md)
-  [`assign_col_binned()`](https://tobiste.github.io/structr/reference/colorize.md)
-  [`legend_c()`](https://tobiste.github.io/structr/reference/colorize.md)
-  [`legend_d()`](https://tobiste.github.io/structr/reference/colorize.md)
-  : Helper functions for color assignment and legends
 
 - [`confidence_ellipse()`](https://tobiste.github.io/structr/reference/confidence_ellipse.md)
   : Confidence ellipse

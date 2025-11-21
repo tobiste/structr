@@ -317,7 +317,7 @@ stereoplot(
   guides = FALSE
 )
 angelier(faults, col = assign_col(beta))
-legend_c(
+legend_col(
   seq(min(beta), max(beta), 10),
   title = bquote("Deviation angle" ~ beta ~ "(" * degree * ")")
 )
@@ -460,7 +460,7 @@ legend(0, -1.1,
   lty = c(1, 2)
 )
 
-legend_c(increments, title = "Time")
+legend_col(increments, title = "Time")
 ```
 
 ![](reference/figures/README-defgrad1-1.png) Show how the orientation

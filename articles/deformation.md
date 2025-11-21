@@ -293,7 +293,7 @@ legend(0, -1.1,
   col = c("grey30", "grey70"),
   lty = c(1, 2)
 )
-legend_c(increments, title = "Time")
+legend_col(increments, title = "Time")
 ```
 
 ![](deformation_files/figure-html/plot_stereo-1.png)

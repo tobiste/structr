@@ -313,7 +313,7 @@ stereoplot(
 )
 
 fault_plot(test_data, col = assign_col(beta))
-legend_c(
+legend_col(
   seq(min(beta), max(beta), 10),
   title = bquote("Deviation angle" ~ beta ~ "(" * degree * ")")
 )

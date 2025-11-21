@@ -61,7 +61,7 @@ variance_plot(
 - ...:
 
   optional arguments passed to
-  [`assign_col()`](https://tobiste.github.io/structr/reference/colorize.md)
+  [`assign_col()`](https://tobiste.github.io/structr/reference/assign-color.md)
 
 ## Value
 

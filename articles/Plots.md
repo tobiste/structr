@@ -94,7 +94,7 @@ A Fabric plot visualizes the shape of the distribution by plotting the
 eigenvalues of the orientation tensor. Three different diagram are
 provided by {structr}, namely the triangular *Vollmer plot*[¹](#fn1),
 the logarithmic biplot (*Woodcock plot*)[²](#fn2), and the Lode
-parameter vs. natural octahedral strain diagram (*Hsu plot*)\[\|^hsu\].
+parameter vs. natural octahedral strain diagram (*Hsu plot*)\[\|^hsu\].
 
 ### Vollmer plot
 
@@ -294,6 +294,51 @@ arrows.
 > Hoeppener plot using the `type` argument. See
 > [`?fault_plot`](https://tobiste.github.io/structr/reference/fault-plot.md)
 > for details.
+
+## Assign plotting parameters based on data
+
+{structr} offers some convenience functions to help your to map certain
+plotting parameters such as color, size, and symbol based on vector
+values:
+
+- [`assign_col()`](https://tobiste.github.io/structr/reference/assign-color.md)
+  for color
+
+- [`assign_cex()`](https://tobiste.github.io/structr/reference/assign-cex.md)
+  for marker size (character expansion)
+
+- [`assign_pch()`](https://tobiste.github.io/structr/reference/assign-pch.md)
+  for marker symbols (plotting character)
+
+The following example assigns the `col` (color), the `cex` (size), and
+the `pch` (symbol) based on three different properties:
+
+``` r
+# define three random properties
+prop_continuous1 <- runif(nrow(planes))
+prop_continuous2 <- runif(nrow(planes))
+prop_discrete <- sort(letters[sample(1:3, size = nrow(planes), replace = TRUE)])
+
+stereoplot()
+points(planes, 
+       col = assign_col(prop_continuous1), 
+       cex = assign_cex(prop_continuous2, area = TRUE),
+       pch = assign_pch(prop_discrete)
+       )
+
+# Add legends
+legend_cex(plane_weightings, area = TRUE, title = 'A continuous property', position = 'bottomleft')
+legend_pch(prop_discrete, title = 'A discrete property', position = 'topleft')
+legend_col(pretty(plane_weightings), title = 'Another continuous property')
+```
+
+![](Plots_files/figure-html/assign-1.png) The legend for these plotting
+parameters can be created using the `legend_*` functions.
+
+All these `assign_*` functions can be applied on continuous as well as
+discrete values using `assign_*_d`. Also there are binned mapping
+options through `assign_*_binnned`. See `?assign_cex()` for more
+information.
 
 ------------------------------------------------------------------------
 

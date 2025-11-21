@@ -352,7 +352,7 @@ cl <- sph_cluster(x123, k = 3)
 # visualize the result:
 plot(x123, col = assign_col_d(cl$cluster))
 
-legend_d(assign_col_d(unique(cl$cluster)), title = "Cluster")
+legend_col_d(assign_col_d(unique(cl$cluster)), title = "Cluster")
 ```
 
 ![Stereoplot showing the the cluster result of an example
