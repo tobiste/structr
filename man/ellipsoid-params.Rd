@@ -123,29 +123,35 @@ positive numeric
 Ellipsoid shape parameters
 }
 \details{
-\deqn{e_i = \log s_i} with \eqn{s1 \geq s2 \geq s3} the semi-axis lengths of the ellipsoid.
+The natural strain is
+\deqn{\bar{\epsilon}_i = \log s_i = \log(1 + \epsilon_i)} with \eqn{s_1 \geq s_2 \geq s_3} the semi-axis lengths of the ellipsoid, or
+\eqn{\epsilon_i} the strains (elongation) given by \eqn{\epsilon = \frac{l-l_0}{l_0}} (hence \eqn{s = \frac{l}{l_0}}).
 
-Lode's shape parameter:
-\deqn{\nu = \frac{2 e_2 - e_1 - e_3}{e_1-e_3}}
-with \eqn{e_1 \geq e_2 \geq e_3}. Note that \eqn{\nu}  is undefined for spheres,
-but we arbitrarily declare \eqn{\nu=0} for them.
-Otherwise \eqn{-1 \geq \nu \geq 1}. \eqn{\nu=-1} for prolate spheroids and \eqn{\nu=1} for oblate spheroids.
+Lode's parameter for \strong{strain symmetry}:
+\deqn{\nu = \frac{2 \bar{\epsilon}_2 - \bar{\epsilon}_1 - \bar{\epsilon}_3}{\bar{\epsilon}_1-\bar{\epsilon}_3}}
+with \eqn{\bar{\epsilon}_1 \geq \bar{\epsilon}_2 \geq \bar{\epsilon}_3}. Note that \eqn{\nu} is undefined for spheres,
+but we arbitrarily declare \eqn{\nu=0} for them (plane strain).
+Otherwise \eqn{-1 \geq \nu \geq 1}. \eqn{\nu=-1} for prolate spheroids (constriction) and \eqn{\nu=1} for oblate spheroids (flattening).
 
-Octahedral shear strain \eqn{e_s} (Nadai 1963):
-\deqn{e_s = \sqrt{\frac{(e_1 - e_2)^2 + (e_2 - e_3)^2 + (e_1 - e_3)^2 }{3}}}
+\strong{Octahedral shear strain} \eqn{\bar{\epsilon}_s} (Nádai 1963):
+\deqn{\bar{\epsilon}_s = \sqrt{\frac{(\bar{\epsilon}_1 - \bar{\epsilon}_2)^2 + (\bar{\epsilon}_2 - \bar{\epsilon}_3)^2 + (\bar{\epsilon}_1 - \bar{\epsilon}_3)^2 }{3}}}
+This is the amount of strain assuming coaxial deformation (pure-shear).
 
-Strain symmetry (Flinn 1963):
+\strong{Strain symmetry} (Flinn 1963):
 \deqn{k = \frac{s_1/s_2 - 1}{s_2/s_3 - 1}}
+The value ranges from 0 to \eqn{\infty}, and is 0 for oblate ellipsoids
+(flattening), 1 for plane strain and  \eqn{\infty} for prolate ellipsoids (constriction).
 
-and strain intensity (Flinn 1963):
+and \strong{strain intensity} (Flinn 1963):
 \deqn{d = \sqrt{(s_1/s_2 - 1)^2 + (s_2/s_3 - 1)^2}}
+This is analogous to Nadai's strain parameter.
 
 Jelinek (1981)'s \eqn{P_j} parameter:
-\deqn{P_j = e^{\sqrt{2 \vec{v}\cdot \vec{v}}}}
-with \eqn{\vec{v} = e_i - \frac{\sum e_i}{3}}
+\deqn{P_j = \bar{\epsilon}^{\sqrt{2 \vec{v}\cdot \vec{v}}}}
+with \eqn{\vec{v} = \bar{\epsilon}_i - \frac{\sum \bar{\epsilon}_i}{3}}
 }
 \examples{
-# Generate some random data
+# Generate some random orientation data
 set.seed(20250411)
 dat <- rvmf(100, k = 20)
 s <- principal_stretch(dat)
@@ -162,7 +168,7 @@ strain_invariant(s)
 # Shape-related tensor invariant of ellipsoids
 shape_invariant(s)
 
-# Lode's shape parameter
+# Lode's shape parameter for the strain symmetry ratio
 lode(s)
 
 # Nadai's octahedral shear strain
@@ -175,6 +181,12 @@ jelinek(s)
 flinn(s)
 
 kind(s)
+
+# Ellipsoid data
+hossack_ell <- lapply(seq.int(nrow(hossack1968)), function(i) {
+  ellipsoid_from_stretch(hossack1968[i, 3], hossack1968[i, 2], hossack1968[i, 1])
+})
+sapply(hossack_ell, nadai)
 }
 \references{
 Flinn, Derek.(1963): "On the statistical analysis of fabric diagrams."
@@ -186,12 +198,17 @@ auf das Fließen der Metalle Eisen, Kupfer und Nickel“
 the metals iron, copper and nickel"}], Zeitschrift für Physik, vol. 36 (November),
 pp. 913–939, \doi{10.1007/BF01400222}
 
-Nadai, A., and Hodge, P. G., Jr. (1963): "Theory of Flow and Fracture of Solids,
+Nádai, A., and Hodge, P. G., Jr. (1963): "Theory of Flow and Fracture of Solids,
 vol. II." ASME. J. Appl. Mech. December 1963; 30(4): 640. \doi{10.1115/1.3636654}
 
 Jelinek, Vit. "Characterization of the magnetic fabric of rocks."
 Tectonophysics 79.3-4 (1981): T63-T67.
 }
 \seealso{
-\code{\link[=shape_params]{shape_params()}}, \code{\link[=ot_eigen]{ot_eigen()}}
+\code{\link[=shape_params]{shape_params()}}, \code{\link[=ot_eigen]{ot_eigen()}}, \code{\link[=hsu_plot]{hsu_plot()}}, \code{\link[=flinn_plot]{flinn_plot()}}
+
+Other ellipsoid: 
+\code{\link{ellipsoid-class}},
+\code{\link{ellipsoid_from_stretch}()}
 }
+\concept{ellipsoid}

@@ -6,7 +6,7 @@
 \alias{vollmer_plot.default}
 \alias{vollmer_plot.spherical}
 \alias{vollmer_plot.list}
-\title{Fabric plot of Vollmer (1990)}
+\title{Fabric Plot of Vollmer (1990)}
 \usage{
 vollmer_plot(x, labels, add, ngrid, main, ...)
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/fabric_plots.R
 \name{woodcock_plot}
 \alias{woodcock_plot}
-\title{Fabric plot of Woodcock (1977)}
+\title{Fabric Plot of Woodcock (1977)}
 \usage{
 woodcock_plot(
   x,

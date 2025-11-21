@@ -6,7 +6,8 @@
 \alias{flinn_plot.ortensor}
 \alias{flinn_plot.ellipsoid}
 \alias{flinn_plot.spherical}
-\title{Flinn diagram}
+\alias{flinn_plot.list}
+\title{Flinn Diagram}
 \usage{
 flinn_plot(
   x,
@@ -31,11 +32,16 @@ flinn_plot(
 \method{flinn_plot}{ellipsoid}(x, ...)
 
 \method{flinn_plot}{spherical}(x, ...)
+
+\method{flinn_plot}{list}(x, ...)
 }
 \arguments{
-\item{x}{accepts the following objects: a two-column matrix where first column is the ratio of maximum strain and
-intermediate strain (X/Y) and second column is the the ratio of intermediate strain and minimum strain (Y/Z);
-objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}; or \code{"ortensor"} objects.}
+\item{x}{accepts the following objects: a two-column matrix where first
+column is the ratio of maximum strain and
+intermediate strain (X/Y) and second column is the the ratio of intermediate
+strain and minimum strain (Y/Z);
+objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"ortensor"} and \code{"ellipsoid"} objects.
+Tensor objects can also be lists of such objects (\code{"ortensor"} and \code{"ellipsoid"}).}
 
 \item{main}{character. The main title (on top).}
 
@@ -48,10 +54,21 @@ objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}; 
 \item{...}{plotting arguments passed to \code{\link[graphics:points]{graphics::points()}}}
 }
 \value{
-plot and when stored as an object, the multiplication factors for X, Y and Z.
+list. Relative magnitudes of X, Y and Z (Z=1).
 }
 \description{
-Flinn diagram
+Plots the strain ratios X/Y against Y/Z and shows the strain intensity and
+the strain symmetry after Flinn (1965)
+}
+\details{
+\strong{Strain symmetry} (Flinn 1965):
+\deqn{k = \frac{s_1/s_2 - 1}{s_2/s_3 - 1}}
+where \eqn{s_1 \geq s_2 \geq s_3} the semi-axis lengths of the ellipsoid.
+The value ranges from 0 to \eqn{\infty}, and is 0 for oblate ellipsoids
+(flattening), 1 for plane strain and  \eqn{\infty} for prolate ellipsoids (constriction).
+
+and \strong{strain intensity} (Flinn 1965):
+\deqn{d = \sqrt{(s_1/s_2 - 1)^2 + (s_2/s_3 - 1)^2}}
 }
 \examples{
 data(holst)
@@ -59,6 +76,12 @@ R_XY <- holst[, "R_XY"]
 R_YZ <- holst[, "R_YZ"]
 flinn_plot(cbind(R_XY, R_YZ), log = FALSE, col = "#B63679", pch = 16)
 flinn_plot(cbind(R_XY, R_YZ), log = TRUE, col = "#B63679", pch = 16, type = "b")
+
+# ellipsoid objects
+hossack_ell <- lapply(seq.int(nrow(hossack1968)), function(i) {
+  ellipsoid_from_stretch(hossack1968[i, 3], hossack1968[i, 2], hossack1968[i, 1])
+})
+flinn_plot(hossack_ell, col = "#B63679", pch = 16, log = TRUE)
 
 set.seed(20250411)
 mu <- Line(120, 50)
@@ -74,6 +97,9 @@ Flinn, D. (1965). On the Symmetry Principle and the Deformation
 Ellipsoid. Geological Magazine, 102(1), 36–45. \doi{10.1017/S0016756800053851}
 }
 \seealso{
+\code{\link[=ellipsoid]{ellipsoid()}} class, \code{\link[=ortensor]{ortensor()}} class, \code{\link[=flinn]{flinn()}} for Flinn's
+strain parameters.
+
 Other fabric-plot: 
 \code{\link{hsu_plot}()},
 \code{\link{vollmer-plot}},

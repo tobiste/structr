@@ -79,4 +79,3 @@ confidence_ellipse <- function(x, n_iter = 10000L, alpha = 0.05, res = 512L, iso
     ellipse = ellipse
   )
 }
-

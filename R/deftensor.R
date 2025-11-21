@@ -32,7 +32,7 @@
 #'
 #' \item{`defgrad_from_vectors()` creates `"defgrad"` tensor representing rotation around the
 #' axis perpendicular to both vectors and rotate `v1` to `v2`.}
-#' 
+#'
 #' \item{`defgrad_from_axisangle`  creates `"defgrad"` tensor representing a rigid-body
 #' rotation about an axis and an angle.}
 #'

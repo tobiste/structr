@@ -30,7 +30,7 @@
 #' Ann. Statist. 7(5) 929-943, September, 1979. \doi{10.1214/aos/1176344779}
 #'
 #' @name wellner
-#' 
+#'
 #' @source modified after `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
 #'
 #' @examples

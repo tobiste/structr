@@ -37,6 +37,10 @@ In deformation analysis, the quadratic forms of the three-dimensional stretches
 are represented by the \code{ellipsoid} class.
 It can be used to represents either ellipsoid objects or finite strain ellipsoids.
 }
+\details{
+The eigenvalues \eqn{\lambda} of the deformation matrix are the quadratic
+forms of the principal stretches \eqn{s} (\eqn{s = 1 + \epsilon = l/l_0}).
+}
 \examples{
 test <- as.ellipsoid(diag(3))
 is.ellipsoid(test)
@@ -46,5 +50,9 @@ ellipsoid(R)
 }
 \seealso{
 \code{\link[=ortensor]{ortensor()}}
+
+Other ellipsoid: 
+\code{\link{ellipsoid-params}},
+\code{\link{ellipsoid_from_stretch}()}
 }
 \concept{ellipsoid}

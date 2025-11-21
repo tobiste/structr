@@ -130,7 +130,7 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 0.005) 
 
 #' Direction of maximum horizontal stress from the stress tensor (full knowledge)
 #'
-#' @param S 3x3 matrix where the columns are the principal stress axes and the 
+#' @param S 3x3 matrix where the columns are the principal stress axes and the
 #' rows are the coordinates.
 #'
 #' @return numeric angle in degrees. The direction of SH from North.
@@ -143,7 +143,7 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 0.005) 
 #' @family SH-from-tensor
 # #' @seealso [SH()] when only principal axes and their relative magnitudes are known;
 #' @seealso [slip_inversion()] for stress inversion of fault slip data.
-#' 
+#'
 #' @references Lund and Townend, (2007). Calculating horizontal stress
 #' orientations with full or partial knowledge of the tectonic stress tensor,
 #' Geophys. J. Int., doi:\doi{10.1111/j.1365-246X.2007.03468.x}.

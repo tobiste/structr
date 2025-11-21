@@ -1,6 +1,6 @@
 # Fabric intensities and plots -------------------------------------------------
 
-#' Orientation tensor fabric intensity and shape
+#' Fabric Intensity and Shape of Orientation Tensor
 #'
 #' Fabric intensity and shape parameters of the orientation tensor based on Vollmer (1990)
 #'
@@ -66,7 +66,7 @@ vollmer <- function(x) {
   c(P = P, G = G, R = R, B = B, C = C, I = I, D = D, U = U)
 }
 
-#' Fabric plot of Vollmer (1990)
+#' Fabric Plot of Vollmer (1990)
 #'
 #' Creates a fabric plot using the eigenvalue method
 #'
@@ -219,7 +219,7 @@ vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5),
 }
 
 
-#' Fabric plot of Woodcock (1977)
+#' Fabric Plot of Woodcock (1977)
 #'
 #' Creates a fabric plot using the eigenvalue method
 #'
@@ -294,23 +294,48 @@ woodcock_plot <- function(x, labels = NULL, add = FALSE, max = 7, main = "Woodco
   invisible(x_eigen)
 }
 
-#' Fabric plot of Hsu (1965)
+#' Fabric Plot of Hsu (1965)
 #'
-#' 3D strain diagram using the Hsu (1965) method to display the natural
-#' octahedral strain (Nádai, 1950) and Lode's parameter (Lode, 1926).
+#' 3D strain diagram using the Hsu (1965) method to display the amount of the natural
+#' octahedral strain, \eqn{\bar{\epsilon}_s} (Nádai, 1950) and Lode's parameter
+#' for the symmetry of strain \eqn{\nu} (Lode, 1926).
 #'
-#' @param x accepts the following objects: a two-column matrix where first column is the ratio of maximum strain and
-#' intermediate strain (X/Y) and second column is the the ratio of intermediate strain and minimum strain (Y/Z);
-#' objects of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`; or `"ortensor"` objects.
+#' @param x accepts the following objects: a two-column matrix where first
+#' column is the ratio of maximum strain and
+#' intermediate strain (X/Y) and second column is the the ratio of intermediate
+#' strain and minimum strain (Y/Z);
+#' objects of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"ortensor"` and `"ellipsoid"` objects.
+#' Tensor objects can also be lists of such objects (`"ortensor"` and `"ellipsoid"`).
 #' @inheritParams Rphi_plot
 #' @param labels character. text labels
 #' @param add logical. Should data be plotted to an existing plot?
 #' @param ... plotting arguments passed to [graphics::points()]
 #' @param es.max maximum strain for scaling.
 #'
-#' @returns plot and when stored as object, a list containing the Lode parameter `lode` and the natural octahedral strain `es`.
+#' @returns a list containing the Lode parameter `lode` and the natural octahedral strain `es`.
 #' @family fabric-plot
 #' @seealso [lode()] for Lode parameter, and [nadai] for natural octahedral strain.
+#' [ellipsoid()] class, [ortensor()] class
+#'
+#' @details
+#' The **amount of strain** related to the natural octahedral unit shear \eqn{\bar{\gamma}_o}
+#' is (Nádai, 1963, p.73):
+#' \deqn{\bar{\epsilon}_s = \frac{\sqrt{3}}{2} \bar{\gamma}_o}
+#' where \eqn{\bar{\gamma}_o} is defined as
+#' \deqn{\bar{\gamma}_o = \frac{2}{3} \sqrt{(\bar{\epsilon}_1 - \bar{\epsilon}_2)^2 + (\bar{\epsilon}_2 - \bar{\epsilon}_3)^2 + (\bar{\epsilon}_3 - \bar{\epsilon}_1)^2}}
+#' and \eqn{\bar{\epsilon}} is the natural strain (\eqn{\bar{\epsilon} = \log{1+\epsilon}})
+#' and \eqn{\epsilon} is the conventional strain given by \eqn{\epsilon = \frac{l-l_0}{l_0}}
+#' where \eqn{l} and \eqn{l_0} is the length after and before the strain, respectively (Nádai, 1959, p.70).
+#' The amount of strain \eqn{\bar{\epsilon}_s} is directly proportional to the
+#' amount of mechanical work applied in the coaxial component of strain.
+#'
+#' The **symmetry of strain** is defined by Lode’s (1926, p.932) ratio (\eqn{\nu}):
+#' \deqn{\nu = \frac{2 \bar{\epsilon}_2 - \bar{\epsilon}_1 - \bar{\epsilon}_3}{\bar{\epsilon}_1 - \bar{\epsilon}_3}}
+#' The values range between -1 and +1, where -1 gives constriction, 0 gives
+#' plane strain, and +1 gives flattening.
+#'
+#' @note Hossack (1968) was the first one to use this graphical representation
+#' of 3D strain and called the plot "Strain plane plot"
 #'
 #' @name hsu_plot
 #'
@@ -328,10 +353,12 @@ woodcock_plot <- function(x, labels = NULL, add = FALSE, max = 7, main = "Woodco
 #' (Southern Norway). Tectonophysics, 5(4), 315–339. \doi{10.1016/0040-1951(68)90035-8}
 #'
 #' @examples
+#' # default
 #' R_XY <- holst[, "R_XY"]
 #' R_YZ <- holst[, "R_YZ"]
 #' hsu_plot(cbind(R_XY, R_YZ), col = "#B63679", pch = 16, type = "b")
 #'
+#' # orientation data
 #' set.seed(20250411)
 #' mu <- Line(120, 50)
 #' x <- rvmf(100, mu = mu, k = 1)
@@ -340,6 +367,12 @@ woodcock_plot <- function(x, labels = NULL, add = FALSE, max = 7, main = "Woodco
 #' set.seed(20250411)
 #' y <- rvmf(100, mu = mu, k = 20)
 #' hsu_plot(ortensor(y), labels = "y", col = "red", add = TRUE)
+#'
+#' # ellipsoid objects
+#' hossack_ell <- lapply(seq.int(nrow(hossack1968)), function(i) {
+#'   ellipsoid_from_stretch(hossack1968[i, 3], hossack1968[i, 2], hossack1968[i, 1])
+#' })
+#' hsu_plot(hossack_ell, col = "#B63679", pch = 16)
 NULL
 
 #' @rdname hsu_plot
@@ -532,16 +565,31 @@ hsu_plot.list <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu
 }
 
 
-#' Flinn diagram
+#' Flinn Diagram
+#'
+#' Plots the strain ratios X/Y against Y/Z and shows the strain intensity and
+#' the strain symmetry after Flinn (1965)
 #'
 #' @inheritParams hsu_plot
 #' @param R.max numeric. Maximum aspect ratio for scaling.
 #' @param log logical. Whether the axes should be in logarithmic scale.
 #'
-#' @returns plot and when stored as an object, the multiplication factors for X, Y and Z.
+#' @returns list. Relative magnitudes of X, Y and Z (Z=1).
 #'
 #' @family fabric-plot
 #' @name flinn_plot
+#' @seealso [ellipsoid()] class, [ortensor()] class, [flinn()] for Flinn's
+#' strain parameters.
+#'
+#' @details **Strain symmetry** (Flinn 1965):
+#' \deqn{k = \frac{s_1/s_2 - 1}{s_2/s_3 - 1}}
+#' where \eqn{s_1 \geq s_2 \geq s_3} the semi-axis lengths of the ellipsoid.
+#' The value ranges from 0 to \eqn{\infty}, and is 0 for oblate ellipsoids
+#' (flattening), 1 for plane strain and  \eqn{\infty} for prolate ellipsoids (constriction).
+#'
+#' and **strain intensity** (Flinn 1965):
+#' \deqn{d = \sqrt{(s_1/s_2 - 1)^2 + (s_2/s_3 - 1)^2}}
+#'
 #'
 #' @references Flinn, D. (1965). On the Symmetry Principle and the Deformation
 #' Ellipsoid. Geological Magazine, 102(1), 36–45. \doi{10.1017/S0016756800053851}
@@ -552,6 +600,12 @@ hsu_plot.list <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu
 #' R_YZ <- holst[, "R_YZ"]
 #' flinn_plot(cbind(R_XY, R_YZ), log = FALSE, col = "#B63679", pch = 16)
 #' flinn_plot(cbind(R_XY, R_YZ), log = TRUE, col = "#B63679", pch = 16, type = "b")
+#'
+#' # ellipsoid objects
+#' hossack_ell <- lapply(seq.int(nrow(hossack1968)), function(i) {
+#'   ellipsoid_from_stretch(hossack1968[i, 3], hossack1968[i, 2], hossack1968[i, 1])
+#' })
+#' flinn_plot(hossack_ell, col = "#B63679", pch = 16, log = TRUE)
 #'
 #' set.seed(20250411)
 #' mu <- Line(120, 50)
@@ -668,4 +722,17 @@ flinn_plot.ellipsoid <- function(x, ...) {
 #' @export
 flinn_plot.spherical <- function(x, ...) {
   flinn_plot.ortensor(ortensor(x), ...)
+}
+
+#' @rdname flinn_plot
+#' @export
+flinn_plot.list <- function(x, ...) {
+  a <- lapply(x, principal_stretch) |>
+    sapply(sort, decreasing = TRUE) |>
+    t()
+
+  R_xy <- a[, 1] / a[, 2]
+  R_yz <- a[, 2] / a[, 3]
+
+  flinn_plot.default(cbind(R_xy, R_yz), ...)
 }

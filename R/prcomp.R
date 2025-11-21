@@ -2,7 +2,7 @@
 
 
 #' Principal component (geodesic) analysis in the tangent space.
-#' 
+#'
 #' @inheritParams geodesic-mean
 #' @param center A spherical object. Typically the geodesic mean of the x.
 #' @param n  real number (integer, 0 or >= 3). The number of points to
@@ -24,8 +24,8 @@
 #' \item{`curves`}{list of two lists of (2 `n` + 1) rays, only if `n` >= 1}
 #' \item{`tangents`}{Tangents from `directions` and `rotation`}
 #' }
-#' 
-#' If `x` is a `"Pair"` object the list only contains `magnitudes`, `directions` 
+#'
+#' If `x` is a `"Pair"` object the list only contains `magnitudes`, `directions`
 #' and `curves` (if `n`>=1).
 #'
 #' @name sph-prcomp
@@ -33,7 +33,7 @@
 #' @examples
 #' res <- prcomp(example_lines, n = 10)
 #'
-#' stereoplot(sub = paste("SD1:", round(res$magnitudes[1], 2), "| SD2:",round(res$magnitudes[2], 2)))
+#' stereoplot(sub = paste("SD1:", round(res$magnitudes[1], 2), "| SD2:", round(res$magnitudes[2], 2)))
 #' points(example_lines, pch = 16, cex = .8)
 #' invisible(lapply(res$curves, stereo_lines, col = "red", lwd = 1.5))
 NULL
@@ -53,7 +53,7 @@ prcomp.Vec3 <- function(x, center = geodesic_mean(x), n = 0L) {
     rayPointFromTangentVector(res$directions[, 2], res$rotation)
   ) |> as.Vec3()
 
-  res$rotation <- as.Rotation(res$rotation )
+  res$rotation <- as.Rotation(res$rotation)
 
   # res$direction <- list_vec(res$direction)
   if (n > 0) {
@@ -128,7 +128,7 @@ prcomp.Pair <- function(x, center = geodesic_mean(x), n = 0L, group = NULL) {
   xl <- pair2rot(x)
   center <- pair2rot(center)[[1]] |> unclass()
 
-  res <- if(is.null(group)) {
+  res <- if (is.null(group)) {
     rotLeftPrincipalComponentAnalysis(xl, center, numPoints = n)
   } else {
     oriLeftPrincipalComponentAnalysis(xl, center, numPoints = n, group = group)

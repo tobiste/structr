@@ -7,7 +7,7 @@
 \alias{hsu_plot.ellispoid}
 \alias{hsu_plot.default}
 \alias{hsu_plot.list}
-\title{Fabric plot of Hsu (1965)}
+\title{Fabric Plot of Hsu (1965)}
 \usage{
 hsu_plot(x, ...)
 
@@ -22,9 +22,12 @@ hsu_plot(x, ...)
 \method{hsu_plot}{list}(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...)
 }
 \arguments{
-\item{x}{accepts the following objects: a two-column matrix where first column is the ratio of maximum strain and
-intermediate strain (X/Y) and second column is the the ratio of intermediate strain and minimum strain (Y/Z);
-objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}; or \code{"ortensor"} objects.}
+\item{x}{accepts the following objects: a two-column matrix where first
+column is the ratio of maximum strain and
+intermediate strain (X/Y) and second column is the the ratio of intermediate
+strain and minimum strain (Y/Z);
+objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"ortensor"} and \code{"ellipsoid"} objects.
+Tensor objects can also be lists of such objects (\code{"ortensor"} and \code{"ellipsoid"}).}
 
 \item{...}{plotting arguments passed to \code{\link[graphics:points]{graphics::points()}}}
 
@@ -37,17 +40,41 @@ objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}; 
 \item{main}{character. The main title (on top).}
 }
 \value{
-plot and when stored as object, a list containing the Lode parameter \code{lode} and the natural octahedral strain \code{es}.
+a list containing the Lode parameter \code{lode} and the natural octahedral strain \code{es}.
 }
 \description{
-3D strain diagram using the Hsu (1965) method to display the natural
-octahedral strain (Nádai, 1950) and Lode's parameter (Lode, 1926).
+3D strain diagram using the Hsu (1965) method to display the amount of the natural
+octahedral strain, \eqn{\bar{\epsilon}_s} (Nádai, 1950) and Lode's parameter
+for the symmetry of strain \eqn{\nu} (Lode, 1926).
+}
+\details{
+The \strong{amount of strain} related to the natural octahedral unit shear \eqn{\bar{\gamma}_o}
+is (Nádai, 1963, p.73):
+\deqn{\bar{\epsilon}_s = \frac{\sqrt{3}}{2} \bar{\gamma}_o}
+where \eqn{\bar{\gamma}_o} is defined as
+\deqn{\bar{\gamma}_o = \frac{2}{3} \sqrt{(\bar{\epsilon}_1 - \bar{\epsilon}_2)^2 + (\bar{\epsilon}_2 - \bar{\epsilon}_3)^2 + (\bar{\epsilon}_3 - \bar{\epsilon}_1)^2}}
+and \eqn{\bar{\epsilon}} is the natural strain (\eqn{\bar{\epsilon} = \log{1+\epsilon}})
+and \eqn{\epsilon} is the conventional strain given by \eqn{\epsilon = \frac{l-l_0}{l_0}}
+where \eqn{l} and \eqn{l_0} is the length after and before the strain, respectively (Nádai, 1959, p.70).
+The amount of strain \eqn{\bar{\epsilon}_s} is directly proportional to the
+amount of mechanical work applied in the coaxial component of strain.
+
+The \strong{symmetry of strain} is defined by Lode’s (1926, p.932) ratio (\eqn{\nu}):
+\deqn{\nu = \frac{2 \bar{\epsilon}_2 - \bar{\epsilon}_1 - \bar{\epsilon}_3}{\bar{\epsilon}_1 - \bar{\epsilon}_3}}
+The values range between -1 and +1, where -1 gives constriction, 0 gives
+plane strain, and +1 gives flattening.
+}
+\note{
+Hossack (1968) was the first one to use this graphical representation
+of 3D strain and called the plot "Strain plane plot"
 }
 \examples{
+# default
 R_XY <- holst[, "R_XY"]
 R_YZ <- holst[, "R_YZ"]
 hsu_plot(cbind(R_XY, R_YZ), col = "#B63679", pch = 16, type = "b")
 
+# orientation data
 set.seed(20250411)
 mu <- Line(120, 50)
 x <- rvmf(100, mu = mu, k = 1)
@@ -56,6 +83,12 @@ hsu_plot(x, labels = "x")
 set.seed(20250411)
 y <- rvmf(100, mu = mu, k = 20)
 hsu_plot(ortensor(y), labels = "y", col = "red", add = TRUE)
+
+# ellipsoid objects
+hossack_ell <- lapply(seq.int(nrow(hossack1968)), function(i) {
+  ellipsoid_from_stretch(hossack1968[i, 3], hossack1968[i, 2], hossack1968[i, 1])
+})
+hsu_plot(hossack_ell, col = "#B63679", pch = 16)
 }
 \references{
 Lode, W. (1926). Versuche über den Einfluß der mittleren Hauptspannung auf
@@ -72,6 +105,7 @@ Hossack, J. R. (1968). Pebble deformation and thrusting in the Bygdin area
 }
 \seealso{
 \code{\link[=lode]{lode()}} for Lode parameter, and \link{nadai} for natural octahedral strain.
+\code{\link[=ellipsoid]{ellipsoid()}} class, \code{\link[=ortensor]{ortensor()}} class
 
 Other fabric-plot: 
 \code{\link{flinn_plot}()},

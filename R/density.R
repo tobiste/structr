@@ -335,7 +335,7 @@ density_calc <- function(x,
                          weights = NULL, upper.hem = FALSE, r = 1) {
   x_grid <- y_grid <- seq(-1, 1, length.out = n)
 
-  grid <- expand.grid(x_grid, y_grid) |> 
+  grid <- expand.grid(x_grid, y_grid) |>
     as.matrix()
   dg <- density_grid(x, weights = weights, upper.hem = upper.hem, kamb = TRUE, FUN = FUN, sigma = sigma, ngrid = n, r = r)
   density_matrix <- matrix(dg$density, nrow = n, byrow = FALSE)

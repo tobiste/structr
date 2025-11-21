@@ -317,7 +317,8 @@ projected_mean <- function(x, ...) {
 #' }
 #'
 #' @family ortensor
-#' @seealso [vollmer()] for Vollmer 1990 shape parameters of the orientation tensor
+#' @seealso [vollmer()] for Vollmer 1990 shape parameters of the orientation tensor.
+#' [ellipsoid()] class
 #'
 #' @returns list
 #'

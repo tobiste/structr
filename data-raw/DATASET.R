@@ -161,3 +161,9 @@ shebandowan <- read.csv("inst/vorticity_example.csv") |>
   dplyr::rename_all(tolower) |>
   dplyr::rename(area = area_norm)
 usethis::use_data(shebandowan, overwrite = TRUE)
+
+
+# hossack 1968
+hossack1968 <- read.table("inst/hossack1968.txt", header = TRUE, row.names = 1) |>
+  mutate(Z = 1.0, .before = Y)
+usethis::use_data(hossack1968, overwrite = TRUE)

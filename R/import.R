@@ -300,7 +300,7 @@ read_strabo_JSON <- function(file, sf = TRUE) {
               if (a$type != "planar_orientation") {
                 a_dt <- as.data.table(a)
                 setnames(a_dt, names(a_dt), paste0("associated_", names(a_dt)))
-                #a_dt$associated <- NULL # drop associated column in lineations
+                # a_dt$associated <- NULL # drop associated column in lineations
                 return(a_dt)
               }
               NULL
@@ -323,9 +323,9 @@ read_strabo_JSON <- function(file, sf = TRUE) {
   })
   orient_dt <- rbindlist(orient_list, fill = TRUE)
   orient_dt <- unique(orient_dt)
-  
+
   # dirty hack to remove duplicated columns
-  
+
 
   if (nrow(orient_dt) > 0) {
     planes <- Plane(orient_dt$strike + 90, orient_dt$dip)

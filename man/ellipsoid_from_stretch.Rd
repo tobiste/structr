@@ -15,7 +15,21 @@ object of class \code{"ellipsoid"}
 \description{
 Return diagonal tensor defined by magnitudes of principal stretches
 }
+\details{
+The eigenvalues \eqn{\lambda} of the deformation matrix are the quadratic
+forms of the principal stretches \eqn{s} (\eqn{s = 1 + \epsilon = l/l_0}).
+}
 \examples{
 el <- ellipsoid_from_stretch(4, 3, 1)
 principal_stretch(el)
+
+lapply(seq.int(nrow(hossack1968)), function(i) {
+  ellipsoid_from_stretch(hossack1968[i, 3], hossack1968[i, 2], hossack1968[i, 1])
+})
 }
+\seealso{
+Other ellipsoid: 
+\code{\link{ellipsoid-class}},
+\code{\link{ellipsoid-params}}
+}
+\concept{ellipsoid}

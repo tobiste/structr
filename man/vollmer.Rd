@@ -2,7 +2,7 @@
 % Please edit documentation in R/fabric_plots.R
 \name{vollmer}
 \alias{vollmer}
-\title{Orientation tensor fabric intensity and shape}
+\title{Fabric Intensity and Shape of Orientation Tensor}
 \usage{
 vollmer(x)
 }

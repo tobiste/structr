@@ -27,8 +27,8 @@ two-column matrix of the stereographic or equal-area coordinates
 Draws simple lines between vector points in stereographic or equal-area projection
 }
 \examples{
-plot(example_lines, col= 'grey')
-stereo_lines(example_lines[1:2, ], col = 'red')
+plot(example_lines, col = "grey")
+stereo_lines(example_lines[1:2, ], col = "red")
 }
 \seealso{
 \code{\link[=slerp]{slerp()}}, \link{stereo_greatcircle}, \code{\link[=stereo_lines]{stereo_lines()}}, \code{\link[=stereo_segment]{stereo_segment()}}

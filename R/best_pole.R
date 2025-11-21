@@ -457,7 +457,7 @@ regression_greatcircle <- function(x, val = seq_len(nrow(x)), iterations = 1000L
   }
 
   rot_vec <- as.Vec3(rot[, 3])
-  
+
   result <- list(
     vec = Spherical(rot_vec, class(x)[1]),
     range = a,
@@ -478,7 +478,7 @@ regression_greatcircle <- function(x, val = seq_len(nrow(x)), iterations = 1000L
     result$points <- lapply(
       seq(from = min(val), to = max(val), length.out = (n_points + 1)),
       result$prediction
-    ) |> 
+    ) |>
       list_vec()
   }
 

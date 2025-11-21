@@ -552,4 +552,3 @@ symmetry_group <- function(group = c("triclinic", "ray_in_plane", "line_in_plane
     )
   }
 }
-

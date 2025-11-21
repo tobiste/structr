@@ -473,16 +473,16 @@ modes <- function(kde) {
 #' @inheritParams sph_mean
 #' @param ls list of 3-element vectors (Cartesian coordinates x, y, z)
 #'
-#' @returns `vec_list` returns a list of 3-element vectors (Cartesian coordinates x, y, z). 
+#' @returns `vec_list` returns a list of 3-element vectors (Cartesian coordinates x, y, z).
 #' `list_vec` returns a `"Vec3"` object
 #'
 #' @name vec-list
 # #' @seealso [rot2pair()] and [pair2rot()]
-#' 
+#'
 #' @examples
 #' ls <- vec_list(example_lines[1:5, ])
 #' print(ls)
-#' 
+#'
 #' list_vec(ls)
 NULL
 
@@ -496,7 +496,7 @@ vec_list <- function(x) {
 #' @rdname vec-list
 #' @export
 list_vec <- function(ls) {
-  do.call(rbind, ls) |> 
+  do.call(rbind, ls) |>
     as.Vec3()
 }
 

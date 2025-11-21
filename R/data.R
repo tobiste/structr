@@ -166,7 +166,7 @@
 "ramsay"
 
 
-#' 3D Strain Data
+#' 3D Strain Data I
 #'
 #' Example data from Holst and Fossen (1987) containing 3D strain data from 17 localities in the West Norwegian Caledonides.
 #' The data gives the  difference of the  \eqn{\epsilon_1} and \eqn{\epsilon_2} (`e1e2`) and \eqn{\epsilon_2} and \eqn{\epsilon_3} (`e2e3`)
@@ -182,6 +182,25 @@
 #' head(holst)
 "holst"
 
+
+#' 3D Strain Data II
+#'
+#' Example data from J.R. Hossack (1968) containing 3D strain data from 81
+#' localities from the Bygdin Conglomerate by the Upper Jotun Nappe. The data
+#' gives the mean axial ratios (X, Y, Z) of the deformed pebbles.
+#' Different to Hossack, here X is the longest axes, and Z the shortest.
+#'
+#' @docType data
+#'
+#' @usage data('hossack1968')
+#'
+#' @format An object of class `matrix`
+#' @family datasets
+#' @keywords datasets
+#' @examples
+#' data("hossack1968")
+#' head(hossack1968)
+"hossack1968"
 
 #' Vorticity from Rotated Porphyroclasts
 #'

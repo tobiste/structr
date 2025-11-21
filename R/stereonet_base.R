@@ -126,7 +126,7 @@ stereo_coords <- function(az, inc, upper.hem = FALSE, earea = TRUE, r = 1) {
 #' @importFrom graphics points text
 #'
 #' @family stereo-plot
-#' 
+#'
 #' @return two-column matrix of the stereographic or equal-area coordinates
 #'
 #' @export
@@ -285,9 +285,9 @@ stereo_pair <- function(x, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex 
 #' @param ... optional graphical parameters passed to [graphics::lines()]
 #' @importFrom graphics lines
 #' @name stereo_cones
-#' 
+#'
 #' @seealso [lines.spherical()], [stereo_segment()], [stereo_lines()]
-#' 
+#'
 #' @family stereo-plot
 #' @examples
 #' stereoplot()
@@ -348,7 +348,7 @@ stereo_smallcircle0 <- function(x, d = 90, col = 1, N = 1000, upper.hem = FALSE,
     r2 <- sqrt(g[, 1]^2 + g[, 2]^2 + g[, 3]^2)
     phi2 <- atan2d(g[, 2], g[, 1])
     theta2 <- acosd(g[, 3] / r2)
-    
+
     Sc <- stereo_coords(phi2, 90 - theta2, upper.hem, earea)
 
     diss <- sqrt((Sc[1:(N - 1), "x"] - Sc[2:(N), "x"])^2 + (Sc[1:(N - 1), "y"] - Sc[2:(N), "y"])^2)
@@ -440,13 +440,13 @@ stereo_segment <- function(x, y, upper.hem = FALSE, earea = TRUE, n = 100L, BALL
 .draw_lines <- function(x, y, n = 100L, upper.hem, earea, BALL.radius = 1, ...) {
   t <- seq(0, 1, length.out = n)
   D <- slerp(x, y, t) #|>
-    # Line() |>
-    # unclass()
+  # Line() |>
+  # unclass()
 
   stereo_lines(D, upper.hem, earea, BALL.radius, ...)
-  
+
   # Sc <- stereo_coords(D[, 1], D[, 2], upper.hem, earea)
-  # 
+  #
   # diss <- sqrt((Sc[1:(n - 1), "x"] - Sc[2:(n), "x"])^2 + (Sc[1:(n - 1), "y"] - Sc[2:(n), "y"])^2)
   # ww <- which(diss > 0.9 * BALL.radius)
   # if (length(ww) > 0) {
@@ -457,7 +457,7 @@ stereo_segment <- function(x, y, upper.hem = FALSE, earea = TRUE, n = 100L, BALL
 }
 
 #' Lines in a Stereoplot
-#' 
+#'
 #' Draws simple lines between vector points in stereographic or equal-area projection
 #'
 #' @inheritParams stereo_smallcircle
@@ -466,13 +466,13 @@ stereo_segment <- function(x, y, upper.hem = FALSE, earea = TRUE, n = 100L, BALL
 #' @family stereo-plot
 #' @seealso [slerp()], [stereo_greatcircle], [stereo_lines()], [stereo_segment()]
 #' @importFrom graphics lines
-#' 
+#'
 #' @export
 #'
 #' @examples
-#' plot(example_lines, col= 'grey')
-#' stereo_lines(example_lines[1:2, ], col = 'red')
-stereo_lines <-  function(x, upper.hem = FALSE, earea = TRUE, BALL.radius = 1, ...) {
+#' plot(example_lines, col = "grey")
+#' stereo_lines(example_lines[1:2, ], col = "red")
+stereo_lines <- function(x, upper.hem = FALSE, earea = TRUE, BALL.radius = 1, ...) {
   D <- Line(x) |> unclass()
   n <- nrow(x)
 

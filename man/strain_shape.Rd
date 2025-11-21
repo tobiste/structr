@@ -109,7 +109,8 @@ Watterson, Juan. (1968): "Homogeneous deformation of the gneisses of Vesterland,
 Woodcock, N. H.  (1977): "Specification of fabric shapes using an eigenvalue method." Geological Society of America Bulletin 88.9: 1231-1236.
 }
 \seealso{
-\code{\link[=vollmer]{vollmer()}} for Vollmer 1990 shape parameters of the orientation tensor
+\code{\link[=vollmer]{vollmer()}} for Vollmer 1990 shape parameters of the orientation tensor.
+\code{\link[=ellipsoid]{ellipsoid()}} class
 
 More details on shape parameters: \code{\link[=lode]{lode()}}, \code{\link[=nadai]{nadai()}},
 \code{\link[=jelinek]{jelinek()}}, \code{\link[=flinn]{flinn()}}. Details on eigenvectors from orientation

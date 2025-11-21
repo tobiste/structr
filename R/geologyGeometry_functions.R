@@ -343,9 +343,9 @@ rotAxisAngleFromMatrix <- function(r) {
 #'
 #' @param v A real 3D vector.
 #' @return A infinitsimal rotation matrix.
-#' 
+#'
 #' @noRd
-#' 
+#'
 #' @source `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
 rotAntisymmetricFromVector <- function(v) {
   matrix(c(0, v[3], -v[2], -v[3], 0, v[1], v[2], -v[1], 0), 3, 3)
@@ -355,9 +355,9 @@ rotAntisymmetricFromVector <- function(v) {
 #'
 #' @param l A line (unit 3D vector).
 #' @param center A ray (unit 3D vector).
-#' 
+#'
 #' @noRd
-#' 
+#'
 #' @source `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
 lineNearestRepresentative <- function(l, center) {
   if (dot(l, center) < 0) {
@@ -926,23 +926,23 @@ rotLeftPrincipalComponentAnalysis <- function(rs, center, numPoints = 0) {
 
 #' Principal geodesic analysis in the tangent space at a given orientation.
 #'
-#' Appropriate only if the sample is tightly concentrated near the center. In 
+#' Appropriate only if the sample is tightly concentrated near the center. In
 #' fact, this function is a thin wrapper for rotLeftPrincipalComponentAnalysis.
-#' 
+#'
 #' @param rs A list of rotation matrices.
 #' @param center A rotation matrix. Typically the geodesic mean of the rs.
-#' @param numPoints A real number (integer, 0 or >= 3). The number of points to 
+#' @param numPoints A real number (integer, 0 or >= 3). The number of points to
 #' return on each of the six geodesics through the center.
-#' 
-#' @return A list consisting of $magnitudes (3D real vector, nonnegative) and 
-#' $directions (3x3 real matrix, whose columns are unit-length vectors). The 
-#' $magnitudes are analogous to sample standard deviations. They are in 
-#' decreasing order. The $directions are the corresponding directions, suitable 
-#' for use in rotMatrixFromLeftTangent. If numPoints >= 1, then there is also a 
+#'
+#' @return A list consisting of $magnitudes (3D real vector, nonnegative) and
+#' $directions (3x3 real matrix, whose columns are unit-length vectors). The
+#' $magnitudes are analogous to sample standard deviations. They are in
+#' decreasing order. The $directions are the corresponding directions, suitable
+#' for use in rotMatrixFromLeftTangent. If numPoints >= 1, then there is also a
 #' $curves field (list of three lists of (2 numPoints + 1) rotation matrices).
-#' 
+#'
 #' @noRd
-#' 
+#'
 #' @source `geologyGeometry` by Davis, J.R.
 oriLeftPrincipalComponentAnalysis <- function(rs, center, group, numPoints = 0) {
   rs <- lapply(rs, oriNearestRepresentative, center, group)
@@ -1005,9 +1005,9 @@ rayPointFromTangentVector <- function(w, rotation) {
 #' Appropriate only if the sample is tightly concentrated near the center.
 #' @param rs A list of rotation matrices.
 #' @param center A rotation matrix. Typically the geodesic mean of the `rs`.
-#' 
+#'
 #' @return A 3x3 real matrix (symmetric, non-negative eigenvalues).
-#' 
+#'
 #' @export
 rotLeftCovariance <- function(rs, center) {
   vs <- lapply(rs, rotLeftTangentFromMatrix, center)
@@ -1019,14 +1019,14 @@ rotLeftCovariance <- function(rs, center) {
 
 #' Maps the space of rotations into one of its tangent spaces.
 #'
-#' Converts rotation matrix \eqn{R = \exp(V) C} into vector v. Appropriate only 
+#' Converts rotation matrix \eqn{R = \exp(V) C} into vector v. Appropriate only
 #' if the two given rotations are close to each other.
-#' 
+#'
 #' @param r A rotation matrix.
 #' @param center A rotation matrix.
-#' 
+#'
 #' @return A 3D real vector.
-#' 
+#'
 #' @noRd
 rotLeftTangentFromMatrix <- function(r, center) {
   ua <- rotAxisAngleFromMatrix(t(center) %*% r)
@@ -1036,10 +1036,10 @@ rotLeftTangentFromMatrix <- function(r, center) {
 #' Conversion from matrix to angle-axis representation.
 #'
 #' @param r A rotation matrix.
-#' 
-#' @return A 4D real vector c(u1, u2, u3, a), with u unit length and a an angle 
+#'
+#' @return A 4D real vector c(u1, u2, u3, a), with u unit length and a an angle
 #' in radians (between 0 and pi).
-#' 
+#'
 #' @noRd
 rotAxisAngleFromMatrix <- function(r) {
   cosine <- (tr(r) - 1) / 2
@@ -1097,10 +1097,10 @@ rotAxisAngleFromMatrix <- function(r) {
 #' Maps a tangent space into the space of rotations.
 #'
 #' Converts tangent vector `v` into rotation matrix \eqn{R = C \exp(V)}.
-#' 
+#'
 #' @param v A 3D real vector.
 #' @param center A rotation matrix.
-#' 
+#'
 #' @return A 3x3 rotation matrix.
 #' @noRd
 rotMatrixFromLeftTangent <- function(v, center) {
