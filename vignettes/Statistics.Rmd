@@ -315,9 +315,9 @@ The Eigenvalues from orientation data can be computed through `ot_eigen()`
 planes_eigen <- ot_eigen(planes)
 print(planes_eigen)
 ```
-To visualize the orientation of the Eigen-vectors and their -values, you can call the vectors and values of the object returned by `ot_eigen()`:
+To visualize the orientation of the Eigenvectors and their -values, you can call the vectors and values of the object returned by `ot_eigen()`:
 
-```{r oteigen}
+```{r oteigen_plot}
 stereoplot()
 points(example_planes, col = "grey", pch = 16, cex = .7)
 lines(planes_eigen$vectors, 
