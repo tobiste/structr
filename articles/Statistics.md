@@ -279,6 +279,57 @@ orientation of the most dense, intermediate and least dense orientation,
 and thus, are used to determine the orientation of girdle-distributed
 vectors (e.g. folded planes).
 
+The orientation tensor of orientation tensor is calculated by
+[`ortensor()`](https://tobiste.github.io/structr/reference/ortensor.md):
+
+``` r
+ortensor(planes)
+#> Orientation tensor
+#>            [,1]        [,2]        [,3]
+#> [1,]  0.5634412 -0.11043381 -0.12507927
+#> [2,] -0.1104338  0.13269479 -0.04040902
+#> [3,] -0.1250793 -0.04040902  0.30386403
+```
+
+The Eigenvalues from orientation data can be computed through
+[`ot_eigen()`](https://tobiste.github.io/structr/reference/ot_eigen.md)
+
+``` r
+planes_eigen <- ot_eigen(planes)
+print(planes_eigen)
+#> eigen() decomposition
+#> $values
+#> [1] 0.62975929 0.28812045 0.08212026
+#> 
+#> $vectors
+#> Line object (n = 3):
+#>        azimuth   plunge
+#> [1,] 169.08091 19.46169
+#> [2,] 300.98901 62.11934
+#> [3,]  72.03016 19.15562
+```
+
+To visualize the orientation of the Eigenvectors and their -values, you
+can call the vectors and values of the object returned by
+[`ot_eigen()`](https://tobiste.github.io/structr/reference/ot_eigen.md):
+
+``` r
+stereoplot()
+points(example_planes, col = "grey", pch = 16, cex = .7)
+lines(planes_eigen$vectors, 
+       col = c("#000004", "#B63679FF", "#FEC287FF"), 
+       lwd = rev(assign_cex(planes_eigen$values, range = c(.5, 2))))
+points(planes_eigen$vectors, 
+       col = c("#000004", "#B63679FF", "#FEC287FF"), 
+       cex = assign_cex(planes_eigen$values, range = c(.5, 2)), 
+       pch = 16)
+legend('right', 
+       legend = c("Eigen-1", "Eigen-2", "Eigen-3"), 
+       col = c("#000004", "#B63679FF", "#FEC287FF"), pch = 16, lty = 1)
+```
+
+![](Statistics_files/figure-html/oteigen_plot-1.png)
+
 #### Shape parameters
 
 There are more shape parameters using different algorithms based on the

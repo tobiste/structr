@@ -85,7 +85,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2025-11-21</h4>
+            <h4 data-toc-skip class="date">2025-11-22</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/Statistics.Rmd" class="external-link"><code>vignettes/Statistics.Rmd</code></a></small>
       <div class="d-none name"><code>Statistics.Rmd</code></div>
@@ -336,12 +336,53 @@ the <strong>Eigenvectors</strong> of this tensor describe the
 orientation of the most dense, intermediate and least dense orientation,
 and thus, are used to determine the orientation of girdle-distributed
 vectors (e.g. folded planes).</p>
+<p>The orientation tensor of orientation tensor is calculated by
+<code><a href="../reference/ortensor.html">ortensor()</a></code>:</p>
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/ortensor.html">ortensor</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Orientation tensor</span></span>
+<span><span class="co">#&gt;            [,1]        [,2]        [,3]</span></span>
+<span><span class="co">#&gt; [1,]  0.5634412 -0.11043381 -0.12507927</span></span>
+<span><span class="co">#&gt; [2,] -0.1104338  0.13269479 -0.04040902</span></span>
+<span><span class="co">#&gt; [3,] -0.1250793 -0.04040902  0.30386403</span></span></code></pre></div>
+<p>The Eigenvalues from orientation data can be computed through
+<code><a href="../reference/ot_eigen.html">ot_eigen()</a></code></p>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">planes_eigen</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ot_eigen.html">ot_eigen</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">planes_eigen</span><span class="op">)</span></span>
+<span><span class="co">#&gt; eigen() decomposition</span></span>
+<span><span class="co">#&gt; $values</span></span>
+<span><span class="co">#&gt; [1] 0.62975929 0.28812045 0.08212026</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $vectors</span></span>
+<span><span class="co">#&gt; Line object (n = 3):</span></span>
+<span><span class="co">#&gt;        azimuth   plunge</span></span>
+<span><span class="co">#&gt; [1,] 169.08091 19.46169</span></span>
+<span><span class="co">#&gt; [2,] 300.98901 62.11934</span></span>
+<span><span class="co">#&gt; [3,]  72.03016 19.15562</span></span></code></pre></div>
+<p>To visualize the orientation of the Eigenvectors and their -values,
+you can call the vectors and values of the object returned by
+<code><a href="../reference/ot_eigen.html">ot_eigen()</a></code>:</p>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">example_planes</span>, col <span class="op">=</span> <span class="st">"grey"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">planes_eigen</span><span class="op">$</span><span class="va">vectors</span>, </span>
+<span>       col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#000004"</span>, <span class="st">"#B63679FF"</span>, <span class="st">"#FEC287FF"</span><span class="op">)</span>, </span>
+<span>       lwd <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/rev.html" class="external-link">rev</a></span><span class="op">(</span><span class="fu"><a href="../reference/assign-cex.html">assign_cex</a></span><span class="op">(</span><span class="va">planes_eigen</span><span class="op">$</span><span class="va">values</span>, range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.5</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">planes_eigen</span><span class="op">$</span><span class="va">vectors</span>, </span>
+<span>       col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#000004"</span>, <span class="st">"#B63679FF"</span>, <span class="st">"#FEC287FF"</span><span class="op">)</span>, </span>
+<span>       cex <span class="op">=</span> <span class="fu"><a href="../reference/assign-cex.html">assign_cex</a></span><span class="op">(</span><span class="va">planes_eigen</span><span class="op">$</span><span class="va">values</span>, range <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">.5</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span>, </span>
+<span>       pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">'right'</span>, </span>
+<span>       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Eigen-1"</span>, <span class="st">"Eigen-2"</span>, <span class="st">"Eigen-3"</span><span class="op">)</span>, </span>
+<span>       col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#000004"</span>, <span class="st">"#B63679FF"</span>, <span class="st">"#FEC287FF"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span>, lty <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Statistics_files/figure-html/oteigen_plot-1.png" class="r-plt" width="700"></p>
 <div class="section level4">
 <h4 id="shape-parameters">Shape parameters<a class="anchor" aria-label="anchor" href="#shape-parameters"></a>
 </h4>
 <p>There are more shape parameters using different algorithms based on
 the orientation tensor:</p>
-<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/strain_shape.html">shape_params</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span></span>
 <span><span class="co">#&gt; $stretch_ratios</span></span>
 <span><span class="co">#&gt;      Rxy      Ryz      Rxz </span></span>
@@ -396,7 +437,7 @@ the orientation tensor:</p>
 </h2>
 <p>To find k clusters of orientational data, the
 <code><a href="../reference/sph_cluster.html">sph_cluster()</a></code> function can be used:</p>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># generate some random vectors:</span></span>
 <span><span class="va">x1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">100</span>, mu <span class="op">=</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">90</span>, <span class="fl">0</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
 <span><span class="va">x2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">100</span>, mu <span class="op">=</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">20</span><span class="op">)</span></span>
