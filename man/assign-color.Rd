@@ -65,6 +65,9 @@ plot(x, col = assign_col(runif(100)), grid.params = list(guides = FALSE))
 legend_col(seq(0, 1, .1), title = "test")
 }
 \seealso{
+\code{\link[PlotTools:SpectrumLegend]{PlotTools::SpectrumLegend()}} - salternative tool to generate a
+color-bar in base-R plots
+
 Other assign: 
 \code{\link{assign-cex}},
 \code{\link{assign-pch}}

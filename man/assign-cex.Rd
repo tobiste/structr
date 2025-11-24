@@ -45,7 +45,7 @@ keyword from the list \code{"bottomright"}, \code{"bottom"}, \code{"bottomleft"}
 
 \item{pch}{plotting character to be used in legend.}
 
-\item{...}{arguments passed to \code{graphics::legend()}}
+\item{...}{arguments passed to \code{\link[graphics:legend]{graphics::legend()}}}
 }
 \value{
 numeric vector
@@ -74,6 +74,9 @@ plot(x, cex = assign_cex(key), grid.params = list(guides = FALSE))
 legend_cex(key, position = 'topright', area = TRUE)
 }
 \seealso{
+\code{\link[PlotTools:SpectrumLegend]{PlotTools::SizeLegend()}} - alternative tool to generate nice
+looking legends for cex values
+
 Other assign: 
 \code{\link{assign-color}},
 \code{\link{assign-pch}}

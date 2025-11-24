@@ -265,6 +265,8 @@ parse_quadrant_measurement <- function(x) {
 #' @return character vector of colors in hexadecimal code
 #' @import viridis
 #' @importFrom grDevices colorRamp
+#' @seealso [PlotTools::SpectrumLegend()] - salternative tool to generate a 
+#' color-bar in base-R plots
 #' @family assign
 #' @name assign-color
 #'
@@ -383,9 +385,11 @@ legend_col_d <- function(fill, legend = names(fill), position = "topright", ...)
 #' @param values numeric. `cex` values to manually assign to `x`. Must be at least 
 #' the number of unique values in `x`.
 #' @inheritParams assign_col
-#' @param ... arguments passed to `graphics::legend()`
+#' @param ... arguments passed to [graphics::legend()]
 #' 
 #' @family assign
+#' @seealso [PlotTools::SizeLegend()] - alternative tool to generate nice 
+#' looking legends for cex values
 #'
 #' @returns numeric vector
 #' @name assign-cex
