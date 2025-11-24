@@ -71,6 +71,9 @@ character vector of colors in hexadecimal code
 
 ## See also
 
+`PlotTools::SpectrumLegend()` - salternative tool to generate a
+color-bar in base-R plots
+
 Other assign:
 [`assign-cex`](https://tobiste.github.io/structr/reference/assign-cex.md),
 [`assign-pch`](https://tobiste.github.io/structr/reference/assign-pch.md)

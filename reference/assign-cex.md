@@ -82,6 +82,9 @@ plotting text and symbols should be scaled relative to the default.
 
 ## See also
 
+`PlotTools::SizeLegend()` - alternative tool to generate nice looking
+legends for cex values
+
 Other assign:
 [`assign-color`](https://tobiste.github.io/structr/reference/assign-color.md),
 [`assign-pch`](https://tobiste.github.io/structr/reference/assign-pch.md)
