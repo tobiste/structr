@@ -90,8 +90,9 @@ ortensor.default <- function(x, norm = TRUE, w = NULL, shift = NULL) {
   } else {
     n <- 1
   }
+  xw <- w * x
 
-  or <- (1 / n) * (t(x) %*% x)
+  or <- (1 / n) * (t(xw) %*% xw)
   # or <- matrix(nrow = 3, ncol = 3)
   # or[1, 1] <- sum(x[, 1]^2)
   # or[1, 2] <- sum(x[, 1] * x[, 2])

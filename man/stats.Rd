@@ -26,7 +26,7 @@ sd_error(x, w = NULL, na.rm = FALSE)
 
 delta(x, w = NULL, na.rm = TRUE)
 
-estimate_k(x, w = NULL, na.rm = FALSE)
+estimate_k(x, w = NULL, na.rm = FALSE, p = 3)
 }
 \arguments{
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
@@ -39,6 +39,8 @@ rows are the observations and the columns are the coordinates.}
 \item{w}{numeric. Optional weights for each observation.}
 
 \item{alpha}{numeric. Significance level for the confidence angle (default is 0.05 for a 95\% confidence angle).}
+
+\item{p}{integer. Number of parameters in the data space (2 for circle, 3 for a sphere)}
 }
 \description{
 Statistical estimators of the distribution of a set of vectors

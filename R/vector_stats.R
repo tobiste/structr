@@ -301,12 +301,11 @@ delta <- function(x, w = NULL, na.rm = TRUE) {
 }
 
 #' @rdname stats
+#' @param p integer. Number of parameters in the data space (2 for circle, 3 for a sphere)
 #' @export
-estimate_k <- function(x, w = NULL, na.rm = FALSE) {
+estimate_k <- function(x, w = NULL, na.rm = FALSE, p = 3) {
   Rbar <- vresultant(Vec3(x), w = w, mean = TRUE, na.rm = na.rm) |>
     vlength()
-
-  p <- 3
 
   (Rbar * (p - Rbar^2)) / (1 - Rbar^2)
 }
