@@ -19,7 +19,7 @@ sd_error(x, w = NULL, na.rm = FALSE)
 
 delta(x, w = NULL, na.rm = TRUE)
 
-estimate_k(x, w = NULL, na.rm = FALSE)
+estimate_k(x, w = NULL, na.rm = FALSE, p = 3)
 ```
 
 ## Arguments
@@ -46,6 +46,11 @@ estimate_k(x, w = NULL, na.rm = FALSE)
 
   numeric. Significance level for the confidence angle (default is 0.05
   for a 95% confidence angle).
+
+- p:
+
+  integer. Number of parameters in the data space (2 for circle, 3 for a
+  sphere)
 
 ## Details
 
