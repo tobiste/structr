@@ -54,10 +54,10 @@ includes
 
 ## Duplicate Name Alert
 
-> This repository \[structr\] is not associated with the generic
-> application platform [structr](https://github.com/structr/structr).
-> Please ensure you are using the correct version to avoid compatibility
-> issues.
+This repository \[structr\] is not associated with the generic
+application platform [structr](https://github.com/structr/structr).
+Please ensure you are using the correct version to avoid compatibility
+issues.
 
 ## Installation
 
