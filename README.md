@@ -49,6 +49,10 @@ for structural geology. The toolset includes
 > orientations in 2D (statistics, rose diagrams, etc.), check out the
 > [tectonicr](https://github.com/tobiste/tectonicr) package!
 
+## Duplicate Name Alert
+
+> This repository [structr] is not associated with the generic application platform [structr](https://github.com/structr/structr). Please ensure you are using the correct version to avoid compatibility issues.
+
 ## Installation
 
 You can install the development version of `{structr}` from
