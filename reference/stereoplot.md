@@ -21,7 +21,8 @@ stereoplot(
   ladj = 0.05,
   centercross = TRUE,
   ticks = 90,
-  radius = 1
+  radius = 1,
+  center = NULL
 )
 ```
 
@@ -95,6 +96,12 @@ Adapted from the `RFOC` package
 
   numeric. Radius of circle
 
+- center:
+
+  An object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`
+  specifying the center of the stereoplot. If `NULL` (the default), the
+  center is at the origin of the plot.
+
 ## See also
 
 Other stereo-plot:
@@ -120,4 +127,7 @@ stereoplot()
 
 
 stereoplot(ticks = 30, title = "title", sub = "subtitle", border.col = "purple", labels = TRUE)
+
+
+stereoplot(center = Line(120, 50))
 ```

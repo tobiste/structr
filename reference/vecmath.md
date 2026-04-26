@@ -127,5 +127,5 @@ project(vec1, vec2) # projection of a vector
 transform_linear(vec1, matrix(runif(9), 3, 3)) # linear transformation
 #> Vector (Vec3) object (n = 1):
 #>         x         y         z 
-#> 0.1714069 0.1418151 0.1022888 
+#> 0.6996967 0.5818234 0.7023318 
 ```

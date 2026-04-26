@@ -6,7 +6,7 @@ stereoplot.
 ## Usage
 
 ``` r
-stereoplot_guides(d = 10, earea = TRUE, radius = 1, ...)
+stereoplot_guides(d = 10, earea = TRUE, radius = 1, center = NULL, ...)
 ```
 
 ## Arguments
@@ -23,6 +23,12 @@ stereoplot_guides(d = 10, earea = TRUE, radius = 1, ...)
 - radius:
 
   numeric. Radius of circle
+
+- center:
+
+  Center position of gridlines. If `NULL` (the default), gridlines are
+  centered on the origin of the stereoplot. Otherwise, this should is an
+  spherical object.
 
 - ...:
 
@@ -56,4 +62,8 @@ stereoplot_guides(d = 5, earea = FALSE, col = "green", rotation = 20)
 
 plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
 stereoplot_guides(d = 15, earea = TRUE, col = "orange", rotation = 90)
+
+
+plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
+stereoplot_guides(d = 15, earea = FALSE, center = Line(120, 50))
 ```

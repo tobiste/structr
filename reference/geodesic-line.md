@@ -82,7 +82,7 @@ geodesic_meanvariance_line(example_lines)
 #> $mean
 #> Line object (n = 1):
 #>  azimuth   plunge 
-#> 69.64251 14.87961 
+#> 69.63855 14.87817 
 #> 
 #> $error
 #> [1] 0
