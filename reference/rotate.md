@@ -1,7 +1,6 @@
 # Vector Rotation
 
-Helper function to rotate a vector from one orientation to an target
-orientation by finding the rotation axis and angle.
+Vector Rotation
 
 ## Usage
 
@@ -22,8 +21,6 @@ rotate(x, rotaxis, rotangle)
 
 # S3 method for class 'Pair'
 rotate(x, rotaxis, rotangle)
-
-rotate_ab(x, a = x, b)
 ```
 
 ## Arguments
@@ -44,19 +41,7 @@ rotate_ab(x, a = x, b)
   Angle of rotation in radians for `"Vec3"` objects and in degrees for
   `"Line"`, `"Ray"` and `"Plane"` objects.
 
-- a:
-
-  Origin vector orientation, object of class `"Vec3"`, `"Line"`,
-  `"Ray"`, or `"Plane"`
-
-- b:
-
-  Target vector orientation, object of class `"Vec3"`, `"Line"`,
-  `"Ray"`, or `"Plane"`.
-
 ## Value
-
-objects of same class as `x`
 
 objects of same class as `x`
 
@@ -64,8 +49,6 @@ objects of same class as `x`
 
 [`defgrad_from_axisangle()`](https://tobiste.github.io/structr/reference/defgrad.md);
 [`transform_linear()`](https://tobiste.github.io/structr/reference/vecmath.md)
-
-`rotate()`
 
 ## Examples
 
@@ -86,8 +69,4 @@ rotate(simongomez[1:5, ], Ray(90, 10), 80)
 #> [3,]     281.39043 44.48230 249.1242 39.70735    -1
 #> [4,]     293.63164 59.35347 246.4979 48.94592     1
 #> [5,]     296.64621 46.49228 259.0021 39.83414     1
-veca <- Vec3(1, 0, 0)
-vecb <- Vec3(0, 0, 1)
-rotate_ab(example_planes[1, ], veca, vecb)
-#> Error in rotate_ab(example_planes[1, ], veca, vecb): could not find function "rotate_ab"
 ```

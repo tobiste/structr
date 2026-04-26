@@ -347,9 +347,8 @@
   : Sample covariance matrix, approximated in the tangent space at a
   given rotation.
 
-- [`rotate()`](https://tobiste.github.io/structr/reference/rotate.md)
-  [`rotate_ab()`](https://tobiste.github.io/structr/reference/rotate.md)
-  : Vector Rotation
+- [`rotate()`](https://tobiste.github.io/structr/reference/rotate.md) :
+  Vector Rotation
 
 - [`rotate_stereogrid()`](https://tobiste.github.io/structr/reference/rotate_stereogrid.md)
   : Center gridlines on a given point
