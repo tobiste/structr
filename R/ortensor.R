@@ -572,7 +572,7 @@ shape_params.ellipsoid <- function(x, ...) {
 #' x_centered <- center(x)
 #'
 #' # plot results
-#' plot(x, col = "grey")
+#' plot(x, col = "grey", grid.params = list(center = Line(0, 90)))
 #' points(x_centered, col = "#B63679", pch = 16)
 #' legend("topright", legend = c("original", "centered"), col = c("grey", "#B63679"), pch = 16)
 center <- function(x, max_vertical = FALSE) {

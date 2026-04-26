@@ -22,7 +22,8 @@ stereoplot(
   ladj = 0.05,
   centercross = TRUE,
   ticks = 90,
-  radius = 1
+  radius = 1,
+  center = NULL
 )
 }
 \arguments{
@@ -57,6 +58,10 @@ This essentially an amount that is added to \code{radius} and the length of the 
 \item{ticks}{integer. Angle between ticks. if \code{NULL} (the default), no ticks are drawn.}
 
 \item{radius}{numeric. Radius of circle}
+
+\item{center}{An object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}
+specifying the center of the stereoplot. If \code{NULL} (the default), the center
+is at the origin of the plot.}
 }
 \description{
 Initialize the plot for equal-area stereographic projections (Wulff) or Lambert
@@ -66,6 +71,8 @@ Equal-Area projections (Schmidt).
 stereoplot()
 
 stereoplot(ticks = 30, title = "title", sub = "subtitle", border.col = "purple", labels = TRUE)
+
+stereoplot(center = Line(120, 50))
 }
 \seealso{
 Other stereo-plot: 

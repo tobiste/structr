@@ -533,6 +533,9 @@ stereoplot_frame <- function(n = 512L, radius = 1, ...) {
 #' @param ladj adjustment for all labels away from origin of stereoplot circle.
 #' This essentially an amount that is added to `radius` and the length of the ticks.
 #' @param radius numeric. Radius of circle
+#' @param center An object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"` 
+#' specifying the center of the stereoplot. If `NULL` (the default), the center 
+#' is at the origin of the plot.
 #'
 #' @source Adapted from the `RFOC` package
 #'
@@ -544,10 +547,12 @@ stereoplot_frame <- function(n = 512L, radius = 1, ...) {
 #' stereoplot()
 #'
 #' stereoplot(ticks = 30, title = "title", sub = "subtitle", border.col = "purple", labels = TRUE)
+#' 
+#' stereoplot(center = Line(120, 50))
 stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = "gray90",
                        lwd = 0.5, lty = 1, border.col = "black", title = NULL,
                        sub = NULL, origin.text = "N", labels = FALSE, ladj = 0.05,
-                       centercross = TRUE, ticks = 90, radius = 1) {
+                       centercross = TRUE, ticks = 90, radius = 1, center = NULL) {
   graphics::par(xpd = NA)
   graphics::plot(radius * c(-1, 1), radius * c(-1, 1),
     type = "n", xlab = NULL, ylab = NULL, asp = 1,
@@ -557,7 +562,7 @@ stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = "gray90",
   graphics::title(main = title, sub = sub)
   graphics::mtext(origin.text, col = border.col, font = 2)
 
-  if (guides) stereoplot_guides(d = d, earea = earea, col = col, lwd = lwd, lty = lty, radius = radius)
+  if (guides) stereoplot_guides(d = d, earea = earea, col = col, lwd = lwd, lty = lty, radius = radius, center=center)
 
   if (!is.null(ticks)) stereoplot_ticks(angle = ticks, col = border.col, radius = radius, labels = labels, ladj = ladj)
 
@@ -705,6 +710,7 @@ stereo_guides_wulff <- function(d = 9, n = 512, r = 1, rotation = 0, ...) {
 #'
 #' @param d angle between grid lines
 #' @inheritParams stereoplot
+#' @param center Center position of gridlines. If `NULL` (the default), gridlines are centered on the origin of the stereoplot. Otherwise, this should is an spherical object.
 #' @param ... optional arguments passed to [graphics::lines()]
 #'
 #' @importFrom graphics lines
@@ -717,11 +723,18 @@ stereo_guides_wulff <- function(d = 9, n = 512, r = 1, rotation = 0, ...) {
 #'
 #' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
 #' stereoplot_guides(d = 15, earea = TRUE, col = "orange", rotation = 90)
-stereoplot_guides <- function(d = 10, earea = TRUE, radius = 1, ...) {
+#' 
+#' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
+#' stereoplot_guides(d = 15, earea = FALSE, center = Line(120, 50))
+stereoplot_guides <- function(d = 10, earea = TRUE, radius = 1, center = NULL, ...) {
+  if(is.null(center)){
   if (earea) {
     stereo_guides_schmidt(d = d, r = radius, ...)
   } else {
     stereo_guides_wulff(d = d, r = radius, ...)
+  }
+  } else {
+    rotate_stereogrid(center, d = d, earea = earea, ...)
   }
 }
 
@@ -1231,4 +1244,35 @@ stereo_path <- function(x, type = c("l", "p", "b"), add = TRUE, n = 5, upper.hem
       })
     )
   }
+}
+
+
+
+#' Center gridlines on a given point
+#'
+#' @param x center position of grid lines. 
+#' @inheritParams stereoplot
+#' @param ... arguments passed to [graphics::lines()]
+#'
+#' @returns NULL
+#' @export
+#'
+#' @examples
+#' stereoplot(guide = FALSE)
+#' rotate_stereogrid(Plane(120, 50), earea = FALSE)
+rotate_stereogrid <- function(x, d = 10, col = "gray90", lwd = 0.5, lty = 1, ...){
+  xv <- Line(x)
+  # small circles
+  ds <- seq(-90+d, 90, d)
+  invisible(lapply(ds, function(d) stereo_smallcircle(xv, d = d, col = col, lwd = lwd, lty = lty, ...)))
+  
+  # great circles
+  dummy_gc <- Plane(90, 90)
+  
+  gc0 <- rotate(dummy_gc, Vec3(0,0,1), deg2rad(xv[1,1]))
+  ds2 <- seq(d, 180, by = d)
+  invisible(lapply(ds2, function(d) {
+    gc <- rotate(gc0, xv, d)
+    stereo_greatcircle(gc, col = col, lwd = lwd, lty = lty, ...)
+  }))
 }

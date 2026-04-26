@@ -414,7 +414,29 @@ rotate.Pair <- function(x, rotaxis, rotangle) {
   }
 }
 
-
+#' Rotate vector from one orientation to another
+#' 
+#' Helper function to rotate a vector from one orientation to an target 
+#' orientation by finding the rotation axis and angle. 
+#'
+#' @inheritParams geodesic-mean
+#' @param a Origin vector orientation, object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`
+#' @param b Target vector orientation,  object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`.
+#'
+#' @seealso [rotate()]
+#'
+#' @returns objects of same class as `x`
+#' @name rotate
+#'
+#' @examples
+#' veca <- Vec3(1, 0, 0)
+#' vecb <- Vec3(0, 0, 1)
+#' rotate_ab(example_planes[1, ], veca, vecb)
+rotate_ab <- function(x, a = x, b){
+  rotaxis <- crossprod(a, b)
+  rotangle <- angle(a, b)
+  rotate(x, rotaxis, rotangle)
+}
 
 
 #' Antipode vector
