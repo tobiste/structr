@@ -7,7 +7,6 @@
 \alias{rotate.Line}
 \alias{rotate.Plane}
 \alias{rotate.Pair}
-\alias{rotate_ab}
 \title{Vector Rotation}
 \usage{
 rotate(x, rotaxis, rotangle)
@@ -21,8 +20,6 @@ rotate(x, rotaxis, rotangle)
 \method{rotate}{Plane}(x, rotaxis, rotangle)
 
 \method{rotate}{Pair}(x, rotaxis, rotangle)
-
-rotate_ab(x, a = x, b)
 }
 \arguments{
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"},
@@ -31,19 +28,12 @@ where the rows are the observations and the columns are the coordinates.}
 \item{rotaxis}{Axis of rotation given as object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}.}
 
 \item{rotangle}{Angle of rotation in radians for \code{"Vec3"} objects and in degrees for \code{"Line"}, \code{"Ray"} and \code{"Plane"} objects.}
-
-\item{a}{Origin vector orientation, object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}}
-
-\item{b}{Target vector orientation,  object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}.}
 }
 \value{
 objects of same class as \code{x}
-
-objects of same class as \code{x}
 }
 \description{
-Helper function to rotate a vector from one orientation to an target
-orientation by finding the rotation axis and angle.
+Vector Rotation
 }
 \examples{
 vec1 <- Vec3(1, 0, 0)
@@ -52,12 +42,7 @@ rotate(vec1, vec2, pi / 2)
 
 # rotate Fault data (sense of motion changes!)
 rotate(simongomez[1:5, ], Ray(90, 10), 80)
-veca <- Vec3(1, 0, 0)
-vecb <- Vec3(0, 0, 1)
-rotate_ab(example_planes[1, ], veca, vecb)
 }
 \seealso{
 \code{\link[=defgrad_from_axisangle]{defgrad_from_axisangle()}}; \code{\link[=transform_linear]{transform_linear()}}
-
-\code{\link[=rotate]{rotate()}}
 }

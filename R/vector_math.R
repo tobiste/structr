@@ -426,7 +426,7 @@ rotate.Pair <- function(x, rotaxis, rotangle) {
 #' @seealso [rotate()]
 #'
 #' @returns objects of same class as `x`
-#' @name rotate
+#' @noRd
 #'
 #' @examples
 #' veca <- Vec3(1, 0, 0)
