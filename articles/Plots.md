@@ -5,12 +5,14 @@ This tutorial shows how to create various orientation plots using the
 fabric plots, density plots, and fault plots.
 
 ``` r
+
 library(structr)
 ```
 
 Import and convert to spherical objects:
 
 ``` r
+
 data(example_planes_df)
 data(example_lines_df)
 
@@ -24,6 +26,7 @@ Lambert equal area, lower hemisphere projection is the default plotting
 setting.
 
 ``` r
+
 stereoplot()
 points(lines, col = "#B63679", pch = 19, cex = .5)
 points(planes, col = "#000004", pch = 1, cex = .5)
@@ -45,6 +48,7 @@ just set the `earea` argument to `FALSE`, and the `upper.hem` argument
 to `TRUE`:
 
 ``` r
+
 stereoplot(earea = FALSE)
 points(lines, col = "#B63679", pch = 19, cex = .5, earea = FALSE, upper.hem = TRUE)
 points(planes, col = "#000004", pch = 1, cex = .5, earea = FALSE, upper.hem = TRUE)
@@ -64,6 +68,7 @@ Great and small circles can be added using the
 Adding great circles for the first 10 vectors in planes:
 
 ``` r
+
 stereoplot(guides = FALSE) # turn of guides for better visibility
 lines(planes[1:10, ], col = "lightgrey", lty = 1)
 points(planes[1:10, ], col = "#000004", pch = 1, cex = .5)
@@ -76,6 +81,7 @@ To plot a small circle with, e.g., a 10° radius, you need to specify the
 `ang` argument in [`lines()`](https://rdrr.io/r/graphics/lines.html):
 
 ``` r
+
 stereoplot(guides = FALSE)
 points(lines[1:5, ], col = "#B63679", pch = 19, cex = .5)
 lines(lines[1:5, ], ang = 10, col = "#B63679")
@@ -92,9 +98,9 @@ random these vectors are distributed.
 
 A Fabric plot visualizes the shape of the distribution by plotting the
 eigenvalues of the orientation tensor. Three different diagram are
-provided by {structr}, namely the triangular *Vollmer plot*[¹](#fn1),
-the logarithmic biplot (*Woodcock plot*)[²](#fn2), and the Lode
-parameter vs. natural octahedral strain diagram (*Hsu plot*)\[\|^hsu\].
+provided by {structr}, namely the triangular *Vollmer plot*[^1], the
+logarithmic biplot (*Woodcock plot*)[^2], and the Lode parameter vs.
+natural octahedral strain diagram (*Hsu plot*)\[\|^hsu\].
 
 ### Vollmer plot
 
@@ -103,6 +109,7 @@ creates a triangular plot showing the shape of the orientation
 distribution (after Vollmer, 1990).
 
 ``` r
+
 vollmer_plot(planes, col = "#000004", pch = 1, cex = 2)
 vollmer_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
@@ -119,6 +126,7 @@ creates a logarithmic biplot showing the shape of the orientation
 distribution (after Woodcock, 1977).
 
 ``` r
+
 woodcock_plot(planes, col = "#000004", pch = 1, cex = 2)
 woodcock_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
@@ -131,11 +139,11 @@ an biplot plot after Woodcok
 ### Hsu plot
 
 [`hsu_plot()`](https://tobiste.github.io/structr/reference/hsu_plot.md)
-creates a Lode parameter[³](#fn3) vs. natural octahedral strain[⁴](#fn4)
-diagram showing the shape of the orientation distribution (after Hsu,
-1965).
+creates a Lode parameter[^3] vs. natural octahedral strain[^4] diagram
+showing the shape of the orientation distribution (after Hsu, 1965).
 
 ``` r
+
 hsu_plot(planes, col = "#000004", pch = 1, cex = 2)
 hsu_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
@@ -146,12 +154,13 @@ a Hsu plot](Plots_files/figure-html/hsu-1.png)
 
 ## Density plots
 
-**Kamb** contours[⁵](#fn5) and densities can be added to an existing
+**Kamb** contours[^5] and densities can be added to an existing
 projection plot using the `contour` functions. Weighted densities can be
 controlled by the `weights` argument and are useful when the orientation
 measurements have different accuracies.
 
 ``` r
+
 example_planes_df$quality <- ifelse(is.na(example_planes_df$quality), 6, example_planes_df$quality) # replacing NA values with 6
 plane_weightings <- 6 / example_planes_df$quality
 
@@ -176,6 +185,7 @@ and
 for more information.
 
 ``` r
+
 stereoplot(guides = FALSE)
 points(planes, col = "grey", pch = 16, cex = .5)
 contourf(planes, add = TRUE, density.params = list(weights = plane_weightings))
@@ -191,6 +201,7 @@ orientation data, showing the density distribution, eigenvectors/mean
 values, and fabric strength.
 
 ``` r
+
 # Minimum eigenvector of plane's orientation tensor:
 planes_eigen <- ot_eigen(planes)$vectors
 planes_eigen3 <- planes_eigen[3, ]
@@ -207,6 +218,7 @@ fabric_l <- vollmer(lines)["D"]
 The final plot:
 
 ``` r
+
 # two plots side by side
 par(mfrow = c(1, 2))
 
@@ -251,11 +263,12 @@ can be visualized, namely the Angelier and the Hoeppener plot.
 ### Angelier plot
 
 The **Angelier plot** shows all planes as *great circles* and lineations
-as points (after Angelier, 1984)[⁶](#fn6). Fault striae are plotted as
+as points (after Angelier, 1984)[^6]. Fault striae are plotted as
 vectors on top of the lineation pointing in the movement direction of
 the hanging wall. Easy to read in case of homogeneous or small datasets.
 
 ``` r
+
 f <- Fault(
   c("a" = 120, "b" = 125, "c" = 100),
   c(60, 62, 50),
@@ -274,11 +287,12 @@ projection](Plots_files/figure-html/faults1-1.png)
 ### Hoeppener plot
 
 The **Hoeppener plot** shows all planes as *poles* while lineations are
-not shown (after Hoeppener, 1955)[⁷](#fn7). Instead, fault striae are
-plotted as vectors on top of poles pointing in the movement direction of
-the hanging wall. Useful in case of large or heterogeneous datasets.
+not shown (after Hoeppener, 1955)[^7]. Instead, fault striae are plotted
+as vectors on top of poles pointing in the movement direction of the
+hanging wall. Useful in case of large or heterogeneous datasets.
 
 ``` r
+
 stereoplot(title = "Hoeppener plot")
 hoeppener(f, col = viridis::magma(nrow(f), end = .9), points = FALSE)
 ```
@@ -314,6 +328,7 @@ The following example assigns the `col` (color), the `cex` (size), and
 the `pch` (symbol) based on three different properties:
 
 ``` r
+
 # define three random properties
 prop_continuous1 <- runif(nrow(planes))
 prop_continuous2 <- runif(nrow(planes))
@@ -342,31 +357,29 @@ discrete values using `assign_*_d`. Also there are binned mapping
 options through `assign_*_binnned`. See `?assign_cex()` for more
 information.
 
-------------------------------------------------------------------------
-
-1.  Vollmer, F. W. (1990). An application of eigenvalue methods to
+[^1]: Vollmer, F. W. (1990). An application of eigenvalue methods to
     structural domain analysis. Geological Society of America Bulletin,
     102, 786–791.
 
-2.  Woodcock, N. H. (1977). Specification of fabric shapes using an
+[^2]: Woodcock, N. H. (1977). Specification of fabric shapes using an
     eigenvalue method. Geological Society of America Bulletin88,
     1231–1236. Retrieved from
     <http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf>
 
-3.  Lode, W. (1926). Versuche über den Einfluß der mittleren
+[^3]: Lode, W. (1926). Versuche über den Einfluß der mittleren
     Hauptspannung auf das Fließen der Metalle Eisen. Kupfer und Nickel.
     Zeitschrift Für Physik, 36(11–12), 913–939.
     <https://doi.org/10.1007/BF01400222>
 
-4.  Nádai, A. (1950). Theory of flow and fracture of solids.
+[^4]: Nádai, A. (1950). Theory of flow and fracture of solids.
     McGraw-Hill.
 
-5.  Kamb, W. B. (1959). Ice Petrofabric Observations from Blue Glacier,
-    Washington, in Relation to Theory and Experiment. Journal of
-    Geophysical Research, 54(11).
+[^5]: Kamb, W. B. (1959). Ice Petrofabric Observations from Blue
+    Glacier, Washington, in Relation to Theory and Experiment. Journal
+    of Geophysical Research, 54(11).
 
-6.  Angelier, J. Tectonic analysis of fault slip data sets, J. Geophys.
-    Res. 89 (B7), 5835-5848 (1984)
+[^6]: Angelier, J. Tectonic analysis of fault slip data sets, J.
+    Geophys. Res. 89 (B7), 5835-5848 (1984)
 
-7.  Hoeppener, R. Tektonik im Schiefergebirge. Geol Rundsch 44, 26-58
+[^7]: Hoeppener, R. Tektonik im Schiefergebirge. Geol Rundsch 44, 26-58
     (1955). <https://doi.org/10.1007/BF01802903>

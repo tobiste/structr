@@ -9,6 +9,7 @@ orientation data.
 Load the package:
 
 ``` r
+
 library(structr)
 ```
 
@@ -16,6 +17,7 @@ To start, we import some example planes and lines, and convert them to
 spherical objects:
 
 ``` r
+
 data(example_planes_df)
 data(example_lines_df)
 
@@ -31,23 +33,24 @@ Arithmetic mean, geodesic mean, and projected mean
 
 The arithmetic mean orientation of spherical data is calculated by
 summing up all orientation vectors and normalizing the resulting
-vector[¹](#fn1):
+vector[^1]:
 
-This involves the resultant vector of a set of $n$ vectors
-$x_{1},\ldots,x_{n}$, given by
-$\bar{\mathbf{x}} = \sum_{i = 1}^{n}\mathbf{x}_{i}$, and the resultant
-length defined as
-$\bar{\mathbf{R}} = \sqrt{x_{x}^{2} + x_{y}^{2} + x_{z}^{2}}$.
+This involves the resultant vector of a set of $`n`$ vectors
+$`x_1, \ldots, x_n`$, given by
+$`\bar{\mathbf{x}} = \sum_{i=1}^{n} \mathbf{x}_i`$, and the resultant
+length defined as $`\bar{\mathbf{R}} = \sqrt{x_x^2 + x_y^2 + x_z^2}`$.
 
 The arithmetic mean of the vector components is the mean resultant
 vector, i.e the resultant vector normalized by its length
-$$\mu = \frac{\bar{\mathbf{x}}}{\bar{\mathbf{R}}}$$
+``` math
+\mu = \frac{\bar{\mathbf{x}}}{\bar{\mathbf{R}}}
+```
 
 In geology, the statistical estimators are useful for **vectorial data**
 (`"Line"` objects) such as lineations (e.g. mineral lineations,
 stretching lineations) or plunge directions of fold axes, but less for
 axial data (`"Ray"` objects) such as paleomagnetic directions or
-orientations of fold axes, where the direction is not relevant[²](#fn2).
+orientations of fold axes, where the direction is not relevant[^2].
 
 These estimators are good descriptors of the concentration of the data
 around the mean direction, assuming an unimodal, isotropic distributions
@@ -57,6 +60,7 @@ Define some weights for our lines based on the quality reported for the
 measurements:
 
 ``` r
+
 example_lines_df$quality <- ifelse(is.na(example_lines_df$quality), 6, example_lines_df$quality) # replacing NA values with 6
 line_weightings <- 6 / example_lines_df$quality
 ```
@@ -64,12 +68,14 @@ line_weightings <- 6 / example_lines_df$quality
 The (weighted) arithmetic mean orientation of spherical data is:
 
 ``` r
+
 lines_mean <- sph_mean(lines, w = line_weightings)
 ```
 
 … and the (weighted) arithmetic variance
 
 ``` r
+
 lines_variance <- sph_var(lines, w = line_weightings)
 ```
 
@@ -77,6 +83,7 @@ the (weighted) standard deviation (i.e. the 63% cone around the mean)
 and the 95% confidence cone around the mean:
 
 ``` r
+
 lines_delta <- delta(lines, w = line_weightings)
 lines_confangle <- sph_confidence_angle(lines, w = line_weightings)
 ```
@@ -84,6 +91,7 @@ lines_confangle <- sph_confidence_angle(lines, w = line_weightings)
 Taken together, this prints as
 
 ``` r
+
 c(
   "Variance" = lines_variance,
   "63% cone" = lines_delta,
@@ -96,6 +104,7 @@ c(
 Summary stats can also be retrieved through
 
 ``` r
+
 summary(lines)
 #>         azimuth          plunge        variance        68% cone confidence cone 
 #>      68.5127690      20.4958671       0.2168518      38.4502642       4.7492331
@@ -104,7 +113,8 @@ summary(lines)
 Plotting a summary of the stats on a equal-area projection:
 
 ``` r
-stereoplot()
+
+stereoplot(center  = lines_mean)
 points(lines, col = "lightgrey", pch = 1, cex = .5)
 points(lines_mean, col = "#B63679", pch = 19, cex = 1)
 lines(lines_mean, ang = lines_confangle, col = "#E65164FF")
@@ -119,13 +129,14 @@ equal-area projection](Statistics_files/figure-html/stat_plot-1.png)
 
 Another measure of mean and dispersion is the *Fréchet (geodesic L*²)
 mean and *variance* which is based on the angles between all data
-vectors[³](#fn3).  
+vectors[^3].  
 This can be visualized using the
 [`variance_plot()`](https://tobiste.github.io/structr/reference/variance_plot.md);
 here showing the (geodesic) angle distances between all lines and the
 first line in the same data set:
 
 ``` r
+
 variance_plot(lines, y = lines[1, ])
 ```
 
@@ -142,6 +153,7 @@ the vector by using a numerical optimization method to minimize the
 distances to all other vectors
 
 ``` r
+
 # Mean
 geodesic_mean(lines)
 #> Line object (n = 1):
@@ -164,6 +176,7 @@ to the highest concentration of a population. This vector can also be
 described as the **projected mean**. A shortcut function for this is:
 
 ``` r
+
 projected_mean(example_lines)
 #> Line object (n = 1):
 #>  azimuth   plunge 
@@ -175,8 +188,9 @@ around the mean direction, when data follows an unimodal, anisotropic
 distributions such as the *Kent* or *Bingham distributions*.
 
 ``` r
+
 par(mfrow = c(1, 2))
-stereoplot()
+stereoplot(center = sph_mean(example_lines))
 points(example_lines, col = "grey", pch = 16, cex = .7)
 points(sph_mean(example_lines), col = "#1D1147FF", pch = 16)
 points(geodesic_mean(example_lines), col = "#B63679FF", pch = 16)
@@ -190,7 +204,7 @@ legend("bottomleft",
   bg = "white"
 )
 
-stereoplot()
+stereoplot(center = sph_mean(example_lines))
 points(example_planes, col = "grey", pch = 16, cex = .7)
 points(sph_mean(example_planes), col = "#1D1147FF", pch = 16)
 points(geodesic_mean(example_planes), col = "#B63679FF", pch = 16)
@@ -213,18 +227,21 @@ Let’s test the hypothesis that a horizontal lineation trending towards
 70° is the mean for our lineations.
 
 ``` r
+
 line_NULL <- Line(70, 0)
 ```
 
 The 95% confidence interval (from 10,000 bootstrap samples):
 
 ``` r
+
 ce <- confidence_ellipse(lines, n = 10000, alpha = 0.05)
 ```
 
 To visualize the confidence region of our lines:
 
 ``` r
+
 plot(lines, col = "grey")
 stereo_confidence(ce, col = "#B63679FF")
 points(line_NULL, col = "#000004", pch = 16)
@@ -233,9 +250,10 @@ points(line_NULL, col = "#000004", pch = 16)
 ![Diagram showing the confidence region of a
 mean](Statistics_files/figure-html/test2-1.png)
 
-The $p$-value for our hypothesis line:
+The $`p`$-value for our hypothesis line:
 
 ``` r
+
 ce$pvalue.FUN(line_NULL)
 #> [1] 0
 ```
@@ -245,25 +263,27 @@ line represents the population mean as the p-value is smaller than 5%.
 
 #### Two-sample T-Test
 
-Wellner’s Rayleigh-style T-statistic[⁴](#fn4) measures how different two
-sets of vectors are. The test statistic T is a non-negative measure of
+Wellner’s Rayleigh-style T-statistic[^4] measures how different two sets
+of vectors are. The test statistic T is a non-negative measure of
 dissimilarity between two datasets. The value is zero when the datasets
 are identical.
 
 ``` r
+
 wellner(lines, line_NULL)
 #> [1] 0.9585258
 ```
 
-A $p$-value for this test-statistic can be estimated using permutations.
-The fraction of tests in the computed T-statistic exceeds the observed T
-for the original data (a number between 0 and 1 inclusive) can be
-interpreted as a $p$-value for the null hypothesis that the two
-populations are identical (not merely that their means coincide). Thus,
-smaller p-values indicate stronger evidence that the two populations
-differ significantly.
+A $`p`$-value for this test-statistic can be estimated using
+permutations. The fraction of tests in the computed T-statistic exceeds
+the observed T for the original data (a number between 0 and 1
+inclusive) can be interpreted as a $`p`$-value for the null hypothesis
+that the two populations are identical (not merely that their means
+coincide). Thus, smaller p-values indicate stronger evidence that the
+two populations differ significantly.
 
 ``` r
+
 wellner_inference(lines, line_NULL, n_perm = 1000)
 #> [1] 0.43
 ```
@@ -272,17 +292,18 @@ wellner_inference(lines, line_NULL, n_perm = 1000)
 
 ### Eigenvectors
 
-The orientation tensor[⁵](#fn5) is a matrix comprising the mean
-direction cosines of the orientation vectors. In case of a Bingham
-distribution, the **Eigenvectors** of this tensor describe the
-orientation of the most dense, intermediate and least dense orientation,
-and thus, are used to determine the orientation of girdle-distributed
-vectors (e.g. folded planes).
+The orientation tensor[^5] is a matrix comprising the mean direction
+cosines of the orientation vectors. In case of a Bingham distribution,
+the **Eigenvectors** of this tensor describe the orientation of the most
+dense, intermediate and least dense orientation, and thus, are used to
+determine the orientation of girdle-distributed vectors (e.g. folded
+planes).
 
 The orientation tensor of orientation tensor is calculated by
 [`ortensor()`](https://tobiste.github.io/structr/reference/ortensor.md):
 
 ``` r
+
 ortensor(planes)
 #> Orientation tensor
 #>            [,1]        [,2]        [,3]
@@ -295,6 +316,7 @@ The Eigenvalues from orientation data can be computed through
 [`ot_eigen()`](https://tobiste.github.io/structr/reference/ot_eigen.md)
 
 ``` r
+
 planes_eigen <- ot_eigen(planes)
 print(planes_eigen)
 #> eigen() decomposition
@@ -314,7 +336,8 @@ can call the vectors and values of the object returned by
 [`ot_eigen()`](https://tobiste.github.io/structr/reference/ot_eigen.md):
 
 ``` r
-stereoplot()
+
+stereoplot(center = planes_eigen$vectors[3, ])
 points(example_planes, col = "grey", pch = 16, cex = .7)
 lines(planes_eigen$vectors, 
        col = c("#000004", "#B63679FF", "#FEC287FF"), 
@@ -336,6 +359,7 @@ There are more shape parameters using different algorithms based on the
 orientation tensor:
 
 ``` r
+
 shape_params(planes)
 #> $stretch_ratios
 #>      Rxy      Ryz      Rxz 
@@ -386,11 +410,12 @@ shape_params(planes)
 
 ## Cluster vectors
 
-To find k clusters of orientational data, the
+To find *k* clusters of orientational data, the
 [`sph_cluster()`](https://tobiste.github.io/structr/reference/sph_cluster.md)
 function can be used:
 
 ``` r
+
 # generate some random vectors:
 x1 <- rvmf(100, mu = Line(90, 0), k = 20)
 x2 <- rvmf(100, mu = Line(0, 0), k = 20)
@@ -433,26 +458,25 @@ plane solutions. Bulletin of the Seismological Society of America,
 Wellner, J. A. (1979) “Permutation Tests for Directional Data.” Ann.
 Statist. 7(5) 929-943. <https://doi.org/10.1214/aos/1176344779>
 
-------------------------------------------------------------------------
-
-1.  Mardia, K. V., & Jupp, P. E. (2000). Directional Statistics. (K. V.
-    Mardia & P. E. Jupp, Eds.). Hoboken, NJ, USA: Wiley.
+[^1]: Mardia, K. V., & Jupp, P. E. (2000). Directional Statistics. (K.
+    V. Mardia & P. E. Jupp, Eds.). Hoboken, NJ, USA: Wiley.
     <https://doi.org/10.1002/9780470316979>
 
-2.  Bachmann, F., Hielscher, R., Jupp, P. E., Pantleon, W., Schaeben,
+[^2]: Bachmann, F., Hielscher, R., Jupp, P. E., Pantleon, W., Schaeben,
     H., & Wegert, E. (2010). Inferential statistics of electron
     backscatter diffraction data from within individual crystalline
     grains. Journal of Applied Crystallography, 43(6), 1338–1355.
     <https://doi.org/10.1107/S002188981003027X>
 
-3.  Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis for
-    three-dimensional orientational data. Journal of Structural Geology,
-    96, 65–89. <https://doi.org/10.1016/j.jsg.2017.01.002>
+[^3]: Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis
+    for three-dimensional orientational data. Journal of Structural
+    Geology, 96, 65–89. <https://doi.org/10.1016/j.jsg.2017.01.002>
 
-4.  Wellner, J. A. (1979) “Permutation Tests for Directional Data.” Ann.
-    Statist. 7 (5) 929-943. <https://doi.org/10.1214/aos/1176344779>
+[^4]: Wellner, J. A. (1979) “Permutation Tests for Directional Data.”
+    Ann. Statist. 7 (5) 929-943.
+    <https://doi.org/10.1214/aos/1176344779>
 
-5.  Scheidegger, A. E. (1964). The tectonic stress and tectonic motion
+[^5]: Scheidegger, A. E. (1964). The tectonic stress and tectonic motion
     direction in Europe and Western Asia as calculated from earthquake
     fault plane solutions. Bulletin of the Seismological Society of
     America, 54(5A), 1519–1528. <https://doi.org/10.1785/BSSA05405A1519>

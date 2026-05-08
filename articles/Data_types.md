@@ -4,6 +4,7 @@ This tutorial introduces the different data types existing in spherical
 geometry (in particular those used in structural geology).
 
 ``` r
+
 library(structr)
 ```
 
@@ -42,6 +43,7 @@ reversals are involved), a vorticity vector describing the sense of slip
 on a fault, etc.
 
 ``` r
+
 Ray(120, 30, sense = -1)
 #> Ray object (n = 1):
 #> azimuth  plunge 
@@ -56,6 +58,7 @@ strain ellipsoid directions (e.g. stretching lineation), intersection,
 fault striae, and crystallographic axes.
 
 ``` r
+
 Line(120, 30)
 #> Line object (n = 1):
 #> azimuth  plunge 
@@ -70,6 +73,7 @@ of planes is known. Examples include the pole to a bedding plane, the
 pole to a foliation, etc.
 
 ``` r
+
 Plane(120, 30)
 #> Plane object (n = 1):
 #> dip_direction           dip 
@@ -82,6 +86,7 @@ A `Pair` consists of a `Plane` and a `Line` contained in that plane.
 Examples are stretching lineations on a foliation plane.
 
 ``` r
+
 Pair(120, 30, 75, 15)
 #> Pair object (n = 1):
 #> dip_direction           dip       azimuth        plunge 
@@ -95,6 +100,7 @@ A `Fault` is a special case of a Pair, when the line component is a
 the slip direction or sense of motion is known.
 
 ``` r
+
 Fault(120, 30, 75, 15, sense = -1)
 #> Fault object (n = 1):
 #> dip_direction           dip       azimuth        plunge         sense 
@@ -109,6 +115,7 @@ Cartesian coordinate system given by the direction cosines along the X,
 Y, and Z axes.
 
 ``` r
+
 Vec3(1, 0, 0)
 #> Vector (Vec3) object (n = 1):
 #> x y z 
@@ -139,6 +146,7 @@ type, using the object creator function
 functions. For example:
 
 ``` r
+
 Line(120, 30) |> Vec3()
 #> Vector (Vec3) object (n = 1):
 #>          x          y          z 
@@ -156,6 +164,7 @@ Pair(Plane(120, 30), Line(120, 30))
 ```
 
 ``` r
+
 v <- Pair(Plane(120, 30), Line(120, 30))
 
 Plane(v)
@@ -173,6 +182,7 @@ You can also convert into other data types without transformation, using
 Plane:
 
 ``` r
+
 Line(120, 30) |> as.Plane()
 #> Plane object (n = 1):
 #> dip_direction           dip 
@@ -196,6 +206,7 @@ Usually orientation data is stored in a table containing the column dip
 direction (or strike) and the dip angle of a measured plane…
 
 ``` r
+
 data(example_planes_df)
 head(example_planes_df)
 #> # A tibble: 6 × 4
@@ -212,6 +223,7 @@ head(example_planes_df)
 or the trend (azimuth) and plunge (inclination) of a measured line…
 
 ``` r
+
 data(example_lines_df)
 head(example_lines_df)
 #> # A tibble: 6 × 4
@@ -233,6 +245,7 @@ direction and dip angle for planes, and the trend and plunge for lines
 as arguments.
 
 ``` r
+
 data(example_planes)
 planes <- Plane(example_planes_df$dipdir, example_planes_df$dip)
 lines <- Line(example_lines_df$trend, example_lines_df$plunge)
@@ -248,6 +261,7 @@ vectors using the function
 [`Vec3()`](https://tobiste.github.io/structr/reference/classes.md):
 
 ``` r
+
 lines_vector <- Vec3(lines)
 head(lines_vector)
 #> Vector (Vec3) object (n = 6):
@@ -263,6 +277,7 @@ head(lines_vector)
 Convert a Plane’s pole to a Line:
 
 ``` r
+
 planes_as_line <- Line(planes)
 head(planes_as_line)
 #> Line object (n = 6):

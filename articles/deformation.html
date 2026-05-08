@@ -85,7 +85,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2026-04-26</h4>
+            <h4 data-toc-skip class="date">2026-05-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/deformation.Rmd" class="external-link"><code>vignettes/deformation.Rmd</code></a></small>
       <div class="d-none name"><code>deformation.Rmd</code></div>
@@ -308,7 +308,7 @@ shear and 90° for pure shear. The <strong>kinematic vorticity
 number</strong>
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>W</mi><mi>k</mi></msub><annotation encoding="application/x-tex">W_k</annotation></semantics></math>
 is given by
-<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mi>k</mi></msub><mo>=</mo><mo>cos</mo><mi>α</mi></mrow><annotation encoding="application/x-tex">W_k = \cos\alpha</annotation></semantics></math>:</p>
+<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><msub><mi>W</mi><mi>k</mi></msub><mo>=</mo><mrow><mi mathvariant="normal">cos</mi><mo>⁡</mo></mrow><mi>α</mi></mrow><annotation encoding="application/x-tex">W_k = \cos\alpha</annotation></semantics></math>:</p>
 <div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vecmath.html">angle</a></span><span class="op">(</span><span class="va">flow_apophyses</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>, <span class="va">flow_apophyses</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Trig.html" class="external-link">cos</a></span><span class="op">(</span><span class="va">alpha</span> <span class="op">*</span> <span class="va">pi</span> <span class="op">/</span> <span class="fl">180</span><span class="op">)</span><span class="op">)</span></span>

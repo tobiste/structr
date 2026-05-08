@@ -5,6 +5,7 @@ with the help of the [structr](https://tobiste.github.io/structr/)
 package.
 
 ``` r
+
 library(structr)
 library(ggplot2)
 library(mapproj)
@@ -13,6 +14,7 @@ library(mapproj)
 Import and convert to spherical objects:
 
 ``` r
+
 data(example_planes)
 
 planes <- Plane(example_planes_df$dipdir, example_planes_df$dip)
@@ -22,6 +24,7 @@ lines <- Line(example_lines_df$trend, example_lines_df$plunge)
 ## Stereographic projection
 
 ``` r
+
 ggstereo() +
   geom_point(data = gg(planes), aes(x, y, color = "planes")) +
   geom_point(data = gg(lines), aes(x, y, color = "lines")) +
@@ -34,6 +37,7 @@ projection](Plots_ggplot_files/figure-html/stereo1-1.png)
 Adding great circles:
 
 ``` r
+
 ggstereo() +
   geom_path(data = ggl(planes), aes(x, y, color = "planes"), lwd = .1) +
   geom_point(data = gg(lines), aes(x, y, color = "lines")) +
@@ -46,6 +50,7 @@ projection](Plots_ggplot_files/figure-html/stereo2-1.png)
 ## Statistics
 
 ``` r
+
 quality <- runif(nrow(lines), min = 1, max = 45) # assigning a random quality score to the data (can be replaced with real data)
 
 lines_mean <- sph_mean(lines, w = 1 / quality)
@@ -65,6 +70,7 @@ equal-area projection](Plots_ggplot_files/figure-html/stat-1.png)
 ## Density plots
 
 ``` r
+
 ggstereo() +
   geom_contourf_stereo(gg(planes), show.legend = TRUE, norm = TRUE) +
   scale_fill_viridis_d("Density") +
@@ -78,6 +84,7 @@ an equal-area projection](Plots_ggplot_files/figure-html/density-1.png)
 ## Facets
 
 ``` r
+
 area_l <- LETTERS[sample.int(3, nrow(lines), replace = TRUE)]
 area_p <- LETTERS[sample.int(3, nrow(planes), replace = TRUE)]
 

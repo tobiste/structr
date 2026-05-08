@@ -1,6 +1,7 @@
 # Import Data
 
 ``` r
+
 library(structr)
 ```
 
@@ -26,6 +27,7 @@ For example your `.txt` file is tab-separated and may look like this:
 you could import the file like
 
 ``` r
+
 imported_data <- read.table(
   "path/to/my/file.xt",
   header = TRUE,
@@ -45,6 +47,7 @@ measurements (e.g. bedding or fault plane orientation), we just need to
 coerce that data.frame into a `"Plane"` object:
 
 ``` r
+
 my_planes <- as.Plane(imported_data)
 ```
 
@@ -75,6 +78,7 @@ To converts strike measurements into dip directions using right-hand
 rule:
 
 ``` r
+
 strike_measurements <- c(270, 315, 0, 45, 90, 135, 180, 225, 270)
 rhr2dd(strike_measurements)
 #> [1]   0  45  90 135 180 225 270 315   0
@@ -93,6 +97,7 @@ i.e. “N”, “E”, “S”, and “W”. In that case you can use the funct
 [`quadrant2dd()`](https://tobiste.github.io/structr/reference/quadrant2dd.md)
 
 ``` r
+
 strike_direction <- c(270, 315, 0, 45, 90, 135, 180, 225, 270) # strike in left-hand-rule
 dip_quadrtant <- c("N", "E", "E", "S", "S", "W", "W", "N", "N") # dip quadrant
 quadrant2dd(strike_direction, dip_quadrtant)
@@ -105,6 +110,7 @@ two by using
 [`split_strike()`](https://tobiste.github.io/structr/reference/split.md)
 
 ``` r
+
 split_strike("270N")
 #> $measurement
 #> 270N 
@@ -138,6 +144,7 @@ If your datra follows this convention, use the function
 [`Fault_from_rake()`](https://tobiste.github.io/structr/reference/fault_from_rake.md)
 
 ``` r
+
 fault_plane <- Plane(c(120, 120, 100, 0), c(60, 60, 50, 40))
 fault_pitch <- c(84.7202, -10, 30, 180)
 Fault_from_rake(fault_plane, rake = fault_pitch)
@@ -162,6 +169,7 @@ If this is the notation used, call the function
 and set `type="plunge"`
 
 ``` r
+
 dip <- c(5, 10, 15, 30, 40, 55, 65, 75, 90)
 dip_dir <- c(180, 225, 270, 315, 360, 0, 45, 90, 135)
 rake1 <- c(0, 45, 90, 135, 180, 45, 90, 135, 180)
@@ -195,6 +203,7 @@ If this is the notation used, call the function
 and set `type="rake"`
 
 ``` r
+
 rake2 <- c(0, 45, 90, 45, 0, 45, 90, 45, 0)
 rake_quadrant <- c("E", "S", "S", "E", "E", "W", "N", "S", "W")
 Fault_from_rake_quadrant(Plane(dip_dir, dip), rake2, rake_quadrant, type = "rake")
@@ -225,6 +234,7 @@ Now you can import the downloaded file via
 [`read_strabo_JSON()`](https://tobiste.github.io/structr/reference/strabo.md):
 
 ``` r
+
 strabo_data <- read_strabo_JSON("path/to/my/file.json")
 ```
 

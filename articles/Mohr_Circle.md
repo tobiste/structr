@@ -5,6 +5,7 @@ basic stress calculations and visualize the stress state using a Mohr
 circle.
 
 ``` r
+
 library(structr)
 library(ggplot2)
 ```
@@ -12,6 +13,7 @@ library(ggplot2)
 Some basic calculations:
 
 ``` r
+
 # Define the magnitudes of the principal stress axes
 s1 <- 66 # maximum stress, sigma 1
 s2 <- 30 # intermediate stress, sigma 2
@@ -41,6 +43,7 @@ fracture_angle(mu = 0.6)
 To plot the Mohr circle, you can either use base R plotting:
 
 ``` r
+
 Mohr_plot(
   sigma1 = s1, sigma2 = s2, sigma3 = s3,
   unit = "MPa", full.circle = TRUE,
@@ -57,6 +60,7 @@ circle](Mohr_Circle_files/figure-html/mohr1-1.png)
 or ggplot-style plotting:
 
 ``` r
+
 ggMohr(sigma1 = s1, sigma2 = s2, sigma3 = s3, unit = "MPa") +
 
   # Only show upper half of MohR Circle

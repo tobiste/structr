@@ -29,20 +29,20 @@ list of rotation parameters
 
 ## Details
 
-|                |                            |                                                                             |
-|----------------|----------------------------|-----------------------------------------------------------------------------|
-| Symmetry       | Enantiomorphic Point Group | Example                                                                     |
-| `triclinic`    | 1                          | Ray in plane, plagioclase                                                   |
-| `monoclinic`   | 2                          | Line in plane, orthoclase, gypsum, muscovite, clinopyroxene, clinoamphibole |
-| `orthorhombic` | 222                        | olivine, aragonite, marcasite, orthopyroxenes                               |
-| `tetragonal`   | 4                          | Pyramidal: zircon                                                           |
-|                | 422                        | Trapezohedral                                                               |
-| `trigonal`     | 3                          | Pyramidal, Rhombohedral                                                     |
-|                | 32                         | Trapezohedral: \\\alpha\\-Quartz                                            |
-| `hexagonal`    | 6                          | Pyramidal, Rhombohedral                                                     |
-|                | 622                        | Trapezohedral: \\\beta\\-Quartz                                             |
-| `cubic`        | 23                         | Tetartoidal                                                                 |
-|                | 432                        | Hexoctahedral: galena, pyrite, fluorite                                     |
+|  |  |  |
+|----|----|----|
+| Symmetry | Enantiomorphic Point Group | Example |
+| `triclinic` | 1 | Ray in plane, plagioclase |
+| `monoclinic` | 2 | Line in plane, orthoclase, gypsum, muscovite, clinopyroxene, clinoamphibole |
+| `orthorhombic` | 222 | olivine, aragonite, marcasite, orthopyroxenes |
+| `tetragonal` | 4 | Pyramidal: zircon |
+|  | 422 | Trapezohedral |
+| `trigonal` | 3 | Pyramidal, Rhombohedral |
+|  | 32 | Trapezohedral: \\\alpha\\-Quartz |
+| `hexagonal` | 6 | Pyramidal, Rhombohedral |
+|  | 622 | Trapezohedral: \\\beta\\-Quartz |
+| `cubic` | 23 | Tetartoidal |
+|  | 432 | Hexoctahedral: galena, pyrite, fluorite |
 
 ## Examples
 

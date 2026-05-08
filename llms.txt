@@ -66,6 +66,7 @@ You can install the development version of
 [GitHub](https://github.com/) with:
 
 ``` r
+
 # install.packages("devtools")
 devtools::install_github("tobiste/structr")
 ```
@@ -81,6 +82,7 @@ These are some basic examples which shows you what you can do with
 {structr}. First we load the package
 
 ``` r
+
 library(structr)
 ```
 
@@ -89,6 +91,7 @@ library(structr)
 Plot orientation data in equal-area, lower hemisphere projection:
 
 ``` r
+
 # load some example data
 data("example_planes")
 data("example_lines")
@@ -115,6 +118,7 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 Density shown by contour lines…
 
 ``` r
+
 par(mfrow = c(1, 2))
 contour(example_planes)
 points(example_planes, col = "grey", cex = .5)
@@ -130,6 +134,7 @@ title(main = "Lines")
 or as filled contours:
 
 ``` r
+
 par(mfrow = c(1, 2))
 image(example_planes)
 points(example_planes, col = "grey", cex = .5)
@@ -148,6 +153,7 @@ Calculation of arithmetic mean, geodesic mean, confidence cones and
 eigenvectors… and plotting them in the equal-area projection:
 
 ``` r
+
 planes_mean <- sph_mean(example_planes)
 planes_geomean <- geodesic_mean(example_planes)
 planes_eig <- ot_eigen(example_planes)$vectors
@@ -194,6 +200,7 @@ The shape parameters of the orientation tensor of the above examples
 planes and lines can be visualized in two ways:
 
 ``` r
+
 par(mfrow = c(1, 2), xpd = NA)
 vollmer_plot(example_planes, col = "#000004", pch = 16)
 vollmer_plot(example_lines, col = "#B63679FF", pch = 16, add = TRUE)
@@ -216,6 +223,7 @@ Finds the best-fit great or small-circle for a given set of vectors by
 applying geodesic regression:
 
 ``` r
+
 set.seed(20250411)
 data("gray_example")
 cleavage <- gray_example[1:8, ]
@@ -262,6 +270,7 @@ vector on fault plane great circle) and Hoeppener plot (fault slip
 vector projected on pole to fault plane):
 
 ``` r
+
 data("angelier1990")
 faults <- angelier1990$TYM
 
@@ -281,6 +290,7 @@ Compute deviatoric stress tensor and calculate 95% confidence intervals
 using bootstrap samples:
 
 ``` r
+
 set.seed(20250411)
 faults_stress <- slip_inversion(faults, n_iter = 10)
 ```
@@ -289,6 +299,7 @@ Visualize the slip inversion results (orientation of principal
 stresses):
 
 ``` r
+
 cols <- c("#000004FF", "#B63679FF", "#FEC287FF")
 R_val <- round(faults_stress$R, 2)
 R_CI <- round(faults_stress$R_conf, 2)
@@ -314,6 +325,7 @@ Visualize the accuracy of the slip inversion by showing the deviation
 angle (β) between the theoretical slip and the actual slip vector:
 
 ``` r
+
 beta <- faults_stress$fault_data$beta
 beta_mean <- round(faults_stress$beta)
 beta_CI <- round(faults_stress$beta_CI)
@@ -336,6 +348,7 @@ Azimuth of the maximum horizontal stress (in degrees) for the slip
 inversion result:
 
 ``` r
+
 # Simply call
 # faults_stress$SHmax
 # faults_stress$SHmax_CI # confidence interval
@@ -354,6 +367,7 @@ SH(
 The Mohr circle for the slip inversion result:
 
 ``` r
+
 Mohr_plot(
   sigma1 = faults_stress$principal_vals[1],
   sigma2 = faults_stress$principal_vals[2],
@@ -375,6 +389,7 @@ Aspect ratio of finite strain ellipses vs orientation of long-axis
 (Rf/ϕ)
 
 ``` r
+
 data(ramsay)
 
 par(mfrow = c(1, 2))
@@ -389,6 +404,7 @@ elliott_plot(ramsay[, 1], ramsay[, 2], proj = "eqd")
 Finite strain ellipsoids plotted in Flinn diagram and Hsu diagram:
 
 ``` r
+
 data("holst")
 R_XY <- holst[, "R_XY"]
 R_YZ <- holst[, "R_YZ"]
@@ -407,6 +423,7 @@ of long-axis with respect to foliation plotted in the **Rigid Grain
 Net**
 
 ``` r
+
 data(shebandowan)
 set.seed(20250411)
 
@@ -422,6 +439,7 @@ Define a deformation gradient tensor and deform some orientation data
 over time `t` in `i` increments:
 
 ``` r
+
 # Define deformation time and increments
 t <- 10
 i <- 2
@@ -474,6 +492,7 @@ legend_col(increments, title = "Time")
 tensor changes during progressive deformation:
 
 ``` r
+
 par(mfrow = c(1, 2))
 vollmer_plot(xl_steps, type = "b", col = assign_col(increments), pch = 16)
 hsu_plot(xl_steps, type = "b", col = assign_col(increments), pch = 16)

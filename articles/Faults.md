@@ -11,6 +11,7 @@ angle), the orientation of the slip (e.g. measured from striae, given in
 azimuth and plunge angles), and the sense of displacement:
 
 ``` r
+
 my_fault <- Fault(120, 50, 60, 110, sense = -1)
 ```
 
@@ -21,6 +22,7 @@ Rake of the fault, i.e. the angle between fault slip vector and fault
 strike:
 
 ``` r
+
 Fault_rake(my_fault)
 ```
 
@@ -30,6 +32,7 @@ Define a fault by just knowing the orientation of the fault plane, the
 sense, and the rake
 
 ``` r
+
 # 1. Define a plane through dip direction, dip angle
 fault_plane <- Plane(c(120, 120, 100), c(60, 60, 50))
 
@@ -49,10 +52,12 @@ subjected to some random noise. Thus the slip vector will not lie
 the measurements so that this will not be the case:
 
 ``` r
+
 p <- Pair(120, 60, 110, 58)
 ```
 
 ``` r
+
 misfit_pair(p)
 ```
 
@@ -70,6 +75,7 @@ misfit_pair(p)
     ## [1] 0.02793105
 
 ``` r
+
 correct_pair(p)
 ```
 
@@ -99,6 +105,7 @@ can be visualized, namely the Angelier and the Hoeppener plot.
   datasets.
 
 ``` r
+
 # simongomez is a example fault dataset:
 
 # define some colors for each fault in the dataset (here the fault sense)
@@ -130,9 +137,10 @@ This simple technique calculates PT-axes, kinematic plane (M), and
 dihedra separation plane (d).
 
 First we load some example data (here the first three faults from the
-TYM dataset by from Angelier, 1990)[¹](#fn1)
+TYM dataset by from Angelier, 1990)[^1]
 
 ``` r
+
 data("angelier1990")
 my_fault2 <- angelier1990$TYM[1:3, ]
 
@@ -146,6 +154,7 @@ print(my_fault2)
     ## [3,]             2  80 287.5304 56.63295     1
 
 ``` r
+
 my_fault2_PT <- Fault_PT(my_fault2)
 print(my_fault2_PT)
 ```
@@ -181,6 +190,7 @@ print(my_fault2_PT)
 Plot the results
 
 ``` r
+
 stereoplot(title = "PT results", guides = FALSE)
 fault_plot(my_fault2)
 points(my_fault2_PT$p, col = "#B63679FF", pch = 16)
@@ -215,13 +225,13 @@ best satisfies all of the faults is found.
 
 {structr} provides a numerical solution to determine the orientation of
 the principal stresses from fault slip data using the Michael (1984)
-method[²](#fn2). It uses bootstrapping for confidence intervals of the
-stress estimates.
+method[^2]. It uses bootstrapping for confidence intervals of the stress
+estimates.
 
-First we load some example data (here the data from Angelier,
-1990)[³](#fn3)
+First we load some example data (here the data from Angelier, 1990)[^3]
 
 ``` r
+
 test_data <- angelier1990$TYM
 
 stereoplot(title = "Test data", guides = FALSE)
@@ -234,6 +244,7 @@ stereoplot](Faults_files/figure-html/slip_inversion1-1.png)
 The stress inversion with 10 bootstraps:
 
 ``` r
+
 test_res <- slip_inversion(test_data, n_iter = 10)
 
 # Average beta angle
@@ -243,6 +254,7 @@ test_res$beta
     ## [1] 15.16869
 
 ``` r
+
 # Average resolved shear stress
 test_res$sigma_s
 ```
@@ -262,6 +274,7 @@ confidence region of the axes, you may use the stereoplot() functions
 from {structr}
 
 ``` r
+
 cols <- c("#000004FF", "#B63679FF", "#FEC287FF")
 
 stereoplot(title = "Stress inversion", guides = FALSE)
@@ -282,15 +295,17 @@ legend("topleft",
 ![Diagram showing principal stress vector results in a
 stereoplot](Faults_files/figure-html/slip_inversion_plot-1.png)
 
-The stress shape ratio Φ (Angelier 1979)[⁴](#fn4)
+The stress shape ratio Φ (Angelier 1979)[^4]
 
 ``` r
+
 test_res$phi
 ```
 
     ## [1] 0.101247
 
 ``` r
+
 # 95% confidence interval
 test_res$phi_conf
 ```
@@ -304,6 +319,7 @@ the best stress tensor and the slip vector. This deviation can be
 visualized in the stereoplot:
 
 ``` r
+
 beta <- test_res$fault_data$beta
 
 stereoplot(
@@ -323,6 +339,7 @@ legend_col(
 stereoplot](Faults_files/figure-html/slip_inversion_beta-1.png)
 
 ``` r
+
 Mohr_plot(
   sigma1 = test_res$principal_vals[1],
   sigma2 = test_res$principal_vals[2],
@@ -341,27 +358,30 @@ result](Faults_files/figure-html/slip_inversion_mohr-1.png)
 ### Maximum horizontal stress
 
 The orientation of the maximum horizontal stress
-($\sigma_{\text{Hmax}}$) can be calculated from the stress tensor the
-the orientation of the principal stress ($\sigma_{1}$, $\sigma_{2}$,
-$\sigma_{3}$) axes their their relative magnitudes($R$) [⁵](#fn5).
+($`\sigma_\text{Hmax}`$) can be calculated from the stress tensor the
+the orientation of the principal stress ($`\sigma_1`$, $`\sigma_2`$,
+$`\sigma_3`$) axes their their relative magnitudes($`R`$) [^5].
 
 First, we define the orientation of the principle stress axes:
 
 ``` r
+
 S1 <- Line(250.89, 70.07)
 S3 <- Line(103.01, 17.07)
 ```
 
-To get $\sigma_{2}$ - which is perpendicular to $\sigma_{1}$ and
-$\sigma_{3}$, we calculate the cross-product of the two vectors:
+To get $`\sigma_2`$ - which is perpendicular to $`\sigma_1`$ and
+$`\sigma_3`$, we calculate the cross-product of the two vectors:
 
 ``` r
+
 S2 <- crossprod(S3, S1)
 ```
 
-The azimuth of $\sigma_{\text{Hmax}}$ for a given stress ratio `R = 1`:
+The azimuth of $`\sigma_\text{Hmax}`$ for a given stress ratio `R = 1`:
 
 ``` r
+
 SH(S1, S2, S3, R = 1) # in degrees
 ```
 
@@ -370,6 +390,7 @@ SH(S1, S2, S3, R = 1) # in degrees
 For a several stress ratios:
 
 ``` r
+
 R <- seq(0, 1, .1)
 cbind(R, SH = SH(S1, S2, S3, R = R))
 ```
@@ -387,9 +408,10 @@ cbind(R, SH = SH(S1, S2, S3, R = R))
     ## [10,] 0.9 45.01043
     ## [11,] 1.0 70.89000
 
-The $\sigma_{\text{Hmax}}$ for our slip inversion result from above:
+The $`\sigma_\text{Hmax}`$ for our slip inversion result from above:
 
 ``` r
+
 SH(
   S1 = test_res$principal_axes[1, ],
   S2 = test_res$principal_axes[2, ],
@@ -409,7 +431,7 @@ The offset along a fault can be factorized into several components.
 North.](fault_displacements.png)
 
 Fig. 1: Graphic illustration of displacement components along a fault.
-$\mathbb{G}$ as the georeference frame with D = down, E = East, N =
+$`\mathbb{G}`$ as the georeference frame with D = down, E = East, N =
 North.
 
 ### Get different components with trigonometry
@@ -420,29 +442,37 @@ Knowing the horizontal throw (e.g. from plate motion parameters), the
 remaining components of the displacements along a given fault are as
 follows.
 
-$$\delta = \left| \sigma_{\text{Hmax}} - \left( \text{dip direction} + 90^{\circ} \right) \right|$$
+``` math
+\begin{equation}\delta = |\sigma_{\textrm{Hmax}} - (\textrm{dip direction}+90^{\circ})|\end{equation}
+```
 
 *Slip components in the horizontal plane:*
 
-$$\begin{aligned}
-f_{\text{strike slip}} & {= \left| \cos\delta*f_{\text{horizontal throw}} \right|} \\
-f_{\text{heave}} & {= \sqrt{f_{\text{horizontal throw}}^{2} - f_{\text{strike slip}}^{2}}}
-\end{aligned}$$
+``` math
+\begin{equation}\begin{split}
+  f_\textrm{strike slip} & = |\cos{\delta} * f_\textrm{horizontal throw}|\\
+  f_\textrm{heave} & = \sqrt{f_\textrm{horizontal throw}^2 - f_\textrm{strike slip}^2}
+  \end{split}\end{equation}
+```
 
 *Slip components in the vertical plane perpendicular to the strike of
 the fault:*
 
-$$\begin{aligned}
-f_{\text{dip slip}} & {= \frac{f_{\text{heave}}}{cos\left( \text{dip} \right)}} \\
-f_{\text{vertical throw}} & {= \sqrt{f_{\text{dip slip}}^{2} - f_{\text{heave}}^{2}}}
-\end{aligned}$$
+``` math
+\begin{equation}\begin{split}
+  f_\textrm{dip slip} &=  \frac{f_\textrm{heave}}{cos{(\textrm{dip})}}\\
+  f_\textrm{vertical throw} &= \sqrt{f_\textrm{dip slip}^2 - f_\textrm{heave}^2}
+  \end{split}\end{equation}
+```
 
 *Slip components in the fault plane plane:*
 
-$$\begin{aligned}
-f_{\text{net slip}} & {= \sqrt{f_{\text{strike slip}}^{2} + f_{\text{dip slip}}^{2}}} \\
-\text{rake} & {= \arctan\left( \frac{f_{\text{dip slip}}}{f_{\text{strike slip}}} \right)}
-\end{aligned}$$
+``` math
+\begin{equation}\begin{split}
+  f_\textrm{net slip} &= \sqrt{f_\textrm{strike slip}^2 + f_\textrm{dip slip}^2}\\
+  \textrm{rake} &= \arctan{\left(\frac{f_\textrm{dip slip}}{f_\textrm{strike slip}}\right)}
+  \end{split}\end{equation}
+```
 
 Thus, the rake angle describes the ratio between the dip slip and the
 strike slip component.
@@ -451,21 +481,25 @@ Knowing the vertical throw (e.g. from thermochronology or petrology),
 the fault dip (?assumption), and the direction and amount of horizontal
 offset, the **strike** of the fault is as follows:
 
-$$\begin{aligned}
-f_{\text{heave}} & {= f_{\text{vertical throw}}*\tan\left( \text{dip} \right)} \\
-\delta & {= \arcsin\left( \frac{f_{\text{heave}}}{f_{\text{horizontal throw}}} \right)} \\
-\text{strike} & {= \left| \sigma_{\text{Hmax}} - \delta \right|}
-\end{aligned}$$
+``` math
+\begin{equation}\begin{split}
+f_\textrm{heave} &= f_\textrm{vertical throw} * \tan{(\textrm{dip})}\\
+\delta &= \arcsin{\left(\frac{f_\textrm{heave}}{f_\textrm{horizontal throw}}\right)}\\
+\textrm{strike} &= |\sigma_{\textrm{Hmax}} - \delta|
+\end{split}\end{equation}
+```
 
 Knowing the vertical throw (e.g. from thermochronology or petrology),
 the fault strike (geomorphology), and the direction and amount of
 horizontal offset, the **dip** of the fault is as follows:
 
-$$\begin{aligned}
-\delta & {= \left| \sigma_{\text{Hmax}} - \text{strike} \right|} \\
-f_{\text{heave}} & {= f_{\text{horizontal throw}}*\sin\delta} \\
-\text{dip} & {= \arctan\left( \frac{f_{\text{heave}}}{f_{\text{vertical throw}}} \right)}
-\end{aligned}$$
+``` math
+\begin{equation}\begin{split}
+\delta &= |\sigma_{\textrm{Hmax}} - \textrm{strike}|\\
+f_\textrm{heave} &= f_\textrm{horizontal throw} * \sin{\delta} \\
+\textrm{dip} &= \arctan{\left(\frac{f_\textrm{heave}}{f_\textrm{vertical throw}}\right)} 
+\end{split}\end{equation}
+```
 
 Knowing the vertical throw (e.g. from thermochronology or petrology) and
 the fault’s dip and rake, the *horizontal offset*, the horizontal throw,
@@ -476,44 +510,44 @@ and the net-slip are as follows:
 Each fault component is a vector describing its direction and length.
 For instance, the vector of the strike slip is:
 
-$$\overset{\rightarrow}{f_{\text{strike slip}}} = \begin{pmatrix}
-{\parallel f_{\text{strike-slip}} \parallel} \\
-0 \\
-0
-\end{pmatrix}$$
+``` math
+\begin{equation}
+  \vec{f_\text{strike slip}} = \begin{pmatrix} \lVert f_\textrm{strike-slip}\rVert \\ 0 \\ 0 \end{pmatrix}
+\end{equation}
+```
 
 ### Net slip vector
 
 Net slip vector
 
-$$\overset{\rightarrow}{f_{\text{net}}} = \begin{pmatrix}
-{\parallel f_{\text{strike-slip}} \parallel} \\
-{\parallel f_{\text{heave}} \parallel} \\
-{\parallel f_{\text{vertical throw}} \parallel}
-\end{pmatrix}$$
+``` math
+\begin{equation}
+  \vec{f_\text{net}} = \begin{pmatrix} \lVert f_\textrm{strike-slip}\rVert \\ \lVert f_\textrm{heave}\rVert \\ \lVert f_\textrm{vertical throw}\rVert \end{pmatrix}
+\end{equation}
+```
 
 ``` r
+
 fault_displacements(strikeslip = 2, verticalthrow = -5, heave = 3)
 ```
 
 ### Principal displacement tensor
 
-The Eigen values of $\mathsf{F}_{ij}$; represented as
-$\{\overset{\rightarrow}{f_{1}},\overset{\rightarrow}{f_{2}},\overset{\rightarrow}{f_{3}}\}$
-are referred to as the heave, strike slip, and vertical throw component,
-respectively. These orthonormal vectors define a orthogonal matrix,
-i.e. the **principal displacement tensor** $\mathsf{F}_{\mathbb{F}}$:
+The Eigen values of $`\mathsf{F}_{ij}`$; represented as
+$`\{ \vec{f_1}, \vec{f_2}, \vec{f_3} \}`$ are referred to as the heave,
+strike slip, and vertical throw component, respectively. These
+orthonormal vectors define a orthogonal matrix, i.e. the **principal
+displacement tensor** $`\mathsf{F}_\mathbb{F}`$:
 
-$$\mathsf{F}_{\mathbb{F}} = \begin{bmatrix}
-{\parallel f_{\text{heave}} \parallel} & 0 & 0 \\
-0 & {\parallel f_{\text{strike-slip}} \parallel} & 0 \\
-0 & 0 & {\parallel f_{\text{vertical throw}} \parallel}
-\end{bmatrix}$$
+``` math
+\begin{equation}\mathsf{F}_{\mathbb{F}} = {\begin{bmatrix} \lVert f_\textrm{heave}\rVert & 0 & 0\\ 0 & \lVert f_\textrm{strike-slip}\rVert & 0\\ 0 & 0 & \lVert f_\textrm{vertical throw}\rVert\end{bmatrix}}\end{equation}
+```
 
-The tensor $\mathsf{F}$ can also be defined by the magnitudes of the
+The tensor $`\mathsf{F}`$ can also be defined by the magnitudes of the
 fault displacements:
 
 ``` r
+
 Fu <- displacement_tensor(s = 2, v = -5, h = 3)
 print(Fu)
 ```
@@ -531,13 +565,12 @@ Fault orientation tensor is defined by the fault plane’s location,
 orientation (dip direction and dip angle), and the fault’s slip
 (direction and magnitude):
 
-$$\mathsf{F}_{ij} = \begin{bmatrix}
-f_{11} & f_{12} & f_{13} \\
-f_{21} & f_{22} & f_{23} \\
-f_{31} & f_{32} & f_{33}
-\end{bmatrix}$$
+``` math
+\begin{equation}\mathsf{F}_{ij} = {\begin{bmatrix}f_{11} & f_{12} & f_{13}\\ f_{21} & f_{22} & f_{23}\\ f_{31} & f_{32} & f_{33}\end{bmatrix}}\end{equation}
+```
 
 ``` r
+
 Fg <- displacement_tensor(s = 2, v = -5, h = 3, dip_direction = 45)
 print(Fg)
 ```
@@ -551,11 +584,11 @@ print(Fg)
 
 ### From Principal displacement tensor to Orientation tensor
 
-Translation point of origin in $\mathsf{F}_{\mathbb{F}}$ into point of
-measurement and rotate into fault orientation
-$\mathsf{F}_{{\mathbb{F}}{\mathbb{G}}}$
+Translation point of origin in $`\mathsf{F_\mathbb{F}}`$ into point of
+measurement and rotate into fault orientation $`\mathsf{F}_\mathbb{FG}`$
 
 ``` r
+
 displacement_tensor_decomposition(Fg, dip_direction = 45)
 ```
 
@@ -602,27 +635,25 @@ Michael, A. J. (1984). Determination of stress from slip data: Faults
 and folds. Journal of Geophysical Research: Solid Earth, 89(B13),
 11517–11526. <https://doi.org/10.1029/JB089iB13p11517>
 
-------------------------------------------------------------------------
-
-1.  Angelier, J. (1990). Inversion of field data in fault tectonics to
+[^1]: Angelier, J. (1990). Inversion of field data in fault tectonics to
     obtain the regional stress—III. A new rapid direct inversion method
     by analytical means. Geophys. J. Int, 103, 363–376.
     <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
 
-2.  Michael, A. J. (1984). Determination of stress from slip data:
+[^2]: Michael, A. J. (1984). Determination of stress from slip data:
     Faults and folds. Journal of Geophysical Research: Solid Earth,
     89(B13), 11517–11526. <https://doi.org/10.1029/JB089iB13p11517>
 
-3.  Angelier, J. (1990). Inversion of field data in fault tectonics to
+[^3]: Angelier, J. (1990). Inversion of field data in fault tectonics to
     obtain the regional stress—III. A new rapid direct inversion method
     by analytical means. Geophys. J. Int, 103, 363–376.
     <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
 
-4.  Angelier, J. (1979). Determination of the mean principal directions
-    of stresses for a given fault population. Tectonophysics, 56(3–4),
-    T17–T26. <https://doi.org/10.1016/0040-1951(79)90081-7>
+[^4]: Angelier, J. (1979). Determination of the mean principal
+    directions of stresses for a given fault population. Tectonophysics,
+    56(3–4), T17–T26. <https://doi.org/10.1016/0040-1951(79)90081-7>
 
-5.  Lund & Townend (2007): Calculating horizontal stress orientations
+[^5]: Lund & Townend (2007): Calculating horizontal stress orientations
     with full or partial knowledge of the tectonic stress tensor.
     *Geophys. J. Int.*, 170, 1328—1335. doi:
     10.1111/j.1365-246X.2007.03468.x

@@ -6,6 +6,7 @@ from oriented drill cores into geological planes and lines using the
 function of the {structr} package.
 
 ``` r
+
 library(structr)
 ```
 
@@ -24,6 +25,7 @@ core axis (`inc` in degrees, measured anticlockwise from the horizontal
 plane).
 
 ``` r
+
 azi <- 225
 inc <- 45
 ```
@@ -35,6 +37,7 @@ inc <- 45
 respectively, measured in degrees.
 
 ``` r
+
 drillcore_transformation(azi, inc, alpha = 60, beta = 320)
 #> Plane object (n = 1):
 #> dip_direction           dip 
@@ -47,6 +50,7 @@ angles are specified, the output is a `"plane"` object.
 For several alpha and beta angles:
 
 ``` r
+
 planes_AB <- drillcore_transformation(azi, inc, alpha = c(60, 45), beta = c(320, 220))
 ```
 
@@ -54,6 +58,7 @@ The orientations can be plotted in a equal-area (lower hemisphere)
 projection:
 
 ``` r
+
 # initialize plot:
 stereoplot()
 

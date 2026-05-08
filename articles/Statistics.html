@@ -85,7 +85,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2026-04-26</h4>
+            <h4 data-toc-skip class="date">2026-05-08</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/Statistics.Rmd" class="external-link"><code>vignettes/Statistics.Rmd</code></a></small>
       <div class="d-none name"><code>Statistics.Rmd</code></div>
@@ -176,7 +176,7 @@ and the 95% confidence cone around the mean:</p>
 <span><span class="co">#&gt;      68.5127690      20.4958671       0.2168518      38.4502642       4.7492331</span></span></code></pre></div>
 <p>Plotting a summary of the stats on a equal-area projection:</p>
 <div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>center  <span class="op">=</span> <span class="va">lines_mean</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">lines</span>, col <span class="op">=</span> <span class="st">"lightgrey"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">lines_mean</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">lines_mean</span>, ang <span class="op">=</span> <span class="va">lines_confangle</span>, col <span class="op">=</span> <span class="st">"#E65164FF"</span><span class="op">)</span></span>
@@ -240,7 +240,7 @@ anisotropic distributions such as the <em>Kent</em> or <em>Bingham
 distributions</em>.</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>center <span class="op">=</span> <span class="fu"><a href="../reference/stats.html">sph_mean</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">example_lines</span>, col <span class="op">=</span> <span class="st">"grey"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="fu"><a href="../reference/stats.html">sph_mean</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#1D1147FF"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="fu"><a href="../reference/geodesic-mean.html">geodesic_mean</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
@@ -254,7 +254,7 @@ distributions</em>.</p>
 <span>  bg <span class="op">=</span> <span class="st">"white"</span></span>
 <span><span class="op">)</span></span>
 <span></span>
-<span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>center <span class="op">=</span> <span class="fu"><a href="../reference/stats.html">sph_mean</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">example_planes</span>, col <span class="op">=</span> <span class="st">"grey"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="fu"><a href="../reference/stats.html">sph_mean</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#1D1147FF"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="fu"><a href="../reference/geodesic-mean.html">geodesic_mean</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
@@ -364,7 +364,7 @@ vectors (e.g. folded planes).</p>
 you can call the vectors and values of the object returned by
 <code><a href="../reference/ot_eigen.html">ot_eigen()</a></code>:</p>
 <div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span><span class="op">)</span></span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>center <span class="op">=</span> <span class="va">planes_eigen</span><span class="op">$</span><span class="va">vectors</span><span class="op">[</span><span class="fl">3</span>, <span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">example_planes</span>, col <span class="op">=</span> <span class="st">"grey"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">.7</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">planes_eigen</span><span class="op">$</span><span class="va">vectors</span>, </span>
 <span>       col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#000004"</span>, <span class="st">"#B63679FF"</span>, <span class="st">"#FEC287FF"</span><span class="op">)</span>, </span>
@@ -435,7 +435,7 @@ the orientation tensor:</p>
 <div class="section level2">
 <h2 id="cluster-vectors">Cluster vectors<a class="anchor" aria-label="anchor" href="#cluster-vectors"></a>
 </h2>
-<p>To find k clusters of orientational data, the
+<p>To find <em>k</em> clusters of orientational data, the
 <code><a href="../reference/sph_cluster.html">sph_cluster()</a></code> function can be used:</p>
 <div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># generate some random vectors:</span></span>

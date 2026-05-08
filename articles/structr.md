@@ -33,6 +33,7 @@ on your computer:
 5.  Next you must “load” the library to use the functions of {structr}:
 
 ``` r
+
 library(structr)
 ```
 
@@ -79,6 +80,7 @@ These functions create spherical object, and {structr} will identify the
 symmetry nature of the data in further function calls.
 
 ``` r
+
 plunge_direction <- c(54, 61, 74, 80, 63)
 plunge <- c(13, 15, 14, 19, 17)
 
@@ -101,6 +103,7 @@ primitive plotting functions, e.g. `plot`,
 [`lines()`](https://rdrr.io/r/graphics/lines.html), ….
 
 ``` r
+
 #  import some example lines
 data(example_lines)
 
@@ -120,6 +123,7 @@ meaningfulness depend on the underlying distribution of the orientation
 data (and hence also on the symmetry of the data).
 
 ``` r
+
 # Spherical arithmetic mean
 lines_mean <- sph_mean(example_lines)
 print(lines_mean)
@@ -153,6 +157,7 @@ The orientation tensor describes the distribution of all vectors in your
 dataset.
 
 ``` r
+
 ortensor(example_lines)
 #> Orientation tensor
 #>            [,1]      [,2]       [,3]
@@ -164,6 +169,7 @@ ortensor(example_lines)
 Eigenvalues and eigenvectors of this tensor describe the distribution.
 
 ``` r
+
 lines_eigen <- ot_eigen(example_lines)
 print(lines_eigen)
 #> eigen() decomposition
@@ -181,6 +187,7 @@ print(lines_eigen)
 Summarize the statistical parameters in a equal-area projection:
 
 ``` r
+
 # plot the data
 plot(example_lines, col = "grey30")
 

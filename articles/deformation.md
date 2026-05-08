@@ -8,6 +8,7 @@ deformation tensors, and how to extract other flow parameters (such as
 vorticity, stretching, and dilatation).
 
 ``` r
+
 library(structr)
 ```
 
@@ -36,13 +37,14 @@ The deformation matrix can be defined using several ways:
 - [`defgrad_from_simpleshear()`](https://tobiste.github.io/structr/reference/defgrad.md)
   creates an isochoric non-coaxial tensor.
 - [`defgrad_from_generalshear()`](https://tobiste.github.io/structr/reference/defgrad.md)
-  creates an isochoric tensor, where *transtension* is $k > 1$ and
-  $\gamma \neq 0$, and *transpression* is $k < 1$ and $\gamma \neq 0$
-  ([¹](#fn1))
+  creates an isochoric tensor, where *transtension* is $`k>1`$ and
+  $`\gamma \neq 0`$, and *transpression* is $`k<1`$ and
+  $`\gamma \neq 0`$ ([^1])
 - [`defgrad_from_dilation()`](https://tobiste.github.io/structr/reference/defgrad.md)
   creates tensor representing the volume change in z-direction.
 
 ``` r
+
 D1 <- defgrad_from_generalshear(k = 2.5, gamma = 0.9)
 print(D1)
 #> Deformation gradient tensor
@@ -59,6 +61,7 @@ change. In that case, the determinant of the matrix must be 1. In R,
 this can be checked using [`det()`](https://rdrr.io/r/base/det.html):
 
 ``` r
+
 det(D1)
 #> [1] 1
 ```
@@ -67,6 +70,7 @@ The *inverse* of the tensor reverses the deformation. In R, this can be
 done using [`solve()`](https://rdrr.io/r/base/solve.html):
 
 ``` r
+
 solve(D1)
 #>      [,1]       [,2] [,3]
 #> [1,]    1 -0.5893326  0.0
@@ -75,10 +79,11 @@ solve(D1)
 ```
 
 The *eigenvectors* of the tensor describe the orientation of the strain
-ellipse, and the eigenvalues $\lambda$ describe its shape (i.e. length
+ellipse, and the eigenvalues $`\lambda`$ describe its shape (i.e. length
 of the principal axes is proportional to the amount of stretch).
 
 ``` r
+
 eigen(D1)
 #> eigen() decomposition
 #> $values
@@ -96,13 +101,14 @@ resulting deformation from our general-shear deformation (D1)
 superimposed by our rotation (D2) is
 
 ``` r
+
 D2 <- defgrad_from_axisangle(Line(0, 90), 30)
 
 D12 <- D2 %*% D1 # D1 is applied first
 ```
 
 > Matrix multiplication is **not commutative**, i.e.
-> $D1 \cdot D2 \neq D2 \cdot D1$
+> $`D1 \cdot D2 \neq D2 \cdot D1`$
 
 ### Transformation using deformation gradient tensor
 
@@ -110,6 +116,7 @@ The deformation can now be applied on some orientation data using linear
 transformation:
 
 ``` r
+
 # generate some random lineation
 xl <- rvmf(100, mu = Line(0, 90), k = 100)
 
@@ -128,6 +135,7 @@ head(xl_transformed)
 Let’s visualize the deformation:
 
 ``` r
+
 # The coordinate axes of our deformation tensor:
 axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
 
@@ -152,6 +160,7 @@ deformation gradient tensor.
   times the Deformation gradient tensor should be applied.
 
 ``` r
+
 L <- velgrad(D1, time = 10)
 ```
 
@@ -165,6 +174,7 @@ The stretching matrix (or tensor) and describes the portion of the
 deformation that over time produces strain:
 
 ``` r
+
 S <- velgrad_rate(L)
 ```
 
@@ -172,6 +182,7 @@ The spin tensor contains information about the internal rotation during
 the deformation:
 
 ``` r
+
 W <- velgrad_spin(L)
 ```
 
@@ -179,6 +190,7 @@ The eigenvectors of the stretching gradient tensor give the orientations
 and lengths of the **instantaneous stretching axes**:
 
 ``` r
+
 S_eig <- eigen(S)
 
 # ISA vectors
@@ -198,6 +210,7 @@ The eigenvectors of the velocity gradient tensor describe the **flow
 apophyses**:
 
 ``` r
+
 L_eig <- eigen(L)
 
 # Flow apophyses
@@ -215,10 +228,11 @@ flow_apophyses <- rbind(
 
 The angle α between the apophyses is directly related to how close to
 simple shear or pure shear the deformation is. α is zero for simple
-shear and 90° for pure shear. The **kinematic vorticity number** $W_{k}$
-is given by $W_{k} = \cos\alpha$:
+shear and 90° for pure shear. The **kinematic vorticity number** $`W_k`$
+is given by $`W_k = \cos\alpha`$:
 
 ``` r
+
 alpha <- angle(flow_apophyses[1, ], flow_apophyses[2, ])
 abs(cos(alpha * pi / 180))
 #> [1] 0.7007364
@@ -230,6 +244,7 @@ The **vorticity vector** is the eigenvector corresponding to the
 intermediate eigenvalue of the velocity gradient tensor:
 
 ``` r
+
 Line(flow_vectors[2, ])
 #> Line object (n = 1):
 #> azimuth  plunge 
@@ -250,12 +265,14 @@ time steps using
 - The `time`
 
 ``` r
+
 D1_steps <- defgrad(L, time = 10, steps = 2)
 ```
 
 Now apply the deformation tensors on some orientation data
 
 ``` r
+
 xl_steps <- lapply(D1_steps, function(i) {
   transform_linear(xl, i)
 })
@@ -266,6 +283,7 @@ xl_steps <- lapply(D1_steps, function(i) {
 And plot the paths showing how the orientations change over time
 
 ``` r
+
 increments <- seq(0, 10, 2)
 cols <- assign_col(increments)
 
@@ -302,6 +320,7 @@ We can also monitor how the orientation tensor changes during
 progressive deformation:
 
 ``` r
+
 par(mfrow = c(1, 2))
 vollmer_plot(xl_steps, type = "b", col = cols)
 hsu_plot(xl_steps, type = "b", col = cols)
@@ -320,9 +339,7 @@ Sanderson, D. J., & Marchini, W. R. D. (1984). Transpression. Journal of
 Structural Geology, 6(5), 449–458.
 <https://doi.org/10.1016/0191-8141(84)90058-0>
 
-------------------------------------------------------------------------
-
-1.  Fossen, H., & Tikoff, B. (1993). The deformation matrix for
+[^1]: Fossen, H., & Tikoff, B. (1993). The deformation matrix for
     simultaneous simple shearing, pure shearing and volume change, and
     its application to transpression-transtension tectonics. Journal of
     Structural Geology, 15(3–5), 413–422.

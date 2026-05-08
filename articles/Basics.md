@@ -5,6 +5,7 @@ This tutorial introduces the basic mathematical operations of the
 orientation data.
 
 ``` r
+
 library(structr)
 ```
 
@@ -18,6 +19,7 @@ projection and rotation.
 Define some example vectors:
 
 ``` r
+
 line1 <- Line(120, 50)
 line2 <- Line(10, 30)
 ```
@@ -25,6 +27,7 @@ line2 <- Line(10, 30)
 The **vector length** (or magnitude):
 
 ``` r
+
 vector_length(line1)
 #> [1] 1
 ```
@@ -35,6 +38,7 @@ vector_length(line1)
 The **angle** between two vectors
 
 ``` r
+
 angle(line1, line2)
 #> [1] 78.89371
 ```
@@ -42,6 +46,7 @@ angle(line1, line2)
 The **dot product** (or scalar product) of two vectors
 
 ``` r
+
 dotprod(line1, line2)
 #> [1] 0.1926297
 ```
@@ -52,6 +57,7 @@ same direction.
 The **cross product** of two vectors:
 
 ``` r
+
 crossprod(line1, line2)
 #> Line object (n = 1):
 #>   azimuth    plunge 
@@ -64,6 +70,7 @@ two vectors.
 The **projection** of a vector on another vector:
 
 ``` r
+
 project(line1, line2)
 #> Line object (n = 1):
 #> azimuth  plunge 
@@ -77,6 +84,7 @@ The **rotation** of a vector about another vector (rotation axis) by a
 specified rotation angle:
 
 ``` r
+
 rotate(line1, rotaxis = line2, rotangle = 45)
 #> Line object (n = 1):
 #>   azimuth    plunge 
@@ -87,6 +95,7 @@ rotate(line1, rotaxis = line2, rotangle = 45)
 matrix (second-order tensor).
 
 ``` r
+
 trans_mat <- matrix(runif(9), 3, 3)
 transform_linear(line1, trans_mat)
 #> Vector (Vec3) object (n = 1):

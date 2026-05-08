@@ -4,12 +4,14 @@ This tutorial demonstrates geodesic regression, a method to determine
 statistically the best-fit great- or small-circle for a set of vectors.
 
 ``` r
+
 library(structr)
 ```
 
 Import some example data of some folded fabric elements
 
 ``` r
+
 data("gray_example")
 gray_example
 #> Plane object (n = 16):
@@ -35,6 +37,7 @@ gray_example
 Show data in equal-area projection:
 
 ``` r
+
 cleavage <- gray_example[1:8, ]
 bedding <- gray_example[9:16, ]
 
@@ -62,6 +65,7 @@ elements. The great-circle regression is done via
 which a returns a list containing the axis of the great-circle:
 
 ``` r
+
 cleavage_gc <- regression_greatcircle(cleavage)
 bedding_gc <- regression_greatcircle(bedding)
 
@@ -82,6 +86,7 @@ check if the optimization successfully converged, and asses the quality
 of the fit using the R²:
 
 ``` r
+
 # Check
 cleavage_gc$convergence == 0 & cleavage_gc$min_eigenvalue > 0
 #> [1] TRUE
@@ -98,6 +103,7 @@ bedding_gc$r_squared
 Plot the results
 
 ``` r
+
 stereoplot()
 lines(cleavage_gc$vec, col = "#000004FF")
 lines(bedding_gc$vec, col = "#B63679")
@@ -118,6 +124,7 @@ fit for the bedding, but a rather poor fit for the cleavage planes.
 ### Best-fit small circles
 
 ``` r
+
 cleavage_sc <- regression_smallcircle(cleavage)
 bedding_sc <- regression_smallcircle(bedding)
 
@@ -131,6 +138,7 @@ bedding_sc$cone
 Check the optimization convergence and the fit:
 
 ``` r
+
 # Check
 cleavage_sc$convergence == 0 & cleavage_sc$min_eigenvalue > 0
 #> [1] TRUE
@@ -147,6 +155,7 @@ bedding_sc$r_squared
 Plot the results:
 
 ``` r
+
 stereoplot()
 lines(cleavage_sc$vec, cleavage_sc$cone, col = "#000004FF")
 lines(bedding_sc$vec, bedding_sc$cone, col = "#B63679")
