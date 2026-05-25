@@ -181,6 +181,16 @@ angle.spherical <- function(x, y) {
   }
 }
 
+
+angle_smallcircle <- function(x, y, axis){
+  x <- Vec3(x)
+  y <- Vec3(y)
+  axis <- Vec3(axis)
+  gsx <- crossprod(x, axis)
+  gsy <- crossprod(y, axis)
+  angle(gsx, gsy) # in radians
+}
+
 #' @keywords internal
 vproject_length <- function(x, y) {
   xn <- vnorm(x)

@@ -1050,6 +1050,58 @@ angelier <- function(x, pch = 1, lwd = 1, lty = 1, col = "black", cex = 1, point
 }
 
 
+#' Horizontal directions
+#'
+#' @param azi numeric. Angle of maximum horizontal stress in degrees
+#' @param ... ... arguments passed to [graphics::segments()] or [graphics::arrows()]
+#' @param type character. Either `'line'` or `'arrows'` for a straight line or arrows at the perimeter of the plot.
+#' @param shmin logical. Whether the minimum horizontal stress should be indicated too?
+#' @param BALL.radius numeric. Radius of the stereo plot.
+#' @param arrow.offset numeric. Offset of the arrows from the perimeter.
+#' @param arrow.length numeric. Length of the arrows.
+#' @param arrow.head numeric. Length of the arrow head.
+#'
+#' @returns NULL
+#' @export
+#'
+#' @examples
+#' stereoplot()
+#' stereo_shmax(30, shmin = TRUE)
+stereo_shmax <- function(azi, ..., type = c('arrows', 'line'), shmin = FALSE, BALL.radius = 1, arrow.offset = 0.02, arrow.length = 0.1, arrow.head = arrow.length){
+  azi_rad <- deg2rad(azi)
+  azi_rad_min <- azi_rad + pi/2
+  type <- match.arg(type)
+  
+  if(type == 'line'){
+    tx <- BALL.radius * cos(azi_rad)
+    ty <- BALL.radius * sin(azi_rad)
+    
+    graphics::segments(rep(0, 2), rep(0, 2), tx * c(1, -1), ty * c(1, -1), ...)
+    if(isTRUE(shmin)){
+      tx2 <- BALL.radius * cos(azi_rad_min)
+      ty2 <- BALL.radius * sin(azi_rad_min)
+      
+      graphics::segments(rep(0, 2), rep(0, 2), tx2 * c(1, -1), ty2 * c(1, -1), ...)
+    }
+    
+  } else {
+    start <- c(BALL.radius + arrow.offset, BALL.radius + arrow.offset + arrow.length)
+    tx <- start * cos(azi_rad)
+    ty <- start* sin(azi_rad)
+    graphics::arrows(tx[2], ty[2], tx[1], ty[1], length = arrow.head, ...)
+    graphics::arrows(-tx[2], -ty[2], -tx[1], -ty[1], length = arrow.head, ...)
+    if(isTRUE(shmin)){
+      tx2 <- start * cos(azi_rad_min)
+      ty2 <- start * sin(azi_rad_min)
+      graphics::arrows(tx2[1], ty2[1], tx2[2], ty2[2], length = arrow.head, ...)
+      graphics::arrows(-tx2[1], -ty2[1], -tx2[2], -ty2[2], length = arrow.head, ...)
+    }
+  }
+}
+
+
+
+
 
 #' Variance Plot
 #'
