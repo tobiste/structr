@@ -7,8 +7,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 <title>Statistics on the Sphere • structr</title>
 <script src="../deps/jquery-3.6.0/jquery-3.6.0.min.js"></script><meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-<link href="../deps/bootstrap-5.3.1/bootstrap.min.css" rel="stylesheet">
-<script src="../deps/bootstrap-5.3.1/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
+<link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
+<script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
 <script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="Statistics on the Sphere">
 <meta name="description" content="Some basic staistical analyses tools for spherical data.
@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9007</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9008</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -85,7 +85,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2026-05-08</h4>
+            <h4 data-toc-skip class="date">2026-05-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/Statistics.Rmd" class="external-link"><code>vignettes/Statistics.Rmd</code></a></small>
       <div class="d-none name"><code>Statistics.Rmd</code></div>
@@ -147,8 +147,8 @@ distributions such as the <em>von Mises-Fisher distribution</em>.</p>
 <p>Define some weights for our lines based on the quality reported for
 the measurements:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">example_lines_df</span><span class="op">$</span><span class="va">quality</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">example_lines_df</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span>, <span class="fl">6</span>, <span class="va">example_lines_df</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span> <span class="co"># replacing NA values with 6</span></span>
-<span><span class="va">line_weightings</span> <span class="op">&lt;-</span> <span class="fl">6</span> <span class="op">/</span> <span class="va">example_lines_df</span><span class="op">$</span><span class="va">quality</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">example_lines_df</span><span class="op">$</span><span class="va">quality</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">example_lines_df</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span>, <span class="fl">1</span>, <span class="va">example_lines_df</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span> <span class="co"># replacing NA values with 1</span></span>
+<span><span class="va">line_weightings</span> <span class="op">&lt;-</span> <span class="fl">5</span> <span class="op">/</span> <span class="va">example_lines_df</span><span class="op">$</span><span class="va">quality</span></span></code></pre></div>
 <p>The (weighted) arithmetic mean orientation of spherical data is:</p>
 <div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lines_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stats.html">sph_mean</a></span><span class="op">(</span><span class="va">lines</span>, w <span class="op">=</span> <span class="va">line_weightings</span><span class="op">)</span></span></code></pre></div>
@@ -168,7 +168,7 @@ and the 95% confidence cone around the mean:</p>
 <span>  <span class="st">"Confidence angle"</span> <span class="op">=</span> <span class="va">lines_confangle</span></span>
 <span><span class="op">)</span></span>
 <span><span class="co">#&gt;         Variance         63% cone Confidence angle </span></span>
-<span><span class="co">#&gt;        0.1938084       36.2745102        6.9017035</span></span></code></pre></div>
+<span><span class="co">#&gt;        0.1568745       32.5283448        6.6748765</span></span></code></pre></div>
 <p>Summary stats can also be retrieved through</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">lines</span><span class="op">)</span></span>

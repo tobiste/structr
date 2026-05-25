@@ -440,6 +440,9 @@
 - [`stereo_segment()`](https://tobiste.github.io/structr/reference/stereo_segment.md)
   : Great-circle Segment Between Two Vectors
 
+- [`stereo_shmax()`](https://tobiste.github.io/structr/reference/stereo_shmax.md)
+  : Horizontal directions
+
 - [`stereoplot()`](https://tobiste.github.io/structr/reference/stereoplot.md)
   : Stereographic Projection
 

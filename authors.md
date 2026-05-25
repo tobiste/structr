@@ -11,12 +11,12 @@ Source:
 [`DESCRIPTION`](https://github.com/tobiste/structr/blob/main/DESCRIPTION)
 
 Stephan T (2026). *structr: Structural Geology in R*. R package version
-0.2.2.9007, <https://tobiste.github.io/structr/>.
+0.2.2.9008, <https://tobiste.github.io/structr/>.
 
     @Manual{,
       title = {structr: Structural Geology in R},
       author = {Tobias Stephan},
       year = {2026},
-      note = {R package version 0.2.2.9007},
+      note = {R package version 0.2.2.9008},
       url = {https://tobiste.github.io/structr/},
     }

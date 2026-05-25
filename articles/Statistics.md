@@ -61,8 +61,8 @@ measurements:
 
 ``` r
 
-example_lines_df$quality <- ifelse(is.na(example_lines_df$quality), 6, example_lines_df$quality) # replacing NA values with 6
-line_weightings <- 6 / example_lines_df$quality
+example_lines_df$quality <- ifelse(is.na(example_lines_df$quality), 1, example_lines_df$quality) # replacing NA values with 1
+line_weightings <- 5 / example_lines_df$quality
 ```
 
 The (weighted) arithmetic mean orientation of spherical data is:
@@ -98,7 +98,7 @@ c(
   "Confidence angle" = lines_confangle
 )
 #>         Variance         63% cone Confidence angle 
-#>        0.1938084       36.2745102        6.9017035
+#>        0.1568745       32.5283448        6.6748765
 ```
 
 Summary stats can also be retrieved through
