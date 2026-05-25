@@ -202,12 +202,17 @@ read_strabo_JSON <- function(file, sf = TRUE) {
   #   by.x = "tag_id", by.y = "tag_id",
   #   all.x = TRUE
   # )
+  
+  if(nrow(unique(tags_dt)) == 0){
+    spot_tags_dt <- tag_info_dt[, list(tag_id = tag_id, tag_name = tag_name)]
+  } else {
   spot_tags_dt <- merge(
     unique(tags_dt),
     tag_info_dt[, list(tag_id = tag_id, tag_name = tag_name)],
     by.x = "tag_id", by.y = "tag_id",
     all.x = TRUE
   )
+  }
 
   spot_tags_dt[, tag_col := paste0("tag:", tag_name)]
 
@@ -215,11 +220,15 @@ read_strabo_JSON <- function(file, sf = TRUE) {
   #   spot_id ~ tag_name,
   #   fill = FALSE
   # )
+  if(is.null(spot_tags_dt$spot_id)){
+    spot_tags_wide <- spot_tags_dt[, list(spot_id, tag_name = paste0("tag:", tag_name), value = TRUE)]
+    spot_tags_wide$spot_id <- NA_character_
+  } else {
   spot_tags_wide <- dcast(
     spot_tags_dt[, list(spot_id, tag_name = paste0("tag:", tag_name), value = TRUE)],
     spot_id ~ tag_name,
     fill = FALSE
-  )
+  )}
 
   # --- Datasets ---
   datasets <- dat$project$datasets
