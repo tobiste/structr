@@ -103,11 +103,12 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
     res <- st_as_sf(res, coords = c("Longitude", "Latitude"), crs = 4326, remove = FALSE, na.fail = FALSE)
   }
 
-  list(
+  ls <- list(
     data = res,
     planar = planes,
     linear = lines
   )
+  as.structr(ls)
 }
 
 #' @rdname strabo
@@ -151,13 +152,17 @@ read_strabo_mobile <- function(file, sf = TRUE) {
     )
   }
 
+  # data <- rbind(planes.meta, lines.meta, fill = TRUE)
+  
+  
   # Return list
-  list(
+  ls <- list(
     linear = lines,
     linear_data = lines.meta,
     planar = planes,
     planar_data = planes.meta
   )
+  as.structr(ls)
 }
 
 
@@ -346,13 +351,47 @@ read_strabo_JSON <- function(file, sf = TRUE) {
 
 
   # --- Return ---
-  list(
+  ls <- list(
     data = orient_dt,
     spots = fieldbook_dt,
     tags = tag_info_dt,
     planar = planes,
     linear = lines
   )
+  as.structr(ls)
 }
 
 # if (getRversion() >= "2.15.1")  utils::globalVariables(".")
+
+is.structr <- function(x) inherits(x, "structr")
+
+as.structr <- function(x) {
+  structure(x, class = append(class(x), "structr"))
+}
+
+#' @exportS3Method base::print
+print.structr <- function(x, ...){
+  list(
+    data = head(x$data, ...),
+    spots = head(x$spots, ...),
+    tags = head(x$tags, ...),
+    planar = print.Plane(x$planar),
+    linear = print.Line(x$linear)
+  )
+}
+
+#' @exportS3Method base::subset
+subset.structr <- function(x, ...){
+  #stopifnot(is.structr(x))
+  x$data$newrowid <- seq_len(nrow(x$data))
+  x_subset <- subset(x$data, ...)
+  selected_rows <- x_subset$newrowid
+  x_subset$newrowid <- NULL
+  
+  list(
+    data = x_subset,
+    planar = x$planar[selected_rows, ],
+    linear = x$linear[selected_rows, ]
+  ) |> 
+    as.structr()
+}
