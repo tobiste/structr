@@ -1,0 +1,318 @@
+{
+    "mapNamesDb": {},
+    "mapTilesDb": {},
+    "otherMapsDb": {},
+    "projectDb": {
+        "activeDatasetsIds": [
+            17667550869627
+        ],
+        "selectedDatasetId": 17667550869627,
+        "project": {
+            "date": "2025-12-26T13:18:06.949Z",
+            "modified_timestamp": 1779731013494,
+            "projecttype": "app",
+            "preferences": {
+                "starting_number_for_spot": 4
+            },
+            "other_features": [
+                "geomorphic",
+                "hydrologic",
+                "paleontological",
+                "igneous",
+                "metamorphic",
+                "sedimentological",
+                "other"
+            ],
+            "description": {
+                "start_date": "2025-12-26T13:17:48.996Z",
+                "gps_datum": "WGS84 (Default)",
+                "magnetic_declination": 0,
+                "project_name": "Open project"
+            },
+            "templates": {},
+            "reports": [],
+            "relationship_types": [
+                "cross-cuts",
+                "mutually cross-cuts",
+                "is cut by",
+                "is younger than",
+                "is older than",
+                "is lower metamorphic grade than",
+                "is higher metamorphic grade than",
+                "is included within",
+                "includes",
+                "merges with"
+            ],
+            "useContinuousTagging": false,
+            "id": 17667550869490,
+            "self": "https:\/\/strabospot.org\/db\/project\/17667550869490",
+            "isReadOnly": false,
+            "isOwner": true,
+            "owner_name": "Tobias Stephan",
+            "owner_email": "tstephan@lakeheadu.ca",
+            "owner_straboUserId": 8667,
+            "isCollaborativeProject": false
+        },
+        "datasets": {
+            "17667550869627": {
+                "date": "2025-12-26T13:18:06.962Z",
+                "centroid": "POINT (-52.69854105 47.67669545)",
+                "name": "Default",
+                "id": 17667550869627,
+                "modified_timestamp": 1779731013494,
+                "datasettype": "app",
+                "self": "https:\/\/strabospot.org\/db\/dataset\/17667550869627",
+                "isReadOnly": false,
+                "owner_name": "Tobias Stephan",
+                "owner_email": "tstephan@lakeheadu.ca",
+                "owner_straboUserId": 8667,
+                "images": {
+                    "neededImageIds": [],
+                    "imageIds": [
+                        17797219232155,
+                        17797218259340,
+                        17797212233686,
+                        17797292619086,
+                        17797293162546
+                    ]
+                },
+                "spotIds": [
+                    17797209856925,
+                    17797286646530
+                ]
+            }
+        },
+        "deviceBackUpDirectoryExists": true,
+        "backupFileName": "2026-05-30_804am_Open_project",
+        "downloadsDirectory": false,
+        "isTestingMode": false,
+        "selectedProject": {
+            "project": "",
+            "source": ""
+        },
+        "selectedTag": null,
+        "isMultipleFeaturesTaggingEnabled": false,
+        "addTagToSelectedSpot": false,
+        "projectTransferProgress": 0,
+        "isImageTransferring": false,
+        "_persist": {
+            "version": -1,
+            "rehydrated": true
+        }
+    },
+    "spotsDb": {
+        "17797209856925": {
+            "properties": {
+                "images": [
+                    {
+                        "width": 4000,
+                        "id": 17797219232155,
+                        "title": "Untitled 3",
+                        "created_by": 8667,
+                        "modified_timestamp": "1779956189386",
+                        "image_type": "photo",
+                        "height": 3000,
+                        "annotated": false,
+                        "self": "https:\/\/strabospot.org\/db\/image\/17797219232155"
+                    },
+                    {
+                        "width": 4000,
+                        "id": 17797218259340,
+                        "title": "Fold axes plunging in different directions",
+                        "created_by": 8667,
+                        "modified_timestamp": "1779956188025",
+                        "height": 3000,
+                        "image_type": "photo",
+                        "annotated": false,
+                        "self": "https:\/\/strabospot.org\/db\/image\/17797218259340"
+                    },
+                    {
+                        "width": 3000,
+                        "id": 17797212233686,
+                        "title": "Fold hinge collapse",
+                        "created_by": 8667,
+                        "modified_timestamp": "1779956186010",
+                        "height": 4000,
+                        "image_type": "photo",
+                        "annotated": false,
+                        "self": "https:\/\/strabospot.org\/db\/image\/17797212233686"
+                    }
+                ],
+                "date": "2026-05-25T14:56:25.000Z",
+                "altitude": 9.0135515416041,
+                "notes": "Middle Cove, St. John's, NF,\nQuartzite, low grade,\nTight folds, with undulating fold axes plunge,\nFold hinge collapse",
+                "orientation_data": [
+                    {
+                        "id": "d8a0c5a4-1edc-415c-a90b-49849f8b5e55",
+                        "type": "planar_orientation",
+                        "feature_type": "bedding",
+                        "strike": 115,
+                        "dip_direction": 205,
+                        "dip": 59,
+                        "unix_timestamp": 1779721015896
+                    },
+                    {
+                        "id": "06246e85-4166-426b-87a3-c805c3a4c9d8",
+                        "type": "planar_orientation",
+                        "feature_type": "bedding",
+                        "strike": 230,
+                        "dip_direction": 320,
+                        "dip": 57,
+                        "unix_timestamp": 1779721052343
+                    },
+                    {
+                        "id": "5c7b0c63-e1c9-4a99-a4dd-d18e00051e84",
+                        "type": "planar_orientation",
+                        "feature_type": "bedding",
+                        "strike": 161,
+                        "dip_direction": 251,
+                        "dip": 68,
+                        "unix_timestamp": 1779721163578
+                    },
+                    {
+                        "id": "8f298e4a-4cf0-4405-ac1c-82e53f2ab3d1",
+                        "type": "planar_orientation",
+                        "feature_type": "bedding",
+                        "strike": 54,
+                        "dip_direction": 144,
+                        "dip": 11,
+                        "unix_timestamp": 1779721179728
+                    },
+                    {
+                        "id": "2e62b522-11da-4f83-bd32-d5326744a01e",
+                        "type": "planar_orientation",
+                        "feature_type": "bedding",
+                        "strike": 9,
+                        "dip_direction": 99,
+                        "dip": 33,
+                        "unix_timestamp": 1779721191714
+                    },
+                    {
+                        "id": "de6e5343-fd25-45fb-bffd-326c83637e2d",
+                        "type": "planar_orientation",
+                        "feature_type": "bedding",
+                        "strike": 49,
+                        "dip_direction": 139,
+                        "dip": 81,
+                        "unix_timestamp": 1779721205231
+                    },
+                    {
+                        "id": "72384163-ff69-43f5-9038-a1ba5da87a15",
+                        "type": "linear_orientation",
+                        "feature_type": "fold_hinge",
+                        "trend": 215,
+                        "plunge": 9,
+                        "unix_timestamp": 1779721717404
+                    },
+                    {
+                        "id": "ebd6dbfe-fea4-4ffe-a631-9bea24e6620d",
+                        "type": "linear_orientation",
+                        "feature_type": "fold_hinge",
+                        "trend": 27,
+                        "plunge": 15,
+                        "unix_timestamp": 1779721732806
+                    }
+                ],
+                "modified_timestamp": 1779722745677,
+                "gps_accuracy": 3,
+                "name": "02",
+                "notesTimestamp": "Mon May 25 2026 12:55:45 GMT-0230",
+                "time": "2026-05-25T14:56:25.000Z",
+                "id": 17797209856925,
+                "self": "https:\/\/strabospot.org\/db\/feature\/17797209856925"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -52.6968404,
+                    47.6512064
+                ]
+            },
+            "type": "Feature"
+        },
+        "17797286646530": {
+            "properties": {
+                "images": [
+                    {
+                        "width": 4000,
+                        "id": 17797292619086,
+                        "title": "Crossbeds",
+                        "created_by": 8667,
+                        "modified_timestamp": "1779956192108",
+                        "image_type": "photo",
+                        "height": 3000,
+                        "annotated": false,
+                        "self": "https:\/\/strabospot.org\/db\/image\/17797292619086"
+                    },
+                    {
+                        "width": 4000,
+                        "id": 17797293162546,
+                        "title": "Overview",
+                        "created_by": 8667,
+                        "modified_timestamp": "1779956190878",
+                        "image_type": "photo",
+                        "height": 3000,
+                        "annotated": false,
+                        "self": "https:\/\/strabospot.org\/db\/image\/17797293162546"
+                    }
+                ],
+                "date": "2026-05-25T17:04:24.000Z",
+                "altitude": 25.706687927246,
+                "notes": "Flatrock, St. John's, NF\nSandstones and conglomerates, channel fills, crossbedding",
+                "orientation_data": [
+                    {
+                        "id": "6892ff48-9147-40b5-b006-0f1dc93a941c",
+                        "type": "planar_orientation",
+                        "feature_type": "bedding",
+                        "strike": 176,
+                        "dip_direction": 266,
+                        "dip": 10,
+                        "unix_timestamp": 1779728730299
+                    },
+                    {
+                        "id": "57a6deb6-0874-4628-a131-34ab67a0c353",
+                        "type": "planar_orientation",
+                        "feature_type": "bedding",
+                        "strike": 138,
+                        "dip_direction": 228,
+                        "dip": 18,
+                        "unix_timestamp": 1779728748141
+                    },
+                    {
+                        "id": "cdce1a1c-55b8-419e-84b9-6c13a5a3e1e8",
+                        "type": "planar_orientation",
+                        "feature_type": "bedding",
+                        "strike": 141,
+                        "dip_direction": 231,
+                        "dip": 11,
+                        "unix_timestamp": 1779729185567
+                    },
+                    {
+                        "id": "b3b2cd6e-6389-4757-a9b2-2596234e4155",
+                        "type": "planar_orientation",
+                        "feature_type": "bedding",
+                        "strike": 271,
+                        "dip_direction": 1,
+                        "dip": 13,
+                        "unix_timestamp": 1779731013440
+                    }
+                ],
+                "modified_timestamp": 1779731013501,
+                "gps_accuracy": 13.359999656677,
+                "name": "03",
+                "notesTimestamp": "Mon May 25 2026 14:41:41 GMT-0230",
+                "time": "2026-05-25T17:04:24.000Z",
+                "id": 17797286646530,
+                "self": "https:\/\/strabospot.org\/db\/feature\/17797286646530"
+            },
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -52.7002417,
+                    47.7021845
+                ]
+            },
+            "type": "Feature"
+        }
+    }
+}

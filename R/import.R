@@ -92,7 +92,7 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
   res <- merge(res, data0, by = "Planar.Orientation.Unix.Timestamp", all.x = TRUE)
 
   # Clean up timestamp columns
-  res[, Linear.Orientation.Unix.Timestamp := NULL]
+  if(!is.null(res$Linear.Orientation.Unix.Timestamp)) res[, Linear.Orientation.Unix.Timestamp := NULL]
 
   # Construct planes and lines
   planes <- Plane(res$Planar.Orientation.Dipdirection, res$Planar.Orientation.Dip)
@@ -108,61 +108,76 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
     planar = planes,
     linear = lines
   )
-  as.structr(ls)
+  as.strabo(ls)
 }
 
 #' @rdname strabo
 #' @export
 read_strabo_mobile <- function(file, sf = TRUE) {
-  `Trd/Strk` <- Dipdir <- Type <- Strk <- NULL
+  `Plg/Dip` <- `Trd/Strk` <- Dipdir <- Type <- Strk <- NULL
   # Read the data with data.table::fread for speed
   data0 <- fread(file,
     sep = "\t", header = TRUE,
     colClasses = c("integer", rep("character", 3), rep("numeric", 11), "character")
   )
+  
+  data <- data0
+  data$`Trd/Strk` <- NULL
+  data$`Plg/Dip` <- NULL
+  
 
+  data$azimuth <- ifelse(data0$Type == "L", data0$`Trd/Strk`, NA_real_)
+  strike <- ifelse(data0$Type == "P", data0$`Trd/Strk`, NA_real_)
+  data$plunge <- ifelse(data0$Type == "L", data0$`Plg/Dip`, NA_real_)
+  data$dip <- ifelse(data0$Type == "P", data0$`Plg/Dip`, NA_real_)
+  data$dip_direction <- rhr2dd(strike)
+  
   # Separate lines and planes using data.table syntax
-  lines0 <- data0[Type == "L"]
-  planes0 <- data0[Type == "P"]
+  #lines0 <- data0[Type == "L"]
+  #planes0 <- data0[Type == "P"]
 
   # Create 'Dipdir' for planes (vectorized)
-  planes0[, Dipdir := (`Trd/Strk` + 90) %% 360]
+  #planes0[, Dipdir := (`Trd/Strk` + 90) %% 360]
 
   # Construct line and plane objects from orientation data
-  lines <- Line(lines0$`Trd/Strk`, lines0$`Plg/Dip`)
-  planes <- Plane(planes0$Dipdir, planes0$`Plg/Dip`)
-
+  #lines <- Line(lines0$`Trd/Strk`, lines0$`Plg/Dip`)
+  #planes <- Plane(planes0$Dipdir, planes0$`Plg/Dip`)
+  lines <- Line(data$azimuth, data$plunge)
+  planes <- Plane(data$dip_direction, data$dip)
+  
   # Extract metadata tables, dropping columns as needed
-  lines.meta <- lines0[, !c("No.", "Trd/Strk", "Plg/Dip"), with = FALSE]
-  planes.meta <- planes0[, !c("No.", "Dipdir", "Trd/Strk", "Plg/Dip"), with = FALSE]
+  #lines.meta <- lines0[, !c("No.", "Trd/Strk", "Plg/Dip"), with = FALSE]
+  #planes.meta <- planes0[, !c("No.", "Dipdir", "Trd/Strk", "Plg/Dip"), with = FALSE]
 
   # Set row names based on 'No.'
-  rownames(lines) <- rownames(lines.meta) <- lines0$No.
-  rownames(planes) <- rownames(planes.meta) <- planes0$No.
+  #rownames(lines) <- rownames(lines.meta) <- lines0$No.
+  #rownames(planes) <- rownames(planes.meta) <- planes0$No.
 
   # Convert metadata to sf objects if requested
   if (sf) {
-    lines.meta <- st_as_sf(lines.meta,
-      coords = c("Longitude", "Latitude"),
-      crs = 4326, remove = FALSE, na.fail = FALSE
-    )
-    planes.meta <- st_as_sf(planes.meta,
+    # lines.meta <- st_as_sf(lines.meta,
+    #   coords = c("Longitude", "Latitude"),
+    #   crs = 4326, remove = FALSE, na.fail = FALSE
+    # )
+    # planes.meta <- st_as_sf(planes.meta,
+    #   coords = c("Longitude", "Latitude"),
+    #   crs = 4326, remove = FALSE, na.fail = FALSE
+    # )
+    data <- st_as_sf(data,
       coords = c("Longitude", "Latitude"),
       crs = 4326, remove = FALSE, na.fail = FALSE
     )
   }
 
-  # data <- rbind(planes.meta, lines.meta, fill = TRUE)
-  
-  
   # Return list
   ls <- list(
-    linear = lines,
-    linear_data = lines.meta,
+    data = data,
+    # linear_data = lines.meta,
     planar = planes,
-    planar_data = planes.meta
+    linear = lines
+    # planar_data = planes.meta
   )
-  as.structr(ls)
+  as.strabo(ls)
 }
 
 
@@ -191,6 +206,9 @@ read_strabo_JSON <- function(file, sf = TRUE) {
     fill = TRUE
   )
 
+  if(is.null(tags_list)){
+    tag_info_dt <- NULL
+  } else {
   tag_info_dt <- rbindlist(
     lapply(tags_list, function(tag) {
       tag$spots <- NULL
@@ -200,6 +218,7 @@ read_strabo_JSON <- function(file, sf = TRUE) {
     fill = TRUE
   )
   setnames(tag_info_dt, paste0("tag_", names(tag_info_dt)))
+  }
 
   # spot_tags_dt <- merge(
   #   unique(tags_dt),
@@ -219,7 +238,7 @@ read_strabo_JSON <- function(file, sf = TRUE) {
   )
   }
 
-  spot_tags_dt[, tag_col := paste0("tag:", tag_name)]
+  if(!is.null(tags_list)) spot_tags_dt[, tag_col := paste0("tag:", tag_name)]
 
   # spot_tags_wide <- dcast(spot_tags_dt[, .(spot_id, tag_name = paste0("tag:", tag_name), value = TRUE)],
   #   spot_id ~ tag_name,
@@ -281,7 +300,7 @@ read_strabo_JSON <- function(file, sf = TRUE) {
 
   fieldbook_dt[, spot_id := as.character(spot_id)]
   spots_dt[, spot_id := as.character(spot_id)]
-  spot_tags_wide[, spot_id := as.character(spot_id)]
+  if(!is.null(tags_list)) spot_tags_wide[, spot_id := as.character(spot_id)]
 
 
   # --- Join with dataset and tag info ---
@@ -303,6 +322,7 @@ read_strabo_JSON <- function(file, sf = TRUE) {
       spot_id <- props$id
       spot_name <- props$name
       orient_data <- props$orientation_data
+      
       if (!is.null(orient_data)) {
         rbindlist(lapply(orient_data, function(orient) {
           assoc <- orient$associated_orientation
@@ -338,12 +358,27 @@ read_strabo_JSON <- function(file, sf = TRUE) {
   orient_dt <- rbindlist(orient_list, fill = TRUE)
   orient_dt <- unique(orient_dt)
 
-  # dirty hack to remove duplicated columns
-
+  # create trend and plunge objects from orient_dt and replace with associated line if present
+  trend <- sapply(seq_len(nrow(orient_dt)), function(i){
+    if(isTRUE(orient_dt[i, 'associated'])){
+      orient_dt[i, 'associated_trend']
+    } else {
+      orient_dt[i, 'trend']
+    }
+  }) |> unlist()
+  
+  plunge <- sapply(seq_len(nrow(orient_dt)), function(i){
+    if(isTRUE(orient_dt[i, 'associated'])){
+      orient_dt[i, 'associated_plunge']
+    } else {
+      orient_dt[i, 'plunge']
+    }
+  }) |> unlist()
+  
 
   if (nrow(orient_dt) > 0) {
-    planes <- Plane(orient_dt$strike + 90, orient_dt$dip)
-    lines <- Line(orient_dt$associated_trend, orient_dt$associated_plunge)
+    planes <- Plane(rhr2dd(orient_dt$strike), orient_dt$dip)
+    lines <- Line(trend, plunge)
   } else {
     planes <- NULL
     lines <- NULL
@@ -358,30 +393,42 @@ read_strabo_JSON <- function(file, sf = TRUE) {
     planar = planes,
     linear = lines
   )
-  as.structr(ls)
+  as.strabo(ls)
 }
 
 # if (getRversion() >= "2.15.1")  utils::globalVariables(".")
 
-is.structr <- function(x) inherits(x, "structr")
+is.strabo <- function(x) inherits(x, "strabo")
 
-as.structr <- function(x) {
-  structure(x, class = append(class(x), "structr"))
+as.strabo <- function(x) {
+  structure(x, class = append(class(x), "strabo"))
 }
 
-#' @exportS3Method base::print
-print.structr <- function(x, ...){
-  list(
-    data = head(x$data, ...),
-    spots = head(x$spots, ...),
-    tags = head(x$tags, ...),
-    planar = print.Plane(x$planar),
-    linear = print.Line(x$linear)
-  )
-}
+# #' Print strabo imports
+# #'
+# #' @param n integer. Number of rows to show for each data set.
+# #'
+# #' @returns combined objects as class defined in `.class`
+# #' @method print strabo
+# #' @exportS3Method base::print
+# #' 
+# #' @importFrom utils head
+# #' 
+# #' @keywords internal
+# #'
+# #' @noRd
+# print.strabo <- function(x, ..., n = 6L){
+#   list(
+#     data = utils::head(x$data, n = n, ...),
+#     spots = utils::head(x$spots, n = n, ...),
+#     tags = utils::head(x$tags, n = n, ...),
+#     planar = x$planar,
+#     linear = x$linear
+#   )
+# }
 
 #' @exportS3Method base::subset
-subset.structr <- function(x, ...){
+subset.strabo <- function(x, ...){
   #stopifnot(is.structr(x))
   x$data$newrowid <- seq_len(nrow(x$data))
   x_subset <- subset(x$data, ...)
