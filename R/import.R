@@ -205,6 +205,7 @@ read_strabo_JSON <- function(file, sf = TRUE) {
     }),
     fill = TRUE
   )
+  tags_dt$spot_id <- as.character(tags_dt$spot_id)
 
   if(is.null(tags_list)){
     tag_info_dt <- NULL
@@ -274,6 +275,7 @@ read_strabo_JSON <- function(file, sf = TRUE) {
     fill = TRUE
   )
   spots_dt <- unique(spots_dt)
+  spots_dt$spot_id <- as.character(spots_dt$spot_id)
 
   # --- Spots ---
   spots_db <- dat$spotsDb
@@ -357,6 +359,15 @@ read_strabo_JSON <- function(file, sf = TRUE) {
   })
   orient_dt <- rbindlist(orient_list, fill = TRUE)
   orient_dt <- unique(orient_dt)
+  orient_dt$spot_id <- as.character(orient_dt$spot_id)
+  
+  # Fix duplicate associated columns
+  idx <- which(names(orient_dt) == "associated")
+  orient_dt[, associated :=
+       Reduce(`|`, lapply(.SD, coalesce, FALSE)),
+     .SDcols = idx]
+  orient_dt[, idx[-1] := NULL] # remove second associate column
+  
 
   # create trend and plunge objects from orient_dt and replace with associated line if present
   trend <- sapply(seq_len(nrow(orient_dt)), function(i){
@@ -440,5 +451,5 @@ subset.strabo <- function(x, ...){
     planar = x$planar[selected_rows, ],
     linear = x$linear[selected_rows, ]
   ) |> 
-    as.structr()
+    as.strabo()
 }
