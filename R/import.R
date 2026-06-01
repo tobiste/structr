@@ -369,27 +369,49 @@ read_strabo_JSON <- function(file, sf = TRUE) {
   orient_dt[, idx[-1] := NULL] # remove second associate column
   
 
-  # create trend and plunge objects from orient_dt and replace with associated line if present
-  trend <- sapply(seq_len(nrow(orient_dt)), function(i){
-    if(isTRUE(orient_dt[i, 'associated'])){
-      orient_dt[i, 'associated_trend']
-    } else {
-      orient_dt[i, 'trend']
-    }
-  }) |> unlist()
   
-  plunge <- sapply(seq_len(nrow(orient_dt)), function(i){
-    if(isTRUE(orient_dt[i, 'associated'])){
-      orient_dt[i, 'associated_plunge']
-    } else {
-      orient_dt[i, 'plunge']
-    }
-  }) |> unlist()
+  if(any(orient_dt$associated)){
+  # Condition: trend is NA but associated_trend is not
+  fill_from_associated <- is.na(orient_dt$trend) & !is.na(orient_dt$associated_trend)
   
-
+  orient_dt[fill_from_associated, `:=`(
+    plunge       = associated_plunge,
+    trend        = associated_trend,
+    linear_type  = associated_feature_type
+  )]
+  
+  # linear_type for linear_orientation rows (where not already set from above)
+  orient_dt[!fill_from_associated & type == "linear_orientation",
+            linear_type := feature_type]
+  
+  # planar_type for planar_orientation rows
+  orient_dt[type == "planar_orientation",
+            planar_type := feature_type]
+  
+  # Drop columns
+  drop_cols <- c(
+    "type", "feature_type", "associated_unix_timestamp",
+    "associated_feature_type", "associated_id", "associated_type",
+    "associated_trend", "associated_plunge"
+  )
+  } else {
+    orient_dt[,linear_type := feature_type]
+    
+    # planar_type for planar_orientation rows
+    orient_dt[type == "planar_orientation",
+              planar_type := feature_type]
+    
+    # Drop columns
+    drop_cols <- c(
+      "type", "feature_type"
+    )
+  }
+  orient_dt[, (drop_cols) := NULL]
+  
+  
   if (nrow(orient_dt) > 0) {
     planes <- Plane(rhr2dd(orient_dt$strike), orient_dt$dip)
-    lines <- Line(trend, plunge)
+    lines <- Line(orient_dt$trend, orient_dt$plunge)
   } else {
     planes <- NULL
     lines <- NULL
