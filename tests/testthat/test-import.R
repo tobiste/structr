@@ -1,8 +1,15 @@
 # excel
-read_strabo_xls('strabo_example.xlsx')
+test_that('import excel', {
+  expect_no_failure(read_strabo_xls('strabo_example.xlsx'))
+})
 
 # mobile
-read_strabo_mobile('strabo_example.txt')
+test_that('import csv', {
+  expect_no_failure(read_strabo_mobile('strabo_example.txt'))
+})
+
 
 # json
-read_strabo_JSON('strabo_example.json')
+test_that('import json', {
+  expect_no_failure(read_strabo_JSON('strabo_example.json'))
+})
