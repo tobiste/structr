@@ -2,11 +2,14 @@
 % Please edit documentation in R/import.R
 \name{strabo}
 \alias{strabo}
+\alias{read_strabo_xlsx}
 \alias{read_strabo_xls}
 \alias{read_strabo_mobile}
 \alias{read_strabo_JSON}
 \title{Import orientation data from \emph{StraboSpot}}
 \usage{
+read_strabo_xlsx(file, tag_cols = FALSE, sf = TRUE)
+
 read_strabo_xls(file, tag_cols = FALSE, sf = TRUE)
 
 read_strabo_mobile(file, sf = TRUE)
@@ -40,7 +43,7 @@ creates a list with the metadata, and the line or plane orientations.
 \examples{
 \dontrun{
 # import from excel file
-read_strabo_xls("path/to/my/file.xlsx")
+read_strabo_xlsx("path/to/my/file.xlsx")
 
 # import from text file
 read_strabo_mobile("path/to/my/file.txt")

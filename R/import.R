@@ -31,7 +31,7 @@
 #' @examples
 #' \dontrun{
 #' # import from excel file
-#' read_strabo_xls("path/to/my/file.xlsx")
+#' read_strabo_xlsx("path/to/my/file.xlsx")
 #'
 #' # import from text file
 #' read_strabo_mobile("path/to/my/file.txt")
@@ -43,7 +43,7 @@ NULL
 
 #' @rdname strabo
 #' @export
-read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
+read_strabo_xlsx <- function(file, tag_cols = FALSE, sf = TRUE) {
   Date <- Dipdir <- Linear.Orientation.Trend <- Linear.Orientation.Unix.Timestamp <- Linear.Sense <- Planar.Orientation.Dipdirection <-
     temp <- Planar.Orientation.Fault.Or.Sz.Type <- Planar.Orientation.Movement <- Planar.Orientation.Strike <- Planar.Orientation.Unix.Timestamp <- Tag <- NULL
 
@@ -56,8 +56,11 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
   # Convert Date to POSIXct (quiet, no lubridate)
   data[, Date := as.POSIXct(Date, tz = "UTC")]
 
-  # Calculate Planar.Orientation.Dipdirection (assuming rhr2dd is defined)
-  data[, Planar.Orientation.Dipdirection := rhr2dd(Planar.Orientation.Strike)]
+  
+  # old_names <- names(data)[startsWith(names(data), "Tabular.")]
+  # setnames(data, old = old_names, new = gsub("^Tabular.", "Planar.", old_names))
+  
+  
 
   # Linear.Sense logic vectorized and concise
   data[, Linear.Sense := fifelse(Planar.Orientation.Movement == "left_lateral", -1, NA_real_)]
@@ -65,6 +68,20 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
   data[Planar.Orientation.Fault.Or.Sz.Type %in% c("sinistral", "reverse"), Linear.Sense := -1]
   data[Planar.Orientation.Fault.Or.Sz.Type %in% c("dextral", "normal", "dextral_normal"), Linear.Sense := 1]
 
+  
+  if (!"Planar.Orientation.Unix.Timestamp" %in% names(data) && 
+      "Planar.Orientation.Modified.Timestamp" %in% names(data)) {
+    setnames(data, "Planar.Orientation.Modified.Timestamp", "Planar.Orientation.Unix.Timestamp")
+  }
+  if (!"Linear.Orientation.Unix.Timestamp" %in% names(data) && 
+      "Linear.Orientation.Modified.Timestamp" %in% names(data)) {
+    setnames(data, "Linear.Orientation.Modified.Timestamp", "Linear.Orientation.Unix.Timestamp")
+  }
+  if (!"Tabular.Orientation.Unix.Timestamp" %in% names(data) && 
+      "Tabular.Orientation.Modified.Timestamp" %in% names(data)) {
+    setnames(data, "Tabular.Orientation.Modified.Timestamp", "Tabular.Orientation.Unix.Timestamp")
+  }
+  
   # If tags columns requested, pivot longer and filter
   if (tag_cols) {
     tag_cols_names <- grep("^Tag", names(data), value = TRUE)
@@ -74,13 +91,22 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
   }
 
   # Separate linear and planar data.tables
-  data_lines <- data[!is.na(Linear.Orientation.Trend), .SD, .SDcols = data.table::patterns("^Linear")]
+  data_lines <- data[!is.na(Linear.Orientation.Plunge), .SD, .SDcols = data.table::patterns("^Linear")]
   data_planes <- data[!is.na(Planar.Orientation.Dipdirection), .SD, .SDcols = data.table::patterns("^Planar")]
-
+  data_tabular <- data[!is.na(Tabular.Orientation.Dip), .SD, .SDcols = data.table::patterns("^Tabular")]
+  old_names <- grep("^Tabular\\.", names(data_tabular), value = TRUE)
+  setnames(data_tabular, old = old_names, new = gsub("^Tabular\\.", "Planar.", old_names))  
+  data_planes <- rbindlist(list(data_planes, data_tabular), fill = TRUE)
+  
   # Data without planar or linear cols
-  cols_to_exclude <- grep("^(Planar|Linear)", names(data), value = TRUE)
+  cols_to_exclude <- grep("^(Planar|Linear|Tabular)", names(data), value = TRUE)
   data0 <- data[, setdiff(names(data), cols_to_exclude), with = FALSE]
-  data0[, Planar.Orientation.Unix.Timestamp := data$Planar.Orientation.Unix.Timestamp]
+  
+  t <- ifelse(is.na(data$Linear.Orientation.Unix.Timestamp), data$Planar.Orientation.Unix.Timestamp, data$Linear.Orientation.Unix.Timestamp)
+  t <- ifelse(is.na(t), data$Tabular.Orientation.Unix.Timestamp, t)
+  
+  data0[, Orientation.Unix.Timestamp := t]
+  data0 <- data0[!is.na(Orientation.Unix.Timestamp), ]
 
   # Full join on timestamps, using data.table merge with all=TRUE
   res <- merge(data_planes, data_lines,
@@ -89,13 +115,28 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
     all = TRUE,
     allow.cartesian = TRUE
   )
-  res <- merge(res, data0, by = "Planar.Orientation.Unix.Timestamp", all.x = TRUE)
-
+  res <- merge(res, data0, by.x = "Planar.Orientation.Unix.Timestamp", by.y = "Orientation.Unix.Timestamp", all.x = TRUE)
+  setnames(res, "Planar.Orientation.Unix.Timestamp", "Orientation.Unix.Timestamp")
+  
+  # res2 <- merge(data_tabular, data_lines,
+  #              by.x = "Tabular.Orientation.Unix.Timestamp",
+  #              by.y = "Linear.Orientation.Unix.Timestamp",
+  #              all = TRUE,
+  #              allow.cartesian = TRUE
+  # )
+  # res2 <- merge(res2, data0, by.x = "Tabular.Orientation.Unix.Timestamp", by.y = "Orientation.Unix.Timestamp", all.x = TRUE)
+  # setnames(res2, "Tabular.Orientation.Unix.Timestamp", "Orientation.Unix.Timestamp")
+  # 
+  # res <- rbindlist(list(res1, res2), fill = TRUE)
+  
   # Clean up timestamp columns
-  if(!is.null(res$Linear.Orientation.Unix.Timestamp)) res[, Linear.Orientation.Unix.Timestamp := NULL]
+  # if(!is.null(res$Linear.Orientation.Unix.Timestamp)) res[, Linear.Orientation.Unix.Timestamp := NULL]
 
+  # Calculate Planar.Orientation.Dipdirection (assuming rhr2dd is defined)
+  # data[, Planar.Orientation.Dipdirection := rhr2dd(Planar.Orientation.Strike)]
+  
   # Construct planes and lines
-  planes <- Plane(res$Planar.Orientation.Dipdirection, res$Planar.Orientation.Dip)
+  planes <- Plane(rhr2dd(res$Planar.Orientation.Strike), res$Planar.Orientation.Dip)
   lines <- Line(res$Linear.Orientation.Trend, res$Linear.Orientation.Plunge)
 
   # Convert to sf if requested
@@ -110,6 +151,10 @@ read_strabo_xls <- function(file, tag_cols = FALSE, sf = TRUE) {
   )
   as.strabo(ls)
 }
+
+#' @rdname strabo
+#' @export
+read_strabo_xls <- read_strabo_xlsx
 
 #' @rdname strabo
 #' @export
@@ -368,50 +413,61 @@ read_strabo_JSON <- function(file, sf = TRUE) {
      .SDcols = idx]
   orient_dt[, idx[-1] := NULL] # remove second associate column
   
-
-  
-  if(any(orient_dt$associated)){
-  # Condition: trend is NA but associated_trend is not
-  fill_from_associated <- is.na(orient_dt$trend) & !is.na(orient_dt$associated_trend)
-  
-  orient_dt[fill_from_associated, `:=`(
-    plunge       = associated_plunge,
-    trend        = associated_trend,
-    linear_type  = associated_feature_type
-  )]
-  
-  # linear_type for linear_orientation rows (where not already set from above)
-  orient_dt[!fill_from_associated & type == "linear_orientation",
-            linear_type := feature_type]
-  
-  # planar_type for planar_orientation rows
-  orient_dt[type == "planar_orientation",
-            planar_type := feature_type]
-  
-  # Drop columns
-  drop_cols <- c(
-    "type", "feature_type", "associated_unix_timestamp",
-    "associated_feature_type", "associated_id", "associated_type",
-    "associated_trend", "associated_plunge"
+  # add strabo measurement column numbers if not present:
+  expected_cols <- c(
+    "associated", "associated_defined_by", "associated_feature_type", "associated_id",
+    "associated_label", "associated_notes", "associated_plunge", "associated_quality",
+    "associated_trend", "associated_type", "defined_by", "dip",
+    "dip_direction", "directional_indicators", "fault_or_sz_type", "feature_type",
+    "foliation_defined_by", "foliation_type", "id", "label",
+    "length", "modified_timestamp", "movement", "movement_amount_m",
+    "movement_amount_qualifier", "movement_justification", "notes", "other_movement",
+    "other_movement_justification", "plunge", "quality", "rake",
+    "spot", "spot_id", "strike", "tabularity",
+    "thickness", "trend", "type", "unix_timestamp",
+    "vein_fill", "vein_type"
   )
-  } else {
-    orient_dt[,linear_type := feature_type]
-    
-    # planar_type for planar_orientation rows
-    orient_dt[type == "planar_orientation",
-              planar_type := feature_type]
-    
-    # Drop columns
-    drop_cols <- c(
-      "type", "feature_type"
-    )
-  }
-  orient_dt[, (drop_cols) := NULL]
+  missing_cols <- setdiff(expected_cols, names(orient_dt))
+  orient_dt[, (missing_cols) := NA]
+  
+  orient_dt[, associated := fifelse(is.na(orient_dt$associated), FALSE, associated)]
+  # orient_dt$associated <- ifelse(is.na(orient_dt$associated), FALSE, orient_dt$associated)
+  
+  # select only planes that are not associated with a line
+  only_planes <- orient_dt[type == "planar_orientation" | type == "tabular_orientation" & !associated, ]
+  only_planes[, c("trend", "plunge", grep("^associated_", names(only_planes), value = TRUE)) := NULL] # drop all line and associated related columns
+  setnames(only_planes, old = "type", new = "planar_type") # rename type columns
+  only_planes[, which(sapply(only_planes, \(x) all(is.na(x)))) := NULL] # drop all empty columns
+  
+  # select all lines that are not associated with a plane
+  only_lines <- orient_dt[type == "linear_orientation" & !associated, ]
+  only_lines[, grep("^associated_", names(only_lines), value = TRUE) := NULL] # drop all associated related columns
+  line_specifiers1 <- c("defined_by", "feature_type", "label", "notes", "quality", "type") 
+  setnames(only_lines, old = line_specifiers1, new = paste0("linear_", line_specifiers1)) # rename all line related columns
+  only_lines[, which(sapply(only_lines, \(x) all(is.na(x)))) := NULL] # drop all empty columns
+  
+  # select all associated planes and lines
+  only_associated_lines <- orient_dt[associated_type == "linear_orientation" & associated, ]
+  drop_cols1 <- c('trend', 'plunge')
+  only_associated_lines[, (drop_cols1) := NULL] # drop trend and plunge columns
+  old_names <- names(only_associated_lines)[startsWith(names(only_associated_lines), "associated_")]
+  setnames(only_associated_lines, old = old_names, new = gsub("^associated_", "linear_", old_names))
+  setnames(only_associated_lines, old = c("linear_trend", "linear_plunge"), new = c("trend", "plunge"))
+  only_associated_lines[, which(sapply(only_associated_lines, \(x) all(is.na(x)))) := NULL] # drop all empty columns
   
   
-  if (nrow(orient_dt) > 0) {
-    planes <- Plane(rhr2dd(orient_dt$strike), orient_dt$dip)
-    lines <- Line(orient_dt$trend, orient_dt$plunge)
+  orient_dt2 <- rbindlist(list(only_planes, only_lines, only_associated_lines), fill = TRUE)
+  setcolorder(orient_dt2, c("id", "dip_direction", "dip", "strike", "plunge", "trend", "associated"))
+  
+  # drop all empty columns
+  orient_dt2[, which(sapply(orient_dt2, \(x) all(is.na(x)))) := NULL]
+
+  # sort the data
+  setorder(orient_dt2, unix_timestamp)
+  
+  if (nrow(orient_dt2) > 0) {
+    planes <- Plane(rhr2dd(orient_dt2$strike), orient_dt2$dip)
+    lines <- Line(orient_dt2$trend, orient_dt2$plunge)
   } else {
     planes <- NULL
     lines <- NULL
@@ -420,7 +476,7 @@ read_strabo_JSON <- function(file, sf = TRUE) {
 
   # --- Return ---
   ls <- list(
-    data = orient_dt,
+    data = orient_dt2,
     spots = fieldbook_dt,
     tags = tag_info_dt,
     planar = planes,

@@ -4,15 +4,16 @@
     "otherMapsDb": {},
     "projectDb": {
         "activeDatasetsIds": [
+            17804307509874,
             17667550869627
         ],
-        "selectedDatasetId": 17667550869627,
+        "selectedDatasetId": 17804307509874,
         "project": {
             "date": "2025-12-26T13:18:06.949Z",
-            "modified_timestamp": 1779731013494,
+            "modified_timestamp": 1780432307880,
             "projecttype": "app",
             "preferences": {
-                "starting_number_for_spot": 4
+                "starting_number_for_spot": 6
             },
             "other_features": [
                 "geomorphic",
@@ -27,7 +28,8 @@
                 "start_date": "2025-12-26T13:17:48.996Z",
                 "gps_datum": "WGS84 (Default)",
                 "magnetic_declination": 0,
-                "project_name": "Open project"
+                "project_name": "Newfoundland",
+                "end_date": "2026-06-01T04:00:00.000Z"
             },
             "templates": {},
             "reports": [],
@@ -54,18 +56,38 @@
             "isCollaborativeProject": false
         },
         "datasets": {
-            "17667550869627": {
-                "date": "2025-12-26T13:18:06.962Z",
-                "centroid": "POINT (-52.69854105 47.67669545)",
-                "name": "Default",
-                "id": 17667550869627,
-                "modified_timestamp": 1779731013494,
-                "datasettype": "app",
-                "self": "https:\/\/strabospot.org\/db\/dataset\/17667550869627",
-                "isReadOnly": false,
-                "owner_name": "Tobias Stephan",
+            "17804307509874": {
                 "owner_email": "tstephan@lakeheadu.ca",
+                "date": "2026-06-02T20:05:50.987Z",
+                "owner_name": "Tobias Stephan",
+                "modified_timestamp": 1780432307880,
                 "owner_straboUserId": 8667,
+                "datasettype": "app",
+                "isReadOnly": false,
+                "centroid": "POINT (-52.68021446701512 47.15635400232497)",
+                "name": "test",
+                "id": 17804307509874,
+                "self": "https:\/\/strabospot.org\/db\/dataset\/17804307509874",
+                "images": {
+                    "neededImageIds": [],
+                    "imageIds": []
+                },
+                "spotIds": [
+                    17804308145631
+                ]
+            },
+            "17667550869627": {
+                "owner_email": "tstephan@lakeheadu.ca",
+                "date": "2025-12-26T13:18:06.962Z",
+                "owner_name": "Tobias Stephan",
+                "owner_straboUserId": 8667,
+                "modified_timestamp": 1780430776919,
+                "datasettype": "app",
+                "isReadOnly": false,
+                "centroid": "POINT (-52.85404246666667 47.32675426666666)",
+                "name": "TS",
+                "id": 17667550869627,
+                "self": "https:\/\/strabospot.org\/db\/dataset\/17667550869627",
                 "images": {
                     "neededImageIds": [],
                     "imageIds": [
@@ -78,12 +100,13 @@
                 },
                 "spotIds": [
                     17797209856925,
-                    17797286646530
+                    17797286646530,
+                    17802501985827
                 ]
             }
         },
         "deviceBackUpDirectoryExists": true,
-        "backupFileName": "2026-05-30_804am_Open_project",
+        "backupFileName": "2026-06-02_832pm_Newfoundland",
         "downloadsDirectory": false,
         "isTestingMode": false,
         "selectedProject": {
@@ -101,6 +124,125 @@
         }
     },
     "spotsDb": {
+        "17804308145631": {
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -52.68021446701512,
+                    47.15635400232497
+                ]
+            },
+            "properties": {
+                "date": "2026-06-02T20:06:54.000Z",
+                "notes": "this is a spot for testing structr",
+                "orientation_data": [
+                    {
+                        "id": "93f7e88e-3b4d-4b4f-84fd-8bcb4d34b691",
+                        "type": "planar_orientation",
+                        "dip_direction": 210,
+                        "strike": 120,
+                        "dip": 50,
+                        "feature_type": "foliation",
+                        "foliation_type": "schistosity",
+                        "thickness": 10,
+                        "length": 10,
+                        "notes": "a note",
+                        "label": "s1",
+                        "quality": "4",
+                        "foliation_defined_by": "plane definition",
+                        "modified_timestamp": 1780432066332
+                    },
+                    {
+                        "id": "3a5285f0-10a2-4370-8a0f-8d2a82e3f376",
+                        "type": "linear_orientation",
+                        "label": "l1",
+                        "trend": 75,
+                        "plunge": 20,
+                        "feature_type": "stretching",
+                        "defined_by": "streak",
+                        "notes": "a line note",
+                        "modified_timestamp": 1780432072197
+                    },
+                    {
+                        "id": "8a39d47a-105c-40df-a405-92718c14c1c8",
+                        "type": "planar_orientation",
+                        "label": "s+l",
+                        "dip_direction": 213,
+                        "strike": 123,
+                        "dip": 45,
+                        "associated_orientation": [
+                            {
+                                "trend": 44,
+                                "plunge": 10,
+                                "feature_type": "slickenfibers",
+                                "defined_by": "streak",
+                                "notes": "line note",
+                                "quality": "4",
+                                "label": "s+l",
+                                "id": "86f707e6-e751-4346-813a-7cfe5a06d1cd",
+                                "type": "linear_orientation"
+                            }
+                        ],
+                        "feature_type": "fault",
+                        "fault_or_sz_type": "normal",
+                        "directional_indicators": [
+                            "slickenfibers",
+                            "riedel_shear"
+                        ],
+                        "thickness": 12,
+                        "length": 13,
+                        "notes": "plane note",
+                        "quality": "4",
+                        "movement": "other",
+                        "other_movement": "other text",
+                        "movement_justification": [
+                            "offset_bedding",
+                            "other"
+                        ],
+                        "movement_amount_m": 1,
+                        "movement_amount_qualifier": "estimate_of_am",
+                        "other_movement_justification": "movement justification text",
+                        "modified_timestamp": 1780432174780
+                    },
+                    {
+                        "id": "e7d69057-2b9a-454c-a687-5ec5935bfbce",
+                        "type": "tabular_orientation",
+                        "dip_direction": 102,
+                        "strike": 12,
+                        "dip": 65,
+                        "quality": "3",
+                        "feature_type": "vein",
+                        "vein_type": "oblique_openin",
+                        "vein_fill": "calcite",
+                        "thickness": 1,
+                        "tabularity": "variable",
+                        "length": 2,
+                        "defined_by": "text",
+                        "notes": "text",
+                        "label": "vein",
+                        "modified_timestamp": 1780432260542
+                    },
+                    {
+                        "id": "6ff282e1-954d-4296-a397-fd7406970f32",
+                        "type": "linear_orientation",
+                        "trend": 234,
+                        "rake": 6,
+                        "quality": "4",
+                        "notes": "rake"
+                    }
+                ],
+                "modified_timestamp": 1780432307887,
+                "symbology": {
+                    "circleColor": "transparent"
+                },
+                "name": "test",
+                "notesTimestamp": "Tue Jun 02 2026 16:07:18 GMT-0400 (Eastern Daylight Time)",
+                "time": "2026-06-02T20:06:54.000Z",
+                "id": 17804308145631,
+                "self": "https:\/\/strabospot.org\/db\/feature\/17804308145631"
+            },
+            "type": "Feature"
+        },
         "17797209856925": {
             "properties": {
                 "images": [
@@ -109,7 +251,7 @@
                         "id": 17797219232155,
                         "title": "Untitled 3",
                         "created_by": 8667,
-                        "modified_timestamp": "1779956189386",
+                        "modified_timestamp": 1779956189386,
                         "image_type": "photo",
                         "height": 3000,
                         "annotated": false,
@@ -120,9 +262,9 @@
                         "id": 17797218259340,
                         "title": "Fold axes plunging in different directions",
                         "created_by": 8667,
-                        "modified_timestamp": "1779956188025",
-                        "height": 3000,
+                        "modified_timestamp": 1779956188025,
                         "image_type": "photo",
+                        "height": 3000,
                         "annotated": false,
                         "self": "https:\/\/strabospot.org\/db\/image\/17797218259340"
                     },
@@ -131,7 +273,7 @@
                         "id": 17797212233686,
                         "title": "Fold hinge collapse",
                         "created_by": 8667,
-                        "modified_timestamp": "1779956186010",
+                        "modified_timestamp": 1779956186010,
                         "height": 4000,
                         "image_type": "photo",
                         "annotated": false,
@@ -238,7 +380,7 @@
                         "id": 17797292619086,
                         "title": "Crossbeds",
                         "created_by": 8667,
-                        "modified_timestamp": "1779956192108",
+                        "modified_timestamp": 1779956192108,
                         "image_type": "photo",
                         "height": 3000,
                         "annotated": false,
@@ -249,7 +391,7 @@
                         "id": 17797293162546,
                         "title": "Overview",
                         "created_by": 8667,
-                        "modified_timestamp": "1779956190878",
+                        "modified_timestamp": 1779956190878,
                         "image_type": "photo",
                         "height": 3000,
                         "annotated": false,
@@ -311,6 +453,54 @@
                     -52.7002417,
                     47.7021845
                 ]
+            },
+            "type": "Feature"
+        },
+        "17802501985827": {
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    -53.1650453,
+                    46.6268719
+                ]
+            },
+            "properties": {
+                "date": "2026-05-31T17:56:38.000Z",
+                "altitude": 7.6956386566162,
+                "gps_accuracy": 19,
+                "name": "04",
+                "orientation_data": [
+                    {
+                        "id": "12fbe6e3-d1bc-45af-8640-950e32cc9bcf",
+                        "type": "planar_orientation",
+                        "feature_type": "bedding",
+                        "strike": -6,
+                        "dip_direction": 84,
+                        "dip": 14,
+                        "unix_timestamp": 1780250215511
+                    },
+                    {
+                        "id": "821a06dc-2174-4313-9ae9-1d44131beb36",
+                        "type": "planar_orientation",
+                        "feature_type": "foliation",
+                        "strike": 66,
+                        "dip_direction": 156,
+                        "dip": 76,
+                        "unix_timestamp": 1780250265226
+                    },
+                    {
+                        "id": "080de4e9-e35f-491e-bf40-c3113c4a5be9",
+                        "type": "linear_orientation",
+                        "feature_type": "groove_marks",
+                        "trend": 86,
+                        "plunge": 9,
+                        "unix_timestamp": 1780250285478
+                    }
+                ],
+                "time": "2026-05-31T17:56:38.000Z",
+                "id": 17802501985827,
+                "modified_timestamp": 1780250285532,
+                "self": "https:\/\/strabospot.org\/db\/feature\/17802501985827"
             },
             "type": "Feature"
         }

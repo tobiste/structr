@@ -1,3 +1,13 @@
+test_that("objects class return", {
+  expect_s3_class(Vec3(1, 0, 0), "Vec3")
+  expect_s3_class(Line(90, 0), "Line")
+  expect_s3_class(Plane(90, 0), "Plane")
+  expect_s3_class(Pair(90, 0, 90, 0), "Pair")
+  expect_s3_class(Fault(90, 0, 90, 0, 1), "Fault")
+  expect_s3_class(Fault_from_rake(Plane(90, 0), 12, 1), "Fault")
+})
+
+
 test_that("Line to cartesian works", {
   expect_equal(Vec3(Line(90, 0)), Vec3(0, 1, 0))
 })
