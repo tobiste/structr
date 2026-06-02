@@ -9,6 +9,8 @@ orientations.
 ## Usage
 
 ``` r
+read_strabo_xlsx(file, tag_cols = FALSE, sf = TRUE)
+
 read_strabo_xls(file, tag_cols = FALSE, sf = TRUE)
 
 read_strabo_mobile(file, sf = TRUE)
@@ -66,7 +68,7 @@ read_strabo_JSON(file, sf = TRUE)
 ``` r
 if (FALSE) { # \dontrun{
 # import from excel file
-read_strabo_xls("path/to/my/file.xlsx")
+read_strabo_xlsx("path/to/my/file.xlsx")
 
 # import from text file
 read_strabo_mobile("path/to/my/file.txt")

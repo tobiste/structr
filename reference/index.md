@@ -455,7 +455,8 @@
 - [`stereoplot_ticks()`](https://tobiste.github.io/structr/reference/stereoplot_ticks.md)
   : Stereoplot Tickmarks
 
-- [`read_strabo_xls()`](https://tobiste.github.io/structr/reference/strabo.md)
+- [`read_strabo_xlsx()`](https://tobiste.github.io/structr/reference/strabo.md)
+  [`read_strabo_xls()`](https://tobiste.github.io/structr/reference/strabo.md)
   [`read_strabo_mobile()`](https://tobiste.github.io/structr/reference/strabo.md)
   [`read_strabo_JSON()`](https://tobiste.github.io/structr/reference/strabo.md)
   :
