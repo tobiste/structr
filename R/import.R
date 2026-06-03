@@ -465,6 +465,14 @@ read_strabo_JSON <- function(file, sf = TRUE) {
 
 
   orient_dt2 <- rbindlist(list(only_planes, only_lines, only_associated_lines), fill = TRUE)
+  
+  
+  if("strike" %in% names(orient_dt2)){
+    orient_dt2$dip_direction <- rhr2dd(orient_dt2$strike)
+  } else if("dip_direction" %in% names(orient_dt2)){
+    orient_dt2$strike <- dd2rhr(orient_dt2$dip_direction)
+  }
+  
   setcolorder(orient_dt2, c("id", "dip_direction", "dip", "strike", "plunge", "trend", "associated"))
 
   # drop all empty columns
