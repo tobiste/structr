@@ -558,7 +558,7 @@ as.strabo <- function(x) {
 #' @examples
 #' subset(strabo_prj, strabo_prj$data$quality > 3)
 subset.strabo <- function(x, ..., ds = c("data", "spots", "tags")) {
-  spot_id <- NULL
+  newrowid <- spot_id <- NULL
   
   if (inherits(x, "strabo.json")) {
     ds <- match.arg(ds)
@@ -639,7 +639,9 @@ subset.strabo <- function(x, ..., ds = c("data", "spots", "tags")) {
 #' @examples
 #' sort_by(strabo_prj, strabo_prj$data$dip_direction)
 sort_by.strabo <- function(x, y, ...){
-  spot_id <- NULL
+  # spot_id <- NULL
+  newrowid <- NULL
+  
   
   x$data$newrowid <- seq_len(nrow(x$data))
   x_sort <- sort_by(x$data, y, ...)
