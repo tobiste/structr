@@ -3,15 +3,12 @@
 \name{Fault_components}
 \alias{Fault_components}
 \alias{Fault_rake}
-\alias{Pair_plane}
 \alias{Fault_slip}
 \alias{Fault_plane}
 \alias{Fault_sense}
 \title{Extract components of fault object}
 \usage{
 Fault_rake(x)
-
-Pair_plane(x)
 
 Fault_slip(x)
 

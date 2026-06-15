@@ -564,9 +564,21 @@ Fault_rake <- function(x) {
   x[, 5] * angle(strike, slip)
 }
 
+# #' @rdname Fault_components
+# #' @export
+# Pair_plane <- function(x) {
+#   stopifnot(is.Pair(x))
+#   # azi <- x[, 3]
+#   # inc <- x[, 4]
+#   # sense <- x[, 5]
+#   # # azi_cor <- ifelse(sense>1, azi + 180, azi)
+#   # Ray(azi, inc, sense = sense)
+#   Plane(x)
+# }
+
 #' @rdname Fault_components
 #' @export
-Pair_plane <- function(x) {
+Fault_slip <- Fault_line <- Pair_line <- function(x) {
   stopifnot(is.Pair(x))
   # azi <- x[, 3]
   # inc <- x[, 4]
@@ -576,17 +588,7 @@ Pair_plane <- function(x) {
   Line(x)
 }
 
-#' @rdname Fault_components
-#' @export
-Fault_slip <- Pair_plane <- function(x) {
-  stopifnot(is.Fault(x))
-  # azi <- x[, 3]
-  # inc <- x[, 4]
-  # sense <- x[, 5]
-  # # azi_cor <- ifelse(sense>1, azi + 180, azi)
-  # Ray(azi, inc, sense = sense)
-  Line(x)
-}
+
 
 
 #' @rdname Fault_components
@@ -636,7 +638,7 @@ Fault_sense <- function(x, steps = 8) {
 #' Fault from plane and rake
 #'
 #' @param p object of class `"Plane"`
-#' @param rake Angle (in degrees) between fault strike and lineation.
+#' @param rake,pitch Angle (in degrees) between fault strike and lineation.
 #' Measured clockwise from the strike, i.e.
 #' down is positive; values between 0 and 360&deg; (or −180&deg; and 180&deg;)
 #' @param sense Either 1 (for normal fault movement) or -1 (reverse fault movement).
@@ -652,8 +654,9 @@ Fault_sense <- function(x, steps = 8) {
 #' - normal: rake near 90&deg;
 #' - reverse/thrust: rake near -90&deg; (270&deg;)
 #'
-#' @returns `"Fault"` object
-#' @export
+#' @returns `"Fault"` or `"Pair"` object
+#' 
+#' @name fault-rake
 #'
 #' @examples
 #' fr <- Fault_from_rake(Plane(c(120, 120, 100, 0), c(60, 60, 50, 40)),
@@ -667,6 +670,10 @@ Fault_sense <- function(x, steps = 8) {
 #' )
 #' plot(fr2, col = 1:3)
 #' legend("topleft", legend = Fault_sense(fr2, 8), col = 1:3, pch = 16)
+NULL
+
+#' @rdname fault-rake
+#' @export
 Fault_from_rake <- function(p, rake, sense = NULL, ...) {
   stopifnot(is.Plane(p))
   strike <- Ray(dd2rhr(p[, 1]), rep(0, nrow(p)))
@@ -683,6 +690,18 @@ Fault_from_rake <- function(p, rake, sense = NULL, ...) {
 
   Fault(p[, 1], p[, 2], l[, 1], l[, 2], sense = sense, ...)
 }
+
+#' @rdname fault-rake
+#' @export
+Pair_from_pitch <- function(p, pitch){
+  stopifnot(is.Plane(p))
+  strike <- Ray(dd2rhr(p[, 1]), rep(0, nrow(p)))
+  l <- rotate(strike, p, pitch)
+  
+  Pair(p[, 1], p[, 2], l[, 1], l[, 2])
+}
+
+
 
 #' Fault from rake and quadrant notation
 #'
@@ -772,6 +791,24 @@ rake2pitch <- function(rake) {
 Plane_pitch <- function(p, l) {
   Fault_rake(Fault(p[, 1], p[, 2], l[, 1], l[, 2], 1)) |> rake2pitch()
 }
+
+#' Pitch of a pair
+#'
+#' @param x object of class "`Pair`" 
+#'
+#' @returns numeric. Angle in degrees
+#' @export
+#'
+#' @examples
+#' Pair_pitch(Fault_from_rake(Plane(120, 50), 80))
+Pair_pitch <- function(x){
+  stopifnot(is.Pair(x))
+  strike <- Line(dd2rhr(x[, 1]), rep(0, nrow(x)))
+  slip <- Line(x)
+  pitch <- angle(strike, slip)
+  rake2pitch(pitch)
+}
+
 
 #' Apparent dip direction
 #'

@@ -92,15 +92,12 @@ vollmer <- function(x) {
 #' a <- rvmf(10, mu = mu, k = 10)
 #' vollmer_plot(a, labels = "VMF")
 #'
-#' set.seed(20250411)
 #' b <- rfb(100, mu = mu, k = 1, A = diag(c(10, 0, 0)))
 #' vollmer_plot(b, labels = "FB", add = TRUE, col = "red")
 #'
-#' set.seed(20250411)
 #' c <- runif.spherical(n = 100, "Line", method = "rotasym")
 #' vollmer_plot(c, labels = "UNIF", add = TRUE, col = "green")
 #'
-#' set.seed(20250411)
 #' d <- rkent(100, mu = mu, k = 10, b = 4)
 #' vollmer_plot(d, labels = "KENT", add = TRUE, col = "blue")
 NULL
@@ -112,23 +109,12 @@ vollmer_plot <- function(x, labels, add, ngrid, main, ...) UseMethod("vollmer_pl
 #' @rdname vollmer-plot
 #' @export
 vollmer_plot.default <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), main = "Vollmer diagram", ...) {
-  A <- c(0, 0) # left
-  B <- c(1, 0) # right
-  C <- c(1 / 2, sqrt(3) / 2) # top
-  abc <- rbind(A, B, C)
-  coords <- sapply(seq_len(nrow(x)), function(i) {
-    vec <- c(P = x[i, 1], G = x[i, 2], R = x[i, 3])
-    PGR <- x[i, 1] + x[i, 3] + x[i, 3]
-    PGR <- sum(vec)
-    colSums(vec * abc) / PGR
-  }) |> t()
-
   if (isFALSE(add)) .vollmer_plot_blank(ngrid, main = main)
 
   if (!is.null(labels)) {
-    graphics::text(coords[, 1], coords[, 2], labels = labels, ...)
+    .ternary_text(x, labels = labels, ...)
   } else {
-    graphics::points(coords[, 1], coords[, 2], ...)
+    .ternary_points(x, ...)
   }
 }
 
@@ -159,6 +145,45 @@ vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5),
 }
 
 .vollmer_plot_blank <- function(ngrid = c(5, 5, 5), main = "Vollmer diagram") {
+  .ternary_plot(
+    ngrid = ngrid, main = main,
+    left_vertex_label = "Point", right_vertex_label = "Girdle", top_vertex_label = "Random",
+    bottom_edge_label = expression(lambda[3] == 0),
+    left_edge_label = expression(lambda[2] == lambda[3]),
+    right_edge_label = expression(lambda[1] == lambda[2]),
+    ticks = FALSE
+  )
+}
+
+.ternary_coords <- function(left, right = NULL, top = NULL) {
+  x <- if (is.matrix(left)) left else cbind(left, right, top)
+
+  A <- c(0, 0) # left
+  B <- c(1, 0) # right
+  C <- c(0.5, sqrt(3) / 2) # top
+  abc <- rbind(A, B, C)
+
+  # Normalise rows to sum to 1, then project onto triangle
+  x_norm <- x / rowSums(x)
+  x_norm %*% abc
+}
+
+.ternary_points <- function(x, ...) {
+  coords <- .ternary_coords(x)
+  graphics::points(coords[, 1], coords[, 2], ...)
+}
+
+.ternary_text <- function(x, labels, ...) {
+  coords <- .ternary_coords(x)
+  graphics::text(coords[, 1], coords[, 2], labels = labels, ...)
+}
+
+.ternary_plot <- function(ngrid = c(1, 1, 1),
+                          left_vertex_label = NULL, right_vertex_label = NULL, top_vertex_label = NULL,
+                          bottom_edge_label = NULL, left_edge_label = NULL, right_edge_label = NULL,
+                          ticks = TRUE, invert_ticks = FALSE, tick_range = c(0, 1),
+                          invert = c(FALSE, FALSE, FALSE),
+                          ...) {
   A <- c(0, 0) # left
   B <- c(1, 0) # right
   C <- c(1 / 2, sqrt(3) / 2) # top
@@ -167,8 +192,8 @@ vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5),
   graphics::par(xpd = TRUE)
   graphics::plot(c(0, 1), c(0, sqrt(3) / 2), "n",
     asp = 1, axes = FALSE,
-    main = main,
-    xlab = "", ylab = ""
+    xlab = "", ylab = "",
+    ...
   )
 
   if (!is.null(ngrid)) {
@@ -205,17 +230,154 @@ vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5),
 
   graphics::polygon(abc)
 
-  l1 <- colSums(c(0, 1, 1) * abc) / 2
-  l2 <- colSums(c(0, 0, 1) * abc) / 2
-  l3 <- c(.5, 0)
 
-  # add axes labels
-  graphics::text(l3[1], l3[2], labels = expression(lambda[3] == 0), pos = 3, offset = -1, col = "grey")
-  graphics::text(l2[1], l2[2], labels = expression(lambda[2] == lambda[3]), pos = 3, srt = 60, offset = 1, col = "grey")
-  graphics::text(l1[1], l1[2], labels = expression(lambda[1] == lambda[2]), pos = 3, srt = -60, offset = 1, col = "grey")
+  # Edge and vertices labels:
 
-  abc_text <- abc #+ c(-.02, .02, .02)
-  for (t in 1:3) graphics::text(abc_text[t, 1], abc_text[t, 2], labels = c("Point", "Girdle", "Random")[t], pos = c(1, 1, 3)[t], srt = c(-60, 60, 0)[t])
+  mid_AB <- (A + B) / 2 # c(0.5, 0)          — bottom edge
+  mid_AC <- (A + C) / 2 # c(0.25, sqrt(3)/4) — left edge
+  mid_BC <- (B + C) / 2 # c(0.75, sqrt(3)/4) — right edge
+
+  # Perpendicular outward nudge for each edge
+  offset_val <- 0.1
+  nudge_AC <- c(-cos(pi / 3), sin(pi / 3)) * offset_val # outward normal of left edge
+  nudge_BC <- c(cos(pi / 3), sin(pi / 3)) * offset_val # outward normal of right edge
+
+  graphics::text(mid_AB[1], mid_AB[2] - offset_val, labels = bottom_edge_label, srt = 0, col = "grey")
+  graphics::text(mid_AC[1] + nudge_AC[1], mid_AC[2] + nudge_AC[2], labels = left_edge_label, srt = 60, col = "grey")
+  graphics::text(mid_BC[1] + nudge_BC[1], mid_BC[2] + nudge_BC[2], labels = right_edge_label, srt = -60, col = "grey")
+
+  # Vertex nudges — outward from centroid along each vertex direction
+  centroid <- c(0.5, sqrt(3) / 6)
+  nudge_vert <- (abc - centroid) / sqrt(rowSums((abc - centroid)^2)) * offset_val / 2
+
+  vertex_labels <- c(left_vertex_label, right_vertex_label, top_vertex_label)
+  vertex_srt <- c(-60, 60, 0)
+
+  for (t in 1:3) {
+    graphics::text(
+      abc[t, 1] + nudge_vert[t, 1],
+      abc[t, 2] + nudge_vert[t, 2],
+      labels = vertex_labels[t],
+      srt    = vertex_srt[t],
+      col    = "black"
+    )
+  }
+
+
+  # ticks
+  if (ticks & !is.null(ngrid)) {
+    tick_offset <- 0.04
+    tick_vals <- seq(min(tick_range), max(tick_range), length.out = ngrid[1])
+    tick_vals <- tick_vals[2:(length(tick_vals) - 1)]
+    tick_labels <- as.character(tick_vals)
+    if (invert_ticks) tick_labels <- rev(tick_labels)
+
+    # Bottom edge (A-B): l1_2 points, labels below, no rotation
+    labels_AB <- if (invert[1]) rev(tick_labels) else tick_labels
+    labels_AC <- if (invert[2]) rev(tick_labels) else tick_labels
+    labels_BC <- if (invert[3]) rev(tick_labels) else tick_labels
+
+    graphics::text(
+      l1_2[, 1], l1_2[, 2] - tick_offset,
+      labels = labels_AB,
+      srt = 0, col = "grey", cex = 0.7
+    )
+
+    # Left edge (A-C): l2_2 points, labels to the left, rotated 60°
+    graphics::text(
+      l2_2[, 1] + nudge_AC[1] / offset_val * tick_offset,
+      l2_2[, 2] + nudge_AC[2] / offset_val * tick_offset,
+      labels = labels_AC,
+      srt = 60, col = "grey", cex = 0.7
+    )
+
+    # Right edge (B-C): l3 points, labels to the right, rotated -60°
+    graphics::text(
+      l3[, 1] + nudge_BC[1] / offset_val * tick_offset,
+      l3[, 2] + nudge_BC[2] / offset_val * tick_offset,
+      labels = labels_BC,
+      srt = -60, col = "grey", cex = 0.7
+    )
+  }
+}
+
+
+#' Dip-Pitch-Plunge Triangular Diagram
+#'
+#' Ternary fabric orientation diagram after Balé and Brun (1989) showing the
+#' pitch and plunge of stretching lineation X) and the dip of the foliation plane (XY).
+#'
+#' @param x object of class `"Pair"`
+#' @param labels character. Text labels
+#' @param ... optional plotting parameters passed to [graphics::points()]
+#' @param main character. The title of the plot.
+#' @param extra_labels logical
+#'
+#' @returns matrix of plotting parameters
+#' @noRd
+#'
+#' @references
+#' Balé, P., & Brun, J.-P. (1989). Late Precambrian thrust and wrench zones in
+#' northern Brittany (France). Journal of Structural Geology, 11(4), 391–405.
+#' https://doi.org/10.1016/0191-8141(89)90017-5
+#'
+#' @examples
+#' data(angelier1990)
+#' balebrun_plot(angelier1990$TYM)
+#'
+#' lapply(seq(0, 90, 10), function(i) {
+#'   p.i <- Pair_from_pitch(Plane(120, 0), i)
+#'   invisible(balebrun_plot(p.i, as.character(i), col = i / 9, add = i != 0))
+#' })
+#'
+#' balebrun_plot(Pair_from_pitch(Plane(0, 80), 80), "vertical flow", col = 1, add = F)
+#' balebrun_plot(Pair_from_pitch(Plane(0, 80), 10), "strike-slip", col = 2, add = T)
+#' balebrun_plot(Pair_from_pitch(Plane(0, 10), 10), "horizontal flow", col = 2, add = T)
+balebrun_plot <- function(x, labels = NULL, main = "Ternary Fabric Orientation", extra_labels = TRUE, add = FALSE, ...) {
+  stopifnot(is.Pair(x))
+  lambda1_plunge <- x[, "plunge"]
+  lambda1_pitch <- Pair_pitch(x)
+  lambda12_dip <- x[, "dip"]
+
+  if (isFALSE(add)) {
+    .ternary_plot(
+      ngrid = rep(6, 3), main = main,
+      invert_ticks = TRUE, tick_range = c(0, 90),
+      left_vertex_label = "Strike-slip\nflow", right_vertex_label = "Horizontal\nflow", top_vertex_label = "Vertical flow",
+      bottom_edge_label = "Dip of Foliation (XY)", # expression("Dip of"~lambda[1]*lambda[2]),
+      left_edge_label = "Pitch of Lineation (X)", # expression("Pitch of"~lambda[1]),
+      right_edge_label = "Plunge of Lineation (X)", # expression("Plunge of"~lambda[1]),
+      invert = c(FALSE, TRUE, TRUE)
+    )
+
+    if (isTRUE(extra_labels)) {
+      A <- c(0, 0) # left
+      B <- c(1, 0) # right
+      C <- c(0.5, sqrt(3) / 2) # top
+
+      mid_AB <- (A + B) / 2 # c(0.5, 0)          — bottom edge
+      mid_AC <- (A + C) / 2 # c(0.25, sqrt(3)/4) — left edge
+
+      # Perpendicular outward nudge for each edge
+      offset_val <- -0.066
+      nudge_AC <- c(-cos(pi / 3), sin(pi / 3)) * offset_val # outward normal of left edge
+
+      graphics::text(mid_AC[1] + nudge_AC[1], mid_AC[2] + nudge_AC[2], labels = "Transpression", srt = 60, col = "grey")
+      graphics::text(mid_AB[1], mid_AB[2] - offset_val, labels = "Lateral flow", srt = 0, col = "grey")
+    }
+  }
+
+
+  plot_params <- cbind((90-lambda1_pitch) / 90, (90-lambda12_dip) / 90, (lambda1_plunge) / 90)
+
+  if (is.null(labels)) {
+    .ternary_points(plot_params, ...)
+  } else {
+    .ternary_text(plot_params, labels, ...)
+  }
+
+
+  invisible(plot_params)
 }
 
 
