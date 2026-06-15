@@ -1,6 +1,6 @@
 # Subsetting StraboSpot Projects
 
-Retursn a subset from `"strabo"` objects which meet conditions.
+Returns a subset from `"strabo"` objects which meet conditions.
 
 ## Usage
 

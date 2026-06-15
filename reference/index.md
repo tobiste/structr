@@ -380,6 +380,9 @@
 - [`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md)
   : Stress Inversion for Fault-Slip Data
 
+- [`sort_by(`*`<strabo>`*`)`](https://tobiste.github.io/structr/reference/sort_by.strabo.md)
+  : Sorting StraboSpot Projects
+
 - [`dist(`*`<Vec3>`*`)`](https://tobiste.github.io/structr/reference/sph-dist.md)
   [`dist(`*`<Line>`*`)`](https://tobiste.github.io/structr/reference/sph-dist.md)
   [`dist(`*`<Ray>`*`)`](https://tobiste.github.io/structr/reference/sph-dist.md)
