@@ -325,9 +325,9 @@ vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5),
 #' @examples
 #' balebrun_plot(simongomez, col = assign_col(simongomez[, 'azimuth']), pch = 16)
 #'s
-#' balebrun_plot(Pair_from_pitch(Plane(0, 80), 80), "vertical flow", col = 1, add = F)
-#' balebrun_plot(Pair_from_pitch(Plane(0, 80), 10), "strike-slip", col = 2, add = T)
-#' balebrun_plot(Pair_from_pitch(Plane(0, 10), 10), "horizontal flow", col = 3, add = T)
+#' balebrun_plot(Pair_from_pitch(Plane(0, 80), 80), "vertical flow", col = 1, add = FALSE)
+#' balebrun_plot(Pair_from_pitch(Plane(0, 80), 10), "strike-slip", col = 2, add = TRUE)
+#' balebrun_plot(Pair_from_pitch(Plane(0, 10), 10), "horizontal flow", col = 3, add = TRUE)
 balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", extra_labels = TRUE, add = FALSE, ...) {
   stopifnot(is.Pair(x))
   # plunge <- x[, "plunge"]
