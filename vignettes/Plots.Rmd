@@ -99,7 +99,7 @@ points(lines[1:5, ], col = "#B63679", pch = 19, cex = .5)
 lines(lines[1:5, ], ang = 10, col = "#B63679")
 ```
 
-### Orientation pairs
+## Pair Objects (Linear Element on a Plane)
 
 **Pair** objects contain plane and line measurements, such as stretching lineations on foliation planes, or intersection lineation of bedding planes etc.
 
@@ -110,7 +110,7 @@ my_pairs <- Pair(strabo_prj$planar, strabo_prj$linear)
 plot(my_pairs, col = assign_col_d(strabo_prj$data$spot_id))
 title("Pairs")
 ```
-#### Dip-Pitch-Plunge Ternary diagram
+### Dip-Pitch-Plunge Ternary diagram
 
 The Dip-Pitch-Plunge diagram is a ternary fabric orientation diagram after Balé and Brun (1989)[^8] showing the pitch and plunge of stretching lineation (X) and the dip of the foliation plane (XY). This can be used to asses lateral flow or transpression geometries of Pair objects.
 
