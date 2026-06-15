@@ -99,6 +99,28 @@ points(lines[1:5, ], col = "#B63679", pch = 19, cex = .5)
 lines(lines[1:5, ], ang = 10, col = "#B63679")
 ```
 
+### Orientation pairs
+
+**Pair** objects contain plane and line measurements, such as stretching lineations on foliation planes, or intersection lineation of bedding planes etc.
+
+```{r pair}
+data(strabo_prj)
+my_pairs <- Pair(strabo_prj$planar, strabo_prj$linear)
+
+plot(my_pairs, col = assign_col_d(strabo_prj$data$spot_id))
+title("Pairs")
+```
+#### Dip-Pitch-Plunge Ternary diagram
+
+The Dip-Pitch-Plunge diagram is a ternary fabric orientation diagram after Balé and Brun (1989)[^1] showing the pitch and plunge of stretching lineation (X) and the dip of the foliation plane (XY). This can be used to asses lateral flow or transpression geometries of Pair objects.
+
+[^1]: Balé, P., & Brun, J.-P. (1989). Late Precambrian thrust and wrench zones in 
+northern Brittany (France). Journal of Structural Geology, 11(4), 391–405. <https://doi.org/10.1016/0191-8141(89)90017-5>
+
+```{r bale}
+balebrun_plot(my_pairs, col = assign_col_d(strabo_prj$data$spot_id), pch = 16)
+```
+
 ## Fabric plots
 
 The **Eigenvalues** of the orientation tensor describe the shape of the
@@ -265,6 +287,7 @@ title(
 )
 ```
 
+
 ## Fault plots
 
 Fault objects consist of planes (fault plane), lines (e.g. striae), and
@@ -361,3 +384,5 @@ The legend for these plotting parameters can be created using the `legend_*` fun
 All these `assign_*` functions can be applied on continuous as well as discrete values using `assign_*_d`. 
 Also there are binned mapping options through `assign_*_binnned`. 
 See `?assign_cex()` for more information.
+
+## References

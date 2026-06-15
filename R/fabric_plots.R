@@ -305,7 +305,7 @@ vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5),
 #' Dip-Pitch-Plunge Triangular Diagram
 #'
 #' Ternary fabric orientation diagram after Balé and Brun (1989) showing the
-#' pitch and plunge of stretching lineation X) and the dip of the foliation plane (XY).
+#' pitch and plunge of stretching lineation (X) and the dip of the foliation plane (XY).
 #'
 #' @param x object of class `"Pair"`
 #' @param labels character. Text labels

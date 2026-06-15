@@ -56,10 +56,25 @@ usethis::use_data(example_lines_df, overwrite = TRUE)
 example_lines <- Line(example_lines_df$trend, example_lines_df$plunge)
 usethis::use_data(example_lines, overwrite = TRUE)
 
+strabo_prj<- structr::read_strabo_JSON("G:/My Drive/Moss_Lake/data.json") |> 
+  subset(feature_type %in% c('foliation', 'shear_zone', "plane_of_boudinage", 'bedding') &
+           linear_feature_type %in% c("stretching", "mineral_align")
+  )
+usethis::use_data(strabo_prj, overwrite = TRUE)
+
+# strabo_prj_pair <- Pair(strabo_prj$planar, strabo_prj$linear)
+# par(mfrow = c(1, 2))
+# plot(strabo_prj_pair, col = assign_col_d(strabo_prj$data$spot_id), pch = 16)
+# balebrun_plot(strabo_prj_pair, col = assign_col_d(strabo_prj$data$spot_id), pch = 16)
+
+
+
 ramsay <- read.csv("inst/RamsayHuber1983.csv", header = FALSE)
 colnames(ramsay) <- c("R", "phi")
 ramsay <- as.matrix(ramsay)
 usethis::use_data(ramsay, overwrite = TRUE)
+
+
 
 
 

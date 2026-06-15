@@ -31,7 +31,7 @@ matrix of plotting parameters
 }
 \description{
 Ternary fabric orientation diagram after Balé and Brun (1989) showing the
-pitch and plunge of stretching lineation X) and the dip of the foliation plane (XY).
+pitch and plunge of stretching lineation (X) and the dip of the foliation plane (XY).
 }
 \examples{
 balebrun_plot(simongomez, col = assign_col(simongomez[, 'azimuth']), pch = 16)

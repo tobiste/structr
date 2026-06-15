@@ -11,11 +11,13 @@
 #' single column (may lead to duplicate rows).
 #' @param sf logical. Whether the output should be a spatial `"sf"` object
 #' using the Longitude and Latitude columns.
+#' 
 #' @importFrom readxl read_xlsx
 #' @importFrom rjson fromJSON
 # #' @importFrom data.table rbindlist dcast fread setDT fifelse melt data.table as.data.table setnames setorder setcolorder patterns .SD .( :=
 #' @import data.table
 #' @importFrom sf st_as_sf
+#' 
 #' @returns `list` containing the following objects:
 #' \describe{
 #' \item{`data`}{`"tbl_df"` object. Metadata.}
@@ -26,6 +28,7 @@
 #' }
 #' @name strabo
 #'
+#' @family strabo
 #' @seealso [drillcore_transformation()]
 #'
 #' @examples
@@ -533,7 +536,25 @@ as.strabo <- function(x) {
 #   )
 # }
 
+
+#' Subsetting StraboSpot Projects
+#' 
+#' Retursn a subset from `"strabo"` objects which meet conditions.
+#' 
+#' @param x object of class `"strabo"`
+#' @param ... arguments to be passed to [subset()]
+#' 
+#' @returns An object of class `"strabo"` containing just the selected rows and 
+#' columns of `"x"`.
+#' 
 #' @exportS3Method base::subset
+#' 
+#' @family strabo
+#' 
+#' @seealso [subset()]
+#' 
+#' @examples
+#' subset(strabo_prj, strabo_prj$data$quality > 3)
 subset.strabo <- function(x, ..., ds = c("data", "spots", "tags")) {
   if (inherits(x, "strabo.json")) {
     ds <- match.arg(ds)

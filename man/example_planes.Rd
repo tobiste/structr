@@ -6,17 +6,27 @@
 \title{Planes orientations as "Plane" objects}
 \format{
 An object of class \code{Plane}
+
+An object of class \code{strabo}
 }
 \usage{
 data('example_planes')
+
+data('strabo_prj')
 }
 \description{
 200 foliation measurements from a folded metasedimentary sequence in the
+Quetico Subprovince (Stephan et al., 2025)
+
+Strabospot poject containing 347 foliation and stretching lineation
+measurements from the Shebandowan Greenstone Belt and
 Quetico Subprovince (Stephan et al., 2025)
 }
 \examples{
 data("example_planes")
 head(example_planes)
+data("strabo_prj")
+head(strabo_prj)
 }
 \references{
 Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
@@ -24,8 +34,26 @@ Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
 vorticity control gold enrichment in Archean shear zones
 (Shebandowan Greenstone Belt, Superior Province, Canada).
 Journal of Structural Geology, 201, 105542. \doi{10.1016/j.jsg.2025.105542}
+
+Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
+Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
+vorticity control gold enrichment in Archean shear zones
+(Shebandowan Greenstone Belt, Superior Province, Canada).
+Journal of Structural Geology, 201, 105542. \doi{10.1016/j.jsg.2025.105542}
 }
 \seealso{
+Other datasets: 
+\code{\link{angelier1990}},
+\code{\link{example_lines}},
+\code{\link{example_lines_df}},
+\code{\link{example_planes_df}},
+\code{\link{gray_example}},
+\code{\link{holst}},
+\code{\link{hossack1968}},
+\code{\link{ramsay}},
+\code{\link{shebandowan}},
+\code{\link{simongomez}}
+
 Other datasets: 
 \code{\link{angelier1990}},
 \code{\link{example_lines}},

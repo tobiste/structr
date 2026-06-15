@@ -110,6 +110,33 @@
 #' head(example_planes)
 "example_planes"
 
+
+#' Example of StraboSpot Project
+#'
+#' Strabospot poject containing 347 foliation and stretching lineation 
+#' measurements from the Shebandowan Greenstone Belt and 
+#' Quetico Subprovince (Stephan et al., 2025)
+#'
+#' @docType data
+#'
+#' @usage data('strabo_prj')
+#'
+#' @references
+#' Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
+#' Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
+#' vorticity control gold enrichment in Archean shear zones
+#' (Shebandowan Greenstone Belt, Superior Province, Canada).
+#' Journal of Structural Geology, 201, 105542. \doi{10.1016/j.jsg.2025.105542}
+#'
+#' @format An object of class `strabo`
+#' @family datasets
+#' @keywords datasets
+#' @examples
+#' data("strabo_prj")
+#' head(strabo_prj)
+"example_planes"
+
+
 #' Example data set
 #'
 #' 80 Fault-slip orientations from Simon-Gomez ???
