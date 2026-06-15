@@ -27,7 +27,8 @@ Other datasets:
 [`holst`](https://tobiste.github.io/structr/reference/holst.md),
 [`ramsay`](https://tobiste.github.io/structr/reference/ramsay.md),
 [`shebandowan`](https://tobiste.github.io/structr/reference/shebandowan.md),
-[`simongomez`](https://tobiste.github.io/structr/reference/simongomez.md)
+[`simongomez`](https://tobiste.github.io/structr/reference/simongomez.md),
+[`strabo_prj`](https://tobiste.github.io/structr/reference/strabo_prj.md)
 
 ## Examples
 

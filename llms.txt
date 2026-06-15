@@ -706,7 +706,6 @@ MIT License
   : Intersection lineation data
 
 - [`example_planes`](https://tobiste.github.io/structr/reference/example_planes.md)
-  [`strabo_prj`](https://tobiste.github.io/structr/reference/example_planes.md)
   : Planes orientations as "Plane" objects
 
 - [`example_planes_df`](https://tobiste.github.io/structr/reference/example_planes_df.md)
@@ -979,6 +978,9 @@ MIT License
   :
 
   Import orientation data from *StraboSpot*
+
+- [`strabo_prj`](https://tobiste.github.io/structr/reference/strabo_prj.md)
+  : Example of StraboSpot Project
 
 - [`principal_stretch()`](https://tobiste.github.io/structr/reference/strain_shape.md)
   [`principal_strain()`](https://tobiste.github.io/structr/reference/strain_shape.md)

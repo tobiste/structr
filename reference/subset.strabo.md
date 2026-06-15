@@ -20,6 +20,11 @@ subset(x, ..., ds = c("data", "spots", "tags"))
   arguments to be passed to
   [`subset()`](https://rdrr.io/r/base/subset.html)
 
+- ds:
+
+  character. Dataset that should be the base for subsetting. One of
+  `"data"` (the default), `"spots"`, or `"tags"`.
+
 ## Value
 
 An object of class `"strabo"` containing just the selected rows and
