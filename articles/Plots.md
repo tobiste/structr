@@ -90,6 +90,37 @@ lines(lines[1:5, ], ang = 10, col = "#B63679")
 ![Diagram showing
 smallcircles](Plots_files/figure-html/stereo_smallcircle-1.png)
 
+### Orientation pairs
+
+**Pair** objects contain plane and line measurements, such as stretching
+lineations on foliation planes, or intersection lineation of bedding
+planes etc.
+
+``` r
+
+data(strabo_prj)
+my_pairs <- Pair(strabo_prj$planar, strabo_prj$linear)
+
+plot(my_pairs, col = assign_col_d(strabo_prj$data$spot_id))
+title("Pairs")
+```
+
+![](Plots_files/figure-html/pair-1.png) \#### Dip-Pitch-Plunge Ternary
+diagram
+
+The Dip-Pitch-Plunge diagram is a ternary fabric orientation diagram
+after Balé and Brun (1989)[^1] showing the pitch and plunge of
+stretching lineation (X) and the dip of the foliation plane (XY). This
+can be used to asses lateral flow or transpression geometries of Pair
+objects.
+
+``` r
+
+balebrun_plot(my_pairs, col = assign_col_d(strabo_prj$data$spot_id), pch = 16)
+```
+
+![](Plots_files/figure-html/bale-1.png)
+
 ## Fabric plots
 
 The **Eigenvalues** of the orientation tensor describe the shape of the
@@ -98,8 +129,8 @@ random these vectors are distributed.
 
 A Fabric plot visualizes the shape of the distribution by plotting the
 eigenvalues of the orientation tensor. Three different diagram are
-provided by {structr}, namely the triangular *Vollmer plot*[^1], the
-logarithmic biplot (*Woodcock plot*)[^2], and the Lode parameter vs.
+provided by {structr}, namely the triangular *Vollmer plot*[^2], the
+logarithmic biplot (*Woodcock plot*)[^3], and the Lode parameter vs.
 natural octahedral strain diagram (*Hsu plot*)\[\|^hsu\].
 
 ### Vollmer plot
@@ -139,7 +170,7 @@ an biplot plot after Woodcok
 ### Hsu plot
 
 [`hsu_plot()`](https://tobiste.github.io/structr/reference/hsu_plot.md)
-creates a Lode parameter[^3] vs. natural octahedral strain[^4] diagram
+creates a Lode parameter[^4] vs. natural octahedral strain[^5] diagram
 showing the shape of the orientation distribution (after Hsu, 1965).
 
 ``` r
@@ -154,7 +185,7 @@ a Hsu plot](Plots_files/figure-html/hsu-1.png)
 
 ## Density plots
 
-**Kamb** contours[^5] and densities can be added to an existing
+**Kamb** contours[^6] and densities can be added to an existing
 projection plot using the `contour` functions. Weighted densities can be
 controlled by the `weights` argument and are useful when the orientation
 measurements have different accuracies.
@@ -263,7 +294,7 @@ can be visualized, namely the Angelier and the Hoeppener plot.
 ### Angelier plot
 
 The **Angelier plot** shows all planes as *great circles* and lineations
-as points (after Angelier, 1984)[^6]. Fault striae are plotted as
+as points (after Angelier, 1984)[^7]. Fault striae are plotted as
 vectors on top of the lineation pointing in the movement direction of
 the hanging wall. Easy to read in case of homogeneous or small datasets.
 
@@ -287,7 +318,7 @@ projection](Plots_files/figure-html/faults1-1.png)
 ### Hoeppener plot
 
 The **Hoeppener plot** shows all planes as *poles* while lineations are
-not shown (after Hoeppener, 1955)[^7]. Instead, fault striae are plotted
+not shown (after Hoeppener, 1955)[^8]. Instead, fault striae are plotted
 as vectors on top of poles pointing in the movement direction of the
 hanging wall. Useful in case of large or heterogeneous datasets.
 
@@ -357,29 +388,35 @@ discrete values using `assign_*_d`. Also there are binned mapping
 options through `assign_*_binnned`. See `?assign_cex()` for more
 information.
 
-[^1]: Vollmer, F. W. (1990). An application of eigenvalue methods to
+## References
+
+[^1]: Balé, P., & Brun, J.-P. (1989). Late Precambrian thrust and wrench
+    zones in northern Brittany (France). Journal of Structural Geology,
+    11(4), 391–405. <https://doi.org/10.1016/0191-8141(89)90017-5>
+
+[^2]: Vollmer, F. W. (1990). An application of eigenvalue methods to
     structural domain analysis. Geological Society of America Bulletin,
     102, 786–791.
 
-[^2]: Woodcock, N. H. (1977). Specification of fabric shapes using an
+[^3]: Woodcock, N. H. (1977). Specification of fabric shapes using an
     eigenvalue method. Geological Society of America Bulletin88,
     1231–1236. Retrieved from
     <http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf>
 
-[^3]: Lode, W. (1926). Versuche über den Einfluß der mittleren
+[^4]: Lode, W. (1926). Versuche über den Einfluß der mittleren
     Hauptspannung auf das Fließen der Metalle Eisen. Kupfer und Nickel.
     Zeitschrift Für Physik, 36(11–12), 913–939.
     <https://doi.org/10.1007/BF01400222>
 
-[^4]: Nádai, A. (1950). Theory of flow and fracture of solids.
+[^5]: Nádai, A. (1950). Theory of flow and fracture of solids.
     McGraw-Hill.
 
-[^5]: Kamb, W. B. (1959). Ice Petrofabric Observations from Blue
+[^6]: Kamb, W. B. (1959). Ice Petrofabric Observations from Blue
     Glacier, Washington, in Relation to Theory and Experiment. Journal
     of Geophysical Research, 54(11).
 
-[^6]: Angelier, J. Tectonic analysis of fault slip data sets, J.
+[^7]: Angelier, J. Tectonic analysis of fault slip data sets, J.
     Geophys. Res. 89 (B7), 5835-5848 (1984)
 
-[^7]: Hoeppener, R. Tektonik im Schiefergebirge. Geol Rundsch 44, 26-58
+[^8]: Hoeppener, R. Tektonik im Schiefergebirge. Geol Rundsch 44, 26-58
     (1955). <https://doi.org/10.1007/BF01802903>

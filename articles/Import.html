@@ -319,13 +319,26 @@ meta data (<code>data</code>), the geographic locations
 (<code>spots</code>), the used tags (<code>tags</code>), and all the
 plane (<code>planes</code>) and line measurements (<code>lines</code>)
 already converted into {structr} data objects.</p>
-<p>Additional to descriptions and comments, the meta data
-(<code>data</code>) also contains information on the dataset name and
-time of measurement.</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">strabo_data</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] "data"   "spots"  "tags"   "planar" "linear"</span></span></code></pre></div>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">strabo_data</span><span class="op">$</span><span class="va">linear</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col_d</a></span><span class="op">(</span><span class="va">strabo_data</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">spot_id</span><span class="op">)</span><span class="op">)</span> </span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">'All linear elements'</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Import_files/figure-html/strabi_plot1-1.png" class="r-plt" alt="" width="700"></p>
+<p>The <code>"strabo"</code> objects are list objects containing
+orientation data as planar and linear objects as well as several slots
+containing your metadata (<code>data</code>) and geospatial information
+(<code>spots</code>).</p>
 <p><strong>IMPORTANT</strong>: The meta data and the plane and line
 measurements all share the same row indices. Thus, planes and lines with
 identical row indices have been measured simultaneously (e.g. as a
 fault).</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/classes.html">Pair</a></span><span class="op">(</span><span class="va">strabo_data</span><span class="op">$</span><span class="va">planar</span>, <span class="va">strabo_data</span><span class="op">$</span><span class="va">linear</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col_d</a></span><span class="op">(</span><span class="va">strabo_data</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">spot_id</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">'Planar+Linear'</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Import_files/figure-html/strabi_plot_pair-1.png" class="r-plt" alt="" width="700"></p>
 <blockquote>
 <p>This import allows that the connection of simultaneously measured
 plane and lines (such as faults and their striae) will be preserved.
@@ -337,11 +350,29 @@ lost…</p>
 <code><a href="../reference/strabo.html">read_strabo_mobile()</a></code> provide import of <code>.xls</code>
 and any character-separated table files (e.g. <code>.csv</code> or
 <code>.txt</code>).</p>
+<blockquote>
 <p>Keep in mind that these import options do not properly identify
 whether your lineation measurements are ray-like or line-like vectors,
 nor does it combine simultaneously lineation-plane measurements to
 either pairs or faults. Thus, you’ll need to carefully convert these
 data dataypes after the import to move forward.</p>
+</blockquote>
+<div class="section level3">
+<h3 id="subsetting-strabo-objects">Subsetting Strabo objects<a class="anchor" aria-label="anchor" href="#subsetting-strabo-objects"></a>
+</h3>
+<p>One advantage of <code>"strabo"</code> objects is that the
+orientation data is accompanied with metadata such as GPS coordinates,
+descriptions etc. This makes it a data base which can be filtered,
+arranged and manipulated using queries the way you want it.</p>
+<p>You can subset (or filter) the objects based on columns in any of
+these list elements, and it returns only the selected rows in all
+elements of the list, including the orientation data:</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">strabo_prj_subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">strabo_prj</span>, <span class="va">strabo_prj</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">quality</span> <span class="op">&gt;</span> <span class="fl">3</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">strabo_prj_subset</span><span class="op">$</span><span class="va">linear</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col_d</a></span><span class="op">(</span><span class="va">strabo_prj_subset</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">spot_id</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">'Subset of linear elements'</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Import_files/figure-html/subset-1.png" class="r-plt" alt="" width="700"></p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="drill-core-data">Drill core data<a class="anchor" aria-label="anchor" href="#drill-core-data"></a>

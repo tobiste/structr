@@ -63,6 +63,9 @@ read_strabo_JSON(file, sf = TRUE)
 
 [`drillcore_transformation()`](https://tobiste.github.io/structr/reference/drillcore.md)
 
+Other strabo:
+[`subset.strabo()`](https://tobiste.github.io/structr/reference/subset.strabo.md)
+
 ## Examples
 
 ``` r

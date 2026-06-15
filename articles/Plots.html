@@ -155,6 +155,30 @@ the <code>ang</code> argument in <code><a href="https://rdrr.io/r/graphics/lines
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">lines</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span>, ang <span class="op">=</span> <span class="fl">10</span>, col <span class="op">=</span> <span class="st">"#B63679"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Plots_files/figure-html/stereo_smallcircle-1.png" class="r-plt" alt="Diagram showing smallcircles" width="700"></p>
 </div>
+<div class="section level3">
+<h3 id="orientation-pairs">Orientation pairs<a class="anchor" aria-label="anchor" href="#orientation-pairs"></a>
+</h3>
+<p><strong>Pair</strong> objects contain plane and line measurements,
+such as stretching lineations on foliation planes, or intersection
+lineation of bedding planes etc.</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">strabo_prj</span><span class="op">)</span></span>
+<span><span class="va">my_pairs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Pair</a></span><span class="op">(</span><span class="va">strabo_prj</span><span class="op">$</span><span class="va">planar</span>, <span class="va">strabo_prj</span><span class="op">$</span><span class="va">linear</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my_pairs</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col_d</a></span><span class="op">(</span><span class="va">strabo_prj</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">spot_id</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Pairs"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Plots_files/figure-html/pair-1.png" class="r-plt" alt="" width="700">
+#### Dip-Pitch-Plunge Ternary diagram</p>
+<p>The Dip-Pitch-Plunge diagram is a ternary fabric orientation diagram
+after Balé and Brun (1989)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Balé, P., &amp;amp; Brun, J.-P. (1989). Late Precambrian
+thrust and wrench zones in northern Brittany (France). Journal of
+Structural Geology, 11(4), 391–405. &lt;a href="https://doi.org/10.1016/0191-8141(89)90017-5" class="external-link uri"&gt;https://doi.org/10.1016/0191-8141(89)90017-5&lt;/a&gt;&lt;/p&gt;'><sup>1</sup></a> showing the pitch and plunge of stretching
+lineation (X) and the dip of the foliation plane (XY). This can be used
+to asses lateral flow or transpression geometries of Pair objects.</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/balebrun_plot.html">balebrun_plot</a></span><span class="op">(</span><span class="va">my_pairs</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col_d</a></span><span class="op">(</span><span class="va">strabo_prj</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">spot_id</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Plots_files/figure-html/bale-1.png" class="r-plt" alt="" width="700"></p>
+</div>
 </div>
 <div class="section level2">
 <h2 id="fabric-plots">Fabric plots<a class="anchor" aria-label="anchor" href="#fabric-plots"></a>
@@ -166,10 +190,10 @@ cylindrical or random these vectors are distributed.</p>
 the eigenvalues of the orientation tensor. Three different diagram are
 provided by {structr}, namely the triangular <em>Vollmer plot</em><a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Vollmer, F. W. (1990). An application of eigenvalue
 methods to structural domain analysis. Geological Society of America
-Bulletin, 102, 786–791.&lt;/p&gt;"><sup>1</sup></a>, the
+Bulletin, 102, 786–791.&lt;/p&gt;"><sup>2</sup></a>, the
 logarithmic biplot (<em>Woodcock plot</em>)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Woodcock, N. H. (1977). Specification of fabric shapes
 using an eigenvalue method. Geological Society of America Bulletin88,
-1231–1236. Retrieved from &lt;a href="http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf" class="external-link uri"&gt;http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf&lt;/a&gt;&lt;/p&gt;'><sup>2</sup></a>, and the Lode
+1231–1236. Retrieved from &lt;a href="http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf" class="external-link uri"&gt;http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf&lt;/a&gt;&lt;/p&gt;'><sup>3</sup></a>, and the Lode
 parameter vs. natural octahedral strain diagram (<em>Hsu
 plot</em>)[|^hsu].</p>
 <div class="section level3">
@@ -177,7 +201,7 @@ plot</em>)[|^hsu].</p>
 </h3>
 <p><code><a href="../reference/vollmer-plot.html">vollmer_plot()</a></code> creates a triangular plot showing the
 shape of the orientation distribution (after Vollmer, 1990).</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/vollmer-plot.html">vollmer_plot</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/vollmer-plot.html">vollmer_plot</a></span><span class="op">(</span><span class="va">lines</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Lines"</span>, <span class="st">"Planes"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679"</span>, <span class="st">"#000004"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="fl">1</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
@@ -188,7 +212,7 @@ shape of the orientation distribution (after Vollmer, 1990).</p>
 </h3>
 <p><code><a href="../reference/woodcock_plot.html">woodcock_plot()</a></code> creates a logarithmic biplot showing the
 shape of the orientation distribution (after Woodcock, 1977).</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/woodcock_plot.html">woodcock_plot</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/woodcock_plot.html">woodcock_plot</a></span><span class="op">(</span><span class="va">lines</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Lines"</span>, <span class="st">"Planes"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679"</span>, <span class="st">"#000004"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="fl">1</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
@@ -199,12 +223,12 @@ shape of the orientation distribution (after Woodcock, 1977).</p>
 </h3>
 <p><code><a href="../reference/hsu_plot.html">hsu_plot()</a></code> creates a Lode parameter<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Lode, W. (1926). Versuche über den Einfluß der mittleren
 Hauptspannung auf das Fließen der Metalle Eisen. Kupfer und Nickel.
-Zeitschrift Für Physik, 36(11–12), 913–939. &lt;a href="https://doi.org/10.1007/BF01400222" class="external-link uri"&gt;https://doi.org/10.1007/BF01400222&lt;/a&gt;&lt;/p&gt;'><sup>3</sup></a> vs. natural octahedral
+Zeitschrift Für Physik, 36(11–12), 913–939. &lt;a href="https://doi.org/10.1007/BF01400222" class="external-link uri"&gt;https://doi.org/10.1007/BF01400222&lt;/a&gt;&lt;/p&gt;'><sup>4</sup></a> vs. natural octahedral
 strain<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Nádai, A. (1950). Theory of flow and fracture of solids.
-McGraw-Hill.&lt;/p&gt;"><sup>4</sup></a>
+McGraw-Hill.&lt;/p&gt;"><sup>5</sup></a>
 diagram showing the shape of the orientation distribution (after Hsu,
 1965).</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">1</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/hsu_plot.html">hsu_plot</a></span><span class="op">(</span><span class="va">lines</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Lines"</span>, <span class="st">"Planes"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679"</span>, <span class="st">"#000004"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="fl">1</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
@@ -216,11 +240,11 @@ diagram showing the shape of the orientation distribution (after Hsu,
 </h2>
 <p><strong>Kamb</strong> contours<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Kamb, W. B. (1959). Ice Petrofabric Observations from
 Blue Glacier, Washington, in Relation to Theory and Experiment. Journal
-of Geophysical Research, 54(11).&lt;/p&gt;"><sup>5</sup></a> and densities can be added to an existing
+of Geophysical Research, 54(11).&lt;/p&gt;"><sup>6</sup></a> and densities can be added to an existing
 projection plot using the <code>contour</code> functions. Weighted
 densities can be controlled by the <code>weights</code> argument and are
 useful when the orientation measurements have different accuracies.</p>
-<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">example_planes_df</span><span class="op">$</span><span class="va">quality</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/ifelse.html" class="external-link">ifelse</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NA.html" class="external-link">is.na</a></span><span class="op">(</span><span class="va">example_planes_df</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span>, <span class="fl">6</span>, <span class="va">example_planes_df</span><span class="op">$</span><span class="va">quality</span><span class="op">)</span> <span class="co"># replacing NA values with 6</span></span>
 <span><span class="va">plane_weightings</span> <span class="op">&lt;-</span> <span class="fl">6</span> <span class="op">/</span> <span class="va">example_planes_df</span><span class="op">$</span><span class="va">quality</span></span>
 <span></span>
@@ -233,7 +257,7 @@ useful when the orientation measurements have different accuracies.</p>
 adds a density image (i.e. a dense grid of colored rectangles). See
 <code><a href="../reference/stereo_contour.html">?contour</a></code>, <code><a href="../reference/stereo_contour.html">?contourf</a></code>, and <code><a href="../reference/stereo_contour.html">?image</a></code>
 for more information.</p>
-<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">planes</span>, col <span class="op">=</span> <span class="st">"grey"</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/stereo_contour.html">contourf</a></span><span class="op">(</span><span class="va">planes</span>, add <span class="op">=</span> <span class="cn">TRUE</span>, density.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>weights <span class="op">=</span> <span class="va">plane_weightings</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
@@ -245,7 +269,7 @@ for more information.</p>
 <p>Let’s create a publication ready synoptical plot for the line and
 plane orientation data, showing the density distribution,
 eigenvectors/mean values, and fabric strength.</p>
-<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Minimum eigenvector of plane's orientation tensor:</span></span>
 <span><span class="va">planes_eigen</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ot_eigen.html">ot_eigen</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span><span class="op">$</span><span class="va">vectors</span></span>
 <span><span class="va">planes_eigen3</span> <span class="op">&lt;-</span> <span class="va">planes_eigen</span><span class="op">[</span><span class="fl">3</span>, <span class="op">]</span></span>
@@ -258,7 +282,7 @@ eigenvectors/mean values, and fabric strength.</p>
 <span><span class="va">fabric_p</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vollmer.html">vollmer</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span><span class="op">[</span><span class="st">"D"</span><span class="op">]</span></span>
 <span><span class="va">fabric_l</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/vollmer.html">vollmer</a></span><span class="op">(</span><span class="va">lines</span><span class="op">)</span><span class="op">[</span><span class="st">"D"</span><span class="op">]</span></span></code></pre></div>
 <p>The final plot:</p>
-<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># two plots side by side</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
@@ -303,11 +327,11 @@ plot.</p>
 </h3>
 <p>The <strong>Angelier plot</strong> shows all planes as <em>great
 circles</em> and lineations as points (after Angelier, 1984)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Angelier, J. Tectonic analysis of fault slip data sets,
-J. Geophys. Res. 89 (B7), 5835-5848 (1984)&lt;/p&gt;"><sup>6</sup></a>. Fault
+J. Geophys. Res. 89 (B7), 5835-5848 (1984)&lt;/p&gt;"><sup>7</sup></a>. Fault
 striae are plotted as vectors on top of the lineation pointing in the
 movement direction of the hanging wall. Easy to read in case of
 homogeneous or small datasets.</p>
-<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Fault</a></span><span class="op">(</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"a"</span> <span class="op">=</span> <span class="fl">120</span>, <span class="st">"b"</span> <span class="op">=</span> <span class="fl">125</span>, <span class="st">"c"</span> <span class="op">=</span> <span class="fl">100</span><span class="op">)</span>,</span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">62</span>, <span class="fl">50</span><span class="op">)</span>,</span>
@@ -325,11 +349,11 @@ homogeneous or small datasets.</p>
 </h3>
 <p>The <strong>Hoeppener plot</strong> shows all planes as
 <em>poles</em> while lineations are not shown (after Hoeppener, 1955)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Hoeppener, R. Tektonik im Schiefergebirge. Geol Rundsch
-44, 26-58 (1955). &lt;a href="https://doi.org/10.1007/BF01802903" class="external-link uri"&gt;https://doi.org/10.1007/BF01802903&lt;/a&gt;&lt;/p&gt;'><sup>7</sup></a>. Instead,
+44, 26-58 (1955). &lt;a href="https://doi.org/10.1007/BF01802903" class="external-link uri"&gt;https://doi.org/10.1007/BF01802903&lt;/a&gt;&lt;/p&gt;'><sup>8</sup></a>. Instead,
 fault striae are plotted as vectors on top of poles pointing in the
 movement direction of the hanging wall. Useful in case of large or
 heterogeneous datasets.</p>
-<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Hoeppener plot"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/fault-plot.html">hoeppener</a></span><span class="op">(</span><span class="va">f</span>, col <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="fu"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">magma</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span>, end <span class="op">=</span> <span class="fl">.9</span><span class="op">)</span>, points <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Plots_files/figure-html/faults2-1.png" class="r-plt" alt="Diagram showing example fault data plotted in an equal-area projection" width="700"></p>
@@ -358,7 +382,7 @@ character)</p></li>
 <p>The following example assigns the <code>col</code> (color), the
 <code>cex</code> (size), and the <code>pch</code> (symbol) based on
 three different properties:</p>
-<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># define three random properties</span></span>
 <span><span class="va">prop_continuous1</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">prop_continuous2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span><span class="op">)</span></span>
@@ -383,6 +407,10 @@ continuous as well as discrete values using <code>assign_*_d</code>.
 Also there are binned mapping options through
 <code>assign_*_binnned</code>. See <code>?assign_cex()</code> for more
 information.</p>
+</div>
+<div class="section level2">
+<h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>
+</h2>
 </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

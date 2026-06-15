@@ -196,6 +196,7 @@
   : Intersection lineation data
 
 - [`example_planes`](https://tobiste.github.io/structr/reference/example_planes.md)
+  [`strabo_prj`](https://tobiste.github.io/structr/reference/example_planes.md)
   : Planes orientations as "Plane" objects
 
 - [`example_planes_df`](https://tobiste.github.io/structr/reference/example_planes_df.md)
@@ -493,6 +494,9 @@
 - [`structr`](https://tobiste.github.io/structr/reference/structr.md)
   [`structr-package`](https://tobiste.github.io/structr/reference/structr.md)
   : library(structr)
+
+- [`subset(`*`<strabo>`*`)`](https://tobiste.github.io/structr/reference/subset.strabo.md)
+  : Subsetting StraboSpot Projects
 
 - [`summary(`*`<spherical>`*`)`](https://tobiste.github.io/structr/reference/summary.spherical.md)
   : Summary statistics
