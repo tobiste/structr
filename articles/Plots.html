@@ -155,12 +155,13 @@ the <code>ang</code> argument in <code><a href="https://rdrr.io/r/graphics/lines
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/lines.html" class="external-link">lines</a></span><span class="op">(</span><span class="va">lines</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span>, ang <span class="op">=</span> <span class="fl">10</span>, col <span class="op">=</span> <span class="st">"#B63679"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Plots_files/figure-html/stereo_smallcircle-1.png" class="r-plt" alt="Diagram showing smallcircles" width="700"></p>
 </div>
-<div class="section level3">
-<h3 id="orientation-pairs">Orientation pairs<a class="anchor" aria-label="anchor" href="#orientation-pairs"></a>
-</h3>
+</div>
+<div class="section level2">
+<h2 id="pair-objects-linear-element-on-a-plane">Pair Objects (Linear Element on a Plane)<a class="anchor" aria-label="anchor" href="#pair-objects-linear-element-on-a-plane"></a>
+</h2>
 <p><strong>Pair</strong> objects contain plane and line measurements,
 such as stretching lineations on foliation planes, or intersection
-lineation of bedding planes etc.</p>
+lineations on bedding planes etc.</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">strabo_prj</span><span class="op">)</span></span>
 <span><span class="va">my_pairs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Pair</a></span><span class="op">(</span><span class="va">strabo_prj</span><span class="op">$</span><span class="va">planar</span>, <span class="va">strabo_prj</span><span class="op">$</span><span class="va">linear</span><span class="op">)</span></span>
@@ -168,17 +169,17 @@ lineation of bedding planes etc.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my_pairs</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col_d</a></span><span class="op">(</span><span class="va">strabo_prj</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">spot_id</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Pairs"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Plots_files/figure-html/pair-1.png" class="r-plt" alt="" width="700">
-#### Dip-Pitch-Plunge Ternary diagram</p>
-<p>The Dip-Pitch-Plunge diagram is a ternary fabric orientation diagram
-after Balé and Brun (1989)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Balé, P., &amp;amp; Brun, J.-P. (1989). Late Precambrian
+### Dip-Pitch-Plunge Ternary diagram</p>
+<p>The <em>Dip-Pitch-Plunge Diagram</em> is a ternary fabric orientation
+diagram after Balé and Brun (1989)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Balé, P., &amp;amp; Brun, J.-P. (1989). Late Precambrian
 thrust and wrench zones in northern Brittany (France). Journal of
-Structural Geology, 11(4), 391–405. &lt;a href="https://doi.org/10.1016/0191-8141(89)90017-5" class="external-link uri"&gt;https://doi.org/10.1016/0191-8141(89)90017-5&lt;/a&gt;&lt;/p&gt;'><sup>1</sup></a> showing the pitch and plunge of stretching
+Structural Geology, 11(4), 391–405. &lt;a href="https://doi.org/10.1016/0191-8141(89)90017-5" class="external-link uri"&gt;https://doi.org/10.1016/0191-8141(89)90017-5&lt;/a&gt;&lt;/p&gt;'><sup>1</sup></a> using the pitch and plunge of stretching
 lineation (X) and the dip of the foliation plane (XY). This can be used
-to asses lateral flow or transpression geometries of Pair objects.</p>
+to show three-dimensional geometries of fabrics (useful for
+transpression).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/balebrun_plot.html">balebrun_plot</a></span><span class="op">(</span><span class="va">my_pairs</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col_d</a></span><span class="op">(</span><span class="va">strabo_prj</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">spot_id</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Plots_files/figure-html/bale-1.png" class="r-plt" alt="" width="700"></p>
-</div>
 </div>
 <div class="section level2">
 <h2 id="fabric-plots">Fabric plots<a class="anchor" aria-label="anchor" href="#fabric-plots"></a>
