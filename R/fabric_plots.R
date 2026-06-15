@@ -392,18 +392,34 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
     .ternary_coords()
 }
 
+.ternary_from_pitchplunge <- function(pitch, plunge){
+  dip <- dip_from_pitchplunge(pitch, plunge)
+  
+  b_comp <- 90 - dip
+  
+  remaining <- dip
+  c_comp <- plunge
+  a_comp <- remaining - plunge # = dip - plunge
+  
+  cbind(a = a_comp, b = b_comp, c = c_comp) |>
+    .ternary_coords()
+}
+
 .ternary_grid_pitchdip <- function(dip_seq = seq(0, 90, 10),
-                                   pitch_seq = seq(0, 90, 10),
+                                   pitch_seq = dip_seq,
+                                   plunge_seq = seq(0, 90, length.out = n_interp),
                                    n_interp = 100,
-                                   col = "lightgray", lty = 3, 
-                                   ticks = TRUE) {
+                                   col = "lightgray", 
+                                   lty = 3, 
+                                   ticks = TRUE, 
+                                   ...) {
   # --- Constant dip lines (dip fixed, pitch varies) ---
   dip_seq_s <- sort(dip_seq)
   dip_seq_sr <- dip_seq_s[-c(1L, length(dip_seq_s))] # remove first and last line 
   
   for (d in dip_seq_sr) {
     plunge_lines_sr <- .ternary_from_pitchdip(pitch_seq, dip = d)
-    graphics::lines(plunge_lines_sr[, 1], plunge_lines_sr[, 2], col = col, lty = lty)
+    graphics::lines(plunge_lines_sr[, 1], plunge_lines_sr[, 2], col = col, lty = lty, ...)
   }
 
   # --- Constant pitch lines (pitch fixed, dip varies) ---
@@ -412,10 +428,20 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
   pitch_seq_sr <- pitch_seq_s[-c(1L, length(pitch_seq_s))] # remove first and last line 
   
   pitch_lines_sr <- .ternary_from_pitchdip(pitch_seq_sr, dip = 90)
-  graphics::segments(x0 = dip_corner[, 1], y0 = dip_corner[, 2], x1 = pitch_lines_sr[, 1], y1 = pitch_lines_sr[, 2], col = col, lty = lty)
+  graphics::segments(x0 = dip_corner[, 1], y0 = dip_corner[, 2], x1 = pitch_lines_sr[, 1], y1 = pitch_lines_sr[, 2], col = col, lty = lty, ...)
 
   # --- Constant plunge lines ---
-  
+  # plunge_seq_s <- sort(plunge_seq)
+  # plunge_seq_sr <- plunge_seq_s[-c(1L, length(plunge_seq_s))] # remove first and last line 
+  # 
+  # for(pl in plunge_seq_sr){
+  #   dip_range <- seq(pl, 90, length.out = n_interp)
+  #   pitch_range <- dip_from_pitchplunge(   # invert: get valid pitch range
+  #     plunge = pl, pitch = dip_range       # placeholder — see note below
+  #   )
+  #   coords <- .ternary_from_pitchdip(pitch = pitch_range, dip = dip_range)
+  #   graphics::lines(coords[, 1], coords[, 2], col = col, lty = lty, ...)
+  # }
   
   # --- Tick labels ---
   if (ticks) {

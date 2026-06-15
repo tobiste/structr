@@ -916,21 +916,26 @@ strikeslip_kinematics <- function(x) {
 
 
 plunge_from_pitchdip <- function(pitch, dip){
-  n_dip <- length(dip)
-  n_pitch <- length(pitch)
-  
-  if(n_pitch == 1L & n_dip>1L){
-    pitch <- rep(pitch, n_dip)
-  } else if(n_dip == 1L & n_pitch > 1L){
-    dip <- rep(dip, n_pitch)
-  }
-  
-  pitch_fun <- function(p, d){
-    pl <- Plane(0, d)
-  l <- Pair_from_pitch(pl, p) |> 
-    Line()
-  l[, 2]
-  }
-  
-  mapply(pitch_fun, p = pitch, d = dip)
+  # n_dip <- length(dip)
+  # n_pitch <- length(pitch)
+  # 
+  # if(n_pitch == 1L & n_dip>1L){
+  #   pitch <- rep(pitch, n_dip)
+  # } else if(n_dip == 1L & n_pitch > 1L){
+  #   dip <- rep(dip, n_pitch)
+  # }
+  # 
+  # pitch_fun <- function(p, d){
+  #   pl <- Plane(0, d)
+  # l <- Pair_from_pitch(pl, p) |> 
+  #   Line()
+  # l[, 2]
+  # }
+  # 
+  # mapply(pitch_fun, p = pitch, d = dip)
+  asind(sind(dip) * sind(pitch))
+}
+
+dip_from_pitchplunge <- function(pitch, plunge) {
+  asind(sind(plunge) / sind(pitch))
 }
