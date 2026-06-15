@@ -19,7 +19,7 @@ An object of class \code{"strabo"} containing just the selected rows and
 columns of \code{"x"}.
 }
 \description{
-Retursn a subset from \code{"strabo"} objects which meet conditions.
+Returns a subset from \code{"strabo"} objects which meet conditions.
 }
 \examples{
 subset(strabo_prj, strabo_prj$data$quality > 3)

@@ -539,7 +539,7 @@ as.strabo <- function(x) {
 
 #' Subsetting StraboSpot Projects
 #' 
-#' Retursn a subset from `"strabo"` objects which meet conditions.
+#' Returns a subset from `"strabo"` objects which meet conditions.
 #' 
 #' @param x object of class `"strabo"`
 #' @param ds character. Dataset that should be the base for subsetting. 
@@ -619,5 +619,48 @@ subset.strabo <- function(x, ..., ds = c("data", "spots", "tags")) {
     )
   }
 
+  as.strabo(ls)
+}
+
+#' Sorting StraboSpot Projects
+#' 
+#' Sorts `strabo` objects in the order determined by one or more other objects, typically columns in the
+#' `data` data.frame. This will also sort the `planar` and `linear` objects.
+#' 
+#' @param x object of class `"strabo"`
+#' @param y Variables to sort by. Typically a column in `x$data` data.frame. To
+#' sort by more than one column, take the form `list(g1, g2, ...)`.
+#' @param ... Additional arguments, typically passed on to [order()].
+#'  
+#' @returns A sorted version of `x`. 
+#'
+#' @exportS3Method base::sort_by
+#' 
+#' @examples
+#' sort_by(strabo_prj, strabo_prj$data$dip_direction)
+sort_by.strabo <- function(x, y, ...){
+  spot_id <- NULL
+  
+  x$data$newrowid <- seq_len(nrow(x$data))
+  x_sort <- sort_by(x$data, y, ...)
+  selected_rows <- x_sort$newrowid
+  x_sort$newrowid <- NULL
+  
+  if (inherits(x, "strabo.json")) {
+  ls <- list(
+    data = x_sort,
+    spots = x$spots,
+    tags = x$tags,
+    planar = x$planar[selected_rows, ],
+    linear = x$linear[selected_rows, ]
+  )
+  } else {
+    ls <- list(
+      data = x_sort,
+      planar = x$planar[selected_rows, ],
+      linear = x$linear[selected_rows, ]
+    )
+  }
+  
   as.strabo(ls)
 }

@@ -257,6 +257,15 @@ plot(strabo_prj_subset$linear, col = assign_col_d(strabo_prj_subset$data$spot_id
 title(main = 'Subset of linear elements')
 ```
 
+### Sort Strabo objects
+
+The function `sort_by()` can sort your strabo objects based on one or more columns in the `data` and will automatically sort all planar and linear elements.
+
+```{r sort, echo=FALSE}
+sort_by(strabo_prj, strabo_prj$data$quality)
+```
+
+
 
 ## Drill core data
 
