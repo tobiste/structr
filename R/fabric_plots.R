@@ -323,9 +323,8 @@ vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5),
 #' https://doi.org/10.1016/0191-8141(89)90017-5
 #'
 #' @examples
-#' data(angelier1990)
-#' balebrun_plot(angelier1990$TYM)
-#'
+#' balebrun_plot(simongomez, col = assign_col(simongomez[, 'azimuth']), pch = 16)
+#'s
 #' balebrun_plot(Pair_from_pitch(Plane(0, 80), 80), "vertical flow", col = 1, add = F)
 #' balebrun_plot(Pair_from_pitch(Plane(0, 80), 10), "strike-slip", col = 2, add = T)
 #' balebrun_plot(Pair_from_pitch(Plane(0, 10), 10), "horizontal flow", col = 3, add = T)
@@ -414,13 +413,13 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
   
   # ticks
   if (ticks) {
-    graphics::text(plunge_lines[, 1], plunge_lines[, 2], pitch_seq, pos = 2, cex = 0.7) # pitch 
+    graphics::text(plunge_lines[, 1], plunge_lines[, 2], pitch_seq, pos = 2, cex = 0.8) # pitch 
     for(i in pitch_seq/90){
       plunge_label_pts <- .ternary_coords(0, i, 1-i)
-      graphics::text(plunge_label_pts[, 1], plunge_label_pts[, 2], (1-i)*90, pos = 4, cex = 0.7) # dip
+      graphics::text(plunge_label_pts[, 1], plunge_label_pts[, 2], (1-i)*90, pos = 4, cex = 0.8) # dip
       
     }
-    graphics::text(dip_seq/90, 0, rev(dip_seq), pos = 1, cex = 0.7) # dip 
+    graphics::text(dip_seq/90, 0, rev(dip_seq), pos = 1, cex = 0.8) # dip 
   }
 }
 
