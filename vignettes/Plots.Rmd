@@ -386,3 +386,29 @@ Also there are binned mapping options through `assign_*_binnned`.
 See `?assign_cex()` for more information.
 
 ## References
+
+Angelier, J. Tectonic analysis of fault slip data sets, J.
+    Geophys. Res. 89 (B7), 5835-5848 (1984)
+    
+Balé, P., & Brun, J.-P. (1989). Late Precambrian thrust and wrench zones in northern Brittany (France). Journal of Structural Geology, 11(4), 391–405. <https://doi.org/10.1016/0191-8141(89)90017-5>
+
+Hoeppener, R. Tektonik im Schiefergebirge. Geol Rundsch 44, 26-58 (1955). <https://doi.org/10.1007/BF01802903>
+
+Kamb, W. B. (1959). Ice Petrofabric Observations from Blue
+    Glacier, Washington, in Relation to Theory and Experiment. Journal of Geophysical Research, 54(11).
+  
+Lode, W. (1926). Versuche über den Einfluß der mittleren
+    Hauptspannung auf das Fließen der Metalle Eisen. Kupfer und Nickel. Zeitschrift Für Physik, 36(11–12), 913–939.
+    <https://doi.org/10.1007/BF01400222>
+
+Nádai, A. (1950). Theory of flow and fracture of solids.
+    McGraw-Hill.
+
+Vollmer, F. W. (1990). An application of eigenvalue methods to
+    structural domain analysis. Geological Society of America Bulletin, 102, 786–791.
+
+Woodcock, N. H. (1977). Specification of fabric shapes using an
+    eigenvalue method. Geological Society of America Bulletin88,
+    1231–1236. Retrieved from
+    <http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf>
+
