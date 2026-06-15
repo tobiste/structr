@@ -50,8 +50,6 @@ rotz3 <- function(deg) {
 }
 
 
-
-
 #' Stereographic Projection
 #'
 #' Transformation of spherical coordinates into the stereographic projection
@@ -263,13 +261,37 @@ NULL
 #' @rdname stereo-pair
 #' @export
 stereo_pair <- function(x, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex = 1, greatcircles = TRUE, upper.hem = FALSE, earea = TRUE) {
-  if (greatcircles) {
-    stereo_greatcircle(Fault_plane(x), lwd = lwd, lty = lty, col = col, upper.hem = upper.hem, earea = earea)
-  } else {
-    stereo_point(Fault_plane(x), pch = pch, cex = cex, col = col, upper.hem = upper.hem, earea = earea)
-  }
+  p <- Plane(x)
+  l <- Line(x)
 
-  stereo_point(Fault_slip(x), pch = pch, cex = cex, col = col, upper.hem = upper.hem, earea = earea)
+  nx <- nrow(x)
+
+  # for (par in list(pch, col, lwd, lty, cex)) {
+  #   if (length(par) > 1 && length(par) != nx) {
+  #     warning("Graphical parameters with length > 1 will be recycled to match nrow(x)")
+  #     break
+  #   }
+  # }
+
+  pch <- rep_len(pch, nx)
+  col <- rep_len(col, nx)
+  lwd <- rep_len(lwd, nx)
+  lty <- rep_len(lty, nx)
+  cex <- rep_len(cex, nx)
+
+  invisible(
+    if (greatcircles) {
+      lapply(seq_len(nx), function(i) {
+        stereo_greatcircle(p[i, ], lwd = lwd[i], lty = lty[i], col = col[i], upper.hem = upper.hem, earea = earea)
+        stereo_point(l[i, ], pch = pch[i], cex = cex[i], col = col[i], upper.hem = upper.hem, earea = earea)
+      })
+    } else {
+      lapply(seq_len(nx), function(i) {
+        stereo_point(p[i, ], pch = pch[i], cex = cex[i], col = col[i], upper.hem = upper.hem, earea = earea)
+        stereo_point(l[i, ], pch = pch[i], cex = cex[i], col = col[i], upper.hem = upper.hem, earea = earea)
+      })
+    }
+  )
 }
 
 
@@ -310,9 +332,16 @@ stereo_smallcircle <- function(x, d = 90, col = 1, N = 1000, upper.hem = FALSE, 
     nx <- nrow(x)
     stopifnot(length(d) == nx)
 
-    if (length(col) == 1) col <- rep(col, nx)
-    if (length(lwd) == 1) lwd <- rep(lwd, nx)
-    if (length(lty) == 1) lty <- rep(lty, nx)
+    # for (par in list(pch, lwd, lty)) {
+    #   if (length(par) > 1 && length(par) != nx) {
+    #     warning("Graphical parameters with length > 1 will be recycled to match nrow(x)")
+    #     break
+    #   }
+    # }
+
+    col <- rep_len(col, nx)
+    lwd <- rep_len(lwd, nx)
+    lty <- rep_len(lty, nx)
 
     invisible(
       lapply(seq_len(nx), function(i) {
@@ -324,9 +353,20 @@ stereo_smallcircle <- function(x, d = 90, col = 1, N = 1000, upper.hem = FALSE, 
 
 stereo_smallcircle0 <- function(x, d = 90, col = 1, N = 1000, upper.hem = FALSE, earea = TRUE, lty = 1, lwd = 1, BALL.radius = 1, ...) {
   stopifnot(is.spherical(x))
-  if (length(col) == 1) col <- rep(col, nrow(x))
-  if (length(lty) == 1) lty <- rep(lty, nrow(x))
-  if (length(lwd) == 1) lwd <- rep(lwd, nrow(x))
+
+  nx <- nrow(x)
+
+  # for (par in list(pch, lwd, lty)) {
+  #   if (length(par) > 1 && length(par) != nx) {
+  #     warning("Graphical parameters with length > 1 will be recycled to match nrow(x)")
+  #     break
+  #   }
+  # }
+
+
+  col <- rep_len(col, nx)
+  lwd <- rep_len(lwd, nx)
+  lty <- rep_len(lty, nx)
 
   if (is.Vec3(x)) x <- Line(x)
   az <- x[, 1]
@@ -533,8 +573,8 @@ stereoplot_frame <- function(n = 512L, radius = 1, ...) {
 #' @param ladj adjustment for all labels away from origin of stereoplot circle.
 #' This essentially an amount that is added to `radius` and the length of the ticks.
 #' @param radius numeric. Radius of circle
-#' @param center An object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"` 
-#' specifying the center of the stereoplot. If `NULL` (the default), the center 
+#' @param center An object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`
+#' specifying the center of the stereoplot. If `NULL` (the default), the center
 #' is at the origin of the plot.
 #'
 #' @source Adapted from the `RFOC` package
@@ -547,7 +587,7 @@ stereoplot_frame <- function(n = 512L, radius = 1, ...) {
 #' stereoplot()
 #'
 #' stereoplot(ticks = 30, title = "title", sub = "subtitle", border.col = "purple", labels = TRUE)
-#' 
+#'
 #' stereoplot(center = Line(120, 50))
 stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = "gray90",
                        lwd = 0.5, lty = 1, border.col = "black", title = NULL,
@@ -562,7 +602,7 @@ stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = "gray90",
   graphics::title(main = title, sub = sub)
   graphics::mtext(origin.text, col = border.col, font = 2)
 
-  if (guides) stereoplot_guides(d = d, earea = earea, col = col, lwd = lwd, lty = lty, radius = radius, center=center)
+  if (guides) stereoplot_guides(d = d, earea = earea, col = col, lwd = lwd, lty = lty, radius = radius, center = center)
 
   if (!is.null(ticks)) stereoplot_ticks(angle = ticks, col = border.col, radius = radius, labels = labels, ladj = ladj)
 
@@ -579,7 +619,7 @@ stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = "gray90",
 #' @param length numeric. Length of ticks as fraction of `radius`
 #' @param angle numeric. Division angle in degrees
 #' @param rotation numeric. Rotation (positive for counter-clockwise) of tick marks and labels
-#' @param cex numeric. Character expansion controls the font size of thee labels. 
+#' @param cex numeric. Character expansion controls the font size of thee labels.
 #' @param ... optional arguments passed to [graphics::segments()] and [graphics::text()]
 #'
 #' @importFrom graphics segments
@@ -615,7 +655,6 @@ stereoplot_ticks <- function(length = 0.02, angle = 10, labels = FALSE, ladj = 2
     )
   }
 }
-
 
 
 stereo_guides_schmidt <- function(d = 10, n = 512, r = 1, rotation = 0, ...) {
@@ -724,16 +763,16 @@ stereo_guides_wulff <- function(d = 9, n = 512, r = 1, rotation = 0, ...) {
 #'
 #' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
 #' stereoplot_guides(d = 15, earea = TRUE, col = "orange", rotation = 90)
-#' 
+#'
 #' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
 #' stereoplot_guides(d = 15, earea = FALSE, center = Line(120, 50))
 stereoplot_guides <- function(d = 10, earea = TRUE, radius = 1, center = NULL, ...) {
-  if(is.null(center)){
-  if (earea) {
-    stereo_guides_schmidt(d = d, r = radius, ...)
-  } else {
-    stereo_guides_wulff(d = d, r = radius, ...)
-  }
+  if (is.null(center)) {
+    if (earea) {
+      stereo_guides_schmidt(d = d, r = radius, ...)
+    } else {
+      stereo_guides_wulff(d = d, r = radius, ...)
+    }
   } else {
     rotate_stereogrid(center, d = d, earea = earea, ...)
   }
@@ -803,8 +842,9 @@ plot.Plane <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(),
 #' @exportS3Method graphics::plot
 plot.Pair <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
   do.call(stereoplot, append(grid.params, earea))
-  stereo_greatcircle(Plane(x), upper.hem = upper.hem, earea = earea, ...)
-  stereo_point(Line(x), upper.hem = upper.hem, earea = earea, ...)
+  # stereo_greatcircle(Plane(x), upper.hem = upper.hem, earea = earea, ...)
+  # stereo_point(Line(x), upper.hem = upper.hem, earea = earea, ...)
+  stereo_pair(x, upper.hem = upper.hem, earea = earea, ...)
 }
 
 #' @rdname plot-spherical
@@ -1035,9 +1075,34 @@ fault_plot <- function(x, type = c("angelier", "hoeppener"), ...) {
 #' @export
 hoeppener <- function(x, pch = 1, col = "black", cex = 1, bg = NULL, points = TRUE, ...) {
   stopifnot(is.Fault(x))
-
-  stereo_arrows(Plane(x), sense = x[, "sense"], col = col, ...)
-  if (isTRUE(points)) points(Plane(x), pch = pch, col = col, cex = cex, bg = bg)
+  
+  p <- Plane(x)
+  s <- x[, "sense"]
+  
+  # stereo_arrows(p, sense = s, col = col, ...)
+  # if (isTRUE(points)) points(p, pch = pch, col = col, cex = cex, bg = bg)
+  
+  nx <- nrow(x)
+  
+  pch <- rep_len(pch, nx)
+  col <- rep_len(col, nx)
+  #lwd <- rep_len(lwd, nx)
+  #lty <- rep_len(lty, nx)
+  cex <- rep_len(cex, nx)
+  
+  invisible(
+      lapply(seq_len(nx), function(i) {
+        stereo_arrows(p[i, ], sense = s[i], col = col[i], ...)
+      })
+  )
+  
+  if(points){
+  invisible(
+    lapply(seq_len(nx), function(i) {
+      points(p[i, ], pch = pch[i], cex = cex[i], col = col[i], bg = bg)
+    })
+  )
+  }
 }
 
 #' @rdname fault-plot
@@ -1045,9 +1110,36 @@ hoeppener <- function(x, pch = 1, col = "black", cex = 1, bg = NULL, points = TR
 angelier <- function(x, pch = 1, lwd = 1, lty = 1, col = "black", cex = 1, points = TRUE, bg = NULL, ...) {
   stopifnot(is.Fault(x))
 
-  lines(Fault_plane(x), lwd = lwd, lty = lty, col = col)
-  stereo_arrows(Fault_slip(x), sense = x[, "sense"], col = col, ...)
-  if (isTRUE(points)) points(Fault_slip(x), pch = pch, col = col, cex = cex, bg = bg)
+  p <- Plane(x)
+  l <- Fault_slip(x)
+  s <- x[, "sense"]
+  
+  # lines(p, lwd = lwd, lty = lty, col = col)
+  # stereo_arrows(l, sense = s, col = col, ...)
+  # if (isTRUE(points)) points(l, pch = pch, col = col, cex = cex, bg = bg)
+  
+  nx <- nrow(x)
+  
+  pch <- rep_len(pch, nx)
+  col <- rep_len(col, nx)
+  lwd <- rep_len(lwd, nx)
+  lty <- rep_len(lty, nx)
+  cex <- rep_len(cex, nx)
+  
+  
+  invisible(
+    lapply(seq_len(nx), function(i) {
+      lines(p[i, ], lwd = lwd[i], lty = lty[i], col = col[i])
+      stereo_arrows(l[i, ], sense = s[i], col = col[i], ...)
+    })
+  )
+  if(points){
+    invisible(
+      lapply(seq_len(nx), function(i) {
+        points(l[i, ], pch = pch[i], cex = cex[i], col = col[i], bg = bg)
+      })
+    )
+  }
 }
 
 
@@ -1068,30 +1160,29 @@ angelier <- function(x, pch = 1, lwd = 1, lty = 1, col = "black", cex = 1, point
 #' @examples
 #' stereoplot()
 #' stereo_shmax(30, shmin = TRUE)
-stereo_shmax <- function(azi, ..., type = c('arrows', 'line'), shmin = FALSE, BALL.radius = 1, arrow.offset = 0.02, arrow.length = 0.1, arrow.head = arrow.length){
+stereo_shmax <- function(azi, ..., type = c("arrows", "line"), shmin = FALSE, BALL.radius = 1, arrow.offset = 0.02, arrow.length = 0.1, arrow.head = arrow.length) {
   azi_rad <- deg2rad(azi)
-  azi_rad_min <- azi_rad + pi/2
+  azi_rad_min <- azi_rad + pi / 2
   type <- match.arg(type)
-  
-  if(type == 'line'){
+
+  if (type == "line") {
     tx <- BALL.radius * cos(azi_rad)
     ty <- BALL.radius * sin(azi_rad)
-    
+
     graphics::segments(rep(0, 2), rep(0, 2), tx * c(1, -1), ty * c(1, -1), ...)
-    if(isTRUE(shmin)){
+    if (isTRUE(shmin)) {
       tx2 <- BALL.radius * cos(azi_rad_min)
       ty2 <- BALL.radius * sin(azi_rad_min)
-      
+
       graphics::segments(rep(0, 2), rep(0, 2), tx2 * c(1, -1), ty2 * c(1, -1), ...)
     }
-    
   } else {
     start <- c(BALL.radius + arrow.offset, BALL.radius + arrow.offset + arrow.length)
     tx <- start * cos(azi_rad)
-    ty <- start* sin(azi_rad)
+    ty <- start * sin(azi_rad)
     graphics::arrows(tx[2], ty[2], tx[1], ty[1], length = arrow.head, ...)
     graphics::arrows(-tx[2], -ty[2], -tx[1], -ty[1], length = arrow.head, ...)
-    if(isTRUE(shmin)){
+    if (isTRUE(shmin)) {
       tx2 <- start * cos(azi_rad_min)
       ty2 <- start * sin(azi_rad_min)
       graphics::arrows(tx2[1], ty2[1], tx2[2], ty2[2], length = arrow.head, ...)
@@ -1099,9 +1190,6 @@ stereo_shmax <- function(azi, ..., type = c('arrows', 'line'), shmin = FALSE, BA
     }
   }
 }
-
-
-
 
 
 #' Variance Plot
@@ -1300,10 +1388,9 @@ stereo_path <- function(x, type = c("l", "p", "b"), add = TRUE, n = 5, upper.hem
 }
 
 
-
 #' Center gridlines on a given point
 #'
-#' @param x center position of grid lines. 
+#' @param x center position of grid lines.
 #' @inheritParams stereoplot
 #' @param ... arguments passed to [graphics::lines()]
 #'
@@ -1313,16 +1400,16 @@ stereo_path <- function(x, type = c("l", "p", "b"), add = TRUE, n = 5, upper.hem
 #' @examples
 #' stereoplot(guide = FALSE)
 #' rotate_stereogrid(Plane(120, 50), earea = FALSE)
-rotate_stereogrid <- function(x, d = 10, col = "gray90", lwd = 0.5, lty = 1, ...){
+rotate_stereogrid <- function(x, d = 10, col = "gray90", lwd = 0.5, lty = 1, ...) {
   xv <- Line(x)
   # small circles
-  ds <- seq(-90+d, 90, d)
+  ds <- seq(-90 + d, 90, d)
   invisible(lapply(ds, function(d) stereo_smallcircle(xv, d = d, col = col, lwd = lwd, lty = lty, ...)))
-  
+
   # great circles
   dummy_gc <- Plane(90, 90)
-  
-  gc0 <- rotate(dummy_gc, Vec3(0,0,1), deg2rad(xv[1,1]))
+
+  gc0 <- rotate(dummy_gc, Vec3(0, 0, 1), deg2rad(xv[1, 1]))
   ds2 <- seq(d, 180, by = d)
   invisible(lapply(ds2, function(d) {
     gc <- rotate(gc0, xv, d)
