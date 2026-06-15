@@ -87,6 +87,9 @@
 - [`azimuth_to_cardinal()`](https://tobiste.github.io/structr/reference/azimuth_to_cardinal.md)
   : Converts azimuth angles into Cardinal directions
 
+- [`balebrun_plot()`](https://tobiste.github.io/structr/reference/balebrun_plot.md)
+  : Dip-Pitch-Plunge Triangular Diagram
+
 - [`regression_greatcircle()`](https://tobiste.github.io/structr/reference/best_fit.md)
   [`regression_smallcircle()`](https://tobiste.github.io/structr/reference/best_fit.md)
   : Least-square fit of small and great circles to spherically projected
