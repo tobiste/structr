@@ -6,7 +6,6 @@
   : Simple fault analysis
 
 - [`Fault_rake()`](https://tobiste.github.io/structr/reference/Fault_components.md)
-  [`Pair_plane()`](https://tobiste.github.io/structr/reference/Fault_components.md)
   [`Fault_slip()`](https://tobiste.github.io/structr/reference/Fault_components.md)
   [`Fault_plane()`](https://tobiste.github.io/structr/reference/Fault_components.md)
   [`Fault_sense()`](https://tobiste.github.io/structr/reference/Fault_components.md)
@@ -23,6 +22,9 @@
 
 - [`PR_stress()`](https://tobiste.github.io/structr/reference/PR_stress.md)
   : Principal stresses from 2D stress components
+
+- [`Pair_pitch()`](https://tobiste.github.io/structr/reference/Pair_pitch.md)
+  : Pitch of a pair
 
 - [`Plane_from_apparent_dips()`](https://tobiste.github.io/structr/reference/Plane_from_apparent_dips.md)
   : Apparent dip direction
@@ -204,15 +206,16 @@
   [`angelier()`](https://tobiste.github.io/structr/reference/fault-plot.md)
   : Add Fault Data to Existing Plot
 
+- [`Fault_from_rake()`](https://tobiste.github.io/structr/reference/fault-rake.md)
+  [`Pair_from_pitch()`](https://tobiste.github.io/structr/reference/fault-rake.md)
+  : Fault from plane and rake
+
 - [`displacement_tensor()`](https://tobiste.github.io/structr/reference/fault-tensor.md)
   [`displacement_tensor_decomposition()`](https://tobiste.github.io/structr/reference/fault-tensor.md)
   : Fault displacement tensor
 
 - [`fault_displacements()`](https://tobiste.github.io/structr/reference/fault_displacements.md)
   : Fault displacement components
-
-- [`Fault_from_rake()`](https://tobiste.github.io/structr/reference/fault_from_rake.md)
-  : Fault from plane and rake
 
 - [`fisher_ftest()`](https://tobiste.github.io/structr/reference/fisher_ftest.md)
   : Test of mean orientations

@@ -85,7 +85,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2026-06-03</h4>
+            <h4 data-toc-skip class="date">2026-06-15</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/Import.Rmd" class="external-link"><code>vignettes/Import.Rmd</code></a></small>
       <div class="d-none name"><code>Import.Rmd</code></div>
@@ -227,11 +227,11 @@ measured on the fault plane, clockwise from the strike, where
 down-plunging is positive. Rake values range between 0 and 360° (or
 −180° and 180°).</p>
 <p>If your datra follows this convention, use the function
-<code><a href="../reference/fault_from_rake.html">Fault_from_rake()</a></code></p>
+<code><a href="../reference/fault-rake.html">Fault_from_rake()</a></code></p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">fault_plane</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Plane</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">120</span>, <span class="fl">100</span>, <span class="fl">0</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">60</span>, <span class="fl">50</span>, <span class="fl">40</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="va">fault_pitch</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">84.7202</span>, <span class="op">-</span><span class="fl">10</span>, <span class="fl">30</span>, <span class="fl">180</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/fault_from_rake.html">Fault_from_rake</a></span><span class="op">(</span><span class="va">fault_plane</span>, rake <span class="op">=</span> <span class="va">fault_pitch</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/fault-rake.html">Fault_from_rake</a></span><span class="op">(</span><span class="va">fault_plane</span>, rake <span class="op">=</span> <span class="va">fault_pitch</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Fault object (n = 4):</span></span>
 <span><span class="co">#&gt;      dip_direction dip   azimuth       plunge sense</span></span>
 <span><span class="co">#&gt; [1,]           120  60 109.52858 5.958159e+01     1</span></span>

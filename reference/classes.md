@@ -75,7 +75,7 @@ Spherical(x, .class)
   integer. Sense of the line (e.g.on a fault plane). Either `1`or `-1`
   for down (normal offset) or up (reverse offset), respectively. The
   "sense" is the sign of the fault's rake (see
-  [`Fault_from_rake()`](https://tobiste.github.io/structr/reference/fault_from_rake.md)
+  [`Fault_from_rake()`](https://tobiste.github.io/structr/reference/fault-rake.md)
   for details). Can also be a character with `"n"` (for normal) and
   `"r"` for "reverse".
 

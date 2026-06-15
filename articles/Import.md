@@ -141,7 +141,7 @@ down-plunging is positive. Rake values range between 0 and 360° (or
 −180° and 180°).
 
 If your datra follows this convention, use the function
-[`Fault_from_rake()`](https://tobiste.github.io/structr/reference/fault_from_rake.md)
+[`Fault_from_rake()`](https://tobiste.github.io/structr/reference/fault-rake.md)
 
 ``` r
 

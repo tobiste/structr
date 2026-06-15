@@ -54,5 +54,5 @@ example_lines_df$quality
 projected_mean(example_lines, w = runif(nrow(example_lines)))
 #> Line object (n = 1):
 #>  azimuth   plunge 
-#> 70.69187 12.33657 
+#> 71.76257 13.82375 
 ```

@@ -30,7 +30,7 @@ stereo_arrows(
   numeric. Sense of the line on a fault plane. Either `1`or `-1` for
   normal or thrust offset, respectively. The "sense" is the sign of the
   fault's rake (see
-  [`Fault_from_rake()`](https://tobiste.github.io/structr/reference/fault_from_rake.md)
+  [`Fault_from_rake()`](https://tobiste.github.io/structr/reference/fault-rake.md)
   for details).
 
 - scale:

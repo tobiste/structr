@@ -12,8 +12,6 @@ reverse)
 ``` r
 Fault_rake(x)
 
-Pair_plane(x)
-
 Fault_slip(x)
 
 Fault_plane(x)
