@@ -210,7 +210,7 @@ and all the plane (`planes`) and line measurements (`lines`) already
 converted into {structr} data objects.
 
 ```{r strabo2}
-names(strabo)
+names(strabo_data)
 ```
 
 ```{r strabi_plot1}

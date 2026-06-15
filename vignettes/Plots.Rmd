@@ -112,9 +112,9 @@ title("Pairs")
 ```
 #### Dip-Pitch-Plunge Ternary diagram
 
-The Dip-Pitch-Plunge diagram is a ternary fabric orientation diagram after Balé and Brun (1989)[^1] showing the pitch and plunge of stretching lineation (X) and the dip of the foliation plane (XY). This can be used to asses lateral flow or transpression geometries of Pair objects.
+The Dip-Pitch-Plunge diagram is a ternary fabric orientation diagram after Balé and Brun (1989)[^8] showing the pitch and plunge of stretching lineation (X) and the dip of the foliation plane (XY). This can be used to asses lateral flow or transpression geometries of Pair objects.
 
-[^1]: Balé, P., & Brun, J.-P. (1989). Late Precambrian thrust and wrench zones in 
+[^8]: Balé, P., & Brun, J.-P. (1989). Late Precambrian thrust and wrench zones in 
 northern Brittany (France). Journal of Structural Geology, 11(4), 391–405. <https://doi.org/10.1016/0191-8141(89)90017-5>
 
 ```{r bale}
