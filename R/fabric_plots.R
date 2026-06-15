@@ -311,10 +311,11 @@ vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5),
 #' @param labels character. Text labels
 #' @param ... optional plotting parameters passed to [graphics::points()]
 #' @param main character. The title of the plot.
-#' @param extra_labels logical
+#' @param extra_labels logical. Should some extra labels be added to the plot?
+#' @param add logical. Should data be plotted to an existing plot?
 #'
 #' @returns matrix of plotting parameters
-#' @noRd
+#' @export
 #'
 #' @references
 #' Balé, P., & Brun, J.-P. (1989). Late Precambrian thrust and wrench zones in
@@ -325,23 +326,22 @@ vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5),
 #' data(angelier1990)
 #' balebrun_plot(angelier1990$TYM)
 #'
-#' lapply(seq(0, 90, 10), function(i) {
-#'   p.i <- Pair_from_pitch(Plane(120, 0), i)
-#'   invisible(balebrun_plot(p.i, as.character(i), col = i / 9, add = i != 0))
-#' })
-#'
 #' balebrun_plot(Pair_from_pitch(Plane(0, 80), 80), "vertical flow", col = 1, add = F)
 #' balebrun_plot(Pair_from_pitch(Plane(0, 80), 10), "strike-slip", col = 2, add = T)
-#' balebrun_plot(Pair_from_pitch(Plane(0, 10), 10), "horizontal flow", col = 2, add = T)
-balebrun_plot <- function(x, labels = NULL, main = "Ternary Fabric Orientation", extra_labels = TRUE, add = FALSE, ...) {
+#' balebrun_plot(Pair_from_pitch(Plane(0, 10), 10), "horizontal flow", col = 3, add = T)
+balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", extra_labels = TRUE, add = FALSE, ...) {
   stopifnot(is.Pair(x))
-  lambda1_plunge <- x[, "plunge"]
-  lambda1_pitch <- Pair_pitch(x)
-  lambda12_dip <- x[, "dip"]
+  # plunge <- x[, "plunge"]
+  pitch <- Pair_pitch(x)
+  dip <- x[, "dip"]
+
+  crds <- .ternary_from_pitchdip(pitch, dip)
+
 
   if (isFALSE(add)) {
     .ternary_plot(
-      ngrid = rep(6, 3), main = main,
+      ngrid = NULL, main = main,
+      ticks = FALSE,
       invert_ticks = TRUE, tick_range = c(0, 90),
       left_vertex_label = "Strike-slip\nflow", right_vertex_label = "Horizontal\nflow", top_vertex_label = "Vertical flow",
       bottom_edge_label = "Dip of Foliation (XY)", # expression("Dip of"~lambda[1]*lambda[2]),
@@ -349,6 +349,9 @@ balebrun_plot <- function(x, labels = NULL, main = "Ternary Fabric Orientation",
       right_edge_label = "Plunge of Lineation (X)", # expression("Plunge of"~lambda[1]),
       invert = c(FALSE, TRUE, TRUE)
     )
+
+    .ternary_grid_pitchdip()
+
 
     if (isTRUE(extra_labels)) {
       A <- c(0, 0) # left
@@ -367,19 +370,59 @@ balebrun_plot <- function(x, labels = NULL, main = "Ternary Fabric Orientation",
     }
   }
 
-
-  plot_params <- cbind((90-lambda1_pitch) / 90, (90-lambda12_dip) / 90, (lambda1_plunge) / 90)
-
   if (is.null(labels)) {
-    .ternary_points(plot_params, ...)
+    graphics::points(crds, ...)
   } else {
-    .ternary_text(plot_params, labels, ...)
+    graphics::text(crds, labels, ...)
   }
 
 
-  invisible(plot_params)
+  invisible(crds)
 }
 
+.ternary_from_pitchdip <- function(pitch, dip) {
+  plunge <- plunge_from_pitchdip(pitch = pitch, dip = dip)
+
+  b_comp <- 90 - dip
+
+  remaining <- dip
+  c_comp <- plunge
+  a_comp <- remaining - plunge # = dip - plunge
+
+  cbind(a = a_comp, b = b_comp, c = c_comp) |>
+    .ternary_coords()
+}
+
+.ternary_grid_pitchdip <- function(dip_seq = seq(0, 90, 10),
+                                   pitch_seq = seq(0, 90, 10),
+                                   n_interp = 100,
+                                   col = "lightgray", lty = 3, 
+                                   ticks = TRUE) {
+  # --- Constant dip lines (dip fixed, pitch varies) ---
+  for (d in dip_seq) {
+    plunge_lines <- .ternary_from_pitchdip(pitch_seq, dip = d)
+    graphics::lines(plunge_lines[, 1], plunge_lines[, 2], col = col, lty = lty)
+  }
+
+  # --- Constant pitch lines (pitch fixed, dip varies) ---
+  dip_corner <- cbind(1, 0)
+  pitch_lines <- .ternary_from_pitchdip(pitch_seq, dip = 90)
+  graphics::segments(x0 = dip_corner[, 1], y0 = dip_corner[, 2], x1 = pitch_lines[, 1], y1 = pitch_lines[, 2], col = col, lty = lty)
+
+  # --- Constant plunge lines ---
+  
+  
+  # ticks
+  if (ticks) {
+    graphics::text(plunge_lines[, 1], plunge_lines[, 2], pitch_seq, pos = 2, cex = 0.7) # pitch 
+    for(i in pitch_seq/90){
+      plunge_label_pts <- .ternary_coords(0, i, 1-i)
+      graphics::text(plunge_label_pts[, 1], plunge_label_pts[, 2], (1-i)*90, pos = 4, cex = 0.7) # dip
+      
+    }
+    graphics::text(dip_seq/90, 0, rev(dip_seq), pos = 1, cex = 0.7) # dip 
+  }
+}
 
 #' Fabric Plot of Woodcock (1977)
 #'
