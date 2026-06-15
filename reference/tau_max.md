@@ -53,7 +53,7 @@ tau_max(sigma_x = 80, sigma_z = 120, tau_xz = 20)
 #>     theta <- theta1 + 45
 #>     return(list(tau_max = tau_max, theta = theta))
 #> }
-#> <bytecode: 0x55caa3c03508>
+#> <bytecode: 0x55aafcecd0e0>
 #> <environment: namespace:structr>
 #> 
 #> $theta

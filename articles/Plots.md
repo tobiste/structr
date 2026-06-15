@@ -131,7 +131,7 @@ A Fabric plot visualizes the shape of the distribution by plotting the
 eigenvalues of the orientation tensor. Three different diagram are
 provided by {structr}, namely the triangular *Vollmer plot*[^2], the
 logarithmic biplot (*Woodcock plot*)[^3], and the Lode parameter vs.
-natural octahedral strain diagram (*Hsu plot*)\[\|^hsu\].
+natural octahedral strain diagram (*Hsu plot*)[^4].
 
 ### Vollmer plot
 
@@ -170,7 +170,7 @@ an biplot plot after Woodcok
 ### Hsu plot
 
 [`hsu_plot()`](https://tobiste.github.io/structr/reference/hsu_plot.md)
-creates a Lode parameter[^4] vs. natural octahedral strain[^5] diagram
+creates a Lode parameter[^5] vs. natural octahedral strain[^6] diagram
 showing the shape of the orientation distribution (after Hsu, 1965).
 
 ``` r
@@ -185,7 +185,7 @@ a Hsu plot](Plots_files/figure-html/hsu-1.png)
 
 ## Density plots
 
-**Kamb** contours[^6] and densities can be added to an existing
+**Kamb** contours[^7] and densities can be added to an existing
 projection plot using the `contour` functions. Weighted densities can be
 controlled by the `weights` argument and are useful when the orientation
 measurements have different accuracies.
@@ -294,7 +294,7 @@ can be visualized, namely the Angelier and the Hoeppener plot.
 ### Angelier plot
 
 The **Angelier plot** shows all planes as *great circles* and lineations
-as points (after Angelier, 1984)[^7]. Fault striae are plotted as
+as points (after Angelier, 1984)[^8]. Fault striae are plotted as
 vectors on top of the lineation pointing in the movement direction of
 the hanging wall. Easy to read in case of homogeneous or small datasets.
 
@@ -318,7 +318,7 @@ projection](Plots_files/figure-html/faults1-1.png)
 ### Hoeppener plot
 
 The **Hoeppener plot** shows all planes as *poles* while lineations are
-not shown (after Hoeppener, 1955)[^8]. Instead, fault striae are plotted
+not shown (after Hoeppener, 1955)[^9]. Instead, fault striae are plotted
 as vectors on top of poles pointing in the movement direction of the
 hanging wall. Useful in case of large or heterogeneous datasets.
 
@@ -400,6 +400,9 @@ in northern Brittany (France). Journal of Structural Geology, 11(4),
 Hoeppener, R. Tektonik im Schiefergebirge. Geol Rundsch 44, 26-58
 (1955). <https://doi.org/10.1007/BF01802903>
 
+Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial strain
+paths. Journal of Strain Analysis, 1(3), 216–222.
+
 Kamb, W. B. (1959). Ice Petrofabric Observations from Blue Glacier,
 Washington, in Relation to Theory and Experiment. Journal of Geophysical
 Research, 54(11).
@@ -432,20 +435,23 @@ Retrieved from
     1231–1236. Retrieved from
     <http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf>
 
-[^4]: Lode, W. (1926). Versuche über den Einfluß der mittleren
+[^4]: Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial
+    strain paths. Journal of Strain Analysis, 1(3), 216–222.
+
+[^5]: Lode, W. (1926). Versuche über den Einfluß der mittleren
     Hauptspannung auf das Fließen der Metalle Eisen. Kupfer und Nickel.
     Zeitschrift Für Physik, 36(11–12), 913–939.
     <https://doi.org/10.1007/BF01400222>
 
-[^5]: Nádai, A. (1950). Theory of flow and fracture of solids.
+[^6]: Nádai, A. (1950). Theory of flow and fracture of solids.
     McGraw-Hill.
 
-[^6]: Kamb, W. B. (1959). Ice Petrofabric Observations from Blue
+[^7]: Kamb, W. B. (1959). Ice Petrofabric Observations from Blue
     Glacier, Washington, in Relation to Theory and Experiment. Journal
     of Geophysical Research, 54(11).
 
-[^7]: Angelier, J. Tectonic analysis of fault slip data sets, J.
+[^8]: Angelier, J. Tectonic analysis of fault slip data sets, J.
     Geophys. Res. 89 (B7), 5835-5848 (1984)
 
-[^8]: Hoeppener, R. Tektonik im Schiefergebirge. Geol Rundsch 44, 26-58
+[^9]: Hoeppener, R. Tektonik im Schiefergebirge. Geol Rundsch 44, 26-58
     (1955). <https://doi.org/10.1007/BF01802903>
