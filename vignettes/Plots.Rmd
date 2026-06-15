@@ -131,7 +131,7 @@ A Fabric plot visualizes the shape of the distribution by plotting the
 eigenvalues of the orientation tensor. Three different diagram are
 provided by {structr}, namely the triangular *Vollmer plot*[^1], the
 logarithmic biplot (*Woodcock plot*)[^2], and the Lode parameter vs.
-natural octahedral strain diagram (*Hsu plot*)[\|\^hsu].
+natural octahedral strain diagram (*Hsu plot*)[^9].
 
 [^1]: Vollmer, F. W. (1990). An application of eigenvalue methods to
     structural domain analysis. Geological Society of America Bulletin,
@@ -141,6 +141,9 @@ natural octahedral strain diagram (*Hsu plot*)[\|\^hsu].
     eigenvalue method. Geological Society of America Bulletin88,
     1231–1236. Retrieved from
     <http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf>
+    
+[^9]: Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial strain 
+      paths. Journal of Strain Analysis, 1(3), 216–222. \doi{10.1243/03093247V013216}
 
 ### Vollmer plot
 
@@ -393,6 +396,9 @@ Angelier, J. Tectonic analysis of fault slip data sets, J.
 Balé, P., & Brun, J.-P. (1989). Late Precambrian thrust and wrench zones in northern Brittany (France). Journal of Structural Geology, 11(4), 391–405. <https://doi.org/10.1016/0191-8141(89)90017-5>
 
 Hoeppener, R. Tektonik im Schiefergebirge. Geol Rundsch 44, 26-58 (1955). <https://doi.org/10.1007/BF01802903>
+
+Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial strain paths. 
+Journal of Strain Analysis, 1(3), 216–222. \doi{10.1243/03093247V013216}
 
 Kamb, W. B. (1959). Ice Petrofabric Observations from Blue
     Glacier, Washington, in Relation to Theory and Experiment. Journal of Geophysical Research, 54(11).
