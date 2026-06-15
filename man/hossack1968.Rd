@@ -31,7 +31,8 @@ Other datasets:
 \code{\link{holst}},
 \code{\link{ramsay}},
 \code{\link{shebandowan}},
-\code{\link{simongomez}}
+\code{\link{simongomez}},
+\code{\link{strabo_prj}}
 }
 \concept{datasets}
 \keyword{datasets}

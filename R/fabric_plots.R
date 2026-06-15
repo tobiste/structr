@@ -398,27 +398,37 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
                                    col = "lightgray", lty = 3, 
                                    ticks = TRUE) {
   # --- Constant dip lines (dip fixed, pitch varies) ---
-  for (d in dip_seq) {
-    plunge_lines <- .ternary_from_pitchdip(pitch_seq, dip = d)
-    graphics::lines(plunge_lines[, 1], plunge_lines[, 2], col = col, lty = lty)
+  dip_seq_s <- sort(dip_seq)
+  dip_seq_sr <- dip_seq_s[-c(1L, length(dip_seq_s))] # remove first and last line 
+  
+  for (d in dip_seq_sr) {
+    plunge_lines_sr <- .ternary_from_pitchdip(pitch_seq, dip = d)
+    graphics::lines(plunge_lines_sr[, 1], plunge_lines_sr[, 2], col = col, lty = lty)
   }
 
   # --- Constant pitch lines (pitch fixed, dip varies) ---
   dip_corner <- cbind(1, 0)
-  pitch_lines <- .ternary_from_pitchdip(pitch_seq, dip = 90)
-  graphics::segments(x0 = dip_corner[, 1], y0 = dip_corner[, 2], x1 = pitch_lines[, 1], y1 = pitch_lines[, 2], col = col, lty = lty)
+  pitch_seq_s <- sort(pitch_seq)
+  pitch_seq_sr <- pitch_seq_s[-c(1L, length(pitch_seq_s))] # remove first and last line 
+  
+  pitch_lines_sr <- .ternary_from_pitchdip(pitch_seq_sr, dip = 90)
+  graphics::segments(x0 = dip_corner[, 1], y0 = dip_corner[, 2], x1 = pitch_lines_sr[, 1], y1 = pitch_lines_sr[, 2], col = col, lty = lty)
 
   # --- Constant plunge lines ---
   
   
-  # ticks
+  # --- Tick labels ---
   if (ticks) {
+    plunge_lines <- .ternary_from_pitchdip(pitch_seq, dip = 90)
     graphics::text(plunge_lines[, 1], plunge_lines[, 2], pitch_seq, pos = 2, cex = 0.8) # pitch 
+    
+    pitch_lines <- .ternary_from_pitchdip(pitch_seq, dip = 90)
     for(i in pitch_seq/90){
       plunge_label_pts <- .ternary_coords(0, i, 1-i)
       graphics::text(plunge_label_pts[, 1], plunge_label_pts[, 2], (1-i)*90, pos = 4, cex = 0.8) # dip
       
     }
+    
     graphics::text(dip_seq/90, 0, rev(dip_seq), pos = 1, cex = 0.8) # dip 
   }
 }

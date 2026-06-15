@@ -10,6 +10,9 @@
 \item{x}{object of class \code{"strabo"}}
 
 \item{...}{arguments to be passed to \code{\link[=subset]{subset()}}}
+
+\item{ds}{character. Dataset that should be the base for subsetting.
+One of \code{"data"} (the default), \code{"spots"}, or \code{"tags"}.}
 }
 \value{
 An object of class \code{"strabo"} containing just the selected rows and

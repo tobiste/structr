@@ -134,7 +134,7 @@
 #' @examples
 #' data("strabo_prj")
 #' head(strabo_prj)
-"example_planes"
+"strabo_prj"
 
 
 #' Example data set

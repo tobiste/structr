@@ -28,7 +28,8 @@ Other datasets:
 \code{\link{holst}},
 \code{\link{hossack1968}},
 \code{\link{ramsay}},
-\code{\link{shebandowan}}
+\code{\link{shebandowan}},
+\code{\link{strabo_prj}}
 }
 \concept{datasets}
 \keyword{datasets}

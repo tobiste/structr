@@ -542,6 +542,8 @@ as.strabo <- function(x) {
 #' Retursn a subset from `"strabo"` objects which meet conditions.
 #' 
 #' @param x object of class `"strabo"`
+#' @param ds character. Dataset that should be the base for subsetting. 
+#'  One of `"data"` (the default), `"spots"`, or `"tags"`.
 #' @param ... arguments to be passed to [subset()]
 #' 
 #' @returns An object of class `"strabo"` containing just the selected rows and 
@@ -556,6 +558,8 @@ as.strabo <- function(x) {
 #' @examples
 #' subset(strabo_prj, strabo_prj$data$quality > 3)
 subset.strabo <- function(x, ..., ds = c("data", "spots", "tags")) {
+  spot_id <- NULL
+  
   if (inherits(x, "strabo.json")) {
     ds <- match.arg(ds)
     if (ds == "spots") {
