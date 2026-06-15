@@ -571,14 +571,15 @@ stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = "gray90",
   stereoplot_frame(col = border.col, radius = radius)
 }
 
-#' Stereoplot Tickmarks
+#' Stereoplot Tick Marks
 #'
-#' Adds stereoplot rickmarks to an existing plot
+#' Adds stereoplot trick marks to an existing plot
 #'
 #' @inheritParams stereoplot
 #' @param length numeric. Length of ticks as fraction of `radius`
 #' @param angle numeric. Division angle in degrees
-#' @param rotation numeric. Rotation (positive for counter-clockwise) of tickmarks and labels
+#' @param rotation numeric. Rotation (positive for counter-clockwise) of tick marks and labels
+#' @param cex numeric. Character expansion controls the font size of thee labels. 
 #' @param ... optional arguments passed to [graphics::segments()] and [graphics::text()]
 #'
 #' @importFrom graphics segments
@@ -588,7 +589,7 @@ stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = "gray90",
 #' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
 #' stereoplot_frame()
 #' stereoplot_ticks(length = 0.05, angle = 45, col = "blue", lwd = 2, labels = TRUE)
-stereoplot_ticks <- function(length = 0.02, angle = 10, labels = FALSE, ladj = 2 * length, radius = 1, rotation = 0, ...) {
+stereoplot_ticks <- function(length = 0.02, angle = 10, labels = FALSE, ladj = 2 * length, radius = 1, rotation = 0, cex = 0.8, ...) {
   DR <- radius + length
   ang_deg <- (seq(0, 360, by = angle) + rotation) %% 360
   ang <- pi * ang_deg / 180
@@ -610,7 +611,7 @@ stereoplot_ticks <- function(length = 0.02, angle = 10, labels = FALSE, ladj = 2
     DR.labs <- DR + ladj
     graphics::text(
       DR.labs * cos(ang), DR.labs * sin(ang),
-      labels = labels, ...
+      labels = labels, cex = cex, ...
     )
   }
 }

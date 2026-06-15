@@ -31,6 +31,10 @@
 #' set.seed(20250411)
 #' geodesic_var(example_planes, example_planes[1, ])
 #' geodesic_var(example_planes)
+#' 
+#' # Pair data
+#' p <- Pair(strabo_prj$planar, strabo_prj$linear)
+#' geodesic_var(p)
 NULL
 
 #' @rdname geodesic-var
@@ -121,6 +125,13 @@ geodesic_var.Pair <- function(x, y = NULL, group = NULL, ...) {
 #' @examples
 #' set.seed(20250411)
 #' geodesic_mean(example_planes)
+#' 
+#' # Pair data
+#' p <- Pair(strabo_prj$planar, strabo_prj$linear)
+#' p_mean <- geodesic_mean(p)
+#' 
+#' plot(p, col = 'grey')
+#' points(p_mean, col = 'red')
 NULL
 
 #' @rdname geodesic-mean
@@ -260,6 +271,7 @@ geodesic_meanvariance_ray <- function(x, seeds = 5L, steps = 100L) {
 #' @source oriMeanVariance from geologyGeometry (J.R. Davis)
 #'
 #' @examples
+#' # Fault data
 #' my_fault <- Fault(
 #'   c("a" = 120, "b" = 120, "c" = 100),
 #'   c(60, 60, 50),
@@ -269,6 +281,11 @@ geodesic_meanvariance_ray <- function(x, seeds = 5L, steps = 100L) {
 #' )
 #' geodesic_mean_pair(my_fault)
 #' geodesic_var_pair(my_fault)
+#' 
+#' # Pair data
+#' p <- Pair(strabo_prj$planar, strabo_prj$linear)
+#' geodesic_mean_pair(p)
+#' geodesic_var_pair(p)
 NULL
 
 #' @rdname mean-pair
@@ -527,7 +544,7 @@ symmetry_group <- function(group = c("triclinic", "ray_in_plane", "line_in_plane
       "ray_in_plane" = oriRayInPlaneGroup(), # 1 triclinic
       "triclinic" = oriRayInPlaneGroup(),
       "line_in_plane" = oriLineInPlaneGroup(), # 2 monoclinic
-      "monoclinie" = oriLineInPlaneGroup(), # 2 monoclinic
+      "monoclinic" = oriLineInPlaneGroup(), # 2 monoclinic
       "orthorhombic" = NULL,
       "tetragonal" = NULL,
       "trigonal-trapezohedral" = oriTrigonalTrapezohedralGroup(), # 32 trigonal-trapezohedral

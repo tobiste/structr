@@ -56,6 +56,10 @@ where \eqn{d_G(x, y)} is the geodesic distance between vectors \eqn{x} and \eqn{
 set.seed(20250411)
 geodesic_var(example_planes, example_planes[1, ])
 geodesic_var(example_planes)
+
+# Pair data
+p <- Pair(strabo_prj$planar, strabo_prj$linear)
+geodesic_var(p)
 }
 \references{
 Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis

@@ -740,12 +740,12 @@ hsu_plot.default <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "
 
     # Lode parameters labels
     for (rr in rseq[-1]) {
-      graphics::text(cos(pi / 2 - pi / 6 * 1.05) * rr, sin(pi / 2 - pi / 6 * 1.05) * rr, rr, adj = 1)
+      graphics::text(cos(pi / 2 - pi / 6 * 1.05) * rr, sin(pi / 2 - pi / 6 * 1.05) * rr, rr, adj = 1, cex = 0.8)
     }
 
     # Strain magnitude labels
     for (vr in seq(-1, 1, by = 0.5)) {
-      graphics::text(rmax2 * cos(pi / 2 + pi / 6 * vr) * 1.05, rmax2 * sin(pi / 2 - pi / 6 * vr) * 1.05, vr, adj = 0.5)
+      graphics::text(rmax2 * cos(pi / 2 + pi / 6 * vr) * 1.05, rmax2 * sin(pi / 2 - pi / 6 * vr) * 1.05, vr, adj = 0.5, cex = 0.8)
     }
 
 
@@ -753,9 +753,9 @@ hsu_plot.default <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "
     graphics::text(rmax2 * cos(pi / 2 - pi / 6 * 1.3) / 2, rmax2 * sin(pi / 2 - pi / 6 * 1.3) / 2, expression(bold(bar(epsilon[s]))), adj = .5, col = "black", font = 2)
 
     # Labels
-    graphics::text(0, rmax2 * 0.8, "Plane strain", adj = 0.5, col = "grey70", srt = 90)
-    graphics::text(rmax2 * cos(pi / 2 + pi / 6 * 0.9) * 0.8, rmax2 * sin(pi / 2 + pi / 6 * 0.9) * 0.8, "Flattening", adj = 0.5, col = "grey70", srt = 60)
-    graphics::text(rmax2 * cos(pi / 2 - pi / 6 * 0.9) * 0.8, rmax2 * sin(pi / 2 - pi / 6 * 0.9) * 0.8, "Constriction", adj = 0.5, col = "grey70", srt = -60)
+    graphics::text(0, rmax2 * 0.8, "Plane strain", adj = 0.5, col = "grey70", srt = 90, cex = 0.9)
+    graphics::text(rmax2 * cos(pi / 2 + pi / 6 * 0.9) * 0.8, rmax2 * sin(pi / 2 + pi / 6 * 0.9) * 0.8, "Flattening", adj = 0.5, col = "grey70", srt = 60, cex = 0.9)
+    graphics::text(rmax2 * cos(pi / 2 - pi / 6 * 0.9) * 0.8, rmax2 * sin(pi / 2 - pi / 6 * 0.9) * 0.8, "Constriction", adj = 0.5, col = "grey70", srt = -60, cex = 0.9)
   }
 
   # Data points

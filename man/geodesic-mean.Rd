@@ -44,6 +44,13 @@ minimizes the Fréchet variance.
 \examples{
 set.seed(20250411)
 geodesic_mean(example_planes)
+
+# Pair data
+p <- Pair(strabo_prj$planar, strabo_prj$linear)
+p_mean <- geodesic_mean(p)
+
+plot(p, col = 'grey')
+points(p_mean, col = 'red')
 }
 \references{
 Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis

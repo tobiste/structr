@@ -2,7 +2,7 @@
 % Please edit documentation in R/stereonet_base.R
 \name{stereoplot_ticks}
 \alias{stereoplot_ticks}
-\title{Stereoplot Tickmarks}
+\title{Stereoplot Tick Marks}
 \usage{
 stereoplot_ticks(
   length = 0.02,
@@ -11,6 +11,7 @@ stereoplot_ticks(
   ladj = 2 * length,
   radius = 1,
   rotation = 0,
+  cex = 0.8,
   ...
 )
 }
@@ -28,12 +29,14 @@ This essentially an amount that is added to \code{radius} and the length of the 
 
 \item{radius}{numeric. Radius of circle}
 
-\item{rotation}{numeric. Rotation (positive for counter-clockwise) of tickmarks and labels}
+\item{rotation}{numeric. Rotation (positive for counter-clockwise) of tick marks and labels}
+
+\item{cex}{numeric. Character expansion controls the font size of thee labels.}
 
 \item{...}{optional arguments passed to \code{\link[graphics:segments]{graphics::segments()}} and \code{\link[graphics:text]{graphics::text()}}}
 }
 \description{
-Adds stereoplot rickmarks to an existing plot
+Adds stereoplot trick marks to an existing plot
 }
 \examples{
 plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)

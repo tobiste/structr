@@ -28,6 +28,7 @@ The Frechet (geodesic \eqn{L^2}) mean and variance of a pair of foliations
 and lineations
 }
 \examples{
+# Fault data
 my_fault <- Fault(
   c("a" = 120, "b" = 120, "c" = 100),
   c(60, 60, 50),
@@ -37,6 +38,11 @@ my_fault <- Fault(
 )
 geodesic_mean_pair(my_fault)
 geodesic_var_pair(my_fault)
+
+# Pair data
+p <- Pair(strabo_prj$planar, strabo_prj$linear)
+geodesic_mean_pair(p)
+geodesic_var_pair(p)
 }
 \references{
 Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis
