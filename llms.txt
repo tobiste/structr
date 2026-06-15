@@ -969,7 +969,7 @@ MIT License
   : Stereoplot Gridlines
 
 - [`stereoplot_ticks()`](https://tobiste.github.io/structr/reference/stereoplot_ticks.md)
-  : Stereoplot Tickmarks
+  : Stereoplot Tick Marks
 
 - [`read_strabo_xlsx()`](https://tobiste.github.io/structr/reference/strabo.md)
   [`read_strabo_xls()`](https://tobiste.github.io/structr/reference/strabo.md)

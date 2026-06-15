@@ -76,4 +76,11 @@ geodesic_mean(example_planes)
 #> Plane object (n = 1):
 #> dip_direction           dip 
 #>     345.92363      75.35166 
+
+# Pair data
+p <- Pair(strabo_prj$planar, strabo_prj$linear)
+p_mean <- geodesic_mean(p)
+
+plot(p, col = 'grey')
+points(p_mean, col = 'red')
 ```

@@ -48,6 +48,7 @@ for geodesic mean of lines.
 ## Examples
 
 ``` r
+# Fault data
 my_fault <- Fault(
   c("a" = 120, "b" = 120, "c" = 100),
   c(60, 60, 50),
@@ -61,4 +62,13 @@ geodesic_mean_pair(my_fault)
 #>     109.11409      59.36207     131.87199      57.28751       1.00000 
 geodesic_var_pair(my_fault)
 #> [1] 0.721249
+
+# Pair data
+p <- Pair(strabo_prj$planar, strabo_prj$linear)
+geodesic_mean_pair(p)
+#> Pair object (n = 1):
+#> dip_direction           dip       azimuth        plunge 
+#>    333.187402     86.125820     62.754923      6.359923 
+geodesic_var_pair(p)
+#> [1] 0.2216458
 ```

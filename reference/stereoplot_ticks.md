@@ -1,6 +1,6 @@
-# Stereoplot Tickmarks
+# Stereoplot Tick Marks
 
-Adds stereoplot rickmarks to an existing plot
+Adds stereoplot trick marks to an existing plot
 
 ## Usage
 
@@ -12,6 +12,7 @@ stereoplot_ticks(
   ladj = 2 * length,
   radius = 1,
   rotation = 0,
+  cex = 0.8,
   ...
 )
 ```
@@ -44,8 +45,12 @@ stereoplot_ticks(
 
 - rotation:
 
-  numeric. Rotation (positive for counter-clockwise) of tickmarks and
+  numeric. Rotation (positive for counter-clockwise) of tick marks and
   labels
+
+- cex:
+
+  numeric. Character expansion controls the font size of thee labels.
 
 - ...:
 
