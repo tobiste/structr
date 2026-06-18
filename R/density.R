@@ -125,7 +125,7 @@ density_grid <- function(x, weights = NULL, upper.hem = FALSE, kamb = TRUE, ...)
   
   
   if (is.null(weights)) {
-    weights <- rep(1, nrow(x))
+    weights <- rep(1, length(azi))
   } else {
     weights <- weights[noNA] # remove elements where x is NA
   }
