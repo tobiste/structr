@@ -53,11 +53,11 @@ stereo_confidence(example_lines, params = list(n = 100, res = 100), col = "red")
 \code{\link[=confidence_ellipse]{confidence_ellipse()}}
 
 Other stereo-plot: 
+\code{\link{arrows}()},
 \code{\link{fault-plot}},
-\code{\link{lines.spherical}()},
+\code{\link{lines}()},
 \code{\link{plot-spherical}},
 \code{\link{points.spherical}()},
-\code{\link{stereo_arrows}()},
 \code{\link{stereo_cones}},
 \code{\link{stereo_contour}},
 \code{\link{stereo_lines}()},

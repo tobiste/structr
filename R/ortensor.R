@@ -236,8 +236,6 @@ ot_eigen <- function(x, scaled = FALSE, ...) UseMethod("ot_eigen")
 #' @name ot_eigen
 #' @export
 ot_eigen.spherical <- function(x, scaled = FALSE, ...) {
-  # stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
-
   xeig <- ortensor(x, ...) |>
     ot_eigen.ortensor(scaled = scaled)
 
@@ -304,16 +302,17 @@ projected_mean <- function(x, ...) {
 #' @details \describe{
 #' \item{`stretch_ratios`}{Sqrt of eigenvalue ratios}
 #' \item{`strain_ratios`}{Log of stretch ratios}
+#' \item{`Flinn`}{Flinn strain intensity}
 #' \item{`Ramsay`}{strain symmetry (Ramsay, 1983)}
 #' \item{`Woodcock`}{Woodcock shape}
-#' \item{`Flinn`}{Flinn strain intensity}
-# #' \item{`Vollmer`}{Point, Girdle, Random, Cylindricity (B), and Uniform Distance (D) Indices (Vollmer 1990; 2020). `D` is a measure of the "distance" from uniformity, and is linear from R to P, and R to G. End members are: uniform D = 0, girdle D = 0.5, cluster D = 1. The 99% level for a test against uniformity for a sample size of 300 is D = 0.1.}
-#' \item{`Nadai`}{natural octahedral unit strain and shear (Nadai, 1963)}
-#' \item{`Lisle_intensity`}{Intensity index (Lisle, 1985)}
 #' \item{`Waterson_intensity`}{strain intensity (Watterson, 1968)}
+# #' \item{`Vollmer`}{Point, Girdle, Random, Cylindricity (B), and Uniform Distance (D) Indices (Vollmer 1990; 2020). `D` is a measure of the "distance" from uniformity, and is linear from R to P, and R to G. End members are: uniform D = 0, girdle D = 0.5, cluster D = 1. The 99% level for a test against uniformity for a sample size of 300 is D = 0.1.}
+#' \item{`Lisle_intensity`}{Intensity index (Lisle, 1985)}
+#' \item{`Nadai`}{natural octahedral unit strain and shear (Nadai, 1963)}
 #' \item{`lode`}{Lode parameter (Lode, 1926)}
 #' \item{`kind`}{Descriptive type of ellipsoid: `"O"` - isotrope, `"L"` - L-tectonite, `"LLS"` - oblate L-tectonite, `"S"` - S-tectonite, `"SSL"` - prolate S-tectonite}
 #' \item{`MAD`}{maximum angular deviation (Kirschvink, 1980)}
+#' \item{`Jelinek`}{Jelinek (1981)'s \eqn{P_j} fabric intensity parameter}
 # #' \item{`US`}{Uniformity statistic of Mardia (1972)}
 #' }
 #'
@@ -510,7 +509,7 @@ shape_params.ortensor <- function(x, ...) {
   Watterson_intensity <- Rxy + Ryz - 1
 
   Flinn <- flinn(s)
-  pj <- jelinek(s) # Jellinek 1981
+  pj <- jelinek(s) # Jelinek 1981
 
   # JPF
   # hom.dens <- projection(hom.cpo, upper.proj(hom.cpo), stereonet)
@@ -535,7 +534,7 @@ shape_params.ortensor <- function(x, ...) {
     # MAD_approx = as.numeric(aMAD), # approximate deviation according to shape
     MAD = as.numeric(MAD), #  maximum angular deviation (MAD)
     # US = us,
-    Jellinek = pj # Jellinek 1981
+    Jelinek = pj # Jelinek 1981
   )
 }
 

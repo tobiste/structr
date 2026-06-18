@@ -34,11 +34,11 @@ stereo_lines(example_lines[1:2, ], col = "red")
 \code{\link[=slerp]{slerp()}}, \link{stereo_greatcircle}, \code{\link[=stereo_lines]{stereo_lines()}}, \code{\link[=stereo_segment]{stereo_segment()}}
 
 Other stereo-plot: 
+\code{\link{arrows}()},
 \code{\link{fault-plot}},
-\code{\link{lines.spherical}()},
+\code{\link{lines}()},
 \code{\link{plot-spherical}},
 \code{\link{points.spherical}()},
-\code{\link{stereo_arrows}()},
 \code{\link{stereo_cones}},
 \code{\link{stereo_confidence}()},
 \code{\link{stereo_contour}},

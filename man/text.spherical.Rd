@@ -35,11 +35,11 @@ text(Line(c(90, 80), c(10, 75)), labels = c("L1", "L2"), col = 1:2, pos = 3)
 }
 \seealso{
 Other stereo-plot: 
+\code{\link{arrows}()},
 \code{\link{fault-plot}},
-\code{\link{lines.spherical}()},
+\code{\link{lines}()},
 \code{\link{plot-spherical}},
 \code{\link{points.spherical}()},
-\code{\link{stereo_arrows}()},
 \code{\link{stereo_cones}},
 \code{\link{stereo_confidence}()},
 \code{\link{stereo_contour}},

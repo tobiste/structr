@@ -191,72 +191,6 @@ stereo_point <- function(x, col = 1, pch = 20, lab = NULL, text.pos = 4, cex = 1
 #' stereo_pair(faults, col = 1:4)
 NULL
 
-# #' @rdname stereo-fault
-# #' @export
-# stereo_fault <- function(x, hoeppener = FALSE, greatcirles = TRUE, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex = 1, text.pos = 4, upper.hem = FALSE, earea = TRUE) {
-#   stopifnot(is.Fault(x))
-#   x0 <- x
-#
-#   if (length(col) == 1) col <- rep(col, nrow(x))
-#   if (length(pch) == 1) pch <- rep(pch, nrow(x))
-#   if (length(cex) == 1) cex <- rep(cex, nrow(x))
-#   if (length(lwd) == 1) lwd <- rep(lwd, nrow(x))
-#   if (length(lty) == 1) lty <- rep(lty, nrow(x))
-#
-#   x[, 1] <- 180 + x[, 1]
-#   x[, 2] <- 90 - x[, 2]
-#
-#   crds.p <- stereo_coords(
-#     x[, 1],
-#     x[, 2],
-#     upper.hem
-#   )
-#   if (hoeppener) {
-#     crds.l <- stereo_coords(
-#       x[, 3] + 180,
-#       90 - x[, 4],
-#       upper.hem, earea
-#     )
-#   } else {
-#     crds.l <- stereo_coords(
-#       x[, 3],
-#       x[, 4],
-#       upper.hem, earea
-#     )
-#   }
-#
-#   for (i in 1:nrow(crds.p)) {
-#     if (greatcirles) {
-#       stereo_greatcircle(Plane(x0[i, 1], x0[i, 2]), col = col[i], lwd = lwd[i], lty = lty[i])
-#     } else {
-#       graphics::points(crds.p[i, "x"], crds.p[i, "y"], pch = pch[i], col = col[i])
-#       if (!is.null(lab)) {
-#         graphics::text(crds.p[, "x"], crds.p[, "y"], labels = lab, pos = text.pos, col = col[i], cex = cex[i])
-#       }
-#     }
-#     if (hoeppener) {
-#       ang <- (x0[i, 3] * sign(x0[i, "sense"]))
-#       graphics::points(crds.l[i, "x"], crds.l[i, "y"], pch = pch[i], col = col[i], cex = cex[i] / 1.25)
-#       if (x0[i, "sense"] != 0) {
-#         graphics::text(crds.l[i, "x"], crds.l[i, "y"], labels = "\u2191", col = col[i], srt = ang, cex = cex[i] * 1.5)
-#       }
-#     } else {
-#       ang <- x0[i, 3] %% 360
-#
-#       symb <- if (x0[i, 5] < 0) {
-#         "\u2193"
-#       } else {
-#         "\u2191"
-#       }
-#
-#       if (x0[i, "sense"] != 0) {
-#         graphics::text(crds.l[i, "x"], crds.l[i, "y"], labels = symb, col = col[i], srt = -ang, cex = cex[i] * 1.5)
-#       } else {
-#         graphics::points(crds.l[i, "x"], crds.l[i, "y"], pch = pch[i], col = col[i], cex = cex[i])
-#       }
-#     }
-#   }
-# }
 
 #' @rdname stereo-pair
 #' @export
@@ -355,14 +289,6 @@ stereo_smallcircle0 <- function(x, d = 90, col = 1, N = 1000, upper.hem = FALSE,
   stopifnot(is.spherical(x))
 
   nx <- nrow(x)
-
-  # for (par in list(pch, lwd, lty)) {
-  #   if (length(par) > 1 && length(par) != nx) {
-  #     warning("Graphical parameters with length > 1 will be recycled to match nrow(x)")
-  #     break
-  #   }
-  # }
-
 
   col <- rep_len(col, nx)
   lwd <- rep_len(lwd, nx)
@@ -855,26 +781,6 @@ plot.Fault <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(),
 }
 
 
-# plot.spherical <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
-#   do.call(stereoplot, append(grid.params, earea))
-#
-#   if (is.Line(x) | is.Vec3(x)) stereo_point(x, upper.hem = upper.hem, earea = earea, ...)
-#   if(is.Ray(x)){
-#     # different symbols for upper and lower hemisphere rays
-#     pch_upp <- if(upper.hem) c(1, 16) else c(16, 1)
-#     stereo_point(x, upper.hem = upper.hem, earea = earea,
-#                  pch = ifelse(x[, 2] > 1, pch_upp[1], pch_upp[2]),
-#                  ...)
-#   }
-#   if (is.Plane(x) & !is.Pair(x)) stereo_greatcircle(x, upper.hem = upper.hem, earea = earea, ...)
-#   if (is.Fault(x)) fault_plot(x, upper.hem = upper.hem, earea = earea, ...)
-#   if (is.Pair(x) & !is.Fault(x)) {
-#     stereo_greatcircle(Fault_plane(x), upper.hem = upper.hem, earea = earea, ...)
-#     stereo_point(Fault_slip(x), upper.hem = upper.hem, earea = earea, ...)
-#   }
-# }
-#
-
 #' Add Points to a Plot
 #'
 #' @param ... arguments passed to [graphics::points()]
@@ -915,7 +821,8 @@ points.spherical <- function(x, upper.hem = FALSE, earea = TRUE, ...) {
 #' @param ang numeric. Conical angle in degrees.
 #' @param ... arguments passed to [graphics::lines()]
 #' @importFrom graphics lines
-#' @exportS3Method graphics::lines
+#' 
+#' @name lines
 #'
 #' @family stereo-plot
 #'
@@ -923,10 +830,22 @@ points.spherical <- function(x, upper.hem = FALSE, earea = TRUE, ...) {
 #' set.seed(20250411)
 #' stereoplot()
 #' lines(rvmf(n = 5), ang = runif(5, 0, 90), col = 1:5)
+NULL
+
+#' @rdname lines
+#' @method lines spherical
+#' @export
 lines.spherical <- function(x, ang = 90, ...) {
   if (is.Plane(x)) stereo_greatcircle(x, ...) else stereo_smallcircle(x, d = ang, ...)
 }
 
+# extra here because {sp} has also a Line method for lines() 
+#' @rdname lines
+#' @method lines Line
+#' @export
+lines.Line <- function(x, ...) {
+  lines.spherical(x, ...)
+}
 
 #' Add Points to a Plot
 #'
@@ -979,6 +898,8 @@ hypot <- function(x, y) {
 #' @param length numeric. Length of the edges of the arrow head (in inches).
 #' @param angle numeric. Angle from the shaft of the arrow to the edge of the arrow head.
 #' @param scale numeric. Scales the length of the vector. `0.1` by default
+#' 
+#' @name arrows
 #'
 #' @seealso [hoeppener()], [angelier()]
 #' @family stereo-plot
@@ -992,6 +913,10 @@ hypot <- function(x, y) {
 #' p <- rvmf(n = 100)
 #' points(p, pch = 16, cex = .5)
 #' stereo_arrows(p, sense = 1, col = "red")
+NULL
+
+#' @rdname arrows
+#' @export
 stereo_arrows <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.hem = FALSE, earea = TRUE, ...) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Ray(x) | is.Plane(x))
 
@@ -1020,6 +945,11 @@ stereo_arrows <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.
   graphics::arrows(dx, dy, dx + scale * u, dy + scale * v, angle = angle, length = length, ...)
 }
 
+#' @rdname arrows
+#' @exportS3Method graphics::arrows
+arrows.spherical <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.hem = FALSE, earea = TRUE, ...){
+  stereo_arrows(x, sense, scale, angle, length, upper.hem, earea, ...)
+}
 
 #' Add Fault Data to Existing Plot
 #'

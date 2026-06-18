@@ -59,11 +59,11 @@ stereo_smallcircle(Line(c(129, 90), c(30, 5)), d = c(10, 5), col = 1:2, lty = 1:
 \code{\link[=lines.spherical]{lines.spherical()}}, \code{\link[=stereo_segment]{stereo_segment()}}, \code{\link[=stereo_lines]{stereo_lines()}}
 
 Other stereo-plot: 
+\code{\link{arrows}()},
 \code{\link{fault-plot}},
-\code{\link{lines.spherical}()},
+\code{\link{lines}()},
 \code{\link{plot-spherical}},
 \code{\link{points.spherical}()},
-\code{\link{stereo_arrows}()},
 \code{\link{stereo_confidence}()},
 \code{\link{stereo_contour}},
 \code{\link{stereo_lines}()},

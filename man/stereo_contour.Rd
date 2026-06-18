@@ -146,11 +146,11 @@ title(
 \code{\link[=count_points]{count_points()}}, \link{density}
 
 Other stereo-plot: 
+\code{\link{arrows}()},
 \code{\link{fault-plot}},
-\code{\link{lines.spherical}()},
+\code{\link{lines}()},
 \code{\link{plot-spherical}},
 \code{\link{points.spherical}()},
-\code{\link{stereo_arrows}()},
 \code{\link{stereo_cones}},
 \code{\link{stereo_confidence}()},
 \code{\link{stereo_lines}()},

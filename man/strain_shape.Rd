@@ -63,15 +63,16 @@ Principal Stretches, Strain and Shape Parameters based on the Orientation Tensor
 \describe{
 \item{\code{stretch_ratios}}{Sqrt of eigenvalue ratios}
 \item{\code{strain_ratios}}{Log of stretch ratios}
+\item{\code{Flinn}}{Flinn strain intensity}
 \item{\code{Ramsay}}{strain symmetry (Ramsay, 1983)}
 \item{\code{Woodcock}}{Woodcock shape}
-\item{\code{Flinn}}{Flinn strain intensity}
-\item{\code{Nadai}}{natural octahedral unit strain and shear (Nadai, 1963)}
-\item{\code{Lisle_intensity}}{Intensity index (Lisle, 1985)}
 \item{\code{Waterson_intensity}}{strain intensity (Watterson, 1968)}
+\item{\code{Lisle_intensity}}{Intensity index (Lisle, 1985)}
+\item{\code{Nadai}}{natural octahedral unit strain and shear (Nadai, 1963)}
 \item{\code{lode}}{Lode parameter (Lode, 1926)}
 \item{\code{kind}}{Descriptive type of ellipsoid: \code{"O"} - isotrope, \code{"L"} - L-tectonite, \code{"LLS"} - oblate L-tectonite, \code{"S"} - S-tectonite, \code{"SSL"} - prolate S-tectonite}
 \item{\code{MAD}}{maximum angular deviation (Kirschvink, 1980)}
+\item{\code{Jelinek}}{Jelinek (1981)'s \eqn{P_j} fabric intensity parameter}
 }
 }
 \examples{
