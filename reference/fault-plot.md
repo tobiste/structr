@@ -37,7 +37,7 @@ angelier(
 - ...:
 
   arguments passed to
-  [`stereo_arrows()`](https://tobiste.github.io/structr/reference/stereo_arrows.md)
+  [`stereo_arrows()`](https://tobiste.github.io/structr/reference/arrows.md)
 
 - points:
 
@@ -71,10 +71,10 @@ Hoeppener, R. Tektonik im Schiefergebirge. Geol Rundsch 44, 26-58
 ## See also
 
 Other stereo-plot:
-[`lines.spherical()`](https://tobiste.github.io/structr/reference/lines.spherical.md),
+[`arrows()`](https://tobiste.github.io/structr/reference/arrows.md),
+[`lines()`](https://tobiste.github.io/structr/reference/lines.md),
 [`plot-spherical`](https://tobiste.github.io/structr/reference/plot-spherical.md),
 [`points.spherical()`](https://tobiste.github.io/structr/reference/points.spherical.md),
-[`stereo_arrows()`](https://tobiste.github.io/structr/reference/stereo_arrows.md),
 [`stereo_cones`](https://tobiste.github.io/structr/reference/stereo_cones.md),
 [`stereo_confidence()`](https://tobiste.github.io/structr/reference/stereo_confidence.md),
 [`stereo_contour`](https://tobiste.github.io/structr/reference/stereo_contour.md),

@@ -64,16 +64,16 @@ stereo_greatcircle(x, ...)
 
 ## See also
 
-[`lines.spherical()`](https://tobiste.github.io/structr/reference/lines.spherical.md),
+[`lines.spherical()`](https://tobiste.github.io/structr/reference/lines.md),
 [`stereo_segment()`](https://tobiste.github.io/structr/reference/stereo_segment.md),
 [`stereo_lines()`](https://tobiste.github.io/structr/reference/stereo_lines.md)
 
 Other stereo-plot:
+[`arrows()`](https://tobiste.github.io/structr/reference/arrows.md),
 [`fault-plot`](https://tobiste.github.io/structr/reference/fault-plot.md),
-[`lines.spherical()`](https://tobiste.github.io/structr/reference/lines.spherical.md),
+[`lines()`](https://tobiste.github.io/structr/reference/lines.md),
 [`plot-spherical`](https://tobiste.github.io/structr/reference/plot-spherical.md),
 [`points.spherical()`](https://tobiste.github.io/structr/reference/points.spherical.md),
-[`stereo_arrows()`](https://tobiste.github.io/structr/reference/stereo_arrows.md),
 [`stereo_confidence()`](https://tobiste.github.io/structr/reference/stereo_confidence.md),
 [`stereo_contour`](https://tobiste.github.io/structr/reference/stereo_contour.md),
 [`stereo_lines()`](https://tobiste.github.io/structr/reference/stereo_lines.md),

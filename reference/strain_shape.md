@@ -73,6 +73,10 @@ list
 
   Log of stretch ratios
 
+- `Flinn`:
+
+  Flinn strain intensity
+
 - `Ramsay`:
 
   strain symmetry (Ramsay, 1983)
@@ -81,21 +85,17 @@ list
 
   Woodcock shape
 
-- `Flinn`:
+- `Waterson_intensity`:
 
-  Flinn strain intensity
-
-- `Nadai`:
-
-  natural octahedral unit strain and shear (Nadai, 1963)
+  strain intensity (Watterson, 1968)
 
 - `Lisle_intensity`:
 
   Intensity index (Lisle, 1985)
 
-- `Waterson_intensity`:
+- `Nadai`:
 
-  strain intensity (Watterson, 1968)
+  natural octahedral unit strain and shear (Nadai, 1963)
 
 - `lode`:
 
@@ -110,6 +110,10 @@ list
 - `MAD`:
 
   maximum angular deviation (Kirschvink, 1980)
+
+- `Jelinek`:
+
+  Jelinek (1981)'s \\P_j\\ fabric intensity parameter
 
 ## References
 
@@ -235,7 +239,7 @@ shape_params(x)
 #> $MAD
 #> [1] 17.97803
 #> 
-#> $Jellinek
+#> $Jelinek
 #> [1] 5.476767
 #> 
 ```

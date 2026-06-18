@@ -100,7 +100,7 @@ print(lines)
 The spherical objects can be plotted in equal-area projections using R’s
 primitive plotting functions, e.g. `plot`,
 [`points()`](https://rdrr.io/r/graphics/points.html), and
-[`lines()`](https://rdrr.io/r/graphics/lines.html), ….
+[`lines()`](https://tobiste.github.io/structr/reference/lines.md), ….
 
 ``` r
 

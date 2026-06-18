@@ -66,6 +66,10 @@
 - [`apparent_dip_direction()`](https://tobiste.github.io/structr/reference/apparent_dip_direction.md)
   : Apparent dip direction
 
+- [`stereo_arrows()`](https://tobiste.github.io/structr/reference/arrows.md)
+  [`arrows(`*`<spherical>`*`)`](https://tobiste.github.io/structr/reference/arrows.md)
+  : Add Arrows to a Stereoplot
+
 - [`assign_cex()`](https://tobiste.github.io/structr/reference/assign-cex.md)
   [`assign_cex_binned()`](https://tobiste.github.io/structr/reference/assign-cex.md)
   [`assign_cex_d()`](https://tobiste.github.io/structr/reference/assign-cex.md)
@@ -283,7 +287,8 @@
 - [`inertia_tensor()`](https://tobiste.github.io/structr/reference/inertia.md)
   : Inertia tensor
 
-- [`lines(`*`<spherical>`*`)`](https://tobiste.github.io/structr/reference/lines.spherical.md)
+- [`lines(`*`<spherical>`*`)`](https://tobiste.github.io/structr/reference/lines.md)
+  [`lines(`*`<Line>`*`)`](https://tobiste.github.io/structr/reference/lines.md)
   : Add Lines to a Plot
 
 - [`geodesic_mean_pair()`](https://tobiste.github.io/structr/reference/mean-pair.md)
@@ -419,9 +424,6 @@
 
 - [`stereo_pair()`](https://tobiste.github.io/structr/reference/stereo-pair.md)
   : Stereographic Projection of Pairs
-
-- [`stereo_arrows()`](https://tobiste.github.io/structr/reference/stereo_arrows.md)
-  : Add Arrows to a Stereoplot
 
 - [`stereo_smallcircle()`](https://tobiste.github.io/structr/reference/stereo_cones.md)
   [`stereo_greatcircle()`](https://tobiste.github.io/structr/reference/stereo_cones.md)

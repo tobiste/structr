@@ -404,7 +404,7 @@ shape_params(planes)
 #> $MAD
 #> [1] 32.80303
 #> 
-#> $Jellinek
+#> $Jelinek
 #> [1] 2.794622
 ```
 

@@ -64,10 +64,10 @@ hemisphere, and open symbols point into the upper hemisphere
 ## See also
 
 Other stereo-plot:
+[`arrows()`](https://tobiste.github.io/structr/reference/arrows.md),
 [`fault-plot`](https://tobiste.github.io/structr/reference/fault-plot.md),
-[`lines.spherical()`](https://tobiste.github.io/structr/reference/lines.spherical.md),
+[`lines()`](https://tobiste.github.io/structr/reference/lines.md),
 [`points.spherical()`](https://tobiste.github.io/structr/reference/points.spherical.md),
-[`stereo_arrows()`](https://tobiste.github.io/structr/reference/stereo_arrows.md),
 [`stereo_cones`](https://tobiste.github.io/structr/reference/stereo_cones.md),
 [`stereo_confidence()`](https://tobiste.github.io/structr/reference/stereo_confidence.md),
 [`stereo_contour`](https://tobiste.github.io/structr/reference/stereo_contour.md),

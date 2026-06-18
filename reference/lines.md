@@ -1,12 +1,15 @@
-# Lines in a Stereoplot
+# Add Lines to a Plot
 
-Draws simple lines between vector points in stereographic or equal-area
-projection
+Add Lines to a Plot
 
 ## Usage
 
 ``` r
-stereo_lines(x, upper.hem = FALSE, earea = TRUE, BALL.radius = 1, ...)
+# S3 method for class 'spherical'
+lines(x, ang = 90, ...)
+
+# S3 method for class 'Line'
+lines(x, ...)
 ```
 
 ## Arguments
@@ -17,46 +20,26 @@ stereo_lines(x, upper.hem = FALSE, earea = TRUE, BALL.radius = 1, ...)
   `"Fault"`, where the rows are the observations and the columns are the
   coordinates.
 
-- upper.hem:
+- ang:
 
-  logical. Whether the projection is shown for upper hemisphere (`TRUE`)
-  or lower hemisphere (`FALSE`, the default).
-
-- earea:
-
-  logical `TRUE` for Lambert equal-area projection (also "Schmidt net";
-  the default), or `FALSE` for meridional stereographic projection (also
-  "Wulff net" or "Stereonet").
-
-- BALL.radius:
-
-  numeric size of sphere
+  numeric. Conical angle in degrees.
 
 - ...:
 
-  optional graphical parameters passed to
+  arguments passed to
   [`graphics::lines()`](https://rdrr.io/r/graphics/lines.html)
 
-## Value
-
-two-column matrix of the stereographic or equal-area coordinates
-
 ## See also
-
-[`slerp()`](https://tobiste.github.io/structr/reference/slerp.md),
-[stereo_greatcircle](https://tobiste.github.io/structr/reference/stereo_cones.md),
-`stereo_lines()`,
-[`stereo_segment()`](https://tobiste.github.io/structr/reference/stereo_segment.md)
 
 Other stereo-plot:
 [`arrows()`](https://tobiste.github.io/structr/reference/arrows.md),
 [`fault-plot`](https://tobiste.github.io/structr/reference/fault-plot.md),
-[`lines()`](https://tobiste.github.io/structr/reference/lines.md),
 [`plot-spherical`](https://tobiste.github.io/structr/reference/plot-spherical.md),
 [`points.spherical()`](https://tobiste.github.io/structr/reference/points.spherical.md),
 [`stereo_cones`](https://tobiste.github.io/structr/reference/stereo_cones.md),
 [`stereo_confidence()`](https://tobiste.github.io/structr/reference/stereo_confidence.md),
 [`stereo_contour`](https://tobiste.github.io/structr/reference/stereo_contour.md),
+[`stereo_lines()`](https://tobiste.github.io/structr/reference/stereo_lines.md),
 [`stereo_point()`](https://tobiste.github.io/structr/reference/stereo_point.md),
 [`stereo_segment()`](https://tobiste.github.io/structr/reference/stereo_segment.md),
 [`stereoplot()`](https://tobiste.github.io/structr/reference/stereoplot.md),
@@ -67,6 +50,7 @@ Other stereo-plot:
 ## Examples
 
 ``` r
-plot(example_lines, col = "grey")
-stereo_lines(example_lines[1:2, ], col = "red")
+set.seed(20250411)
+stereoplot()
+lines(rvmf(n = 5), ang = runif(5, 0, 90), col = 1:5)
 ```

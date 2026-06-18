@@ -63,7 +63,8 @@ example data](Plots_files/figure-html/stereo_eangle-1.png)
 ### Great and small circles
 
 Great and small circles can be added using the
-[`lines()`](https://rdrr.io/r/graphics/lines.html) function.
+[`lines()`](https://tobiste.github.io/structr/reference/lines.md)
+function.
 
 Adding great circles for the first 10 vectors in planes:
 
@@ -78,7 +79,8 @@ points(planes[1:10, ], col = "#000004", pch = 1, cex = .5)
 greatcircles](Plots_files/figure-html/stereo_greatcircle-1.png)
 
 To plot a small circle with, e.g., a 10° radius, you need to specify the
-`ang` argument in [`lines()`](https://rdrr.io/r/graphics/lines.html):
+`ang` argument in
+[`lines()`](https://tobiste.github.io/structr/reference/lines.md):
 
 ``` r
 

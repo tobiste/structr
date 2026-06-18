@@ -1,21 +1,62 @@
-# Lines in a Stereoplot
+# Add Arrows to a Stereoplot
 
-Draws simple lines between vector points in stereographic or equal-area
-projection
+A quiver plot displays displacement vectors into pointing into the
+direction of movement.
 
 ## Usage
 
 ``` r
-stereo_lines(x, upper.hem = FALSE, earea = TRUE, BALL.radius = 1, ...)
+stereo_arrows(
+  x,
+  sense,
+  scale = 0.1,
+  angle = 10,
+  length = 0.1,
+  upper.hem = FALSE,
+  earea = TRUE,
+  ...
+)
+
+# S3 method for class 'spherical'
+arrows(
+  x,
+  sense,
+  scale = 0.1,
+  angle = 10,
+  length = 0.1,
+  upper.hem = FALSE,
+  earea = TRUE,
+  ...
+)
 ```
 
 ## Arguments
 
 - x:
 
-  object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or
-  `"Fault"`, where the rows are the observations and the columns are the
-  coordinates.
+  object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, where the
+  rows are the observations and the columns are the coordinates.
+
+- sense:
+
+  numeric. Sense of the line on a fault plane. Either `1`or `-1` for
+  normal or thrust offset, respectively. The "sense" is the sign of the
+  fault's rake (see
+  [`Fault_from_rake()`](https://tobiste.github.io/structr/reference/fault-rake.md)
+  for details).
+
+- scale:
+
+  numeric. Scales the length of the vector. `0.1` by default
+
+- angle:
+
+  numeric. Angle from the shaft of the arrow to the edge of the arrow
+  head.
+
+- length:
+
+  numeric. Length of the edges of the arrow head (in inches).
 
 - upper.hem:
 
@@ -28,28 +69,17 @@ stereo_lines(x, upper.hem = FALSE, earea = TRUE, BALL.radius = 1, ...)
   the default), or `FALSE` for meridional stereographic projection (also
   "Wulff net" or "Stereonet").
 
-- BALL.radius:
-
-  numeric size of sphere
-
 - ...:
 
-  optional graphical parameters passed to
-  [`graphics::lines()`](https://rdrr.io/r/graphics/lines.html)
-
-## Value
-
-two-column matrix of the stereographic or equal-area coordinates
+  arguments passed to
+  [`graphics::arrows()`](https://rdrr.io/r/graphics/arrows.html)
 
 ## See also
 
-[`slerp()`](https://tobiste.github.io/structr/reference/slerp.md),
-[stereo_greatcircle](https://tobiste.github.io/structr/reference/stereo_cones.md),
-`stereo_lines()`,
-[`stereo_segment()`](https://tobiste.github.io/structr/reference/stereo_segment.md)
+[`hoeppener()`](https://tobiste.github.io/structr/reference/fault-plot.md),
+[`angelier()`](https://tobiste.github.io/structr/reference/fault-plot.md)
 
 Other stereo-plot:
-[`arrows()`](https://tobiste.github.io/structr/reference/arrows.md),
 [`fault-plot`](https://tobiste.github.io/structr/reference/fault-plot.md),
 [`lines()`](https://tobiste.github.io/structr/reference/lines.md),
 [`plot-spherical`](https://tobiste.github.io/structr/reference/plot-spherical.md),
@@ -57,6 +87,7 @@ Other stereo-plot:
 [`stereo_cones`](https://tobiste.github.io/structr/reference/stereo_cones.md),
 [`stereo_confidence()`](https://tobiste.github.io/structr/reference/stereo_confidence.md),
 [`stereo_contour`](https://tobiste.github.io/structr/reference/stereo_contour.md),
+[`stereo_lines()`](https://tobiste.github.io/structr/reference/stereo_lines.md),
 [`stereo_point()`](https://tobiste.github.io/structr/reference/stereo_point.md),
 [`stereo_segment()`](https://tobiste.github.io/structr/reference/stereo_segment.md),
 [`stereoplot()`](https://tobiste.github.io/structr/reference/stereoplot.md),
@@ -67,6 +98,9 @@ Other stereo-plot:
 ## Examples
 
 ``` r
-plot(example_lines, col = "grey")
-stereo_lines(example_lines[1:2, ], col = "red")
+set.seed(20250411)
+stereoplot()
+p <- rvmf(n = 100)
+points(p, pch = 16, cex = .5)
+stereo_arrows(p, sense = 1, col = "red")
 ```
