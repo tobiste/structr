@@ -4,11 +4,13 @@
 \alias{vollmer}
 \title{Fabric Intensity and Shape of Orientation Tensor}
 \usage{
-vollmer(x)
+vollmer(x, ...)
 }
 \arguments{
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"},
 where the rows are the observations and the columns are the coordinates.}
+
+\item{...}{paramters passed to \code{\link[=ortensor]{ortensor()}}}
 }
 \value{
 numeric vector containing the fabric shape and intensity indices:

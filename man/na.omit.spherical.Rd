@@ -11,9 +11,6 @@
 
 \item{...}{further arguments special methods could require.}
 }
-\value{
-object with same class as input
-}
 \description{
 Handle Missing Values in Spherical Objects
 }
@@ -21,3 +18,4 @@ Handle Missing Values in Spherical Objects
 x <- Line(c(120, NA, 100), c(50, 60, 70))
 na.omit(x)
 }
+\keyword{internal}

@@ -109,6 +109,7 @@ ellipsoid_from_stretch <- function(x = 1, y = 1, z = 1) {
 #'
 #' @param x numeric. either a 3-element vector giving the ellipsoid's semi-axis
 #' lengths (in any order), an object of class `"ellipsoid"`, or an object of class `"ortensor"`.
+#' @param ... optional arguments passed to [ortensor()]
 #'
 #' @returns positive numeric
 #' @family ellipsoid
@@ -200,18 +201,18 @@ NULL
 
 #' @rdname ellipsoid-params
 #' @export
-volume <- function(x) UseMethod("volume")
+volume <- function(x, ...) UseMethod("volume")
 
 #' @rdname ellipsoid-params
 #' @export
-volume.default <- function(x) {
+volume.default <- function(x, ...) {
   logs <- log(x) |> unname()
   exp(sum(logs)) * 4 * pi / 3
 }
 
 #' @rdname ellipsoid-params
 #' @export
-volume.ellipsoid <- function(x) {
+volume.ellipsoid <- function(x, ...) {
   x |>
     principal_stretch.ellipsoid() |>
     volume.default()
@@ -219,19 +220,19 @@ volume.ellipsoid <- function(x) {
 
 #' @rdname ellipsoid-params
 #' @export
-volume.ortensor <- function(x) {
+volume.ortensor <- function(x, ...) {
   x |>
-    principal_stretch.ortensor(x) |>
+    principal_stretch.ortensor(...) |>
     volume.default()
 }
 
 #' @rdname ellipsoid-params
 #' @export
-lode <- function(x) UseMethod("lode")
+lode <- function(x, ...) UseMethod("lode")
 
 #' @rdname ellipsoid-params
 #' @export
-lode.default <- function(x) {
+lode.default <- function(x, ...) {
   logs <- sort(log(x), TRUE) |> unname()
   if (logs[1] == logs[3]) {
     0
@@ -242,7 +243,7 @@ lode.default <- function(x) {
 
 #' @rdname ellipsoid-params
 #' @export
-lode.ellipsoid <- function(x) {
+lode.ellipsoid <- function(x, ...) {
   x |>
     principal_stretch.ellipsoid() |>
     lode.default()
@@ -250,20 +251,20 @@ lode.ellipsoid <- function(x) {
 
 #' @rdname ellipsoid-params
 #' @export
-lode.ortensor <- function(x) {
+lode.ortensor <- function(x, ...) {
   x |>
-    principal_stretch.ortensor() |>
+    principal_stretch.ortensor(...) |>
     lode.default()
 }
 
 
 #' @rdname ellipsoid-params
 #' @export
-nadai <- function(x) UseMethod("nadai")
+nadai <- function(x, ...) UseMethod("nadai")
 
 #' @rdname ellipsoid-params
 #' @export
-nadai.default <- function(x) {
+nadai.default <- function(x, ...) {
   e <- log(x) |> unname()
 
   exy <- e[1] - e[2]
@@ -276,7 +277,7 @@ nadai.default <- function(x) {
 
 #' @rdname ellipsoid-params
 #' @export
-nadai.ellipsoid <- function(x) {
+nadai.ellipsoid <- function(x, ...) {
   x |>
     principal_stretch.ellipsoid() |>
     nadai.default()
@@ -284,19 +285,19 @@ nadai.ellipsoid <- function(x) {
 
 #' @rdname ellipsoid-params
 #' @export
-nadai.ortensor <- function(x) {
+nadai.ortensor <- function(x, ...) {
   x |>
-    principal_stretch.ortensor() |>
+    principal_stretch.ortensor(...) |>
     nadai.default()
 }
 
 #' @rdname ellipsoid-params
 #' @export
-jelinek <- function(x) UseMethod("jelinek")
+jelinek <- function(x, ...) UseMethod("jelinek")
 
 #' @rdname ellipsoid-params
 #' @export
-jelinek.default <- function(x) {
+jelinek.default <- function(x, ...) {
   logs <- log(x) |> unname()
   v <- logs - sum(logs) / 3
   v_dot <- sum(v^2)
@@ -305,7 +306,7 @@ jelinek.default <- function(x) {
 
 #' @rdname ellipsoid-params
 #' @export
-jelinek.ellipsoid <- function(x) {
+jelinek.ellipsoid <- function(x, ...) {
   x |>
     principal_stretch.ellipsoid() |>
     jelinek.default()
@@ -313,19 +314,19 @@ jelinek.ellipsoid <- function(x) {
 
 #' @rdname ellipsoid-params
 #' @export
-jelinek.ortensor <- function(x) {
+jelinek.ortensor <- function(x, ...) {
   x |>
-    principal_stretch.ortensor() |>
+    principal_stretch.ortensor(...) |>
     jelinek.default()
 }
 
 #' @rdname ellipsoid-params
 #' @export
-flinn <- function(x) UseMethod("flinn")
+flinn <- function(x, ...) UseMethod("flinn")
 
 #' @rdname ellipsoid-params
 #' @export
-flinn.default <- function(x) {
+flinn.default <- function(x, ...) {
   a <- sort(x, TRUE) |> unname()
 
   R_xy <- a[1] / a[2]
@@ -340,7 +341,15 @@ flinn.default <- function(x) {
 
 #' @rdname ellipsoid-params
 #' @export
-flinn.ortensor <- function(x) {
+flinn.ortensor <- function(x, ...) {
+  x |>
+    principal_stretch(...) |>
+    flinn()
+}
+
+#' @rdname ellipsoid-params
+#' @export
+flinn.ellipsoid <- function(x, ...) {
   x |>
     principal_stretch() |>
     flinn()
@@ -348,26 +357,26 @@ flinn.ortensor <- function(x) {
 
 #' @rdname ellipsoid-params
 #' @export
-flinn.ellipsoid <- function(x) {
-  x |>
-    principal_stretch() |>
-    flinn()
-}
+size_invariant <- function(x, ...) UseMethod("size_invariant")
 
 #' @rdname ellipsoid-params
 #' @export
-size_invariant <- function(x) UseMethod("size_invariant")
-
-#' @rdname ellipsoid-params
-#' @export
-size_invariant.default <- function(x) {
+size_invariant.default <- function(x, ...) {
   logs <- log(x) |> unname()
   sum(logs)
 }
 
 #' @rdname ellipsoid-params
 #' @export
-size_invariant.ortensor <- function(x) {
+size_invariant.ortensor <- function(x, ...) {
+  x |>
+    principal_stretch(...) |>
+    size_invariant()
+}
+
+#' @rdname ellipsoid-params
+#' @export
+size_invariant.ellipsoid <- function(x, ...) {
   x |>
     principal_stretch() |>
     size_invariant()
@@ -375,26 +384,26 @@ size_invariant.ortensor <- function(x) {
 
 #' @rdname ellipsoid-params
 #' @export
-size_invariant.ellipsoid <- function(x) {
-  x |>
-    principal_stretch() |>
-    size_invariant()
-}
+strain_invariant <- function(x, ...) UseMethod("strain_invariant")
 
 #' @rdname ellipsoid-params
 #' @export
-strain_invariant <- function(x) UseMethod("strain_invariant")
-
-#' @rdname ellipsoid-params
-#' @export
-strain_invariant.default <- function(x) {
+strain_invariant.default <- function(x, ...) {
   logs <- log(x) |> unname()
   logs[[1]] * logs[[2]] + logs[[2]] * logs[[3]] + logs[[3]] * logs[[1]]
 }
 
 #' @rdname ellipsoid-params
 #' @export
-strain_invariant.ortensor <- function(x) {
+strain_invariant.ortensor <- function(x, ...) {
+  x |>
+    principal_stretch(...) |>
+    strain_invariant()
+}
+
+#' @rdname ellipsoid-params
+#' @export
+strain_invariant.ellipsoid <- function(x, ...) {
   x |>
     principal_stretch() |>
     strain_invariant()
@@ -402,26 +411,26 @@ strain_invariant.ortensor <- function(x) {
 
 #' @rdname ellipsoid-params
 #' @export
-strain_invariant.ellipsoid <- function(x) {
-  x |>
-    principal_stretch() |>
-    strain_invariant()
-}
+shape_invariant <- function(x, ...) UseMethod("shape_invariant")
 
 #' @rdname ellipsoid-params
 #' @export
-shape_invariant <- function(x) UseMethod("shape_invariant")
-
-#' @rdname ellipsoid-params
-#' @export
-shape_invariant.default <- function(x) {
+shape_invariant.default <- function(x, ...) {
   logs <- log(x) |> unname()
   logs[[1]] * logs[[2]] * logs[[3]]
 }
 
 #' @rdname ellipsoid-params
 #' @export
-shape_invariant.ortensor <- function(x) {
+shape_invariant.ortensor <- function(x, ...) {
+  x |>
+    principal_stretch(...) |>
+    shape_invariant()
+}
+
+#' @rdname ellipsoid-params
+#' @export
+shape_invariant.ellipsoid <- function(x, ...) {
   x |>
     principal_stretch() |>
     shape_invariant()
@@ -429,19 +438,11 @@ shape_invariant.ortensor <- function(x) {
 
 #' @rdname ellipsoid-params
 #' @export
-shape_invariant.ellipsoid <- function(x) {
-  x |>
-    principal_stretch() |>
-    shape_invariant()
-}
+kind <- function(x, ...) UseMethod("kind")
 
 #' @rdname ellipsoid-params
 #' @export
-kind <- function(x) UseMethod("kind")
-
-#' @rdname ellipsoid-params
-#' @export
-kind.default <- function(x) {
+kind.default <- function(x, ...) {
   e <- log(x) |> unname()
 
   e12 <- e[1] - e[2]
@@ -458,15 +459,15 @@ kind.default <- function(x) {
 
 #' @rdname ellipsoid-params
 #' @export
-kind.ortensor <- function(x) {
+kind.ortensor <- function(x, ...) {
   x |>
-    principal_stretch() |>
+    principal_stretch(...) |>
     kind()
 }
 
 #' @rdname ellipsoid-params
 #' @export
-kind.ellipsoid <- function(x) {
+kind.ellipsoid <- function(x, ...) {
   x |>
     principal_stretch() |>
     kind()

@@ -10,6 +10,7 @@ woodcock_plot(
   add = FALSE,
   max = 7,
   main = "Woodcock diagram",
+  weights = NULL,
   ...
 )
 }
@@ -25,6 +26,8 @@ rows are the observations and the columns are the coordinates, or an \code{"orte
 \item{max}{numeric. Maximum value for x and y axes. If \code{NULL}, it is calculated from the data.}
 
 \item{main}{character. The main title for the plot.}
+
+\item{weights}{numeric. Weightings}
 
 \item{...}{optional graphical parameters}
 }

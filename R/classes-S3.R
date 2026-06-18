@@ -544,7 +544,7 @@ print.Fault <- function(x, ...) {
 
 
 
-#' Combine SPherical Objects by Rows or Columns
+#' Combine Spherical Objects by Rows or Columns
 #'
 #' @param ... objects  to bind; note that all objects have to be class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`.
 #' @param .class character. The output class. If `NULL`, all combined objects
@@ -636,17 +636,18 @@ tail.spherical <- function(x, n = 6L, ...) {
 #'
 #' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`.
 #' @inheritParams base::sample
+#' 
+#' @returns object identical to class of `x`
 #'
-#' @returns object of class `x`
-#' @exportS3Method base::sample
+#' @export
 #'
 #' @examples
 #' set.seed(20250411)
 #' x <- rvmf(n = 100, mu = Line(90, 45))
-#' sample(x, size = 5)
-sample.spherical <- function(x, size, replace = FALSE, prob = NULL) {
-  rnd <- sample.int(nrow(x), size, replace, prob)
-  return(x[rnd, ])
+#' sample_spherical(x, size = 5)
+sample_spherical <- function(x, size, replace = FALSE, prob = NULL) {
+  rnd <- sample.int(nrow(x), size = size, replace = replace, prob = prob)
+  x[rnd, ]
 }
 
 #' Handle Missing Values in Spherical Objects
@@ -654,7 +655,9 @@ sample.spherical <- function(x, size, replace = FALSE, prob = NULL) {
 #' @param object object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`.
 #' @param ... further arguments special methods could require.
 #' 
-#' @returns object with same class as input
+#' @keywords internal
+#' 
+#' @method na.omit spherical
 #' @exportS3Method stats::na.omit
 #' @examples
 #' x <- Line(c(120, NA, 100), c(50, 60, 70))

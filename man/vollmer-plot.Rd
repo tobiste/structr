@@ -25,6 +25,7 @@ vollmer_plot(x, labels, add, ngrid, main, ...)
   add = FALSE,
   ngrid = c(5, 5, 5),
   main = "Vollmer diagram",
+  weights = NULL,
   ...
 )
 
@@ -52,6 +53,8 @@ for the P, G, and G axes. Constant grid spacing when only one integer is given.
 \item{main}{character. The main title for the plot.}
 
 \item{...}{optional graphical parameters}
+
+\item{weights}{numeric. Weightings}
 }
 \value{
 plot and when stored as an object, the \code{P}, \code{G}, and \code{R} values as a numeric vector.

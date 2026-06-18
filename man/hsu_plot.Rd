@@ -11,9 +11,17 @@
 \usage{
 hsu_plot(x, ...)
 
-\method{hsu_plot}{ortensor}(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...)
+\method{hsu_plot}{ortensor}(
+  x,
+  labels = NULL,
+  add = FALSE,
+  es.max = 3,
+  main = "Hsu diagram",
+  weights = NULL,
+  ...
+)
 
-\method{hsu_plot}{spherical}(x, ...)
+\method{hsu_plot}{spherical}(x, weights = NULL, ...)
 
 \method{hsu_plot}{ellispoid}(x, ...)
 
@@ -38,6 +46,8 @@ Tensor objects can also be lists of such objects (\code{"ortensor"} and \code{"e
 \item{es.max}{maximum strain for scaling.}
 
 \item{main}{character. The main title (on top).}
+
+\item{weights}{numeric. Weightings}
 }
 \value{
 a list containing the Lode parameter \code{lode} and the natural octahedral strain \code{es}.

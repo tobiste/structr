@@ -9,14 +9,7 @@
 \alias{flinn_plot.list}
 \title{Flinn Diagram}
 \usage{
-flinn_plot(
-  x,
-  main = "Flinn diagram",
-  R.max = NULL,
-  log = FALSE,
-  add = FALSE,
-  ...
-)
+flinn_plot(x, ...)
 
 \method{flinn_plot}{default}(
   x,
@@ -27,11 +20,11 @@ flinn_plot(
   ...
 )
 
-\method{flinn_plot}{ortensor}(x, ...)
+\method{flinn_plot}{ortensor}(x, weights = NULL, ...)
 
 \method{flinn_plot}{ellipsoid}(x, ...)
 
-\method{flinn_plot}{spherical}(x, ...)
+\method{flinn_plot}{spherical}(x, weights = NULL, ...)
 
 \method{flinn_plot}{list}(x, ...)
 }
@@ -43,6 +36,8 @@ strain and minimum strain (Y/Z);
 objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"ortensor"} and \code{"ellipsoid"} objects.
 Tensor objects can also be lists of such objects (\code{"ortensor"} and \code{"ellipsoid"}).}
 
+\item{...}{plotting arguments passed to \code{\link[graphics:points]{graphics::points()}}}
+
 \item{main}{character. The main title (on top).}
 
 \item{R.max}{numeric. Maximum aspect ratio for scaling.}
@@ -51,7 +46,7 @@ Tensor objects can also be lists of such objects (\code{"ortensor"} and \code{"e
 
 \item{add}{logical. Should data be plotted to an existing plot?}
 
-\item{...}{plotting arguments passed to \code{\link[graphics:points]{graphics::points()}}}
+\item{weights}{numeric. Weightings}
 }
 \value{
 list. Relative magnitudes of X, Y and Z (Z=1).

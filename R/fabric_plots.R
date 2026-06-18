@@ -5,6 +5,7 @@
 #' Fabric intensity and shape parameters of the orientation tensor based on Vollmer (1990)
 #'
 #' @inheritParams geodesic_mean
+#' @param ... paramters passed to [ortensor()]
 #' @returns numeric vector containing the fabric shape and intensity indices:
 #' \describe{
 #' \item{`P`}{Point (Vollmer 1990). Range: (0, 1)}
@@ -43,9 +44,9 @@
 #'
 #' # Pair objects:
 #' vollmer(simongomez)
-vollmer <- function(x) {
+vollmer <- function(x, ...) {
   stopifnot(is.spherical(x))
-  ot <- ortensor(x)
+  ot <- ortensor(x, ...)
   eig <- eigen(ot, only.values = TRUE)$values #|> sort(decreasing = TRUE)
 
   if (is.Pair(x) & any(eig < 0)) eig <- abs(eig) |> sort(decreasing = TRUE)
@@ -120,8 +121,8 @@ vollmer_plot.default <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 
 
 #' @rdname vollmer-plot
 #' @export
-vollmer_plot.spherical <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), main = "Vollmer diagram", ...) {
-  x_vollmer <- vollmer(x)
+vollmer_plot.spherical <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), main = "Vollmer diagram", weights = NULL, ...) {
+  x_vollmer <- vollmer(x, w = weights)
   # P <- x_vollmer["P"]
   # G <- x_vollmer["G"]
   # R <- x_vollmer["R"]
@@ -468,6 +469,7 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
 #' @param labels character. text labels
 #' @param add logical. Should data be plotted to an existing plot?
 #' @param max numeric. Maximum value for x and y axes. If `NULL`, it is calculated from the data.
+#' @param weights numeric. Weightings
 #' @param ... optional graphical parameters
 #'
 #' @references Woodcock, N. H. (1977). Specification of fabric shapes using an eigenvalue method. Geological Society of America Bulletin88, 1231<U+2013>1236. http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf
@@ -487,8 +489,8 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
 #' woodcock_plot(x, lab = "x")
 #' y <- rvmf(100, mu = mu, k = 20)
 #' woodcock_plot(y, lab = "y", add = TRUE, col = "red")
-woodcock_plot <- function(x, labels = NULL, add = FALSE, max = 7, main = "Woodcock diagram", ...) {
-  x_eigen <- ot_eigen(x, scaled = TRUE)
+woodcock_plot <- function(x, labels = NULL, add = FALSE, max = 7, main = "Woodcock diagram", weights = NULL, ...) {
+  x_eigen <- ot_eigen(x, w = weights, scaled = TRUE)
 
   max_val <- if (is.null(max)) {
     max(log(x_eigen$values[1] / x_eigen$values[2]), log(x_eigen$values[2] / x_eigen$values[3])) + 1
@@ -551,6 +553,7 @@ woodcock_plot <- function(x, labels = NULL, add = FALSE, max = 7, main = "Woodco
 #' @param add logical. Should data be plotted to an existing plot?
 #' @param ... plotting arguments passed to [graphics::points()]
 #' @param es.max maximum strain for scaling.
+#' @param weights numeric. Weightings
 #'
 #' @returns a list containing the Lode parameter `lode` and the natural octahedral strain `es`.
 #' @family fabric-plot
@@ -621,8 +624,8 @@ hsu_plot <- function(x, ...) UseMethod("hsu_plot")
 
 #' @rdname hsu_plot
 #' @export
-hsu_plot.ortensor <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...) {
-  x_eigen <- principal_stretch(x)
+hsu_plot.ortensor <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", weights = NULL, ...) {
+  x_eigen <- principal_stretch(x, w = weights)
 
   # X <- x_eigen$values[1]
   # Y <- x_eigen$values[2]
@@ -668,8 +671,8 @@ hsu_plot.ortensor <- function(x, labels = NULL, add = FALSE, es.max = 3, main = 
 
 #' @rdname hsu_plot
 #' @export
-hsu_plot.spherical <- function(x, ...) {
-  ortensor(x) |>
+hsu_plot.spherical <- function(x, weights = NULL, ...) {
+  ortensor(x, w = weights) |>
     hsu_plot.ortensor(...)
 }
 
@@ -859,7 +862,7 @@ NULL
 
 #' @rdname flinn_plot
 #' @export
-flinn_plot <- function(x, main = "Flinn diagram", R.max = NULL, log = FALSE, add = FALSE, ...) UseMethod("flinn_plot")
+flinn_plot <- function(x, ...) UseMethod("flinn_plot")
 
 #' @rdname flinn_plot
 #' @export
@@ -940,8 +943,8 @@ flinn_plot.default <- function(x, main = "Flinn diagram", R.max = NULL, log = FA
 
 #' @rdname flinn_plot
 #' @export
-flinn_plot.ortensor <- function(x, ...) {
-  x.stretch <- principal_stretch(x)
+flinn_plot.ortensor <- function(x, weights = NULL, ...) {
+  x.stretch <- principal_stretch(x, w = weights)
 
   a <- sort(x.stretch, TRUE) |> unname()
 
@@ -960,8 +963,8 @@ flinn_plot.ellipsoid <- function(x, ...) {
 
 #' @rdname flinn_plot
 #' @export
-flinn_plot.spherical <- function(x, ...) {
-  flinn_plot.ortensor(ortensor(x), ...)
+flinn_plot.spherical <- function(x, weights = NULL, ...) {
+  flinn_plot.ortensor(ortensor(x, w = weights), ...)
 }
 
 #' @rdname flinn_plot

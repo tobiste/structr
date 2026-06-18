@@ -40,81 +40,83 @@
 \alias{kind.ellipsoid}
 \title{Ellipsoid shape parameters}
 \usage{
-volume(x)
+volume(x, ...)
 
-\method{volume}{default}(x)
+\method{volume}{default}(x, ...)
 
-\method{volume}{ellipsoid}(x)
+\method{volume}{ellipsoid}(x, ...)
 
-\method{volume}{ortensor}(x)
+\method{volume}{ortensor}(x, ...)
 
-lode(x)
+lode(x, ...)
 
-\method{lode}{default}(x)
+\method{lode}{default}(x, ...)
 
-\method{lode}{ellipsoid}(x)
+\method{lode}{ellipsoid}(x, ...)
 
-\method{lode}{ortensor}(x)
+\method{lode}{ortensor}(x, ...)
 
-nadai(x)
+nadai(x, ...)
 
-\method{nadai}{default}(x)
+\method{nadai}{default}(x, ...)
 
-\method{nadai}{ellipsoid}(x)
+\method{nadai}{ellipsoid}(x, ...)
 
-\method{nadai}{ortensor}(x)
+\method{nadai}{ortensor}(x, ...)
 
-jelinek(x)
+jelinek(x, ...)
 
-\method{jelinek}{default}(x)
+\method{jelinek}{default}(x, ...)
 
-\method{jelinek}{ellipsoid}(x)
+\method{jelinek}{ellipsoid}(x, ...)
 
-\method{jelinek}{ortensor}(x)
+\method{jelinek}{ortensor}(x, ...)
 
-flinn(x)
+flinn(x, ...)
 
-\method{flinn}{default}(x)
+\method{flinn}{default}(x, ...)
 
-\method{flinn}{ortensor}(x)
+\method{flinn}{ortensor}(x, ...)
 
-\method{flinn}{ellipsoid}(x)
+\method{flinn}{ellipsoid}(x, ...)
 
-size_invariant(x)
+size_invariant(x, ...)
 
-\method{size_invariant}{default}(x)
+\method{size_invariant}{default}(x, ...)
 
-\method{size_invariant}{ortensor}(x)
+\method{size_invariant}{ortensor}(x, ...)
 
-\method{size_invariant}{ellipsoid}(x)
+\method{size_invariant}{ellipsoid}(x, ...)
 
-strain_invariant(x)
+strain_invariant(x, ...)
 
-\method{strain_invariant}{default}(x)
+\method{strain_invariant}{default}(x, ...)
 
-\method{strain_invariant}{ortensor}(x)
+\method{strain_invariant}{ortensor}(x, ...)
 
-\method{strain_invariant}{ellipsoid}(x)
+\method{strain_invariant}{ellipsoid}(x, ...)
 
-shape_invariant(x)
+shape_invariant(x, ...)
 
-\method{shape_invariant}{default}(x)
+\method{shape_invariant}{default}(x, ...)
 
-\method{shape_invariant}{ortensor}(x)
+\method{shape_invariant}{ortensor}(x, ...)
 
-\method{shape_invariant}{ellipsoid}(x)
+\method{shape_invariant}{ellipsoid}(x, ...)
 
-kind(x)
+kind(x, ...)
 
-\method{kind}{default}(x)
+\method{kind}{default}(x, ...)
 
-\method{kind}{ortensor}(x)
+\method{kind}{ortensor}(x, ...)
 
-\method{kind}{ellipsoid}(x)
+\method{kind}{ellipsoid}(x, ...)
 }
 \arguments{
 \item{x}{numeric. either a 3-element vector giving the ellipsoid's semi-axis
 lengths (in any order), an object of class \code{"ellipsoid"}, or an object of class \code{"ortensor"}.}
+
+\item{...}{optional arguments passed to \code{\link[=ortensor]{ortensor()}}}
 }
 \value{
 positive numeric

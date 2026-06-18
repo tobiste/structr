@@ -34,14 +34,16 @@
 #' # Line data
 #' res <- prcomp(example_lines, n = 10)
 #'
-#' stereoplot(sub = paste("SD1:", round(res$magnitudes[1], 2), "| SD2:", round(res$magnitudes[2], 2)), guides = FALSE)
+#' stereoplot(sub = paste("SD1:", round(res$magnitudes[1], 2), "| SD2:", 
+#'   round(res$magnitudes[2], 2)), guides = FALSE)
 #' points(example_lines, pch = 16, cex = .8, col = 'gray')
 #' invisible(lapply(res$curves, stereo_lines, col = "red", lwd = 1.5))
 #' 
 #' # Pair data
 #' p <- Pair(strabo_prj$planar, strabo_prj$linear)
 #' res2 <- prcomp(p, n = 10)
-#' stereoplot(sub = paste("SD1:", round(res2$magnitudes[1], 2), "| SD2:", round(res2$magnitudes[2], 2)), guides=FALSE)
+#' stereoplot(sub = paste("SD1:", round(res2$magnitudes[1], 2), "| SD2:", 
+#'   round(res2$magnitudes[2], 2)), guides=FALSE)
 #' stereo_pair(p, pch = 16, cex = .5, lwd = 0.5, col = 'gray')
 #' invisible(lapply(res2$curves, stereo_lines, col = "red", lwd = 1.5))
 NULL
