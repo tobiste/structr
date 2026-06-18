@@ -79,10 +79,15 @@ ortensor <- function(x, norm, w, shift) UseMethod("ortensor")
 
 #' @export
 ortensor.default <- function(x, norm = TRUE, w = NULL, shift = NULL) {
+  # remove NA values
+  noNA <- which(complete.cases(x))
+  noNA
+  x <- x[noNA, ]
+  
   w <- if (is.null(w)) {
     rep(1, times = nrow(x))
   } else {
-    as.numeric(w)
+    as.numeric(w[noNA])
   }
 
   if (norm) {
@@ -93,16 +98,7 @@ ortensor.default <- function(x, norm = TRUE, w = NULL, shift = NULL) {
   xw <- w * x
 
   or <- (1 / n) * (t(xw) %*% xw)
-  # or <- matrix(nrow = 3, ncol = 3)
-  # or[1, 1] <- sum(x[, 1]^2)
-  # or[1, 2] <- sum(x[, 1] * x[, 2])
-  # or[1, 3] <- sum(x[, 1] * x[, 3])
-  # or[2, 1] <- sum(x[, 2] * x[, 1])
-  # or[2, 2] <- sum(x[, 2]^2)
-  # or[2, 3] <- sum(x[, 2] * x[, 3])
-  # or[3, 1] <- sum(x[, 3] * x[, 1])
-  # or[3, 2] <- sum(x[, 3] * x[, 2])
-  # or[3, 3] <- sum(x[, 3]^2)
+  
   rownames(or) <- colnames(or) <- NULL
   as.ortensor(or)
 }
@@ -181,10 +177,15 @@ inertia_tensor <- function(x, w = NULL) UseMethod("inertia_tensor")
 
 #' @export
 inertia_tensor.default <- function(x, w = NULL) {
+  # remove NA values
+  noNA <- which(complete.cases(x))
+  noNA
+  x <- x[noNA, ]
+  
   w <- if (is.null(w)) {
     rep(1, times = nrow(x))
   } else {
-    as.numeric(w)
+    as.numeric(w[noNA])
   }
 
   n <- sum(w)
@@ -284,7 +285,6 @@ ot_eigen.ortensor <- function(x, scaled = FALSE, ...) {
 #' @export
 #'
 #' @examples
-#' example_lines_df$quality
 #' projected_mean(example_lines, w = runif(nrow(example_lines)))
 projected_mean <- function(x, ...) {
   ot_eigen(x, ...)$vectors[1, ]

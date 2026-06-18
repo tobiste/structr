@@ -4,7 +4,7 @@
 \alias{head-sphere}
 \alias{head.spherical}
 \alias{tail.spherical}
-\title{Return the First or Last Parts of an Object}
+\title{Return the First or Last Parts of a Spherical Object}
 \usage{
 \method{head}{spherical}(x, n = 6L, ...)
 

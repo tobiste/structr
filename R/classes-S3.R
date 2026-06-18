@@ -544,7 +544,7 @@ print.Fault <- function(x, ...) {
 
 
 
-#' Combine R Objects by Rows or Columns
+#' Combine SPherical Objects by Rows or Columns
 #'
 #' @param ... objects  to bind; note that all objects have to be class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`.
 #' @param .class character. The output class. If `NULL`, all combined objects
@@ -582,7 +582,7 @@ rbind.spherical <- function(..., .class = NULL) {
 }
 
 
-#' Return the First or Last Parts of an Object
+#' Return the First or Last Parts of a Spherical Object
 #'
 #' Returns the first or last parts of a vector.
 #'
@@ -632,20 +632,33 @@ tail.spherical <- function(x, n = 6L, ...) {
 }
 
 
-#' Random Samples and Permutations
+#' Random Samples and Permutations of Spherical Objects
 #'
 #' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`.
 #' @inheritParams base::sample
 #'
 #' @returns object of class `x`
 #' @exportS3Method base::sample
-#' @noRd
 #'
 #' @examples
 #' set.seed(20250411)
 #' x <- rvmf(n = 100, mu = Line(90, 45))
-#' sample(test, size = 5)
+#' sample(x, size = 5)
 sample.spherical <- function(x, size, replace = FALSE, prob = NULL) {
   rnd <- sample.int(nrow(x), size, replace, prob)
   return(x[rnd, ])
+}
+
+#' Handle Missing Values in Spherical Objects
+#' 
+#' @param object object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`.
+#' @param ... further arguments special methods could require.
+#' 
+#' @returns object with same class as input
+#' @exportS3Method stats::na.omit
+#' @examples
+#' x <- Line(c(120, NA, 100), c(50, 60, 70))
+#' na.omit(x)
+na.omit.spherical <- function(object, ...){
+  object[stats::complete.cases(object), ]
 }

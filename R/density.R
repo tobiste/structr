@@ -112,13 +112,23 @@ count_points <- function(azi, inc, FUN, sigma, ngrid, weights, r) {
 density_grid <- function(x, weights = NULL, upper.hem = FALSE, kamb = TRUE, ...) {
   if (!is.Line(x)) x <- Line(x)
 
-  azi <- x[, 1]
+  # remove NA values
+  noNA <- which(complete.cases(x))
+  noNA
+  
+  azi <- x[noNA, 1]
   if (upper.hem) {
     azi <- azi + 180
   }
-  inc <- x[, 2]
+  inc <- x[noNA, 2]
 
-  if (is.null(weights)) weights <- rep(1, nrow(x))
+  
+  
+  if (is.null(weights)) {
+    weights <- rep(1, nrow(x))
+  } else {
+    weights <- weights[noNA] # remove elements where x is NA
+  }
 
   # normalize weights to 1
   # weights <- as.numeric(weights) / mean(weights)

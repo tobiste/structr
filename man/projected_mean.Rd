@@ -20,7 +20,6 @@ Vector in coordinate system of \code{x}
 Eigenvector with largest eigenvalue of the orientation tensor
 }
 \examples{
-example_lines_df$quality
 projected_mean(example_lines, w = runif(nrow(example_lines)))
 }
 \references{
