@@ -1,6 +1,8 @@
 # Random Samples and Permutations of Spherical Objects
 
-Random Samples and Permutations of Spherical Objects
+`sample_spherical` takes a sample of the specified size from the
+elements of the spherical object `x` using either with or without
+replacement.
 
 ## Usage
 
@@ -27,6 +29,10 @@ sample_spherical(x, size, replace = FALSE, prob = NULL)
 
   a vector of probability weights for obtaining the elements of the
   vector being sampled.
+
+## Value
+
+A spherical object of length `size` with elements drawn from `x`
 
 ## Examples
 
