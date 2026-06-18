@@ -633,11 +633,14 @@ tail.spherical <- function(x, n = 6L, ...) {
 
 
 #' Random Samples and Permutations of Spherical Objects
+#' 
+#' `sample_spherical` takes a sample of the specified size from the elements of 
+#' the spherical object `x` using either with or without replacement.
 #'
 #' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`.
 #' @inheritParams base::sample
 #' 
-#' @returns object identical to class of `x`
+#' @returns A spherical object of length `size` with elements drawn from `x`
 #'
 #' @export
 #'

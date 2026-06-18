@@ -16,8 +16,12 @@ sample_spherical(x, size, replace = FALSE, prob = NULL)
 \item{prob}{a vector of probability weights for obtaining the elements
     of the vector being sampled.}
 }
+\value{
+A spherical object of length \code{size} with elements drawn from \code{x}
+}
 \description{
-Random Samples and Permutations of Spherical Objects
+\code{sample_spherical} takes a sample of the specified size from the elements of
+the spherical object \code{x} using either with or without replacement.
 }
 \examples{
 set.seed(20250411)
