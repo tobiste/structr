@@ -46,13 +46,8 @@ for geodesic mean.
 ## Examples
 
 ``` r
-example_lines_df$quality
-#>  [1]  3  3 NA NA NA NA  4  4  4  3  3  3  3  3  3  3  3  3  3  3  3  3 NA  5  3
-#> [26] NA  5  5  5  5  5  5  5  5  5  3  3  3  5  5  5  5  5  5  5  5  5  5  5  5
-#> [51]  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5  5
-#> [76]  5  5  5  5  5  3  3  3  5
 projected_mean(example_lines, w = runif(nrow(example_lines)))
 #> Line object (n = 1):
 #>  azimuth   plunge 
-#> 70.88551 15.10432 
+#> 68.41056 13.42329 
 ```

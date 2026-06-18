@@ -1,4 +1,4 @@
-# Return the First or Last Parts of an Object
+# Return the First or Last Parts of a Spherical Object
 
 Returns the first or last parts of a vector.
 
