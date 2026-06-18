@@ -10,10 +10,18 @@ Lode's parameter for the symmetry of strain \\\nu\\ (Lode, 1926).
 hsu_plot(x, ...)
 
 # S3 method for class 'ortensor'
-hsu_plot(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...)
+hsu_plot(
+  x,
+  labels = NULL,
+  add = FALSE,
+  es.max = 3,
+  main = "Hsu diagram",
+  weights = NULL,
+  ...
+)
 
 # S3 method for class 'spherical'
-hsu_plot(x, ...)
+hsu_plot(x, weights = NULL, ...)
 
 # S3 method for class 'ellispoid'
 hsu_plot(x, ...)
@@ -56,6 +64,10 @@ hsu_plot(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...)
 - main:
 
   character. The main title (on top).
+
+- weights:
+
+  numeric. Weightings
 
 ## Value
 

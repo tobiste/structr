@@ -6,7 +6,7 @@ Vollmer (1990)
 ## Usage
 
 ``` r
-vollmer(x)
+vollmer(x, ...)
 ```
 
 ## Arguments
@@ -16,6 +16,11 @@ vollmer(x)
   object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or
   `"Fault"`, where the rows are the observations and the columns are the
   coordinates.
+
+- ...:
+
+  paramters passed to
+  [`ortensor()`](https://tobiste.github.io/structr/reference/ortensor.md)
 
 ## Value
 

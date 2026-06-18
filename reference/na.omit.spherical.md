@@ -20,10 +20,6 @@ na.omit(object, ...)
 
   further arguments special methods could require.
 
-## Value
-
-object with same class as input
-
 ## Examples
 
 ``` r

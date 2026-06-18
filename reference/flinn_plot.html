@@ -66,14 +66,7 @@ the strain symmetry after Flinn (1965)</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">flinn_plot</span><span class="op">(</span></span>
-<span>  <span class="va">x</span>,</span>
-<span>  main <span class="op">=</span> <span class="st">"Flinn diagram"</span>,</span>
-<span>  R.max <span class="op">=</span> <span class="cn">NULL</span>,</span>
-<span>  log <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  add <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">flinn_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Default S3 method</span></span>
 <span><span class="fu">flinn_plot</span><span class="op">(</span></span>
@@ -86,13 +79,13 @@ the strain symmetry after Flinn (1965)</p>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'ortensor'</span></span>
-<span><span class="fu">flinn_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">flinn_plot</span><span class="op">(</span><span class="va">x</span>, weights <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'ellipsoid'</span></span>
 <span><span class="fu">flinn_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'spherical'</span></span>
-<span><span class="fu">flinn_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu">flinn_plot</span><span class="op">(</span><span class="va">x</span>, weights <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'list'</span></span>
 <span><span class="fu">flinn_plot</span><span class="op">(</span><span class="va">x</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
@@ -111,6 +104,10 @@ objects of class <code>"Vec3"</code>, <code>"Line"</code>, <code>"Ray"</code>, <
 Tensor objects can also be lists of such objects (<code>"ortensor"</code> and <code>"ellipsoid"</code>).</p></dd>
 
 
+<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
+<dd><p>plotting arguments passed to <code><a href="https://rdrr.io/r/graphics/points.html" class="external-link">graphics::points()</a></code></p></dd>
+
+
 <dt id="arg-main">main<a class="anchor" aria-label="anchor" href="#arg-main"></a></dt>
 <dd><p>character. The main title (on top).</p></dd>
 
@@ -127,8 +124,8 @@ Tensor objects can also be lists of such objects (<code>"ortensor"</code> and <c
 <dd><p>logical. Should data be plotted to an existing plot?</p></dd>
 
 
-<dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>plotting arguments passed to <code><a href="https://rdrr.io/r/graphics/points.html" class="external-link">graphics::points()</a></code></p></dd>
+<dt id="arg-weights">weights<a class="anchor" aria-label="anchor" href="#arg-weights"></a></dt>
+<dd><p>numeric. Weightings</p></dd>
 
 </dl></div>
     <div class="section level2">

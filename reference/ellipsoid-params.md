@@ -5,104 +5,104 @@ Ellipsoid shape parameters
 ## Usage
 
 ``` r
-volume(x)
+volume(x, ...)
 
 # Default S3 method
-volume(x)
+volume(x, ...)
 
 # S3 method for class 'ellipsoid'
-volume(x)
+volume(x, ...)
 
 # S3 method for class 'ortensor'
-volume(x)
+volume(x, ...)
 
-lode(x)
+lode(x, ...)
 
 # Default S3 method
-lode(x)
+lode(x, ...)
 
 # S3 method for class 'ellipsoid'
-lode(x)
+lode(x, ...)
 
 # S3 method for class 'ortensor'
-lode(x)
+lode(x, ...)
 
-nadai(x)
+nadai(x, ...)
 
 # Default S3 method
-nadai(x)
+nadai(x, ...)
 
 # S3 method for class 'ellipsoid'
-nadai(x)
+nadai(x, ...)
 
 # S3 method for class 'ortensor'
-nadai(x)
+nadai(x, ...)
 
-jelinek(x)
+jelinek(x, ...)
 
 # Default S3 method
-jelinek(x)
+jelinek(x, ...)
 
 # S3 method for class 'ellipsoid'
-jelinek(x)
+jelinek(x, ...)
 
 # S3 method for class 'ortensor'
-jelinek(x)
+jelinek(x, ...)
 
-flinn(x)
+flinn(x, ...)
 
 # Default S3 method
-flinn(x)
+flinn(x, ...)
 
 # S3 method for class 'ortensor'
-flinn(x)
+flinn(x, ...)
 
 # S3 method for class 'ellipsoid'
-flinn(x)
+flinn(x, ...)
 
-size_invariant(x)
+size_invariant(x, ...)
 
 # Default S3 method
-size_invariant(x)
+size_invariant(x, ...)
 
 # S3 method for class 'ortensor'
-size_invariant(x)
+size_invariant(x, ...)
 
 # S3 method for class 'ellipsoid'
-size_invariant(x)
+size_invariant(x, ...)
 
-strain_invariant(x)
+strain_invariant(x, ...)
 
 # Default S3 method
-strain_invariant(x)
+strain_invariant(x, ...)
 
 # S3 method for class 'ortensor'
-strain_invariant(x)
+strain_invariant(x, ...)
 
 # S3 method for class 'ellipsoid'
-strain_invariant(x)
+strain_invariant(x, ...)
 
-shape_invariant(x)
+shape_invariant(x, ...)
 
 # Default S3 method
-shape_invariant(x)
+shape_invariant(x, ...)
 
 # S3 method for class 'ortensor'
-shape_invariant(x)
+shape_invariant(x, ...)
 
 # S3 method for class 'ellipsoid'
-shape_invariant(x)
+shape_invariant(x, ...)
 
-kind(x)
+kind(x, ...)
 
 # Default S3 method
-kind(x)
+kind(x, ...)
 
 # S3 method for class 'ortensor'
-kind(x)
+kind(x, ...)
 
 # S3 method for class 'ellipsoid'
-kind(x)
+kind(x, ...)
 ```
 
 ## Arguments
@@ -112,6 +112,11 @@ kind(x)
   numeric. either a 3-element vector giving the ellipsoid's semi-axis
   lengths (in any order), an object of class `"ellipsoid"`, or an object
   of class `"ortensor"`.
+
+- ...:
+
+  optional arguments passed to
+  [`ortensor()`](https://tobiste.github.io/structr/reference/ortensor.md)
 
 ## Value
 

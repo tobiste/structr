@@ -296,9 +296,6 @@
 - [`mean_strain_ellipse_ramsay()`](https://tobiste.github.io/structr/reference/mean_strain_ellipse_ramsay.md)
   : Mean strain ellipse after Ramsay (1967)
 
-- [`na.omit(`*`<spherical>`*`)`](https://tobiste.github.io/structr/reference/na.omit.spherical.md)
-  : Handle Missing Values in Spherical Objects
-
 - [`is.ortensor()`](https://tobiste.github.io/structr/reference/ortensor.md)
   [`as.ortensor()`](https://tobiste.github.io/structr/reference/ortensor.md)
   [`ortensor()`](https://tobiste.github.io/structr/reference/ortensor.md)
@@ -365,7 +362,7 @@
 - [`runif.spherical()`](https://tobiste.github.io/structr/reference/runif.spherical.md)
   : Uniformly distributed vectors
 
-- [`sample(`*`<spherical>`*`)`](https://tobiste.github.io/structr/reference/sample.spherical.md)
+- [`sample_spherical()`](https://tobiste.github.io/structr/reference/sample_spherical.md)
   : Random Samples and Permutations of Spherical Objects
 
 - [`sense_from_strikeslip()`](https://tobiste.github.io/structr/reference/sense_from_strikeslip.md)

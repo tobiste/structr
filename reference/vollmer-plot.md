@@ -24,6 +24,7 @@ vollmer_plot(
   add = FALSE,
   ngrid = c(5, 5, 5),
   main = "Vollmer diagram",
+  weights = NULL,
   ...
 )
 
@@ -66,6 +67,10 @@ vollmer_plot(
 - ...:
 
   optional graphical parameters
+
+- weights:
+
+  numeric. Weightings
 
 ## Value
 

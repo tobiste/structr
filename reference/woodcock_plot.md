@@ -11,6 +11,7 @@ woodcock_plot(
   add = FALSE,
   max = 7,
   main = "Woodcock diagram",
+  weights = NULL,
   ...
 )
 ```
@@ -39,6 +40,10 @@ woodcock_plot(
 - main:
 
   character. The main title for the plot.
+
+- weights:
+
+  numeric. Weightings
 
 - ...:
 

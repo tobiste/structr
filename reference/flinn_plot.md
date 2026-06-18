@@ -6,14 +6,7 @@ and the strain symmetry after Flinn (1965)
 ## Usage
 
 ``` r
-flinn_plot(
-  x,
-  main = "Flinn diagram",
-  R.max = NULL,
-  log = FALSE,
-  add = FALSE,
-  ...
-)
+flinn_plot(x, ...)
 
 # Default S3 method
 flinn_plot(
@@ -26,13 +19,13 @@ flinn_plot(
 )
 
 # S3 method for class 'ortensor'
-flinn_plot(x, ...)
+flinn_plot(x, weights = NULL, ...)
 
 # S3 method for class 'ellipsoid'
 flinn_plot(x, ...)
 
 # S3 method for class 'spherical'
-flinn_plot(x, ...)
+flinn_plot(x, weights = NULL, ...)
 
 # S3 method for class 'list'
 flinn_plot(x, ...)
@@ -48,6 +41,11 @@ flinn_plot(x, ...)
   strain (Y/Z); objects of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`,
   `"ortensor"` and `"ellipsoid"` objects. Tensor objects can also be
   lists of such objects (`"ortensor"` and `"ellipsoid"`).
+
+- ...:
+
+  plotting arguments passed to
+  [`graphics::points()`](https://rdrr.io/r/graphics/points.html)
 
 - main:
 
@@ -65,10 +63,9 @@ flinn_plot(x, ...)
 
   logical. Should data be plotted to an existing plot?
 
-- ...:
+- weights:
 
-  plotting arguments passed to
-  [`graphics::points()`](https://rdrr.io/r/graphics/points.html)
+  numeric. Weightings
 
 ## Value
 
