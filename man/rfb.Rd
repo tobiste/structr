@@ -26,10 +26,14 @@ Simulation of random values from a spherical Fisher-Bingham distribution.
 \examples{
 set.seed(20250411)
 x <- rfb(100, mu = Line(120, 50), k = 5, A = diag(c(-1, 0, 1)))
-plot(x)
+contour(x)
 }
 \seealso{
-\code{\link[=rvmf]{rvmf()}} to draw samples from the von Mises Fisher distribution
-around a specified mean vector. \code{\link[=rkent]{rkent()}} to draw from a Kent-distribution.
-\code{\link[=runif.spherical]{runif.spherical()}} to draw from a a spherical uniform distribution.
+Other random: 
+\code{\link{rbing}},
+\code{\link{rkent}()},
+\code{\link{rrot}()},
+\code{\link{runif.spherical}()},
+\code{\link{vonmises-fisher}}
 }
+\concept{random}

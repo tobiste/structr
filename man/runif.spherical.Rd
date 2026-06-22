@@ -2,12 +2,12 @@
 % Please edit documentation in R/sph_distributions.R
 \name{runif.spherical}
 \alias{runif.spherical}
-\title{Uniformly distributed vectors}
+\title{Uniformly Distributed Vectors on the Sphere}
 \usage{
 runif.spherical(
   n = 100,
-  class = c("Vec3", "Line", "Plane"),
-  method = c("gss", "sfs", "rotasym")
+  class = c("Vec3", "Ray", "Line", "Plane"),
+  method = c("cart", "gss", "sfs", "rotasym")
 )
 }
 \arguments{
@@ -16,7 +16,9 @@ runif.spherical(
 \item{class}{character. Coordinate class of the output vectors.}
 
 \item{method}{character. The algorithm for generating uniformly distributed
-vectors. Either \code{"sfs"} for the "Spherical Fibonacci Spiral points on a sphere",
+vectors. Either \code{"cart"} (the default) for generating random points in Cartesian coordinates
+(as in the \code{geologyGeometry} package),
+\code{"sfs"} for the "Spherical Fibonacci Spiral points on a sphere",
 \code{"gss"} for "Golden Section Spiral points on a sphere", or the algorithm
 \code{\link[rotasym:unif]{rotasym::r_unif_sphere()}} from the rotasym package.}
 }
@@ -24,25 +26,32 @@ vectors. Either \code{"sfs"} for the "Spherical Fibonacci Spiral points on a sph
 object of class specified by \code{"class"} argument
 }
 \description{
-Create uniformly distributed vectors using the algorithm
-\emph{Spherical Fibonacci Spiral points on a sphere} algorithm (John Burkardt) or
-\emph{Golden Section Spiral points on a sphere}.
+Create uniformly distributed vectors on the sphere
 }
 \details{
 \code{"sfs"} algorithm is from on John Burkardt (http://people.sc.fsu.edu/~jburkardt/),
 \verb{"gss} is from  http://www.softimageblog.com/archives/115
 }
 \examples{
-set.seed(20250411)
-x1 <- runif.spherical(n = 100, "Line", method = "sfs")
-plot(x1)
+set.seed(2025041s1)
+x1 <- runif.spherical(n = 100, "Ray", method = "sfs")
+contour(x1)
 
-x2 <- runif.spherical(n = 100, "Line", method = "gss")
-plot(x2)
-x3 <- runif.spherical(n = 100, "Line", method = "rotasym")
-plot(x3)
+x2 <- runif.spherical(n = 100, "Ray", method = "gss")
+contour(x2)
+
+x3 <- runif.spherical(n = 100, "Ray", method = "rotasym")
+contour(x3)
+
+x4 <- runif.spherical(n = 100, "Ray", method = "cart")
+contour(x4)
 }
 \seealso{
-\code{\link[=rvmf]{rvmf()}} to draw samples from the von Mises Fisher distribution
-around a specified mean vector. \code{\link[=rkent]{rkent()}} to draw from a Kent-distribution. \code{\link[=rfb]{rfb()}} to draw from a Fisher-Bingham distribution.
+Other random: 
+\code{\link{rbing}},
+\code{\link{rfb}()},
+\code{\link{rkent}()},
+\code{\link{rrot}()},
+\code{\link{vonmises-fisher}}
 }
+\concept{random}

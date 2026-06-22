@@ -23,7 +23,7 @@
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"},
 where the rows are the observations and the columns are the coordinates.}
 
-\item{center}{A spherical object. Typically the geodesic mean of the x.}
+\item{center}{A spherical object. Typically the geodesic mean of \code{x}.}
 
 \item{n}{real number (integer, 0 or >= 3). The number of points to
 return on each of the four geodesics through the center.}

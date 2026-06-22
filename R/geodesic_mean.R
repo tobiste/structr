@@ -223,7 +223,7 @@ geodesic_var_ray <- function(x, ...) geodesic_meanvariance_ray(x, ...)$variance
 geodesic_meanvariance_line <- function(x, seeds = 5L, steps = 100L) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
   res <- lineMeanVariance(vec_list(x), numSeeds = seeds, numSteps = steps)
-  m <- res$mean |> as.Vec3()
+  m <- as.Vec3(res$mean)
 
   names(res) <- c("variance", "mean", "error", "min.eigenvalue")
 
@@ -236,7 +236,7 @@ geodesic_meanvariance_line <- function(x, seeds = 5L, steps = 100L) {
 geodesic_meanvariance_ray <- function(x, seeds = 5L, steps = 100L) {
   stopifnot(is.Vec3(x) | is.Ray(x) | is.Plane(x))
   res <- rayMeanVariance(vec_list(x), numSeeds = seeds, numSteps = steps)
-  m <- res$mean |> as.Vec3()
+  m <- as.Vec3(res$mean)
 
   names(res) <- c("variance", "mean", "error", "min.eigenvalue")
 
@@ -315,10 +315,11 @@ geodesic_var_pair <- function(x, group = NULL) {
 
 #' Orientation matrix from fault planes and slip directions
 #'
-#' Converts a set of planes and lines into a list of rotation matrices.
+#' Converts a set of planes and lines into a list of rotation matrices in SO(3).
 #'
-#' @param x object of class `"Pair"` or `"Fault"`
-#' @noRd
+#' @param p object of class `"Pair"` or `"Fault"`
+#' @param x object of class `"Rotation"`, a 3x3 matrix
+#' @name class-rot
 #' @returns list of rotation matrices
 #'
 #' @examples
@@ -330,28 +331,38 @@ geodesic_var_pair <- function(x, group = NULL) {
 #'   c(1, -1, 1)
 #' )
 #' pair2rot(my_fault)
-pair2rot <- function(x) {
-  stopifnot(is.Pair(x))
-  p <- Fault_plane(x) |> Vec3()
-  l <- Fault_slip(x) |> Vec3()
+NULL
+
+#' @rdname class-rot
+#' @export
+pair2rot <- function(p) {
+  stopifnot(is.Pair(p))
+  pv <- Fault_plane(p) |> Vec3()
+  lv <- Fault_slip(p) |> Vec3()
 
   if (inherits(x, "Fault")) {
-    l <- x[, 5] * l
+    lv <- p[, 5] * lv
   }
-  cross <- crossprod.Vec3(p, l)
+  cross <- crossprod.Vec3(pv, ll)
 
-  rotm <- rot_projected_matrix(list(pole = p, direction = l, cross = cross)) |>
+  rotm <- rot_projected_matrix(list(pole = pv, direction = lv, cross = cross)) |>
     as.Rotation()
   return(rotm)
 }
 
+#' @rdname class-rot
+#' @export
 is.Rotation <- function(x) inherits(x, "Rotation")
 
+#' @rdname class-rot
+#' @export
 as.Rotation <- function(x) {
   class(x) <- append("Rotation", class(x))
   return(x)
 }
 
+#' @rdname class-rot
+#' @export
 rot2pair <- function(x, fault = FALSE) {
   stopifnot(is.Rotation(x))
   mp <- as.Vec3(x[1, ])

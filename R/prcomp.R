@@ -4,7 +4,7 @@
 #' Principal component (geodesic) analysis in the tangent space.
 #'
 #' @inheritParams geodesic-mean
-#' @param center A spherical object. Typically the geodesic mean of the x.
+#' @param center A spherical object. Typically the geodesic mean of `x`.
 #' @param n  real number (integer, 0 or >= 3). The number of points to
 #' return on each of the four geodesics through the center.
 #' @inheritParams geodesic_mean_pair

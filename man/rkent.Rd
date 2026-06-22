@@ -3,11 +3,8 @@
 \name{rkent}
 \alias{rkent}
 \title{Kent distribution}
-\source{
-Adapted from \code{\link[Directional:rkent]{Directional::rkent()}}
-}
 \usage{
-rkent(n = 100, mu = Vec3(1, 0, 0), k = 5, b)
+rkent(n, mu = Vec3(1, 0, 0), k = 5, b)
 }
 \arguments{
 \item{n}{integer. number of random samples to be generated}
@@ -25,11 +22,15 @@ Simulation of random values from a spherical Kent distribution.
 }
 \examples{
 set.seed(20250411)
-x <- rkent(100, mu = Line(120, 50), k = 5, b = 1)
+x <- rkent(100, mu = Ray(120, 50), k = 5, b = 1)
 plot(x)
 }
 \seealso{
-\code{\link[=rvmf]{rvmf()}} to draw samples from the von Mises Fisher distribution
-around a specified mean vector. \code{\link[=runif.spherical]{runif.spherical()}} to draw from a a spherical uniform distribution.
-\code{\link[=rfb]{rfb()}} to draw from a Fisher-Bingham distribution.
+Other random: 
+\code{\link{rbing}},
+\code{\link{rfb}()},
+\code{\link{rrot}()},
+\code{\link{runif.spherical}()},
+\code{\link{vonmises-fisher}}
 }
+\concept{random}

@@ -9,17 +9,19 @@
 #'  rows are the observations and the columns are the coordinates.
 #' @param k numeric. The concentration parameter (\eqn{\kappa}) of the von
 #' Mises-Fisher distribution
-#' @seealso [runif.spherical()] for alternative algorithms to generate uniform
-#' distributed samples on a sphere, [rkent()] for Kent distribution,
-#' [rfb()] for Fisher-Bingham distribution.
+#'
 #' @source Adapted fom [rotasym::r_vMF()] and [rotasym::d_vMF()]
 #' @importFrom rotasym r_vMF d_vMF
-# #' @importFrom Directional rvmf dvmf
+#
 #' @name vonmises-fisher
+#' @family random
+#'
 #' @examples
 #' set.seed(20250411)
-#' x <- rvmf(100, mu = Line(120, 50), k = 5)
-#' dx <- dvmf(x, mu = Line(120, 50))
+#' x <- rvmf(100, mu = Ray(120, 50), k = 5)
+#' contour(x)
+#'
+#' dx <- dvmf(x, mu = Ray(120, 50))
 #' head(dx)
 #'
 #' plot(x, col = assign_col(dx))
@@ -33,12 +35,11 @@ rvmf <- function(n = 100, mu = Vec3(1, 0, 0), k = 5) {
     unclass() |>
     c()
   res <- rotasym::r_vMF(n, muv, k)
-  # res <- Directional::rvmf(n, muv, k)
   colnames(res) <- c("x", "y", "z")
   res <- Vec3(res)
 
-  if (is.Line(mu)) {
-    Line(res)
+  if (is.Line(mu) | is.Ray(mu)) {
+    Ray(res)
   } else if (is.Plane(mu)) {
     Plane(res)
   } else {
@@ -54,43 +55,47 @@ dvmf <- function(x, mu, k = 5) {
   muv <- Vec3(mu) |>
     unclass() |>
     c()
+  
   rotasym::d_vMF(xv, muv, k)
-  # Directional::dvmf(xv, muv, k) |> as.numeric()
 }
 
 
-
-#' Uniformly distributed vectors
+#' Uniformly Distributed Vectors on the Sphere
 #'
-#' Create uniformly distributed vectors using the algorithm
-#' *Spherical Fibonacci Spiral points on a sphere* algorithm (John Burkardt) or
-#' *Golden Section Spiral points on a sphere*.
+#' Create uniformly distributed vectors on the sphere
 #'
 #' @param class character. Coordinate class of the output vectors.
 #' @param n integer. number of random samples to be generated
 #' @param method character. The algorithm for generating uniformly distributed
-#' vectors. Either `"sfs"` for the "Spherical Fibonacci Spiral points on a sphere",
+#' vectors. Either `"cart"` (the default) for generating random points in Cartesian coordinates 
+#' (as in the `geologyGeometry` package), 
+#' `"sfs"` for the "Spherical Fibonacci Spiral points on a sphere",
 #' `"gss"` for "Golden Section Spiral points on a sphere", or the algorithm
 #' [rotasym::r_unif_sphere()] from the rotasym package.
 #' @returns object of class specified by `"class"` argument
 #' @details
 #'  `"sfs"` algorithm is from on John Burkardt (http://people.sc.fsu.edu/~jburkardt/),
 #'  `"gss` is from  http://www.softimageblog.com/archives/115
-#' @seealso [rvmf()] to draw samples from the von Mises Fisher distribution
-#' around a specified mean vector. [rkent()] to draw from a Kent-distribution. [rfb()] to draw from a Fisher-Bingham distribution.
-#' @importFrom rotasym r_unif_sphere
-#' @export
-#' @examples
-#' set.seed(20250411)
-#' x1 <- runif.spherical(n = 100, "Line", method = "sfs")
-#' plot(x1)
 #'
-#' x2 <- runif.spherical(n = 100, "Line", method = "gss")
-#' plot(x2)
-
-#' x3 <- runif.spherical(n = 100, "Line", method = "rotasym")
-#' plot(x3)
-runif.spherical <- function(n = 100, class = c("Vec3", "Line", "Plane"), method = c("gss", "sfs", "rotasym")) {
+#' @importFrom rotasym r_unif_sphere
+#'
+#' @family random
+#' @export
+#'
+#' @examples
+#' set.seed(2025041s1)
+#' x1 <- runif.spherical(n = 100, "Ray", method = "sfs")
+#' contour(x1)
+#'
+#' x2 <- runif.spherical(n = 100, "Ray", method = "gss")
+#' contour(x2)
+#'
+#' x3 <- runif.spherical(n = 100, "Ray", method = "rotasym")
+#' contour(x3)
+#' 
+#' x4 <- runif.spherical(n = 100, "Ray", method = "cart")
+#' contour(x4)
+runif.spherical <- function(n = 100, class = c("Vec3", "Ray", "Line", "Plane"), method = c("cart", "gss", "sfs", "rotasym")) {
   method <- match.arg(method)
   class <- match.arg(class)
 
@@ -111,8 +116,10 @@ runif.spherical <- function(n = 100, class = c("Vec3", "Line", "Plane"), method 
     r <- sqrt(1 - y * y)
     phi <- k * inc
     dc <- cbind(x = cos(phi) * r, y = y, z = sin(phi) * r)
-  } else {
+  } else if(method == "rotasym") {
     dc <- rotasym::r_unif_sphere(n, p = 3)
+  } else {
+    dc <- do.call(rbind, rayUniform(n))
   }
 
   dc <- Vec3(dc)
@@ -120,6 +127,8 @@ runif.spherical <- function(n = 100, class = c("Vec3", "Line", "Plane"), method 
     Line(dc)
   } else if (class == "Plane") {
     Plane(dc)
+  } else if(class == "Ray") {
+    Ray(dc)
   } else {
     dc
   }
@@ -134,15 +143,12 @@ runif.spherical <- function(n = 100, class = c("Vec3", "Line", "Plane"), method 
 #' @source Adapted from [Directional::rfb()]
 #' @importFrom Directional rfb
 #'
-#' @seealso [rvmf()] to draw samples from the von Mises Fisher distribution
-#' around a specified mean vector. [rkent()] to draw from a Kent-distribution.
-#' [runif.spherical()] to draw from a a spherical uniform distribution.
-#'
+#' @family random
 #' @export
 #' @examples
 #' set.seed(20250411)
 #' x <- rfb(100, mu = Line(120, 50), k = 5, A = diag(c(-1, 0, 1)))
-#' plot(x)
+#' contour(x)
 rfb <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, A) {
   muv <- Vec3(mu) |>
     unclass() |>
@@ -152,13 +158,63 @@ rfb <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, A) {
   colnames(res) <- c("x", "y", "z")
   res <- Vec3(res)
 
-  if (is.Line(mu)) {
+  if (is.Line(mu) | is.Ray(mu)) {
     Line(res)
   } else if (is.Plane(mu)) {
     Plane(res)
   } else {
     res
   }
+}
+
+#' Bingham Distribution
+#'
+#' Simulation of random values from a Bingham distribution with any given symmetric matrix A.
+#'
+#' @inheritParams rfb
+#' @param eigenvalues numeric, three-element vector. Eigenvalues of the diagonal symmetric matrix of the Bingham distribution.
+#' @param .class character.
+#'
+#' @returns  A spherical object of class `.class` and length `n`
+#' @name rbing
+#'
+#' @importFrom Directional rbingham f.rbing
+#' @family random
+#'
+#' @references
+#' Fallaize C. J. and Kypraios T. (2016). Exact bayesian inference for the Bingham distribution. Statistics and Computing, 26(1): 349–360. http://arxiv.org/pdf/1401.2894v1.pdf
+#'
+#' @examples
+#' a <- cov(iris[, 1:3])
+#' rbingham(100, a, "Line") |> contour()
+#'
+#' rbingham_eig(100, c(100, 1, 0), "Line") |> contour()
+NULL
+
+#' @rdname rbing
+#' @export
+rbingham <- function(n, A, .class = c("Vec3", "Line", "Ray", "Plane")) {
+  .class <- match.arg(.class)
+  Directional::rbingham(n, A) |>
+    as.Vec3() |>
+    Spherical(.class)
+}
+
+#' @rdname rbing
+#' @export
+rbingham_eig <- function(n, eigenvalues, .class = c("Vec3", "Line", "Ray", "Plane")) {
+  .class <- match.arg(.class)
+  ne <- length(eigenvalues)
+  stopifnot(ne <= 3)
+
+  if (ne == 3) {
+    eigenvalues <- sort(eigenvalues, decreasing = TRUE)
+    eigenvalues <- eigenvalues - min(eigenvalues)
+    eigenvalues <- eigenvalues[1:2]
+  }
+
+  r <- Directional::f.rbing(n, eigenvalues, fast = TRUE)
+  Spherical(as.Vec3(r$X), .class)
 }
 
 
@@ -169,25 +225,22 @@ rfb <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, A) {
 #' @inheritParams rvmf
 #' @param b numeric. \eqn{\beta} (ellipticity): \eqn{0 \leq \beta < \kappa}
 #'
-#' @source Adapted from [Directional::rkent()]
-#' @seealso [rvmf()] to draw samples from the von Mises Fisher distribution
-#' around a specified mean vector. [runif.spherical()] to draw from a a spherical uniform distribution.
-#'  [rfb()] to draw from a Fisher-Bingham distribution.
 #'
 #' @importFrom Directional rkent
+#' @family random
 #' @export
 #' @examples
 #' set.seed(20250411)
-#' x <- rkent(100, mu = Line(120, 50), k = 5, b = 1)
+#' x <- rkent(100, mu = Ray(120, 50), k = 5, b = 1)
 #' plot(x)
-rkent <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, b) {
+rkent <- function(n, mu = Vec3(1, 0, 0), k = 5, b) {
   muv <- Vec3(mu) |> c()
   res <- Directional::rkent(n = n, k = k, m = muv, b = b)
   colnames(res) <- c("x", "y", "z")
   res <- Vec3(res)
 
-  if (is.Line(mu)) {
-    Line(res)
+  if (is.Line(mu) | is.Ray(mu)) {
+    Ray(res)
   } else if (is.Plane(mu)) {
     Plane(res)
   } else {
@@ -195,55 +248,46 @@ rkent <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, b) {
   }
 }
 
-
-
-#' MLE of spherical rotational symmetric distributions
+#' Random Rotation Matrices
 #'
-#' Estimates the parameters of a von Mises-Fisher or Kent distribution.
+#' Random sample of matrices in SO(3).
 #'
-#' @inheritParams ortensor
-#' @source Adapted from [Directional::kent.mle()] and [Directional::vmf.mle()]
-#' @name dist.mle
-#' @importFrom Directional kent.mle vmf.mle
+#' @inheritParams rvmf
+#'
+#' @returns list of rotation matrices
+#' @export
+#'
+#' @family random
+#'
 #' @examples
-#' x <- rkent(100, mu = Line(120, 50), k = 5, b = 1)
-#' kent_mle(x)
-#' vmf_mle(x)
-NULL
+#' set.seed(20250411)
+#' # Generate 10 random SO(3) rotation matrices
+#' r <- rrot(10)
+#'
+#' # convort SO(3) matrices to "Pair"
+#' rp <- lapply(r, rot2pair) |> lapply(unclass)
+#' rp <- do.call(rbind, args = rp) |>
+#'   as.Pair()
+#'   
+#' # plot pairs
+#'   plot(rp)
+rrot <- function(n) {
+  p <- 3
+  a <- c(1, numeric(p - 1))
+  A <- array(dim = c(p, p, n))
+  Ip <- diag(p)
+  rotl <- lapply(seq_len(n), function(i) {
+    b <- stats::rnorm(p)
+    b <- b / sqrt(sum(b^2))
+    ca <- a - b * b[1]
+    ca <- ca / sqrt(sum(ca^2))
+    B <- tcrossprod(b, ca)
+    B <- B - t(B)
+    theta <- acos(b[1])
+    Ip + sin(theta) * B + (cos(theta) - 1) *
+      (tcrossprod(b) + tcrossprod(ca))
+  })
+  if (n == 1) rotl <- list(A)
 
-#' @rdname dist.mle
-#' @export
-kent_mle <- function(x) {
-  xv <- Vec3(x) |> unclass()
-  res <- Directional::kent.mle(xv)
-  nm <- colnames(res$G)
-  res$G <- t(res$G) |> Vec3()
-  rownames(res$G) <- nm
-  if (is.Line(x)) {
-    res$G <- Line(res$G)
-  } else if (is.Plane(x)) {
-    res$G <- Plane(res$G)
-  }
-
-  res$runtime <- NULL
-  return(res)
-}
-
-#' @rdname dist.mle
-#' @export
-vmf_mle <- function(x) {
-  xv <- Vec3(x) |> unclass()
-
-  res <- Directional::vmf.mle(xv, fast = TRUE)
-  res$mu <- t(res$mu)
-  colnames(res$mu) <- c("x", "y", "z")
-  res$mu <- Vec3(res$mu)
-
-  if (is.Line(x)) {
-    res$mu <- Line(res$mu)
-  } else if (is.Plane(x)) {
-    res$mu <- Plane(res$mu)
-  }
-
-  return(res)
+  return(lapply(rotl, as.Rotation))
 }

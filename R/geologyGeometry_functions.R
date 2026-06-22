@@ -280,6 +280,96 @@ lineUniform <- function(n = NULL) {
 }
 
 
+#' A ray perpendicular to a given vector, probabilistically.
+#'
+#' In theory, the returned ray is uniformly chosen on the circle's worth of rays perpendicular to the given vector.
+#' @param v A 3-dimensional vector. Need not be unit.
+#' @return A ray, perpendicular to v.
+#' @noRd
+rayOrthogonalUniform <- function(v) {
+  rayOrthogonalProjection(v, rayUniform())
+}
+
+#' Vector normalization (to have length 1).
+#'
+#' @param v A d-dimensional vector. Cannot be of length 0.
+#' @return A d-dimensional vector of length 1.
+#' @noRd
+rayNormalized <- function(v) {
+  v / sqrt(sum(v^2))
+}
+
+#' Projection of a vector onto the plane perpendicular to another vector.
+#'
+#' For example, when v = c(0, 0, 1), returns the upward-most ray perpendicular to pole.
+#' @param pole A d-dimensional vector perpendicular to the plane of interest. Must have non-zero length. Need not be unit.
+#' @param v A d-dimensional vector. Should not be parallel to pole. Need not be unit.
+#' @return A unit d-dimensional vector.
+#' @noRd
+rayOrthogonalProjection <- function(pole, v) {
+  rayNormalized(v - pole * dot(v, pole) / dot(pole, pole))
+}
+
+#' Triangular approximation to the unit sphere.
+#'
+#' @param numNonAdapt A real number (non-negative integer). The number of times to refine the base triangulation of the sphere.
+#' @return A list of triangles, where each triangle is a list of three rays. The number of triangles is 4^(1 + numNonAdapt), so each triangle has spherical area pi / 4^numNonAdapt.
+#' @noRd
+rayTetrahedralSphere <- function(numNonAdapt) {
+  rayTetrahedron <- list(
+    list(c(1, 1, 1) / sqrt(3), c(1, -1, -1) / sqrt(3), c(-1, 1, -1) / sqrt(3)),
+    list(c(-1, -1, 1) / sqrt(3), c(1, -1, -1) / sqrt(3), c(-1, 1, -1) / sqrt(3)),
+    list(c(-1, 1, -1) / sqrt(3), c(-1, -1, 1) / sqrt(3), c(1, 1, 1) / sqrt(3)),
+    list(c(1, -1, -1) / sqrt(3), c(-1, -1, 1) / sqrt(3), c(1, 1, 1) / sqrt(3))
+  )
+  
+  unlist(
+    lapply(rayTetrahedron, rayRefinedTriangle, numNonAdapt),
+    recursive = FALSE, use.names = FALSE
+  )
+}
+
+
+#' Numerical integration of a scalar function on the sphere.
+#'
+#' @param f An R function from {rays} to {real numbers}.
+#' @param numNonAdapt A real number (non-negative integer). The number of times to refine the base triangulation of the sphere. Each increment of numNonAdapt increases the time and memory requirements by a factor of 4, but makes the approximation better.
+#' @return The approximated integral of f over the sphere.
+#' @noRd
+rayIntegral <- function(f, numNonAdapt = 5) {
+  tris <- rayTetrahedralSphere(numNonAdapt)
+  grid <- lapply(
+    tris, function(tri) rayNormalized(tri[[1]] + tri[[2]] + tri[[3]])
+  )
+  area <- pi / 4^numNonAdapt
+  sum(sapply(grid, f)) * area
+}
+
+
+
+# Given a triangle of unit vectors in counterclockwise order when viewed from outside.
+# Returns a list of 4^numNonAdapt triangles of unit vectors, each in counterclockwise order again.
+rayRefinedTriangle <- function(tri, numNonAdapt) {
+  if (numNonAdapt == 0) {
+    list(tri)
+  } else {
+    w1 <- rayNormalized(tri[[1]] + tri[[2]])
+    w2 <- rayNormalized(tri[[2]] + tri[[3]])
+    w3 <- rayNormalized(tri[[3]] + tri[[1]])
+    unlist(
+      list(
+        rayRefinedTriangle(list(w1, w2, w3), numNonAdapt - 1),
+        rayRefinedTriangle(list(tri[[1]], w1, w3), numNonAdapt - 1),
+        rayRefinedTriangle(list(tri[[2]], w2, w1), numNonAdapt - 1),
+        rayRefinedTriangle(list(tri[[3]], w3, w2), numNonAdapt - 1)
+      ),
+      recursive = FALSE, use.names = FALSE
+    )
+  }
+}
+
+
+
 #' Conversion from matrix to angle-axis representation.
 #'
 #' @param r A rotation matrix.
@@ -351,6 +441,35 @@ rotAntisymmetricFromVector <- function(v) {
   matrix(c(0, v[3], -v[2], -v[3], 0, v[1], v[2], -v[1], 0), 3, 3)
 }
 
+
+#' Uniformly random points on the unit sphere.
+#'
+#' @param n A real number (positive integer) or NULL.
+#' @return If n is NULL, then a single ray. If n is a positive integer, then a list of n rays.
+#' @noRd
+rayUniform <- function(n = NULL) {
+  if (is.null(n)) {
+    cartesianFromHorizontal(c(runif(1, 0, 2 * pi), runif(1, -1, 1)))
+  } else {
+    replicate(n, rayUniform(), simplify = FALSE)
+  }
+}
+
+#' Uniformly random lines.
+#'
+#' @param n A real number (positive integer) or `NULL`.
+#' @return If `n` is NULL, then a single line. If `n` is a positive integer, then a list of `n` lines.
+#' @noRd
+lineUniform <- function(n = NULL) {
+  if (is.null(n)) {
+    lower(rayUniform())
+  } else {
+    lapply(rayUniform(n), lower)
+  }
+}
+
+
+
 #' The ray that represents the line and that is closest to center.
 #'
 #' @param l A line (unit 3D vector).
@@ -394,9 +513,6 @@ oriNearestRepresentative <- function(r, center, group) {
 oriNearestRepresentatives <- function(rs, center = rs[[1]], group) {
   lapply(rs, oriNearestRepresentative, center, group)
 }
-
-
-
 
 #' When trivial symmetry is used, the orientations are simply rotations. This case is so important that we have separate code, in rot.R, for doing it. But let's include the trivial group, for completeness.
 #' @noRd
@@ -821,6 +937,16 @@ oriDiameter <- function(rs, group) {
   max(sapply(2:(length(rs)), f))
 }
 
+#' The distance between two rotations as points in SO(3).
+#'
+#' @param r A rotation matrix.
+#' @param q A rotation matrix.
+#' @return A real number (in the interval `[0, pi]`).
+#' @noRd
+rotDistance <- function(r, q) {
+  arcCos((tr(crossprod(r, q)) - 1) / 2)
+}
+
 
 # Tangent space methods, e.g. PCA --------------------------------------------------------------------------
 
@@ -1008,7 +1134,7 @@ rayPointFromTangentVector <- function(w, rotation) {
 #'
 #' @return A 3x3 real matrix (symmetric, non-negative eigenvalues).
 #'
-#' @export
+#' @noRd
 rotLeftCovariance <- function(rs, center) {
   vs <- lapply(rs, rotLeftTangentFromMatrix, center)
   ms <- lapply(vs, function(v) {
@@ -1259,6 +1385,422 @@ rayMahalanobisPercentiles <- function(us, center, alpha = 0.05, numPoints = 0, d
 
 
 
+# Returns C such that C exp(-u^T A u) integrates to 1 over the hemisphere? Accuracy is doubtful.
+lineBinghamSaddlepointConstant <- function(a) {
+  vals <- eigen(a, symmetric = TRUE, only.values = TRUE)$values
+  const <- Directional::fb.saddle(c(0, 0, 0), vals)
+  1 / const[[3]]
+}
+
+# Returns C such that C exp(-u^T A u) integrates to 1 over the hemisphere? Accuracy is unclear.
+lineBinghamIntegratedConstant <- function(a, numNonAdapt = 5) {
+  rayInt <- rayIntegral(function(u) exp(-u %*% a %*% u), numNonAdapt)
+  1 / (0.5 * rayInt)
+}
+
+
+
+#' Simulation from the Bingham distribution.
+#'
+#' Uses the function [Directional::rbingham()] in package `"Directional"`. In that convention, the 
+#' Bingham probability density is proportional to \eqn{\exp{(-x^T A x)}}, not \eqn{\exp{(x^T A x)}}. 
+#' The mean is the eigenvector of A with least eigenvalue. The main direction of 
+#' the dispersion is toward the eigenvector of A with the intermediate eigenvalue. 
+#' The pole to the dispersion is the eigenvector with greatest eigenvalue.
+#' 
+#' @param a A symmetric real 3x3 matrix.
+#' @param n A real number (positive integer) or NULL.
+#' @return If `n` is `NULL`, then a single line. If `n` is a positive integer, then a list of `n` lines.
+#' @importFrom Directional rbingham
+#' @noRd
+lineBingham <- function(a, n = NULL) {
+  if (is.null(n)) {
+    lower(as.numeric(rbingham(1, a)))
+  } else {
+    us <- rbingham(n, a)
+    if (n == 1) {
+      list(lower(as.numeric(us)))
+    } else {
+      lapply(1:nrow(us), function(i) lower(us[i, ]))
+    }
+  }
+}
+
+#' Maximum likelihood estimation of the Bingham distribution parameters.
+#'
+#' Compared to `lineBinghamMLETauxe()`, this is slow but apparently more accurate. 
+#' Uses a numerical integration (to compute the normalization constant) inside 
+#' an numerical optimization (to maximize the likelihood). The Bingham 
+#' probability density is proportional to \eqn{\exp{(-x^T A x)}}, not \eqn{\exp{(x^T A x)}}. 
+#' I prefer to normalize A so that \eqn{tr(A) = 0}s.
+#' 
+#' @param us A list of lines.
+#' @param weights A vector of real numbers (non-negative), of length equal to 
+#' `us`. They need not sum to 1; the function automatically normalizes them to do so.
+#' @param numNonAdapt A real number (non-negative integer). The number of 
+#' refinements to use in the numerical integration. Each increment of 
+#' `numNonAdapt` increases time and memory requirements by a factor of 4.
+#' @param numSteps. A real number (positive integer). The number of steps to 
+#' use in the numerical optimization. If the output $error is non-zero, then try increasing `numSteps`.
+#' 
+#' @return A list with members 
+#' \describe{
+#' \item{`$a`}{(symmetric 3x3 real matrix A),}
+#' \item{`$values`}{(a real 3D vector; the eigenvalues of A; sum to zero),}
+#' \item{`$vectors`}{(a rotation matrix; the eigenvectors of A are the columns),}
+#' \item{`$error`}{(integer; increase `numSteps` if `$error` != 0), and}
+#' \item{`$minEigenvalue`}{(the minimum eigenvalue of the Hessian at the putative optimum; worry if this is not positive).}
+#' }
+#' @noRd
+lineBinghamMLE <- function(us, weights = replicate(length(us), 1), numNonAdapt = 5, numSteps = 1000) {
+  # Scale the weights so that they sum to 1.
+  n <- length(us)
+  ws <- weights / sum(weights)
+  
+  # In eigen, the eigenvectors are descending and the eigenvectors are unit.
+  ts <- lapply(1:n, function(i) {
+    ws[[i]] * outer(us[[i]], us[[i]])
+  })
+  tBar <- Reduce("+", ts)
+  eig <- eigen(tBar, symmetric = TRUE)
+  
+  # Let's assume that the MLE A will have the same eigenvectors as T-bar, as in
+  # the unweighted case.
+  q <- eig$vectors
+  vs <- lapply(us, function(u) as.numeric(t(q) %*% u))
+  
+  # The MLE will have eigenvalues a1, a2, -a1 - a2. Define f to be the negative
+  # log-likelihood.
+  f <- function(a1a2) {
+    diagonal <- diag(c(a1a2[[1]], a1a2[[2]], -a1a2[[1]] - a1a2[[2]]))
+    const <- lineBinghamIntegratedConstant(diagonal, numNonAdapt)
+    -log(const) + sum(
+      sapply(1:n, function(i) {
+        ws[[i]] * vs[[i]] %*% diagonal %*% vs[[i]]
+      })
+    )
+  }
+  
+  # Numerically minimize f to obtain the maximum likelihood estimate.
+  seed <- c(0, 0)
+  sol <- optim(seed, f, hessian = TRUE, control = list(maxit = numSteps))
+  values <- c(sol$par[[1]], sol$par[[2]], -sol$par[[1]] - sol$par[[2]])
+  a <- q %*% diag(values) %*% t(q)
+  
+  # Report diagnostic information.
+  eigvals <- eigen(sol$hessian, symmetric = TRUE, only.values = TRUE)$values
+  
+  list(
+    error = sol$convergence, minEigenvalue = min(eigvals), a = a, values = values,
+    vectors = q
+  )
+}
+
+
+
+# Bingham MLE lookup table from Appendix C of Tauxe's books.
+lineBinghamK1Table <- function() {
+  cbind(
+    c(-25.55, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
+    c(-25.56, -13.11, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
+    c(
+      -25.58, -13.14, -9.043, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
+      NA
+    ),
+    c(
+      -25.6, -13.16, -9.065, -7.035, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
+      NA
+    ),
+    c(
+      -25.62, -13.18, -9.080, -7.042, -5.797, NA, NA, NA, NA, NA, NA, NA, NA, NA,
+      NA, NA
+    ),
+    c(
+      -25.63, -13.19, -9.087, -7.041, -5.789, -4.917, NA, NA, NA, NA, NA, NA, NA,
+      NA, NA, NA
+    ),
+    c(
+      -25.64, -13.20, -9.087, -7.033, -5.773, -4.896, -4.231, NA, NA, NA, NA, NA,
+      NA, NA, NA, NA
+    ),
+    c(
+      -25.65, -13.20, -9.081, -7.019, -5.752, -4.868, -4.198, -3.659, NA, NA, NA,
+      NA, NA, NA, NA, NA
+    ),
+    c(
+      -25.65, -13.19, -9.068, -6.999, -5.726, -4.836, -4.160, -3.616, -3.160, NA,
+      NA, NA, NA, NA, NA, NA
+    ),
+    c(
+      -25.64, -13.18, -9.05, -6.974, -5.694, -4.799, -4.118, -3.570, -3.109,
+      -2.709, NA, NA, NA, NA, NA, NA
+    ),
+    c(
+      -25.63, -13.17, -9.027, -6.944, -5.658, -4.757, -4.071, -3.518, -3.053,
+      -2.649, -2.289, NA, NA, NA, NA, NA
+    ),
+    c(
+      -25.61, -23.14, -8.999, -6.910, -5.618, -4.711, -4.021, -3.463, -2.993,
+      -2.584, -2.220, -1.888, NA, NA, NA, NA
+    ),
+    c(
+      -25.59, -13.12, -8.966, -6.870, -5.573, -4.661, -3.965, -3.403, -2.928,
+      -2.515, -2.146, -1.809, -1.497, NA, NA, NA
+    ),
+    c(
+      -25.57, -13.09, -8.928, -6.827, -5.523, -4.606, -3.906, -3.338, -2.859,
+      -2.441, -2.066, -1.724, -1.406, -1.106, NA, NA
+    ),
+    c(
+      -25.54, -13.05, -8.886, -6.778, -5.469, -4.547, -3.842, -3.269, -2.785,
+      -2.361, -1.981, -1.634, -1.309, -1.002, -0.708, NA
+    ),
+    c(
+      -25.50, -13.01, -8.839, -6.725, -5.411, -4.484, -3.773, -3.195, -2.706,
+      -2.277, -1.891, -1.537, -1.206, -0.891, -0.588, -0.292
+    ),
+    c(
+      -25.46, -12.96, -8.788, -6.668, -5.348, -4.415, -3.699, -3.116, -2.621,
+      -2.186, -1.794, -1.433, -1.094, -0.771, -0.459, -0.152
+    ),
+    c(
+      -25.42, -12.91, -8.731, -6.606, -5.280, -4.342, -3.620, -3.032, -2.531,
+      -2.089, -1.690, -1.322, -0.974, -0.642, NA, NA
+    ),
+    c(
+      -25.37, -12.86, -8.670, -6.539, -5.207, -4.263, -3.536, -2.941, -2.434,
+      -1.986, -1.579, -1.202, NA, NA, NA, NA
+    ),
+    c(
+      -25.31, -12.80, -8.604, -6.466, -5.126, -4.179, -3.446, -2.845, -2.330,
+      -1.874, NA, NA, NA, NA, NA, NA
+    ),
+    c(
+      -25.5, -12.73, -8.532, -6.388, -5.045, -4.089, -3.349, -2.741, NA, NA, NA,
+      NA, NA, NA, NA, NA
+    ),
+    c(
+      -25.19, -12.66, -8.454, -6.305, -4.955, -3.992, NA, NA, NA, NA, NA, NA, NA,
+      NA, NA, NA
+    ),
+    c(
+      -25.12, -12.58, -8.371, -6.215, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
+      NA
+    )
+  )
+}
+
+# Bingham MLE lookup table from Appendix C of Tauxe's books.
+lineBinghamK2Table <- function() {
+  cbind(
+    c(-25.55, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
+    c(-13.09, -13.11, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
+    c(
+      -8.996, -9.019, -9.043, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
+      NA
+    ),
+    c(
+      -6.977, -6.999, -7.020, -7.035, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
+      NA
+    ),
+    c(
+      -5.760, -5.777, -5.791, -5.798, -5.797, NA, NA, NA, NA, NA, NA, NA, NA, NA,
+      NA, NA
+    ),
+    c(
+      -4.923, -4.934, -4.941, -4.941, -4.933, -4.917, NA, NA, NA, NA, NA, NA, NA,
+      NA, NA, NA
+    ),
+    c(
+      -4.295, -4.301, -4.301, -4.294, -4.279, -4.258, -4.231, NA, NA, NA, NA, NA,
+      NA, NA, NA, NA
+    ),
+    c(
+      -3.796, -3.796, -3.790, -3.777, -3.756, -3.729, -3.697, -3.659, NA, NA, NA,
+      NA, NA, NA, NA, NA
+    ),
+    c(
+      -3.381, -3.375, -3.363, -3.345, -3.319, -3.287, -3.249, -3.207, -3.160, NA,
+      NA, NA, NA, NA, NA, NA
+    ),
+    c(
+      -3.025, -3.014, -2.997, -2.973, -2.942, -2.905, -2.863, -2.816, -2.765,
+      -2.709, NA, NA, NA, NA, NA, NA
+    ),
+    c(
+      -2.712, -2.695, -2.673, -2.644, -2.609, -2.568, -2.521, -2.470, -2.414,
+      -2.354, -2.289, NA, NA, NA, NA, NA
+    ),
+    c(
+      -2.431, -2.410, -2.382, -2.349, -2.309, -2.263, -2.212, -2.157, -2.097,
+      -2.032, -1.963, -1.888, NA, NA, NA, NA
+    ),
+    c(
+      -2.175, -2.149, -2.117, -2.078, -2.034, -1.984, -1.929, -1.869, -1.805,
+      -1.735, -1.661, -1.582, -1.497, NA, NA, NA
+    ),
+    c(
+      -1.939, -1.908, -1.871, -1.828, -1.779, -1.725, -1.665, -1.601, -1.532,
+      -1.458, -1.378, -1.294, -1.203, -1.106, NA, NA
+    ),
+    c(
+      -1.718, -1.682, -1.641, -1.596, -1.540, -1.481, -1.417, -1.348, -1.274,
+      -1.195, -1.110, -1.020, -0.923, -0.819, -0.708, NA
+    ),
+    c(
+      -1.510, -1.470, -1.423, -1.371, -1.313, -1.250, -1.181, -1.108, -1.028,
+      -0.944, -0.853, -0.756, -0.653, -0.541, -0.421, -0.292
+    ),
+    c(
+      -1.312, -1.267, -1.216, -1.159, -1.096, -1.028, -0.955, -0.876, -0.791,
+      -0.701, -0.604, -0.500, -0.389, -0.269, -0.140, 0.000
+    ),
+    c(
+      -1.123, -1.073, -1.017, -9.555, -0.887, -0.814, -0.736, -0.651, -0.561,
+      -0.464, -0.360, -0.249, -0.129, 0.000, NA, NA
+    ),
+    c(
+      -0.940, -0.885, -0.824, -0.757, -0.684, -0.606, -0.522, -0.432, -0.335,
+      -0.231, -0.120, 0.000, NA, NA, NA, NA
+    ),
+    c(
+      -0.762, -0.702, -0.636, -0.564, -0.486, -0.402, -0.312, -0.215, -0.111,
+      -0.000, NA, NA, NA, NA, NA, NA
+    ),
+    c(
+      -0.589, -0.523, -0.452, -0.374, -0.290, -0.200, -0.104, 0.000, NA, NA, NA,
+      NA, NA, NA, NA, NA
+    ),
+    c(
+      -0.418, -0.347, -0.270, -0.186, -0.097, 0.000, NA, NA, NA, NA, NA, NA, NA,
+      NA, NA, NA
+    ),
+    c(
+      -0.250, -0.173, -0.090, 0.000, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA,
+      NA
+    )
+  )
+}
+
+# Computes K1, K2 from omega1, omega2, using the lookup tables.
+#' @importFrom fields interp.surface
+lineBinghamK1K2MLE <- function(omega1, omega2) {
+  omega1s <- seq(from = 0.02, to = 0.32, by = 0.02)
+  omega2s <- seq(from = 0.02, to = 0.46, by = 0.02)
+  point <- matrix(c(omega1, omega2), 1, 2)
+  k1 <- fields::interp.surface(list(x = omega1s, y = omega2s, z = lineBinghamK1Table()), point)
+  k2 <- fields::interp.surface(list(x = omega1s, y = omega2s, z = lineBinghamK2Table()), point)
+  c(k1, k2)
+}
+
+lineWatsonMLED3s <- function() {
+  c(
+    0.001,
+    seq(from = 0.005, to = 0.330, by = 0.005),
+    0.333,
+    seq(from = 0.34, to = 0.99, by = 0.01),
+    0.995, 0.999
+  )
+}
+
+lineWatsonMLEKappaHats <- function() {
+  c(
+    -500, -100, -50, -33.33, -25, -20, -16.67, -14.29, -12.25, -11.11, -9.992,
+    -9.087, -8.327, -7.681, -7.126, -6.641, -6.215, -5.836, -5.495, -5.188,
+    -4.908, -4.651, -4.415, -4.196, -3.993, -3.802, -3.624, -3.457, -3.298,
+    -3.148, -3.006, -2.870, -2.741, -2.617, -2.499, -2.385, -2.275, -2.170,
+    -2.068, -1.970, -1.874, -1.782, -1.692, -1.605, -1.520, -1.438, -1.357,
+    -1.279, -1.202, -1.127, -1.053, -0.982, -0.911, -0.842, -0.774, -0.708,
+    -0.642, -0.578, -0.514, -0.452, -0.390, -0.330, -0.270, -0.211, -0.152,
+    -0.095, -0.038, -0.004, 0.075, 0.184, 0.292, 0.398, 0.503, 0.606, 0.708,
+    0.809, 0.909, 1.008, 1.106, 1.204, 1.302, 1.399, 1.497, 1.594, 1.692, 1.790,
+    1.888, 1.987, 2.087, 2.188, 2.289, 2.392, 2.496, 2.602, 2.709, 2.819, 2.930,
+    3.044, 3.160, 3.280, 3.402, 3.529, 3.659, 3.764, 3.934, 4.079, 4.231, 4.389,
+    4.556, 4.731, 4.917, 5.115, 5.326, 5.552, 5.797, 6.063, 6.354, 6.676, 7.035,
+    7.438, 7.897, 8.426, 9.043, 9.776, 10.654, 11.746, 13.112, 14.878, 17.242,
+    20.560, 25.546, 33.866, 50.521, 100.510, 200.5, 1000.5
+  )
+}
+lineWatsonMLEInterpolation <- function() {
+  stats::approxfun(
+    x = lineWatsonMLED3s(), y = lineWatsonMLEKappaHats()
+  )
+}
+
+
+# Generates one ray from the Fisher distribution centered at the third column of the rotation matrix, using accept-reject with f and its bound.
+rayFisherHelper <- function(rot, f, bound) {
+  # The azimuthal coordinate theta is uniform on the unit circle.
+  theta <- runif(1, min = -pi, max = pi)
+  # Perform acceptance-rejection sampling for phi.
+  phi <- runif(1, min = 0, max = pi)
+  y <- runif(1, min = 0, max = bound)
+  while (y > f(phi)) {
+    phi <- runif(1, min = 0, max = pi)
+    y <- runif(1, min = 0, max = bound)
+  }
+  as.numeric(rot %*% cartesianFromSpherical(c(1, phi, theta)))
+}
+
+#' Sampling points from the Fisher distribution.
+#'
+#' Also called von Mises-Fisher distribution or Langevin distribution. Uses expressions on p. 172 of Mardia and Jupp (2000), with a naive acceptance-rejection sampling algorithm. As kappa increases, this algorithm gets less and less efficient --- for example, about 19 tries per acceptance when kappa == 100.
+#' @param mu A ray. The center of the distribution.
+#' @param kappa A real number (positive). The concentration of the distribution.
+#' @param n A real number (positive integer) or NULL.
+#' @return If `n` is `NULL`, then a single ray. If n is a positive integer, then a list of n rays.
+#' @noRd
+rayFisher <- function(mu, kappa, n = NULL) {
+  # Make a rotation matrix with mu as its third column.
+  nu <- rayOrthogonalUniform(mu)
+  rot <- cbind(cross(nu, mu), nu, mu)
+  # phi has PDF f = ((k / (2 sinh k)) e^(k cos phi) sin phi) on [0, pi].
+  f <- function(phi) {
+    cosPhi <- cos(phi)
+    if (kappa * cosPhi < 700) {
+      (kappa / (2 * sinh(kappa))) * exp(kappa * cos(phi)) * sin(phi)
+    } else {
+      numerator <- kappa * sin(phi)
+      denominator <- exp(kappa * (1 - cosPhi)) - exp(kappa * (-1 - cosPhi))
+      numerator / denominator
+    }
+  }
+  # Bound f.
+  bb <- sqrt(sqrt(1 + 4 * kappa^2) - 1)
+  if (kappa < 700) {
+    aa <- exp((sqrt(1 + 4 * kappa^2) - 1) / 2)
+    cc <- 2 * sqrt(2) * sinh(kappa)
+    bound <- aa * bb / cc
+  } else {
+    bound <- bb * exp(-1 / 2) / sqrt(2)
+  }
+  if (is.null(n)) {
+    rayFisherHelper(rot, f, bound)
+  } else {
+    replicate(n, rayFisherHelper(rot, f, bound), simplify = FALSE)
+  }
+}
+
+# From Mardia and Jupp (2000), Appendix 3.2.
+rayFisherMLEKappaHats <- function() {
+  c(
+    0.000, 0.030, 0.060, 0.090, 0.120, 0.150, 0.180, 0.211, 0.241, 0.271, 0.302,
+    0.332, 0.363, 0.394, 0.425, 0.456, 0.488, 0.519, 0.551, 0.583, 0.615, 0.647,
+    0.680, 0.713, 0.746, 0.780, 0.814, 0.848, 0.883, 0.918, 0.953, 0.989, 1.025,
+    1.062, 1.100, 1.137, 1.176, 1.215, 1.255, 1.295, 1.336, 1.378, 1.421, 1.464,
+    1.508, 1.554, 1.600, 1.647, 1.696, 1.746, 1.797, 1.849, 1.903, 1.958, 2.015,
+    2.074, 2.135, 2.198, 2.263, 2.330, 2.401, 2.473, 2.549, 2.628, 2.711, 2.798,
+    2.888, 2.984, 3.085, 3.191, 3.304, 3.423, 3.551, 3.687, 3.832, 3.989, 4.158,
+    4.341, 4.541, 4.759, 4.998, 5.262, 5.555, 5.882, 6.250, 6.667, 7.143, 7.692,
+    8.333, 9.091, 10.000, 11.111, 12.500, 14.286, 16.667, 20.000, 25.000, 33.333,
+    50.000, 100.000
+  )
+}
+rayFisherMLEInterpolation <- function() {
+  stats::approxfun(
+    x = seq(from = 0.00, to = 0.99, by = 0.01), y = rayFisherMLEKappaHats()
+  )
+}
 
 
 

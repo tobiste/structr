@@ -31,14 +31,20 @@ and concentration parameter (\eqn{\kappa}) .
 }
 \examples{
 set.seed(20250411)
-x <- rvmf(100, mu = Line(120, 50), k = 5)
-dx <- dvmf(x, mu = Line(120, 50))
+x <- rvmf(100, mu = Ray(120, 50), k = 5)
+contour(x)
+
+dx <- dvmf(x, mu = Ray(120, 50))
 head(dx)
 
 plot(x, col = assign_col(dx))
 }
 \seealso{
-\code{\link[=runif.spherical]{runif.spherical()}} for alternative algorithms to generate uniform
-distributed samples on a sphere, \code{\link[=rkent]{rkent()}} for Kent distribution,
-\code{\link[=rfb]{rfb()}} for Fisher-Bingham distribution.
+Other random: 
+\code{\link{rbing}},
+\code{\link{rfb}()},
+\code{\link{rkent}()},
+\code{\link{rrot}()},
+\code{\link{runif.spherical}()}
 }
+\concept{random}
