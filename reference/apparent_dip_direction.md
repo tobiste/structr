@@ -26,5 +26,5 @@ Azimuth in degrees
 
 ``` r
 apparent_dip_direction(Plane(63, 45), 10)
-#> [1] 145.8929
+#> [1] 325.8929
 ```

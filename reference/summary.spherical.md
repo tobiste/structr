@@ -35,5 +35,5 @@ named vector
 set.seed(20250411)
 summary(rvmf(100, mu = Line(90, 20), k = 20))
 #>         azimuth          plunge        variance        68% cone confidence cone 
-#>      91.2000211      25.2505297       0.2389314      40.4415071       4.1705671 
+#>     90.34420929     21.23577351      0.04613671     17.47209466      3.07781518 
 ```

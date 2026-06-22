@@ -1,6 +1,6 @@
 # Maximum likelihood estimation of the Fisher parameters.
 
-MLE parameters describing a Fisher distribution for isotropic
+MLE parameters describing a von Mises-Fisher distribution for isotropic
 directional vectors. Based on Mardia and Jupp (2000, p. 198).
 
 ## Usage
@@ -45,6 +45,13 @@ A list with members
 
 ## See also
 
+[`fisher_inference()`](https://tobiste.github.io/structr/reference/fisher-inference.md)
+for confidence regions, and
+[`rvmf()`](https://tobiste.github.io/structr/reference/vonmises-fisher.md)
+to simulate a distribution.
+[`vmf_MLE()`](https://tobiste.github.io/structr/reference/dist.mle.md)
+is an alternative MLE function.
+
 Other distribution-MLE:
 [`bingham-mle`](https://tobiste.github.io/structr/reference/bingham-mle.md),
 [`dist.mle`](https://tobiste.github.io/structr/reference/dist.mle.md),
@@ -53,20 +60,19 @@ Other distribution-MLE:
 ## Examples
 
 ``` r
-r <- fisher_MLE(Ray(example_lines))
-print(r)
+set.seed(20250411)
+x <- rvmf(100, mu = Ray(120, 50), k = 5)
+
+fisher_MLE(x)
 #> $muHat
 #> Ray object (n = 1):
-#>  azimuth   plunge 
-#> 68.51277 20.49587 
+#>   azimuth    plunge 
+#> 118.32579  50.88713 
 #> 
 #> $rBar
-#> [1] 0.7831482
+#> [1] 0.8000961
 #> 
 #> $kappaHat
-#> [1] 4.609632
+#> [1] 5.000538
 #> 
-
-plot(example_lines)
-points(r$muHat, col = 'red')
 ```

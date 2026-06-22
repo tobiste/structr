@@ -196,43 +196,43 @@ s <- principal_stretch(dat)
 
 # Volume of ellipsoid
 volume(s)
-#> [1] 0.171276
+#> [1] 0.1750129
 
 #  Size-related tensor invariant of ellipsoids
 size_invariant(s)
-#> [1] -3.196891
+#> [1] -3.175307
 
 # Strain-related tensor invariant of ellipsoids
 strain_invariant(s)
-#> [1] 2.60509
+#> [1] 2.591371
 
 # Shape-related tensor invariant of ellipsoids
 shape_invariant(s)
-#> [1] -0.1155451
+#> [1] -0.1121536
 
 # Lode's shape parameter for the strain symmetry ratio
 lode(s)
-#> [1] -0.63562
+#> [1] -0.9457258
 
 # Nadai's octahedral shear strain
 nadai(s)
-#> [1] 1.266186
+#> [1] 1.240555
 
 # Jelinek Pj parameter
 jelinek(s)
-#> [1] 5.993392
+#> [1] 5.780032
 
 # Flinn's intensity and symmetry parameters
 flinn(s)
 #> $k
-#> [1] 8.243876
+#> [1] 81.38657
 #> 
 #> $d
-#> [1] 2.975821
+#> [1] 3.47317
 #> 
 
 kind(s)
-#> [1] "LLS"
+#> [1] "L"
 
 # Ellipsoid data
 hossack_ell <- lapply(seq.int(nrow(hossack1968)), function(i) {

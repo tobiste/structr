@@ -43,7 +43,7 @@ Fault_from_rake(fault_plane, rake = c(84.7202, -10, 30))
     ## Fault object (n = 3):
     ##      dip_direction dip   azimuth    plunge sense
     ## [1,]           120  60 109.52858 59.581591     1
-    ## [2,]           120  60 204.96163  8.649165    -1
+    ## [2,]           120  60  24.96163 -8.649165    -1
     ## [3,]           100  50  30.36057 22.521012     1
 
 Often, measured orientation angles can be (slightly) imprecise and
@@ -601,7 +601,7 @@ displacement_tensor_decomposition(Fg, dip_direction = 45)
     ## $fault
     ## Fault object (n = 1):
     ## dip_direction           dip       azimuth        plunge         sense 
-    ##      45.00000      59.03624      78.69007      54.20424      -1.00000 
+    ##      45.00000      59.03624     258.69007     -54.20424      -1.00000 
     ## 
     ## $strain_tensor
     ##      [,1] [,2] [,3]

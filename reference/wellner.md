@@ -82,7 +82,7 @@ Jon A. Wellner. "Permutation Tests for Directional Data." Ann. Statist.
 ``` r
 test <- rvmf(100)
 wellner(test, Line(120, 50))
-#> [1] 8.121567
+#> [1] 8.639335
 wellner_inference(test, Line(120, 50))
-#> [1] 0.013
+#> [1] 0.014
 ```

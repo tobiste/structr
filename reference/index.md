@@ -105,7 +105,7 @@
   s-plane poles
 
 - [`bingham_inference()`](https://tobiste.github.io/structr/reference/bingham-inference.md)
-  : 95% confidence region for the mean of the Bingham distribution.
+  : Confidence region for the mean of the Bingham distribution.
 
 - [`bingham_MLE()`](https://tobiste.github.io/structr/reference/bingham-mle.md)
   : Maximum likelihood estimation of the Bingham distribution
@@ -177,8 +177,8 @@
   [`density_calc()`](https://tobiste.github.io/structr/reference/density.md)
   : Spherical density estimation
 
-- [`kent_mle()`](https://tobiste.github.io/structr/reference/dist.mle.md)
-  [`vmf_mle()`](https://tobiste.github.io/structr/reference/dist.mle.md)
+- [`kent_MLE()`](https://tobiste.github.io/structr/reference/dist.mle.md)
+  [`vmf_MLE()`](https://tobiste.github.io/structr/reference/dist.mle.md)
   : Maximum likelihood estimation of Spherical Rotational Symmetric
   Distributions
 
@@ -237,6 +237,9 @@
 
 - [`fault_displacements()`](https://tobiste.github.io/structr/reference/fault_displacements.md)
   : Fault displacement components
+
+- [`fisher_inference()`](https://tobiste.github.io/structr/reference/fisher-inference.md)
+  : Confidence Region for the Fisher Distribution Mean.
 
 - [`fisher_MLE()`](https://tobiste.github.io/structr/reference/fisher-mle.md)
   : Maximum likelihood estimation of the Fisher parameters.
@@ -373,7 +376,7 @@
   Converts strike into dip direction using right-hand rule
 
 - [`rkent()`](https://tobiste.github.io/structr/reference/rkent.md) :
-  Kent distribution
+  Kent Distribution
 
 - [`rotate()`](https://tobiste.github.io/structr/reference/rotate.md) :
   Vector Rotation
@@ -386,6 +389,9 @@
 
 - [`runif.spherical()`](https://tobiste.github.io/structr/reference/runif.spherical.md)
   : Uniformly Distributed Vectors on the Sphere
+
+- [`rwatson()`](https://tobiste.github.io/structr/reference/rwatson.md)
+  : Watson Distribution
 
 - [`sample_spherical()`](https://tobiste.github.io/structr/reference/sample_spherical.md)
   : Random Samples and Permutations of Spherical Objects

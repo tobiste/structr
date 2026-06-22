@@ -72,6 +72,11 @@ A list with members
 
 ## See also
 
+[`bingham_inference()`](https://tobiste.github.io/structr/reference/bingham-inference.md)
+for confidence regions, and
+[`rbingham()`](https://tobiste.github.io/structr/reference/rbing.md) to
+simulate a distribution.
+
 Other distribution-MLE:
 [`dist.mle`](https://tobiste.github.io/structr/reference/dist.mle.md),
 [`fisher-mle`](https://tobiste.github.io/structr/reference/fisher-mle.md),

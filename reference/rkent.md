@@ -1,4 +1,4 @@
-# Kent distribution
+# Kent Distribution
 
 Simulation of random values from a spherical Kent distribution.
 
@@ -36,12 +36,15 @@ Other random:
 [`rfb()`](https://tobiste.github.io/structr/reference/rfb.md),
 [`rrot()`](https://tobiste.github.io/structr/reference/rrot.md),
 [`runif.spherical()`](https://tobiste.github.io/structr/reference/runif.spherical.md),
+[`rwatson()`](https://tobiste.github.io/structr/reference/rwatson.md),
 [`vonmises-fisher`](https://tobiste.github.io/structr/reference/vonmises-fisher.md)
 
 ## Examples
 
 ``` r
 set.seed(20250411)
-x <- rkent(100, mu = Ray(120, 50), k = 5, b = 1)
-plot(x)
+r <- rkent(100, mu = Ray(120, 50), k = 5, b = 1)
+
+contour(r)
+points(r)
 ```

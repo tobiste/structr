@@ -233,11 +233,11 @@ down-plunging is positive. Rake values range between 0 and 360° (or
 <span><span class="va">fault_pitch</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">84.7202</span>, <span class="op">-</span><span class="fl">10</span>, <span class="fl">30</span>, <span class="fl">180</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/fault-rake.html">Fault_from_rake</a></span><span class="op">(</span><span class="va">fault_plane</span>, rake <span class="op">=</span> <span class="va">fault_pitch</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Fault object (n = 4):</span></span>
-<span><span class="co">#&gt;      dip_direction dip   azimuth       plunge sense</span></span>
-<span><span class="co">#&gt; [1,]           120  60 109.52858 5.958159e+01     1</span></span>
-<span><span class="co">#&gt; [2,]           120  60 204.96163 8.649165e+00    -1</span></span>
-<span><span class="co">#&gt; [3,]           100  50  30.36057 2.252101e+01     1</span></span>
-<span><span class="co">#&gt; [4,]             0  40  90.00000 1.487542e-14     1</span></span></code></pre></div>
+<span><span class="co">#&gt;      dip_direction dip   azimuth        plunge sense</span></span>
+<span><span class="co">#&gt; [1,]           120  60 109.52858  5.958159e+01     1</span></span>
+<span><span class="co">#&gt; [2,]           120  60  24.96163 -8.649165e+00    -1</span></span>
+<span><span class="co">#&gt; [3,]           100  50  30.36057  2.252101e+01     1</span></span>
+<span><span class="co">#&gt; [4,]             0  40  90.00000  1.487542e-14     1</span></span></code></pre></div>
 </div>
 <div class="section level5">
 <h5 id="fault-plane-rake-angle-and-plunge-quadrant">Fault plane, rake angle and plunge quadrant<a class="anchor" aria-label="anchor" href="#fault-plane-rake-angle-and-plunge-quadrant"></a>
@@ -258,16 +258,16 @@ measured.</p>
 <span><span class="va">plunge_quadrant</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"E"</span>, <span class="st">"S"</span>, <span class="st">"W"</span>, <span class="st">"N"</span>, <span class="st">"E"</span>, <span class="st">"W"</span>, <span class="st">"E"</span>, <span class="st">"S"</span>, <span class="st">"W"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/Fault_from_rake_quadrant.html">Fault_from_rake_quadrant</a></span><span class="op">(</span><span class="fu"><a href="../reference/classes.html">Plane</a></span><span class="op">(</span><span class="va">dip_dir</span>, <span class="va">dip</span><span class="op">)</span>, <span class="va">rake1</span>, <span class="va">plunge_quadrant</span>, type <span class="op">=</span> <span class="st">"plunge"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Fault object (n = 9):</span></span>
-<span><span class="co">#&gt;       dip_direction dip    azimuth       plunge sense</span></span>
-<span><span class="co">#&gt;  [1,]           180   5  90.000000 0.000000e+00     1</span></span>
-<span><span class="co">#&gt;  [2,]           225  10 179.561451 7.053022e+00     1</span></span>
-<span><span class="co">#&gt;  [3,]           270  15 270.000000 1.500000e+01     1</span></span>
-<span><span class="co">#&gt;  [4,]           315  30   4.106605 2.070481e+01     1</span></span>
-<span><span class="co">#&gt;  [5,]             0  40  90.000000 1.487542e-14     1</span></span>
-<span><span class="co">#&gt;  [6,]             0  55 299.837566 3.539626e+01     1</span></span>
-<span><span class="co">#&gt;  [7,]            45  65  45.000000 6.500000e+01     1</span></span>
-<span><span class="co">#&gt;  [8,]            90  75 165.489181 4.307952e+01     1</span></span>
-<span><span class="co">#&gt;  [9,]           135  90 225.000000 7.016709e-15     1</span></span></code></pre></div>
+<span><span class="co">#&gt;       dip_direction dip    azimuth        plunge sense</span></span>
+<span><span class="co">#&gt;  [1,]           180   5 270.000000 -1.220766e-15     1</span></span>
+<span><span class="co">#&gt;  [2,]           225  10 179.561451  7.053022e+00     1</span></span>
+<span><span class="co">#&gt;  [3,]           270  15 270.000000  1.500000e+01     1</span></span>
+<span><span class="co">#&gt;  [4,]           315  30   4.106605  2.070481e+01     1</span></span>
+<span><span class="co">#&gt;  [5,]             0  40  90.000000  1.487542e-14     1</span></span>
+<span><span class="co">#&gt;  [6,]             0  55 299.837566  3.539626e+01     1</span></span>
+<span><span class="co">#&gt;  [7,]            45  65  45.000000  6.500000e+01     1</span></span>
+<span><span class="co">#&gt;  [8,]            90  75 165.489181  4.307952e+01     1</span></span>
+<span><span class="co">#&gt;  [9,]           135  90 225.000000  7.016709e-15     1</span></span></code></pre></div>
 </div>
 <div class="section level5">
 <h5 id="fault-plane-rake-angle-and-rake-quadrant">Fault plane, rake angle and rake quadrant<a class="anchor" aria-label="anchor" href="#fault-plane-rake-angle-and-rake-quadrant"></a>
@@ -288,15 +288,15 @@ left-hand rule is followed. Angle ranges from 0 to 90 °. Use
 <span><span class="fu"><a href="../reference/Fault_from_rake_quadrant.html">Fault_from_rake_quadrant</a></span><span class="op">(</span><span class="fu"><a href="../reference/classes.html">Plane</a></span><span class="op">(</span><span class="va">dip_dir</span>, <span class="va">dip</span><span class="op">)</span>, <span class="va">rake2</span>, <span class="va">rake_quadrant</span>, type <span class="op">=</span> <span class="st">"rake"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Fault object (n = 9):</span></span>
 <span><span class="co">#&gt;       dip_direction dip    azimuth    plunge sense</span></span>
-<span><span class="co">#&gt;  [1,]           180   5  90.000000  0.000000     1</span></span>
+<span><span class="co">#&gt;  [1,]           180   5 270.000000  0.000000     1</span></span>
 <span><span class="co">#&gt;  [2,]           225  10 179.561451  7.053022     1</span></span>
 <span><span class="co">#&gt;  [3,]           270  15 270.000000 15.000000     1</span></span>
 <span><span class="co">#&gt;  [4,]           315  30   4.106605 20.704811     1</span></span>
-<span><span class="co">#&gt;  [5,]             0  40 270.000000  0.000000     1</span></span>
+<span><span class="co">#&gt;  [5,]             0  40  90.000000  0.000000     1</span></span>
 <span><span class="co">#&gt;  [6,]             0  55 299.837566 35.396260     1</span></span>
 <span><span class="co">#&gt;  [7,]            45  65  45.000000 65.000000     1</span></span>
 <span><span class="co">#&gt;  [8,]            90  75 165.489181 43.079517     1</span></span>
-<span><span class="co">#&gt;  [9,]           135  90  45.000000  0.000000     1</span></span></code></pre></div>
+<span><span class="co">#&gt;  [9,]           135  90 225.000000  0.000000     1</span></span></code></pre></div>
 </div>
 </div>
 </div>

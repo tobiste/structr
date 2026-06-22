@@ -235,43 +235,43 @@ Tectonophysics 79.3-4 (1981): T63-T67.</p>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Volume of ellipsoid</span></span></span>
 <span class="r-in"><span><span class="fu">volume</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.171276</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.1750129</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co">#  Size-related tensor invariant of ellipsoids</span></span></span>
 <span class="r-in"><span><span class="fu">size_invariant</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -3.196891</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -3.175307</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Strain-related tensor invariant of ellipsoids</span></span></span>
 <span class="r-in"><span><span class="fu">strain_invariant</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.60509</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.591371</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Shape-related tensor invariant of ellipsoids</span></span></span>
 <span class="r-in"><span><span class="fu">shape_invariant</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.1155451</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.1121536</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Lode's shape parameter for the strain symmetry ratio</span></span></span>
 <span class="r-in"><span><span class="fu">lode</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.63562</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] -0.9457258</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Nadai's octahedral shear strain</span></span></span>
 <span class="r-in"><span><span class="fu">nadai</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.266186</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1.240555</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Jelinek Pj parameter</span></span></span>
 <span class="r-in"><span><span class="fu">jelinek</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.993392</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 5.780032</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Flinn's intensity and symmetry parameters</span></span></span>
 <span class="r-in"><span><span class="fu">flinn</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $k</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 8.243876</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 81.38657</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $d</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 2.975821</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 3.47317</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">kind</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "LLS"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] "L"</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Ellipsoid data</span></span></span>
 <span class="r-in"><span><span class="va">hossack_ell</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq.int</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">hossack1968</span><span class="op">)</span><span class="op">)</span>, <span class="kw">function</span><span class="op">(</span><span class="va">i</span><span class="op">)</span> <span class="op">{</span></span></span>

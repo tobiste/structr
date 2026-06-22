@@ -25,6 +25,7 @@ Other random:
 [`rfb()`](https://tobiste.github.io/structr/reference/rfb.md),
 [`rkent()`](https://tobiste.github.io/structr/reference/rkent.md),
 [`runif.spherical()`](https://tobiste.github.io/structr/reference/runif.spherical.md),
+[`rwatson()`](https://tobiste.github.io/structr/reference/rwatson.md),
 [`vonmises-fisher`](https://tobiste.github.io/structr/reference/vonmises-fisher.md)
 
 ## Examples
@@ -40,5 +41,5 @@ rp <- do.call(rbind, args = rp) |>
   as.Pair()
   
 # plot pairs
-  plot(rp)
+plot(rp)
 ```

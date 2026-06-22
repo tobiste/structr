@@ -93,7 +93,7 @@ displacement_tensor_decomposition(A_geo, dip_direction = 45)
 #> $fault
 #> Fault object (n = 1):
 #> dip_direction           dip       azimuth        plunge         sense 
-#>      45.00000      59.03624      78.69007      54.20424      -1.00000 
+#>      45.00000      59.03624     258.69007     -54.20424      -1.00000 
 #> 
 #> $strain_tensor
 #>      [,1] [,2] [,3]

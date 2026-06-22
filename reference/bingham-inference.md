@@ -1,4 +1,4 @@
-# 95% confidence region for the mean of the Bingham distribution.
+# Confidence region for the mean of the Bingham distribution.
 
 Confidence region for the mean of a Bingham distribution for anisotropic
 axial vectors. This function sometimes fails, if the data set is too
@@ -44,6 +44,17 @@ dispersions, measured in radians along the unit sphere's surface. If the
 inference fails, then the angles are `NA`. If `n_points` \> 0, then
 there is also a member `points`, which is a list of `n_points` + 1 lines
 delineating the confidence region.
+
+## See also
+
+[`rbingham()`](https://tobiste.github.io/structr/reference/rbing.md) for
+simulating a Bingham distribution, and
+[`bingham_MLE()`](https://tobiste.github.io/structr/reference/bingham-mle.md)
+to estimate distribution parameters.
+
+Other distribution-inference:
+[`fisher-inference`](https://tobiste.github.io/structr/reference/fisher-inference.md),
+[`watson-inference`](https://tobiste.github.io/structr/reference/watson-inference.md)
 
 ## Examples
 

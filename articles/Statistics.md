@@ -25,11 +25,11 @@ planes <- Plane(example_planes_df$dipdir, example_planes_df$dip)
 lines <- Line(example_lines_df$trend, example_lines_df$plunge)
 ```
 
-## Mean and dispersion
+## Mean and Dispersion
 
 Arithmetic mean, geodesic mean, and projected mean
 
-### Arithmetic mean and variance
+### Arithmetic Mean and Variance
 
 The arithmetic mean orientation of spherical data is calculated by
 summing up all orientation vectors and normalizing the resulting
@@ -125,7 +125,7 @@ legend("topright", legend = c("Mean line", "95% confidence cone", "63% data cone
 ![Diagram showing statistical results of some example data plotted in an
 equal-area projection](Statistics_files/figure-html/stat_plot-1.png)
 
-### Geodesic mean and variance
+### Geodesic Mean and Variance
 
 Another measure of mean and dispersion is the *Fréchet (geodesic L*²)
 mean and *variance* which is based on the angles between all data
@@ -169,7 +169,7 @@ These estimators are good descriptors of the concentration of the data
 around the mean direction, when data follows a unimodal, anisotropic
 distributions such as the *Kent* or *Bingham distributions*.
 
-### Projected mean
+### Projected Mean
 
 The Eigenvector with the largest Eigenvalue represents a vector parallel
 to the highest concentration of a population. This vector can also be
@@ -215,84 +215,11 @@ title(main = "Planes")
 ![Equal area projections showing the different estimators of the
 mean](Statistics_files/figure-html/mean_plot-1.png)
 
-### Hypothesis testing
-
-#### Confidence region
-
-To test if a line represents the population mean of a given set of
-lineations, we need to calculate the confidence region of our
-population.
-
-Let’s test the hypothesis that a horizontal lineation trending towards
-70° is the mean for our lineations.
-
-``` r
-
-line_NULL <- Line(70, 0)
-```
-
-The 95% confidence interval (from 10,000 bootstrap samples):
-
-``` r
-
-ce <- confidence_ellipse(lines, n = 10000, alpha = 0.05)
-```
-
-To visualize the confidence region of our lines:
-
-``` r
-
-plot(lines, col = "grey")
-stereo_confidence(ce, col = "#B63679FF")
-points(line_NULL, col = "#000004", pch = 16)
-```
-
-![Diagram showing the confidence region of a
-mean](Statistics_files/figure-html/test2-1.png)
-
-The $`p`$-value for our hypothesis line:
-
-``` r
-
-ce$pvalue.FUN(line_NULL)
-#> [1] 0
-```
-
-With (95% confidence) we rejected the Null Hypothesis that the given
-line represents the population mean as the p-value is smaller than 5%.
-
-#### Two-sample T-Test
-
-Wellner’s Rayleigh-style T-statistic[^4] measures how different two sets
-of vectors are. The test statistic T is a non-negative measure of
-dissimilarity between two datasets. The value is zero when the datasets
-are identical.
-
-``` r
-
-wellner(lines, line_NULL)
-#> [1] 0.9585258
-```
-
-A $`p`$-value for this test-statistic can be estimated using
-permutations. The fraction of tests in the computed T-statistic exceeds
-the observed T for the original data (a number between 0 and 1
-inclusive) can be interpreted as a $`p`$-value for the null hypothesis
-that the two populations are identical (not merely that their means
-coincide). Thus, smaller p-values indicate stronger evidence that the
-two populations differ significantly.
-
-``` r
-
-wellner_inference(lines, line_NULL, n_perm = 1000)
-#> [1] 0.43
-```
-
-## Orientation tensor
+## Orientation Tensor
 
 ### Eigenvectors
 
-The orientation tensor[^5] is a matrix comprising the mean direction
+The orientation tensor[^4] is a matrix comprising the mean direction
 cosines of the orientation vectors. In case of a Bingham distribution,
 the **Eigenvectors** of this tensor describe the orientation of the most
 dense, intermediate and least dense orientation, and thus, are used to
@@ -353,7 +280,7 @@ legend('right',
 
 ![](Statistics_files/figure-html/oteigen_plot-1.png)
 
-#### Shape parameters
+#### Shape Parameters
 
 There are more shape parameters using different algorithms based on the
 orientation tensor:
@@ -408,7 +335,143 @@ shape_params(planes)
 #> [1] 2.794622
 ```
 
-## Cluster vectors
+## Maximum Likelihood Estimation of Distribution Parameters
+
+``` r
+
+par(mfrow = c(2, 2), mar = c(2, 2, 1, 1))
+x1 <- rvmf(100, mu = Ray(120, 50), k = 5)
+r1 <- fisher_MLE(x1)
+plot(x1, col = 'grey')
+points(r1$muHat, col = 'red')
+title(main = 'von Mises-Fisher')
+
+x2 <- rwatson(100, mu = Line(120, 50), kappa = 5)
+r2 <- watson_MLE(x2)
+plot(x2, col = 'grey')
+points(r2$muHat, col = 'red')
+title(main = 'Watson')
+
+x3 <- rkent(100, mu = Ray(120, 50), k = 5, b = 1)
+r3 <- kent_MLE(x3)
+plot(x3, col = 'grey')
+points(r3$G, col = 'red')
+title(main = 'Kent')
+
+a <- cov(iris[, 1:3])
+x4 <- rbingham(100, a, "Line")
+r4 <- bingham_MLE(x4)
+plot(x4, col = 'grey')
+points(r4$vectors, col = 'red')
+title(main = 'Bingham')
+```
+
+![](Statistics_files/figure-html/mle-1.png)
+
+## Hypothesis Testing
+
+To test if a line represents the population mean of a given set of
+lineations, we need to calculate the confidence region of our
+population.
+
+Let’s test the hypothesis that a horizontal lineation trending towards
+70° is the mean for our lineations.
+
+``` r
+
+line_NULL <- Line(2, 10)
+```
+
+### Parametric Testing
+
+Parametric testing means that we assume a specific underlying
+distribution of the data. Here, we assume that the lineations are drawn
+from a von Mises-Fisher distribution.
+
+#### Confidence Region
+
+``` r
+
+cep <- fisher_inference(lines, alpha = 0.05)
+```
+
+``` r
+
+plot(lines, col = "grey")
+points(cep$muHat, col = "#B63679FF", pch = 16)
+lines(cep$muHat, ang = cep$angle, col = "#B63679FF")
+points(line_NULL, col = "#000004", pch = 16)
+```
+
+![Diagram showing the Fisher confidence region of a
+mean](Statistics_files/figure-html/test_param2-1.png)
+
+### Non-parametric Testing
+
+Non-parametric testing does require assumptions on the distribution of
+the data. This is commonly achieved using bootstrapping and permutation
+techniques.
+
+#### Confidence Region
+
+The 95% confidence interval (from 10,000 bootstrap samples):
+
+``` r
+
+cenp <- confidence_ellipse(lines, n = 10000, alpha = 0.05)
+```
+
+To visualize the confidence region of our lines:
+
+``` r
+
+plot(lines, col = "grey")
+stereo_confidence(cenp, col = "#B63679FF")
+points(line_NULL, col = "#000004", pch = 16)
+```
+
+![Diagram showing the confidence region of a
+mean](Statistics_files/figure-html/test2-1.png)
+
+The $`p`$-value for our hypothesis line:
+
+``` r
+
+cenp$pvalue.FUN(line_NULL)
+#> [1] 0
+```
+
+With (95% confidence) we rejected the Null Hypothesis that the given
+line represents the population mean as the p-value is smaller than 5%.
+
+#### Two-Sample T-Test
+
+**Wellner’s Rayleigh-style T-statistic**[^5] measures how different two
+sets of vectors. The test statistic T is a non-negative measure of
+dissimilarity between two datasets. The value is zero when the datasets
+are identical.
+
+``` r
+
+wellner(lines, line_NULL)
+#> [1] 10.2507
+```
+
+A $`p`$-value for this test-statistic can be estimated using
+*permutations*. The fraction of tests in the computed T-statistic
+exceeds the observed T for the original data (a number between 0 and 1
+inclusive) can be interpreted as a $`p`$-value for the null hypothesis
+that the two populations are identical (not merely that their means
+coincide). Thus, smaller p-values indicate stronger evidence that the
+two populations differ significantly.
+
+``` r
+
+wellner_inference(lines, line_NULL, n_perm = 1000)
+#> [1] 0.007
+```
+
+## Cluster Vectors
 
 To find *k* clusters of orientational data, the
 [`sph_cluster()`](https://tobiste.github.io/structr/reference/sph_cluster.md)
@@ -417,9 +480,9 @@ function can be used:
 ``` r
 
 # generate some random vectors:
-x1 <- rvmf(100, mu = Line(90, 0), k = 20)
-x2 <- rvmf(100, mu = Line(0, 0), k = 20)
-x3 <- rvmf(100, mu = Line(0, 90), k = 20)
+x1 <- rvmf(100, mu = Ray(90, 0), k = 20)
+x2 <- rvmf(100, mu = Ray(0, 0), k = 20)
+x3 <- rvmf(100, mu = Ray(0, 90), k = 20)
 x123 <- rbind(x1, x2, x3)
 
 # cluster the vectors:
@@ -472,11 +535,11 @@ Statist. 7(5) 929-943. <https://doi.org/10.1214/aos/1176344779>
     for three-dimensional orientational data. Journal of Structural
     Geology, 96, 65–89. <https://doi.org/10.1016/j.jsg.2017.01.002>
 
-[^4]: Wellner, J. A. (1979) “Permutation Tests for Directional Data.”
-    Ann. Statist. 7 (5) 929-943.
-    <https://doi.org/10.1214/aos/1176344779>
-
-[^5]: Scheidegger, A. E. (1964). The tectonic stress and tectonic motion
+[^4]: Scheidegger, A. E. (1964). The tectonic stress and tectonic motion
     direction in Europe and Western Asia as calculated from earthquake
     fault plane solutions. Bulletin of the Seismological Society of
     America, 54(5A), 1519–1528. <https://doi.org/10.1785/BSSA05405A1519>
+
+[^5]: Wellner, J. A. (1979) “Permutation Tests for Directional Data.”
+    Ann. Statist. 7 (5) 929-943.
+    <https://doi.org/10.1214/aos/1176344779>

@@ -132,31 +132,31 @@ Angle ranges from 0 to 90 °. Use <code>sense</code> argument to specify the sen
 <span class="r-in"><span><span class="va">plunge_quadrant</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"E"</span>, <span class="st">"S"</span>, <span class="st">"W"</span>, <span class="st">"N"</span>, <span class="st">"E"</span>, <span class="st">"W"</span>, <span class="st">"E"</span>, <span class="st">"S"</span>, <span class="st">"W"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">Fault_from_rake_quadrant</span><span class="op">(</span><span class="fu"><a href="classes.html">Plane</a></span><span class="op">(</span><span class="va">dip_dir</span>, <span class="va">dip</span><span class="op">)</span>, <span class="va">rake1</span>, <span class="va">plunge_quadrant</span>, type <span class="op">=</span> <span class="st">"plunge"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Fault object (n = 9):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       dip_direction dip    azimuth       plunge sense</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]           180   5  90.000000 0.000000e+00     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]           225  10 179.561451 7.053022e+00     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,]           270  15 270.000000 1.500000e+01     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,]           315  30   4.106605 2.070481e+01     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,]             0  40  90.000000 1.487542e-14     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,]             0  55 299.837566 3.539626e+01     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,]            45  65  45.000000 6.500000e+01     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]            90  75 165.489181 4.307952e+01     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]           135  90 225.000000 7.016709e-15     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       dip_direction dip    azimuth        plunge sense</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]           180   5 270.000000 -1.220766e-15     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]           225  10 179.561451  7.053022e+00     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [3,]           270  15 270.000000  1.500000e+01     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [4,]           315  30   4.106605  2.070481e+01     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,]             0  40  90.000000  1.487542e-14     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [6,]             0  55 299.837566  3.539626e+01     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [7,]            45  65  45.000000  6.500000e+01     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]            90  75 165.489181  4.307952e+01     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]           135  90 225.000000  7.016709e-15     1</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">rake2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">45</span>, <span class="fl">90</span>, <span class="fl">45</span>, <span class="fl">0</span>, <span class="fl">45</span>, <span class="fl">90</span>, <span class="fl">45</span>, <span class="fl">0</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">rake_quadrant</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"E"</span>, <span class="st">"S"</span>, <span class="st">"S"</span>, <span class="st">"E"</span>, <span class="st">"E"</span>, <span class="st">"W"</span>, <span class="st">"N"</span>, <span class="st">"S"</span>, <span class="st">"W"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">Fault_from_rake_quadrant</span><span class="op">(</span><span class="fu"><a href="classes.html">Plane</a></span><span class="op">(</span><span class="va">dip_dir</span>, <span class="va">dip</span><span class="op">)</span>, <span class="va">rake2</span>, <span class="va">rake_quadrant</span>, type <span class="op">=</span> <span class="st">"rake"</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Fault object (n = 9):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       dip_direction dip    azimuth    plunge sense</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]           180   5  90.000000  0.000000     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1,]           180   5 270.000000  0.000000     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [2,]           225  10 179.561451  7.053022     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [3,]           270  15 270.000000 15.000000     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [4,]           315  30   4.106605 20.704811     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,]             0  40 270.000000  0.000000     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [5,]             0  40  90.000000  0.000000     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [6,]             0  55 299.837566 35.396260     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7,]            45  65  45.000000 65.000000     1</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8,]            90  75 165.489181 43.079517     1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]           135  90  45.000000  0.000000     1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [9,]           135  90 225.000000  0.000000     1</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

@@ -8,9 +8,15 @@ Create uniformly distributed vectors on the sphere
 runif.spherical(
   n = 100,
   class = c("Vec3", "Ray", "Line", "Plane"),
-  method = c("cart", "gss", "sfs", "rotasym")
+  method = c("geologyGeometry", "gss", "sfs", "rotasym")
 )
 ```
+
+## Source
+
+Adapted fom
+[`rotasym::r_unif_sphere()`](https://rdrr.io/pkg/rotasym/man/unif.html)
+and `rayUniform()` from `geologyGeometry` by Davis, J.R.
 
 ## Arguments
 
@@ -25,10 +31,11 @@ runif.spherical(
 - method:
 
   character. The algorithm for generating uniformly distributed vectors.
-  Either `"cart"` (the default) for generating random points in
-  Cartesian coordinates (as in the `geologyGeometry` package), `"sfs"`
-  for the "Spherical Fibonacci Spiral points on a sphere", `"gss"` for
-  "Golden Section Spiral points on a sphere", or the algorithm
+  Either `"geologyGeometry"` (the default) for generating random points
+  in Cartesian coordinates (as in the `geologyGeometry` code
+  compilation), `"sfs"` for the "Spherical Fibonacci Spiral points on a
+  sphere", `"gss"` for "Golden Section Spiral points on a sphere", or
+  the algorithm
   [`rotasym::r_unif_sphere()`](https://rdrr.io/pkg/rotasym/man/unif.html)
   from the rotasym package.
 
@@ -49,6 +56,7 @@ Other random:
 [`rfb()`](https://tobiste.github.io/structr/reference/rfb.md),
 [`rkent()`](https://tobiste.github.io/structr/reference/rkent.md),
 [`rrot()`](https://tobiste.github.io/structr/reference/rrot.md),
+[`rwatson()`](https://tobiste.github.io/structr/reference/rwatson.md),
 [`vonmises-fisher`](https://tobiste.github.io/structr/reference/vonmises-fisher.md)
 
 ## Examples
@@ -67,6 +75,6 @@ x3 <- runif.spherical(n = 100, "Ray", method = "rotasym")
 contour(x3)
 
 
-x4 <- runif.spherical(n = 100, "Ray", method = "cart")
+x4 <- runif.spherical(n = 100, "Ray", method = "geologyGeometry")
 contour(x4)
 ```

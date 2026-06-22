@@ -42,6 +42,7 @@ Other random:
 [`rkent()`](https://tobiste.github.io/structr/reference/rkent.md),
 [`rrot()`](https://tobiste.github.io/structr/reference/rrot.md),
 [`runif.spherical()`](https://tobiste.github.io/structr/reference/runif.spherical.md),
+[`rwatson()`](https://tobiste.github.io/structr/reference/rwatson.md),
 [`vonmises-fisher`](https://tobiste.github.io/structr/reference/vonmises-fisher.md)
 
 ## Examples
@@ -49,5 +50,7 @@ Other random:
 ``` r
 set.seed(20250411)
 x <- rfb(100, mu = Line(120, 50), k = 5, A = diag(c(-1, 0, 1)))
+
 contour(x)
+points(x)
 ```

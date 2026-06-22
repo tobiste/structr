@@ -58,6 +58,17 @@ A list with members `$shape`, `$tBar`, `$rhs`, `$pvalue`.
   a real number in `[0, 1]` — the p-value for the null hypothesis that
   the Watson mean is u0.
 
+## See also
+
+[`rwatson()`](https://tobiste.github.io/structr/reference/rwatson.md)
+for simulating a Watson distribution, and
+[`watson_MLE()`](https://tobiste.github.io/structr/reference/watson-mle.md)
+to estimate distribution parameters.
+
+Other distribution-inference:
+[`bingham-inference`](https://tobiste.github.io/structr/reference/bingham-inference.md),
+[`fisher-inference`](https://tobiste.github.io/structr/reference/fisher-inference.md)
+
 ## Examples
 
 ``` r
@@ -84,8 +95,8 @@ print(r)
 #>         t1))
 #>     1 - stats::pf(f, 2, 2 * n - 2)
 #> }
-#> <bytecode: 0x5605ccdf8500>
-#> <environment: 0x5605ccdfc180>
+#> <bytecode: 0x55ac3a8eabd8>
+#> <environment: 0x55ac3a8e9818>
 #> 
 
 r$pvalue(Line(60, 10))

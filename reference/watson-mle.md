@@ -60,6 +60,11 @@ A list with members
 
 ## See also
 
+[`watson_inference()`](https://tobiste.github.io/structr/reference/watson-inference.md)
+for confidence regions, and
+[`rwatson()`](https://tobiste.github.io/structr/reference/rwatson.md) to
+simulate a distribution.
+
 Other distribution-MLE:
 [`bingham-mle`](https://tobiste.github.io/structr/reference/bingham-mle.md),
 [`dist.mle`](https://tobiste.github.io/structr/reference/dist.mle.md),

@@ -47,14 +47,19 @@ Other random:
 [`rkent()`](https://tobiste.github.io/structr/reference/rkent.md),
 [`rrot()`](https://tobiste.github.io/structr/reference/rrot.md),
 [`runif.spherical()`](https://tobiste.github.io/structr/reference/runif.spherical.md),
+[`rwatson()`](https://tobiste.github.io/structr/reference/rwatson.md),
 [`vonmises-fisher`](https://tobiste.github.io/structr/reference/vonmises-fisher.md)
 
 ## Examples
 
 ``` r
 a <- cov(iris[, 1:3])
-rbingham(100, a, "Line") |> contour()
+r <- rbingham(100, a, "Line")
+contour(r)
+points(r)
 
 
-rbingham_eig(100, c(100, 1, 0), "Line") |> contour()
+re <- rbingham_eig(100, c(100, 1, 0), "Line")
+contour(re)
+points(re)
 ```

@@ -105,6 +105,6 @@ if (require("mapproj")) {
 }
 #> Warning: Contour data has duplicated x, y coordinates.
 #> ℹ 19800 duplicated rows have been dropped.
-#> Warning: Removed 13108 rows containing non-finite outside the scale range
+#> Warning: Removed 13098 rows containing non-finite outside the scale range
 #> (`stat_contour_filled()`).
 ```
