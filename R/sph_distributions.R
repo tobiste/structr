@@ -289,15 +289,15 @@ rkent <- function(n, mu = Vec3(1, 0, 0), k = 5, b) {
 #'
 #' @examples
 #' set.seed(20250411)
-#' r <- rwatson(100, mu = Ray(120, 50), kappa = 10)
+#' r <- rwatson(100, mu = Ray(120, 50), k = 10)
 #' 
 #' contour(r)
 #' points(r)
-rwatson <- function(n, mu, kappa){
+rwatson <- function(n, mu, k){
   muv <- Vec3(mu) |> 
     as.vector()
   
-  r <- lineWatson(n = n, mu = muv, kappa = kappa)
+  r <- lineWatson(n = n, mu = muv, kappa = k)
   res <- do.call(rbind, r) |> 
     as.Vec3() 
   

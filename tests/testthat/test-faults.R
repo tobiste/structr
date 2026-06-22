@@ -36,19 +36,15 @@ rake <- seq(0, 360, 45) %% 360
 
 f <- Fault_from_rake(Plane(dip_dir, dip), rake)
 
-azimuth <- c(90, 179.6, 270, 4.1, 90, 299.8, 45, 165.5, 45)
+azimuth <- c(-90, 179.6, 270, 4.1, 90, 119.8, 225, 165.5+180, 225) %% 360
 test_that("Test Fault from rake: azimuth", {
   expect_equal(round(f[, 3], 1), azimuth)
 })
 
-plunge <- c(0, 7.1, 15, 20.7, 0, 144.6, 115, 115, 136.9, 180)
-# test_that("Test Fault from rake: plunge", {
-#   expect_equal(round(Line(f)[, 2] %% 360, 1), plunge)
-# })
-
-
-
-
+plunge <- c(0, 7.1, 15, 20.7, 0, 35.4, 65, 43.1, 0) * c(1,  1,  1,  1,  1, -1, -1, -1,  1)
+test_that("Test Fault from rake: plunge", {
+  expect_equal(round(Line(f)[, 2], 1), plunge)
+})
 
 
 # test from Shorrot and Lise, 1998, Tab. 2

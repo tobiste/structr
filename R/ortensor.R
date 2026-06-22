@@ -78,6 +78,7 @@ print.ortensor <- function(x, ...) {
 ortensor <- function(x, norm, w, shift) UseMethod("ortensor")
 
 #' @export
+#' @importFrom stats complete.cases
 ortensor.default <- function(x, norm = TRUE, w = NULL, shift = NULL) {
   # remove NA values
   noNA <- which(complete.cases(x))
@@ -176,9 +177,10 @@ inertia_tensor.spherical <- function(x, w = NULL) {
 inertia_tensor <- function(x, w = NULL) UseMethod("inertia_tensor")
 
 #' @export
+#' @importFrom stats complete.cases
 inertia_tensor.default <- function(x, w = NULL) {
   # remove NA values
-  noNA <- which(complete.cases(x))
+  noNA <- which(stats::complete.cases(x))
   noNA
   x <- x[noNA, ]
   

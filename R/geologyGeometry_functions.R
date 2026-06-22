@@ -1308,6 +1308,7 @@ rayBootstrapInference <- function(ls, numBoots, ...) {
 #' region, in order, with the first and last points identical.
 #'
 #' @noRd
+#' @importFrom stats quantile
 #'
 #' @source `geologyGeometry` by Davis, J.R.
 rayMahalanobisPercentiles <- function(us, center, alpha = 0.05, numPoints = 0, doIsotropic = FALSE) {
@@ -1373,6 +1374,7 @@ rayMahalanobisPercentiles <- function(us, center, alpha = 0.05, numPoints = 0, d
 
 # Returns C such that C exp(-u^T A u) integrates to 1 over the hemisphere? Accuracy is doubtful.
 #' @source `geologyGeometry` by Davis, J.R.
+#' @importFrom  Directional fb.saddle
 lineBinghamSaddlepointConstant <- function(a) {
   vals <- eigen(a, symmetric = TRUE, only.values = TRUE)$values
   const <- Directional::fb.saddle(c(0, 0, 0), vals)
@@ -1441,6 +1443,7 @@ lineBingham <- function(a, n = NULL) {
 #' \item{`$minEigenvalue`}{(the minimum eigenvalue of the Hessian at the putative optimum; worry if this is not positive).}
 #' }
 #' @noRd
+#' @importFrom stats optim
 #' @source `geologyGeometry` by Davis, J.R.
 lineBinghamMLE <- function(us, weights = replicate(length(us), 1), numNonAdapt = 5, numSteps = 1000) {
   # Scale the weights so that they sum to 1.
@@ -1691,6 +1694,7 @@ lineBinghamK1K2MLE <- function(omega1, omega2) {
 # Helper function for [lineWatson()]. Returns one line sampled from the Watson distribution.
 #' @noRd
 #' @source `geologyGeometry` by Davis, J.R.
+#' @importFrom stats runif
 lineWatsonHelper <- function(f, bound, rot) {
   phi <- runif(1, min = 0, max = pi)
   y <- runif(1, min = 0, max = bound)

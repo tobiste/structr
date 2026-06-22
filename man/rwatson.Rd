@@ -7,13 +7,16 @@
 \code{geologyGeometry} by Davis, J.R.
 }
 \usage{
-rwatson(n, mu, kappa)
+rwatson(n, mu, k)
 }
 \arguments{
 \item{n}{integer. number of random samples to be generated}
 
 \item{mu}{Mean vector. object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
 rows are the observations and the columns are the coordinates.}
+
+\item{k}{numeric. The concentration parameter (\eqn{\kappa}) of the von
+Mises-Fisher distribution}
 }
 \value{
 vector of class \code{mu} of length \code{n}
@@ -26,7 +29,7 @@ are needed per success. For \code{kappa} == -100, about 18 tries are needed.
 }
 \examples{
 set.seed(20250411)
-r <- rwatson(100, mu = Ray(120, 50), kappa = 10)
+r <- rwatson(100, mu = Ray(120, 50), k = 10)
 
 contour(r)
 points(r)
