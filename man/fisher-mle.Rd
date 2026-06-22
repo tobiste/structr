@@ -28,17 +28,19 @@ A list with members
 }
 }
 \description{
-MLE parameters describing a Fisher distribution for isotropic directional vectors.
+MLE parameters describing a von Mises-Fisher distribution for isotropic directional vectors.
 Based on Mardia and Jupp (2000, p. 198).
 }
 \examples{
-r <- fisher_MLE(Ray(example_lines))
-print(r)
+set.seed(20250411)
+x <- rvmf(100, mu = Ray(120, 50), k = 5)
 
-plot(example_lines)
-points(r$muHat, col = 'red')
+fisher_MLE(x)
 }
 \seealso{
+\code{\link[=fisher_inference]{fisher_inference()}} for confidence regions, and \code{\link[=rvmf]{rvmf()}} to
+simulate a distribution. \code{\link[=vmf_MLE]{vmf_MLE()}} is an alternative MLE function.
+
 Other distribution-MLE: 
 \code{\link{bingham-mle}},
 \code{\link{dist.mle}},

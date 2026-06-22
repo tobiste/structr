@@ -448,36 +448,6 @@ rotAntisymmetricFromVector <- function(v) {
 }
 
 
-#' Uniformly random points on the unit sphere.
-#'
-#' @param n A real number (positive integer) or NULL.
-#' @return If n is NULL, then a single ray. If n is a positive integer, then a list of n rays.
-#' @noRd
-#' @source `geologyGeometry` by Davis, J.R.
-rayUniform <- function(n = NULL) {
-  if (is.null(n)) {
-    cartesianFromHorizontal(c(runif(1, 0, 2 * pi), runif(1, -1, 1)))
-  } else {
-    replicate(n, rayUniform(), simplify = FALSE)
-  }
-}
-
-#' Uniformly random lines.
-#'
-#' @param n A real number (positive integer) or `NULL`.
-#' @return If `n` is NULL, then a single line. If `n` is a positive integer, then a list of `n` lines.
-#' @noRd
-#' @source `geologyGeometry` by Davis, J.R.
-lineUniform <- function(n = NULL) {
-  if (is.null(n)) {
-    lower(rayUniform())
-  } else {
-    lapply(rayUniform(n), lower)
-  }
-}
-
-
-
 #' The ray that represents the line and that is closest to center.
 #'
 #' @param l A line (unit 3D vector).
@@ -1716,6 +1686,70 @@ lineBinghamK1K2MLE <- function(omega1, omega2) {
   c(k1, k2)
 }
 
+
+
+# Helper function for [lineWatson()]. Returns one line sampled from the Watson distribution.
+#' @noRd
+#' @source `geologyGeometry` by Davis, J.R.
+lineWatsonHelper <- function(f, bound, rot) {
+  phi <- runif(1, min = 0, max = pi)
+  y <- runif(1, min = 0, max = bound)
+  while (y > f(phi)) {
+    phi <- runif(1, min = 0, max = pi)
+    y <- runif(1, min = 0, max = bound)
+  }
+  theta <- runif(1, min = -pi, max = pi)
+  as.numeric(rot %*% cartesianFromSpherical(c(1, phi, theta)))
+}
+
+#' Normalizing constant for the Watson distribution.
+#'
+#' That is, the number C such that C \eqn{exp(kappa (mu^T u)^2)} integrates to 1. By the way, \eqn{C == 1 / 1F1(0.5, 1.5, kappa)}.
+#' @param kappa A real number. The concentration parameter.
+#' @return A real number.
+#' @noRd
+#' @importFrom pracma erfi
+#' @source `geologyGeometry` by Davis, J.R.
+lineWatsonNormalizer <- function(kappa) {
+  if (kappa >= 0) {
+    (2 * sqrt(kappa)) / (sqrt(pi) * as.numeric(pracma::erfi(sqrt(kappa))))
+  } else {
+    (2 * sqrt(-kappa)) / (sqrt(pi) * as.numeric(pracma::erf(sqrt(-kappa))))
+  }
+}
+
+#' Sampling lines from the Watson distribution.
+#'
+#' A naive acceptance-rejection sampling algorithm, based on bounding the 
+#' density (with respect to the distance from `mu`) with a constant. For large 
+#' `kappa`, this method grows inefficient. For `kappa` == 100, about 13 tries 
+#' are needed per success. For `kappa` == -100, about 18 tries are needed.
+#' @param mu A line. The mean of the distribution (if `kappa` > 0) or the pole to the girdle of the distribution (if `kappa` < 0).
+#' @param kappa A real number. The concentration parameter.
+#' @param n A real number (positive integer) or `NULL.`
+#' @return If `n` is `NULL`, then a single line. If `n` is a positive integer, then a list of `n` lines.
+#' @noRd
+#' @source `geologyGeometry` by Davis, J.R.
+lineWatson <- function(mu, kappa, n = NULL) {
+  nu <- rayOrthogonalUniform(mu)
+  rot <- cbind(cross(nu, mu), nu, mu)
+  cc <- lineWatsonNormalizer(kappa)
+  f <- function(phi) {
+    exp(kappa * cos(phi)^2) * sin(phi) * cc / 2
+  }
+  if (kappa <= 0.5) {
+    bound <- cc / 2
+  } else {
+    bound <- exp(kappa - 1 / 2) * (2 * kappa)^(-1 / 2) * cc / 2
+  }
+  if (is.null(n)) {
+    lineWatsonHelper(f, bound, rot)
+  } else {
+    replicate(n, lineWatsonHelper(f, bound, rot), simplify = FALSE)
+  }
+}
+
+
 lineWatsonMLED3s <- function() {
   c(
     0.001,
@@ -1752,6 +1786,7 @@ lineWatsonMLEInterpolation <- function() {
     x = lineWatsonMLED3s(), y = lineWatsonMLEKappaHats()
   )
 }
+
 
 
 # Generates one ray from the Fisher distribution centered at the third column of the rotation matrix, using accept-reject with f and its bound.

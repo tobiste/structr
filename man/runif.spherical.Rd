@@ -3,11 +3,15 @@
 \name{runif.spherical}
 \alias{runif.spherical}
 \title{Uniformly Distributed Vectors on the Sphere}
+\source{
+Adapted fom \code{\link[rotasym:unif]{rotasym::r_unif_sphere()}} and \code{rayUniform()} from
+\code{geologyGeometry} by Davis, J.R.
+}
 \usage{
 runif.spherical(
   n = 100,
   class = c("Vec3", "Ray", "Line", "Plane"),
-  method = c("cart", "gss", "sfs", "rotasym")
+  method = c("geologyGeometry", "gss", "sfs", "rotasym")
 )
 }
 \arguments{
@@ -16,8 +20,8 @@ runif.spherical(
 \item{class}{character. Coordinate class of the output vectors.}
 
 \item{method}{character. The algorithm for generating uniformly distributed
-vectors. Either \code{"cart"} (the default) for generating random points in Cartesian coordinates
-(as in the \code{geologyGeometry} package),
+vectors. Either \code{"geologyGeometry"} (the default) for generating random points in Cartesian coordinates
+(as in the \code{geologyGeometry} code compilation),
 \code{"sfs"} for the "Spherical Fibonacci Spiral points on a sphere",
 \code{"gss"} for "Golden Section Spiral points on a sphere", or the algorithm
 \code{\link[rotasym:unif]{rotasym::r_unif_sphere()}} from the rotasym package.}
@@ -52,6 +56,7 @@ Other random:
 \code{\link{rfb}()},
 \code{\link{rkent}()},
 \code{\link{rrot}()},
+\code{\link{rwatson}()},
 \code{\link{vonmises-fisher}}
 }
 \concept{random}

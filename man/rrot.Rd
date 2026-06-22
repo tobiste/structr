@@ -26,7 +26,7 @@ rp <- do.call(rbind, args = rp) |>
   as.Pair()
   
 # plot pairs
-  plot(rp)
+plot(rp)
 }
 \seealso{
 Other random: 
@@ -34,6 +34,7 @@ Other random:
 \code{\link{rfb}()},
 \code{\link{rkent}()},
 \code{\link{runif.spherical}()},
+\code{\link{rwatson}()},
 \code{\link{vonmises-fisher}}
 }
 \concept{random}

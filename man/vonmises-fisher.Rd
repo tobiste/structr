@@ -6,10 +6,16 @@
 \alias{dvmf}
 \title{von Mises-Fisher Distribution}
 \source{
-Adapted fom \code{\link[rotasym:vMF]{rotasym::r_vMF()}} and \code{\link[rotasym:vMF]{rotasym::d_vMF()}}
+Adapted fom \code{\link[rotasym:vMF]{rotasym::r_vMF()}} and \code{\link[rotasym:vMF]{rotasym::d_vMF()}}, and
+\code{geologyGeometry} by Davis, J.R.
 }
 \usage{
-rvmf(n = 100, mu = Vec3(1, 0, 0), k = 5)
+rvmf(
+  n = 100,
+  mu = Vec3(1, 0, 0),
+  k = 5,
+  method = c("geologyGeometry", "rotasym")
+)
 
 dvmf(x, mu, k = 5)
 }
@@ -22,6 +28,10 @@ rows are the observations and the columns are the coordinates.}
 \item{k}{numeric. The concentration parameter (\eqn{\kappa}) of the von
 Mises-Fisher distribution}
 
+\item{method}{character. Algorithm to generate random vectors from a Fisher distribution.
+Either \code{"geologyGeometry"} (the default) to pick the \code{rayFisher()} algorithm  from the \emph{geologyGeometry} code compilation, or
+\code{"rotasym"} to pick the \code{\link[rotasym:vMF]{rotasym::r_vMF()}} algorithm from the \emph{rotasym} package.}
+
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
 rows are the observations and the columns are the coordinates.}
 }
@@ -33,6 +43,7 @@ and concentration parameter (\eqn{\kappa}) .
 set.seed(20250411)
 x <- rvmf(100, mu = Ray(120, 50), k = 5)
 contour(x)
+points(x)
 
 dx <- dvmf(x, mu = Ray(120, 50))
 head(dx)
@@ -45,6 +56,7 @@ Other random:
 \code{\link{rfb}()},
 \code{\link{rkent}()},
 \code{\link{rrot}()},
-\code{\link{runif.spherical}()}
+\code{\link{runif.spherical}()},
+\code{\link{rwatson}()}
 }
 \concept{random}

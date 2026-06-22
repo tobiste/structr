@@ -6,7 +6,7 @@
 \alias{bingham_inference.Vec3}
 \alias{bingham_inference.Line}
 \alias{bingham_inference.Plane}
-\title{95\% confidence region for the mean of the Bingham distribution.}
+\title{Confidence region for the mean of the Bingham distribution.}
 \usage{
 bingham_inference(x, n_points)
 
@@ -47,3 +47,12 @@ points(example_planes, cex = 0.7)
 points(r$directions, col = 1:3, pch = 16, cex = 1.5)
 stereo_lines(r$points, col = 'red')
 }
+\seealso{
+\code{\link[=rbingham]{rbingham()}} for simulating a Bingham distribution, and \code{\link[=bingham_MLE]{bingham_MLE()}} to
+estimate distribution parameters.
+
+Other distribution-inference: 
+\code{\link{fisher-inference}},
+\code{\link{watson-inference}}
+}
+\concept{distribution-inference}

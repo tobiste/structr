@@ -46,3 +46,12 @@ print(r)
 
 r$pvalue(Line(60, 10))
 }
+\seealso{
+\code{\link[=rwatson]{rwatson()}} for simulating a Watson distribution, and \code{\link[=watson_MLE]{watson_MLE()}} to
+estimate distribution parameters.
+
+Other distribution-inference: 
+\code{\link{bingham-inference}},
+\code{\link{fisher-inference}}
+}
+\concept{distribution-inference}

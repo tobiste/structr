@@ -2,30 +2,37 @@
 % Please edit documentation in R/inference.R
 \name{dist.mle}
 \alias{dist.mle}
-\alias{kent_mle}
-\alias{vmf_mle}
+\alias{kent_MLE}
+\alias{vmf_MLE}
 \title{Maximum likelihood estimation of Spherical Rotational Symmetric Distributions}
 \source{
 Adapted from \code{\link[Directional:kent.mle]{Directional::kent.mle()}} and \code{\link[Directional:vmf.mle]{Directional::vmf.mle()}}
 }
 \usage{
-kent_mle(x)
+kent_MLE(x)
 
-vmf_mle(x)
+vmf_MLE(x)
 }
 \arguments{
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"},
 where the rows are the observations and the columns are the coordinates.}
 }
 \description{
-Estimates the parameters of a von Mises-Fisher or Kent distribution.
+MLE parameters of a von Mises-Fisher or Kent distribution.
 }
 \examples{
-x <- rkent(100, mu = Line(120, 50), k = 5, b = 1)
-kent_mle(x)
-vmf_mle(x)
+set.seed(20250411)
+x <- rvmf(100, mu = Ray(120, 50), k = 5)
+vmf_MLE(x)
+ 
+x2 <- rkent(100, mu = Line(120, 50), k = 5, b = 1)
+kent_MLE(x2)
 }
 \seealso{
+\code{\link[=fisher_inference]{fisher_inference()}} for confidence regions, and \code{\link[=rvmf]{rvmf()}} to
+simulate a distribution. \code{\link[=fisher_MLE]{fisher_MLE()}} is an alternative MLE function for
+the Fisher distribution.
+
 Other distribution-MLE: 
 \code{\link{bingham-mle}},
 \code{\link{fisher-mle}},

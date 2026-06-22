@@ -1,6 +1,73 @@
+# MLE --------------------------------------------------------------------------
+
+
+#' Maximum likelihood estimation of the Fisher parameters.
+#'
+#' MLE parameters describing a von Mises-Fisher distribution for isotropic directional vectors. 
+#' Based on Mardia and Jupp (2000, p. 198).
+#' 
+#' @param x object of class `"Vec3"`, `"Ray"`, or `"Plane"`, where the rows are the observations and the columns are the coordinates.
+#' 
+#' @return A list with members
+#' \describe{
+#' \item{`muHat`}{the mean ray, identical to [sph_mean()]}
+#' \item{`rBar`}{non-negative real number. Mean resultant length.}
+#' \item{`kappaHat`}{a positive real number. Concentration parameter \eqn{\kappa} of the Fisher distribution}
+#' }
+#' 
+#' @name fisher-mle
+#' 
+#' @family distribution-MLE
+#' @seealso [fisher_inference()] for confidence regions, and [rvmf()] to 
+#' simulate a distribution. [vmf_MLE()] is an alternative MLE function.
+#' 
+#' @examples
+#' set.seed(20250411)
+#' x <- rvmf(100, mu = Ray(120, 50), k = 5)
+#' 
+#' fisher_MLE(x)
+NULL
+
+#' @rdname fisher-mle
+#' @export
+fisher_MLE <- function(x) UseMethod("fisher_MLE")
+
+#' @rdname fisher-mle
+#' @export
+fisher_MLE.Vec3 <- function(x){
+  rBar <- mrl(x)
+  x0 <- sph_mean(x)
+  
+  if (rBar > 0.9) {
+    kappaHat <- 1 / (1 - rBar)
+  } else {
+    kappaHat <- rayFisherMLEInterpolation()(rBar)
+  }
+  
+  list(muHat = x0, rBar = rBar, kappaHat = kappaHat)
+}
+
+#' @rdname fisher-mle
+#' @export
+fisher_MLE.Ray <- function(x){
+  res <- fisher_MLE.Vec3(Vec3(x))
+  res$muHat <- Ray(res$muHat)
+  return(res)
+}
+
+#' @rdname fisher-mle
+#' @export
+fisher_MLE.Plane <- function(x){
+  res <- fisher_MLE.Vec3(Vec3(x))
+  res$muHat <- Plane(res$muHat)
+  return(res)
+}
+
+
+
 #' Maximum likelihood estimation of Spherical Rotational Symmetric Distributions
 #'
-#' Estimates the parameters of a von Mises-Fisher or Kent distribution.
+#' MLE parameters of a von Mises-Fisher or Kent distribution.
 #'
 #' @inheritParams ortensor
 #' 
@@ -11,22 +78,29 @@
 #' @importFrom Directional kent.mle vmf.mle
 #'
 #' @family distribution-MLE
+#' @seealso [fisher_inference()] for confidence regions, and [rvmf()] to 
+#' simulate a distribution. [fisher_MLE()] is an alternative MLE function for 
+#' the Fisher distribution.
+#' 
 #' @examples
-#' x <- rkent(100, mu = Line(120, 50), k = 5, b = 1)
-#' kent_mle(x)
-#' vmf_mle(x)
+#' set.seed(20250411)
+#' x <- rvmf(100, mu = Ray(120, 50), k = 5)
+#' vmf_MLE(x)
+#'  
+#' x2 <- rkent(100, mu = Line(120, 50), k = 5, b = 1)
+#' kent_MLE(x2)
 NULL
 
 #' @rdname dist.mle
 #' @export
-kent_mle <- function(x) {
+kent_MLE <- function(x) {
   xv <- Vec3(x) |> unclass()
   res <- Directional::kent.mle(xv)
   nm <- colnames(res$G)
   res$G <- t(res$G) |> Vec3()
   rownames(res$G) <- nm
-  if (is.Line(x)) {
-    res$G <- Line(res$G)
+  if (is.Line(x) | is.Ray(x)) {
+    res$G <- Ray(res$G)
   } else if (is.Plane(x)) {
     res$G <- Plane(res$G)
   }
@@ -37,7 +111,7 @@ kent_mle <- function(x) {
 
 #' @rdname dist.mle
 #' @export
-vmf_mle <- function(x) {
+vmf_MLE <- function(x) {
   xv <- Vec3(x) |> unclass()
   
   res <- Directional::vmf.mle(xv, fast = TRUE)
@@ -45,8 +119,8 @@ vmf_mle <- function(x) {
   colnames(res$mu) <- c("x", "y", "z")
   res$mu <- Vec3(res$mu)
   
-  if (is.Line(x)) {
-    res$mu <- Line(res$mu)
+  if (is.Line(x) | is.Ray(x)) {
+    res$mu <- Ray(res$mu)
   } else if (is.Plane(x)) {
     res$mu <- Plane(res$mu)
   }
@@ -84,6 +158,9 @@ vmf_mle <- function(x) {
 #' 
 #' @name bingham-mle
 #' @family distribution-MLE
+#' @seealso [bingham_inference()] for confidence regions, and [rbingham()] to 
+#' simulate a distribution.
+#' 
 #' @examples
 #' set.seed(2025041)
 #' r <- bingham_MLE(example_planes)
@@ -137,7 +214,195 @@ bingham_MLE.Plane <- function(x, w = NULL, n_nonadapt = 5L, n_steps = 1000L){
 
 
 
-#' 95% confidence region for the mean of the Bingham distribution.
+#' Maximum Likelihood Estimation of the Watson Distribution Parameters.
+#'
+#' MLE parameters describing a Watson distribution for isotropic axial vectors. 
+#' From Mardia and Jupp (2000, Section 10.3.2).
+#' 
+#' @inheritParams watson_inference
+#' 
+#' @return A list with members 
+#'  \describe{
+#'  \item{`muHat`}{a line, the MLE of the mean (identical to [projected_mean()] 
+#'  if x has a bipolar shape),}
+#'  \item{`kappaHat`}{a real number, the MLE of the concentration,}
+#'  \item{`shape`}{character, either `'bipolar'` or `'girdle'`,}
+#'  \item{`d3`}{a positive real number, the D3 from which `kappaHat` was 
+#'  computed, and}
+#'  \item{`eigenvalues`}{(the eigenvalues of the \eqn{\bar{T}} matrix 
+#'  (orientation tensor), in descending order (see [ot_eigen()]).}
+#'  }
+#'  
+#' @family distribution-MLE
+#' @seealso [watson_inference()] for confidence regions, and [rwatson()] to 
+#' simulate a distribution.
+#'  
+#' @name watson-mle
+#'  
+#' @examples
+#' r <- watson_MLE(example_lines)
+#' print(r)
+#' 
+#' plot(example_lines)
+#' points(r$muHat, col = 'red', pch = 16, cex = 1.5)
+NULL
+
+#' @rdname watson-mle
+#' @export
+watson_MLE <- function(x, shape) UseMethod("watson_MLE")
+
+
+#' @rdname watson-mle
+#' @export
+watson_MLE.Vec3 <- function(x, shape = NULL){
+  # In eigen, the eigenvectors are descending and the eigenvectors are unit.
+  tBar <- ortensor(x)
+  eig <- ot_eigen(x)
+  eig$vectors <- t(eig$vectors)
+  
+  # Pick a shape if necessary.
+  if (is.null(shape)) {
+    if (eig$values[[1]] - eig$values[[2]] >= eig$values[[2]] - eig$values[[3]]) {
+      shape <- "bipolar"
+    } else {
+      shape <- "girdle"
+    }
+  }
+  
+  # Shape determines which eigenvector is picked for muHat.
+  if (shape == "bipolar") {
+    muHat <- eig$vectors[, 1]
+  } else {
+    muHat <- eig$vectors[, 3]
+  }
+  
+  # Get kappaHat from the lookup table.
+  d3 <- as.numeric(muHat %*% tBar %*% muHat)
+  if (d3 > 0.9) {
+    kappaHat <- 1 / (1 - d3)
+  } else if (d3 < 0.05) {
+    kappaHat <- -1 / (2 * d3)
+  } else {
+    kappaHat <- lineWatsonMLEInterpolation()(d3)
+  }
+  
+  list(
+    muHat = Vec3(t(muHat)), kappaHat = kappaHat, shape = shape, d3 = d3, eigenvalues = eig$values
+  )
+}
+
+#' @rdname watson-mle
+#' @export
+watson_MLE.Line <- function(x, shape = NULL){
+  res <- watson_MLE.Vec3(Vec3(x), shape)
+  
+  res$muHat <- Line(res$muHat)
+  
+  return(res)
+}
+
+#' @rdname watson-mle
+#' @export
+watson_MLE.Plane <- function(x, shape = NULL){
+  res <- watson_MLE.Vec3(Vec3(x), shape)
+  
+  res$muHat <- Plane(res$muHat)
+  
+  return(res)
+}
+
+
+
+
+
+
+ 
+
+
+
+# Inference ---------------------------------------------------------------------
+
+#' Confidence Region for the Fisher Distribution Mean.
+#'
+#' @param x object of class `"Vec3"`, `"Ray"`, or `"Plane"`, where the rows are the observations and the columns are the coordinates.
+#' @inheritParams watson_inference
+#' @return A list with members 
+#'  \describe{
+#'  \item{`muHat`}{a ray, identical to [sph_mean()]). The mean vector of the distribution.}
+#'  \item{`kappaHat`}{a non-negative real number). The concentration parameter.}
+#'  \item{`angle`}{a real number in `[0, pi]`). `angle` is the radius of the 
+#'  confidence region, measured along the surface of the sphere. In radians if 
+#'  `x` is a `Vec3` class, in degrees otherwise.}
+#'  }#'  
+#'
+#' @details Experiments with Fisher-distributed data sets suggest that the sample size n doesn't affect the accuracy much. kappa == 1 is too dispersed, but kappa == 3 is fine.
+#' 
+#' @family distribution-inference
+#' @seealso [rvmf()] for simulating a von Mises-Fisher distribution, and [fisher_MLE()] to 
+#' estimate distribution parameters.
+#' 
+#' @source modified after `geologyGeometry` by Davis, J.R.
+#' 
+#' @references Tauxe (2010, p. 214). 
+#' L. Tauxe 2010. Essentials of Paleomagnetism. xvi + 489 pp. Berkeley: University of California Press.
+#' 
+#' @name fisher-inference
+#' 
+#' @examples
+#' set.seed(20250411)
+#' x <- rvmf(100, mu = Ray(120, 50), k = 5)
+#' r <- fisher_inference(x)
+#' print(r)
+#' 
+#' plot(x)
+#' points(r$muHat, col = 'red')
+#' lines(r$muHat, ang = r$angle, col = 'red')
+NULL
+
+#' @rdname fisher-inference
+#' @export
+fisher_inference <- function(x, alpha) UseMethod('fisher_inference')
+
+#' @rdname fisher-inference
+#' @export
+fisher_inference.Vec3 <- function(x, alpha = 0.05){
+    xs <- vec_list(x)  
+    resultant <- Reduce("+", xs)
+    r <- sqrt(dot(resultant, resultant))
+    xBar <- resultant / r
+    n <- length(xs)
+    
+    kappa <- (n - 1) / (n - r)
+    angle <- arcCos(1 - (alpha^(1 / (1 - n)) - 1) * (n - r) / r)
+    
+    mu <- t(xBar) |> Vec3()
+    list(muHat = mu, kappaHat = kappa, angle = angle)
+}
+
+#' @rdname fisher-inference
+#' @export
+fisher_inference.Ray <- function(x, alpha = 0.05){
+  res <- fisher_inference.Vec3(Vec3(x), alpha)
+  res$muHat <- Ray(res$muHat)
+  res$angle <- rad2deg(res$angle)
+  return(res)
+}
+
+#' @rdname fisher-inference
+#' @export
+fisher_inference.Line <- fisher_inference.Ray
+
+#' @rdname fisher-inference
+#' @export
+fisher_inference.Plane <- function(x, alpha = 0.05){
+  res <- fisher_inference.Vec3(Plane(x), alpha)
+  res$muHat <- Ray(res$muHat)
+  res$angle <- rad2deg(res$angle)
+  return(res)
+}
+
+
+#' Confidence region for the mean of the Bingham distribution.
 #'
 #' Confidence region for the mean of a Bingham distribution for anisotropic axial vectors. 
 #' This function sometimes fails, if the data set is too concentrated, 
@@ -157,6 +422,10 @@ bingham_MLE.Plane <- function(x, w = NULL, n_nonadapt = 5L, n_steps = 1000L){
 #' in radians along the unit sphere's surface. If the inference fails, then the 
 #' angles are `NA`. If `n_points` > 0, then there is also a member `points`, 
 #' which is a list of `n_points` + 1 lines delineating the confidence region.
+#' 
+#' @family distribution-inference
+#' @seealso [rbingham()] for simulating a Bingham distribution, and [bingham_MLE()] to 
+#' estimate distribution parameters.
 #' 
 #' @examples
 #' r <- bingham_inference(example_planes, n_points = 1e3)
@@ -250,6 +519,9 @@ bingham_inference.Plane <- function(x, n_points = 0) bingham_inference.Line(Line
 #' }
 #' 
 #' @name watson-inference
+#' @family distribution-inference
+#' @seealso [rwatson()] for simulating a Watson distribution, and [watson_MLE()] to 
+#' estimate distribution parameters.
 #' 
 #' @examples
 #' r <- watson_inference(example_lines)
@@ -309,164 +581,3 @@ watson_inference.Line <- function(x, alpha = 0.05, shape = NULL){
 #' @rdname watson-inference
 #' @export
 watson_inference.Plane <- watson_inference.Line
-
-
-#' Maximum Likelihood Estimation of the Watson Distribution Parameters.
-#'
-#' MLE parameters describing a Watson distribution for isotropic axial vectors. 
-#' From Mardia and Jupp (2000, Section 10.3.2).
-#' 
-#' @inheritParams watson_inference
-#' 
-#' @return A list with members 
-#'  \describe{
-#'  \item{`muHat`}{a line, the MLE of the mean (identical to [projected_mean()] 
-#'  if x has a bipolar shape),}
-#'  \item{`kappaHat`}{a real number, the MLE of the concentration,}
-#'  \item{`shape`}{character, either `'bipolar'` or `'girdle'`,}
-#'  \item{`d3`}{a positive real number, the D3 from which `kappaHat` was 
-#'  computed, and}
-#'  \item{`eigenvalues`}{(the eigenvalues of the \eqn{\bar{T}} matrix 
-#'  (orientation tensor), in descending order (see [ot_eigen()]).}
-#'  }
-#'  
-#' @family distribution-MLE
-#'  
-#' @name watson-mle
-#'  
-#' @examples
-#' r <- watson_MLE(example_lines)
-#' print(r)
-#' 
-#' plot(example_lines)
-#' points(r$muHat, col = 'red', pch = 16, cex = 1.5)
-NULL
-
-#' @rdname watson-mle
-#' @export
-watson_MLE <- function(x, shape) UseMethod("watson_MLE")
-
-
-#' @rdname watson-mle
-#' @export
-watson_MLE.Vec3 <- function(x, shape = NULL){
-  # In eigen, the eigenvectors are descending and the eigenvectors are unit.
-  tBar <- ortensor(x)
-  eig <- ot_eigen(x)
-  eig$vectors <- t(eig$vectors)
-  
-  # Pick a shape if necessary.
-  if (is.null(shape)) {
-    if (eig$values[[1]] - eig$values[[2]] >= eig$values[[2]] - eig$values[[3]]) {
-      shape <- "bipolar"
-    } else {
-      shape <- "girdle"
-    }
-  }
-  
-  # Shape determines which eigenvector is picked for muHat.
-  if (shape == "bipolar") {
-    muHat <- eig$vectors[, 1]
-  } else {
-    muHat <- eig$vectors[, 3]
-  }
-  
-  # Get kappaHat from the lookup table.
-  d3 <- as.numeric(muHat %*% tBar %*% muHat)
-  if (d3 > 0.9) {
-    kappaHat <- 1 / (1 - d3)
-  } else if (d3 < 0.05) {
-    kappaHat <- -1 / (2 * d3)
-  } else {
-    kappaHat <- lineWatsonMLEInterpolation()(d3)
-  }
-  
-  list(
-    muHat = Vec3(t(muHat)), kappaHat = kappaHat, shape = shape, d3 = d3, eigenvalues = eig$values
-  )
-}
-
-#' @rdname watson-mle
-#' @export
-watson_MLE.Line <- function(x, shape = NULL){
-  res <- watson_MLE.Vec3(Vec3(x), shape)
-  
-  res$muHat <- Line(res$muHat)
-  
-  return(res)
-}
-
-#' @rdname watson-mle
-#' @export
-watson_MLE.Plane <- function(x, shape = NULL){
-  res <- watson_MLE.Vec3(Vec3(x), shape)
-  
-  res$muHat <- Plane(res$muHat)
-  
-  return(res)
-}
-
-
-
-#' Maximum likelihood estimation of the Fisher parameters.
-#'
-#' MLE parameters describing a Fisher distribution for isotropic directional vectors. 
-#' Based on Mardia and Jupp (2000, p. 198).
-#' 
-#' @param x object of class `"Vec3"`, `"Ray"`, or `"Plane"`, where the rows are the observations and the columns are the coordinates.
-#' 
-#' @return A list with members
-#' \describe{
-#' \item{`muHat`}{the mean ray, identical to [sph_mean()]}
-#' \item{`rBar`}{non-negative real number. Mean resultant length.}
-#' \item{`kappaHat`}{a positive real number. Concentration parameter \eqn{\kappa} of the Fisher distribution}
-#' }
-#' 
-#' @name fisher-mle
-#' 
-#' @family distribution-MLE
-#' 
-#' @examples
-#' r <- fisher_MLE(Ray(example_lines))
-#' print(r)
-#' 
-#' plot(example_lines)
-#' points(r$muHat, col = 'red')
-NULL
-
-#' @rdname fisher-mle
-#' @export
-fisher_MLE <- function(x) UseMethod("fisher_MLE")
-
-#' @rdname fisher-mle
-#' @export
-fisher_MLE.Vec3 <- function(x){
-  rBar <- mrl(x)
-  x0 <- sph_mean(x)
-  
-  if (rBar > 0.9) {
-    kappaHat <- 1 / (1 - rBar)
-  } else {
-    kappaHat <- rayFisherMLEInterpolation()(rBar)
-  }
-  
-  list(muHat = x0, rBar = rBar, kappaHat = kappaHat)
-}
-
-#' @rdname fisher-mle
-#' @export
-fisher_MLE.Ray <- function(x){
-  res <- fisher_MLE.Vec3(Vec3(x))
-  res$muHat <- Ray(res$muHat)
-  return(res)
-}
-
-#' @rdname fisher-mle
-#' @export
-fisher_MLE.Plane <- function(x){
-  res <- fisher_MLE.Vec3(Vec3(x))
-  res$muHat <- Plane(res$muHat)
-  return(res)
-}
-
-  

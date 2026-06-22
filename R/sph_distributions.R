@@ -9,8 +9,12 @@
 #'  rows are the observations and the columns are the coordinates.
 #' @param k numeric. The concentration parameter (\eqn{\kappa}) of the von
 #' Mises-Fisher distribution
+#' @param method character. Algorithm to generate random vectors from a Fisher distribution. 
+#' Either `"geologyGeometry"` (the default) to pick the `rayFisher()` algorithm  from the *geologyGeometry* code compilation, or
+#' `"rotasym"` to pick the [rotasym::r_vMF()] algorithm from the *rotasym* package.
 #'
-#' @source Adapted fom [rotasym::r_vMF()] and [rotasym::d_vMF()]
+#' @source Adapted fom [rotasym::r_vMF()] and [rotasym::d_vMF()], and 
+#' `geologyGeometry` by Davis, J.R.
 #' @importFrom rotasym r_vMF d_vMF
 #
 #' @name vonmises-fisher
@@ -20,6 +24,7 @@
 #' set.seed(20250411)
 #' x <- rvmf(100, mu = Ray(120, 50), k = 5)
 #' contour(x)
+#' points(x)
 #'
 #' dx <- dvmf(x, mu = Ray(120, 50))
 #' head(dx)
@@ -29,14 +34,22 @@ NULL
 
 #' @rdname vonmises-fisher
 #' @export
-rvmf <- function(n = 100, mu = Vec3(1, 0, 0), k = 5) {
+rvmf <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, method = c('geologyGeometry', 'rotasym')) {
   stopifnot(nrow(mu) == 1)
+  method <- match.arg(method)
+  
+  if(method == 'rotasym'){
   muv <- Vec3(mu) |>
     unclass() |>
     c()
   res <- rotasym::r_vMF(n, muv, k)
   colnames(res) <- c("x", "y", "z")
   res <- Vec3(res)
+  } else {
+  r <- rayFisher(n = n, mu = as.vector(Vec3(mu)), kappa = k)
+  res <- do.call(rbind, r) |> 
+    Vec3()
+  }
 
   if (is.Line(mu) | is.Ray(mu)) {
     Ray(res)
@@ -67,8 +80,8 @@ dvmf <- function(x, mu, k = 5) {
 #' @param class character. Coordinate class of the output vectors.
 #' @param n integer. number of random samples to be generated
 #' @param method character. The algorithm for generating uniformly distributed
-#' vectors. Either `"cart"` (the default) for generating random points in Cartesian coordinates 
-#' (as in the `geologyGeometry` package), 
+#' vectors. Either `"geologyGeometry"` (the default) for generating random points in Cartesian coordinates 
+#' (as in the `geologyGeometry` code compilation), 
 #' `"sfs"` for the "Spherical Fibonacci Spiral points on a sphere",
 #' `"gss"` for "Golden Section Spiral points on a sphere", or the algorithm
 #' [rotasym::r_unif_sphere()] from the rotasym package.
@@ -78,6 +91,9 @@ dvmf <- function(x, mu, k = 5) {
 #'  `"gss` is from  http://www.softimageblog.com/archives/115
 #'
 #' @importFrom rotasym r_unif_sphere
+#' 
+#' @source Adapted fom [rotasym::r_unif_sphere()] and `rayUniform()` from 
+#' `geologyGeometry` by Davis, J.R.
 #'
 #' @family random
 #' @export
@@ -95,7 +111,7 @@ dvmf <- function(x, mu, k = 5) {
 #' 
 #' x4 <- runif.spherical(n = 100, "Ray", method = "cart")
 #' contour(x4)
-runif.spherical <- function(n = 100, class = c("Vec3", "Ray", "Line", "Plane"), method = c("cart", "gss", "sfs", "rotasym")) {
+runif.spherical <- function(n = 100, class = c("Vec3", "Ray", "Line", "Plane"), method = c("geologyGeometry", "gss", "sfs", "rotasym")) {
   method <- match.arg(method)
   class <- match.arg(class)
 
@@ -148,7 +164,9 @@ runif.spherical <- function(n = 100, class = c("Vec3", "Ray", "Line", "Plane"), 
 #' @examples
 #' set.seed(20250411)
 #' x <- rfb(100, mu = Line(120, 50), k = 5, A = diag(c(-1, 0, 1)))
+#' 
 #' contour(x)
+#' points(x)
 rfb <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, A) {
   muv <- Vec3(mu) |>
     unclass() |>
@@ -186,9 +204,13 @@ rfb <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, A) {
 #'
 #' @examples
 #' a <- cov(iris[, 1:3])
-#' rbingham(100, a, "Line") |> contour()
+#' r <- rbingham(100, a, "Line")
+#' contour(r)
+#' points(r)
 #'
-#' rbingham_eig(100, c(100, 1, 0), "Line") |> contour()
+#' re <- rbingham_eig(100, c(100, 1, 0), "Line")
+#' contour(re)
+#' points(re)
 NULL
 
 #' @rdname rbing
@@ -218,21 +240,22 @@ rbingham_eig <- function(n, eigenvalues, .class = c("Vec3", "Line", "Ray", "Plan
 }
 
 
-#' Kent distribution
+#' Kent Distribution
 #'
 #' Simulation of random values from a spherical Kent distribution.
 #'
 #' @inheritParams rvmf
 #' @param b numeric. \eqn{\beta} (ellipticity): \eqn{0 \leq \beta < \kappa}
 #'
-#'
 #' @importFrom Directional rkent
 #' @family random
 #' @export
 #' @examples
 #' set.seed(20250411)
-#' x <- rkent(100, mu = Ray(120, 50), k = 5, b = 1)
-#' plot(x)
+#' r <- rkent(100, mu = Ray(120, 50), k = 5, b = 1)
+#' 
+#' contour(r)
+#' points(r)
 rkent <- function(n, mu = Vec3(1, 0, 0), k = 5, b) {
   muv <- Vec3(mu) |> c()
   res <- Directional::rkent(n = n, k = k, m = muv, b = b)
@@ -247,6 +270,46 @@ rkent <- function(n, mu = Vec3(1, 0, 0), k = 5, b) {
     res
   }
 }
+
+
+#' Watson Distribution
+#' 
+#' A naive acceptance-rejection sampling algorithm, based on bounding the 
+#' density (with respect to the distance from `mu`) with a constant. For large 
+#' `kappa`, this method grows inefficient. For `kappa` == 100, about 13 tries 
+#' are needed per success. For `kappa` == -100, about 18 tries are needed.
+#'
+#' @inheritParams rvmf
+#'
+#' @returns vector of class `mu` of length `n`
+#' @family random
+#' @export
+#' 
+#' @source `geologyGeometry` by Davis, J.R.
+#'
+#' @examples
+#' set.seed(20250411)
+#' r <- rwatson(100, mu = Ray(120, 50), kappa = 10)
+#' 
+#' contour(r)
+#' points(r)
+rwatson <- function(n, mu, kappa){
+  muv <- Vec3(mu) |> 
+    as.vector()
+  
+  r <- lineWatson(n = n, mu = muv, kappa = kappa)
+  res <- do.call(rbind, r) |> 
+    as.Vec3() 
+  
+  if (is.Line(mu) | is.Ray(mu)) {
+    Line(res)
+  } else if (is.Plane(mu)) {
+    Plane(res)
+  } else {
+    res
+  }
+}
+
 
 #' Random Rotation Matrices
 #'
@@ -270,7 +333,7 @@ rkent <- function(n, mu = Vec3(1, 0, 0), k = 5, b) {
 #'   as.Pair()
 #'   
 #' # plot pairs
-#'   plot(rp)
+#' plot(rp)
 rrot <- function(n) {
   p <- 3
   a <- c(1, numeric(p - 1))

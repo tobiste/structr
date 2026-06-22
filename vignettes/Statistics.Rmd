@@ -44,11 +44,11 @@ planes <- Plane(example_planes_df$dipdir, example_planes_df$dip)
 lines <- Line(example_lines_df$trend, example_lines_df$plunge)
 ```
 
-## Mean and dispersion
+## Mean and Dispersion
 
 Arithmetic mean, geodesic mean, and projected mean
 
-### Arithmetic mean and variance
+### Arithmetic Mean and Variance
 
 The arithmetic mean orientation of spherical data is calculated by
 summing up all orientation vectors and normalizing the resulting
@@ -142,7 +142,7 @@ lines(lines_mean, ang = lines_delta, col = "#FB8861FF")
 legend("topright", legend = c("Mean line", "95% confidence cone", "63% data cone"), col = c("#B63679", "#E65164FF", "#FB8861FF"), pch = c(19, NA, NA), lty = c(NA, 1, 1), cex = .75)
 ```
 
-### Geodesic mean and variance
+### Geodesic Mean and Variance
 
 Another measure of mean and dispersion is the *Fréchet (geodesic
 L*<sup>2</sup>) mean and *variance* which is based on the angles between
@@ -182,7 +182,7 @@ These estimators are good descriptors of the concentration of the data
 around the mean direction, when data follows a unimodal, anisotropic
 distributions such as the *Kent* or *Bingham distributions*.
 
-### Projected mean
+### Projected Mean
 
 The Eigenvector with the largest Eigenvalue represents a vector parallel
 to the highest concentration of a population. This vector can also be
@@ -222,72 +222,10 @@ points(projected_mean(example_planes), col = "#FEC287FF", pch = 16)
 title(main = "Planes")
 ```
 
-### Hypothesis testing
 
-#### Confidence region
 
-To test if a line represents the population mean of a given set of
-lineations, we need to calculate the confidence region of our
-population.
 
-Let's test the hypothesis that a horizontal lineation trending towards
-70° is the mean for our lineations.
-
-```{r test0}
-line_NULL <- Line(70, 0)
-```
-
-The 95% confidence interval (from 10,000 bootstrap samples):
-
-```{r test1}
-ce <- confidence_ellipse(lines, n = 10000, alpha = 0.05)
-```
-
-To visualize the confidence region of our lines:
-
-```{r test2}
-#| fig.alt: Diagram showing the confidence region of a mean
-plot(lines, col = "grey")
-stereo_confidence(ce, col = "#B63679FF")
-points(line_NULL, col = "#000004", pch = 16)
-```
-
-The $p$-value for our hypothesis line:
-
-```{r test3}
-ce$pvalue.FUN(line_NULL)
-```
-
-With (95% confidence) we rejected the Null Hypothesis that the given
-line represents the population mean as the p-value is smaller than 5%.
-
-#### Two-sample T-Test
-
-Wellner's Rayleigh-style T-statistic[^4] measures how different two sets
-of vectors are. The test statistic T is a non-negative measure of dissimilarity between
-two datasets. The value is zero when the datasets are identical.
-
-[^4]: Wellner, J. A. (1979) "Permutation Tests for Directional Data."
-    Ann. Statist. 7 (5) 929-943.
-    <https://doi.org/10.1214/aos/1176344779>
-
-```{R wellner}
-wellner(lines, line_NULL)
-```
-
-A $p$-value for this test-statistic can be estimated using permutations.
-The fraction of tests in the computed T-statistic exceeds the observed T
-for the original data (a number between 0 and 1 inclusive) can be
-interpreted as a $p$-value for the null hypothesis that the two
-populations are identical (not merely that their means coincide). Thus,
-smaller p-values indicate stronger evidence that the two populations
-differ significantly.
-
-```{R wellner_inference}
-wellner_inference(lines, line_NULL, n_perm = 1000)
-```
-
-## Orientation tensor
+## Orientation Tensor
 
 ### Eigenvectors
 
@@ -333,7 +271,7 @@ legend('right',
 ```
 
 
-#### Shape parameters
+#### Shape Parameters
 
 There are more shape parameters using different algorithms based on the
 orientation tensor:
@@ -342,7 +280,145 @@ orientation tensor:
 shape_params(planes)
 ```
 
-## Cluster vectors
+
+## Maximum Likelihood Estimation of Distribution Parameters
+
+
+```{r mle}
+par(mfrow = c(2, 2))
+x1 <- rvmf(100, mu = Ray(120, 50), k = 5)
+r1 <- fisher_MLE(x)
+plot(x1, col = 'grey')
+points(r1$muHat, col = 'red')
+title(main = 'von Mises-Fisher')
+
+x2 <- rwatson(100, mu = Line(120, 50), kappa = 5)
+r2 <- watson_MLE(x2)
+plot(x2, col = 'grey')
+points(r2$muHat, col = 'red')
+title(main = 'Watson')
+
+x3 <- rkent(100, mu = Ray(120, 50), k = 5, b = 1)
+r3 <- kent_MLE(x3)
+plot(x3, col = 'grey')
+points(r3$G, col = 'red')
+title(main = 'Kent')
+
+a <- cov(iris[, 1:3])
+x4 <- rbingham(100, a, "Line")
+r4 <- bingham_MLE(x4)
+plot(x4, col = 'grey')
+points(r4$vectors, col = 'red')
+title(main = 'Bingham')
+```
+
+
+
+## Hypothesis Testing
+
+To test if a line represents the population mean of a given set of
+lineations, we need to calculate the confidence region of our
+population.
+
+Let's test the hypothesis that a horizontal lineation trending towards
+70° is the mean for our lineations.
+
+```{r test0}
+line_NULL <- Line(2, 10)
+```
+
+### Parametric Testing
+
+Parametric testing means that we assume a specific underlying distribution of the data. 
+Here, we assume that the lineations are drawn from a von Mises-Fisher distribution.
+
+#### Confidence Region
+
+```{r test_param}
+cep <- fisher_inference(lines, alpha = 0.05)
+```
+
+```{r test_param2}
+#| fig.alt: Diagram showing the Fisher confidence region of a mean
+plot(lines, col = "grey")
+points(cep$muHat, col = "#B63679FF", pch = 16)
+lines(cep$muHat, ang = cep$angle, col = "#B63679FF")
+points(line_NULL, col = "#000004", pch = 16)
+```
+
+<!-- ### Two-Sample Test -->
+
+<!-- Using the **Fisher F-test**, We can now derive a p-value for the  -->
+<!-- Null-Hypothesis that the samples are drawn from the same von Mises Fisher distribution. -->
+<!-- The test statistic F is a non-negative measure of dissimilarity between -->
+<!-- two datasets. The value is zero when the datasets are identical. -->
+
+<!-- ```{r fisher-test} -->
+<!-- fisher_ftest(lines, line_NULL) -->
+<!-- ``` -->
+<!-- **Interpretation**: Here, the test statistic (0.26) is dramatically lower than the critical value threshold (3.05), there is no statistically significant difference between the two samples. -->
+
+
+### Non-parametric Testing 
+
+Non-parametric testing does require assumptions on the distribution of the data.
+This is commonly achieved using bootstrapping and permutation techniques.
+
+#### Confidence Region
+
+The 95% confidence interval (from 10,000 bootstrap samples):
+
+```{r test1}
+cenp <- confidence_ellipse(lines, n = 10000, alpha = 0.05)
+```
+
+To visualize the confidence region of our lines:
+
+```{r test2}
+#| fig.alt: Diagram showing the confidence region of a mean
+plot(lines, col = "grey")
+stereo_confidence(cenp, col = "#B63679FF")
+points(line_NULL, col = "#000004", pch = 16)
+```
+
+The $p$-value for our hypothesis line:
+
+```{r test3}
+cenp$pvalue.FUN(line_NULL)
+```
+
+With (95% confidence) we rejected the Null Hypothesis that the given
+line represents the population mean as the p-value is smaller than 5%.
+
+#### Two-Sample T-Test
+
+**Wellner's Rayleigh-style T-statistic**[^4] measures how different two sets
+of vectors. 
+The test statistic T is a non-negative measure of dissimilarity between
+two datasets. The value is zero when the datasets are identical.
+
+[^4]: Wellner, J. A. (1979) "Permutation Tests for Directional Data."
+    Ann. Statist. 7 (5) 929-943.
+    <https://doi.org/10.1214/aos/1176344779>
+
+```{R wellner}
+wellner(lines, line_NULL)
+```
+
+A $p$-value for this test-statistic can be estimated using *permutations*.
+The fraction of tests in the computed T-statistic exceeds the observed T
+for the original data (a number between 0 and 1 inclusive) can be
+interpreted as a $p$-value for the null hypothesis that the two
+populations are identical (not merely that their means coincide). Thus,
+smaller p-values indicate stronger evidence that the two populations
+differ significantly.
+
+```{R wellner_inference}
+wellner_inference(lines, line_NULL, n_perm = 1000)
+```
+
+
+## Cluster Vectors
 
 To find *k* clusters of orientational data, the `sph_cluster()` function
 can be used:
@@ -352,9 +428,9 @@ can be used:
 #|   Stereoplot showing the the cluster result of an example dataset
 
 # generate some random vectors:
-x1 <- rvmf(100, mu = Line(90, 0), k = 20)
-x2 <- rvmf(100, mu = Line(0, 0), k = 20)
-x3 <- rvmf(100, mu = Line(0, 90), k = 20)
+x1 <- rvmf(100, mu = Ray(90, 0), k = 20)
+x2 <- rvmf(100, mu = Ray(0, 0), k = 20)
+x3 <- rvmf(100, mu = Ray(0, 90), k = 20)
 x123 <- rbind(x1, x2, x3)
 
 # cluster the vectors:

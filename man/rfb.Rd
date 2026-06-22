@@ -26,7 +26,9 @@ Simulation of random values from a spherical Fisher-Bingham distribution.
 \examples{
 set.seed(20250411)
 x <- rfb(100, mu = Line(120, 50), k = 5, A = diag(c(-1, 0, 1)))
+
 contour(x)
+points(x)
 }
 \seealso{
 Other random: 
@@ -34,6 +36,7 @@ Other random:
 \code{\link{rkent}()},
 \code{\link{rrot}()},
 \code{\link{runif.spherical}()},
+\code{\link{rwatson}()},
 \code{\link{vonmises-fisher}}
 }
 \concept{random}
