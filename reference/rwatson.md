@@ -9,7 +9,7 @@ needed.
 ## Usage
 
 ``` r
-rwatson(n, mu, kappa)
+rwatson(n, mu, k)
 ```
 
 ## Source
@@ -27,6 +27,11 @@ rwatson(n, mu, kappa)
   Mean vector. object of class `"Vec3"`, `"Line"`, `"Ray"`, or
   `"Plane"`, where the rows are the observations and the columns are the
   coordinates.
+
+- k:
+
+  numeric. The concentration parameter (\\\kappa\\) of the von
+  Mises-Fisher distribution
 
 ## Value
 
@@ -46,7 +51,7 @@ Other random:
 
 ``` r
 set.seed(20250411)
-r <- rwatson(100, mu = Ray(120, 50), kappa = 10)
+r <- rwatson(100, mu = Ray(120, 50), k = 10)
 
 contour(r)
 points(r)

@@ -346,7 +346,7 @@ plot(x1, col = 'grey')
 points(r1$muHat, col = 'red')
 title(main = 'von Mises-Fisher')
 
-x2 <- rwatson(100, mu = Line(120, 50), kappa = 5)
+x2 <- rwatson(100, mu = Line(120, 50), k = 5)
 r2 <- watson_MLE(x2)
 plot(x2, col = 'grey')
 points(r2$muHat, col = 'red')
