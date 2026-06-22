@@ -47,7 +47,7 @@ contour(x2)
 x3 <- runif.spherical(n = 100, "Ray", method = "rotasym")
 contour(x3)
 
-x4 <- runif.spherical(n = 100, "Ray", method = "cart")
+x4 <- runif.spherical(n = 100, "Ray", method = "geologyGeometry")
 contour(x4)
 }
 \seealso{

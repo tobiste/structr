@@ -109,7 +109,7 @@ dvmf <- function(x, mu, k = 5) {
 #' x3 <- runif.spherical(n = 100, "Ray", method = "rotasym")
 #' contour(x3)
 #' 
-#' x4 <- runif.spherical(n = 100, "Ray", method = "cart")
+#' x4 <- runif.spherical(n = 100, "Ray", method = "geologyGeometry")
 #' contour(x4)
 runif.spherical <- function(n = 100, class = c("Vec3", "Ray", "Line", "Plane"), method = c("geologyGeometry", "gss", "sfs", "rotasym")) {
   method <- match.arg(method)
