@@ -286,6 +286,7 @@ lineUniform <- function(n = NULL) {
 #' @param v A 3-dimensional vector. Need not be unit.
 #' @return A ray, perpendicular to v.
 #' @noRd
+#' @source `geologyGeometry` by Davis, J.R.
 rayOrthogonalUniform <- function(v) {
   rayOrthogonalProjection(v, rayUniform())
 }
@@ -295,6 +296,7 @@ rayOrthogonalUniform <- function(v) {
 #' @param v A d-dimensional vector. Cannot be of length 0.
 #' @return A d-dimensional vector of length 1.
 #' @noRd
+#' @source `geologyGeometry` by Davis, J.R.
 rayNormalized <- function(v) {
   v / sqrt(sum(v^2))
 }
@@ -306,6 +308,7 @@ rayNormalized <- function(v) {
 #' @param v A d-dimensional vector. Should not be parallel to pole. Need not be unit.
 #' @return A unit d-dimensional vector.
 #' @noRd
+#' @source `geologyGeometry` by Davis, J.R.
 rayOrthogonalProjection <- function(pole, v) {
   rayNormalized(v - pole * dot(v, pole) / dot(pole, pole))
 }
@@ -315,6 +318,7 @@ rayOrthogonalProjection <- function(pole, v) {
 #' @param numNonAdapt A real number (non-negative integer). The number of times to refine the base triangulation of the sphere.
 #' @return A list of triangles, where each triangle is a list of three rays. The number of triangles is 4^(1 + numNonAdapt), so each triangle has spherical area pi / 4^numNonAdapt.
 #' @noRd
+#' @source `geologyGeometry` by Davis, J.R.
 rayTetrahedralSphere <- function(numNonAdapt) {
   rayTetrahedron <- list(
     list(c(1, 1, 1) / sqrt(3), c(1, -1, -1) / sqrt(3), c(-1, 1, -1) / sqrt(3)),
@@ -336,6 +340,7 @@ rayTetrahedralSphere <- function(numNonAdapt) {
 #' @param numNonAdapt A real number (non-negative integer). The number of times to refine the base triangulation of the sphere. Each increment of numNonAdapt increases the time and memory requirements by a factor of 4, but makes the approximation better.
 #' @return The approximated integral of f over the sphere.
 #' @noRd
+#' @source `geologyGeometry` by Davis, J.R.
 rayIntegral <- function(f, numNonAdapt = 5) {
   tris <- rayTetrahedralSphere(numNonAdapt)
   grid <- lapply(
@@ -349,6 +354,7 @@ rayIntegral <- function(f, numNonAdapt = 5) {
 
 # Given a triangle of unit vectors in counterclockwise order when viewed from outside.
 # Returns a list of 4^numNonAdapt triangles of unit vectors, each in counterclockwise order again.
+#' @source `geologyGeometry` by Davis, J.R.
 rayRefinedTriangle <- function(tri, numNonAdapt) {
   if (numNonAdapt == 0) {
     list(tri)
@@ -447,6 +453,7 @@ rotAntisymmetricFromVector <- function(v) {
 #' @param n A real number (positive integer) or NULL.
 #' @return If n is NULL, then a single ray. If n is a positive integer, then a list of n rays.
 #' @noRd
+#' @source `geologyGeometry` by Davis, J.R.
 rayUniform <- function(n = NULL) {
   if (is.null(n)) {
     cartesianFromHorizontal(c(runif(1, 0, 2 * pi), runif(1, -1, 1)))
@@ -460,6 +467,7 @@ rayUniform <- function(n = NULL) {
 #' @param n A real number (positive integer) or `NULL`.
 #' @return If `n` is NULL, then a single line. If `n` is a positive integer, then a list of `n` lines.
 #' @noRd
+#' @source `geologyGeometry` by Davis, J.R.
 lineUniform <- function(n = NULL) {
   if (is.null(n)) {
     lower(rayUniform())
@@ -636,11 +644,13 @@ rotMatrixAboutZ <- function(a) {
 }
 
 
+#' @source `geologyGeometry` by Davis, J.R.
 rotMatrixFromAxisAngle <- function(ua) {
   m <- rotAntisymmetricFromVector(ua[1:3])
   diag(c(1, 1, 1)) + sin(ua[[4]]) * m + (1 - cos(ua[[4]])) * (m %*% m)
 }
 
+#' @source `geologyGeometry` by Davis, J.R.
 rotAntisymmetricFromVector <- function(v) {
   matrix(c(0, v[3], -v[2], -v[3], 0, v[1], v[2], -v[1], 0), 3, 3)
 }
@@ -943,6 +953,7 @@ oriDiameter <- function(rs, group) {
 #' @param q A rotation matrix.
 #' @return A real number (in the interval `[0, pi]`).
 #' @noRd
+#' @source `geologyGeometry` by Davis, J.R.
 rotDistance <- function(r, q) {
   arcCos((tr(crossprod(r, q)) - 1) / 2)
 }
@@ -1008,6 +1019,7 @@ rayPrincipalComponentAnalysis <- function(us, center, numPoints = 0) {
   result
 }
 
+#' @source `geologyGeometry` by Davis, J.R.
 linePrincipalComponentAnalysis <- function(us, center, numPoints = 0) {
   rs <- lapply(us, lineNearestRepresentative, center)
   pca <- rayPrincipalComponentAnalysis(rs, center, numPoints)
@@ -1135,6 +1147,7 @@ rayPointFromTangentVector <- function(w, rotation) {
 #' @return A 3x3 real matrix (symmetric, non-negative eigenvalues).
 #'
 #' @noRd
+#' @source `geologyGeometry` by Davis, J.R.
 rotLeftCovariance <- function(rs, center) {
   vs <- lapply(rs, rotLeftTangentFromMatrix, center)
   ms <- lapply(vs, function(v) {
@@ -1154,6 +1167,7 @@ rotLeftCovariance <- function(rs, center) {
 #' @return A 3D real vector.
 #'
 #' @noRd
+#' @source `geologyGeometry` by Davis, J.R.
 rotLeftTangentFromMatrix <- function(r, center) {
   ua <- rotAxisAngleFromMatrix(t(center) %*% r)
   ua[1:3] * ua[[4]]
@@ -1167,6 +1181,7 @@ rotLeftTangentFromMatrix <- function(r, center) {
 #' in radians (between 0 and pi).
 #'
 #' @noRd
+#' @source `geologyGeometry` by Davis, J.R.
 rotAxisAngleFromMatrix <- function(r) {
   cosine <- (tr(r) - 1) / 2
   if (cosine >= 1) {
@@ -1229,6 +1244,7 @@ rotAxisAngleFromMatrix <- function(r) {
 #'
 #' @return A 3x3 rotation matrix.
 #' @noRd
+#' @source `geologyGeometry` by Davis, J.R.
 rotMatrixFromLeftTangent <- function(v, center) {
   nrm <- sqrt(dot(v, v))
   if (nrm == 0) {
@@ -1386,6 +1402,7 @@ rayMahalanobisPercentiles <- function(us, center, alpha = 0.05, numPoints = 0, d
 
 
 # Returns C such that C exp(-u^T A u) integrates to 1 over the hemisphere? Accuracy is doubtful.
+#' @source `geologyGeometry` by Davis, J.R.
 lineBinghamSaddlepointConstant <- function(a) {
   vals <- eigen(a, symmetric = TRUE, only.values = TRUE)$values
   const <- Directional::fb.saddle(c(0, 0, 0), vals)
@@ -1393,6 +1410,7 @@ lineBinghamSaddlepointConstant <- function(a) {
 }
 
 # Returns C such that C exp(-u^T A u) integrates to 1 over the hemisphere? Accuracy is unclear.
+#' @source `geologyGeometry` by Davis, J.R.
 lineBinghamIntegratedConstant <- function(a, numNonAdapt = 5) {
   rayInt <- rayIntegral(function(u) exp(-u %*% a %*% u), numNonAdapt)
   1 / (0.5 * rayInt)
@@ -1413,6 +1431,7 @@ lineBinghamIntegratedConstant <- function(a, numNonAdapt = 5) {
 #' @return If `n` is `NULL`, then a single line. If `n` is a positive integer, then a list of `n` lines.
 #' @importFrom Directional rbingham
 #' @noRd
+#' @source `geologyGeometry` by Davis, J.R.
 lineBingham <- function(a, n = NULL) {
   if (is.null(n)) {
     lower(as.numeric(rbingham(1, a)))
@@ -1452,6 +1471,7 @@ lineBingham <- function(a, n = NULL) {
 #' \item{`$minEigenvalue`}{(the minimum eigenvalue of the Hessian at the putative optimum; worry if this is not positive).}
 #' }
 #' @noRd
+#' @source `geologyGeometry` by Davis, J.R.
 lineBinghamMLE <- function(us, weights = replicate(length(us), 1), numNonAdapt = 5, numSteps = 1000) {
   # Scale the weights so that they sum to 1.
   n <- length(us)
@@ -1499,6 +1519,7 @@ lineBinghamMLE <- function(us, weights = replicate(length(us), 1), numNonAdapt =
 
 
 # Bingham MLE lookup table from Appendix C of Tauxe's books.
+#' @source `geologyGeometry` by Davis, J.R.
 lineBinghamK1Table <- function() {
   cbind(
     c(-25.55, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
@@ -1591,6 +1612,7 @@ lineBinghamK1Table <- function() {
 }
 
 # Bingham MLE lookup table from Appendix C of Tauxe's books.
+#' @source `geologyGeometry` by Davis, J.R.
 lineBinghamK2Table <- function() {
   cbind(
     c(-25.55, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA),
@@ -1684,6 +1706,7 @@ lineBinghamK2Table <- function() {
 
 # Computes K1, K2 from omega1, omega2, using the lookup tables.
 #' @importFrom fields interp.surface
+#' @source `geologyGeometry` by Davis, J.R.
 lineBinghamK1K2MLE <- function(omega1, omega2) {
   omega1s <- seq(from = 0.02, to = 0.32, by = 0.02)
   omega2s <- seq(from = 0.02, to = 0.46, by = 0.02)
@@ -1703,6 +1726,7 @@ lineWatsonMLED3s <- function() {
   )
 }
 
+#' @source `geologyGeometry` by Davis, J.R.
 lineWatsonMLEKappaHats <- function() {
   c(
     -500, -100, -50, -33.33, -25, -20, -16.67, -14.29, -12.25, -11.11, -9.992,
@@ -1721,6 +1745,8 @@ lineWatsonMLEKappaHats <- function() {
     20.560, 25.546, 33.866, 50.521, 100.510, 200.5, 1000.5
   )
 }
+
+#' @source `geologyGeometry` by Davis, J.R.
 lineWatsonMLEInterpolation <- function() {
   stats::approxfun(
     x = lineWatsonMLED3s(), y = lineWatsonMLEKappaHats()
@@ -1729,6 +1755,7 @@ lineWatsonMLEInterpolation <- function() {
 
 
 # Generates one ray from the Fisher distribution centered at the third column of the rotation matrix, using accept-reject with f and its bound.
+#' @source `geologyGeometry` by Davis, J.R.
 rayFisherHelper <- function(rot, f, bound) {
   # The azimuthal coordinate theta is uniform on the unit circle.
   theta <- runif(1, min = -pi, max = pi)
@@ -1750,6 +1777,7 @@ rayFisherHelper <- function(rot, f, bound) {
 #' @param n A real number (positive integer) or NULL.
 #' @return If `n` is `NULL`, then a single ray. If n is a positive integer, then a list of n rays.
 #' @noRd
+#' @source `geologyGeometry` by Davis, J.R.
 rayFisher <- function(mu, kappa, n = NULL) {
   # Make a rotation matrix with mu as its third column.
   nu <- rayOrthogonalUniform(mu)
@@ -1782,6 +1810,7 @@ rayFisher <- function(mu, kappa, n = NULL) {
 }
 
 # From Mardia and Jupp (2000), Appendix 3.2.
+#' @source `geologyGeometry` by Davis, J.R.
 rayFisherMLEKappaHats <- function() {
   c(
     0.000, 0.030, 0.060, 0.090, 0.120, 0.150, 0.180, 0.211, 0.241, 0.271, 0.302,
@@ -1796,6 +1825,8 @@ rayFisherMLEKappaHats <- function() {
     50.000, 100.000
   )
 }
+
+#' @source `geologyGeometry` by Davis, J.R.
 rayFisherMLEInterpolation <- function() {
   stats::approxfun(
     x = seq(from = 0.00, to = 0.99, by = 0.01), y = rayFisherMLEKappaHats()
@@ -1807,6 +1838,7 @@ rayFisherMLEInterpolation <- function() {
 
 # Regression -------------------------------------------------------------------
 
+#' @source `geologyGeometry` by Davis, J.R.
 rayRegressionSmallCircle <- function(xs, us, numSeeds = 5, numSteps = 1000, numPoints = 0, angleBound = Inf) {
   f <- function(phiThetaAlphaTauSigma) {
     pole <- cartesianFromSpherical(c(1, phiThetaAlphaTauSigma[1:2]))
@@ -1866,6 +1898,7 @@ rayRegressionSmallCircle <- function(xs, us, numSeeds = 5, numSteps = 1000, numP
 }
 
 # Warning: Not well tested. angleBound > 0 is a bound on the amount of rotation (either positive or negative) per unit of x.
+#' @source `geologyGeometry` by Davis, J.R.
 rayRegressionSmallCircleRescaled <- function(xs, ls, angleBound = Inf, ...) {
   # Perform regression in scaled coordinates.
   x0 <- min(xs)
@@ -1883,6 +1916,7 @@ rayRegressionSmallCircleRescaled <- function(xs, ls, angleBound = Inf, ...) {
   results
 }
 
+#' @source `geologyGeometry` by Davis, J.R.
 lineRegressionSmallCircle <- function(xs, us, numSeeds = 5, numSteps = 1000, numPoints = 0, angleBound = Inf) {
   f <- function(phiThetaAlphaTauSigma) {
     pole <- cartesianFromSpherical(c(1, phiThetaAlphaTauSigma[1:2]))
@@ -1942,6 +1976,7 @@ lineRegressionSmallCircle <- function(xs, us, numSeeds = 5, numSteps = 1000, num
 }
 
 # Not well tested. angleBound > 0 is a bound on the amount of rotation (either positive or negative) per unit of x.
+#' @source `geologyGeometry` by Davis, J.R.
 lineRegressionSmallCircleRescaled <- function(xs, us, angleBound = Inf, ...) {
   # Perform regression in scaled coordinates.
   x0 <- min(xs)

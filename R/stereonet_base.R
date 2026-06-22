@@ -360,7 +360,7 @@ stereo_greatcircle <- function(x, ...) {
 #' # For multiple segments use lapply():
 #' set.seed(20250411)
 #' mu <- Line(45, 10)
-#' x <- rvmf(100, mu = mu)
+#' x <- rvmf(100, mu = mu) |> Line()
 #' plot(x)
 #' invisible(lapply(seq_len(nrow(x)), FUN = function(i) {
 #'   stereo_segment(x[i, ], mu, col = i)
@@ -713,8 +713,8 @@ stereoplot_guides <- function(d = 10, earea = TRUE, radius = 1, center = NULL, .
 #' @param ... parameters passed to [stereo_point()], [stereo_smallcircle()], [stereo_greatcircle()], or [fault_plot()]
 #'
 #' @details
-#' If `x` is a Ray, than solid symbols show rays pointing in the lower hemisphere,
-#' and open symbols point into the upper hemisphere
+#' If `x` is a Ray and `pch` is `NULL`, solid symbols show rays pointing in the lower hemisphere,
+#' while open symbols point into the upper hemisphere.
 #'
 #' @name plot-spherical
 #' @family stereo-plot
@@ -744,14 +744,18 @@ plot.Vec3 <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), 
 
 #' @rdname plot-spherical
 #' @exportS3Method graphics::plot
-plot.Ray <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
+plot.Ray <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), pch = NULL, ...) {
   do.call(stereoplot, append(grid.params, earea))
-  if (is.Ray(x)) {
-    # different symbols for upper and lower hemisphere rays
+
+
+  # different symbols for upper and lower hemisphere rays
+  if (is.null(pch)) {
     pch_upp <- if (upper.hem) c(1, 16) else c(16, 1)
+    pch <- ifelse(x[, 2] > 1, pch_upp[1], pch_upp[2])
+
     stereo_point(x,
       upper.hem = upper.hem, earea = earea,
-      pch = ifelse(x[, 2] > 1, pch_upp[1], pch_upp[2]),
+      pch = pch,
       ...
     )
   }
@@ -768,8 +772,6 @@ plot.Plane <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(),
 #' @exportS3Method graphics::plot
 plot.Pair <- function(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...) {
   do.call(stereoplot, append(grid.params, earea))
-  # stereo_greatcircle(Plane(x), upper.hem = upper.hem, earea = earea, ...)
-  # stereo_point(Line(x), upper.hem = upper.hem, earea = earea, ...)
   stereo_pair(x, upper.hem = upper.hem, earea = earea, ...)
 }
 
@@ -821,7 +823,7 @@ points.spherical <- function(x, upper.hem = FALSE, earea = TRUE, ...) {
 #' @param ang numeric. Conical angle in degrees.
 #' @param ... arguments passed to [graphics::lines()]
 #' @importFrom graphics lines
-#' 
+#'
 #' @name lines
 #'
 #' @family stereo-plot
@@ -839,7 +841,7 @@ lines.spherical <- function(x, ang = 90, ...) {
   if (is.Plane(x)) stereo_greatcircle(x, ...) else stereo_smallcircle(x, d = ang, ...)
 }
 
-# extra here because {sp} has also a Line method for lines() 
+# extra here because {sp} has also a Line method for lines()
 #' @rdname lines
 #' @method lines Line
 #' @export
@@ -898,7 +900,7 @@ hypot <- function(x, y) {
 #' @param length numeric. Length of the edges of the arrow head (in inches).
 #' @param angle numeric. Angle from the shaft of the arrow to the edge of the arrow head.
 #' @param scale numeric. Scales the length of the vector. `0.1` by default
-#' 
+#'
 #' @name arrows
 #'
 #' @seealso [hoeppener()], [angelier()]
@@ -947,7 +949,7 @@ stereo_arrows <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.
 
 #' @rdname arrows
 #' @exportS3Method graphics::arrows
-arrows.spherical <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.hem = FALSE, earea = TRUE, ...){
+arrows.spherical <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.hem = FALSE, earea = TRUE, ...) {
   stereo_arrows(x, sense, scale, angle, length, upper.hem, earea, ...)
 }
 
@@ -1005,33 +1007,33 @@ fault_plot <- function(x, type = c("angelier", "hoeppener"), ...) {
 #' @export
 hoeppener <- function(x, pch = 1, col = "black", cex = 1, bg = NULL, points = TRUE, ...) {
   stopifnot(is.Fault(x))
-  
+
   p <- Plane(x)
   s <- x[, "sense"]
-  
+
   # stereo_arrows(p, sense = s, col = col, ...)
   # if (isTRUE(points)) points(p, pch = pch, col = col, cex = cex, bg = bg)
-  
+
   nx <- nrow(x)
-  
+
   pch <- rep_len(pch, nx)
   col <- rep_len(col, nx)
-  #lwd <- rep_len(lwd, nx)
-  #lty <- rep_len(lty, nx)
+  # lwd <- rep_len(lwd, nx)
+  # lty <- rep_len(lty, nx)
   cex <- rep_len(cex, nx)
-  
-  invisible(
-      lapply(seq_len(nx), function(i) {
-        stereo_arrows(p[i, ], sense = s[i], col = col[i], ...)
-      })
-  )
-  
-  if(points){
+
   invisible(
     lapply(seq_len(nx), function(i) {
-      points(p[i, ], pch = pch[i], cex = cex[i], col = col[i], bg = bg)
+      stereo_arrows(p[i, ], sense = s[i], col = col[i], ...)
     })
   )
+
+  if (points) {
+    invisible(
+      lapply(seq_len(nx), function(i) {
+        points(p[i, ], pch = pch[i], cex = cex[i], col = col[i], bg = bg)
+      })
+    )
   }
 }
 
@@ -1043,27 +1045,27 @@ angelier <- function(x, pch = 1, lwd = 1, lty = 1, col = "black", cex = 1, point
   p <- Plane(x)
   l <- Fault_slip(x)
   s <- x[, "sense"]
-  
+
   # lines(p, lwd = lwd, lty = lty, col = col)
   # stereo_arrows(l, sense = s, col = col, ...)
   # if (isTRUE(points)) points(l, pch = pch, col = col, cex = cex, bg = bg)
-  
+
   nx <- nrow(x)
-  
+
   pch <- rep_len(pch, nx)
   col <- rep_len(col, nx)
   lwd <- rep_len(lwd, nx)
   lty <- rep_len(lty, nx)
   cex <- rep_len(cex, nx)
-  
-  
+
+
   invisible(
     lapply(seq_len(nx), function(i) {
       lines(p[i, ], lwd = lwd[i], lty = lty[i], col = col[i])
       stereo_arrows(l[i, ], sense = s[i], col = col[i], ...)
     })
   )
-  if(points){
+  if (points) {
     invisible(
       lapply(seq_len(nx), function(i) {
         points(l[i, ], pch = pch[i], cex = cex[i], col = col[i], bg = bg)

@@ -20,7 +20,7 @@ set.seed(20250411)
 # Generate 10 random SO(3) rotation matrices
 r <- rrot(10)
 
-# convort SO(3) matrices to "Pair"
+# convert SO(3) matrices to "Pair"
 rp <- lapply(r, rot2pair) |> lapply(unclass)
 rp <- do.call(rbind, args = rp) |>
   as.Pair()

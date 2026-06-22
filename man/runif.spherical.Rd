@@ -33,7 +33,7 @@ Create uniformly distributed vectors on the sphere
 \verb{"gss} is from  http://www.softimageblog.com/archives/115
 }
 \examples{
-set.seed(2025041s1)
+set.seed(20250411)
 x1 <- runif.spherical(n = 100, "Ray", method = "sfs")
 contour(x1)
 

@@ -83,7 +83,7 @@ dvmf <- function(x, mu, k = 5) {
 #' @export
 #'
 #' @examples
-#' set.seed(2025041s1)
+#' set.seed(20250411)
 #' x1 <- runif.spherical(n = 100, "Ray", method = "sfs")
 #' contour(x1)
 #'
@@ -264,7 +264,7 @@ rkent <- function(n, mu = Vec3(1, 0, 0), k = 5, b) {
 #' # Generate 10 random SO(3) rotation matrices
 #' r <- rrot(10)
 #'
-#' # convort SO(3) matrices to "Pair"
+#' # convert SO(3) matrices to "Pair"
 #' rp <- lapply(r, rot2pair) |> lapply(unclass)
 #' rp <- do.call(rbind, args = rp) |>
 #'   as.Pair()

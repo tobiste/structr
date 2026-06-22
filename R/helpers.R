@@ -265,7 +265,7 @@ parse_quadrant_measurement <- function(x) {
 #' @return character vector of colors in hexadecimal code
 #' @import viridis
 #' @importFrom grDevices colorRamp
-#' @seealso [PlotTools::SpectrumLegend()] - salternative tool to generate a 
+#' @seealso [PlotTools::SpectrumLegend()] - an alternative tool to generate a 
 #' color-bar in base-R plots
 #' @family assign
 #' @name assign-color
@@ -503,7 +503,7 @@ legend_cex <- function(x, range = c(0.25, 2), breaks = 5, values = NULL, area = 
 #' set.seed(20250411)
 #'
 #' # example for discrete colors
-#' x <- rvmf(5, mu = Line(120, 50), k = 5)
+#' x <- rvmf(5, mu = Line(120, 50), k = 5) 
 #' key <- sample(letters, 5, replace = TRUE)
 #' plot(x, pch = assign_pch(key), grid.params = list(guides = FALSE))
 #' legend_pch(key)

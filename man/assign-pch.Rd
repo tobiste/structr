@@ -40,7 +40,7 @@ used.
 set.seed(20250411)
 
 # example for discrete colors
-x <- rvmf(5, mu = Line(120, 50), k = 5)
+x <- rvmf(5, mu = Line(120, 50), k = 5) 
 key <- sample(letters, 5, replace = TRUE)
 plot(x, pch = assign_pch(key), grid.params = list(guides = FALSE))
 legend_pch(key)

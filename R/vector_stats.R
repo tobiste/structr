@@ -204,7 +204,7 @@ NULL
 #' @rdname stats
 #' @export
 sph_mean <- function(x, na.rm = TRUE, ...) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x) | is.Ray(x))
 
   x_mean <- Vec3(x) |>
     unclass() |>
@@ -212,11 +212,12 @@ sph_mean <- function(x, na.rm = TRUE, ...) {
     vec2mat() |>
     Vec3()
 
-
   if (is.Line(x)) {
     x_mean <- Line(x_mean)
   } else if (is.Plane(x)) {
     x_mean <- Plane(x_mean)
+  } else if (is.Ray(x)) {
+    x_mean <- Ray(x_mean)
   }
   rownames(x_mean) <- NULL
   x_mean
@@ -226,11 +227,12 @@ sph_mean <- function(x, na.rm = TRUE, ...) {
 #' @rdname stats
 #' @export
 sph_sd <- function(x, ...) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x) | is.Ray(x))
   x_sd <- Vec3(x) |>
     unclass() |>
     v_sd(...)
-  if (is.Line(x) | is.Plane(x)) {
+  
+  if (is.Line(x) | is.Plane(x) | is.Ray(x)) {
     x_sd * 180 / pi
   } else {
     x_sd
@@ -240,7 +242,7 @@ sph_sd <- function(x, ...) {
 #' @rdname stats
 #' @export
 sph_var <- function(x, ...) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x) | is.Ray(x))
   Vec3(x) |>
     unclass() |>
     v_var(...)
@@ -249,12 +251,12 @@ sph_var <- function(x, ...) {
 #' @rdname stats
 #' @export
 sph_confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = TRUE) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x) | is.Ray(x))
   ca <- Vec3(x) |>
     unclass() |>
     v_confidence_angle(w, alpha, na.rm)
 
-  if (is.Line(x) | is.Plane(x)) {
+  if (is.Line(x) | is.Plane(x) | is.Ray(x)) {
     ca * 180 / pi
   } else {
     ca
@@ -264,7 +266,7 @@ sph_confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = TRUE) {
 #' @rdname stats
 #' @export
 rdegree <- function(x, w = NULL, na.rm = FALSE) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x) | is.Ray(x))
   Vec3(x) |>
     unclass() |>
     v_rdegree(w, na.rm)
@@ -273,12 +275,12 @@ rdegree <- function(x, w = NULL, na.rm = FALSE) {
 #' @rdname stats
 #' @export
 sd_error <- function(x, w = NULL, na.rm = FALSE) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x) | is.Ray(x))
   sde <- Vec3(x) |>
     unclass() |>
     v_sde(w, na.rm)
 
-  if (is.Line(x) | is.Plane(x)) {
+  if (is.Line(x) | is.Plane(x) | is.Ray(x)) {
     sde * 180 / pi
   } else {
     sde
@@ -288,12 +290,12 @@ sd_error <- function(x, w = NULL, na.rm = FALSE) {
 #' @rdname stats
 #' @export
 delta <- function(x, w = NULL, na.rm = TRUE) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x) | is.Ray(x))
   d <- Vec3(x) |>
     unclass() |>
     v_delta(w, na.rm)
 
-  if (is.Line(x) | is.Plane(x)) {
+  if (is.Line(x) | is.Plane(x) | is.Ray(x)) {
     d * 180 / pi
   } else {
     d
@@ -342,7 +344,7 @@ estimate_k <- function(x, w = NULL, na.rm = FALSE, p = 3) {
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)
 #' fisher_statistics(x)
 fisher_statistics <- function(x, w = NULL, conf.level = 0.95, na.rm = TRUE) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x) | is.Ray(x))
   if (isTRUE(na.rm)) x <- x[!rowSums(!is.finite(x)), ]
   v <- Vec3(x) |> unclass()
 
@@ -411,7 +413,7 @@ fisher_statistics <- function(x, w = NULL, conf.level = 0.95, na.rm = TRUE) {
 #'
 #' bingham_statistics(x)
 bingham_statistics <- function(x, w = NULL, na.rm = TRUE) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x) | is.Ray(x))
   if (isTRUE(na.rm)) x <- x[!rowSums(!is.finite(x)), ]
   v <- Vec3(x)
 
@@ -430,20 +432,9 @@ bingham_statistics <- function(x, w = NULL, na.rm = TRUE) {
   k_ellipse[2] <- (abc[1] + abc[2]) / (abc[3] + abc[2] - abc[1]) # max
   k_ellipse[1] <- (abc[1] + abc[2]) / (abc[3] - abc[2] + abc[1]) # min
 
-  # theta = x[, 2]
-  #
-  # k = n / (n - sum(cosd(theta)))
-  #
-  # A = B = (k * n) / (1+k)
-  # C = (2*n) / (1+k)
-  #
-  # k_ellipse <- c(0, 0)
-  # k_ellipse[2] = (A + B) / (C + B - A)
-  # k_ellipse[1] = (A + B) / (C - B + A) # min
-
   a95 <- deg2rad(140) / sqrt(k_ellipse * n)
 
-  if (is.Line(x) | is.Plane(x)) {
+  if (is.Line(x) | is.Plane(x) | is.Ray(x)) {
     a95 <- rad2deg(a95)
   }
 
@@ -454,7 +445,7 @@ bingham_statistics <- function(x, w = NULL, na.rm = TRUE) {
 #'
 #' Test against the null-hypothesis that the samples are drawn from the same Fisher population.
 #'
-#' @param x,y  objects of class `"Vec3"`, `"Line"`, or `"Plane"`, , where the
+#' @param x,y  objects of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, , where the
 #'  rows are the observations and the columns are the coordinates.
 #' @inheritParams sph_mean
 #'
@@ -475,7 +466,7 @@ bingham_statistics <- function(x, w = NULL, na.rm = TRUE) {
 #'
 #' fisher_ftest(x, y)
 fisher_ftest <- function(x, y, alpha = 0.05, na.rm = TRUE) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x) | is.Ray(x))
   if (isTRUE(na.rm)) {
     x <- x[!rowSums(!is.finite(x)), ]
     y <- y[!rowSums(!is.finite(y)), ]

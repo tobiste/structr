@@ -20,6 +20,8 @@ rot2pair(x, fault = FALSE)
 \item{p}{object of class \code{"Pair"} or \code{"Fault"}}
 
 \item{x}{object of class \code{"Rotation"}, a 3x3 matrix}
+
+\item{fault}{logical. Whether to coerces to a fault or a pair object.}
 }
 \value{
 list of rotation matrices

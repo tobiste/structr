@@ -168,13 +168,13 @@ angle.matrix <- function(x, y) vangle(x, y)
 #' @export
 #' @rdname vecmath
 angle.spherical <- function(x, y) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x) | is.Ray(x))
   vx <- Vec3(x) |> unclass()
   vy <- Vec3(y) |> unclass()
   res <- vangle(vx, vy)
   res <- unname(res)
 
-  if (is.Line(x) | is.Plane(x)) {
+  if (is.Line(x) | is.Plane(x) | is.Ray(x)) {
     rad2deg(res)
   } else {
     res
@@ -214,7 +214,7 @@ vproject <- function(x, y) {
 #' @export
 #' @rdname vecmath
 project.spherical <- function(x, y) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x) | is.Ray(x))
   xv <- Vec3(x) |> unclass()
   yv <- Vec3(y) |> unclass()
   xy <- vproject(xv, yv) |> Vec3()
@@ -223,6 +223,8 @@ project.spherical <- function(x, y) {
     Line(xy)
   } else if (is.Plane(x)) {
     Plane(xy)
+  } else if (is.Ray(x)) {
+    Ray(x)
   } else {
     xy
   }
@@ -247,7 +249,7 @@ reject.default <- function(x, y) vreject(x, y)
 #' @export
 #' @method reject spherical
 reject.spherical <- function(x, y) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x) | is.Ray(x))
   xv <- Vec3(x) |> unclass()
   yv <- Vec3(y) |> unclass()
   xy <- vproject(xv, yv) |> Vec3()
@@ -257,6 +259,8 @@ reject.spherical <- function(x, y) {
     Line(rej)
   } else if (is.Plane(x)) {
     Plane(rej)
+  } else if(is.Ray(x)) {
+    Ray(rej)
   } else {
     rej
   }
@@ -308,7 +312,7 @@ vtransform <- function(x, A, norm = FALSE) {
 #' @export
 #' @rdname vecmath
 transform_linear <- function(x, A, norm = FALSE) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x))
+  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x) | is.Ray(x))
   x <- Vec3(x) |> unclass()
   xt <- vtransform(x, A, norm) |> Vec3()
 
@@ -316,6 +320,8 @@ transform_linear <- function(x, A, norm = FALSE) {
     Line(xt)
   } else if (is.Plane(x)) {
     Plane(xt)
+  } else if(is.Ray(x)){
+    Ray(xt)
   } else {
     xt
   }

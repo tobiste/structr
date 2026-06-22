@@ -14,7 +14,7 @@
 
 \method{plot}{Vec3}(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...)
 
-\method{plot}{Ray}(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...)
+\method{plot}{Ray}(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), pch = NULL, ...)
 
 \method{plot}{Plane}(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...)
 
@@ -35,13 +35,15 @@ hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
 \item{grid.params}{list.}
 
 \item{...}{parameters passed to \code{\link[=stereo_point]{stereo_point()}}, \code{\link[=stereo_smallcircle]{stereo_smallcircle()}}, \code{\link[=stereo_greatcircle]{stereo_greatcircle()}}, or \code{\link[=fault_plot]{fault_plot()}}}
+
+\item{pch}{plotting character}
 }
 \description{
 Plot Spherical Objects
 }
 \details{
-If \code{x} is a Ray, than solid symbols show rays pointing in the lower hemisphere,
-and open symbols point into the upper hemisphere
+If \code{x} is a Ray and \code{pch} is \code{NULL}, solid symbols show rays pointing in the lower hemisphere,
+while open symbols point into the upper hemisphere.
 }
 \examples{
 plot(rvmf(10, mu = Vec3(1, 0, 0))) # Vec

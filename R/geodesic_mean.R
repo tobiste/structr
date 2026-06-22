@@ -319,6 +319,7 @@ geodesic_var_pair <- function(x, group = NULL) {
 #'
 #' @param p object of class `"Pair"` or `"Fault"`
 #' @param x object of class `"Rotation"`, a 3x3 matrix
+#' @param fault logical. Whether to coerces to a fault or a pair object.
 #' @name class-rot
 #' @returns list of rotation matrices
 #'
@@ -343,7 +344,7 @@ pair2rot <- function(p) {
   if (inherits(x, "Fault")) {
     lv <- p[, 5] * lv
   }
-  cross <- crossprod.Vec3(pv, ll)
+  cross <- crossprod.Vec3(pv, lv)
 
   rotm <- rot_projected_matrix(list(pole = pv, direction = lv, cross = cross)) |>
     as.Rotation()
