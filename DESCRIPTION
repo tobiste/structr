@@ -19,6 +19,7 @@ Imports:
     dplyr,
     expm,
     fields,
+    future.apply,
     ggforce,
     ggplot2,
     MASS,
@@ -31,6 +32,7 @@ Imports:
     tectonicr,
     viridis
 Suggests: 
+    future,
     knitr,
     mapproj,
     rmarkdown,

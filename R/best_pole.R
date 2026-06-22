@@ -386,6 +386,7 @@ regression_cone_ramsay2 <- function(x) {
 #' \item{`range`}{Range of the regression line (in radians if `x` is of class `"Vec3"`, degrees otherwise)}
 #' }
 #' @name best_fit
+#' @family geodesic-regression
 #'
 #' @references Davis, J.R. and Titus, S.J. (2017). Modern methods of analysis
 #' for three-dimensional orientational data. Journal of Structural Geology, 96,
@@ -396,7 +397,6 @@ regression_cone_ramsay2 <- function(x) {
 #' data("gray_example")
 #' bestgc_clea <- regression_greatcircle(gray_example[1:8, ])
 #' bestgc_bedd <- regression_greatcircle(gray_example[9:16, ])
-#' bestgc_all <- regression_greatcircle(gray_example)
 #'
 #' bestsc_clea <- regression_smallcircle(gray_example[1:8, ])
 #' bestsc_bedd <- regression_smallcircle(gray_example[9:16, ])
@@ -417,49 +417,58 @@ regression_cone_ramsay2 <- function(x) {
 #' points(bestsc_bedd$vec, col = "sienna", pch = 16)
 #' lines(bestgc_bedd$vec, lty = 2, col = "red")
 #' points(bestgc_bedd$vec, col = "red", pch = 17)
-#'
-#' # best for all
-#' lines(bestsc_all$vec, bestsc_all$cone, col = "gray80")
-#' points(bestsc_all$vec, col = "gray80", pch = 16)
-#' lines(bestgc_all$vec, lty = 2, col = "gray50")
-#' points(bestgc_all$vec, col = "gray50", pch = 17)
 NULL
 
 #' @rdname best_fit
 #' @export
 regression_greatcircle <- function(x, val = seq_len(nrow(x)), iterations = 1000L, n_points = 100L) {
   ls <- vec_list(x)
-
+  n  <- length(ls)
+  val_num <- as.numeric(val)
+  
   # Let l0 be the l whose x is closest to zero.
-  l0 <- ls[[which.min(as.numeric(val)^2)]]
+  l0 <- ls[[which.min(val_num^2)]]
+  
   # Define the function to be minimized.
-  n <- length(ls)
   e <- function(wb) {
     a <- rotExp(rotAntisymmetricFromVector(wb[1:3]))
-    f <- function(i) {
-      u <- c(cos(wb[[4]] * val[[i]]), sin(wb[[4]] * val[[i]]), 0)
-      lineDistance(ls[[i]], as.numeric(a %*% u))^2
-    }
-    sum(sapply(1:n, f)) / (2 * n)
+    w   <- wb[[4L]]
+    
+    # Vectorised trig: compute all unit vectors at once as a 3×n matrix
+    cos_w <- cos(w * val_num)
+    sin_w <- sin(w * val_num)
+    u_mat <- rbind(cos_w, sin_w, 0) 
+    au_mat <- a %*% u_mat 
+    # f <- function(i) {
+    #   u <- c(cos(wb[[4]] * val[[i]]), sin(wb[[4]] * val[[i]]), 0)
+    #   lineDistance(ls[[i]], as.numeric(a %*% u))^2
+    # }
+    #d <- vapply(1:n, f, numeric(1))
+    d <- vapply(seq_len(n), function(i) lineDistance(ls[[i]], au_mat[, i]),
+                numeric(1L))
+    
+    sum(d^2) / (2 * n)
   }
+  
   # Find the minimum, using the constant geodesic l0 as the seed.
   seed <- c(0, 0, 0, 0)
   solution <- stats::optim(seed, e, hessian = TRUE, control = list(maxit = iterations))
+  
   # Report diagnostic information.
   eigvals <- eigen(solution$hessian, symmetric = TRUE, only.values = TRUE)$values
   rot <- rotExp(rotAntisymmetricFromVector(solution$par[1:3]))
   a <- solution$par[[4]]
 
-  if (is.Line(x) | is.Plane(x)) {
-    rSq <- 1 - solution$value / lineVariance(ls, lineProjectedMean(ls))
+  rSq <- if (is.Line(x) | is.Plane(x)) {
+    1 - solution$value / lineVariance(ls, lineProjectedMean(ls))
   } else if (is.Ray(x) | is.Vec3(x)) {
-    rSq <- 1 - solution$value / rayVariance(ls, rayProjectedMean(ls))
+    1 - solution$value / rayVariance(ls, rayProjectedMean(ls))
   }
 
   rot_vec <- as.Vec3(rot[, 3])
 
   result <- list(
-    vec = Spherical(rot_vec, class(x)[1]),
+    vec = Spherical(rot_vec, class(x)[1L]),
     range = a,
     # rotation = rot,
     convergence = solution$convergence,
@@ -498,13 +507,13 @@ regression_smallcircle <- function(x, val = seq_len(nrow(x)), num_seeds = 5L, it
 
   vec <- as.Vec3(res$pole)
   points <- list_vec(res$points)
-  cone <- angle(points, vec)[1]
+  cone <- angle(points, vec)[1L]
 
   if (!is.Vec3(x)) cone <- rad2deg(cone)
   if (!is.Vec3(x)) res$angle <- rad2deg(res$angle)
 
   list(
-    vec = Spherical(vec, class(x)[1]),
+    vec = Spherical(vec, class(x)[1L]),
     cone = cone,
     convergence = res$error,
     min_eigenvalue = res$minEigenvalue,
@@ -515,12 +524,76 @@ regression_smallcircle <- function(x, val = seq_len(nrow(x)), num_seeds = 5L, it
 }
 
 
-# The number interval [a, b] is mapped to the interval [0, 1]. Inputs outside [a, b] are clamped to [a, b].
-scale <- function(y, a = 0, b = 1) {
-  (y - a) / (b - a)
+## Permutation
+
+#' Permutation Tests of Regressions
+#' 
+#' `perm_rsq` retrieves the \eqn{R^2} values from successful `n_perm` permutations 
+#' of a regression function.
+#' `perm_rsq_pvalue` post-processes this vector to count how many of its entries 
+#' exceed the original \eqn{R^2} value. That fraction is a p-value for the null 
+#' hypothesis that the regression result is meaningless.
+#'
+#' @param n_perm A real number (positive integer). The number of permutations to try.
+#' @param FUN An R function. Must return a result list with fields `convergence`, 
+#' `min_eigenvalue`, `r_squared` Typically [regression_greatcircle()] or a 
+#' similar regression function.
+#' @param x A real vector. The values of the independent variable. Assumed to be 
+#' the first argument passed to `FUN`.
+#' @param ... Other arguments passed to `FUN`, after `x`.
+#' @param r_perm vector of permutated \eqn{R^2} values
+#' @param r original \eqn{R^2} value 
+#' 
+#' @return `perm_rsq` returns a a real vector. The maximum length is `n_perms`. 
+#' Often the length is less than `n_perms`, because the regression failed (as 
+#' signaled by error != 0 or `min_eigenvalue` <= 0). 
+#' 
+#' `perm_rsq_pvalue` returns the p-value.
+#' 
+#' @name perm-rsq
+#' @family geodesic-regression
+#' @importFrom future.apply future_vapply
+#' 
+#' @examples
+#' set.seed(20250411)
+#' data("gray_example")
+#' 
+#' # original regression
+#' bestgc_clea <- regression_greatcircle(gray_example[1:8, ])
+#' 
+#' # permutation test
+#' pr <- perm_rsq(100, FUN = regression_greatcircle, x = gray_example[1:8, ])
+#' 
+#' # p-value
+#' perm_rsq_pvalue(pr, bestgc_clea)
+NULL
+
+#' @name perm-rsq
+#' @export
+perm_rsq <- function(n_perm, FUN, x, ...) {
+  # print("Percentage of permutations complete:")
+  g <- function(i) {
+    # print(paste0(i / n_perm * 100, "%"))
+    newXs <- sample_spherical(x, size = nrow(x))
+    regr <- FUN(x = newXs)
+    c(regr$convergence, regr$min_eigenvalue, regr$r_squared)
+  }
+  
+  # perms <- vapply(seq_len(n_perm), g, numeric(3))
+  perms <- future.apply::future_vapply(
+    seq_len(n_perm), g,
+    FUN.VALUE = numeric(3),
+    future.seed = TRUE
+  )
+  
+  success <- perms[1L, ] == 0L & perms[2L, ] > 0
+  perms[3L, success]
 }
 
-# The number interval range(ys) is mapped to the interval [0, 1].
-scales <- function(ys) {
-  sapply(ys, scale, min(ys), max(ys))
+#' @name perm-rsq
+#' @export
+perm_rsq_pvalue <- function(r_perm, r){
+  if(is.list(r)) r <- r$r_squared
+  sum(r_perm > r) / length(r_perm)
 }
+

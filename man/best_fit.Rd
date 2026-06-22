@@ -52,7 +52,6 @@ set.seed(20250411)
 data("gray_example")
 bestgc_clea <- regression_greatcircle(gray_example[1:8, ])
 bestgc_bedd <- regression_greatcircle(gray_example[9:16, ])
-bestgc_all <- regression_greatcircle(gray_example)
 
 bestsc_clea <- regression_smallcircle(gray_example[1:8, ])
 bestsc_bedd <- regression_smallcircle(gray_example[9:16, ])
@@ -73,15 +72,14 @@ lines(bestsc_bedd$vec, bestsc_bedd$cone, col = "sienna")
 points(bestsc_bedd$vec, col = "sienna", pch = 16)
 lines(bestgc_bedd$vec, lty = 2, col = "red")
 points(bestgc_bedd$vec, col = "red", pch = 17)
-
-# best for all
-lines(bestsc_all$vec, bestsc_all$cone, col = "gray80")
-points(bestsc_all$vec, col = "gray80", pch = 16)
-lines(bestgc_all$vec, lty = 2, col = "gray50")
-points(bestgc_all$vec, col = "gray50", pch = 17)
 }
 \references{
 Davis, J.R. and Titus, S.J. (2017). Modern methods of analysis
 for three-dimensional orientational data. Journal of Structural Geology, 96,
 65–89. \doi{10.1016/j.jsg.2017.01.002}
 }
+\seealso{
+Other geodesic-regression: 
+\code{\link{perm-rsq}}
+}
+\concept{geodesic-regression}

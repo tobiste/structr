@@ -245,6 +245,21 @@ parse_quadrant_measurement <- function(x) {
 }
 
 
+# The number interval [a, b] is mapped to the interval [0, 1]. Inputs outside [a, b] are clamped to [a, b].
+#' @keywords internal
+#' @noRd
+scale <- function(y, a = 0, b = 1) {
+  (y - a) / (b - a)
+}
+
+# The number interval range(ys) is mapped to the interval [0, 1].
+#' @keywords internal
+#' @noRd
+scales <- function(ys) {
+  sapply(ys, scale, min(ys), max(ys))
+}
+
+
 #' Helper functions to assign plotting colors to a vector
 #'
 #' @param x vector to colorize
@@ -721,6 +736,7 @@ vec_list <- function(x) {
 #' @rdname vec-list
 #' @export
 list_vec <- function(ls) {
+  # rownames(ls) <- NULL
   do.call(rbind, ls) |>
     as.Vec3()
 }

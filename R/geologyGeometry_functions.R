@@ -60,7 +60,6 @@ lower <- function(v) {
 squareRoot <- function(x) sqrt(max(0, x))
 
 
-
 # Coordinate transformation ----------------------------------------------------
 
 #' @source `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
@@ -97,7 +96,6 @@ cartesianFromHorizontal <- function(tz) {
   root <- sqrt(1 - tz[[2]]^2)
   c(cos(tz[[1]]) * root, sin(tz[[1]]) * root, tz[[2]])
 }
-
 
 
 # Basics -----------------------------------------------------------------------
@@ -173,10 +171,6 @@ rotLog <- function(r) {
   ua <- rotAxisAngleFromMatrix(r)
   ua[[4]] * rotAntisymmetricFromVector(ua[1:3])
 }
-
-
-
-
 
 
 #' Matrix exponentiation of infinitesimal rotation to finite rotation.
@@ -326,7 +320,7 @@ rayTetrahedralSphere <- function(numNonAdapt) {
     list(c(-1, 1, -1) / sqrt(3), c(-1, -1, 1) / sqrt(3), c(1, 1, 1) / sqrt(3)),
     list(c(1, -1, -1) / sqrt(3), c(-1, -1, 1) / sqrt(3), c(1, 1, 1) / sqrt(3))
   )
-  
+
   unlist(
     lapply(rayTetrahedron, rayRefinedTriangle, numNonAdapt),
     recursive = FALSE, use.names = FALSE
@@ -351,7 +345,6 @@ rayIntegral <- function(f, numNonAdapt = 5) {
 }
 
 
-
 # Given a triangle of unit vectors in counterclockwise order when viewed from outside.
 # Returns a list of 4^numNonAdapt triangles of unit vectors, each in counterclockwise order again.
 #' @source `geologyGeometry` by Davis, J.R.
@@ -373,7 +366,6 @@ rayRefinedTriangle <- function(tri, numNonAdapt) {
     )
   }
 }
-
 
 
 #' Conversion from matrix to angle-axis representation.
@@ -626,8 +618,6 @@ rotAntisymmetricFromVector <- function(v) {
 }
 
 
-
-
 #' Sanitizing an orientation of a fault-with-slip.
 #'
 #' The issue here is that geologists like describing fault slips in terms of the
@@ -677,8 +667,6 @@ geoPoleHangingFromPoleVorticity <- function(rot) {
     rbind(-rot[1, ], -rot[3, ], -rot[2, ])
   }
 }
-
-
 
 
 # Mean and Variance -------------------------------------------------------------------------
@@ -749,8 +737,6 @@ lineMeanScatter <- function(us) {
   eig <- eigen(tMatrix, symmetric = TRUE)
   eig
 }
-
-
 
 
 #' The Frechet (geodesic L^2) mean of a set of rays.
@@ -825,7 +811,6 @@ lineMeanVariance <- function(us, numSeeds = 5L, numSteps = 100L) {
 }
 
 
-
 #' L^2 variance of a set of rays about a point.
 #'
 #' I'm not sure about the weighting on this. If you change it, change regression
@@ -865,16 +850,6 @@ rayDistance <- function(u, v) arcCos(dot(u, v))
 lineDistance <- function(u, v) arcCos(abs(dot(u, v)))
 
 
-
-
-
-
-
-
-
-
-
-
 #' The Frechet (geodesic L^2) variance of a set of orientations.
 #'
 #' @param rs A list of rotation matrices.
@@ -887,7 +862,6 @@ oriVariance <- function(rs, center, group) {
   dists <- sapply(rs, oriDistance, center, group)
   sum(dists^2) / (2 * length(rs))
 }
-
 
 
 #' The distance between two orientations as points in SO(3) / G.
@@ -1058,7 +1032,6 @@ oriLeftPrincipalComponentAnalysis <- function(rs, center, group, numPoints = 0) 
 }
 
 
-
 #' Unwrapping unit sphere into a tangent plane.
 #'
 #' Inverse to `rayPointFromTangentVector()`.
@@ -1105,7 +1078,6 @@ rayPointFromTangentVector <- function(w, rotation) {
   # v <- c(sqrt(1 - vec[[1]]^2 - vec[[2]]^2), vec)
   # as.numeric(t(rotation) %*% v)
 }
-
 
 
 #' Sample covariance matrix, approximated in the tangent space at a given rotation.
@@ -1371,7 +1343,6 @@ rayMahalanobisPercentiles <- function(us, center, alpha = 0.05, numPoints = 0, d
 }
 
 
-
 # Returns C such that C exp(-u^T A u) integrates to 1 over the hemisphere? Accuracy is doubtful.
 #' @source `geologyGeometry` by Davis, J.R.
 #' @importFrom  Directional fb.saddle
@@ -1389,15 +1360,14 @@ lineBinghamIntegratedConstant <- function(a, numNonAdapt = 5) {
 }
 
 
-
 #' Simulation from the Bingham distribution.
 #'
-#' Uses the function [Directional::rbingham()] in package `"Directional"`. In that convention, the 
-#' Bingham probability density is proportional to \eqn{\exp{(-x^T A x)}}, not \eqn{\exp{(x^T A x)}}. 
-#' The mean is the eigenvector of A with least eigenvalue. The main direction of 
-#' the dispersion is toward the eigenvector of A with the intermediate eigenvalue. 
+#' Uses the function [Directional::rbingham()] in package `"Directional"`. In that convention, the
+#' Bingham probability density is proportional to \eqn{\exp{(-x^T A x)}}, not \eqn{\exp{(x^T A x)}}.
+#' The mean is the eigenvector of A with least eigenvalue. The main direction of
+#' the dispersion is toward the eigenvector of A with the intermediate eigenvalue.
 #' The pole to the dispersion is the eigenvector with greatest eigenvalue.
-#' 
+#'
 #' @param a A symmetric real 3x3 matrix.
 #' @param n A real number (positive integer) or NULL.
 #' @return If `n` is `NULL`, then a single line. If `n` is a positive integer, then a list of `n` lines.
@@ -1419,22 +1389,22 @@ lineBingham <- function(a, n = NULL) {
 
 #' Maximum likelihood estimation of the Bingham distribution parameters.
 #'
-#' Compared to `lineBinghamMLETauxe()`, this is slow but apparently more accurate. 
-#' Uses a numerical integration (to compute the normalization constant) inside 
-#' an numerical optimization (to maximize the likelihood). The Bingham 
-#' probability density is proportional to \eqn{\exp{(-x^T A x)}}, not \eqn{\exp{(x^T A x)}}. 
+#' Compared to `lineBinghamMLETauxe()`, this is slow but apparently more accurate.
+#' Uses a numerical integration (to compute the normalization constant) inside
+#' an numerical optimization (to maximize the likelihood). The Bingham
+#' probability density is proportional to \eqn{\exp{(-x^T A x)}}, not \eqn{\exp{(x^T A x)}}.
 #' I prefer to normalize A so that \eqn{tr(A) = 0}s.
-#' 
+#'
 #' @param us A list of lines.
-#' @param weights A vector of real numbers (non-negative), of length equal to 
+#' @param weights A vector of real numbers (non-negative), of length equal to
 #' `us`. They need not sum to 1; the function automatically normalizes them to do so.
-#' @param numNonAdapt A real number (non-negative integer). The number of 
-#' refinements to use in the numerical integration. Each increment of 
+#' @param numNonAdapt A real number (non-negative integer). The number of
+#' refinements to use in the numerical integration. Each increment of
 #' `numNonAdapt` increases time and memory requirements by a factor of 4.
-#' @param numSteps. A real number (positive integer). The number of steps to 
+#' @param numSteps. A real number (positive integer). The number of steps to
 #' use in the numerical optimization. If the output $error is non-zero, then try increasing `numSteps`.
-#' 
-#' @return A list with members 
+#'
+#' @return A list with members
 #' \describe{
 #' \item{`$a`}{(symmetric 3x3 real matrix A),}
 #' \item{`$values`}{(a real 3D vector; the eigenvalues of A; sum to zero),}
@@ -1449,19 +1419,19 @@ lineBinghamMLE <- function(us, weights = replicate(length(us), 1), numNonAdapt =
   # Scale the weights so that they sum to 1.
   n <- length(us)
   ws <- weights / sum(weights)
-  
+
   # In eigen, the eigenvectors are descending and the eigenvectors are unit.
   ts <- lapply(1:n, function(i) {
     ws[[i]] * outer(us[[i]], us[[i]])
   })
   tBar <- Reduce("+", ts)
   eig <- eigen(tBar, symmetric = TRUE)
-  
+
   # Let's assume that the MLE A will have the same eigenvectors as T-bar, as in
   # the unweighted case.
   q <- eig$vectors
   vs <- lapply(us, function(u) as.numeric(t(q) %*% u))
-  
+
   # The MLE will have eigenvalues a1, a2, -a1 - a2. Define f to be the negative
   # log-likelihood.
   f <- function(a1a2) {
@@ -1473,22 +1443,21 @@ lineBinghamMLE <- function(us, weights = replicate(length(us), 1), numNonAdapt =
       })
     )
   }
-  
+
   # Numerically minimize f to obtain the maximum likelihood estimate.
   seed <- c(0, 0)
   sol <- optim(seed, f, hessian = TRUE, control = list(maxit = numSteps))
   values <- c(sol$par[[1]], sol$par[[2]], -sol$par[[1]] - sol$par[[2]])
   a <- q %*% diag(values) %*% t(q)
-  
+
   # Report diagnostic information.
   eigvals <- eigen(sol$hessian, symmetric = TRUE, only.values = TRUE)$values
-  
+
   list(
     error = sol$convergence, minEigenvalue = min(eigvals), a = a, values = values,
     vectors = q
   )
 }
-
 
 
 # Bingham MLE lookup table from Appendix C of Tauxe's books.
@@ -1690,7 +1659,6 @@ lineBinghamK1K2MLE <- function(omega1, omega2) {
 }
 
 
-
 # Helper function for [lineWatson()]. Returns one line sampled from the Watson distribution.
 #' @noRd
 #' @source `geologyGeometry` by Davis, J.R.
@@ -1724,9 +1692,9 @@ lineWatsonNormalizer <- function(kappa) {
 
 #' Sampling lines from the Watson distribution.
 #'
-#' A naive acceptance-rejection sampling algorithm, based on bounding the 
-#' density (with respect to the distance from `mu`) with a constant. For large 
-#' `kappa`, this method grows inefficient. For `kappa` == 100, about 13 tries 
+#' A naive acceptance-rejection sampling algorithm, based on bounding the
+#' density (with respect to the distance from `mu`) with a constant. For large
+#' `kappa`, this method grows inefficient. For `kappa` == 100, about 13 tries
 #' are needed per success. For `kappa` == -100, about 18 tries are needed.
 #' @param mu A line. The mean of the distribution (if `kappa` > 0) or the pole to the girdle of the distribution (if `kappa` < 0).
 #' @param kappa A real number. The concentration parameter.
@@ -1790,7 +1758,6 @@ lineWatsonMLEInterpolation <- function() {
     x = lineWatsonMLED3s(), y = lineWatsonMLEKappaHats()
   )
 }
-
 
 
 # Generates one ray from the Fisher distribution centered at the third column of the rotation matrix, using accept-reject with f and its bound.
@@ -1873,68 +1840,180 @@ rayFisherMLEInterpolation <- function() {
 }
 
 
-
-
 # Regression -------------------------------------------------------------------
 
 #' @source `geologyGeometry` by Davis, J.R.
 rayRegressionSmallCircle <- function(xs, us, numSeeds = 5, numSteps = 1000, numPoints = 0, angleBound = Inf) {
+  n     <- length(us)
+  lower <- c(-Inf, -Inf, -angleBound, -Inf, -Inf)
+  upper <- c( Inf,  Inf,  angleBound,  Inf,  Inf)
+
   f <- function(phiThetaAlphaTauSigma) {
     pole <- cartesianFromSpherical(c(1, phiThetaAlphaTauSigma[1:2]))
     uOf0 <- cartesianFromSpherical(c(1, phiThetaAlphaTauSigma[4:5]))
+    alpha <- phiThetaAlphaTauSigma[[3]]
+
     pred <- function(x) {
-      r <- rotMatrixFromAxisAngle(c(pole, x * phiThetaAlphaTauSigma[[3]]))
+      r <- rotMatrixFromAxisAngle(c(pole, x * alpha))
       as.numeric(r %*% uOf0)
     }
+
     preds <- lapply(xs, pred)
     dists <- mapply(rayDistance, preds, us)
-    dot(dists, dists) / (2 * length(us))
+    dot(dists, dists) / (2 * n)
   }
+
   # Find the minimum, starting from a few seeds.
   best <- list(value = (2 * pi^2))
-  for (i in 1:numSeeds) {
-    seed <- c(
+
+  make_seed <- function() {
+    c(
       sphericalFromCartesian(rayUniform())[2:3],
       stats::runif(1, -pi, pi),
       sphericalFromCartesian(rayUniform())[2:3]
     )
+  }
+
+  for (i in seq_len(numSeeds)) {
+    # seed <- c(
+    #   sphericalFromCartesian(rayUniform())[2:3],
+    #   stats::runif(1, -pi, pi),
+    #   sphericalFromCartesian(rayUniform())[2:3]
+    # )
+    seed <- make_seed()
     if (angleBound == Inf) {
       solution <- stats::optim(
-        seed, f,
-        hessian = TRUE, control = list(maxit = numSteps), method = "L-BFGS-B"
+        seed,
+        f,
+        hessian = TRUE,
+        control = list(maxit = numSteps),
+        method = "L-BFGS-B"
       )
     } else {
       solution <- stats::optim(
         seed, f,
-        hessian = TRUE, control = list(maxit = numSteps), method = "L-BFGS-B",
-        lower = c(-Inf, -Inf, -angleBound, -Inf, -Inf),
-        upper = c(Inf, Inf, angleBound, Inf, Inf)
+        hessian = TRUE,
+        control = list(maxit = numSteps),
+        method = "L-BFGS-B",
+        lower = lower,
+        upper = upper
       )
     }
-    if (solution$value <= best$value) {
-      best <- solution
-    }
+    if (solution$value <= best$value) best <- solution
   }
+
   # Report results.
   eigvals <- eigen(best$hessian, symmetric = TRUE, only.values = TRUE)$values
+
   pole <- cartesianFromSpherical(c(1, best$par[1:2]))
   angle <- best$par[[3]]
   uOf0 <- cartesianFromSpherical(c(1, best$par[4:5]))
+
   var <- rayVariance(us, rayProjectedMean(us))
-  rSquared <- 1 - best$value / var
+
   pred <- function(x) {
     as.numeric(rotMatrixFromAxisAngle(c(pole, x * angle)) %*% uOf0)
   }
+
   results <- list(
-    error = best$convergence, minEigenvalue = min(eigvals), pole = pole, angle = angle,
-    rSquared = rSquared, prediction = pred
+    error = best$convergence,
+    minEigenvalue = min(eigvals),
+    pole = pole,
+    angle = angle,
+    rSquared = 1 - best$value / var,
+    prediction = pred
   )
+  if (numPoints >= 1L) {
+    ys <- seq(from = min(xs), to = max(xs), length.out = numPoints)
+    results$points <- lapply(ys, pred)
+  }
+  results
+}
+
+#' @source `geologyGeometry` by Davis, J.R.
+lineRegressionSmallCircle <- function(xs, us, numSeeds = 5, numSteps = 1000, numPoints = 0, angleBound = Inf) {
+  n <- length(us)
+  lower = c(-Inf, -Inf, -angleBound, -Inf, -Inf)
+  upper = c(Inf, Inf, angleBound, Inf, Inf)
+
+  f <- function(phiThetaAlphaTauSigma) {
+    pole <- cartesianFromSpherical(c(1, phiThetaAlphaTauSigma[1:2]))
+    uOf0 <- cartesianFromSpherical(c(1, phiThetaAlphaTauSigma[4:5]))
+    alpha <- phiThetaAlphaTauSigma[[3]]
+
+    pred <- function(x) {
+      angle <- x * alpha
+      as.numeric(rotMatrixFromAxisAngle(c(pole, angle)) %*% uOf0)
+    }
+
+    preds <- lapply(xs, pred)
+    dists <- mapply(lineDistance, preds, us)
+    dot(dists, dists) / (2 * n)
+  }
+
+  # Find the minimum, starting from a few seeds.
+  best <- list(value = (2 * pi^2))
+
+  make_seed <- function(){
+    c(
+    sphericalFromCartesian(lineUniform())[2:3],
+    stats::runif(1, -pi, pi),
+    sphericalFromCartesian(lineUniform())[2:3]
+    )
+  }
+
+  for (i in seq_len(numSeeds)) {
+    seed <- make_seed()
+    if (angleBound == Inf) {
+      solution <- stats::optim(
+        seed,
+        f,
+        hessian = TRUE,
+        control = list(maxit = numSteps),
+        method = "L-BFGS-B"
+      )
+    } else {
+      solution <- stats::optim(
+        seed,
+        f,
+        hessian = TRUE,
+        control = list(maxit = numSteps),
+        method = "L-BFGS-B",
+        lower = lower,
+        upper = upper
+      )
+    }
+    if (solution$value <= best$value) best <- solution
+  }
+
+  # Report results.
+  eigvals <- eigen(best$hessian, symmetric = TRUE, only.values = TRUE)$values
+  pole <- cartesianFromSpherical(c(1, best$par[1:2]))
+  var <- lineVariance(us, lineProjectedMean(us))
+
+  angle <- best$par[[3]]
+  uOf0 <- cartesianFromSpherical(c(1, best$par[4:5]))
+  pred <- function(x) {
+    as.numeric(rotMatrixFromAxisAngle(c(pole, x * angle)) %*% uOf0)
+  }
+
+  results <- list(
+    error = best$convergence,
+    minEigenvalue = min(eigvals),
+    pole = pole,
+    angle = angle,
+    rSquared = 1 - best$value / var,
+    prediction = pred
+  )
+
   if (numPoints >= 1) {
     ys <- seq(from = min(xs), to = max(xs), length.out = numPoints)
     results$points <- lapply(ys, pred)
   }
   results
 }
+
+
 
 # Warning: Not well tested. angleBound > 0 is a bound on the amount of rotation (either positive or negative) per unit of x.
 #' @source `geologyGeometry` by Davis, J.R.
@@ -1946,6 +2025,7 @@ rayRegressionSmallCircleRescaled <- function(xs, ls, angleBound = Inf, ...) {
     scales(xs), ls,
     angleBound = (angleBound * (x1 - x0)), ...
   )
+
   # Scale the results back into the original coordinates.
   results$rescaledPrediction <- results$prediction
   results$prediction <- function(x) {
@@ -1955,64 +2035,6 @@ rayRegressionSmallCircleRescaled <- function(xs, ls, angleBound = Inf, ...) {
   results
 }
 
-#' @source `geologyGeometry` by Davis, J.R.
-lineRegressionSmallCircle <- function(xs, us, numSeeds = 5, numSteps = 1000, numPoints = 0, angleBound = Inf) {
-  f <- function(phiThetaAlphaTauSigma) {
-    pole <- cartesianFromSpherical(c(1, phiThetaAlphaTauSigma[1:2]))
-    uOf0 <- cartesianFromSpherical(c(1, phiThetaAlphaTauSigma[4:5]))
-    pred <- function(x) {
-      angle <- x * phiThetaAlphaTauSigma[[3]]
-      as.numeric(rotMatrixFromAxisAngle(c(pole, angle)) %*% uOf0)
-    }
-    preds <- lapply(xs, pred)
-    dists <- mapply(lineDistance, preds, us)
-    dot(dists, dists) / (2 * length(us))
-  }
-  # Find the minimum, starting from a few seeds.
-  best <- list(value = (2 * pi^2))
-  for (i in 1:numSeeds) {
-    seed <- c(
-      sphericalFromCartesian(lineUniform())[2:3],
-      stats::runif(1, -pi, pi),
-      sphericalFromCartesian(lineUniform())[2:3]
-    )
-    if (angleBound == Inf) {
-      solution <- stats::optim(
-        seed, f,
-        hessian = TRUE, control = list(maxit = numSteps), method = "L-BFGS-B"
-      )
-    } else {
-      solution <- stats::optim(
-        seed, f,
-        hessian = TRUE, control = list(maxit = numSteps), method = "L-BFGS-B",
-        lower = c(-Inf, -Inf, -angleBound, -Inf, -Inf),
-        upper = c(Inf, Inf, angleBound, Inf, Inf)
-      )
-    }
-    if (solution$value <= best$value) {
-      best <- solution
-    }
-  }
-  # Report results.
-  eigvals <- eigen(best$hessian, symmetric = TRUE, only.values = TRUE)$values
-  pole <- cartesianFromSpherical(c(1, best$par[1:2]))
-  angle <- best$par[[3]]
-  uOf0 <- cartesianFromSpherical(c(1, best$par[4:5]))
-  var <- lineVariance(us, lineProjectedMean(us))
-  rSquared <- 1 - best$value / var
-  pred <- function(x) {
-    as.numeric(rotMatrixFromAxisAngle(c(pole, x * angle)) %*% uOf0)
-  }
-  results <- list(
-    error = best$convergence, minEigenvalue = min(eigvals), pole = pole, angle = angle,
-    rSquared = rSquared, prediction = pred
-  )
-  if (numPoints >= 1) {
-    ys <- seq(from = min(xs), to = max(xs), length.out = numPoints)
-    results$points <- lapply(ys, pred)
-  }
-  results
-}
 
 # Not well tested. angleBound > 0 is a bound on the amount of rotation (either positive or negative) per unit of x.
 #' @source `geologyGeometry` by Davis, J.R.
@@ -2023,11 +2045,13 @@ lineRegressionSmallCircleRescaled <- function(xs, us, angleBound = Inf, ...) {
   results <- lineRegressionSmallCircle(
     xs = scales(xs), us = us, angleBound = (angleBound * (x1 - x0)), ...
   )
+
   # Scale the results back into the original coordinates.
   results$rescaledPrediction <- results$prediction
   results$prediction <- function(x) {
     results$rescaledPrediction((x - x0) / (x1 - x0))
   }
+
   results$angle <- results$angle / (x1 - x0)
   results
 }
