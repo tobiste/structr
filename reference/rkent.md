@@ -5,13 +5,8 @@ Simulation of random values from a spherical Kent distribution.
 ## Usage
 
 ``` r
-rkent(n = 100, mu = Vec3(1, 0, 0), k = 5, b)
+rkent(n, mu = Vec3(1, 0, 0), k = 5, b)
 ```
-
-## Source
-
-Adapted from
-[`Directional::rkent()`](https://rdrr.io/pkg/Directional/man/rkent.html)
 
 ## Arguments
 
@@ -36,18 +31,17 @@ Adapted from
 
 ## See also
 
-[`rvmf()`](https://tobiste.github.io/structr/reference/vonmises-fisher.md)
-to draw samples from the von Mises Fisher distribution around a
-specified mean vector.
-[`runif.spherical()`](https://tobiste.github.io/structr/reference/runif.spherical.md)
-to draw from a a spherical uniform distribution.
-[`rfb()`](https://tobiste.github.io/structr/reference/rfb.md) to draw
-from a Fisher-Bingham distribution.
+Other random:
+[`rbing`](https://tobiste.github.io/structr/reference/rbing.md),
+[`rfb()`](https://tobiste.github.io/structr/reference/rfb.md),
+[`rrot()`](https://tobiste.github.io/structr/reference/rrot.md),
+[`runif.spherical()`](https://tobiste.github.io/structr/reference/runif.spherical.md),
+[`vonmises-fisher`](https://tobiste.github.io/structr/reference/vonmises-fisher.md)
 
 ## Examples
 
 ``` r
 set.seed(20250411)
-x <- rkent(100, mu = Line(120, 50), k = 5, b = 1)
+x <- rkent(100, mu = Ray(120, 50), k = 5, b = 1)
 plot(x)
 ```

@@ -44,8 +44,11 @@
 <url><loc>https://tobiste.github.io/structr/reference/balebrun_plot.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/best_fit.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/best_pole.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/bingham-inference.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/bingham-mle.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/bingham_statistics.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/center.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/class-rot.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/classes.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/confidence_ellipse.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/count_points.html</loc></url>
@@ -67,6 +70,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/fault-rake.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/fault-tensor.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/fault_displacements.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/fisher-mle.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/fisher_ftest.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/fisher_statistics.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/flinn_plot.html</loc></url>
@@ -101,13 +105,14 @@
 <url><loc>https://tobiste.github.io/structr/reference/projected_mean.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/quadrant2dd.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ramsay.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/rbing.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/regression_gray.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/rfb.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/rhr.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/rkent.html</loc></url>
-<url><loc>https://tobiste.github.io/structr/reference/rotLeftCovariance.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/rotate.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/rotate_stereogrid.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/rrot.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/runif.spherical.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/sample_spherical.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/sense_from_strikeslip.html</loc></url>
@@ -157,6 +162,8 @@
 <url><loc>https://tobiste.github.io/structr/reference/vollmer.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/vonmises-fisher.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/vorticity.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/watson-inference.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/watson-mle.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/wellner.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/wellner_exact_inference_ray.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/woodcock_plot.html</loc></url>

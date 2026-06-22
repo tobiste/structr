@@ -12,7 +12,7 @@ plot(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...)
 plot(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...)
 
 # S3 method for class 'Ray'
-plot(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...)
+plot(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), pch = NULL, ...)
 
 # S3 method for class 'Plane'
 plot(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...)
@@ -56,10 +56,15 @@ plot(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...)
   or
   [`fault_plot()`](https://tobiste.github.io/structr/reference/fault-plot.md)
 
+- pch:
+
+  plotting character
+
 ## Details
 
-If `x` is a Ray, than solid symbols show rays pointing in the lower
-hemisphere, and open symbols point into the upper hemisphere
+If `x` is a Ray and `pch` is `NULL`, solid symbols show rays pointing in
+the lower hemisphere, while open symbols point into the upper
+hemisphere.
 
 ## See also
 

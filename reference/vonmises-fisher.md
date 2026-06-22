@@ -41,20 +41,22 @@ Adapted fom
 
 ## See also
 
+Other random:
+[`rbing`](https://tobiste.github.io/structr/reference/rbing.md),
+[`rfb()`](https://tobiste.github.io/structr/reference/rfb.md),
+[`rkent()`](https://tobiste.github.io/structr/reference/rkent.md),
+[`rrot()`](https://tobiste.github.io/structr/reference/rrot.md),
 [`runif.spherical()`](https://tobiste.github.io/structr/reference/runif.spherical.md)
-for alternative algorithms to generate uniform distributed samples on a
-sphere,
-[`rkent()`](https://tobiste.github.io/structr/reference/rkent.md) for
-Kent distribution,
-[`rfb()`](https://tobiste.github.io/structr/reference/rfb.md) for
-Fisher-Bingham distribution.
 
 ## Examples
 
 ``` r
 set.seed(20250411)
-x <- rvmf(100, mu = Line(120, 50), k = 5)
-dx <- dvmf(x, mu = Line(120, 50))
+x <- rvmf(100, mu = Ray(120, 50), k = 5)
+contour(x)
+
+
+dx <- dvmf(x, mu = Ray(120, 50))
 head(dx)
 #>           [,1]
 #> [1,] 0.3539639

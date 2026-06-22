@@ -71,7 +71,7 @@ character vector of colors in hexadecimal code
 
 ## See also
 
-`PlotTools::SpectrumLegend()` - salternative tool to generate a
+`PlotTools::SpectrumLegend()` - an alternative tool to generate a
 color-bar in base-R plots
 
 Other assign:

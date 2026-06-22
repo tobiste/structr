@@ -37,18 +37,17 @@ Adapted from
 
 ## See also
 
-[`rvmf()`](https://tobiste.github.io/structr/reference/vonmises-fisher.md)
-to draw samples from the von Mises Fisher distribution around a
-specified mean vector.
-[`rkent()`](https://tobiste.github.io/structr/reference/rkent.md) to
-draw from a Kent-distribution.
-[`runif.spherical()`](https://tobiste.github.io/structr/reference/runif.spherical.md)
-to draw from a a spherical uniform distribution.
+Other random:
+[`rbing`](https://tobiste.github.io/structr/reference/rbing.md),
+[`rkent()`](https://tobiste.github.io/structr/reference/rkent.md),
+[`rrot()`](https://tobiste.github.io/structr/reference/rrot.md),
+[`runif.spherical()`](https://tobiste.github.io/structr/reference/runif.spherical.md),
+[`vonmises-fisher`](https://tobiste.github.io/structr/reference/vonmises-fisher.md)
 
 ## Examples
 
 ``` r
 set.seed(20250411)
 x <- rfb(100, mu = Line(120, 50), k = 5, A = diag(c(-1, 0, 1)))
-plot(x)
+contour(x)
 ```

@@ -70,7 +70,7 @@
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, upper.hem <span class="op">=</span> <span class="cn">FALSE</span>, earea <span class="op">=</span> <span class="cn">TRUE</span>, grid.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'Ray'</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, upper.hem <span class="op">=</span> <span class="cn">FALSE</span>, earea <span class="op">=</span> <span class="cn">TRUE</span>, grid.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, upper.hem <span class="op">=</span> <span class="cn">FALSE</span>, earea <span class="op">=</span> <span class="cn">TRUE</span>, grid.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, pch <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'Plane'</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, upper.hem <span class="op">=</span> <span class="cn">FALSE</span>, earea <span class="op">=</span> <span class="cn">TRUE</span>, grid.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span>
@@ -108,11 +108,15 @@ hemisphere (<code>TRUE</code>) or lower hemisphere (<code>FALSE</code>, the defa
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>parameters passed to <code><a href="stereo_point.html">stereo_point()</a></code>, <code><a href="stereo_cones.html">stereo_smallcircle()</a></code>, <code><a href="stereo_cones.html">stereo_greatcircle()</a></code>, or <code><a href="fault-plot.html">fault_plot()</a></code></p></dd>
 
+
+<dt id="arg-pch">pch<a class="anchor" aria-label="anchor" href="#arg-pch"></a></dt>
+<dd><p>plotting character</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>If <code>x</code> is a Ray, than solid symbols show rays pointing in the lower hemisphere,
-and open symbols point into the upper hemisphere</p>
+    <p>If <code>x</code> is a Ray and <code>pch</code> is <code>NULL</code>, solid symbols show rays pointing in the lower hemisphere,
+while open symbols point into the upper hemisphere.</p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

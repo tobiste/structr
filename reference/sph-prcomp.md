@@ -31,7 +31,7 @@ prcomp(x, center = geodesic_mean(x), n = 0L, group = NULL)
 
 - center:
 
-  A spherical object. Typically the geodesic mean of the x.
+  A spherical object. Typically the geodesic mean of `x`.
 
 - n:
 

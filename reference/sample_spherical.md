@@ -40,7 +40,7 @@ A spherical object of length `size` with elements drawn from `x`
 set.seed(20250411)
 x <- rvmf(n = 100, mu = Line(90, 45))
 sample_spherical(x, size = 5)
-#> Line object (n = 5):
+#> Ray object (n = 5):
 #>        azimuth   plunge
 #> [1,]  87.14959 36.28062
 #> [2,] 169.76083 18.63444

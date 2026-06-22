@@ -130,7 +130,7 @@ as a convenience wrapper for all spherical data types.
 set.seed(20250411)
 x <- rvmf(100, mu = Line(120, 50), k = 5)
 sph_mean(x)
-#> Line object (n = 1):
+#> Ray object (n = 1):
 #>   azimuth    plunge 
 #> 115.21007  52.67744 
 sph_sd(x)

@@ -1,16 +1,14 @@
-# Uniformly distributed vectors
+# Uniformly Distributed Vectors on the Sphere
 
-Create uniformly distributed vectors using the algorithm *Spherical
-Fibonacci Spiral points on a sphere* algorithm (John Burkardt) or
-*Golden Section Spiral points on a sphere*.
+Create uniformly distributed vectors on the sphere
 
 ## Usage
 
 ``` r
 runif.spherical(
   n = 100,
-  class = c("Vec3", "Line", "Plane"),
-  method = c("gss", "sfs", "rotasym")
+  class = c("Vec3", "Ray", "Line", "Plane"),
+  method = c("cart", "gss", "sfs", "rotasym")
 )
 ```
 
@@ -27,9 +25,10 @@ runif.spherical(
 - method:
 
   character. The algorithm for generating uniformly distributed vectors.
-  Either `"sfs"` for the "Spherical Fibonacci Spiral points on a
-  sphere", `"gss"` for "Golden Section Spiral points on a sphere", or
-  the algorithm
+  Either `"cart"` (the default) for generating random points in
+  Cartesian coordinates (as in the `geologyGeometry` package), `"sfs"`
+  for the "Spherical Fibonacci Spiral points on a sphere", `"gss"` for
+  "Golden Section Spiral points on a sphere", or the algorithm
   [`rotasym::r_unif_sphere()`](https://rdrr.io/pkg/rotasym/man/unif.html)
   from the rotasym package.
 
@@ -45,25 +44,29 @@ http://www.softimageblog.com/archives/115
 
 ## See also
 
-[`rvmf()`](https://tobiste.github.io/structr/reference/vonmises-fisher.md)
-to draw samples from the von Mises Fisher distribution around a
-specified mean vector.
-[`rkent()`](https://tobiste.github.io/structr/reference/rkent.md) to
-draw from a Kent-distribution.
-[`rfb()`](https://tobiste.github.io/structr/reference/rfb.md) to draw
-from a Fisher-Bingham distribution.
+Other random:
+[`rbing`](https://tobiste.github.io/structr/reference/rbing.md),
+[`rfb()`](https://tobiste.github.io/structr/reference/rfb.md),
+[`rkent()`](https://tobiste.github.io/structr/reference/rkent.md),
+[`rrot()`](https://tobiste.github.io/structr/reference/rrot.md),
+[`vonmises-fisher`](https://tobiste.github.io/structr/reference/vonmises-fisher.md)
 
 ## Examples
 
 ``` r
 set.seed(20250411)
-x1 <- runif.spherical(n = 100, "Line", method = "sfs")
-plot(x1)
+x1 <- runif.spherical(n = 100, "Ray", method = "sfs")
+contour(x1)
 
 
-x2 <- runif.spherical(n = 100, "Line", method = "gss")
-plot(x2)
+x2 <- runif.spherical(n = 100, "Ray", method = "gss")
+contour(x2)
 
-x3 <- runif.spherical(n = 100, "Line", method = "rotasym")
-plot(x3)
+
+x3 <- runif.spherical(n = 100, "Ray", method = "rotasym")
+contour(x3)
+
+
+x4 <- runif.spherical(n = 100, "Ray", method = "cart")
+contour(x4)
 ```

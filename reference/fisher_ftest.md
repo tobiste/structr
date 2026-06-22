@@ -13,8 +13,8 @@ fisher_ftest(x, y, alpha = 0.05, na.rm = TRUE)
 
 - x, y:
 
-  objects of class `"Vec3"`, `"Line"`, or `"Plane"`, , where the rows
-  are the observations and the columns are the coordinates.
+  objects of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, , where
+  the rows are the observations and the columns are the coordinates.
 
 - alpha:
 

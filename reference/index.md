@@ -104,11 +104,24 @@
   : The cone or plane best fit of conically or cylindrical disposed
   s-plane poles
 
+- [`bingham_inference()`](https://tobiste.github.io/structr/reference/bingham-inference.md)
+  : 95% confidence region for the mean of the Bingham distribution.
+
+- [`bingham_MLE()`](https://tobiste.github.io/structr/reference/bingham-mle.md)
+  : Maximum likelihood estimation of the Bingham distribution
+  parameters.
+
 - [`bingham_statistics()`](https://tobiste.github.io/structr/reference/bingham_statistics.md)
   : Elliptical concentration and confidence cone estimation
 
 - [`center()`](https://tobiste.github.io/structr/reference/center.md) :
   Centering vectors
+
+- [`pair2rot()`](https://tobiste.github.io/structr/reference/class-rot.md)
+  [`is.Rotation()`](https://tobiste.github.io/structr/reference/class-rot.md)
+  [`as.Rotation()`](https://tobiste.github.io/structr/reference/class-rot.md)
+  [`rot2pair()`](https://tobiste.github.io/structr/reference/class-rot.md)
+  : Orientation matrix from fault planes and slip directions
 
 - [`is.spherical()`](https://tobiste.github.io/structr/reference/classes.md)
   [`is.Vec3()`](https://tobiste.github.io/structr/reference/classes.md)
@@ -166,7 +179,8 @@
 
 - [`kent_mle()`](https://tobiste.github.io/structr/reference/dist.mle.md)
   [`vmf_mle()`](https://tobiste.github.io/structr/reference/dist.mle.md)
-  : MLE of spherical rotational symmetric distributions
+  : Maximum likelihood estimation of Spherical Rotational Symmetric
+  Distributions
 
 - [`drillcore_transformation()`](https://tobiste.github.io/structr/reference/drillcore.md)
   : Orientation of structures from drill core orientation angles
@@ -223,6 +237,9 @@
 
 - [`fault_displacements()`](https://tobiste.github.io/structr/reference/fault_displacements.md)
   : Fault displacement components
+
+- [`fisher_MLE()`](https://tobiste.github.io/structr/reference/fisher-mle.md)
+  : Maximum likelihood estimation of the Fisher parameters.
 
 - [`fisher_ftest()`](https://tobiste.github.io/structr/reference/fisher_ftest.md)
   : Test of mean orientations
@@ -340,6 +357,10 @@
 - [`ramsay`](https://tobiste.github.io/structr/reference/ramsay.md) :
   R/phi data
 
+- [`rbingham()`](https://tobiste.github.io/structr/reference/rbing.md)
+  [`rbingham_eig()`](https://tobiste.github.io/structr/reference/rbing.md)
+  : Bingham Distribution
+
 - [`regression_gray()`](https://tobiste.github.io/structr/reference/regression_gray.md)
   : Least-square fit of small and great circles to spherically projected
   data
@@ -354,18 +375,17 @@
 - [`rkent()`](https://tobiste.github.io/structr/reference/rkent.md) :
   Kent distribution
 
-- [`rotLeftCovariance()`](https://tobiste.github.io/structr/reference/rotLeftCovariance.md)
-  : Sample covariance matrix, approximated in the tangent space at a
-  given rotation.
-
 - [`rotate()`](https://tobiste.github.io/structr/reference/rotate.md) :
   Vector Rotation
 
 - [`rotate_stereogrid()`](https://tobiste.github.io/structr/reference/rotate_stereogrid.md)
   : Center gridlines on a given point
 
+- [`rrot()`](https://tobiste.github.io/structr/reference/rrot.md) :
+  Random Rotation Matrices
+
 - [`runif.spherical()`](https://tobiste.github.io/structr/reference/runif.spherical.md)
-  : Uniformly distributed vectors
+  : Uniformly Distributed Vectors on the Sphere
 
 - [`sample_spherical()`](https://tobiste.github.io/structr/reference/sample_spherical.md)
   : Random Samples and Permutations of Spherical Objects
@@ -560,6 +580,12 @@
   [`instantaneous_stretching()`](https://tobiste.github.io/structr/reference/vorticity.md)
   [`instantaneous_stretching_axes()`](https://tobiste.github.io/structr/reference/vorticity.md)
   : Flow Apophyses, Vorticity, and Instantaneous Stretching Axes
+
+- [`watson_inference()`](https://tobiste.github.io/structr/reference/watson-inference.md)
+  : One-sample inference about the mean of the Watson distribution.
+
+- [`watson_MLE()`](https://tobiste.github.io/structr/reference/watson-mle.md)
+  : Maximum Likelihood Estimation of the Watson Distribution Parameters.
 
 - [`wellner()`](https://tobiste.github.io/structr/reference/wellner.md)
   [`wellner_inference()`](https://tobiste.github.io/structr/reference/wellner.md)
