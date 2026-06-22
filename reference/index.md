@@ -333,6 +333,10 @@
   [`correct_pair()`](https://tobiste.github.io/structr/reference/pair_correct.md)
   : Orthogonalization of plane and line measurement
 
+- [`perm_rsq()`](https://tobiste.github.io/structr/reference/perm-rsq.md)
+  [`perm_rsq_pvalue()`](https://tobiste.github.io/structr/reference/perm-rsq.md)
+  : Permutation Tests of Regressions
+
 - [`plot(`*`<Line>`*`)`](https://tobiste.github.io/structr/reference/plot-spherical.md)
   [`plot(`*`<Vec3>`*`)`](https://tobiste.github.io/structr/reference/plot-spherical.md)
   [`plot(`*`<Ray>`*`)`](https://tobiste.github.io/structr/reference/plot-spherical.md)
