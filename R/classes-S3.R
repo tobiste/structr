@@ -241,14 +241,14 @@ Ray <- function(x, plunge, sense = NULL) {
   } else {
     sense <- 1
   }
-  azi_corr <- ifelse(sense == 1, 0, 180)
 
   if (is.Vec3(x)) {
     l <- Line(x)
     azi_corr <- 0
-    sense <- 1
+    sense <- sign(x[, 3])
     azimuth <- l[, 1]
     plunge <- l[, 2]
+    # azi_corr <- ifelse(sense == 1, 0, 180)
   } else if (is.Line(x)) {
     l <- x
     azimuth <- l[, 1]
@@ -264,7 +264,7 @@ Ray <- function(x, plunge, sense = NULL) {
     azimuth <- x[, "azimuth"]
     plunge <- x[, "plunge"]
     sense <- x[, "sense"]
-    azi_corr <- ifelse(sense == 1, 0, 180)
+    # azi_corr <- ifelse(sense == 1, 0, 180)
   } else if (is.Ray(x)) {
     azimuth <- x[, "azimuth"]
     plunge <- x[, "plunge"]
@@ -273,8 +273,11 @@ Ray <- function(x, plunge, sense = NULL) {
   } else {
     azimuth <- x
   }
+  
+  azi_corr <- ifelse(sense == 1, 0, 180)
+  
 
-  Line(azimuth + azi_corr, sense * plunge) |>
+  cbind(azimuth + azi_corr, sense * plunge) |>
     as.Ray()
 }
 
