@@ -341,7 +341,7 @@ pair2rot <- function(p) {
   pv <- Fault_plane(p) |> Vec3()
   lv <- Fault_slip(p) |> Vec3()
 
-  if (inherits(x, "Fault")) {
+  if (inherits(p, "Fault")) {
     lv <- p[, 5] * lv
   }
   cross <- crossprod.Vec3(pv, lv)
