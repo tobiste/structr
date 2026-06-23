@@ -31,9 +31,9 @@ rows are the observations and the columns are the coordinates.}
 
 \item{...}{parameters passed to \code{\link[=geodesic_meanvariance_line]{geodesic_meanvariance_line()}} or \code{\link[=geodesic_meanvariance_ray]{geodesic_meanvariance_ray()}}}
 
-\item{seeds}{positive integer. How many \code{x} to try as seeds}
+\item{seeds}{integer. How many \code{x} to try as seeds}
 
-\item{steps}{positive integer. Bound on how many iterations to use.}
+\item{steps}{integer. Bound on how many iterations to use.}
 }
 \value{
 \verb{geodesic_meanvariance_*} (* either line or ray) returns a \code{list} consisting of

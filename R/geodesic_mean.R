@@ -175,8 +175,8 @@ geodesic_mean.Pair <- function(x, ...) geodesic_mean_pair(x, ...)
 #' seeds, to improve your chances of finding the global optimum.
 #'
 #' @inheritParams sph_mean
-#' @param seeds positive integer. How many `x` to try as seeds
-#' @param steps positive integer. Bound on how many iterations to use.
+#' @param seeds integer. How many `x` to try as seeds
+#' @param steps integer. Bound on how many iterations to use.
 #' @param ... parameters passed to [geodesic_meanvariance_line()] or [geodesic_meanvariance_ray()]
 #'
 #' @returns `geodesic_meanvariance_*` (* either line or ray) returns a `list` consisting of
@@ -399,8 +399,8 @@ rot_projected_matrix <- function(x) {
 #' An iterative algorithm for computing the geodesic mean --- the orientation that minimizes the geodesic variance. The iterations continue until change-squared of epsilon is achieved or numSteps iterations have been used.
 #' @param rs A list of rotation matrices.
 #' @param group A list of rotation matrices. The symmetry group G.
-#' @param numSeeds A real number (positive integer). How many seeds to try, in trying to find a global optimum.
-#' @param numSteps A real number (positive integer). Bound on how many iterations to use.
+#' @param numSeeds integer. How many seeds to try, in trying to find a global optimum.
+#' @param numSteps integer. Bound on how many iterations to use.
 #' @return A list consisting of $mean (a special orthogonal real 3x3 matrix), $variance (a real number), $changeSquared (a real number), and $numSteps (a non-negative integer). changeSquared is the square of the size of the final step. numSteps is the number of iterations used.
 #'
 #' @noRd
@@ -420,42 +420,73 @@ rot_projected_matrix <- function(x) {
 #'
 #' res2 <- ori_mean_variance(my_fault_vec, group = oriRayInPlaneGroup())
 #' rot2pair(res2$mean, fault = TRUE)
-ori_mean_variance <- function(rs, group, numSeeds = 5, numSteps = 1000, eps = sqrt(.Machine$double.eps)) {
+ori_mean_variance <- function(rs, group, numSeeds = 5L, numSteps = 1000L, eps = sqrt(.Machine$double.eps)) {
   n <- length(rs)
   g_len <- length(group)
 
   # random seeds
-  seeds <- if (n >= numSeeds) sample(rs, numSeeds) else sample(rs, numSeeds, replace = TRUE)
-
+  seeds <- sample(rs, numSeeds, replace = (n < numSeeds))
+  
   # upper bound for variance
   best_var <- 5
   best <- vector("list", 4)
 
+  # for (seed in seeds) {
+  #   rBar <- seed
+  #   changeSquared <- eps + 1.0
+  #   k <- 0L
+  # 
+  #   while (changeSquared >= eps && k < numSteps) {
+  #     w <- matrix(0, 3L, 3L)
+  # 
+  #     for (r in rs) {
+  #       # compute all crossproducts in one pass
+  #       scores <- numeric(g_len)
+  #       mats <- vector("list", g_len)
+  #       for (j in seq_len(g_len)) {
+  #         cp <- crossprod(rBar, group[[j]] %*% r)
+  #         mats[[j]] <- cp
+  #         scores[j] <- tr(cp) # precompute trace
+  #       }
+  #       i <- which.max(scores)
+  #       w <- w + rotLog(mats[[i]])
+  #     }
+  # 
+  #     w <- w / n
+  #     rBar <- rBar %*% rotExp(w)
+  #     # changeSquared <- tr(crossprod(w, w))
+  #     changeSquared <- sum(w * w)           # tr(crossprod(w,w)) without allocation
+  #     k <- k + 1L
+  #   }
   for (seed in seeds) {
-    rBar <- seed
+    rBar          <- seed
     changeSquared <- eps + 1.0
-    k <- 0
-
+    k             <- 0L
+    
     while (changeSquared >= eps && k < numSteps) {
-      w <- matrix(0, 3, 3)
-
+      w <- matrix(0, 3L, 3L)
+      
       for (r in rs) {
-        # compute all crossproducts in one pass
-        scores <- numeric(g_len)
-        mats <- vector("list", g_len)
+        # Precompute group[[j]] %*% r for all j once, then dot with rBar
+        # crossprod(rBar, M) == t(rBar) %*% M; tr(crossprod(A,B)) == sum(A*B)
+        best_score <- -Inf
+        best_mat   <- NULL
+        
         for (j in seq_len(g_len)) {
-          cp <- crossprod(rBar, group[[j]] %*% r)
-          mats[[j]] <- cp
-          scores[j] <- tr(cp) # precompute trace
+          M     <- group[[j]] %*% r
+          score <- sum(rBar * M)            # tr(crossprod(rBar, M)) without allocation
+          if (score > best_score) {
+            best_score <- score
+            best_mat   <- M
+          }
         }
-        i <- which.max(scores)
-        w <- w + rotLog(mats[[i]])
+        w <- w + rotLog(crossprod(rBar, best_mat))
       }
-
-      w <- w / n
-      rBar <- rBar %*% rotExp(w)
-      changeSquared <- tr(crossprod(w, w))
-      k <- k + 1
+      
+      w             <- w / n
+      rBar          <- rBar %*% rotExp(w)
+      changeSquared <- sum(w * w)           # tr(crossprod(w,w)) without allocation
+      k             <- k + 1L
     }
 
     var <- oriVariance(rs, rBar, group)
@@ -475,39 +506,6 @@ ori_mean_variance <- function(rs, group, numSeeds = 5, numSteps = 1000, eps = sq
     numSteps = best$k
   )
 }
-
-# Previous version, kept for reference#
-# oriMeanVariance <- function(rs, group, numSeeds=5, numSteps=1000, eps = sqrt(.Machine$double.eps)) {
-#   seeds <- sample(rs, numSeeds, replace = (length(rs) < numSeeds))
-#   # No variance is ever larger than pi^2 / 2 < 5.
-#   best <- list(5)
-#   for (seed in seeds) {
-#     rBar <- seed
-#     changeSquared <- eps + 1.0
-#     k <- 0
-#     while (changeSquared >= eps && k < numSteps) {
-#       w <- diag(c(0, 0, 0))
-#       for (r in rs) {
-#         rBarTGRs <- lapply(group, function(g) crossprod(rBar, g %*% r))
-#         i <- which.max(sapply(rBarTGRs, tr))
-#         w <- w + rotLog(rBarTGRs[[i]])
-#       }
-#       w <- w / length(rs)
-#       rBar <- rBar %*% rotExp(w)
-#       changeSquared <- tr(crossprod(w, w))
-#       k <- k + 1
-#     }
-#     var <- oriVariance(rs, rBar, group)
-#     if (var < best[[1]])
-#       best <- list(var, rBar, changeSquared, k)
-#   }
-#
-#   class(best[[2]]) <- append(class(best[[2]]), "Rotation")
-#
-#   list(
-#     variance=best[[1]], mean=best[[2]], changeSquared=best[[3]],
-#     numSteps=best[[4]])
-# }
 
 
 

@@ -1,11 +1,11 @@
 #' @keywords internal
 blank_grid_regular <- function(n, r = 1) {
   x_grid <- seq(-1, 1, length.out = n)
-  y_grid <- seq(-1, 1, length.out = n)
-  grid_schmidt <- expand.grid(x_grid, y_grid) |> as.matrix()
+  # y_grid <- seq(-1, 1, length.out = n)
+  grid_schmidt <- as.matrix(expand.grid(x_grid, x_grid))
 
   grid_cart <- .schmidt2cart(grid_schmidt[, 1], grid_schmidt[, 2])
-  values <- rep(0, times = nrow(grid_cart))
+  values <- rep(0, times = n^2)
   list(grid = grid_cart, density = values)
 }
 
@@ -25,10 +25,8 @@ blank_grid_regular <- function(n, r = 1) {
 
 #' @keywords internal
 .schmidt2cart <- function(x, y, r = 1) {
-  res <- .schmdit2spherical(x, y, r) |> rad2deg()
-  Line(res[, 1], res[, 2]) |>
-    Vec3() |>
-    unclass()
+  res <- rad2deg(.schmdit2spherical(x, y, r))
+  unclass(Vec3(Line(res[, 1], res[, 2]))) 
 }
 
 
@@ -64,21 +62,26 @@ count_points <- function(azi, inc, FUN, sigma, ngrid, weights, r) {
   grid_coords <- grid$grid
 
   # Stereonet math transformations to Cartesian coordinates
-  xyz_points <- Line(azi, inc) |>
-    Vec3() |>
-    unclass()
+  xyz_points  <- unclass(Vec3(Line(azi, inc)))      # n × 3
+  
+  n_cells <- nrow(grid_coords)
 
-  for (i in seq_along(grid_coords[, 1])) {
-    cos_dist <- abs(grid_coords[i, ] %*% t(xyz_points))
-    density_scale <- FUN(cos_dist, sigma)
-    density <- density_scale$count * weights
-    scale <- density_scale$units
-    grid$density[i] <- (sum(density) - 0.5) / scale
-  }
+  # for (i in seq_len(n_cells)) {
+  #   cos_dist <- abs(grid_coords[i, ] %*% t(xyz_points))
+  #   density_scale <- FUN(cos_dist, sigma)
+  #   density <- density_scale$count * weights
+  #   scale <- density_scale$units
+  #   grid$density[i] <- (sum(density) - 0.5) / scale
+  # }
+  # grid$density[grid$density < 0] <- 0
 
-  grid$density[grid$density < 0] <- 0
-
-  grid
+  raw <- vapply(seq_len(n_cells), function(i) {
+    ds  <- FUN(abs(grid_coords[i, ] %*% t(xyz_points)), sigma)
+    (sum(ds$count * weights) - 0.5) / ds$units
+  }, FUN.VALUE = numeric(1L))
+  
+  grid$density <- pmax(raw, 0)
+  return(grid)
 }
 
 
@@ -121,8 +124,6 @@ density_grid <- function(x, weights = NULL, upper.hem = FALSE, kamb = TRUE, ...)
     azi <- azi + 180
   }
   inc <- x[noNA, 2]
-
-  
   
   if (is.null(weights)) {
     weights <- rep(1, length(azi))
@@ -131,18 +132,16 @@ density_grid <- function(x, weights = NULL, upper.hem = FALSE, kamb = TRUE, ...)
   }
 
   # normalize weights to 1
-  # weights <- as.numeric(weights) / mean(weights)
   weights <- as.numeric(weights) / max(weights)
 
   if (kamb) {
     count_points(azi, inc, weights = weights, ...)
   } else {
     res <- vmf_kerncontour(.full_hem(azi, inc), ...)
-    # grid <- expand.grid(Lat = res$lat - 90, Long = res$long - 180)
     grid <- expand.grid(inc = res$lat - 90, azi = res$long - 180)
 
     list(
-      grid = Line(grid$azi, grid$inc) |> Vec3(),
+      grid = Vec3(Line(grid$azi, grid$inc)),
       density = c(res$den)
     )
   }
@@ -275,23 +274,46 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
     hw <- deg2rad(hw)
   }
 
+  # --- constants ---
   kappa_val <- 1 / (hw^2)
   # cpk <- 1 / (sqrt(hw^2) * (2 * pi)^1.5 * besselI(kappa_val, 0.5))
   cpk <- 1 / (sqrt(hw^2) * (2 * pi)^1.5 * besselI(kappa_val, 0.5, expon.scaled = TRUE) * exp(kappa_val))
-
+  log_cpk <- log(cpk)
+  log_n <- log(ngrid)
+  
+  # --- grid of unit vectors: (ngrid^2) × 3 ---
   lat_grid <- seq(0, 180, length.out = ngrid)
   long_grid <- seq(0, 360, length.out = ngrid)
-  den_mat <- matrix(nrow = ngrid, ncol = ngrid)
-  for (i in 1:ngrid) {
-    for (j in 1:ngrid) {
-      y <- Directional::euclid(c(lat_grid[i], long_grid[j]))
-      a <- as.vector(tcrossprod(x, y * kappa_val))
-      can <- sum(exp(a + log(cpk))) / ngrid
-      if (abs(can) < Inf) {
-        den_mat[i, j] <- can
-      }
-    }
-  }
+  
+  
+  # den_mat <- matrix(nrow = ngrid, ncol = ngrid)
+  # for (i in seq_len(ngrid)) {
+  #   for (j in seq_len(ngrid)) {
+  #     y <- Directional::euclid(c(lat_grid[i], long_grid[j]))
+  #     a <- as.vector(tcrossprod(x, y * kappa_val))
+  #     can <- sum(exp(a + log_cpk)) / ngrid
+  #     if (abs(can) < Inf) {
+  #       den_mat[i, j] <- can
+  #     }
+  #   }
+  # }
+  
+  # Build all (lat, long) combinations at once and convert to Cartesian
+  grid_expand <- expand.grid(lat = lat_grid, long = long_grid)  # ngrid^2 rows
+  y_mat       <- Directional::euclid(as.matrix(grid_expand))    # ngrid^2 × 3
+  
+  # --- vectorised KDE ---
+  # dot[i, j] = x[i,] · y_mat[j,]  →  (n × ngrid^2) matrix via BLAS
+  dots     <- tcrossprod(x, y_mat)                         # n × ngrid^2
+  # log-sum-exp over n data points for each grid cell
+  log_dots <- kappa_val * dots                             # scale by kappa
+  # rowSums over n (sum across data pts) for each grid point
+  # log( sum_i exp(kappa * x_i·y_j + log_cpk) ) - log(ngrid)
+  # Use matrixStats or plain base R:
+  den_vec  <- exp(log_cpk) * colSums(exp(log_dots)) / ngrid
+  
+  # Reshape: expand.grid fills lat-major (lat varies fastest)
+  den_mat  <- matrix(den_vec, nrow = ngrid, ncol = ngrid)
 
   list(
     lat = lat_grid,
@@ -343,21 +365,33 @@ density_calc <- function(x,
                          n = 128L, sigma = 3,
                          # vmf_hw = NULL, vmf_optimal = c("cross", "rot"),
                          weights = NULL, upper.hem = FALSE, r = 1) {
-  x_grid <- y_grid <- seq(-1, 1, length.out = n)
-
-  grid <- expand.grid(x_grid, y_grid) |>
-    as.matrix()
+  
   dg <- density_grid(x, weights = weights, upper.hem = upper.hem, kamb = TRUE, FUN = FUN, sigma = sigma, ngrid = n, r = r)
-  density_matrix <- matrix(dg$density, nrow = n, byrow = FALSE)
-  dist_matrix <- grid[, 1]^2 + grid[, 2]^2
+  
+  grid_pts <- seq(-1, 1, length.out = n)
+  # grid <- expand.grid(grid_pts, grid_pts) |>
+  #   as.matrix()
 
-  # Create a logical mask where TRUE if outside the unit circle
-  outside <- dist_matrix > r^2
+  density_matrix <- matrix(dg$density, nrow = n, byrow = FALSE)
+  
+  # dist_matrix <- grid[, 1]^2 + grid[, 2]^2
+  # 
+  # # Create a logical mask where TRUE if outside the unit circle
+  # outside <- dist_matrix > r^2
+  # density_matrix[outside] <- NA
+  # res <- list(
+  #   x = grid_pts, y = grid_pts,
+  #   density = density_matrix
+  # )
+  # class(res) <- append(class(res), "sph_density")
+  # return(res)
+  
+  r2 <- r^2
+  outside <- outer(grid_pts^2, grid_pts^2, `+`) > r2   # n×n logical, same layout as density_matrix
   density_matrix[outside] <- NA
-  res <- list(
-    x = x_grid, y = y_grid,
-    density = density_matrix
+  
+  structure(
+    list(x = grid_pts, y = grid_pts, density = density_matrix),
+    class = c(class(dg), "sph_density")           
   )
-  class(res) <- append(class(res), "sph_density")
-  return(res)
 }

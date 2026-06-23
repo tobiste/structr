@@ -11,7 +11,7 @@
 \alias{contourf}
 \alias{image.spherical}
 \alias{image.sph_density}
-\title{Plot spherical densities in a stereonet}
+\title{Plot Spherical Densities in a Spherical Projection}
 \usage{
 \method{contour}{spherical}(
   x,
@@ -82,7 +82,7 @@ contourf(
 \item{...}{optional parameters passed to \code{\link[graphics:image]{graphics::image()}} or \code{\link[graphics:contour]{graphics::contour()}}.}
 }
 \value{
-list containing the stereographic x and coordinates of of the grid,
+list containing the stereographic coordinates of the grid,
 the counts, and the density.
 }
 \description{
@@ -93,7 +93,6 @@ and \code{image} creates a dense grid of colored rectangles.
 \examples{
 set.seed(20250411)
 x <- rfb(100, mu = Line(120, 10), k = 5, A = diag(c(-1, 0, 1)))
-
 contour(x)
 
 x_density <- density(x)

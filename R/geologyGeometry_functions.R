@@ -758,56 +758,106 @@ lineMeanScatter <- function(us) {
 #'
 #' @noRd
 #'
-#' @source `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
+#' @source modified after `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
 rayMeanVariance <- function(us, numSeeds = 5, numSteps = 100) {
   f <- function(phiTheta) {
     rayVariance(us, cartesianFromSpherical(c(1, phiTheta)))
   }
-  seeds <- sample(us, numSeeds)
-  best <- list(variance = (pi^2))
+  # seeds <- sample(us, numSeeds)
+  # best <- list(variance = (pi^2))
+  # for (seed in seeds) {
+  #   sol <- stats::optim(sphericalFromCartesian(seed), f,
+  #     hessian = TRUE,
+  #     control = list(maxit = numSteps)
+  #   )
+  #   if (sol$value < best$variance) {
+  #     eigvals <- eigen(sol$hessian,
+  #       symmetric = TRUE,
+  #       only.values = TRUE
+  #     )$values
+  #     best <- list(variance = sol$value, mean = cartesianFromSpherical(c(
+  #       1,
+  #       sol$par
+  #     )), error = sol$convergence, minEigenvalue = min(eigvals))
+  #   }
+  # }
+  # best
+  
+  seeds    <- sample(us, numSeeds)
+  best_var <- pi^2                  # scalar, not wrapped in a list yet
+  best     <- NULL
+  
   for (seed in seeds) {
-    sol <- stats::optim(sphericalFromCartesian(seed), f,
+    sol <- stats::optim(
+      sphericalFromCartesian(seed), f,
       hessian = TRUE,
       control = list(maxit = numSteps)
     )
-    if (sol$value < best$variance) {
-      eigvals <- eigen(sol$hessian,
-        symmetric = TRUE,
-        only.values = TRUE
-      )$values
-      best <- list(variance = sol$value, mean = cartesianFromSpherical(c(
-        1,
-        sol$par
-      )), error = sol$convergence, minEigenvalue = min(eigvals))
+    
+    if (sol$value < best_var) {
+      best_var <- sol$value
+      best <- list(
+        variance     = sol$value,
+        mean         = cartesianFromSpherical(c(1.0, sol$par)),
+        error        = sol$convergence,
+        minEigenvalue = min(eigen(sol$hessian, symmetric = TRUE,
+                                  only.values = TRUE)$values)
+      )
     }
   }
-  best
+  
+  return(best)
 }
 
-#' @source `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
+#' @source modified after `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
 lineMeanVariance <- function(us, numSeeds = 5L, numSteps = 100L) {
   f <- function(phiTheta) {
-    lineVariance(us, cartesianFromSpherical(c(1, phiTheta)))
+    lineVariance(us, cartesianFromSpherical(c(1.0, phiTheta)))
   }
-  seeds <- sample(us, numSeeds)
-  best <- list(variance = (pi^2))
+  # seeds <- sample(us, numSeeds)
+  # best <- list(variance = (pi^2))
+  # 
+  # for (seed in seeds) {
+  #   sol <- stats::optim(sphericalFromCartesian(seed), f,
+  #     hessian = TRUE,
+  #     control = list(maxit = numSteps)
+  #   )
+  #   if (sol$value < best$variance) {
+  #     eigvals <- eigen(sol$hessian,
+  #       symmetric = TRUE,
+  #       only.values = TRUE
+  #     )$values
+  #     best <- list(variance = sol$value, mean = cartesianFromSpherical(c(
+  #       1,
+  #       sol$par
+  #     )), error = sol$convergence, minEigenvalue = min(eigvals))
+  #   }
+  # }
+  
+  seeds    <- sample(us, numSeeds)
+  best_var <- pi^2                  # scalar, not wrapped in a list yet
+  best     <- NULL
+
   for (seed in seeds) {
-    sol <- stats::optim(sphericalFromCartesian(seed), f,
+    sol <- stats::optim(
+      sphericalFromCartesian(seed), f,
       hessian = TRUE,
       control = list(maxit = numSteps)
     )
-    if (sol$value < best$variance) {
-      eigvals <- eigen(sol$hessian,
-        symmetric = TRUE,
-        only.values = TRUE
-      )$values
-      best <- list(variance = sol$value, mean = cartesianFromSpherical(c(
-        1,
-        sol$par
-      )), error = sol$convergence, minEigenvalue = min(eigvals))
+
+    if (sol$value < best_var) {
+      best_var <- sol$value
+      best <- list(
+        variance     = sol$value,
+        mean         = cartesianFromSpherical(c(1.0, sol$par)),
+        error        = sol$convergence,
+        minEigenvalue = min(eigen(sol$hessian, symmetric = TRUE,
+                                  only.values = TRUE)$values)
+      )
     }
   }
-  best
+  
+  return(best)
 }
 
 
@@ -1201,10 +1251,10 @@ rotMatrixFromLeftTangent <- function(v, center) {
 
 #' @source `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
 lineBootstrapInference <- function(ls, numBoots, ...) {
-  boots <- replicate(numBoots, lineProjectedMean(sample(ls,
+  boots <- future.apply::future_replicate(numBoots, lineProjectedMean(sample(ls,
     length(ls),
     replace = TRUE
-  )), simplify = FALSE)
+  )), simplify = FALSE, future.seed = TRUE)
   bootMean <- lineProjectedMean(boots)
   boots <- lapply(boots, function(u) {
     if (dot(u, bootMean) >= 0) {
@@ -1244,12 +1294,13 @@ lineBootstrapInference <- function(ls, numBoots, ...) {
 #'
 #' @noRd
 #'
-#' @source `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
+#' @source modified after `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
+#' @importFrom future.apply future_replicate
 rayBootstrapInference <- function(ls, numBoots, ...) {
-  boots <- replicate(numBoots, rayProjectedMean(sample(ls,
+  boots <- future.apply::future_replicate(numBoots, rayProjectedMean(sample(ls,
     length(ls),
     replace = TRUE
-  )), simplify = FALSE)
+  )), simplify = FALSE, future.seed = TRUE)
   bootMean <- rayProjectedMean(boots)
   rayMahalanobisPercentiles(boots, bootMean, ...)
 }
@@ -1421,7 +1472,7 @@ lineBinghamMLE <- function(us, weights = replicate(length(us), 1), numNonAdapt =
   ws <- weights / sum(weights)
 
   # In eigen, the eigenvectors are descending and the eigenvectors are unit.
-  ts <- lapply(1:n, function(i) {
+  ts <- lapply(seq_len(n), function(i) {
     ws[[i]] * outer(us[[i]], us[[i]])
   })
   tBar <- Reduce("+", ts)

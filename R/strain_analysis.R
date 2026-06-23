@@ -754,11 +754,12 @@ RGN_hyperbola <- function(steps = 0.05, w = seq(0.1, 1, steps / 100)) {
   list(hyperbola = hyperbola, crit = hyperbola_crit)
 }
 
-
-vorticity_boot <- function(B, R = 100, probs = 0.975) {
-  vapply(1:R, function(r) {
+#' @importFrom future.apply future_vapply
+vorticity_boot <- function(B, R = 100L, probs = 0.975) {
+  f <- function(r) {
     stats::quantile(sample(B, replace = TRUE), probs = probs, na.rm = TRUE) # take the upper 97.5% quantile to remove outliers
-  }, FUN.VALUE = numeric(1))
+  }
+  future.apply::future_vapply(seq_len(R), f, FUN.VALUE = numeric(1L), future.seed = TRUE)
 }
 
 
