@@ -1,6 +1,6 @@
 ## input/output is cartesian vector (3-column vectors) and input/output angles in radians
 
-#' Vector math operations
+#' Vector Algebra
 #'
 #' @param x,y objects of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, where the
 #'  rows are the observations and the columns are the coordinates.
@@ -430,7 +430,7 @@ rotate.Pair <- function(x, rotaxis, rotangle) {
   }
 }
 
-#' Rotate vector from one orientation to another
+#' Rotate Vector From One Orientation To Onother
 #' 
 #' Helper function to rotate a vector from one orientation to an target 
 #' orientation by finding the rotation axis and angle. 
@@ -455,7 +455,7 @@ rotate_ab <- function(x, a = x, b){
 }
 
 
-#' Antipode vector
+#' Antipode Vector
 #'
 #' Returns the opposite vector
 #'
@@ -516,7 +516,7 @@ antipode.Fault <- function(x, ...) {
 }
 
 
-#' Antipodal map sending upper-hemisphere rays to the lower hemisphere.
+#' Antipodal Map Sending Upper-Hemisphere Rays to the Lower Hemisphere.
 #'
 #' Negates any vector with positive `z`-component. Used in lower-hemisphere plots.
 #'

@@ -2,7 +2,7 @@
 % Please edit documentation in R/vector_stats.R
 \name{sph_cluster}
 \alias{sph_cluster}
-\title{Cluster spherical data}
+\title{Cluster Spherical Data}
 \usage{
 sph_cluster(
   x,
@@ -34,7 +34,7 @@ where the rows are the observations and the columns are the coordinates.}
 output of applied cluster function
 }
 \description{
-Finds k groups of clusters using the angular distance matrix
+Finds \code{k} groups of clusters using the angular distance matrix
 }
 \examples{
 set.seed(20250411)

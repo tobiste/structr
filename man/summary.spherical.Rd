@@ -2,7 +2,7 @@
 % Please edit documentation in R/vector_stats.R
 \name{summary.spherical}
 \alias{summary.spherical}
-\title{Summary statistics}
+\title{Summary Statistics}
 \usage{
 \method{summary}{spherical}(object, ...)
 }

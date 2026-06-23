@@ -150,7 +150,7 @@ runif.spherical <- function(n = 100, class = c("Vec3", "Ray", "Line", "Plane"), 
   }
 }
 
-#' Spherical Fisher-Bingham distribution
+#' Spherical Fisher-Bingham Distribution
 #'
 #' Simulation of random values from a spherical Fisher-Bingham distribution.
 #'

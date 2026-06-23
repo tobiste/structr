@@ -2,7 +2,7 @@
 % Please edit documentation in R/ortensor.R
 \name{center}
 \alias{center}
-\title{Centering vectors}
+\title{Centering Vectors}
 \usage{
 center(x, max_vertical = FALSE)
 }

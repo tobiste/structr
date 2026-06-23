@@ -24,5 +24,8 @@ f <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -
 Fault_PT(f)
 }
 \seealso{
-\code{\link[=slip_inversion]{slip_inversion()}}
+Other stress-inversion: 
+\code{\link{slip_inversion}()},
+\code{\link{slip_inversion_simple}()}
 }
+\concept{stress-inversion}

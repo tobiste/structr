@@ -1,4 +1,4 @@
-#' Mean resultant of a set of vectors
+#' Mean Resultant of a Set of Vectors
 #'
 #' @param x numeric. Can be three element vector or a three column array
 #' @param w numerical vector of weights the same length as `x` giving the
@@ -119,7 +119,7 @@ v_confidence_angle <- function(x, w = NULL, alpha = 0.05, na.rm = FALSE) {
 }
 
 
-#' Statistical estimators of the distribution of a set of vectors
+#' Statistical Estimators of the Distribution of a Set of Vectors
 #'
 #' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, where the
 #'  rows are the observations and the columns are the coordinates.
@@ -321,7 +321,7 @@ estimate_k <- function(x, w = NULL, na.rm = FALSE, p = 3) {
 
 
 
-#' Fisher's statistics
+#' Fisher's Statistics
 #'
 #' Estimates concentration parameter, angular standard deviation, and
 #' confidence limit.
@@ -386,7 +386,7 @@ fisher_statistics <- function(x, w = NULL, conf.level = 0.95, na.rm = TRUE) {
   }
 }
 
-#' Elliptical concentration and confidence cone estimation
+#' Elliptical Concentration and Confidence Cone Estimation
 #'
 #' @inheritParams sph_mean
 #'
@@ -441,7 +441,7 @@ bingham_statistics <- function(x, w = NULL, na.rm = TRUE) {
   list(k = k_ellipse, a95 = a95, beta = k_ellipse[1] / k_ellipse[2])
 }
 
-#' Test of mean orientations
+#' Test of Mean Orientations
 #'
 #' Test against the null-hypothesis that the samples are drawn from the same Fisher population.
 #'
@@ -500,9 +500,9 @@ fisher_ftest <- function(x, y, alpha = 0.05, na.rm = TRUE) {
 
 
 
-#' Cluster spherical data
+#' Cluster Spherical Data
 #'
-#' Finds k groups of clusters using the angular distance matrix
+#' Finds `k` groups of clusters using the angular distance matrix
 #'
 #' @inheritParams geodesic_mean
 #' @param k integer. Number of desired clusters.
@@ -579,14 +579,12 @@ v_hcut <- function(x, k, FUN = stats::hclust, ...) {
 v_dist <- function(x, ...) {
   Vec3(x) |>
     vnorm() |>
-    .dist.helper()
+    .dist.helper(...)
 }
 
-rot_dist <- function(x, ...) {
-  .dist.helper(x)
-}
+rot_dist <- function(x, ...) .dist.helper(x, ...)
 
-#' Angular distance matrix for orientation vectors
+#' Angular Distance Matrix for Orientation Vectors
 #'
 #' This function computes and returns the distance matrix computed by using the
 #' Cosine similarity to compute the distances between the rows of a data matrix.
@@ -619,9 +617,29 @@ dist.Plane <- function(x, ...) v_dist(x, ...)
 
 #' @rdname sph-dist
 #' @exportS3Method stats::dist
-dist.Pair <- function(x, ...) pair2rot(x) |> rot_dist(...)
+dist.Pair <- function(x, ...) {
+  x <- pair2rot(x)
+  n <- length(x)
 
-#' Summary statistics
+  # upper triangle index pairs — avoids n^2 calls, only n*(n-1)/2
+  idx <- which(upper.tri(matrix(0L, n, n)), arr.ind = TRUE)
+
+  vals <- vapply(
+    seq_len(nrow(idx)),
+    function(k) rotDistance(x[[idx[k, 1L]]], x[[idx[k, 2L]]], ...),
+    FUN.VALUE = numeric(1L)
+  )
+
+  d <- matrix(0.0, nrow = n, ncol = n)
+  d[idx] <- vals
+  d[idx[, 2:1, drop = FALSE]] <- vals # mirror to lower triangle
+
+  as.dist(d)
+}
+
+
+
+#' Summary Statistics
 #'
 #' Calculates the arithmetic mean, variance, 68% cone, and the confidence cone around the mean.
 #'

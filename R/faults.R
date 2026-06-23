@@ -51,6 +51,7 @@
 #' that a single a that best satisfies all of the faults is found.
 #'
 #' @export
+#' @family stress-inversion
 #'
 #' @importFrom stats t.test
 #'
@@ -86,7 +87,7 @@ slip_inversion <- function(x, n_iter = 100L, conf.level = 0.95, friction = 0.6, 
   nx <- nrow(x)
 
   # bootstrap results
-  boot_results <- lapply(1:n_iter, function(i) {
+  boot_results <- lapply(seq_len(n_iter), function(i) {
     idx <- sample.int(nx, replace = TRUE)
     x_sample <- x[idx, ]
     slip_inversion0(x_sample)
@@ -237,7 +238,7 @@ linear_stress_inversion <- function(x) {
   # Eq 8:
   A <- do.call(
     rbind,
-    lapply(1:m, function(i) fault_normal_matrix(n[i, ]))
+    lapply(seq_len(m), function(i) fault_normal_matrix(n[i, ]))
   )
 
   # Solve using generalized inverse (real part in case of rounding errors)
@@ -259,7 +260,7 @@ linear_stress_inversion <- function(x) {
     stress_vector["11"], stress_vector["12"], stress_vector["13"],
     stress_vector["12"], stress_vector["22"], stress_vector["23"],
     stress_vector["13"], stress_vector["23"], stress_vector["33"]
-  ), nrow = 3, byrow = TRUE)
+  ), nrow = 3L, byrow = TRUE)
 
   return(stress_tensor)
 }
@@ -440,8 +441,8 @@ tau2shearnorm <- function(tau, fault, friction) {
 #' @returns list. `p` and `t` are the P and T axes as `"Line"` objects,
 #' `m` and `d` are the M-planes and the dihedra separation planes as `"Plane"` objects
 #' @export
-#'
-#' @seealso [slip_inversion()]
+#' 
+#' @family stress-inversion
 #'
 #' @examples
 #' f <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
@@ -916,26 +917,128 @@ strikeslip_kinematics <- function(x) {
 
 
 plunge_from_pitchdip <- function(pitch, dip){
-  # n_dip <- length(dip)
-  # n_pitch <- length(pitch)
-  # 
-  # if(n_pitch == 1L & n_dip>1L){
-  #   pitch <- rep(pitch, n_dip)
-  # } else if(n_dip == 1L & n_pitch > 1L){
-  #   dip <- rep(dip, n_pitch)
-  # }
-  # 
-  # pitch_fun <- function(p, d){
-  #   pl <- Plane(0, d)
-  # l <- Pair_from_pitch(pl, p) |> 
-  #   Line()
-  # l[, 2]
-  # }
-  # 
-  # mapply(pitch_fun, p = pitch, d = dip)
   asind(sind(dip) * sind(pitch))
 }
 
 dip_from_pitchplunge <- function(pitch, plunge) {
   asind(sind(plunge) / sind(pitch))
+}
+
+
+
+
+
+rot_mean <- function(x){
+  x |> pair2rot() |> rotMean() |> as.Rotation() |> rot2pair(fault = TRUE)
+}
+
+#' Simple Statistical Fault-Slip Inversion
+#' 
+#' The idea is to cluster the fault data set to identify the conjugate set of 
+#' faults, calculate the mean orientation, use the Wallace-Bott Hypothesis 
+#' and Anderson's theory to calculate the orientation of the principal stresses, 
+#' and the angle to the fault planes to derive the stress shape parameter R. 
+#'
+#' @param x object of class `"Fault"`
+#' @param cluster_fun function for cluster, must have number of desired cluster 
+#' as second input outputs and vector `cluster`. The default is [stats::kmeans()]
+#' @param n_grid integer. Number to optimize grid search for stress shape parameter R
+#' 
+#' @family stress-inversion
+#'
+#' @returns list.
+#' @export
+#'
+#' @examples
+#' tym <- slip_inversion_simple(angelier1990$TYM)
+#' stereoplot(title = 'TYM', sub = paste0('beta: ', round(tym$beta, 2), " deg | R: ", round(tym$R, 2)))
+#' hoeppener(angelier1990$TYM, col = alpha(assign_col(tym$beta_angles), .5))
+#' angelier(tym$mean_planes, pch = 16, col = viridis::magma(2, end = 0.8), cex = 1)
+#' points(tym$principal_axes, pch = 16, col = viridis::rocket(3, end = 0.8), cex = 1)
+#' text(tym$principal_axes, labels = rownames(tym$principal_axes), col = viridis::rocket(3, end = 0.8), cex = 1, adj = c(-.25, -.25))
+#' # stereo_shmax(SH(tym$principal_axes[1,], tym$principal_axes[2, ], tym$principal_axes[3,], tym$R))
+#' 
+#' avb <- slip_inversion_simple(angelier1990$AVB)
+#' stereoplot(title = 'AVB', sub = paste0('beta: ', round(avb$beta, 2), " deg | R: ", round(avb$R, 2)))
+#' hoeppener(angelier1990$AVB, col = alpha(assign_col(avb$beta_angles), .5))
+#' angelier(avb$mean_planes, pch = 16, col = viridis::magma(2, end = 0.8), cex = 1)
+#' points(avb$principal_axes, pch = 16, col = viridis::rocket(3, end = 0.8), cex = 1)
+#' text(avb$principal_axes, labels = rownames(avb$principal_axes), col = viridis::rocket(3, end = 0.8), cex = 1, adj = c(-.25, -.25))
+#' # stereo_shmax(SH(avb$principal_axes[1,], avb$principal_axes[2, ], avb$principal_axes[3,], avb$R))
+slip_inversion_simple <- function(x, cluster_fun = stats::kmeans, n_grid = 1000L){
+  td <- dist.Pair(x)
+  tdcluster <- cluster_fun(td, 2)$cluster
+  
+  tsplit <- split.data.frame(unclass(x), tdcluster) |> 
+    lapply(as.Fault)
+  
+  tclustermeans <- lapply(tsplit, rot_mean)
+  tclustermeansP <- lapply(tclustermeans, Plane)
+  
+  # The intermediate stress axis (σ₂) represents the direction of no displacement within the fault plane.
+  sigma2 <- crossprod(tclustermeansP[[1]], tclustermeansP[[2]])
+  
+  r <- which.max(table(tsplit[[1]][, 'sense']))
+  ang <- angle(tclustermeansP[[1]], tclustermeansP[[2]])/2
+  sigma1 <- rotate(tclustermeansP[[1]], sigma2, r*ang)
+  
+  if(!.near(angle(sigma1, tclustermeansP[[1]]), angle(sigma1, tclustermeansP[[2]]))) sigma1 <- rotate(tclustermeansP[[1]], sigma2, -r*ang)
+  
+  sigma3 <- crossprod(sigma1, sigma2)
+  
+  principal_axes <- rbind(sigma1, sigma2, sigma3)
+  rownames(principal_axes) <- c('sigma1', 'sigma2', 'sigma3')
+  
+  # Angles between the tangential traction predicted by the best stress tensor and the slip vector on each plane
+  betas <- sapply(seq_len(nrow(x)), function(i) {
+    int <- crossprod(Plane(principal_axes[2, ]), Plane(x[i, ])) |> Line()
+    angle(int, Line(x[i, ]))
+  }) #|> as.vector()
+  betas <- ifelse(betas > 90, 180 - betas, betas)
+  beta_mean <- tectonicr::circular_mean(betas, axial = FALSE)
+  
+  # Angle between slip planes and sigma 1
+  theta <- sapply(seq_len(nrow(x)), function(i) {
+    angle(Plane(x[i, ]), principal_axes[1, ])
+  })
+  
+  res <- list(principal_axes = principal_axes, beta = beta_mean, theta = theta, x_split = tsplit, mean_planes = do.call(rbind, tclustermeans), cluster = tdcluster, beta_angles = betas)
+  #Rlist <- .solve_R(stress_eigenvecs = principal_axes, faults = x, n_grid)
+  Rlist <- list(R = NA)
+  append(res, Rlist)
+}
+
+
+.solve_R <- function(stress_eigenvecs, faults, n_grid = 1000L) {
+  stress_eigenvecs = unclass(Vec3(stress_eigenvecs))
+  fault_normals = unclass(Vec3(Plane(faults)))
+  slip_dirs = unclass(Vec3(Ray(faults)))
+
+  e1 <- stress_eigenvecs[1L, ]
+  e2 <- stress_eigenvecs[2L, ]
+  
+  misfit <- function(R) {
+    sigma <- tcrossprod(e1) + R * tcrossprod(e2)
+    tractions    <- fault_normals %*% t(sigma)
+    normals_proj <- rowSums(tractions * fault_normals)
+    shear        <- tractions - normals_proj * fault_normals
+    shear_hat    <- shear / sqrt(rowSums(shear^2))
+    cos_alpha    <- pmax(-1, pmin(1, rowSums(shear_hat * slip_dirs)))
+    mean(acos(cos_alpha)^2)
+  }
+  
+  R_grid   <- seq(0, 1, length.out = n_grid)
+  misfits  <- vapply(R_grid, misfit, numeric(1L))
+  best_idx <- which.min(misfits)
+  step     <- 1 / (n_grid - 1L)
+  lower    <- max(0, R_grid[best_idx] - step)
+  upper    <- min(1, R_grid[best_idx] + step)
+  opt      <- stats::optimise(misfit, interval = c(lower, upper))
+  
+  list(
+    R         = opt$minimum,
+    misfit_deg = sqrt(opt$objective) * 180 / pi,
+    R_grid    = R_grid[best_idx],
+    converged = abs(opt$minimum - R_grid[best_idx]) < step
+  )
 }

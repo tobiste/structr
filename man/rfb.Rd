@@ -2,7 +2,7 @@
 % Please edit documentation in R/sph_distributions.R
 \name{rfb}
 \alias{rfb}
-\title{Spherical Fisher-Bingham distribution}
+\title{Spherical Fisher-Bingham Distribution}
 \source{
 Adapted from \code{\link[Directional:rfb]{Directional::rfb()}}
 }

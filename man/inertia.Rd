@@ -4,7 +4,7 @@
 \alias{inertia}
 \alias{inertia_tensor.spherical}
 \alias{inertia_tensor}
-\title{Inertia tensor}
+\title{Inertia Tensor}
 \usage{
 \method{inertia_tensor}{spherical}(x, w = NULL)
 
@@ -20,7 +20,7 @@ where the rows are the observations and the columns are the coordinates.}
 3 x 3 matrix
 }
 \description{
-Inertia tensor
+Inertia Tensor
 }
 \details{
 \deqn{D = n - (x_i, y_i, z_i) (x_i, y_i, z_i)^T}

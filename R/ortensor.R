@@ -1,4 +1,4 @@
-#' Orientation tensor
+#' Orientation Tensor
 #'
 #' 3D orientation tensor, which characterize data distribution using
 #' eigenvalue method. See (Watson 1966, Scheidegger 1965).
@@ -149,7 +149,7 @@ ortensor.Pair <- function(x, norm = TRUE, w = NULL, shift = FALSE) {
 
 
 
-#' Inertia tensor
+#' Inertia Tensor
 #'
 #' @inheritParams ortensor
 #'
@@ -548,7 +548,7 @@ shape_params.ellipsoid <- function(x, ...) {
 
 
 
-#' Centering vectors
+#' Centering Vectors
 #'
 #' Rotate vector object to position that ortensor eigenvectors are parallel to
 #' axes of coordinate system: E3||X (north-south), E2||X(east-west),

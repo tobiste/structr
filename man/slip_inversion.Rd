@@ -91,4 +91,9 @@ Faults and folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517â€
 \code{\link[=Fault_PT]{Fault_PT()}} for a simple P-T stress analysis,
 \code{\link[=SH]{SH()}} and \code{\link[=SH_from_tensor]{SH_from_tensor()}} to calculate the azimuth of the maximum horizontal stress;
 \code{\link[=Mohr_plot]{Mohr_plot()}} for graphical representation of the deviatoric stress tensor.
+
+Other stress-inversion: 
+\code{\link{Fault_PT}()},
+\code{\link{slip_inversion_simple}()}
 }
+\concept{stress-inversion}

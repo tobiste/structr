@@ -2,7 +2,7 @@
 % Please edit documentation in R/vector_stats.R
 \name{fisher_ftest}
 \alias{fisher_ftest}
-\title{Test of mean orientations}
+\title{Test of Mean Orientations}
 \usage{
 fisher_ftest(x, y, alpha = 0.05, na.rm = TRUE)
 }

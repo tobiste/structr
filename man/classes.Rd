@@ -23,7 +23,7 @@
 \alias{Pair}
 \alias{Fault}
 \alias{Spherical}
-\title{Structure classes}
+\title{Structr Classes}
 \usage{
 is.spherical(x)
 

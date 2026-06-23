@@ -9,7 +9,7 @@
 \alias{ortensor.Ray}
 \alias{ortensor.Plane}
 \alias{ortensor.Pair}
-\title{Orientation tensor}
+\title{Orientation Tensor}
 \usage{
 is.ortensor(object)
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/best_pole.R
 \name{regression_gray}
 \alias{regression_gray}
-\title{Least-square fit of small and great circles to spherically projected data}
+\title{Least-Square Fit of Small and Great Circles to Spherical Data}
 \usage{
 regression_gray(x)
 }

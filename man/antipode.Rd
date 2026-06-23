@@ -9,7 +9,7 @@
 \alias{antipode.Plane}
 \alias{antipode.Pair}
 \alias{antipode.Fault}
-\title{Antipode vector}
+\title{Antipode Vector}
 \usage{
 antipode(x, ...)
 

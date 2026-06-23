@@ -4,7 +4,7 @@
 \alias{best_fit}
 \alias{regression_greatcircle}
 \alias{regression_smallcircle}
-\title{Least-square fit of small and great circles to spherically projected data}
+\title{Least-Square Fit of Small and Great Circles to Spherical Data}
 \usage{
 regression_greatcircle(
   x,

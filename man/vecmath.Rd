@@ -16,7 +16,7 @@
 \alias{reject}
 \alias{reject.default}
 \alias{transform_linear}
-\title{Vector math operations}
+\title{Vector Algebra}
 \usage{
 vector_length(x)
 
@@ -62,7 +62,7 @@ objects of same class as \code{x}, i.e. one of \code{"Vec3"}, \code{"Line"}, \co
 returns a numeric angle (in degrees, unless \code{x} is class \code{"Vec3"}).
 }
 \description{
-Vector math operations
+Vector Algebra
 }
 \details{
 \describe{

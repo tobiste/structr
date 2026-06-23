@@ -1,4 +1,4 @@
-#' Least-square fit of small and great circles to spherically projected data
+#' Least-Square Fit of Small and Great Circles to Spherical Data
 #'
 #' Finds the best small and great circles using the algorithm by Gray et al. (1980)
 #'
@@ -141,7 +141,7 @@ gray_algorithm <- function(x, sm = TRUE) {
 
 
 
-#' The cone or plane best fit of conically or cylindrical disposed s-plane poles
+#' Cone or Plane Best Fit of Conically or Cylindrical Disposed Plane Poles
 #'
 #' Finding the best fit pole of rotation for a given set of points that are
 #' assumed to lie on a mutual small or great circle circle using Ramsay 1967 algorithm
@@ -366,7 +366,7 @@ regression_cone_ramsay2 <- function(x) {
 }
 
 
-#' Least-square fit of small and great circles to spherically projected data
+#' Least-Square Fit of Small and Great Circles to Spherical Data
 #'
 #' Fits a great circle arc to a set of lines, based on an independent scalar variable.
 #'

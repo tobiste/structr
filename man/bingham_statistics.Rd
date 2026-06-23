@@ -2,7 +2,7 @@
 % Please edit documentation in R/vector_stats.R
 \name{bingham_statistics}
 \alias{bingham_statistics}
-\title{Elliptical concentration and confidence cone estimation}
+\title{Elliptical Concentration and Confidence Cone Estimation}
 \source{
 Borradaile, G. (2003). Spherical-Orientation Data. In: Statistics of
 Earth Science Data. Springer, Berlin, Heidelberg. https://doi.org/10.1007/978-3-662-05223-5_10
@@ -27,7 +27,7 @@ list
 }
 }
 \description{
-Elliptical concentration and confidence cone estimation
+Elliptical Concentration and Confidence Cone Estimation
 }
 \examples{
 set.seed(1234)

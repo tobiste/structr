@@ -7,7 +7,7 @@
 \alias{dist.Ray}
 \alias{dist.Plane}
 \alias{dist.Pair}
-\title{Angular distance matrix for orientation vectors}
+\title{Angular Distance Matrix for Orientation Vectors}
 \usage{
 \method{dist}{Vec3}(x, ...)
 

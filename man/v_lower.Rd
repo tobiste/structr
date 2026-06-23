@@ -2,7 +2,7 @@
 % Please edit documentation in R/vector_math.R
 \name{v_lower}
 \alias{v_lower}
-\title{Antipodal map sending upper-hemisphere rays to the lower hemisphere.}
+\title{Antipodal Map Sending Upper-Hemisphere Rays to the Lower Hemisphere.}
 \usage{
 v_lower(v)
 }

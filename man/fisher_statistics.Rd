@@ -2,7 +2,7 @@
 % Please edit documentation in R/vector_stats.R
 \name{fisher_statistics}
 \alias{fisher_statistics}
-\title{Fisher's statistics}
+\title{Fisher's Statistics}
 \usage{
 fisher_statistics(x, w = NULL, conf.level = 0.95, na.rm = TRUE)
 }

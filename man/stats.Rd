@@ -10,7 +10,7 @@
 \alias{sd_error}
 \alias{delta}
 \alias{estimate_k}
-\title{Statistical estimators of the distribution of a set of vectors}
+\title{Statistical Estimators of the Distribution of a Set of Vectors}
 \usage{
 sph_mean(x, na.rm = TRUE, ...)
 
@@ -43,7 +43,7 @@ rows are the observations and the columns are the coordinates.}
 \item{p}{integer. Number of parameters in the data space (2 for circle, 3 for a sphere)}
 }
 \description{
-Statistical estimators of the distribution of a set of vectors
+Statistical Estimators of the Distribution of a Set of Vectors
 }
 \details{
 These statistical estimators are based on the resultant vector of a set of \eqn{n} vectors \eqn{x_1, \ldots, x_n} (Mardia 1972). The resultant vector is given by

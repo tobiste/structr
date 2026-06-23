@@ -1,4 +1,4 @@
-#' Structure classes
+#' Structr Classes
 #'
 #' @description
 #' `Vec3`, `Line`, `Ray`, `Plane`, `"Pair"` and `Fault` create or convert a `"Vec3"`, `"Line"`,  `"Ray"`, `"Plane"`, `"Pair"`, and `"Fault"`
