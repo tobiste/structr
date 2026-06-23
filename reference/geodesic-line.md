@@ -39,11 +39,11 @@ lineMeanVariance from geologyGeometry (J.R. Davis)
 
 - seeds:
 
-  positive integer. How many `x` to try as seeds
+  integer. How many `x` to try as seeds
 
 - steps:
 
-  positive integer. Bound on how many iterations to use.
+  integer. Bound on how many iterations to use.
 
 ## Value
 

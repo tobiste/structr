@@ -1,4 +1,4 @@
-# Plot spherical densities in a stereonet
+# Plot Spherical Densities in a Spherical Projection
 
 Kamb counts and densities on the sphere. `contour` plots the contour
 lines, `contourf` displays a contour plot with the areas between the
@@ -104,8 +104,8 @@ image(
 
 ## Value
 
-list containing the stereographic x and coordinates of of the grid, the
-counts, and the density.
+list containing the stereographic coordinates of the grid, the counts,
+and the density.
 
 ## See also
 
@@ -133,7 +133,6 @@ Other stereo-plot:
 ``` r
 set.seed(20250411)
 x <- rfb(100, mu = Line(120, 10), k = 5, A = diag(c(-1, 0, 1)))
-
 contour(x)
 
 

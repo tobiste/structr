@@ -467,7 +467,7 @@
   [`contourf()`](https://tobiste.github.io/structr/reference/stereo_contour.md)
   [`image(`*`<spherical>`*`)`](https://tobiste.github.io/structr/reference/stereo_contour.md)
   [`image(`*`<sph_density>`*`)`](https://tobiste.github.io/structr/reference/stereo_contour.md)
-  : Plot spherical densities in a stereonet
+  : Plot Spherical Densities in a Spherical Projection
 
 - [`stereo_coords()`](https://tobiste.github.io/structr/reference/stereo_coords.md)
   : Stereographic Projection

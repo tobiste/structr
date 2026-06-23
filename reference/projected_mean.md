@@ -49,5 +49,5 @@ for geodesic mean.
 projected_mean(example_lines, w = runif(nrow(example_lines)))
 #> Line object (n = 1):
 #>  azimuth   plunge 
-#> 67.02557 13.03526 
+#> 69.64581 14.53108 
 ```
