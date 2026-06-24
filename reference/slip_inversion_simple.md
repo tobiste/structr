@@ -43,8 +43,7 @@ Other stress-inversion:
 ``` r
 tym <- slip_inversion_simple(angelier1990$TYM)
 stereoplot(title = 'TYM', sub = paste0('beta: ', round(tym$beta, 2), " deg | R: ", round(tym$R, 2)))
-hoeppener(angelier1990$TYM, col = alpha(assign_col(tym$beta_angles), .5))
-#> Error in alpha(assign_col(tym$beta_angles), 0.5): could not find function "alpha"
+hoeppener(angelier1990$TYM, col = assign_col(tym$beta_angles))
 angelier(tym$mean_planes, pch = 16, col = viridis::magma(2, end = 0.8), cex = 1)
 points(tym$principal_axes, pch = 16, col = viridis::rocket(3, end = 0.8), cex = 1)
 text(tym$principal_axes, labels = rownames(tym$principal_axes), col = viridis::rocket(3, end = 0.8), cex = 1, adj = c(-.25, -.25))
@@ -53,8 +52,7 @@ text(tym$principal_axes, labels = rownames(tym$principal_axes), col = viridis::r
 
 avb <- slip_inversion_simple(angelier1990$AVB)
 stereoplot(title = 'AVB', sub = paste0('beta: ', round(avb$beta, 2), " deg | R: ", round(avb$R, 2)))
-hoeppener(angelier1990$AVB, col = alpha(assign_col(avb$beta_angles), .5))
-#> Error in alpha(assign_col(avb$beta_angles), 0.5): could not find function "alpha"
+hoeppener(angelier1990$AVB, col = assign_col(avb$beta_angles))
 angelier(avb$mean_planes, pch = 16, col = viridis::magma(2, end = 0.8), cex = 1)
 points(avb$principal_axes, pch = 16, col = viridis::rocket(3, end = 0.8), cex = 1)
 text(avb$principal_axes, labels = rownames(avb$principal_axes), col = viridis::rocket(3, end = 0.8), cex = 1, adj = c(-.25, -.25))
