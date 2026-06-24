@@ -934,10 +934,15 @@ rot_mean <- function(x){
 
 #' Simple Statistical Fault-Slip Inversion
 #' 
-#' The idea is to cluster the fault data set to identify the conjugate set of 
-#' faults, calculate the mean orientation, use the Wallace-Bott Hypothesis 
-#' and Anderson's theory to calculate the orientation of the principal stresses, 
-#' and the angle to the fault planes to derive the stress shape parameter R. 
+#' Measurements of fault-slip data are often scattered due to measurement 
+#' errors and the wavy nature of fault planes and fault striations/slickenlines. 
+#' The fault scatter is large due to noise, rather than representing the actual 
+#' geometry of
+#' the fault set. The idea of this algorithm is to cluster the fault data set to 
+#' identify the conjugate set of 
+#' faults and their the mean orientation Using the Wallace-Bott Hypothesis 
+#' and Anderson's theory, it then calculates the orientation of the principal stresses, 
+#' and uses the angles to the fault planes to derive the a best-fit stress shape parameter R. 
 #'
 #' @param x object of class `"Fault"`
 #' @param cluster_fun function for cluster, must have number of desired cluster 
