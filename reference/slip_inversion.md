@@ -159,6 +159,10 @@ to calculate the azimuth of the maximum horizontal stress;
 [`Mohr_plot()`](https://tobiste.github.io/structr/reference/Mohr_plot.md)
 for graphical representation of the deviatoric stress tensor.
 
+Other stress-inversion:
+[`Fault_PT()`](https://tobiste.github.io/structr/reference/Fault_PT.md),
+[`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md)
+
 ## Examples
 
 ``` r

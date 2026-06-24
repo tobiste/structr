@@ -29,7 +29,9 @@ are the M-planes and the dihedra separation planes as `"Plane"` objects
 
 ## See also
 
-[`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md)
+Other stress-inversion:
+[`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md),
+[`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md)
 
 ## Examples
 

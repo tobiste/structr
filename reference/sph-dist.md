@@ -1,4 +1,4 @@
-# Angular distance matrix for orientation vectors
+# Angular Distance Matrix for Orientation Vectors
 
 This function computes and returns the distance matrix computed by using
 the Cosine similarity to compute the distances between the rows of a

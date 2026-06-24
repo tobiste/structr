@@ -1,4 +1,4 @@
-# Antipode vector
+# Antipode Vector
 
 Returns the opposite vector
 

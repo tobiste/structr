@@ -1,6 +1,6 @@
-# Vector math operations
+# Vector Algebra
 
-Vector math operations
+Vector Algebra
 
 ## Usage
 

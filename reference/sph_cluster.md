@@ -1,6 +1,6 @@
-# Cluster spherical data
+# Cluster Spherical Data
 
-Finds k groups of clusters using the angular distance matrix
+Finds `k` groups of clusters using the angular distance matrix
 
 ## Usage
 

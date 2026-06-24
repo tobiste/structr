@@ -61,7 +61,7 @@
   : Fault-Slip Data
 
 - [`antipode()`](https://tobiste.github.io/structr/reference/antipode.md)
-  : Antipode vector
+  : Antipode Vector
 
 - [`apparent_dip_direction()`](https://tobiste.github.io/structr/reference/apparent_dip_direction.md)
   : Apparent dip direction
@@ -96,13 +96,12 @@
 
 - [`regression_greatcircle()`](https://tobiste.github.io/structr/reference/best_fit.md)
   [`regression_smallcircle()`](https://tobiste.github.io/structr/reference/best_fit.md)
-  : Least-square fit of small and great circles to spherically projected
-  data
+  : Least-Square Fit of Small and Great Circles to Spherical Data
 
 - [`regression_cone_ramsay()`](https://tobiste.github.io/structr/reference/best_pole.md)
   [`regression_cone_ramsay2()`](https://tobiste.github.io/structr/reference/best_pole.md)
-  : The cone or plane best fit of conically or cylindrical disposed
-  s-plane poles
+  : Cone or Plane Best Fit of Conically or Cylindrical Disposed Plane
+  Poles
 
 - [`bingham_inference()`](https://tobiste.github.io/structr/reference/bingham-inference.md)
   : Confidence region for the mean of the Bingham distribution.
@@ -112,10 +111,10 @@
   parameters.
 
 - [`bingham_statistics()`](https://tobiste.github.io/structr/reference/bingham_statistics.md)
-  : Elliptical concentration and confidence cone estimation
+  : Elliptical Concentration and Confidence Cone Estimation
 
 - [`center()`](https://tobiste.github.io/structr/reference/center.md) :
-  Centering vectors
+  Centering Vectors
 
 - [`pair2rot()`](https://tobiste.github.io/structr/reference/class-rot.md)
   [`is.Rotation()`](https://tobiste.github.io/structr/reference/class-rot.md)
@@ -144,7 +143,7 @@
   [`Pair()`](https://tobiste.github.io/structr/reference/classes.md)
   [`Fault()`](https://tobiste.github.io/structr/reference/classes.md)
   [`Spherical()`](https://tobiste.github.io/structr/reference/classes.md)
-  : Structure classes
+  : Structr Classes
 
 - [`confidence_ellipse()`](https://tobiste.github.io/structr/reference/confidence_ellipse.md)
   : Confidence ellipse
@@ -245,10 +244,10 @@
   : Maximum likelihood estimation of the Fisher parameters.
 
 - [`fisher_ftest()`](https://tobiste.github.io/structr/reference/fisher_ftest.md)
-  : Test of mean orientations
+  : Test of Mean Orientations
 
 - [`fisher_statistics()`](https://tobiste.github.io/structr/reference/fisher_statistics.md)
-  : Fisher's statistics
+  : Fisher's Statistics
 
 - [`flinn_plot()`](https://tobiste.github.io/structr/reference/flinn_plot.md)
   : Flinn Diagram
@@ -305,7 +304,7 @@
   : Calculates densities for fabric and strain data
 
 - [`inertia_tensor()`](https://tobiste.github.io/structr/reference/inertia.md)
-  : Inertia tensor
+  : Inertia Tensor
 
 - [`lines(`*`<spherical>`*`)`](https://tobiste.github.io/structr/reference/lines.md)
   [`lines(`*`<Line>`*`)`](https://tobiste.github.io/structr/reference/lines.md)
@@ -324,7 +323,7 @@
 - [`is.ortensor()`](https://tobiste.github.io/structr/reference/ortensor.md)
   [`as.ortensor()`](https://tobiste.github.io/structr/reference/ortensor.md)
   [`ortensor()`](https://tobiste.github.io/structr/reference/ortensor.md)
-  : Orientation tensor
+  : Orientation Tensor
 
 - [`ot_eigen()`](https://tobiste.github.io/structr/reference/ot_eigen.md)
   : Eigenvalues and Eigenvectors of a Set of Vectors
@@ -369,11 +368,10 @@
   : Bingham Distribution
 
 - [`regression_gray()`](https://tobiste.github.io/structr/reference/regression_gray.md)
-  : Least-square fit of small and great circles to spherically projected
-  data
+  : Least-Square Fit of Small and Great Circles to Spherical Data
 
 - [`rfb()`](https://tobiste.github.io/structr/reference/rfb.md) :
-  Spherical Fisher-Bingham distribution
+  Spherical Fisher-Bingham Distribution
 
 - [`rhr2dd()`](https://tobiste.github.io/structr/reference/rhr.md)
   [`dd2rhr()`](https://tobiste.github.io/structr/reference/rhr.md) :
@@ -418,6 +416,9 @@
 - [`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md)
   : Stress Inversion for Fault-Slip Data
 
+- [`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md)
+  : Simple Statistical Fault-Slip Inversion
+
 - [`sort_by(`*`<strabo>`*`)`](https://tobiste.github.io/structr/reference/sort_by.strabo.md)
   : Sorting StraboSpot Projects
 
@@ -426,7 +427,7 @@
   [`dist(`*`<Ray>`*`)`](https://tobiste.github.io/structr/reference/sph-dist.md)
   [`dist(`*`<Plane>`*`)`](https://tobiste.github.io/structr/reference/sph-dist.md)
   [`dist(`*`<Pair>`*`)`](https://tobiste.github.io/structr/reference/sph-dist.md)
-  : Angular distance matrix for orientation vectors
+  : Angular Distance Matrix for Orientation Vectors
 
 - [`prcomp(`*`<Vec3>`*`)`](https://tobiste.github.io/structr/reference/sph-prcomp.md)
   [`prcomp(`*`<Ray>`*`)`](https://tobiste.github.io/structr/reference/sph-prcomp.md)
@@ -436,7 +437,7 @@
   : Principal component (geodesic) analysis in the tangent space.
 
 - [`sph_cluster()`](https://tobiste.github.io/structr/reference/sph_cluster.md)
-  : Cluster spherical data
+  : Cluster Spherical Data
 
 - [`split_trailing_letters()`](https://tobiste.github.io/structr/reference/split.md)
   [`split_strike()`](https://tobiste.github.io/structr/reference/split.md)
@@ -450,7 +451,7 @@
   [`sd_error()`](https://tobiste.github.io/structr/reference/stats.md)
   [`delta()`](https://tobiste.github.io/structr/reference/stats.md)
   [`estimate_k()`](https://tobiste.github.io/structr/reference/stats.md)
-  : Statistical estimators of the distribution of a set of vectors
+  : Statistical Estimators of the Distribution of a Set of Vectors
 
 - [`stereo_pair()`](https://tobiste.github.io/structr/reference/stereo-pair.md)
   : Stereographic Projection of Pairs
@@ -539,7 +540,7 @@
   : Subsetting StraboSpot Projects
 
 - [`summary(`*`<spherical>`*`)`](https://tobiste.github.io/structr/reference/summary.spherical.md)
-  : Summary statistics
+  : Summary Statistics
 
 - [`symmetry_group()`](https://tobiste.github.io/structr/reference/symmetry_group.md)
   : Symmetry groups
@@ -568,7 +569,7 @@
   [`project()`](https://tobiste.github.io/structr/reference/vecmath.md)
   [`reject()`](https://tobiste.github.io/structr/reference/vecmath.md)
   [`transform_linear()`](https://tobiste.github.io/structr/reference/vecmath.md)
-  : Vector math operations
+  : Vector Algebra
 
 - [`velgrad_rate()`](https://tobiste.github.io/structr/reference/vel_rate.md)
   [`velgrad_spin()`](https://tobiste.github.io/structr/reference/vel_rate.md)

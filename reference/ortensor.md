@@ -1,4 +1,4 @@
-# Orientation tensor
+# Orientation Tensor
 
 3D orientation tensor, which characterize data distribution using
 eigenvalue method. See (Watson 1966, Scheidegger 1965).
@@ -99,9 +99,9 @@ x <- rfb(100, mu = Line(120, 50), k = 1, A = diag(c(10, 0, 0)))
 ortensor(x, w = runif(nrow(x)))
 #> Orientation tensor
 #>             [,1]        [,2]        [,3]
-#> [1,]  0.06186097 -0.08616512 -0.02037245
-#> [2,] -0.08616512  0.26562112  0.01116568
-#> [3,] -0.02037245  0.01116568  0.35534188
+#> [1,]  0.07564725 -0.08896140 -0.05627332
+#> [2,] -0.08896140  0.24966384  0.03792583
+#> [3,] -0.05627332  0.03792583  0.39090442
 
 test <- as.ortensor(diag(3))
 is.ortensor(test)

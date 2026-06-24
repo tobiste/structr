@@ -1,4 +1,4 @@
-# Antipodal map sending upper-hemisphere rays to the lower hemisphere.
+# Antipodal Map Sending Upper-Hemisphere Rays to the Lower Hemisphere.
 
 Negates any vector with positive `z`-component. Used in lower-hemisphere
 plots.

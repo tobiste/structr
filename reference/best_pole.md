@@ -1,4 +1,4 @@
-# The cone or plane best fit of conically or cylindrical disposed s-plane poles
+# Cone or Plane Best Fit of Conically or Cylindrical Disposed Plane Poles
 
 Finding the best fit pole of rotation for a given set of points that are
 assumed to lie on a mutual small or great circle circle using Ramsay

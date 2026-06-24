@@ -1,6 +1,6 @@
-# Elliptical concentration and confidence cone estimation
+# Elliptical Concentration and Confidence Cone Estimation
 
-Elliptical concentration and confidence cone estimation
+Elliptical Concentration and Confidence Cone Estimation
 
 ## Usage
 
@@ -65,12 +65,12 @@ stereo_point(x)
 
 bingham_statistics(x)
 #> $k
-#> [1] 2.507170 4.128188
+#> [1] 2.628537 4.458496
 #> 
 #> $a95
-#> [1] 8.841708 6.890461
+#> [1] 8.635171 6.630310
 #> 
 #> $beta
-#> [1] 0.6073294
+#> [1] 0.589557
 #> 
 ```

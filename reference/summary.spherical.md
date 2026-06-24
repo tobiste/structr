@@ -1,4 +1,4 @@
-# Summary statistics
+# Summary Statistics
 
 Calculates the arithmetic mean, variance, 68% cone, and the confidence
 cone around the mean.

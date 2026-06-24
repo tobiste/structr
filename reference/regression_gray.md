@@ -1,4 +1,4 @@
-# Least-square fit of small and great circles to spherically projected data
+# Least-Square Fit of Small and Great Circles to Spherical Data
 
 Finds the best small and great circles using the algorithm by Gray et
 al. (1980)

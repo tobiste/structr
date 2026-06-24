@@ -1,4 +1,4 @@
-# Fisher's statistics
+# Fisher's Statistics
 
 Estimates concentration parameter, angular standard deviation, and
 confidence limit.

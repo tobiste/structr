@@ -1,4 +1,4 @@
-# Least-square fit of small and great circles to spherically projected data
+# Least-Square Fit of Small and Great Circles to Spherical Data
 
 Fits a great circle arc to a set of lines, based on an independent
 scalar variable.

@@ -1,4 +1,4 @@
-# Spherical Fisher-Bingham distribution
+# Spherical Fisher-Bingham Distribution
 
 Simulation of random values from a spherical Fisher-Bingham
 distribution.

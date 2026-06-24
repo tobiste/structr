@@ -1,4 +1,4 @@
-# Structure classes
+# Structr Classes
 
 `Vec3`, `Line`, `Ray`, `Plane`, `"Pair"` and `Fault` create or convert a
 `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, and `"Fault"` S3 class

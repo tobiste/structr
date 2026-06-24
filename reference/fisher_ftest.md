@@ -1,4 +1,4 @@
-# Test of mean orientations
+# Test of Mean Orientations
 
 Test against the null-hypothesis that the samples are drawn from the
 same Fisher population.

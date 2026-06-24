@@ -1,4 +1,4 @@
-# Centering vectors
+# Centering Vectors
 
 Rotate vector object to position that ortensor eigenvectors are parallel
 to axes of coordinate system: E3\|\|X (north-south), E2\|\|X(east-west),

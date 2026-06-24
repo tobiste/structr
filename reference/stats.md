@@ -1,6 +1,6 @@
-# Statistical estimators of the distribution of a set of vectors
+# Statistical Estimators of the Distribution of a Set of Vectors
 
-Statistical estimators of the distribution of a set of vectors
+Statistical Estimators of the Distribution of a Set of Vectors
 
 ## Usage
 
