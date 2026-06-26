@@ -416,6 +416,12 @@
 - [`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md)
   : Stress Inversion for Fault-Slip Data
 
+- [`slip_inversion_angelier()`](https://tobiste.github.io/structr/reference/slip_inversion_angelier.md)
+  : Stress Inversion for Fault-Slip Data after Angelier (1990)
+
+- [`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md)
+  : Stress Inversion for Fault-Slip Data after Michael (1984)
+
 - [`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md)
   : Simple Statistical Fault-Slip Inversion
 

@@ -40,26 +40,29 @@ list.
 
 Other stress-inversion:
 [`Fault_PT()`](https://tobiste.github.io/structr/reference/Fault_PT.md),
-[`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md)
+[`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md),
+[`slip_inversion_angelier()`](https://tobiste.github.io/structr/reference/slip_inversion_angelier.md),
+[`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md)
 
 ## Examples
 
 ``` r
 tym <- slip_inversion_simple(angelier1990$TYM)
-stereoplot(title = 'TYM', sub = paste0('beta: ', round(tym$beta, 2), " deg | R: ", round(tym$R, 2)))
+stereoplot(title = 'TYM', sub = paste0('beta: ', round(tym$beta, 2), 
+" deg | R: ", round(tym$R, 2)))
 hoeppener(angelier1990$TYM, col = assign_col(tym$beta_angles))
 angelier(tym$mean_planes, pch = 16, col = viridis::magma(2, end = 0.8), cex = 1)
 points(tym$principal_axes, pch = 16, col = viridis::rocket(3, end = 0.8), cex = 1)
-text(tym$principal_axes, labels = rownames(tym$principal_axes), col = viridis::rocket(3, end = 0.8), cex = 1, adj = c(-.25, -.25))
+text(tym$principal_axes, labels = rownames(tym$principal_axes), 
+col = viridis::rocket(3, end = 0.8), cex = 1, adj = c(-.25, -.25))
 
-# stereo_shmax(SH(tym$principal_axes[1,], tym$principal_axes[2, ], tym$principal_axes[3,], tym$R))
 
 avb <- slip_inversion_simple(angelier1990$AVB)
-stereoplot(title = 'AVB', sub = paste0('beta: ', round(avb$beta, 2), " deg | R: ", round(avb$R, 2)))
+stereoplot(title = 'AVB', sub = paste0('beta: ', round(avb$beta, 2), 
+" deg | R: ", round(avb$R, 2)))
 hoeppener(angelier1990$AVB, col = assign_col(avb$beta_angles))
 angelier(avb$mean_planes, pch = 16, col = viridis::magma(2, end = 0.8), cex = 1)
 points(avb$principal_axes, pch = 16, col = viridis::rocket(3, end = 0.8), cex = 1)
-text(avb$principal_axes, labels = rownames(avb$principal_axes), col = viridis::rocket(3, end = 0.8), cex = 1, adj = c(-.25, -.25))
-
-# stereo_shmax(SH(avb$principal_axes[1,], avb$principal_axes[2, ], avb$principal_axes[3,], avb$R))
+text(avb$principal_axes, labels = rownames(avb$principal_axes), 
+col = viridis::rocket(3, end = 0.8), cex = 1, adj = c(-.25, -.25))
 ```

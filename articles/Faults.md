@@ -94,7 +94,7 @@ the sense of movement. There are two ways how these combined features
 can be visualized, namely the Angelier and the Hoeppener plot.
 
 - The **Angelier plot** shows all planes as *great circles* and
-  lineations as points (after Angelier , 1984). Fault striae are plotted
+  lineations as points (after Angelier, 1984). Fault striae are plotted
   as vectors on top of the lineation pointing in the movement direction
   of the hanging wall. Easy to read in case of homogeneous or small
   datasets.
@@ -223,12 +223,17 @@ best satisfies all of the faults is found.
 > tensor within the region being studied for the duration of the
 > faulting event.
 
-{structr} provides a numerical solution to determine the orientation of
-the principal stresses from fault slip data using the Michael (1984)
-method[^2]. It uses bootstrapping for confidence intervals of the stress
-estimates.
+{structr} provides two numerical solutions to determine the orientation
+of the principal stresses from fault slip data.
 
-First we load some example data (here the data from Angelier, 1990)[^3]
+- Michael (1984) linear inversion method[^2] which uses bootstrapping
+  for confidence intervals of the stress estimates.
+
+- Angelier (1990) direct inversion method[^3] coupled with the iterative
+  optimization after Mostafa (2005)[^4] to find the best fit reduced
+  stress tensor.
+
+First we load some example data (here the data from Angelier, 1990)[^5]
 
 ``` r
 
@@ -241,11 +246,11 @@ fault_plot(test_data, col = "grey30")
 ![Diagram showing some fault-slip data in a
 stereoplot](Faults_files/figure-html/slip_inversion1-1.png)
 
-The stress inversion with 10 bootstraps:
+The stress inversion using the Michael method with 10 bootstraps:
 
 ``` r
 
-test_res <- slip_inversion(test_data, n_iter = 10)
+test_res <- slip_inversion(test_data, method = "michael", n_iter = 10)
 
 # Average beta angle
 test_res$beta
@@ -295,14 +300,15 @@ legend("topleft",
 ![Diagram showing principal stress vector results in a
 stereoplot](Faults_files/figure-html/slip_inversion_plot-1.png)
 
-The stress shape ratio Φ (Angelier 1979)[^4]
+The stress shape ratio Φ (Angelier 1979)[^6]
 
 ``` r
 
 test_res$phi
 ```
 
-    ## [1] 0.101247
+    ##   sigma2 
+    ## 0.101247
 
 ``` r
 
@@ -310,7 +316,7 @@ test_res$phi
 test_res$phi_conf
 ```
 
-    ## [1] 0.1025824 0.1818300
+    ## [1] 0.08715034 0.15052106
     ## attr(,"conf.level")
     ## [1] 0.95
 
@@ -360,7 +366,7 @@ result](Faults_files/figure-html/slip_inversion_mohr-1.png)
 The orientation of the maximum horizontal stress
 ($`\sigma_\text{Hmax}`$) can be calculated from the stress tensor the
 the orientation of the principal stress ($`\sigma_1`$, $`\sigma_2`$,
-$`\sigma_3`$) axes their their relative magnitudes($`R`$) [^5].
+$`\sigma_3`$) axes their their relative magnitudes($`R`$) [^7].
 
 First, we define the orientation of the principle stress axes:
 
@@ -623,7 +629,7 @@ stresses for a given fault population. Tectonophysics, 56(3–4), T17–T26.
 
 Angelier, J. (1990). Inversion of field data in fault tectonics to
 obtain the regional stress—III. A new rapid direct inversion method by
-analytical means. Ceophys. J. Int, 103, 363–376.
+analytical means. Geophys. J. Int, 103, 363–376.
 <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
 
 Lund, B., & Townend, J. (2007). Calculating horizontal stress
@@ -634,6 +640,11 @@ tensor. Geophysical Journal International, 170(3), 1328–1335.
 Michael, A. J. (1984). Determination of stress from slip data: Faults
 and folds. Journal of Geophysical Research: Solid Earth, 89(B13),
 11517–11526. <https://doi.org/10.1029/JB089iB13p11517>
+
+Mostafa, M. E. (2005). Iterative direct inversion: An exact
+complementary solution for inverting fault-slip data to obtain
+palaeostresses. Computers & Geosciences, 31(8), 1059–1070.
+<https://doi.org/10.1016/j.cageo.2005.02.012>
 
 [^1]: Angelier, J. (1990). Inversion of field data in fault tectonics to
     obtain the regional stress—III. A new rapid direct inversion method
@@ -649,11 +660,21 @@ and folds. Journal of Geophysical Research: Solid Earth, 89(B13),
     by analytical means. Geophys. J. Int, 103, 363–376.
     <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
 
-[^4]: Angelier, J. (1979). Determination of the mean principal
+[^4]: Mostafa, M. E. (2005). Iterative direct inversion: An exact
+    complementary solution for inverting fault-slip data to obtain
+    palaeostresses. Computers & Geosciences, 31(8), 1059–1070.
+    <https://doi.org/10.1016/j.cageo.2005.02.012>
+
+[^5]: Angelier, J. (1990). Inversion of field data in fault tectonics to
+    obtain the regional stress—III. A new rapid direct inversion method
+    by analytical means. Geophys. J. Int, 103, 363–376.
+    <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
+
+[^6]: Angelier, J. (1979). Determination of the mean principal
     directions of stresses for a given fault population. Tectonophysics,
     56(3–4), T17–T26. <https://doi.org/10.1016/0040-1951(79)90081-7>
 
-[^5]: Lund & Townend (2007): Calculating horizontal stress orientations
+[^7]: Lund & Townend (2007): Calculating horizontal stress orientations
     with full or partial knowledge of the tectonic stress tensor.
     *Geophys. J. Int.*, 170, 1328—1335. doi:
     10.1111/j.1365-246X.2007.03468.x

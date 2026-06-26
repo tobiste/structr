@@ -29,7 +29,7 @@ includes
 
 - **Stress analysis**: reconstruction of stress orientation and
   magnitudes from fault-slip data (stress inversion based on **Michael,
-  1984**:
+  1984** or **Angelier, 1990**:
   [`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md)),
   extracting the **maximum horizontal stress** of a 3D stress tensor
   ([`SH()`](https://tobiste.github.io/structr/reference/SH.md)), and
@@ -279,13 +279,13 @@ hoeppener(faults, points = FALSE, col = "grey20")
 
 ### Fault-Slip Inversion
 
-Compute deviatoric stress tensor and calculate 95% confidence intervals
-using bootstrap samples:
+Compute reduced stress tensor using linear inversion (Michael, 1984) and
+calculate 95% confidence intervals using bootstrap samples:
 
 ``` r
 
 set.seed(20250411)
-faults_stress <- slip_inversion(faults, n_iter = 10)
+faults_stress <- slip_inversion(faults, n_iter = 10, method = 'michael')
 ```
 
 Visualize the slip inversion results (orientation of principal
@@ -481,8 +481,9 @@ legend(0, -1.1,
 legend_col(increments, title = "Time")
 ```
 
-![](reference/figures/README-defgrad1-1.png) Show how the orientation
-tensor changes during progressive deformation:
+![](reference/figures/README-defgrad1-1.png)
+
+Show how the orientation tensor changes during progressive deformation:
 
 ``` r
 
@@ -925,6 +926,12 @@ MIT License
 
 - [`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md)
   : Stress Inversion for Fault-Slip Data
+
+- [`slip_inversion_angelier()`](https://tobiste.github.io/structr/reference/slip_inversion_angelier.md)
+  : Stress Inversion for Fault-Slip Data after Angelier (1990)
+
+- [`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md)
+  : Stress Inversion for Fault-Slip Data after Michael (1984)
 
 - [`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md)
   : Simple Statistical Fault-Slip Inversion

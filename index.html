@@ -89,7 +89,7 @@
 <li><p>Statistical analysis: spherical mean and variance, confidence regions, hypothesis tests, <strong>cluster analysis</strong> of orientation data (<code><a href="reference/sph_cluster.html">sph_cluster()</a></code>, and geodesic regression to find the <strong>best-fitting great circle or small circle</strong> through orientation data (<code><a href="reference/best_fit.html">regression_greatcircle()</a></code> and <code><a href="reference/best_fit.html">regression_smallcircle()</a></code>),</p></li>
 <li><p>Reconstruction of fabric orientations in <strong>oriented drillcores</strong> by transforming the α, β, and γ angles (<code><a href="reference/drillcore.html">drillcore_transformation()</a></code>,</p></li>
 <li><p>Deform orientation data using deformation and velocity gradient tensors: <code><a href="reference/defgrad.html">defgrad()</a></code> and <code><a href="reference/gradient.html">velgrad()</a></code></p></li>
-<li><p><strong>Stress analysis</strong>: reconstruction of stress orientation and magnitudes from fault-slip data (stress inversion based on <strong>Michael, 1984</strong>: <code><a href="reference/slip_inversion.html">slip_inversion()</a></code>), extracting the <strong>maximum horizontal stress</strong> of a 3D stress tensor (<code><a href="reference/SH.html">SH()</a></code>), and visualization of magnitudes of stress in the <strong>Mohr circle</strong> (<code><a href="reference/Mohr_plot.html">Mohr_plot()</a></code>),</p></li>
+<li><p><strong>Stress analysis</strong>: reconstruction of stress orientation and magnitudes from fault-slip data (stress inversion based on <strong>Michael, 1984</strong> or <strong>Angelier, 1990</strong>: <code><a href="reference/slip_inversion.html">slip_inversion()</a></code>), extracting the <strong>maximum horizontal stress</strong> of a 3D stress tensor (<code><a href="reference/SH.html">SH()</a></code>), and visualization of magnitudes of stress in the <strong>Mohr circle</strong> (<code><a href="reference/Mohr_plot.html">Mohr_plot()</a></code>),</p></li>
 <li><p>Calculation fault displacement components,</p></li>
 <li><p>Strain analysis (<strong>R</strong><sub>f</sub>/ϕ), contouring on the unit hyperboloid, <strong>Fry plots</strong> and <strong>Hsu plots</strong></p></li>
 <li><p>Vorticity analysis using the <strong>Rigid Grain Net</strong> method (<code><a href="reference/RGN_plot.html">RGN_plot()</a></code>), and</p></li>
@@ -290,10 +290,10 @@
 <div class="section level3">
 <h3 id="fault-slip-inversion">Fault-Slip Inversion<a class="anchor" aria-label="anchor" href="#fault-slip-inversion"></a>
 </h3>
-<p>Compute deviatoric stress tensor and calculate 95% confidence intervals using bootstrap samples:</p>
+<p>Compute reduced stress tensor using linear inversion (Michael, 1984) and calculate 95% confidence intervals using bootstrap samples:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20250411</span><span class="op">)</span></span>
-<span><span class="va">faults_stress</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/slip_inversion.html">slip_inversion</a></span><span class="op">(</span><span class="va">faults</span>, n_iter <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span></code></pre></div>
+<span><span class="va">faults_stress</span> <span class="op">&lt;-</span> <span class="fu"><a href="reference/slip_inversion.html">slip_inversion</a></span><span class="op">(</span><span class="va">faults</span>, n_iter <span class="op">=</span> <span class="fl">10</span>, method <span class="op">=</span> <span class="st">'michael'</span><span class="op">)</span></span></code></pre></div>
 <p>Visualize the slip inversion results (orientation of principal stresses):</p>
 <div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#000004FF"</span>, <span class="st">"#B63679FF"</span>, <span class="st">"#FEC287FF"</span><span class="op">)</span></span>
@@ -454,7 +454,8 @@
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="reference/assign-color.html">legend_col</a></span><span class="op">(</span><span class="va">increments</span>, title <span class="op">=</span> <span class="st">"Time"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-defgrad1-1.png" width="100%"> Show how the orientation tensor changes during progressive deformation:</p>
+<p><img src="reference/figures/README-defgrad1-1.png" width="100%"></p>
+<p>Show how the orientation tensor changes during progressive deformation:</p>
 <div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="reference/vollmer-plot.html">vollmer_plot</a></span><span class="op">(</span><span class="va">xl_steps</span>, type <span class="op">=</span> <span class="st">"b"</span>, col <span class="op">=</span> <span class="fu"><a href="reference/assign-color.html">assign_col</a></span><span class="op">(</span><span class="va">increments</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
