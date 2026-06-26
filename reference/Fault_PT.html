@@ -97,36 +97,18 @@ It calculates PT-axes, kinematic planes (also movement planes), and the dihedra 
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="fu"><a href="classes.html">Fault</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">120</span>, <span class="fl">100</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">60</span>, <span class="fl">60</span>, <span class="fl">50</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">110</span>, <span class="fl">25</span>, <span class="fl">30</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">58</span>, <span class="fl">9</span>, <span class="fl">23</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="op">-</span><span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">Fault_PT</span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $p</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Line object (n = 3):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       azimuth   plunge</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 314.9690 75.19665</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 248.4545 15.32834</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 342.4517 46.65113</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $t</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Line object (n = 3):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>       azimuth   plunge</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 116.2067 14.04868</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 345.9919 25.60102</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 241.3308 10.31893</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $m</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Plane object (n = 3):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      dip_direction      dip</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]      27.35344 85.42739</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]     310.64119 30.43222</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]     322.06010 48.49732</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $d</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Plane object (n = 3):</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      dip_direction      dip</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]      289.7676 31.20884</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,]      208.9071 83.18716</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,]      210.2233 67.19866</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">angelier1990</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">angelier1990</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span> </span></span>
+<span class="r-in"><span>  <span class="va">xpt</span> <span class="op">&lt;-</span> <span class="fu">Fault_PT</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  </span></span>
+<span class="r-in"><span>  <span class="fu"><a href="stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="fault-plot.html">angelier</a></span><span class="op">(</span><span class="va">x</span>, col <span class="op">=</span> <span class="st">'grey'</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">xpt</span><span class="op">$</span><span class="va">p</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">1.5</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">xpt</span><span class="op">$</span><span class="va">t</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">1.5</span>, col <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">xpt</span><span class="op">$</span><span class="va">p</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">1.5</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="fu"><a href="stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">xpt</span><span class="op">$</span><span class="va">t</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">1.5</span>, col <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span>  <span class="op">}</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-plt img"><img src="Fault_PT-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

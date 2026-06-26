@@ -38,34 +38,15 @@ Other stress-inversion:
 ## Examples
 
 ``` r
-f <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
-Fault_PT(f)
-#> $p
-#> Line object (n = 3):
-#>       azimuth   plunge
-#> [1,] 314.9690 75.19665
-#> [2,] 248.4545 15.32834
-#> [3,] 342.4517 46.65113
-#> 
-#> $t
-#> Line object (n = 3):
-#>       azimuth   plunge
-#> [1,] 116.2067 14.04868
-#> [2,] 345.9919 25.60102
-#> [3,] 241.3308 10.31893
-#> 
-#> $m
-#> Plane object (n = 3):
-#>      dip_direction      dip
-#> [1,]      27.35344 85.42739
-#> [2,]     310.64119 30.43222
-#> [3,]     322.06010 48.49732
-#> 
-#> $d
-#> Plane object (n = 3):
-#>      dip_direction      dip
-#> [1,]      289.7676 31.20884
-#> [2,]      208.9071 83.18716
-#> [3,]      210.2233 67.19866
-#> 
+par(mfrow = c(1, length(angelier1990)))
+invisible(lapply(angelier1990, function(x){ 
+  xpt <- Fault_PT(x)
+  
+  stereoplot(guides = FALSE)
+  angelier(x, col = 'grey')
+  points(xpt$p, pch = 16, cex = 1.5, col = 1)
+  points(xpt$t, pch = 16, cex = 1.5, col = 2)
+  stereo_confidence(xpt$p, pch = 16, cex = 1.5, col = 1)
+  stereo_confidence(xpt$t, pch = 16, cex = 1.5, col = 2)
+  }))
 ```
