@@ -15,7 +15,19 @@ or \code{"angelier"} for a iterative direct inversion.}
 \item{...}{arguments passed to \code{\link[=slip_inversion_angelier]{slip_inversion_angelier()}} or \code{\link[=slip_inversion_michael]{slip_inversion_michael()}}}
 }
 \value{
-list. See \code{\link[=slip_inversion_angelier]{slip_inversion_angelier()}} and \code{\link[=slip_inversion_michael]{slip_inversion_michael()}}
+a named list with the following components:
+\describe{
+\item{\code{stress_tensor}}{\code{"ellipsoid"} object. Best-fit devitoric stress tensor in input coordinate frame}
+\item{\code{principal_axes}}{\code{"Line"} objects. Orientation of the principal stress axes as unit vectors (max to min)}
+\item{\code{tensor_params}}{the four tensor parameters (Eq. 4.87)}
+\item{\code{principal_vals}}{eigenvalues of the stress tensor (\eqn{\sigma_1 >= \sigma_2 >= \sigma_3})}
+\item{\code{stress_shape}}{list Stress shape ratio. See \code{\link[=stress_shape]{stress_shape()}}.}
+\item{\code{misfit}}{list. Misfit parameters. See \code{\link[=slip_inversion_misfit]{slip_inversion_misfit()}}.}
+\item{\code{SHmax}}{numeric. Direction of maximum horizontal stress (in degrees)}
+\item{\code{tau_mean}}{numeric. Average resolved shear stress on each plane. Should be close to 1.}
+\item{\code{stress_components}}{matrix. The resolved shear and normal stresses, the slip and dilation tendency on each plane. See \code{\link[=tau2shearnorm]{tau2shearnorm()}} and \code{\link[=tau2tendency]{tau2tendency()}}.}
+\item{\code{n_iter}}{number of Mostafa iterations performed}
+}
 }
 \description{
 Convenient function for linear and direction inversion of fault-slip data to
@@ -28,15 +40,15 @@ par(mfrow = c(1, length(angelier1990)))
 invisible(lapply(angelier1990, function(x){
 
 # Linear inversion
-TYM_michael <- slip_inversion(x, method = "michael")
+res_michael <- slip_inversion(x, method = "michael", n_iter = 100, n = 100, res = 100)
 
 # Direct inversion
-TYM_angelier <- slip_inversion(x, method = "angelier")
+res_angelier <- slip_inversion(x, method = "angelier")
 
 stereoplot(guides = FALSE)
 fault_plot(x, col = "gray80")
-points(TYM_michael$principal_axes, pch = 3, col = 1:3)
-points(TYM_angelier$principal_axes, pch = 2, col = 1:3)
+points(res_michael$principal_axes, pch = 3, col = 2:4)
+points(res_angelier$principal_axes, pch = 2, col = 2:4)
 legend("topleft", col = 1, legend = c("Michael (1984)", "Angelier (1990)"), pch = c(3, 2))
 }))
 }

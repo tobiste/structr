@@ -24,28 +24,13 @@ slip_inversion_michael(
 \item{...}{optional parameters passed to \code{\link[=confidence_ellipse]{confidence_ellipse()}}}
 }
 \value{
-list
+Additionally, this child functions appends the following list components:
 \describe{
-\item{\code{stress_tensor}}{matrix. Best-fit devitoric stress tensor}
-\item{\code{principal_axes}}{\code{"Line"} objects. Orientation of the principal stress axes}
-\item{\code{principal_axes_conf}}{list containing the confidesnce ellipses for the 3 principal stress vectors. See \code{\link[=confidence_ellipse]{confidence_ellipse()}} for details.}
-\item{\code{principal_vals}}{numeric. The proportional magnitudes of the principal stress axes given by the eigenvalues of the stress tensor: \eqn{\sigma_1}, \eqn{\sigma_2}, and \eqn{\sigma_3}}
-\item{\code{principal_vals_conf}}{3-column vector containing the lower and upper margins of the confidence interval of the principal vals}
-\item{\code{principal_fault}}{Principal fault planes as \code{"Fault"} objects.}
-\item{\code{SHmax}}{numeric. Direction of maximum horizontal stress (in degrees)}
+\item{\code{principal_axes_CI}}{list containing the confidesnce ellipses for the 3 principal stress vectors. See \code{\link[=confidence_ellipse]{confidence_ellipse()}} for details.}
+\item{\code{principal_vals_CI}}{3-column vector containing the lower and upper margins of the confidence interval of the principal vals}
 \item{\code{SHmax_CI}}{numeric. Confidence interval of \code{SHmax} angle}
-\item{\code{R}}{numeric. Stress shape ratio after Gephart & Forsyth (1984): \eqn{R = (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3)}. Values ranging from 0 to 1, with 0 being
-\eqn{\sigma_1 = \sigma_2} and 1 being \eqn{\sigma_2 = \sigma_3}.}
-\item{\code{R_conf}}{Confidence interval for \code{R}}
-\item{\code{phi}}{numeric. Stress shape ratio after Angelier (1979): \eqn{\Phi = (\sigma_2 - \sigma_3)/(\sigma_1 - \sigma_3)}. Values range between 0 (\eqn{\sigma_2 = \sigma_3}) and 1 (\eqn{\sigma_2 = \sigma_1}).}
-\item{\code{phi_conf}}{Confidence interval for \code{phi}}
-\item{\code{bott}}{numeric. Stress shape ratio after Bott (1959): \eqn{\R = (\sigma_3 - \sigma_1)/(\sigma_2 - \sigma_1)}. Values range between \eqn{-\infty} and \eqn{+\infty}.}
-\item{\code{bott_conf}}{Confidence interval for \code{bott}}
-\item{\code{beta}}{numeric. Average angle between the tangential traction predicted by the best stress tensor  and the slip vector on each plane. Should be close to 0.}
-\item{\code{beta_CI}}{numeric. Confidence interval of \code{beta} angle}
-\item{\code{sigma_s}}{numeric. Average resolved shear stress on each plane. Should be close to 1.}
-\item{\code{fault_data}}{\code{data.frame} containing the beta angles, the angles between sigma 1 and the plane normal,
-the resolved shear and normal stresses, and the slip and dilation tendency on each plane.}
+\item{\code{R_CI},\code{phi_CI},\code{bott_CI}}{Confidence interval for \code{R}}
+\item{\code{alpha_CI},\code{beta_CI},\code{theta_CI}}{numeric. Confidence intervals of  \code{alpha}, \code{beta}, and \code{theta} angles}
 }
 }
 \description{
@@ -75,18 +60,18 @@ invisible(lapply(angelier1990, function(x){
 res <- slip_inversion_michael(x, n_iter = 100, n = 1000, res = 100)
 
 # some stress shape
-R_val <- round(res$R, 2)
+R_val <- round(res$stress_shape$R, 2)
 
 # misfit
-rup_val <- round(res$mean_rup, 2)
+rup_val <- round(res$misfit$misfit_means["rup"], 2)
 
 # Plot the faults (color-coded by RUP\%) and show the principal stress axes
 stereoplot(title = "Bootstrapped linear inversion", guides = FALSE)
 stereo_shmax(res$SHmax)
-fault_plot(x, col = assign_col(res$fault_data$rup))
-stereo_confidence(res$principal_axes_conf$sigma1, col = 2)
-stereo_confidence(res$principal_axes_conf$sigma2, col = 3)
-stereo_confidence(res$principal_axes_conf$sigma3, col = 4)
+fault_plot(x, col = assign_col(res$misfit$rup))
+stereo_confidence(res$principal_axes_CI$sigma1, col = 2)
+stereo_confidence(res$principal_axes_CI$sigma2, col = 3)
+stereo_confidence(res$principal_axes_CI$sigma3, col = 4)
 text(res$principal_axes, label = rownames(res$principal_axes), col = 2:4, adj = -.25)
 legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
 title(sub = bquote(R == .(R_val) ~ "|" ~ bar("RUP") == .(rup_val) * '\%'))

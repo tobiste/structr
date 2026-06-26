@@ -26,10 +26,10 @@ invisible(lapply(angelier1990, function(x){
   
   stereoplot(guides = FALSE)
   angelier(x, col = 'grey')
-  points(xpt$p, pch = 16, cex = 1.5, col = 1)
-  points(xpt$t, pch = 16, cex = 1.5, col = 2)
-  stereo_confidence(xpt$p, pch = 16, cex = 1.5, col = 1)
-  stereo_confidence(xpt$t, pch = 16, cex = 1.5, col = 2)
+  points(xpt$p, pch = 16, cex = 0.6, col = 1)
+  points(xpt$t, pch = 16, cex = 0.6, col = 2)
+  stereo_confidence(xpt$p, pch = 16, cex = 1.5, col = 1, params = c(n_iter = 1e3))
+  stereo_confidence(xpt$t, pch = 16, cex = 1.5, col = 2, params = c(n_iter = 1e3))
   }))
 }
 \seealso{

@@ -24,24 +24,17 @@ slip_inversion_angelier(
 \item{friction}{numeric. Coefficient of friction (0.6 by default)}
 }
 \value{
-a named list
+a named list with the following components:
 \describe{
-\item{\code{stress_tensor}}{matrix. Best-fit devitoric stress tensor in input coordinate frame}
+\item{\code{stress_tensor}}{\code{"ellipsoid"} object. Best-fit devitoric stress tensor in input coordinate frame}
 \item{\code{principal_axes}}{\code{"Line"} objects. Orientation of the principal stress axes as unit vectors (max to min)}
 \item{\code{tensor_params}}{the four tensor parameters (Eq. 4.87)}
-\item{\code{principal_vals}}{eigenvalues of the stress tensor (sigma1 >= sigma2 >= sigma3)}
-\item{\code{R}}{numeric. Stress shape ratio after Gephart & Forsyth (1984): \eqn{R = (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3)}. Values ranging from 0 to 1, with 0 being
-\eqn{\sigma_1 = \sigma_2} and 1 being \eqn{\sigma_2 = \sigma_3}.}
-\item{\code{phi}}{numeric. Stress shape ratio after Angelier (1979): \eqn{\Phi = (\sigma_2 - \sigma_3)/(\sigma_1 - \sigma_3)}. Values range between 0 (\eqn{\sigma_2 = \sigma_3}) and 1 (\eqn{\sigma_2 = \sigma_1}).}
-\item{\code{bott}}{numeric. Stress shape ratio after Bott (1959): \eqn{\R = (\sigma_3 - \sigma_1)/(\sigma_2 - \sigma_1)}. Values range between \eqn{-\infty} and \eqn{+\infty}.}
-\item{\code{alpha}}{numeric. The mean misfit angle in degrees. }
-\item{\code{mean_rup}}{mean RUP across all faults}
-\item{\code{quality_summary}}{counts per quality class}
+\item{\code{principal_vals}}{eigenvalues of the stress tensor (\eqn{\sigma_1 >= \sigma_2 >= \sigma_3})}
+\item{\code{stress_shape}}{list Stress shape ratio. See \code{\link[=stress_shape]{stress_shape()}}.}
+\item{\code{misfit}}{list. Misfit parameters. See \code{\link[=slip_inversion_misfit]{slip_inversion_misfit()}}.}
 \item{\code{SHmax}}{numeric. Direction of maximum horizontal stress (in degrees)}
-\item{\code{beta}}{numeric. Average angle between the tangential traction predicted by the best stress tensor  and the slip vector on each plane. Should be close to 0.}
-\item{\code{sigma_s}}{numeric. Average resolved shear stress on each plane. Should be close to 1.}
-\item{\code{fault_data}}{\code{data.frame} containing the \code{alpha} angles, \code{beta} angles, i.e. the angles between sigma 1 and the plane normal,
-the resolved shear and normal stresses, the slip and dilation tendency on each plane, and the per-fault "ratio upsilon parameter" (RUP) estimator in percent, and the RUP-based quality.}
+\item{\code{tau_mean}}{numeric. Average resolved shear stress on each plane. Should be close to 1.}
+\item{\code{stress_components}}{matrix. The resolved shear and normal stresses, the slip and dilation tendency on each plane. See \code{\link[=tau2shearnorm]{tau2shearnorm()}} and \code{\link[=tau2tendency]{tau2tendency()}}.}
 \item{\code{n_iter}}{number of Mostafa iterations performed}
 }
 }
@@ -80,19 +73,18 @@ par(mfrow = c(1, length(angelier1990)))
 # loop through dataset
 invisible(lapply(angelier1990, function(x){
 
-# inversion
 res <- slip_inversion_angelier(x)
 
-# stress shape
-R_val <- round(res$R, 2)
+# some stress shape
+R_val <- round(res$stress_shape$R, 2)
 
 # misfit
-rup_val <- round(res$mean_rup, 2)
+rup_val <- round(res$misfit$misfit_means["rup"], 2)
 
 # Plot the faults (color-coded by RUO\%) and show the principal stress axes
 stereoplot(title = "Iterative direct inversion", guides = FALSE)
 stereo_shmax(res$SHmax)
-fault_plot(x, col = assign_col(res$fault_data$rup))
+fault_plot(x, col = assign_col(res$misfit$rup))
 points(res$principal_axes, col = 1:3, pch = 16, cex = 1.5)
 text(res$principal_axes, label = rownames(res$principal_axes), 
 col = 1:3, adj = -.25)

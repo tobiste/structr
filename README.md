@@ -280,8 +280,8 @@ stresses):
 
 ``` r
 cols <- c("#000004FF", "#B63679FF", "#FEC287FF")
-R_val <- round(faults_stress$R, 2)
-R_CI <- round(faults_stress$R_conf, 2)
+R_val <- round(faults_stress$stress_shape$R, 2)
+R_CI <- round(faults_stress$R_CI, 2)
 
 stereoplot(
   title = "Principal stress axes",
@@ -289,9 +289,9 @@ stereoplot(
   guides = FALSE
 )
 angelier(faults, col = "grey80")
-stereo_confidence(faults_stress$principal_axes_conf$sigma1, col = cols[1])
-stereo_confidence(faults_stress$principal_axes_conf$sigma2, col = cols[2])
-stereo_confidence(faults_stress$principal_axes_conf$sigma3, col = cols[3])
+stereo_confidence(faults_stress$principal_axes_CI$sigma1, col = cols[1])
+stereo_confidence(faults_stress$principal_axes_CI$sigma2, col = cols[2])
+stereo_confidence(faults_stress$principal_axes_CI$sigma3, col = cols[3])
 text(faults_stress$principal_axes,
   label = rownames(faults_stress$principal_axes),
   col = cols, adj = -.25
@@ -304,8 +304,8 @@ Visualize the accuracy of the slip inversion by showing the deviation
 angle (β) between the theoretical slip and the actual slip vector:
 
 ``` r
-beta <- faults_stress$fault_data$beta
-beta_mean <- round(faults_stress$beta)
+beta <- faults_stress$misfit$beta
+beta_mean <- round(faults_stress$misfit$misfit_means['beta'])
 beta_CI <- round(faults_stress$beta_CI)
 
 stereoplot(
@@ -326,17 +326,17 @@ Azimuth of the maximum horizontal stress (in degrees) for the slip
 inversion result:
 
 ``` r
-# Simply call
-# faults_stress$SHmax
-# faults_stress$SHmax_CI # confidence interval
-
 SH(
   S1 = faults_stress$principal_axes[1, ],
   S2 = faults_stress$principal_axes[2, ],
   S3 = faults_stress$principal_axes[3, ],
-  R = faults_stress$R
+  R = faults_stress$stress_shape$R
 )
 #> [1] 60.80844
+
+# or simply call
+# faults_stress$SHmax
+# faults_stress$SHmax_CI # confidence interval
 ```
 
 ### Mohr Circle
@@ -350,7 +350,7 @@ Mohr_plot(
   sigma3 = faults_stress$principal_vals[3],
   unit = NULL, include.zero = FALSE
 )
-points(faults_stress$fault_data$sigma_n, abs(faults_stress$fault_data$sigma_s),
+points(faults_stress$stress_component[, 'normal'], abs(faults_stress$stress_component[, 'shear']),
   col = assign_col(beta), pch = 16
 )
 ```

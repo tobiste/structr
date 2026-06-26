@@ -9,7 +9,7 @@ principal_fault(s1, s3, friction = 0.6)
 \arguments{
 \item{s1, s3}{Principal stress vectors as spherical objects}
 
-\item{friction}{numeric. Coefficient of friction}
+\item{friction}{numeric. Coefficient of friction (0.6 by default)}
 }
 \value{
 \code{"Fault"} object

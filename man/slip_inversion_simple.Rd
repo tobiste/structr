@@ -29,23 +29,17 @@ and Anderson's theory, it then calculates the orientation of the principal stres
 and uses the angles to the fault planes to derive the a best-fit stress shape parameter R.
 }
 \examples{
-tym <- slip_inversion_simple(angelier1990$TYM)
-stereoplot(title = 'TYM', sub = paste0('beta: ', round(tym$beta, 2), 
-" deg | R: ", round(tym$R, 2)))
-hoeppener(angelier1990$TYM, col = assign_col(tym$beta_angles))
-angelier(tym$mean_planes, pch = 16, col = viridis::magma(2, end = 0.8), cex = 1)
-points(tym$principal_axes, pch = 16, col = viridis::rocket(3, end = 0.8), cex = 1)
-text(tym$principal_axes, labels = rownames(tym$principal_axes), 
+par(mfrow = c(1, length(angelier1990)))
+invisible(lapply(angelier1990, function(x){ 
+xres <- slip_inversion_simple(x)
+stereoplot(sub = paste0('beta: ', round(xres$beta, 2), 
+" deg | R: ", round(xres$R, 2)))
+hoeppener(x, col = assign_col(xres$beta_angles))
+angelier(xres$mean_planes, pch = 16, col = viridis::magma(2, end = 0.8), cex = 1)
+points(xres$principal_axes, pch = 16, col = viridis::rocket(3, end = 0.8), cex = 1)
+text(xres$principal_axes, labels = rownames(xres$principal_axes), 
 col = viridis::rocket(3, end = 0.8), cex = 1, adj = c(-.25, -.25))
-
-avb <- slip_inversion_simple(angelier1990$AVB)
-stereoplot(title = 'AVB', sub = paste0('beta: ', round(avb$beta, 2), 
-" deg | R: ", round(avb$R, 2)))
-hoeppener(angelier1990$AVB, col = assign_col(avb$beta_angles))
-angelier(avb$mean_planes, pch = 16, col = viridis::magma(2, end = 0.8), cex = 1)
-points(avb$principal_axes, pch = 16, col = viridis::rocket(3, end = 0.8), cex = 1)
-text(avb$principal_axes, labels = rownames(avb$principal_axes), 
-col = viridis::rocket(3, end = 0.8), cex = 1, adj = c(-.25, -.25))
+}))
 }
 \seealso{
 Other stress-inversion: 
