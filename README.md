@@ -30,7 +30,7 @@ for structural geology. The toolset includes
 
 - **Stress analysis**: reconstruction of stress orientation and
   magnitudes from fault-slip data (stress inversion based on **Michael,
-  1984** or **Angelier (1990)**: `slip_inversion()`), extracting the
+  1984** or **Angelier, 1990**: `slip_inversion()`), extracting the
   **maximum horizontal stress** of a 3D stress tensor (`SH()`), and
   visualization of magnitudes of stress in the **Mohr circle**
   (`Mohr_plot()`),
@@ -267,12 +267,12 @@ hoeppener(faults, points = FALSE, col = "grey20")
 
 ### Fault-Slip Inversion
 
-Compute deviatoric stress tensor and calculate 95% confidence intervals
-using bootstrap samples:
+Compute reduced stress tensor using linear inversion (Michael, 1984) and
+calculate 95% confidence intervals using bootstrap samples:
 
 ``` r
 set.seed(20250411)
-faults_stress <- slip_inversion(faults, n_iter = 10)
+faults_stress <- slip_inversion(faults, n_iter = 10, method = 'michael')
 ```
 
 Visualize the slip inversion results (orientation of principal
