@@ -30,9 +30,10 @@ for structural geology. The toolset includes
 
 - **Stress analysis**: reconstruction of stress orientation and
   magnitudes from fault-slip data (stress inversion based on **Michael,
-  1984**: `slip_inversion()`), extracting the **maximum horizontal
-  stress** of a 3D stress tensor (`SH()`), and visualization of
-  magnitudes of stress in the **Mohr circle** (`Mohr_plot()`),
+  1984** or **Angelier (1990)**: `slip_inversion()`), extracting the
+  **maximum horizontal stress** of a 3D stress tensor (`SH()`), and
+  visualization of magnitudes of stress in the **Mohr circle**
+  (`Mohr_plot()`),
 
 - Calculation fault displacement components,
 
@@ -459,8 +460,9 @@ legend(0, -1.1,
 legend_col(increments, title = "Time")
 ```
 
-<img src="man/figures/README-defgrad1-1.png" width="100%" /> Show how
-the orientation tensor changes during progressive deformation:
+<img src="man/figures/README-defgrad1-1.png" width="100%" />
+
+Show how the orientation tensor changes during progressive deformation:
 
 ``` r
 par(mfrow = c(1, 2))
