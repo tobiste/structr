@@ -253,15 +253,21 @@ The stress inversion using the Michael method with 10 bootstraps:
 test_res <- slip_inversion(test_data, method = "michael", n_iter = 10)
 
 # Average beta angle
-test_res$beta
+test_res$misfit$beta
 ```
 
-    ## [1] 15.16869
+    ##  [1] 22.4236622  7.9223563 20.1821988  9.9101003 13.9637462 20.1733189
+    ##  [7] 16.5519986  2.0706525 17.1911259  2.8583673 11.8477338  7.7629023
+    ## [13]  5.2680686 16.9325330  3.0864496 23.2285082  4.8017604 11.1360382
+    ## [19] 29.9292121 32.2496608 25.3837096 21.3747640 35.2452209 23.0365967
+    ## [25]  7.5504871 28.7097966 21.5712363 24.8114656  4.1798486  8.6411863
+    ## [31] 22.4333122  8.0510983 24.7064543 14.9681085  5.9747586  4.0508392
+    ## [37]  0.6771364 15.9340377
 
 ``` r
 
 # Average resolved shear stress
-test_res$sigma_s
+test_res$tau_mean
 ```
 
     ## [1] 0.9289024
@@ -284,9 +290,9 @@ cols <- c("#000004FF", "#B63679FF", "#FEC287FF")
 
 stereoplot(title = "Stress inversion", guides = FALSE)
 fault_plot(test_data, col = "grey75")
-stereo_confidence(test_res$principal_axes_conf$sigma1, col = cols[1])
-stereo_confidence(test_res$principal_axes_conf$sigma2, col = cols[2])
-stereo_confidence(test_res$principal_axes_conf$sigma3, col = cols[3])
+stereo_confidence(test_res$principal_axes_CI$sigma1, col = cols[1])
+stereo_confidence(test_res$principal_axes_CI$sigma2, col = cols[2])
+stereo_confidence(test_res$principal_axes_CI$sigma3, col = cols[3])
 text(test_res$principal_axes,
   label = rownames(test_res$principal_axes),
   col = cols, adj = -.25
@@ -304,7 +310,7 @@ The stress shape ratio Φ (Angelier 1979)[^6]
 
 ``` r
 
-test_res$phi
+test_res$stress_shape$phi
 ```
 
     ##   sigma2 
@@ -313,7 +319,7 @@ test_res$phi
 ``` r
 
 # 95% confidence interval
-test_res$phi_conf
+test_res$phi_CI
 ```
 
     ## [1] 0.08715034 0.15052106
@@ -326,7 +332,7 @@ visualized in the stereoplot:
 
 ``` r
 
-beta <- test_res$fault_data$beta
+beta <- test_res$misfit$beta
 
 stereoplot(
   title = "Deviation",
@@ -352,7 +358,7 @@ Mohr_plot(
   sigma3 = test_res$principal_vals[3],
   unit = NULL, include.zero = FALSE
 )
-points(test_res$fault_data$sigma_n, abs(test_res$fault_data$sigma_s),
+points(test_res$stress_components[, 'normal'], abs(test_res$stress_components[, 'shear']),
   col = assign_col(beta), pch = 16
 )
 ```
@@ -422,7 +428,7 @@ SH(
   S1 = test_res$principal_axes[1, ],
   S2 = test_res$principal_axes[2, ],
   S3 = test_res$principal_axes[3, ],
-  R = test_res$R
+  R = test_res$stress_shape$R
 )
 ```
 

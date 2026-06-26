@@ -237,6 +237,9 @@
 - [`fault_displacements()`](https://tobiste.github.io/structr/reference/fault_displacements.md)
   : Fault displacement components
 
+- [`fault_instability_criterion()`](https://tobiste.github.io/structr/reference/fault_instability_criterion.md)
+  : Fault Instability Criterion
+
 - [`fisher_inference()`](https://tobiste.github.io/structr/reference/fisher-inference.md)
   : Confidence Region for the Fisher Distribution Mean.
 
@@ -367,6 +370,9 @@
   [`rbingham_eig()`](https://tobiste.github.io/structr/reference/rbing.md)
   : Bingham Distribution
 
+- [`reduced_stress()`](https://tobiste.github.io/structr/reference/reduced_stress.md)
+  : Reduced stress tensor
+
 - [`regression_gray()`](https://tobiste.github.io/structr/reference/regression_gray.md)
   : Least-Square Fit of Small and Great Circles to Spherical Data
 
@@ -421,6 +427,9 @@
 
 - [`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md)
   : Stress Inversion for Fault-Slip Data after Michael (1984)
+
+- [`slip_inversion_misfit()`](https://tobiste.github.io/structr/reference/slip_inversion_misfit.md)
+  : Misfit parameters of slip inversion
 
 - [`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md)
   : Simple Statistical Fault-Slip Inversion
@@ -532,6 +541,9 @@
   [`dilatation_tendency()`](https://tobiste.github.io/structr/reference/stress-comp.md)
   : Stress components
 
+- [`stress_shape()`](https://tobiste.github.io/structr/reference/stress_shape.md)
+  : Shape parameters of the stress ellipsoid
+
 - [`stress_transformation()`](https://tobiste.github.io/structr/reference/stress_transformation.md)
   : Stress transformation
 
@@ -550,6 +562,16 @@
 
 - [`symmetry_group()`](https://tobiste.github.io/structr/reference/symmetry_group.md)
   : Symmetry groups
+
+- [`tau2shearnorm()`](https://tobiste.github.io/structr/reference/tau-comp.md)
+  [`tau2tendency()`](https://tobiste.github.io/structr/reference/tau-comp.md)
+  : Resolved Shear and Normal Stress
+
+- [`tau2rup()`](https://tobiste.github.io/structr/reference/tau2rup.md)
+  : Angelier's Ratio Upsilon (RUP)
+
+- [`tau2stress()`](https://tobiste.github.io/structr/reference/tau2stress.md)
+  : Principal Stresses from Stress Tensor
 
 - [`tau_max()`](https://tobiste.github.io/structr/reference/tau_max.md)
   : Maximum in-plane shear stress

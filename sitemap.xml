@@ -70,6 +70,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/fault-rake.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/fault-tensor.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/fault_displacements.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/fault_instability_criterion.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/fisher-inference.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/fisher-mle.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/fisher_ftest.html</loc></url>
@@ -108,6 +109,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/quadrant2dd.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ramsay.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/rbing.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/reduced_stress.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/regression_gray.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/rfb.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/rhr.html</loc></url>
@@ -126,6 +128,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion_angelier.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion_michael.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/slip_inversion_misfit.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion_simple.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/sort_by.strabo.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/sph-dist.html</loc></url>
@@ -151,12 +154,16 @@
 <url><loc>https://tobiste.github.io/structr/reference/strabo_prj.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/strain_shape.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/stress-comp.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/stress_shape.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/stress_transformation.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/strikeslip_kinematics.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/structr.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/subset.strabo.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/summary.spherical.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/symmetry_group.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/tau-comp.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/tau2rup.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/tau2stress.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/tau_max.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/text.spherical.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/v_lower.html</loc></url>

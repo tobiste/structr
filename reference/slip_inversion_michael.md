@@ -44,97 +44,32 @@ slip_inversion_michael(
 
 ## Value
 
-list
+Additionally, this child functions appends the following list
+components:
 
-- `stress_tensor`:
-
-  matrix. Best-fit devitoric stress tensor
-
-- `principal_axes`:
-
-  `"Line"` objects. Orientation of the principal stress axes
-
-- `principal_axes_conf`:
+- `principal_axes_CI`:
 
   list containing the confidesnce ellipses for the 3 principal stress
   vectors. See
   [`confidence_ellipse()`](https://tobiste.github.io/structr/reference/confidence_ellipse.md)
   for details.
 
-- `principal_vals`:
-
-  numeric. The proportional magnitudes of the principal stress axes
-  given by the eigenvalues of the stress tensor: \\\sigma_1\\,
-  \\\sigma_2\\, and \\\sigma_3\\
-
-- `principal_vals_conf`:
+- `principal_vals_CI`:
 
   3-column vector containing the lower and upper margins of the
   confidence interval of the principal vals
-
-- `principal_fault`:
-
-  Principal fault planes as `"Fault"` objects.
-
-- `SHmax`:
-
-  numeric. Direction of maximum horizontal stress (in degrees)
 
 - `SHmax_CI`:
 
   numeric. Confidence interval of `SHmax` angle
 
-- `R`:
-
-  numeric. Stress shape ratio after Gephart & Forsyth (1984): \\R =
-  (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3)\\. Values ranging from 0
-  to 1, with 0 being \\\sigma_1 = \sigma_2\\ and 1 being \\\sigma_2 =
-  \sigma_3\\.
-
-- `R_conf`:
+- `R_CI`,`phi_CI`,`bott_CI`:
 
   Confidence interval for `R`
 
-- `phi`:
+- `alpha_CI`,`beta_CI`,`theta_CI`:
 
-  numeric. Stress shape ratio after Angelier (1979): \\\Phi =
-  (\sigma_2 - \sigma_3)/(\sigma_1 - \sigma_3)\\. Values range between 0
-  (\\\sigma_2 = \sigma_3\\) and 1 (\\\sigma_2 = \sigma_1\\).
-
-- `phi_conf`:
-
-  Confidence interval for `phi`
-
-- `bott`:
-
-  numeric. Stress shape ratio after Bott (1959): \\\R = (\sigma_3 -
-  \sigma_1)/(\sigma_2 - \sigma_1)\\. Values range between \\-\infty\\
-  and \\+\infty\\.
-
-- `bott_conf`:
-
-  Confidence interval for `bott`
-
-- `beta`:
-
-  numeric. Average angle between the tangential traction predicted by
-  the best stress tensor and the slip vector on each plane. Should be
-  close to 0.
-
-- `beta_CI`:
-
-  numeric. Confidence interval of `beta` angle
-
-- `sigma_s`:
-
-  numeric. Average resolved shear stress on each plane. Should be close
-  to 1.
-
-- `fault_data`:
-
-  `data.frame` containing the beta angles, the angles between sigma 1
-  and the plane normal, the resolved shear and normal stresses, and the
-  slip and dilation tendency on each plane.
+  numeric. Confidence intervals of `alpha`, `beta`, and `theta` angles
 
 ## Details
 
@@ -183,18 +118,18 @@ invisible(lapply(angelier1990, function(x){
 res <- slip_inversion_michael(x, n_iter = 100, n = 1000, res = 100)
 
 # some stress shape
-R_val <- round(res$R, 2)
+R_val <- round(res$stress_shape$R, 2)
 
 # misfit
-rup_val <- round(res$mean_rup, 2)
+rup_val <- round(res$misfit$misfit_means["rup"], 2)
 
 # Plot the faults (color-coded by RUP%) and show the principal stress axes
 stereoplot(title = "Bootstrapped linear inversion", guides = FALSE)
 stereo_shmax(res$SHmax)
-fault_plot(x, col = assign_col(res$fault_data$rup))
-stereo_confidence(res$principal_axes_conf$sigma1, col = 2)
-stereo_confidence(res$principal_axes_conf$sigma2, col = 3)
-stereo_confidence(res$principal_axes_conf$sigma3, col = 4)
+fault_plot(x, col = assign_col(res$misfit$rup))
+stereo_confidence(res$principal_axes_CI$sigma1, col = 2)
+stereo_confidence(res$principal_axes_CI$sigma2, col = 3)
+stereo_confidence(res$principal_axes_CI$sigma3, col = 4)
 text(res$principal_axes, label = rownames(res$principal_axes), col = 2:4, adj = -.25)
 legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
 title(sub = bquote(R == .(R_val) ~ "|" ~ bar("RUP") == .(rup_val) * '%'))

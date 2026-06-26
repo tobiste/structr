@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9011</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9012</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -98,8 +98,8 @@
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>a named list</p><dl><dt><code>stress_tensor</code></dt>
-<dd><p>matrix. Best-fit devitoric stress tensor in input coordinate frame</p></dd>
+    <p>a named list with the following components:</p><dl><dt><code>stress_tensor</code></dt>
+<dd><p><code>"ellipsoid"</code> object. Best-fit devitoric stress tensor in input coordinate frame</p></dd>
 
 <dt><code>principal_axes</code></dt>
 <dd><p><code>"Line"</code> objects. Orientation of the principal stress axes as unit vectors (max to min)</p></dd>
@@ -108,39 +108,22 @@
 <dd><p>the four tensor parameters (Eq. 4.87)</p></dd>
 
 <dt><code>principal_vals</code></dt>
-<dd><p>eigenvalues of the stress tensor (sigma1 &gt;= sigma2 &gt;= sigma3)</p></dd>
+<dd><p>eigenvalues of the stress tensor (\(\sigma_1 &gt;= \sigma_2 &gt;= \sigma_3\))</p></dd>
 
-<dt><code>R</code></dt>
-<dd><p>numeric. Stress shape ratio after Gephart &amp; Forsyth (1984): \(R = (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3)\). Values ranging from 0 to 1, with 0 being
-\(\sigma_1 = \sigma_2\) and 1 being \(\sigma_2 = \sigma_3\).</p></dd>
+<dt><code>stress_shape</code></dt>
+<dd><p>list Stress shape ratio. See <code><a href="stress_shape.html">stress_shape()</a></code>.</p></dd>
 
-<dt><code>phi</code></dt>
-<dd><p>numeric. Stress shape ratio after Angelier (1979): \(\Phi = (\sigma_2 - \sigma_3)/(\sigma_1 - \sigma_3)\). Values range between 0 (\(\sigma_2 = \sigma_3\)) and 1 (\(\sigma_2 = \sigma_1\)).</p></dd>
-
-<dt><code>bott</code></dt>
-<dd><p>numeric. Stress shape ratio after Bott (1959): \(\R = (\sigma_3 - \sigma_1)/(\sigma_2 - \sigma_1)\). Values range between \(-\infty\) and \(+\infty\).</p></dd>
-
-<dt><code>alpha</code></dt>
-<dd><p>numeric. The mean misfit angle in degrees.</p></dd>
-
-<dt><code>mean_rup</code></dt>
-<dd><p>mean RUP across all faults</p></dd>
-
-<dt><code>quality_summary</code></dt>
-<dd><p>counts per quality class</p></dd>
+<dt><code>misfit</code></dt>
+<dd><p>list. Misfit parameters. See <code><a href="slip_inversion_misfit.html">slip_inversion_misfit()</a></code>.</p></dd>
 
 <dt><code>SHmax</code></dt>
 <dd><p>numeric. Direction of maximum horizontal stress (in degrees)</p></dd>
 
-<dt><code>beta</code></dt>
-<dd><p>numeric. Average angle between the tangential traction predicted by the best stress tensor  and the slip vector on each plane. Should be close to 0.</p></dd>
-
-<dt><code>sigma_s</code></dt>
+<dt><code>tau_mean</code></dt>
 <dd><p>numeric. Average resolved shear stress on each plane. Should be close to 1.</p></dd>
 
-<dt><code>fault_data</code></dt>
-<dd><p><code>data.frame</code> containing the <code>alpha</code> angles, <code>beta</code> angles, i.e. the angles between sigma 1 and the plane normal,
-the resolved shear and normal stresses, the slip and dilation tendency on each plane, and the per-fault "ratio upsilon parameter" (RUP) estimator in percent, and the RUP-based quality.</p></dd>
+<dt><code>stress_components</code></dt>
+<dd><p>matrix. The resolved shear and normal stresses, the slip and dilation tendency on each plane. See <code><a href="tau-comp.html">tau2shearnorm()</a></code> and <code><a href="tau-comp.html">tau2tendency()</a></code>.</p></dd>
 
 <dt><code>n_iter</code></dt>
 <dd><p>number of Mostafa iterations performed</p></dd>
@@ -193,19 +176,18 @@ solution for inverting fault-slip data to obtain palaeostresses. Computers
 <span class="r-in"><span><span class="co"># loop through dataset</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">angelier1990</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># inversion</span></span></span>
 <span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">slip_inversion_angelier</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># stress shape</span></span></span>
-<span class="r-in"><span><span class="va">R_val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">R</span>, <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co"># some stress shape</span></span></span>
+<span class="r-in"><span><span class="va">R_val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">stress_shape</span><span class="op">$</span><span class="va">R</span>, <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># misfit</span></span></span>
-<span class="r-in"><span><span class="va">rup_val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">mean_rup</span>, <span class="fl">2</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">rup_val</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">misfit</span><span class="op">$</span><span class="va">misfit_means</span><span class="op">[</span><span class="st">"rup"</span><span class="op">]</span>, <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Plot the faults (color-coded by RUO%) and show the principal stress axes</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Iterative direct inversion"</span>, guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="stereo_shmax.html">stereo_shmax</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">SHmax</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">x</span>, col <span class="op">=</span> <span class="fu"><a href="assign-color.html">assign_col</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">fault_data</span><span class="op">$</span><span class="va">rup</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">x</span>, col <span class="op">=</span> <span class="fu"><a href="assign-color.html">assign_col</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">misfit</span><span class="op">$</span><span class="va">rup</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">principal_axes</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">1.5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">principal_axes</span>, label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">)</span>, </span></span>
 <span class="r-in"><span>col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, adj <span class="op">=</span> <span class="op">-</span><span class="fl">.25</span><span class="op">)</span></span></span>

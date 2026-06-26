@@ -9,7 +9,7 @@ derive the reduced stress tensor."><meta property="og:image" content="https://to
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9011</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9012</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -88,8 +88,38 @@ or <code>"angelier"</code> for a iterative direct inversion.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>list. See <code><a href="slip_inversion_angelier.html">slip_inversion_angelier()</a></code> and <code><a href="slip_inversion_michael.html">slip_inversion_michael()</a></code></p>
-    </div>
+    <p>a named list with the following components:</p><dl><dt><code>stress_tensor</code></dt>
+<dd><p><code>"ellipsoid"</code> object. Best-fit devitoric stress tensor in input coordinate frame</p></dd>
+
+<dt><code>principal_axes</code></dt>
+<dd><p><code>"Line"</code> objects. Orientation of the principal stress axes as unit vectors (max to min)</p></dd>
+
+<dt><code>tensor_params</code></dt>
+<dd><p>the four tensor parameters (Eq. 4.87)</p></dd>
+
+<dt><code>principal_vals</code></dt>
+<dd><p>eigenvalues of the stress tensor (\(\sigma_1 &gt;= \sigma_2 &gt;= \sigma_3\))</p></dd>
+
+<dt><code>stress_shape</code></dt>
+<dd><p>list Stress shape ratio. See <code><a href="stress_shape.html">stress_shape()</a></code>.</p></dd>
+
+<dt><code>misfit</code></dt>
+<dd><p>list. Misfit parameters. See <code><a href="slip_inversion_misfit.html">slip_inversion_misfit()</a></code>.</p></dd>
+
+<dt><code>SHmax</code></dt>
+<dd><p>numeric. Direction of maximum horizontal stress (in degrees)</p></dd>
+
+<dt><code>tau_mean</code></dt>
+<dd><p>numeric. Average resolved shear stress on each plane. Should be close to 1.</p></dd>
+
+<dt><code>stress_components</code></dt>
+<dd><p>matrix. The resolved shear and normal stresses, the slip and dilation tendency on each plane. See <code><a href="tau-comp.html">tau2shearnorm()</a></code> and <code><a href="tau-comp.html">tau2tendency()</a></code>.</p></dd>
+
+<dt><code>n_iter</code></dt>
+<dd><p>number of Mostafa iterations performed</p></dd>
+
+
+</dl></div>
     <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Angelier, J. (1990). Inversion of field data in fault tectonics to obtain
@@ -116,15 +146,15 @@ folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526.
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">angelier1990</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Linear inversion</span></span></span>
-<span class="r-in"><span><span class="va">TYM_michael</span> <span class="op">&lt;-</span> <span class="fu">slip_inversion</span><span class="op">(</span><span class="va">x</span>, method <span class="op">=</span> <span class="st">"michael"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res_michael</span> <span class="op">&lt;-</span> <span class="fu">slip_inversion</span><span class="op">(</span><span class="va">x</span>, method <span class="op">=</span> <span class="st">"michael"</span>, n_iter <span class="op">=</span> <span class="fl">100</span>, n <span class="op">=</span> <span class="fl">100</span>, res <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="co"># Direct inversion</span></span></span>
-<span class="r-in"><span><span class="va">TYM_angelier</span> <span class="op">&lt;-</span> <span class="fu">slip_inversion</span><span class="op">(</span><span class="va">x</span>, method <span class="op">=</span> <span class="st">"angelier"</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">res_angelier</span> <span class="op">&lt;-</span> <span class="fu">slip_inversion</span><span class="op">(</span><span class="va">x</span>, method <span class="op">=</span> <span class="st">"angelier"</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">x</span>, col <span class="op">=</span> <span class="st">"gray80"</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">TYM_michael</span><span class="op">$</span><span class="va">principal_axes</span>, pch <span class="op">=</span> <span class="fl">3</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">TYM_angelier</span><span class="op">$</span><span class="va">principal_axes</span>, pch <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">res_michael</span><span class="op">$</span><span class="va">principal_axes</span>, pch <span class="op">=</span> <span class="fl">3</span>, col <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">res_angelier</span><span class="op">$</span><span class="va">principal_axes</span>, pch <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>, col <span class="op">=</span> <span class="fl">1</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Michael (1984)"</span>, <span class="st">"Angelier (1990)"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="slip_inversion-1.png" alt="" width="700" height="433"></span>

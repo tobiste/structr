@@ -31,10 +31,57 @@ slip_inversion(x, method = c("michael", "angelier"), ...)
 
 ## Value
 
-list. See
-[`slip_inversion_angelier()`](https://tobiste.github.io/structr/reference/slip_inversion_angelier.md)
-and
-[`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md)
+a named list with the following components:
+
+- `stress_tensor`:
+
+  `"ellipsoid"` object. Best-fit devitoric stress tensor in input
+  coordinate frame
+
+- `principal_axes`:
+
+  `"Line"` objects. Orientation of the principal stress axes as unit
+  vectors (max to min)
+
+- `tensor_params`:
+
+  the four tensor parameters (Eq. 4.87)
+
+- `principal_vals`:
+
+  eigenvalues of the stress tensor (\\\sigma_1 \>= \sigma_2 \>=
+  \sigma_3\\)
+
+- `stress_shape`:
+
+  list Stress shape ratio. See
+  [`stress_shape()`](https://tobiste.github.io/structr/reference/stress_shape.md).
+
+- `misfit`:
+
+  list. Misfit parameters. See
+  [`slip_inversion_misfit()`](https://tobiste.github.io/structr/reference/slip_inversion_misfit.md).
+
+- `SHmax`:
+
+  numeric. Direction of maximum horizontal stress (in degrees)
+
+- `tau_mean`:
+
+  numeric. Average resolved shear stress on each plane. Should be close
+  to 1.
+
+- `stress_components`:
+
+  matrix. The resolved shear and normal stresses, the slip and dilation
+  tendency on each plane. See
+  [`tau2shearnorm()`](https://tobiste.github.io/structr/reference/tau-comp.md)
+  and
+  [`tau2tendency()`](https://tobiste.github.io/structr/reference/tau-comp.md).
+
+- `n_iter`:
+
+  number of Mostafa iterations performed
 
 ## References
 
@@ -64,15 +111,15 @@ par(mfrow = c(1, length(angelier1990)))
 invisible(lapply(angelier1990, function(x){
 
 # Linear inversion
-TYM_michael <- slip_inversion(x, method = "michael")
+res_michael <- slip_inversion(x, method = "michael", n_iter = 100, n = 100, res = 100)
 
 # Direct inversion
-TYM_angelier <- slip_inversion(x, method = "angelier")
+res_angelier <- slip_inversion(x, method = "angelier")
 
 stereoplot(guides = FALSE)
 fault_plot(x, col = "gray80")
-points(TYM_michael$principal_axes, pch = 3, col = 1:3)
-points(TYM_angelier$principal_axes, pch = 2, col = 1:3)
+points(res_michael$principal_axes, pch = 3, col = 2:4)
+points(res_angelier$principal_axes, pch = 2, col = 2:4)
 legend("topleft", col = 1, legend = c("Michael (1984)", "Angelier (1990)"), pch = c(3, 2))
 }))
 ```

@@ -16,7 +16,7 @@ principal_fault(s1, s3, friction = 0.6)
 
 - friction:
 
-  numeric. Coefficient of friction
+  numeric. Coefficient of friction (0.6 by default)
 
 ## Value
 

@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9011</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9012</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -308,11 +308,17 @@ inversion method by analytical means. Geophys. J. Int, 103, 363–376. &lt;a hre
 <code class="sourceCode R"><span><span class="va">test_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slip_inversion.html">slip_inversion</a></span><span class="op">(</span><span class="va">test_data</span>, method <span class="op">=</span> <span class="st">"michael"</span>, n_iter <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Average beta angle</span></span>
-<span><span class="va">test_res</span><span class="op">$</span><span class="va">beta</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 15.16869</span></span></code></pre>
+<span><span class="va">test_res</span><span class="op">$</span><span class="va">misfit</span><span class="op">$</span><span class="va">beta</span></span></code></pre></div>
+<pre><code><span><span class="co">##  [1] 22.4236622  7.9223563 20.1821988  9.9101003 13.9637462 20.1733189</span></span>
+<span><span class="co">##  [7] 16.5519986  2.0706525 17.1911259  2.8583673 11.8477338  7.7629023</span></span>
+<span><span class="co">## [13]  5.2680686 16.9325330  3.0864496 23.2285082  4.8017604 11.1360382</span></span>
+<span><span class="co">## [19] 29.9292121 32.2496608 25.3837096 21.3747640 35.2452209 23.0365967</span></span>
+<span><span class="co">## [25]  7.5504871 28.7097966 21.5712363 24.8114656  4.1798486  8.6411863</span></span>
+<span><span class="co">## [31] 22.4333122  8.0510983 24.7064543 14.9681085  5.9747586  4.0508392</span></span>
+<span><span class="co">## [37]  0.6771364 15.9340377</span></span></code></pre>
 <div class="sourceCode" id="cb20"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Average resolved shear stress</span></span>
-<span><span class="va">test_res</span><span class="op">$</span><span class="va">sigma_s</span></span></code></pre></div>
+<span><span class="va">test_res</span><span class="op">$</span><span class="va">tau_mean</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0.9289024</span></span></code></pre>
 <p>To check the accuracy of the solution, you can evaluate</p>
 <ul>
@@ -330,9 +336,9 @@ from {structr}</p>
 <span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Stress inversion"</span>, guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">test_data</span>, col <span class="op">=</span> <span class="st">"grey75"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes_conf</span><span class="op">$</span><span class="va">sigma1</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes_conf</span><span class="op">$</span><span class="va">sigma2</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes_conf</span><span class="op">$</span><span class="va">sigma3</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes_CI</span><span class="op">$</span><span class="va">sigma1</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes_CI</span><span class="op">$</span><span class="va">sigma2</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes_CI</span><span class="op">$</span><span class="va">sigma3</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/text.html" class="external-link">text</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span>,</span>
 <span>  label <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/colnames.html" class="external-link">rownames</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">)</span>,</span>
 <span>  col <span class="op">=</span> <span class="va">cols</span>, adj <span class="op">=</span> <span class="op">-</span><span class="fl">.25</span></span>
@@ -346,12 +352,12 @@ from {structr}</p>
 directions of stresses for a given fault population. Tectonophysics,
 56(3–4), T17–T26. &lt;a href="https://doi.org/10.1016/0040-1951(79)90081-7" class="external-link uri"&gt;https://doi.org/10.1016/0040-1951(79)90081-7&lt;/a&gt;&lt;/p&gt;'><sup>6</sup></a></p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">test_res</span><span class="op">$</span><span class="va">phi</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="va">test_res</span><span class="op">$</span><span class="va">stress_shape</span><span class="op">$</span><span class="va">phi</span></span></code></pre></div>
 <pre><code><span><span class="co">##   sigma2 </span></span>
 <span><span class="co">## 0.101247</span></span></code></pre>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 95% confidence interval</span></span>
-<span><span class="va">test_res</span><span class="op">$</span><span class="va">phi_conf</span></span></code></pre></div>
+<span><span class="va">test_res</span><span class="op">$</span><span class="va">phi_CI</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0.08715034 0.15052106</span></span>
 <span><span class="co">## attr(,"conf.level")</span></span>
 <span><span class="co">## [1] 0.95</span></span></code></pre>
@@ -359,7 +365,7 @@ directions of stresses for a given fault population. Tectonophysics,
 the best stress tensor and the slip vector. This deviation can be
 visualized in the stereoplot:</p>
 <div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">beta</span> <span class="op">&lt;-</span> <span class="va">test_res</span><span class="op">$</span><span class="va">fault_data</span><span class="op">$</span><span class="va">beta</span></span>
+<code class="sourceCode R"><span><span class="va">beta</span> <span class="op">&lt;-</span> <span class="va">test_res</span><span class="op">$</span><span class="va">misfit</span><span class="op">$</span><span class="va">beta</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span></span>
 <span>  title <span class="op">=</span> <span class="st">"Deviation"</span>,</span>
@@ -380,7 +386,7 @@ visualized in the stereoplot:</p>
 <span>  sigma3 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_vals</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>,</span>
 <span>  unit <span class="op">=</span> <span class="cn">NULL</span>, include.zero <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">fault_data</span><span class="op">$</span><span class="va">sigma_n</span>, <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">fault_data</span><span class="op">$</span><span class="va">sigma_s</span><span class="op">)</span>,</span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">stress_components</span><span class="op">[</span>, <span class="st">'normal'</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/MathFun.html" class="external-link">abs</a></span><span class="op">(</span><span class="va">test_res</span><span class="op">$</span><span class="va">stress_components</span><span class="op">[</span>, <span class="st">'shear'</span><span class="op">]</span><span class="op">)</span>,</span>
 <span>  col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col</a></span><span class="op">(</span><span class="va">beta</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="Faults_files/figure-html/slip_inversion_mohr-1.png" class="r-plt" alt="Diagram showing the Mohr circle, and the normal and shear stresses for the slip inversion result" width="700"></p>
@@ -538,7 +544,7 @@ for our slip inversion result from above:</p>
 <span>  S1 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>,</span>
 <span>  S2 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span>,</span>
 <span>  S3 <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">3</span>, <span class="op">]</span>,</span>
-<span>  R <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">R</span></span>
+<span>  R <span class="op">=</span> <span class="va">test_res</span><span class="op">$</span><span class="va">stress_shape</span><span class="op">$</span><span class="va">R</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 60.80844</span></span></code></pre>
 </div>
