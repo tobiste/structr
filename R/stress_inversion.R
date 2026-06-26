@@ -1,6 +1,7 @@
 #' Stress Inversion for Fault-Slip Data
 #' 
-#' Linear and direction inversion of fault-slip data to derive the reduced stress tensor.
+#' Convenient function for linear and direction inversion of fault-slip data to 
+#' derive the reduced stress tensor.
 #'
 #' @param x `"Fault"` object where the rows are the observations, and the columns the coordinates.
 #' @param method character. The inversion algorithm. One of `"michael"` (the default) for a bootstrapped linear inversion, 
@@ -24,20 +25,22 @@
 #'
 #' @examples
 #' set.seed(20250411)
-#' # Use Angelier examples:
-#' dat <- angelier1990$TYM
+#' # Use Angelier examples
+#' par(mfrow = c(1, length(angelier1990)))
+#' invisible(lapply(angelier1990, function(x){
 #' 
 #' # Linear inversion
-#' TYM_michael <- slip_inversion(dat, method = "michael")
+#' TYM_michael <- slip_inversion(x, method = "michael")
 #' 
 #' # Direct inversion
-#' TYM_angelier <- slip_inversion(dat, method = "angelier")
+#' TYM_angelier <- slip_inversion(x, method = "angelier")
 #' 
 #' stereoplot(guides = FALSE)
-#' fault_plot(dat, col = "gray80")
+#' fault_plot(x, col = "gray80")
 #' points(TYM_michael$principal_axes, pch = 3, col = 1:3)
 #' points(TYM_angelier$principal_axes, pch = 2, col = 1:3)
 #' legend("topleft", col = 1, legend = c("Michael (1984)", "Angelier (1990)"), pch = c(3, 2))
+#' }))
 slip_inversion <- function(x, method = c("michael", "angelier"), ...) {
   method <- match.arg(method)
 
@@ -113,32 +116,31 @@ slip_inversion <- function(x, method = c("michael", "angelier"), ...) {
 #'  [Mohr_plot()] for graphical representation of the deviatoric stress tensor.
 #'
 #' @examples
-#' set.seed(20250411)
 #' # Use Angelier examples:
-#' res_TYM <- slip_inversion_michael(angelier1990$TYM, n_iter = 100, n = 1000, res = 100)
-#' R_val <- round(res_TYM$R, 2)
-#' rup_val <- round(res_TYM$mean_rup, 2)
+#' par(mfrow = c(1, length(angelier1990)))
+#' 
+#' invisible(lapply(angelier1990, function(x){
+#' 
+#' # inversion
+#' res <- slip_inversion_michael(x, n_iter = 100, n = 1000, res = 100)
+#' 
+#' # some stress shape
+#' R_val <- round(res$R, 2)
+#' 
+#' # misfit
+#' rup_val <- round(res$mean_rup, 2)
 #'
 #' # Plot the faults (color-coded by RUP%) and show the principal stress axes
-#' stereoplot(title = "Tymbaki, Crete, Greece", guides = FALSE)
-#' stereo_shmax(res_TYM$SHmax)
-#' fault_plot(angelier1990$TYM, col = assign_col(res_TYM$fault_data$rup))
-#' stereo_confidence(res_TYM$principal_axes_conf$sigma1, col = 2)
-#' stereo_confidence(res_TYM$principal_axes_conf$sigma2, col = 3)
-#' stereo_confidence(res_TYM$principal_axes_conf$sigma3, col = 4)
-#' text(res_TYM$principal_axes, label = rownames(res_TYM$principal_axes), col = 2:4, adj = -.25)
-#' legend("topleft", col = 2:4, legend = rownames(res_TYM$principal_axes), pch = 16)
+#' stereoplot(title = "Bootstrapped linear inversion", guides = FALSE)
+#' stereo_shmax(res$SHmax)
+#' fault_plot(x, col = assign_col(res$fault_data$rup))
+#' stereo_confidence(res$principal_axes_conf$sigma1, col = 2)
+#' stereo_confidence(res$principal_axes_conf$sigma2, col = 3)
+#' stereo_confidence(res$principal_axes_conf$sigma3, col = 4)
+#' text(res$principal_axes, label = rownames(res$principal_axes), col = 2:4, adj = -.25)
+#' legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
 #' title(sub = bquote(R == .(R_val) ~ "|" ~ bar("RUP") == .(rup_val) * '%'))
-#'
-#' res_AVB <- slip_inversion_michael(angelier1990$AVB, n_iter = 100, n = 1000, res = 100)
-#' stereoplot(title = "Agia Varvara, Crete, Greece", guides = FALSE)
-#' fault_plot(angelier1990$AVB, col = "gray80")
-#' stereo_confidence(res_AVB$principal_axes_conf$sigma1, col = 2)
-#' stereo_confidence(res_AVB$principal_axes_conf$sigma2, col = 3)
-#' stereo_confidence(res_AVB$principal_axes_conf$sigma3, col = 4)
-#' stereo_shmax(res_AVB$SHmax)
-#' text(res_AVB$principal_axes, label = rownames(res_AVB$principal_axes), col = 2:4, adj = -.25)
-#' legend("topleft", col = 2:4, legend = rownames(res_AVB$principal_axes), pch = 16)
+#' }))
 slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction = 0.6, ...) {
   best.fit <- .slip_inversion_michael(x, friction)
   fault_df <- best.fit$fault_data
@@ -306,7 +308,7 @@ fault2michael <- function(x) {
 
 
   SHmax <- tryCatch(
-    expr = SH_from_tensor(eigen(tau)$vectors),
+    expr = SH_from_tensor(eigen(tau, symmetric = TRUE)$vectors),
     error = function(e) NA
   )
 
@@ -367,28 +369,6 @@ fault_normal_matrix <- function(n) {
   nsq <- n^2
 
   nmult <- -2 * n[1] * n[2] * n[3]
-
-  # A <- matrix(nrow = 3, ncol = 5)
-  # A[1, 1] = n[1] - n[1]^3 + n[1] * n[3]^2
-  # A[1, 2] = n[2] - 2 * n[2] * n[1]^2
-  # A[1, 3] = n[3] - 2 * n[3] * n[1]^2
-  # A[1, 4] = -n[1] * n[2]^2 + n[1] * n[3]^2
-  # A[1, 5] = nmult
-  #
-  # A[2, 1] = -n[2] * n[1]^2 + n[2] * n[3]^2
-  # A[2, 2] = n[1] - 2 * n[1] * n[2]^2
-  # A[2, 3] = nmult
-  # A[2, 4] = n[2] - 2 * n[2]^3 + n[2] * n[3]^2
-  # A[2, 5] = n[3] - 2 * n[3]* n[2]^2
-  #
-  # A[3, 1] = -n[3] * n[1]^2 + n[3] + n[3]^2
-  # A[3, 2] = nmult
-  # A[3, 3] = n[1] - 2 * n[1] * n[3]^2
-  # A[3, 4] = -n[2]^2 * n[3] - n[3] + n[3]^3
-  # A[3, 5] = n[2] - 2*n[2] * n[3]^2
-  #
-  # A
-
 
   A <- matrix(nrow = 5, ncol = 3)
   A[1, 1] <- n[1] * (nsq[2] + 2 * nsq[3])
@@ -487,31 +467,30 @@ fault_normal_matrix <- function(n) {
 #'
 #' @examples
 #' # Use Angelier examples:
-#' res_TYM <- slip_inversion_angelier(angelier1990$TYM)
-#' R_val <- round(res_TYM$R, 2)
-#' rup_val <- round(res_TYM$mean_rup, 2)
+#' par(mfrow = c(1, length(angelier1990)))
+#' 
+#' # loop through dataset
+#' invisible(lapply(angelier1990, function(x){
+#' 
+#' # inversion
+#' res <- slip_inversion_angelier(x)
+#' 
+#' # stress shape
+#' R_val <- round(res$R, 2)
+#' 
+#' # misfit
+#' rup_val <- round(res$mean_rup, 2)
 #'
 #' # Plot the faults (color-coded by RUO%) and show the principal stress axes
-#' stereoplot(title = "Tymbaki, Crete, Greece", guides = FALSE)
-#' stereo_shmax(res_TYM$SHmax)
-#' fault_plot(angelier1990$TYM, col = assign_col(res_TYM$fault_data$rup))
-#' points(res_TYM$principal_axes, col = 1:3, pch = 16, cex = 1.5)
-#' text(res_TYM$principal_axes, label = rownames(res_TYM$principal_axes), 
+#' stereoplot(title = "Iterative direct inversion", guides = FALSE)
+#' stereo_shmax(res$SHmax)
+#' fault_plot(x, col = assign_col(res$fault_data$rup))
+#' points(res$principal_axes, col = 1:3, pch = 16, cex = 1.5)
+#' text(res$principal_axes, label = rownames(res$principal_axes), 
 #' col = 1:3, adj = -.25)
-#' legend("topleft", col = 2:4, legend = rownames(res_TYM$principal_axes), pch = 16)
+#' legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
 #' title(sub = bquote(R == .(R_val) ~ "|" ~ bar("RUP") == .(rup_val) * '%'))
-#'
-#' res_AVB <- slip_inversion_angelier(angelier1990$AVB)
-#' R_val <- round(res_AVB$R, 2)
-#' rup_val <- round(res_AVB$mean_rup, 2)
-#' stereoplot(title = "Agia Varvara, Crete, Greece", guides = FALSE)
-#' stereo_shmax(res_AVB$SHmax)
-#' fault_plot(angelier1990$AVB, col = assign_col(res_AVB$fault_data$rup))
-#' points(res_AVB$principal_axes, col = 1:3, pch = 16, cex = 1.5)
-#' text(res_AVB$principal_axes, label = rownames(res_AVB$principal_axes), 
-#' col = 1:3, adj = -.25)
-#' legend("topleft", col = 2:4, legend = rownames(res_AVB$principal_axes), pch = 16)
-#' title(sub = bquote(R == .(R_val) ~ "|" ~ bar("RUP") == .(rup_val) * '%'))
+#' }))
 slip_inversion_angelier <- function(x,
                                     max_iter = 50L,
                                     tol = 1e-6,
@@ -623,7 +602,7 @@ slip_inversion_angelier <- function(x,
   dilat_tend <- dilatation_tendency(p$sigma_vals[1], p$sigma_vals[3], sigma_n)
   
   SHmax <- tryCatch(
-    expr = SH_from_tensor(eigen(TR)$vectors),
+    expr = SH_from_tensor(eigen(TR, symmetric = TRUE)$vectors),
     error = function(e) {
       SH(p$principal_axes[1, ], p$principal_axes[2, ], p$principal_axes[3, ], R = stress_shape$R)
     }
@@ -879,8 +858,17 @@ slip_inversion_angelier <- function(x,
 #' @family stress-inversion
 #'
 #' @examples
-#' f <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
-#' Fault_PT(f)
+#' par(mfrow = c(1, length(angelier1990)))
+#' invisible(lapply(angelier1990, function(x){ 
+#'   xpt <- Fault_PT(x)
+#'   
+#'   stereoplot(guides = FALSE)
+#'   angelier(x, col = 'grey')
+#'   points(xpt$p, pch = 16, cex = 1.5, col = 1)
+#'   points(xpt$t, pch = 16, cex = 1.5, col = 2)
+#'   stereo_confidence(xpt$p, pch = 16, cex = 1.5, col = 1)
+#'   stereo_confidence(xpt$t, pch = 16, cex = 1.5, col = 2)
+#'   }))
 Fault_PT <- function(x, ptangle = 90) {
   ptangle <- rep(deg2rad(ptangle), nrow(x))
   x_corr <- misfit_pair(x)
@@ -974,7 +962,7 @@ slip_inversion_simple <- function(x, cluster_fun = stats::kmeans, n_grid = 1000L
   betas <- sapply(seq_len(nrow(x)), function(i) {
     int <- crossprod(Plane(principal_axes[2, ]), Plane(x[i, ])) |> Line()
     angle(int, Line(x[i, ]))
-  }) #|> as.vector()
+  }) 
   betas <- ifelse(betas > 90, 180 - betas, betas)
   beta_mean <- tectonicr::circular_mean(betas, axial = FALSE)
   
@@ -1090,8 +1078,7 @@ principal_fault <- function(s1, s3, friction = 0.6) {
 
 # Extract principal stress from stress tensor
 tau2stress <- function(tau) {
-  eig <- eigen(tau)
-  # sigma_vals <- sort(eig$values, decreasing  = TRUE)
+  eig <- eigen(tau, symmetric = TRUE)
   sigma_vals <- eig$values
 
   principal_axes <- t(eig$vectors) |>

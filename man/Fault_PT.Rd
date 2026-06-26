@@ -20,8 +20,17 @@ The PT-techniques is a graphical solution of the \emph{Wallace-Bott hypothesis},
 It calculates PT-axes, kinematic planes (also movement planes), and the dihedra separation plane.
 }
 \examples{
-f <- Fault(c(120, 120, 100), c(60, 60, 50), c(110, 25, 30), c(58, 9, 23), c(1, -1, 1))
-Fault_PT(f)
+par(mfrow = c(1, length(angelier1990)))
+invisible(lapply(angelier1990, function(x){ 
+  xpt <- Fault_PT(x)
+  
+  stereoplot(guides = FALSE)
+  angelier(x, col = 'grey')
+  points(xpt$p, pch = 16, cex = 1.5, col = 1)
+  points(xpt$t, pch = 16, cex = 1.5, col = 2)
+  stereo_confidence(xpt$p, pch = 16, cex = 1.5, col = 1)
+  stereo_confidence(xpt$t, pch = 16, cex = 1.5, col = 2)
+  }))
 }
 \seealso{
 Other stress-inversion: 

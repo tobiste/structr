@@ -66,32 +66,31 @@ therefore it is necessary to simultaneously solve for a number of faults, so
 that a single a that best satisfies all of the faults is found.
 }
 \examples{
-set.seed(20250411)
 # Use Angelier examples:
-res_TYM <- slip_inversion_michael(angelier1990$TYM, n_iter = 100, n = 1000, res = 100)
-R_val <- round(res_TYM$R, 2)
-rup_val <- round(res_TYM$mean_rup, 2)
+par(mfrow = c(1, length(angelier1990)))
+
+invisible(lapply(angelier1990, function(x){
+
+# inversion
+res <- slip_inversion_michael(x, n_iter = 100, n = 1000, res = 100)
+
+# some stress shape
+R_val <- round(res$R, 2)
+
+# misfit
+rup_val <- round(res$mean_rup, 2)
 
 # Plot the faults (color-coded by RUP\%) and show the principal stress axes
-stereoplot(title = "Tymbaki, Crete, Greece", guides = FALSE)
-stereo_shmax(res_TYM$SHmax)
-fault_plot(angelier1990$TYM, col = assign_col(res_TYM$fault_data$rup))
-stereo_confidence(res_TYM$principal_axes_conf$sigma1, col = 2)
-stereo_confidence(res_TYM$principal_axes_conf$sigma2, col = 3)
-stereo_confidence(res_TYM$principal_axes_conf$sigma3, col = 4)
-text(res_TYM$principal_axes, label = rownames(res_TYM$principal_axes), col = 2:4, adj = -.25)
-legend("topleft", col = 2:4, legend = rownames(res_TYM$principal_axes), pch = 16)
+stereoplot(title = "Bootstrapped linear inversion", guides = FALSE)
+stereo_shmax(res$SHmax)
+fault_plot(x, col = assign_col(res$fault_data$rup))
+stereo_confidence(res$principal_axes_conf$sigma1, col = 2)
+stereo_confidence(res$principal_axes_conf$sigma2, col = 3)
+stereo_confidence(res$principal_axes_conf$sigma3, col = 4)
+text(res$principal_axes, label = rownames(res$principal_axes), col = 2:4, adj = -.25)
+legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
 title(sub = bquote(R == .(R_val) ~ "|" ~ bar("RUP") == .(rup_val) * '\%'))
-
-res_AVB <- slip_inversion_michael(angelier1990$AVB, n_iter = 100, n = 1000, res = 100)
-stereoplot(title = "Agia Varvara, Crete, Greece", guides = FALSE)
-fault_plot(angelier1990$AVB, col = "gray80")
-stereo_confidence(res_AVB$principal_axes_conf$sigma1, col = 2)
-stereo_confidence(res_AVB$principal_axes_conf$sigma2, col = 3)
-stereo_confidence(res_AVB$principal_axes_conf$sigma3, col = 4)
-stereo_shmax(res_AVB$SHmax)
-text(res_AVB$principal_axes, label = rownames(res_AVB$principal_axes), col = 2:4, adj = -.25)
-legend("topleft", col = 2:4, legend = rownames(res_AVB$principal_axes), pch = 16)
+}))
 }
 \references{
 Michael, A. J. (1984). Determination of stress from slip data:

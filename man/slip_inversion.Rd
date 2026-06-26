@@ -18,24 +18,27 @@ or \code{"angelier"} for a iterative direct inversion.}
 list. See \code{\link[=slip_inversion_angelier]{slip_inversion_angelier()}} and \code{\link[=slip_inversion_michael]{slip_inversion_michael()}}
 }
 \description{
-Linear and direction inversion of fault-slip data to derive the reduced stress tensor.
+Convenient function for linear and direction inversion of fault-slip data to
+derive the reduced stress tensor.
 }
 \examples{
 set.seed(20250411)
-# Use Angelier examples:
-dat <- angelier1990$TYM
+# Use Angelier examples
+par(mfrow = c(1, length(angelier1990)))
+invisible(lapply(angelier1990, function(x){
 
 # Linear inversion
-TYM_michael <- slip_inversion(dat, method = "michael")
+TYM_michael <- slip_inversion(x, method = "michael")
 
 # Direct inversion
-TYM_angelier <- slip_inversion(dat, method = "angelier")
+TYM_angelier <- slip_inversion(x, method = "angelier")
 
 stereoplot(guides = FALSE)
-fault_plot(dat, col = "gray80")
+fault_plot(x, col = "gray80")
 points(TYM_michael$principal_axes, pch = 3, col = 1:3)
 points(TYM_angelier$principal_axes, pch = 2, col = 1:3)
 legend("topleft", col = 1, legend = c("Michael (1984)", "Angelier (1990)"), pch = c(3, 2))
+}))
 }
 \references{
 Angelier, J. (1990). Inversion of field data in fault tectonics to obtain
