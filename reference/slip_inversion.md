@@ -19,7 +19,7 @@ slip_inversion(x, method = c("michael", "angelier"), ...)
 - method:
 
   character. The inversion algorithm. One of `"michael"` (the default)
-  for a bootstrapped linear inversion, or `"angelier"` for a iterative
+  for a bootstrapped linear inversion, or `"angelier"` for an iterative
   direct inversion.
 
 - ...:

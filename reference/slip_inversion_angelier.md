@@ -8,6 +8,7 @@ Mostafa (2005)
 ``` r
 slip_inversion_angelier(
   x,
+  weights = NULL,
   max_iter = 50L,
   tol = 1e-06,
   n_psi = 361L,
@@ -20,20 +21,25 @@ slip_inversion_angelier(
 - x:
 
   `"Fault"` object where the rows are the observations, and the columns
-  the coordinates.
+  the coordinates. Must have at least 4 fault measurements.
+
+- weights:
+
+  numeric. Weightings for the faults. Must have the same length as `x`
 
 - max_iter:
 
-  integer. maximum Mostafa iteration count (default `50`)
+  integer. Maximum iteration count (default `50`) for Mostafa (2005)
+  optimization.
 
 - tol:
 
-  numeric. convergence tolerance on max absolute change in TR elements
+  numeric. Convergence tolerance on max absolute change in TR elements
   between iterations (default `1e-6`)
 
 - n_psi:
 
-  integer. number of psi grid points for each step (default `361`)
+  integer. Number of psi grid points for each step (default `361`)
 
 - friction:
 
@@ -118,6 +124,21 @@ Mostafa (2005) replaces the global \\\lambda\\ with per-fault
 \\\lambda_i\\ equal to the shear traction magnitude on each plane and
 iterates until convergence.
 
+## Note
+
+The solution can be refined by iteratively by weighting the faults using
+the RUP values. This could be done using
+[`scale_weights()`](https://tobiste.github.io/structr/reference/scale_weights.md)
+which scales the RUP values:
+
+     # run a first inversion:
+     first <- slip_inversion_angelier(x)
+     first$
+
+     # in the
+     second <- slip_inversion_angelier(x, weights = scale_weights(first$misfit$rup, error_type = 'rup'))
+     print(second)
+
 ## References
 
 Angelier, J. (1990). Inversion of field data in fault tectonics to
@@ -156,7 +177,7 @@ res <- slip_inversion_angelier(x)
 R_val <- round(res$stress_shape$R, 2)
 
 # misfit
-rup_val <- round(res$misfit$misfit_means["rup"], 2)
+rup_val <- round(res$misfit$rup_mean, 2)
 
 # Plot the faults (color-coded by RUO%) and show the principal stress axes
 stereoplot(title = "Iterative direct inversion", guides = FALSE)

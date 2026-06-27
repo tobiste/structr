@@ -252,17 +252,17 @@ The stress inversion using the Michael method with 10 bootstraps:
 
 test_res <- slip_inversion(test_data, method = "michael", n_iter = 10)
 
-# Average beta angle
-test_res$misfit$beta
+# Average alpha angle
+test_res$misfit$alpha
 ```
 
-    ##  [1] 22.4236622  7.9223563 20.1821988  9.9101003 13.9637462 20.1733189
-    ##  [7] 16.5519986  2.0706525 17.1911259  2.8583673 11.8477338  7.7629023
-    ## [13]  5.2680686 16.9325330  3.0864496 23.2285082  4.8017604 11.1360382
-    ## [19] 29.9292121 32.2496608 25.3837096 21.3747640 35.2452209 23.0365967
-    ## [25]  7.5504871 28.7097966 21.5712363 24.8114656  4.1798486  8.6411863
-    ## [31] 22.4333122  8.0510983 24.7064543 14.9681085  5.9747586  4.0508392
-    ## [37]  0.6771364 15.9340377
+    ##  [1] 19.0581833  0.4300616 17.6971171  8.5078919  9.3257870  5.9565593
+    ##  [7] 15.0070188  1.1696222 12.2657156  6.2970707 12.1518725  7.3901878
+    ## [13]  4.3095800 12.5543133  1.0365795 13.9582802  3.2573252  5.5898020
+    ## [19] 28.9782473 29.3190948 12.5920654 16.1272918 37.6709469  4.6992775
+    ## [25]  5.0514715 25.5265174 21.6148031 23.1509507  3.9315776 20.8077306
+    ## [31] 17.5255311  3.9282757 15.8194428 12.8556026  5.1748022  6.1157113
+    ## [37]  7.4467402 11.3905892
 
 ``` r
 
@@ -313,8 +313,7 @@ The stress shape ratio Φ (Angelier 1979)[^6]
 test_res$stress_shape$phi
 ```
 
-    ##   sigma2 
-    ## 0.101247
+    ## [1] 0.101247
 
 ``` r
 
@@ -326,29 +325,29 @@ test_res$phi_CI
     ## attr(,"conf.level")
     ## [1] 0.95
 
-The angle β is the angle between the tangential traction predicted by
-the best stress tensor and the slip vector. This deviation can be
-visualized in the stereoplot:
+The angle \$alpha; is the angle between the tangential traction
+predicted by the best stress tensor and the slip vector. This deviation
+can be visualized in the stereoplot:
 
 ``` r
 
-beta <- test_res$misfit$beta
+alpha <- test_res$misfit$alpha
 
 stereoplot(
   title = "Deviation",
-  sub = bquote(bar(beta) == .(round(test_res$beta)) * degree),
+  sub = bquote(bar(alpha) == .(round(test_res$alpha)) * degree),
   guides = FALSE
 )
 
-fault_plot(test_data, col = assign_col(beta))
+fault_plot(test_data, col = assign_col(alpha))
 legend_col(
-  seq(min(beta), max(beta), 10),
-  title = bquote("Deviation angle" ~ beta ~ "(" * degree * ")")
+  seq(min(alpha), max(alpha), 10),
+  title = bquote("Deviation angle" ~ alpha ~ "(" * degree * ")")
 )
 ```
 
 ![Diagram showing deviation of the best-fit principal stress tensor in a
-stereoplot](Faults_files/figure-html/slip_inversion_beta-1.png)
+stereoplot](Faults_files/figure-html/slip_inversion_alpha-1.png)
 
 ``` r
 
@@ -359,7 +358,7 @@ Mohr_plot(
   unit = NULL, include.zero = FALSE
 )
 points(test_res$stress_components[, 'normal'], abs(test_res$stress_components[, 'shear']),
-  col = assign_col(beta), pch = 16
+  col = assign_col(alpha), pch = 16
 )
 ```
 

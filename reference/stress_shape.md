@@ -74,15 +74,12 @@ f <- angelier1990$TYM
 tau <- reduced_stress(f)
 stress_shape(tau) 
 #> $R
-#>   sigma1 
-#> 0.898753 
+#> [1] 0.898753
 #> 
 #> $phi
-#>   sigma2 
-#> 0.101247 
+#> [1] 0.101247
 #> 
 #> $bott
-#>   sigma3 
-#> 1.112653 
+#> [1] 1.112653
 #> 
 ```

@@ -80,28 +80,31 @@
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>list.</p><dl><dt><code>"alpha"</code></dt>
-<dd><p>numeric. Angelier (1990)'s angles between the shear stress
-vector and the slip vector, ranging from 0&amp;degree; (perfect fit) to 180° (inconsistent fit).</p></dd>
+    <p>list.</p><dl><dt><code>alpha</code></dt>
+<dd><p>numeric. Deviation angle between slickenline and shear traction as a line
+(0-90&amp;degree). This is the standard misfit used in Angelier (1990) because
+field slickenlines are geometrically lines, not vectors. Ranging from 0&amp;degree;
+(perfect fit) to 90° (inconsistent fit).</p></dd>
 
-<dt><code>"beta"</code></dt>
-<dd><p>numeric. Michael (1984)'s angles between the tangential
-traction predicted by the best stress tensor and the slip vector on each plane, ranging from 0 to 90°.</p></dd>
+<dt><code>alpha_mean</code></dt>
+<dd><p>numeric. The mean of <code>alpha</code>, the ie. the mean deviation
+of predicted from observed slip.</p></dd>
 
-<dt><code>"theta"</code></dt>
-<dd><p>numeric. Angle between slip planes and \(\sigma_1\) ranging from 0 to 180°.</p></dd>
-
-<dt><code>"rup"</code></dt>
+<dt><code>rup</code></dt>
 <dd><p>numeric. "Ratio Upsilon" (RUP) parameter after Angelier (1990), ranging frm 0 (perfect fit) to 200% (misfit). See <code><a href="tau2rup.html">tau2rup()</a></code>.</p></dd>
 
-<dt><code>"quality"</code></dt>
+<dt><code>quality</code></dt>
 <dd><p>factor. Ranked misfit classification based on RUP values. See <code><a href="tau2rup.html">tau2rup()</a></code>.</p></dd>
 
-<dt><code>"quality_summary"</code></dt>
+<dt><code>rup_mean</code></dt>
+<dd><p>numeric. The mean RUP.</p></dd>
+
+<dt><code>quality_summary</code></dt>
 <dd><p>integer. Counts of faults in the RUP-based quality ranks.</p></dd>
 
-<dt><code>"misfit_means"</code></dt>
-<dd><p>Mean values of <code>alpha</code>, <code>beta</code>, <code>theta</code>, and <code>rup.</code></p></dd>
+<dt><code>flipped</code></dt>
+<dd><p>logical. Are the signs of slip vectors flipped, i.e.,
+dot product of the slip ray and the predicted shear traction is negative?</p></dd>
 
 
 </dl></div>
@@ -120,21 +123,8 @@ traction predicted by the best stress tensor and the slip vector on each plane, 
 <span class="r-out co"><span class="r-pr">#&gt;</span> [31] 17.5255311  3.9282757 15.8194428 12.8556026  5.1748022  6.1157113</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [37]  7.4467402 11.3905892</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $beta</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 22.4236622  7.9223563 20.1821988  9.9101003 13.9637462 20.1733189</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [7] 16.5519986  2.0706525 17.1911259  2.8583673 11.8477338  7.7629023</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [13]  5.2680686 16.9325330  3.0864496 23.2285082  4.8017604 11.1360382</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [19] 29.9292121 32.2496608 25.3837096 21.3747640 35.2452209 23.0365967</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25]  7.5504871 28.7097966 21.5712363 24.8114656  4.1798486  8.6411863</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [31] 22.4333122  8.0510983 24.7064543 14.9681085  5.9747586  4.0508392</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [37]  0.6771364 15.9340377</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $theta</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 61.29090 58.39885 75.84995 67.28394 63.01864 82.71051 75.13496 60.39790</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [9] 57.94764 58.44370 70.63671 51.01134 52.64142 65.43599 60.92119 62.12882</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [17] 59.19148 62.47282 74.45211 53.74784 50.46237 43.95529 79.38046 44.13129</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [25] 57.16206 76.39212 62.47759 55.78091 68.82664 56.60872 67.73859 62.87543</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [33] 66.06326 45.75706 66.72009 70.86226 65.60097 67.09459</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $alpha_mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 11.7521</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $rup</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 39.266859 22.364271 42.794333 14.800803 20.461318 64.718606 38.120249</span>
@@ -143,6 +133,9 @@ traction predicted by the best stress tensor and the slip vector on each plane, 
 <span class="r-out co"><span class="r-pr">#&gt;</span> [22] 50.411469 68.209016 34.135993 25.437568 50.886127 42.192872 53.871795</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [29]  9.421844 47.329481 30.113931 13.797249 27.532282 46.592528  9.067210</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [36] 20.237287 13.242937 19.749635</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $rup_mean</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 32.58638</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $quality</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] good       good       good       good       good       acceptable</span>
@@ -154,13 +147,15 @@ traction predicted by the best stress tensor and the slip vector on each plane, 
 <span class="r-out co"><span class="r-pr">#&gt;</span> [37] good       good      </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Levels: good acceptable poor</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> $misfit_means</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    alpha     beta    theta      rup </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 12.22468 15.16869 62.65926 32.58638 </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $quality_summary</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>       n_good n_acceptable       n_poor </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>           31            7            0 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $flipped</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [25] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [37] FALSE FALSE</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>

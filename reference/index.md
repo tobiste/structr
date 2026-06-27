@@ -404,6 +404,9 @@
 - [`sample_spherical()`](https://tobiste.github.io/structr/reference/sample_spherical.md)
   : Random Samples and Permutations of Spherical Objects
 
+- [`scale_weights()`](https://tobiste.github.io/structr/reference/scale_weights.md)
+  : Scaling weightings
+
 - [`sense_from_strikeslip()`](https://tobiste.github.io/structr/reference/sense_from_strikeslip.md)
   : Dip-slip Kinematics from Strike-Slip Faults
 

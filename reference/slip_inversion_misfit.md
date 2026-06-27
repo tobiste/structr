@@ -23,41 +23,42 @@ slip_inversion_misfit(tau, fault)
 
 list.
 
-- `"alpha"`:
+- `alpha`:
 
-  numeric. Angelier (1990)'s angles between the shear stress vector and
-  the slip vector, ranging from 0&degree; (perfect fit) to 180°
-  (inconsistent fit).
+  numeric. Deviation angle between slickenline and shear traction as a
+  line (0-90&degree). This is the standard misfit used in
+  Angelier (1990) because field slickenlines are geometrically lines,
+  not vectors. Ranging from 0&degree; (perfect fit) to 90° (inconsistent
+  fit).
 
-- `"beta"`:
+- `alpha_mean`:
 
-  numeric. Michael (1984)'s angles between the tangential traction
-  predicted by the best stress tensor and the slip vector on each plane,
-  ranging from 0 to 90°.
+  numeric. The mean of `alpha`, the ie. the mean deviation of predicted
+  from observed slip.
 
-- `"theta"`:
-
-  numeric. Angle between slip planes and \\\sigma_1\\ ranging from 0 to
-  180°.
-
-- `"rup"`:
+- `rup`:
 
   numeric. "Ratio Upsilon" (RUP) parameter after Angelier (1990),
   ranging frm 0 (perfect fit) to 200% (misfit). See
   [`tau2rup()`](https://tobiste.github.io/structr/reference/tau2rup.md).
 
-- `"quality"`:
+- `quality`:
 
   factor. Ranked misfit classification based on RUP values. See
   [`tau2rup()`](https://tobiste.github.io/structr/reference/tau2rup.md).
 
-- `"quality_summary"`:
+- `rup_mean`:
+
+  numeric. The mean RUP.
+
+- `quality_summary`:
 
   integer. Counts of faults in the RUP-based quality ranks.
 
-- `"misfit_means"`:
+- `flipped`:
 
-  Mean values of `alpha`, `beta`, `theta`, and `rup.`
+  logical. Are the signs of slip vectors flipped, i.e., dot product of
+  the slip ray and the predicted shear traction is negative?
 
 ## Examples
 
@@ -74,21 +75,8 @@ slip_inversion_misfit(tau, f)
 #> [31] 17.5255311  3.9282757 15.8194428 12.8556026  5.1748022  6.1157113
 #> [37]  7.4467402 11.3905892
 #> 
-#> $beta
-#>  [1] 22.4236622  7.9223563 20.1821988  9.9101003 13.9637462 20.1733189
-#>  [7] 16.5519986  2.0706525 17.1911259  2.8583673 11.8477338  7.7629023
-#> [13]  5.2680686 16.9325330  3.0864496 23.2285082  4.8017604 11.1360382
-#> [19] 29.9292121 32.2496608 25.3837096 21.3747640 35.2452209 23.0365967
-#> [25]  7.5504871 28.7097966 21.5712363 24.8114656  4.1798486  8.6411863
-#> [31] 22.4333122  8.0510983 24.7064543 14.9681085  5.9747586  4.0508392
-#> [37]  0.6771364 15.9340377
-#> 
-#> $theta
-#>  [1] 61.29090 58.39885 75.84995 67.28394 63.01864 82.71051 75.13496 60.39790
-#>  [9] 57.94764 58.44370 70.63671 51.01134 52.64142 65.43599 60.92119 62.12882
-#> [17] 59.19148 62.47282 74.45211 53.74784 50.46237 43.95529 79.38046 44.13129
-#> [25] 57.16206 76.39212 62.47759 55.78091 68.82664 56.60872 67.73859 62.87543
-#> [33] 66.06326 45.75706 66.72009 70.86226 65.60097 67.09459
+#> $alpha_mean
+#> [1] 11.7521
 #> 
 #> $rup
 #>  [1] 39.266859 22.364271 42.794333 14.800803 20.461318 64.718606 38.120249
@@ -97,6 +85,9 @@ slip_inversion_misfit(tau, f)
 #> [22] 50.411469 68.209016 34.135993 25.437568 50.886127 42.192872 53.871795
 #> [29]  9.421844 47.329481 30.113931 13.797249 27.532282 46.592528  9.067210
 #> [36] 20.237287 13.242937 19.749635
+#> 
+#> $rup_mean
+#> [1] 32.58638
 #> 
 #> $quality
 #>  [1] good       good       good       good       good       acceptable
@@ -108,12 +99,14 @@ slip_inversion_misfit(tau, f)
 #> [37] good       good      
 #> Levels: good acceptable poor
 #> 
-#> $misfit_means
-#>    alpha     beta    theta      rup 
-#> 12.22468 15.16869 62.65926 32.58638 
-#> 
 #> $quality_summary
 #>       n_good n_acceptable       n_poor 
 #>           31            7            0 
+#> 
+#> $flipped
+#>  [1] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+#> [13] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+#> [25] FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE FALSE
+#> [37] FALSE FALSE
 #> 
 ```
