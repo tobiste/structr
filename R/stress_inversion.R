@@ -587,8 +587,9 @@ slip_inversion_angelier <- function(x,
 #   3. Refines the minimum with Brent's method.
 #   4. Returns the optimal (psi, d, e, f) and the corresponding TR.
 #' @importFrom stats optimise
-.angelier_step <- function(normals, slips, lambdas, n_psi = 361L,
-                           psi_centre = pi / 2, psi_window = pi) {
+.angelier_step <- function(normals, slips, lambdas, n_psi = 361L#,
+                           # psi_centre = pi / 2, psi_window = pi
+                           ) {
   N <- nrow(normals)
   lv <- if (length(lambdas) == 1L) rep(lambdas, N) else lambdas
   
@@ -749,19 +750,71 @@ slip_inversion_angelier <- function(x,
   )
 }
 
-fault_weighting <- function(w){
-  # Quality tier weights (e.g. from field confidence scores)
-  w <- c(good = 3, acceptable = 1.5, poor = 0.5)
-  weights <- w[field_quality_class]
+#' Scaling weightings of faults
+#' 
+#' Scales quantitative errors or qualities of fault measurements. Useful for some 
+#' statistical summaries or fault-slip inversion. 
+#'
+#' @param e numeric. Fault weights
+#' @param error_type character. One of `"rank"` (a numeric value ranking 
+#' measurement quality), `"angle"` (a reading error expressed as angles in 
+#' degrees), and `"rup"` (RUP values from a previous fault-slip inversion)
+#' @param scaling  character. Scaling function to use. One of `"lin"` (leaves 
+#' weights \eqn{e} as is), `"inv_lin"` (\eqn{1/e}), `"inv_square"` (\eqn{1/e^2}), 
+#' and `"exp"` (\eqn{\exp{-(x-1)}})
+#' @param replace_na logical. Imputation? Whether `NA` should be replaced by the 
+#' mean of the weights? (`TRUE` by default)
+#' @param norm logical. Whether the scaled weights should be normalized by 
+#' their mean? (`FALSE` by default)
+#'
+#' @returns numeric. 
+#' @export
+#' 
+#' @seealso [slip_inversion_angelier()]
+#'
+#' @examples
+#' set.seed(20250411)
+#' # Generate some random weights from 1 (poor) to 5 (good)
+#' err <- sample(1:5, size = 10, replace = TRUE)
+#' 
+#' # Introduce 3 random NAs
+#' err[sample(length(err), 3)] <- NA
+#' 
+#' fault_weighting(err, error_type = 'rank', scaling = 'inv_square', norm = TRUE)
+fault_weighting <- function(e, error_type = c('rank', 'angle', 'rup'), scaling = c('lin', 'inv_lin', 'inv_square', 'exp'), replace_na = TRUE, norm = FALSE){
+  error_type <- match.arg(error_type)
+  scaling <- match.arg(scaling)
   
-  # Or continuous: inverse of estimated striation measurement error (degrees)
-  weights <- 1 / error_deg^2
+  emean <- mean(e, na.rm = TRUE)
+  if(replace_na){
+    e[is.na(e)] <- emean
+  }
   
-  # Or from a previous inversion's RUP — downweight outliers
-  weights <- 1 / (1 + (prev_rup / 50)^2) 
+  scale_fun <- if(scaling == 'inv_square'){
+    function(x) 1 / x^2
+  } else if(scaling == 'exp'){
+    function(x) exp(-(x-1))
+  } else if(scaling == 'inv_lin') {
+    function(x) 1/x
+  } else {
+    function(x) x
+  }
   
+
+  if(error_type == 'rank'){
+    weights <- scale_fun(e)
+  } else if(error_type == 'angle'){
+    e <- ifelse(e > 90, 180 - e, e)
+    error_clamped <- pmin(pmax(e, 0.1), 90) # zero value for perfect measurement must be 0.1
+    weights <- scale_fun(error_clamped)
+  } else if(error_type == 'rup'){
+  #  from a previous inversion's RUP — downweight outliers
+  weights <- 1 / (1 + (e / 50)^2)
+  }
   
-  terurn(weights)
+  if(norm) weights <- weights / mean(weights, na.rm = TRUE)
+  
+  return(weights)
 }
 
 
