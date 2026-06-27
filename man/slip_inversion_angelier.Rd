@@ -6,6 +6,7 @@
 \usage{
 slip_inversion_angelier(
   x,
+  weights = NULL,
   max_iter = 50L,
   tol = 1e-06,
   n_psi = 361L,
@@ -13,13 +14,16 @@ slip_inversion_angelier(
 )
 }
 \arguments{
-\item{x}{\code{"Fault"} object where the rows are the observations, and the columns the coordinates.}
+\item{x}{\code{"Fault"} object where the rows are the observations, and the columns
+the coordinates. Must have at least 4 fault measurements.}
 
-\item{max_iter}{integer. maximum Mostafa iteration count (default \code{50})}
+\item{weights}{numeric. Weightings for the faults. Must have the same length as \code{x}}
 
-\item{tol}{numeric. convergence tolerance on max absolute change in TR elements between iterations (default \code{1e-6})}
+\item{max_iter}{integer. Maximum iteration count (default \code{50}) for Mostafa (2005) optimization.}
 
-\item{n_psi}{integer. number of psi grid points for each step (default \code{361})}
+\item{tol}{numeric. Convergence tolerance on max absolute change in TR elements between iterations (default \code{1e-6})}
+
+\item{n_psi}{integer. Number of psi grid points for each step (default \code{361})}
 
 \item{friction}{numeric. Coefficient of friction (0.6 by default)}
 }

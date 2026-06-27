@@ -354,10 +354,13 @@ fault_normal_matrix <- function(n) {
 #'
 #' @description Iterative direct inversion after the algorithm of Angelier (1990) and Mostafa (2005)
 #'
+#' @param x `"Fault"` object where the rows are the observations, and the columns 
+#' the coordinates. Must have at least 4 fault measurements.
+#' @param weights numeric. Weightings for the faults. Must have the same length as `x`
+#' @param max_iter integer. Maximum iteration count (default `50`) for Mostafa (2005) optimization.
+#' @param tol numeric. Convergence tolerance on max absolute change in TR elements between iterations (default `1e-6`)
+#' @param n_psi integer. Number of psi grid points for each step (default `361`)
 #' @inheritParams slip_inversion_michael
-#' @param max_iter integer. maximum Mostafa iteration count (default `50`)
-#' @param tol numeric. convergence tolerance on max absolute change in TR elements between iterations (default `1e-6`)
-#' @param n_psi integer. number of psi grid points for each step (default `361`)
 #'
 #' @details
 #' The reduced stress tensor (Eq. 4.87) is parameterised as:
@@ -424,6 +427,7 @@ fault_normal_matrix <- function(n) {
 #' title(sub = bquote(R == .(R_val) ~ "|" ~ bar("RUP") == .(rup_val) * '%'))
 #' }))
 slip_inversion_angelier <- function(x,
+                                    weights = NULL,
                                     max_iter = 50L,
                                     tol = 1e-6,
                                     n_psi = 361L,
@@ -442,8 +446,23 @@ slip_inversion_angelier <- function(x,
   N <- nrow(normals)
   lambda <- sqrt(3) / 2 # global lambda from normalised TR, Eq. 4.106
   
+  
+  # --- weights -----------------------------------------------------------
+  # omega_i enters F4 as sqrt(omega_i) * lambda_i (see derivation above).
+  # Default: uniform weights = 1.
+  if (is.null(weights)) {
+    w_sqrt <- rep(1, N)
+  } else {
+    stopifnot(is.numeric(weights), length(weights) == N,
+              all(weights >= 0), any(weights > 0))
+    # Normalise so mean weight = 1 (keeps lambda scale invariant)
+    weights <- weights / mean(weights)
+    w_sqrt  <- sqrt(weights)
+  }
+  
+  
   # --- Step 1: initial Angelier (1990) inversion with global lambda ---
-  res <- .angelier_step(normals, slips, lambda, n_psi)
+  res <- .angelier_step(normals, slips, lambda * w_sqrt, n_psi)
   TR <- res$TR
   #
   # if (verbose)
@@ -461,7 +480,7 @@ slip_inversion_angelier <- function(x,
     # Fall back to global lambda for degenerate planes (zero shear)
     lambda_i <- ifelse(tau_mag > 1e-12, tau_mag, lambda)
     
-    res_new <- .angelier_step(normals, slips, lambda_i, n_psi)
+    res_new <- .angelier_step(normals, slips, lambda_i * w_sqrt, n_psi)
     TR_new <- res_new$TR
     
     delta <- max(abs(TR_new - TR))
@@ -568,7 +587,8 @@ slip_inversion_angelier <- function(x,
 #   3. Refines the minimum with Brent's method.
 #   4. Returns the optimal (psi, d, e, f) and the corresponding TR.
 #' @importFrom stats optimise
-.angelier_step <- function(normals, slips, lambdas, n_psi = 361L) {
+.angelier_step <- function(normals, slips, lambdas, n_psi = 361L,
+                           psi_centre = pi / 2, psi_window = pi) {
   N <- nrow(normals)
   lv <- if (length(lambdas) == 1L) rep(lambdas, N) else lambdas
   
@@ -727,6 +747,21 @@ slip_inversion_angelier <- function(x,
     TR = as.ellipsoid(TR_opt),
     F4 = opt$objective
   )
+}
+
+fault_weighting <- function(w){
+  # Quality tier weights (e.g. from field confidence scores)
+  w <- c(good = 3, acceptable = 1.5, poor = 0.5)
+  weights <- w[field_quality_class]
+  
+  # Or continuous: inverse of estimated striation measurement error (degrees)
+  weights <- 1 / error_deg^2
+  
+  # Or from a previous inversion's RUP — downweight outliers
+  weights <- 1 / (1 + (prev_rup / 50)^2) 
+  
+  
+  terurn(weights)
 }
 
 
@@ -1137,7 +1172,7 @@ tau2tendency <- function(tau, fault, friction = 0.6){
   slip_tend <- slip_tendency(sigma_s, sigma_n)
   dilat_tend <- dilatation_tendency(p$sigma_vals[1], p$sigma_vals[3], sigma_n)
   
-  cbind(slip_tend, dilat_tend)
+  cbind(slip_tendency = slip_tend, dilatation_tendency = dilat_tend)
 }
 
 
@@ -1191,8 +1226,8 @@ tau2tendency <- function(tau, fault, friction = 0.6){
 #' stress_shape(tau) 
 stress_shape <- function(tau) {
   tau_stress <- tau2stress(tau)
-  sigma_vals <- tau_stress$sigma_vals
-  principal_axes <- tau_stress$principal_axess
+  sigma_vals <- unname(tau_stress$sigma_vals)
+  #principal_axes <- tau_stress$principal_axes
 
   # stress ratios:
   R <- (sigma_vals[1] - sigma_vals[2]) / (sigma_vals[1] - sigma_vals[3]) # Gephart & Forsyth 1984
