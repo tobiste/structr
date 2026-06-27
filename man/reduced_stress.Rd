@@ -10,7 +10,7 @@ reduced_stress(fault, method = c("michael", "angelier"))
 \item{fault}{\code{"Fault"} object where the rows are the observations, and the columns the coordinates.}
 
 \item{method}{character. The inversion algorithm. One of \code{"michael"} (the default) for a bootstrapped linear inversion,
-or \code{"angelier"} for a iterative direct inversion.}
+or \code{"angelier"} for an iterative direct inversion.}
 }
 \value{
 \code{"ellipsoid"} object. 3x3 matrix (i.e. 2nd rank tensor).

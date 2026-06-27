@@ -5,7 +5,7 @@
 #'
 #' @param x `"Fault"` object where the rows are the observations, and the columns the coordinates.
 #' @param method character. The inversion algorithm. One of `"michael"` (the default) for a bootstrapped linear inversion, 
-#' or `"angelier"` for a iterative direct inversion.
+#' or `"angelier"` for an iterative direct inversion.
 #' @param ... arguments passed to [slip_inversion_angelier()] or [slip_inversion_michael()]
 #'
 #' @returns a named list with the following components:
@@ -32,7 +32,7 @@
 #' Michael, A. J. (1984). Determination of stress from slip data: Faults and 
 #' folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526. 
 #' <https://doi.org/10.1029/JB089iB13p11517>
-#'
+#' 
 #' @export
 #'
 #' @examples
@@ -206,6 +206,8 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
   #theta_CI <- tectonicr::confidence_interval(best.fit$misfit$theta, conf.level = conf.level, axial = FALSE)
   rup_CI <- stats::t.test(best.fit$misfit$rup, conf.level = conf.level)
 
+  
+  
   SHmax_CI <- vapply(tau_boot, function(x) {
     tryCatch(
       expr = SH_from_tensor(x),
@@ -225,7 +227,8 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
     R_CI = R_boot$conf.int,
     phi_CI = phi_boot$conf.int,
     bott_CI = bott_boot$conf.int,
-    alpha_CI = alpha_CI$conf.interval
+    alpha_CI = alpha_CI$conf.interval#,
+    #tau_mean_CI = tau_mean_CI$conf.int
     #beta_CI = beta_CI$conf.interval,
     #theta_CI = theta_CI$conf.interval
   ))
@@ -252,11 +255,18 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
   # --- Step 4: Per-fault diagnostics ---
   misfit <- slip_inversion_misfit(TR, x)
   
+  # Angle between slip planes and sigma 1
+  theta <- vapply(seq_len(nx), function(i) {
+    angle(Plane(x[i, ]), p$principal_axes[1, ])
+  }, numeric(1))
+
   # Theoretically resolved shear stress on plane
-  sigma_s_mean <- mean(shear_stress(p$sigma_vals[1], p$sigma_vals[3], misfit$theta))
-  
+  sigma_s_mean <- mean(shear_stress(p$sigma_vals[1], p$sigma_vals[3], theta))
+
   shearnorm <- tau2shearnorm(TR, x, friction = friction)
   tendency <- tau2tendency(TR, x, friction = friction)
+  
+  # sigma_s_mean <- mean(abs(shearnorm))
   
   SHmax <- tryCatch(
     expr = SH_from_tensor(eigen(TR, symmetric = TRUE)$vectors),
@@ -397,6 +407,18 @@ fault_normal_matrix <- function(n) {
 #' & Geosciences, 31(8), 1059–1070. <https://doi.org/10.1016/j.cageo.2005.02.012>
 #' 
 #' @family stress-inversion
+#' 
+#' @note The solution can be refined by iteratively by weighting the faults using the RUP values. 
+#' This could be done using [scale_weights()] which scales the RUP values:
+#' ```r 
+#'  # run a first inversion:
+#'  first <- slip_inversion_angelier(x)
+#'  first$
+#'  
+#'  # in the 
+#'  second <- slip_inversion_angelier(x, weights = scale_weights(first$misfit$rup, error_type = 'rup'))
+#'  print(second)
+#'  ```
 #'
 #' @inherit slip_inversion return
 #' @export
@@ -501,11 +523,19 @@ slip_inversion_angelier <- function(x,
   # --- Step 4: Per-fault diagnostics ---
   misfit <- slip_inversion_misfit(TR, x)
   
+  
+  # Angle between slip planes and sigma 1
+  theta <- vapply(seq_len(N), function(i) {
+    angle(Plane(x[i, ]), p$principal_axes[1, ])
+  }, numeric(1))
+
   # Theoretically resolved shear stress on plane
-  sigma_s_mean <- mean(shear_stress(p$sigma_vals[1], p$sigma_vals[3], misfit$theta))
+  sigma_s_mean <- mean(shear_stress(p$sigma_vals[1], p$sigma_vals[3], theta))
   
   shearnorm <- tau2shearnorm(TR, x, friction = friction)
   tendency <- tau2tendency(TR, x, friction = friction)
+  
+  # sigma_s_mean <- mean(abs(shearnorm))
   
   SHmax <- tryCatch(
     expr = SH_from_tensor(eigen(TR, symmetric = TRUE)$vectors),
@@ -744,72 +774,6 @@ slip_inversion_angelier <- function(x,
   )
 }
 
-#' Scaling weightings
-#' 
-#' Scales quantitative errors or qualities of orientation measurements. Useful for some 
-#' statistical summaries or fault-slip inversion. 
-#'
-#' @param e numeric. Weights
-#' @param error_type character. One of `"rank"` (a numeric value ranking 
-#' measurement quality), `"angle"` (a reading error expressed as angles in 
-#' degrees), and `"rup"` (RUP values from a previous fault-slip inversion)
-#' @param scaling  character. Scaling function to use. One of `"lin"` (leaves 
-#' weights \eqn{e} as is), `"inv_lin"` (\eqn{1/e}), `"inv_square"` (\eqn{1/e^2}), 
-#' and `"exp"` (\eqn{\exp{-(x-1)}})
-#' @param replace_na logical. Imputation? Whether `NA` should be replaced by the 
-#' mean of the weights? (`TRUE` by default)
-#' @param norm logical. Whether the scaled weights should be normalized by 
-#' their mean? (`FALSE` by default)
-#'
-#' @returns numeric. 
-#' @export
-#' 
-#' @seealso [slip_inversion_angelier()]
-#'
-#' @examples
-#' set.seed(20250411)
-#' # Generate some random weights from 1 (poor) to 5 (good)
-#' err <- sample(1:5, size = 10, replace = TRUE)
-#' 
-#' # Introduce 3 random NAs
-#' err[sample(length(err), 3)] <- NA
-#' 
-#' fault_weighting(err, error_type = 'rank', scaling = 'inv_square', norm = TRUE)
-fault_weighting <- function(e, error_type = c('rank', 'angle', 'rup'), scaling = c('lin', 'inv_lin', 'inv_square', 'exp'), replace_na = TRUE, norm = FALSE){
-  error_type <- match.arg(error_type)
-  scaling <- match.arg(scaling)
-  
-  emean <- mean(e, na.rm = TRUE)
-  if(replace_na){
-    e[is.na(e)] <- emean
-  }
-  
-  scale_fun <- if(scaling == 'inv_square'){
-    function(x) 1 / x^2
-  } else if(scaling == 'exp'){
-    function(x) exp(-(x-1))
-  } else if(scaling == 'inv_lin') {
-    function(x) 1/x
-  } else {
-    function(x) x
-  }
-  
-
-  if(error_type == 'rank'){
-    weights <- scale_fun(e)
-  } else if(error_type == 'angle'){
-    e <- ifelse(e > 90, 180 - e, e)
-    error_clamped <- pmin(pmax(e, 0.1), 90) # zero value for perfect measurement must be 0.1
-    weights <- scale_fun(error_clamped)
-  } else if(error_type == 'rup'){
-  #  from a previous inversion's RUP — downweight outliers
-  weights <- 1 / (1 + (e / 50)^2)
-  }
-  
-  if(norm) weights <- weights / mean(weights, na.rm = TRUE)
-  
-  return(weights)
-}
 
 
 # PT technique ------------------------------------------------------------------

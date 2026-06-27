@@ -70,6 +70,19 @@ Minimisation function (Eq. 4.101):
 Mostafa (2005) replaces the global \eqn{\lambda} with per-fault \eqn{\lambda_i} equal to
 the shear traction magnitude on each plane and iterates until convergence.
 }
+\note{
+The solution can be refined by iteratively by weighting the faults using the RUP values.
+This could be done using \code{\link[=scale_weights]{scale_weights()}} which scales the RUP values:
+
+\if{html}{\out{<div class="sourceCode r">}}\preformatted{ # run a first inversion:
+ first <- slip_inversion_angelier(x)
+ first$
+ 
+ # in the 
+ second <- slip_inversion_angelier(x, weights = scale_weights(first$misfit$rup, error_type = 'rup'))
+ print(second)
+}\if{html}{\out{</div>}}
+}
 \examples{
 # Use Angelier examples:
 par(mfrow = c(1, length(angelier1990)))

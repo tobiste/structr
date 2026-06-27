@@ -10,7 +10,7 @@ slip_inversion(x, method = c("michael", "angelier"), ...)
 \item{x}{\code{"Fault"} object where the rows are the observations, and the columns the coordinates.}
 
 \item{method}{character. The inversion algorithm. One of \code{"michael"} (the default) for a bootstrapped linear inversion,
-or \code{"angelier"} for a iterative direct inversion.}
+or \code{"angelier"} for an iterative direct inversion.}
 
 \item{...}{arguments passed to \code{\link[=slip_inversion_angelier]{slip_inversion_angelier()}} or \code{\link[=slip_inversion_michael]{slip_inversion_michael()}}}
 }
