@@ -301,22 +301,22 @@ text(faults_stress$principal_axes,
 <img src="man/figures/README-stereo_inversion_plot-1.png" width="100%" />
 
 Visualize the accuracy of the slip inversion by showing the deviation
-angle (β) between the theoretical slip and the actual slip vector:
+angle (α) between the theoretical slip and the actual slip vector:
 
 ``` r
-beta <- faults_stress$misfit$beta
-beta_mean <- round(faults_stress$misfit$misfit_means['beta'])
-beta_CI <- round(faults_stress$beta_CI)
+alpha <- faults_stress$misfit$alpha
+alpha_mean <- round(faults_stress$misfit$alpha_mean)
+alpha_CI <- round(faults_stress$alpha_CI)
 
 stereoplot(
   title = "Stress inversion accuracy",
-  sub = bquote("Average deviation" ~ bar(beta) == .(beta_mean) * degree ~ "\U00B1" ~ .(beta_CI) * degree),
+  sub = bquote("Average deviation" ~ bar(alpha) == .(alpha_mean) * degree ~ "\U00B1" ~ .(alpha_CI) * degree),
   guides = FALSE
 )
-angelier(faults, col = assign_col(beta))
+angelier(faults, col = assign_col(alpha))
 legend_col(
-  seq(min(beta), max(beta), 10),
-  title = bquote("Deviation angle" ~ beta ~ "(" * degree * ")")
+  seq(min(alpha), max(alpha), 10),
+  title = bquote("Deviation angle" ~ alpha ~ "(" * degree * ")")
 )
 ```
 
@@ -351,7 +351,7 @@ Mohr_plot(
   unit = NULL, include.zero = FALSE
 )
 points(faults_stress$stress_component[, 'normal'], abs(faults_stress$stress_component[, 'shear']),
-  col = assign_col(beta), pch = 16
+  col = assign_col(alpha), pch = 16
 )
 ```
 

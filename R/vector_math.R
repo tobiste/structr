@@ -119,6 +119,7 @@ vdot <- function(x, y) {
   # equivalent to: x %*% t(y)
   res <- x[, 1] * y[, 1] + x[, 2] * y[, 2] + x[, 3] * y[, 3]
   # res <- sum(t(x) * t(y))
+  # res <- rowSums(x * y)
   unname(res)
 }
 

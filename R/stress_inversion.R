@@ -127,7 +127,7 @@ slip_inversion <- function(x, method = c("michael", "angelier"), ...) {
 #' R_val <- round(res$stress_shape$R, 2)
 #' 
 #' # misfit
-#' rup_val <- round(res$misfit$misfit_means["rup"], 2)
+#' rup_val <- round(res$misfit$rup_mean, 2)
 #'
 #' # Plot the faults (color-coded by RUP%) and show the principal stress axes
 #' stereoplot(title = "Bootstrapped linear inversion", guides = FALSE)
@@ -201,9 +201,9 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
   })
   colnames(sigma_boot) <- names(best.fit$principal_vals)
 
-  beta_CI <- tectonicr::confidence_interval(best.fit$misfit$beta, conf.level = conf.level, axial = FALSE)
-  alpha_CI <- tectonicr::confidence_interval(best.fit$misfit$alpha, conf.level = conf.level, axial = FALSE)
-  theta_CI <- tectonicr::confidence_interval(best.fit$misfit$theta, conf.level = conf.level, axial = FALSE)
+  #beta_CI <- tectonicr::confidence_interval(4*best.fit$misfit$beta, conf.level = conf.level, axial = FALSE)/4
+  alpha_CI <- tectonicr::confidence_interval(4*best.fit$misfit$alpha, conf.level = conf.level, axial = FALSE)
+  #theta_CI <- tectonicr::confidence_interval(best.fit$misfit$theta, conf.level = conf.level, axial = FALSE)
   rup_CI <- stats::t.test(best.fit$misfit$rup, conf.level = conf.level)
 
   SHmax_CI <- vapply(tau_boot, function(x) {
@@ -221,13 +221,13 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
   append(best.fit, list(
     principal_axes_CI = list(sigma1 = sigma_vec1, sigma2 = sigma_vec2, sigma3 = sigma_vec3),
     principal_vals_CI = sigma_boot,
-    SHmax_CI = SHmax_CI$conf.interval,
+    SHmax_CI = SHmax_CI$conf.interval/4,
     R_CI = R_boot$conf.int,
     phi_CI = phi_boot$conf.int,
     bott_CI = bott_boot$conf.int,
-    alpha_CI = alpha_CI$conf.interval,
-    beta_CI = beta_CI$conf.interval,
-    theta_CI = theta_CI$conf.interval
+    alpha_CI = alpha_CI$conf.interval
+    #beta_CI = beta_CI$conf.interval,
+    #theta_CI = theta_CI$conf.interval
   ))
 }
 
@@ -414,7 +414,7 @@ fault_normal_matrix <- function(n) {
 #' R_val <- round(res$stress_shape$R, 2)
 #' 
 #' # misfit
-#' rup_val <- round(res$misfit$misfit_means["rup"], 2)
+#' rup_val <- round(res$misfit$rup_mean, 2)
 #'
 #' # Plot the faults (color-coded by RUO%) and show the principal stress axes
 #' stereoplot(title = "Iterative direct inversion", guides = FALSE)
@@ -455,19 +455,17 @@ slip_inversion_angelier <- function(x,
   } else {
     stopifnot(is.numeric(weights), length(weights) == N,
               all(weights >= 0), any(weights > 0))
+    
     # Normalise so mean weight = 1 (keeps lambda scale invariant)
     weights <- weights / mean(weights)
     w_sqrt  <- sqrt(weights)
   }
   
-  
   # --- Step 1: initial Angelier (1990) inversion with global lambda ---
   res <- .angelier_step(normals, slips, lambda * w_sqrt, n_psi)
   TR <- res$TR
-  #
-  # if (verbose)
-  #   message(sprintf("Angelier init:  F4 = %.6f", res$F4))
-  #
+  
+  
   # --- Step 2: Mostafa (2005) iteration ---
   # Replace global lambda with per-fault lambda_i = |tau_i| (shear traction
   # magnitude on each plane under the current TR) and re-invert.
@@ -484,16 +482,12 @@ slip_inversion_angelier <- function(x,
     TR_new <- res_new$TR
     
     delta <- max(abs(TR_new - TR))
-    
-    # if (verbose)
-    #   message(sprintf("Mostafa iter %2d: F4 = %.6f  |dTR|_max = %.2e",
-    #                   iter, res_new$F4, delta))
-    
     TR <- TR_new
     res <- res_new
     
     if (delta < tol) break
   }
+  
   
   # --- Step 3: Extract principal stresses ---
   # eig <- eigen(TR, symmetric = TRUE) # eigenvalues in DECREASING order
@@ -750,12 +744,12 @@ slip_inversion_angelier <- function(x,
   )
 }
 
-#' Scaling weightings of faults
+#' Scaling weightings
 #' 
-#' Scales quantitative errors or qualities of fault measurements. Useful for some 
+#' Scales quantitative errors or qualities of orientation measurements. Useful for some 
 #' statistical summaries or fault-slip inversion. 
 #'
-#' @param e numeric. Fault weights
+#' @param e numeric. Weights
 #' @param error_type character. One of `"rank"` (a numeric value ranking 
 #' measurement quality), `"angle"` (a reading error expressed as angles in 
 #' degrees), and `"rup"` (RUP values from a previous fault-slip inversion)
@@ -1342,15 +1336,25 @@ tau2rup <- function(tau, fault, lambda = sqrt(3) / 2){
 #' @inheritParams tau2shearnorm
 #'
 #' @returns list. \describe{
-#' \item{`"alpha"`}{numeric. Angelier (1990)'s angles between the shear stress 
-#' vector and the slip vector, ranging from 0&degree; (perfect fit) to 180&deg; (inconsistent fit).}
-#' \item{`"beta"`}{numeric. Michael (1984)'s angles between the tangential 
-#' traction predicted by the best stress tensor and the slip vector on each plane, ranging from 0 to 90&deg;.}
-#' \item{`"theta"`}{numeric. Angle between slip planes and \eqn{\sigma_1} ranging from 0 to 180&deg;.}
-#' \item{`"rup"`}{numeric. "Ratio Upsilon" (RUP) parameter after Angelier (1990), ranging frm 0 (perfect fit) to 200% (misfit). See [tau2rup()].}
-#' \item{`"quality"`}{factor. Ranked misfit classification based on RUP values. See [tau2rup()].}
-#' \item{`"quality_summary"`}{integer. Counts of faults in the RUP-based quality ranks.}
-#' \item{`"misfit_means"`}{Mean values of `alpha`, `beta`, `theta`, and `rup.`}
+#' \item{`alpha`}{numeric. Deviation angle between slickenline and shear traction as a line 
+#' (0-90&degree). This is the standard misfit used in Angelier (1990) because 
+#' field slickenlines are geometrically lines, not vectors. Ranging from 0&degree; 
+#' (perfect fit) to 90&deg; (inconsistent fit).}
+# #' \item{`"alpha_signed`}{numeric. Deviation angle between slip RAY and shear traction (0-180&deg;). 
+# #'  Values > 90&deg; reveal that the dot product is negative, i.e. the recorded 
+# #'  slip sense is opposite to the predicted shear direction.}
+#'  \item{`alpha_mean`}{numeric. The mean of `alpha`, the ie. the mean deviation 
+#'  of predicted from observed slip.}
+# #' \item{`"beta"`}{numeric. Michael (1984)'s angles between the tangential 
+# #' traction predicted by the best stress tensor and the slip vector on each plane, ranging from 0 to 90&deg;.}
+# #' \item{`"theta"`}{numeric. Angle between slip planes and \eqn{\sigma_1} ranging from 0 to 180&deg;.}
+#' \item{`rup`}{numeric. "Ratio Upsilon" (RUP) parameter after Angelier (1990), ranging frm 0 (perfect fit) to 200% (misfit). See [tau2rup()].}
+#' \item{`quality`}{factor. Ranked misfit classification based on RUP values. See [tau2rup()].}
+#' \item{`rup_mean`}{numeric. The mean RUP.}
+#' \item{`quality_summary`}{integer. Counts of faults in the RUP-based quality ranks.}
+# #' \item{`"misfit_means"`}{Mean values of `alpha`, `beta`, `theta`, and `rup.`}
+#' \item{`flipped`}{logical. Are the signs of slip vectors flipped, i.e., 
+#' dot product of the slip ray and the predicted shear traction is negative?}
 #' }
 #' 
 #' @export
@@ -1375,10 +1379,27 @@ slip_inversion_misfit <- function(tau, fault){
   tau_hat <- tau_f
   tau_hat[valid, ] <- tau_f[valid, ] / tau_norm[valid]
   
-  # abs() handles the slip-sense ambiguity (Section 4.2.1, condition 4.16/4.17)
-  cos_alpha <- pmax(-1, pmin(1, rowSums(tau_hat * slips)))
-  alphas <- acosd(abs(cos_alpha))
-  alpha_mean <- tectonicr::circular_mean(alphas, axial = FALSE)
+  
+  # Raw dot product s_i . tau_hat_i
+  # Positive: slip and predicted shear are in the same hemisphere (correct sense)
+  # Negative: antiparallel (possibly incorrect slip sense recording)
+  dot <- vdot(slips, tau_hat)
+  
+  # Row indices of faults with negative dot product = suspected flipped sense
+  flipped <- dot < 0
+  
+  
+  # Unsigned alpha: angle between slickenline and shear traction as a LINE
+  # (0-90 deg). This is the standard misfit used in the literature because
+  # field slickenlines are geometrically lines, not vectors.
+  alphas <- acosd(pmax(-1, pmin(1, abs(dot)))) 
+  alpha_mean <- tectonicr::circular_mean(4*alphas, axial = FALSE)/4
+  
+  # Signed alpha: angle between slip VECTOR and shear traction (0-180 deg).
+  # Values > 90 deg reveal that the dot product is negative, i.e. the recorded
+  # slip sense is opposite to the predicted shear direction.
+  # alphas_signed <- acosd(pmax(-1, pmin(1, dot)))
+  
   
   rup <- .rup(tau, normals, slips)
   quality <- ifelse(rup <= 50, "good",
@@ -1388,27 +1409,40 @@ slip_inversion_misfit <- function(tau, fault){
   quality_summary <- c(n_good = sum(rup <= 50), n_acceptable = sum(rup > 50 & rup <= 75),
                        n_poor = sum(rup > 75))
   
-  p <- tau2stress(tau)
+  #p <- tau2stress(tau)
   
   # Angles between the tangential traction predicted by the best stress tensor and the slip vector on each plane
-  betas <- sapply(seq_len(nx), function(i) {
-    int <- crossprod(Plane(p$principal_axes[2, ]), Plane(fault[i, ])) |> Line()
-    angle(int, Line(fault[i, ]))
-  }) 
-  betas <- ifelse(betas > 90, 180 - betas, betas)
-  beta_mean <- tectonicr::circular_mean(betas, axial = FALSE)
+  # betas <- sapply(seq_len(nx), function(i) {
+  #   int <- crossprod(Plane(p$principal_axes[2, ]), Plane(fault[i, ])) |> Line()
+  #   angle(int, Line(fault[i, ]))
+  # }) 
+  # # betas <- ifelse(betas > 90, 180 - betas, betas)
+  # beta_mean <- tectonicr::circular_mean(betas, axial = TRUE)
   
   
   # Angle between slip planes and sigma 1
-  thetas <- vapply(seq_len(nx), function(i) {
-    angle(Plane(fault[i, ]), p$principal_axes[1, ])
-  }, numeric(1))
-  theta_mean <- tectonicr::circular_mean(thetas, axial = FALSE)
+  # thetas <- vapply(seq_len(nx), function(i) {
+  #   angle(Plane(fault[i, ]), p$principal_axes[1, ])
+  # }, numeric(1))
+  # theta_mean <- tectonicr::circular_mean(thetas, axial = TRUE)
   
   
   list(
-    alpha = alphas, beta = betas, theta = thetas, rup = rup, quality = quality,
-    misfit_means = c(alpha = alpha_mean, beta = beta_mean, theta = theta_mean, rup = mean(rup)),
-    quality_summary = quality_summary
+    alpha = alphas, 
+    #alpha_signed = alphas_signed, 
+    alpha_mean = alpha_mean,
+    #beta = betas, 
+    #theta = thetas, 
+    rup = rup, 
+    rup_mean = mean(rup),
+    quality = quality,
+    # misfit_means = c(
+    #   alpha = alpha_mean, 
+    #   # beta = beta_mean, 
+    #   theta = theta_mean, 
+    #   rup = mean(rup)
+    #   ),
+    quality_summary = quality_summary, 
+    flipped = flipped
   )
 }

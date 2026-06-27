@@ -225,8 +225,8 @@ The stress inversion using the Michael method with 10 bootstraps:
 ```{r slip_inversion_check}
 test_res <- slip_inversion(test_data, method = "michael", n_iter = 10)
 
-# Average beta angle
-test_res$misfit$beta
+# Average alpha angle
+test_res$misfit$alpha
 
 # Average resolved shear stress
 test_res$tau_mean
@@ -279,26 +279,26 @@ test_res$stress_shape$phi
 test_res$phi_CI
 ```
 
-The angle β is the angle between the tangential traction predicted by
-the best stress tensor and the slip vector. This deviation can be
-visualized in the stereoplot:
+The angle \$alpha; is the angle between the tangential traction
+predicted by the best stress tensor and the slip vector. This deviation
+can be visualized in the stereoplot:
 
-```{r slip_inversion_beta}
+```{r slip_inversion_alpha}
 #| fig.alt: >
 #|   Diagram showing deviation of the best-fit principal stress tensor in a
 #|   stereoplot
-beta <- test_res$misfit$beta
+alpha <- test_res$misfit$alpha
 
 stereoplot(
   title = "Deviation",
-  sub = bquote(bar(beta) == .(round(test_res$beta)) * degree),
+  sub = bquote(bar(alpha) == .(round(test_res$alpha)) * degree),
   guides = FALSE
 )
 
-fault_plot(test_data, col = assign_col(beta))
+fault_plot(test_data, col = assign_col(alpha))
 legend_col(
-  seq(min(beta), max(beta), 10),
-  title = bquote("Deviation angle" ~ beta ~ "(" * degree * ")")
+  seq(min(alpha), max(alpha), 10),
+  title = bquote("Deviation angle" ~ alpha ~ "(" * degree * ")")
 )
 ```
 
@@ -313,7 +313,7 @@ Mohr_plot(
   unit = NULL, include.zero = FALSE
 )
 points(test_res$stress_components[, 'normal'], abs(test_res$stress_components[, 'shear']),
-  col = assign_col(beta), pch = 16
+  col = assign_col(alpha), pch = 16
 )
 ```
 

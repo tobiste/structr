@@ -63,7 +63,7 @@ res <- slip_inversion_michael(x, n_iter = 100, n = 1000, res = 100)
 R_val <- round(res$stress_shape$R, 2)
 
 # misfit
-rup_val <- round(res$misfit$misfit_means["rup"], 2)
+rup_val <- round(res$misfit$rup_mean, 2)
 
 # Plot the faults (color-coded by RUP\%) and show the principal stress axes
 stereoplot(title = "Bootstrapped linear inversion", guides = FALSE)

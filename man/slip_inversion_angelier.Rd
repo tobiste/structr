@@ -83,7 +83,7 @@ res <- slip_inversion_angelier(x)
 R_val <- round(res$stress_shape$R, 2)
 
 # misfit
-rup_val <- round(res$misfit$misfit_means["rup"], 2)
+rup_val <- round(res$misfit$rup_mean, 2)
 
 # Plot the faults (color-coded by RUO\%) and show the principal stress axes
 stereoplot(title = "Iterative direct inversion", guides = FALSE)

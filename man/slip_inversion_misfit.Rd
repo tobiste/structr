@@ -13,15 +13,18 @@ slip_inversion_misfit(tau, fault)
 }
 \value{
 list. \describe{
-\item{\code{"alpha"}}{numeric. Angelier (1990)'s angles between the shear stress
-vector and the slip vector, ranging from 0&degree; (perfect fit) to 180° (inconsistent fit).}
-\item{\code{"beta"}}{numeric. Michael (1984)'s angles between the tangential
-traction predicted by the best stress tensor and the slip vector on each plane, ranging from 0 to 90°.}
-\item{\code{"theta"}}{numeric. Angle between slip planes and \eqn{\sigma_1} ranging from 0 to 180°.}
-\item{\code{"rup"}}{numeric. "Ratio Upsilon" (RUP) parameter after Angelier (1990), ranging frm 0 (perfect fit) to 200\% (misfit). See \code{\link[=tau2rup]{tau2rup()}}.}
-\item{\code{"quality"}}{factor. Ranked misfit classification based on RUP values. See \code{\link[=tau2rup]{tau2rup()}}.}
-\item{\code{"quality_summary"}}{integer. Counts of faults in the RUP-based quality ranks.}
-\item{\code{"misfit_means"}}{Mean values of \code{alpha}, \code{beta}, \code{theta}, and \code{rup.}}
+\item{\code{alpha}}{numeric. Deviation angle between slickenline and shear traction as a line
+(0-90&degree). This is the standard misfit used in Angelier (1990) because
+field slickenlines are geometrically lines, not vectors. Ranging from 0&degree;
+(perfect fit) to 90° (inconsistent fit).}
+\item{\code{alpha_mean}}{numeric. The mean of \code{alpha}, the ie. the mean deviation
+of predicted from observed slip.}
+\item{\code{rup}}{numeric. "Ratio Upsilon" (RUP) parameter after Angelier (1990), ranging frm 0 (perfect fit) to 200\% (misfit). See \code{\link[=tau2rup]{tau2rup()}}.}
+\item{\code{quality}}{factor. Ranked misfit classification based on RUP values. See \code{\link[=tau2rup]{tau2rup()}}.}
+\item{\code{rup_mean}}{numeric. The mean RUP.}
+\item{\code{quality_summary}}{integer. Counts of faults in the RUP-based quality ranks.}
+\item{\code{flipped}}{logical. Are the signs of slip vectors flipped, i.e.,
+dot product of the slip ray and the predicted shear traction is negative?}
 }
 }
 \description{
