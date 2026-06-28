@@ -22,7 +22,8 @@
 #' 9D parameter space using the method by Hansen (2013)
 #'
 #' @param x object of class `"Pair"` or `"Fault"`
-#' @param flip logical. Flip if you want to have the negative stress tensor, i.e. sigma 1 and 3 will be flipped.
+#' @param flip logical. Flip if you want to have the negative stress tensor, i.e. 
+#' sigma 1 and 3 will be flipped.
 #' 
 #' @references 
 #' Hansen, J. A. (2013). Direct inversion of stress, strain or strain rate 
@@ -38,7 +39,9 @@
 #' @examples
 #' par(mfrow = c(1, 2))
 #' invisible(lapply(angelier1990, function(x){
-#' res <- slip_inversion_hansen(x, TRUE)
+#' 
+#' res <- slip_inversion_hansen(x, FALSE)
+#' 
 #' plot(x, col = 'lightgrey')
 #' title(sub = paste0("R = ", round(res$phi, 2)))
 #' points(res$principal_axes, col = 2:4, pch = 16, cex = 2)
@@ -56,7 +59,7 @@ slip_inversion_hansen <- function(x, flip = FALSE) {
   n <- nrow(normals)
   if (n < 7L)
     warning("Fewer than 7 fault-slip measurements: solution may be ",
-            "underdetermined (Hansen 2013, §4).")
+            "underdetermined.")
   
   # Row-wise unit normalisation
   # normals <- normals / sqrt(rowSums(normals^2))
@@ -88,13 +91,15 @@ slip_inversion_hansen <- function(x, flip = FALSE) {
   for (i in seq_len(n)) M <- M + f[i, ] %o% f[i, ]
   
   # --------------------------------------------------------------------------
-  # 3. Eigen-decomposition; second-lowest eigenvector = best estimate of bs
+  # 3. Eigen-decomposition; second eigenvector = best estimate of the slip vector
   #    (Eq. 20)
   # --------------------------------------------------------------------------
   eM    <- eigen(M)
-  MSort <- order(Re(eM$values))              # ascending
+  SMSort <- order(Re(eM$values))              # ascending
   val_M <- Re(eM$values)[MSort]
   vec_M <- t(Re(eM$vectors))[MSort, ]       # rows = eigenvectors
+  #val_M <- Re(eM$values)
+  #vec_M <- Re(eM$vectors)
   
   s <- vec_M[2, ]   # second eigenvector in ascending rank
   
@@ -142,11 +147,11 @@ slip_inversion_hansen <- function(x, flip = FALSE) {
   # --------------------------------------------------------------------------
   # 7. Convert to [Trend, Plunge]  (Hansen's atan + quadrant logic)
   # --------------------------------------------------------------------------
-  Stp <- matrix(0, 3, 2)
-  for (i in 1:3) {
-    if (vec_Ts[i, 3] >= 0) vec_Ts[i, ] <- -vec_Ts[i, ]
-    Stp[i, ] <- .tp(vec_Ts[i, ])
-  }
+  vec_Ts <- vec_Ts * ifelse(vec_Ts[, 3] >= 0, -1, 1)
+  Stp <- cbind(
+    round(atan2(vec_Ts[, 1], vec_Ts[, 2]) * 180 / pi, 1) %% 360,
+    round(asin(-vec_Ts[, 3]) * 180 / pi, 1)
+  )
   Wtp <- .tp(nw)
   
   # --------------------------------------------------------------------------
@@ -177,12 +182,6 @@ slip_inversion_hansen <- function(x, flip = FALSE) {
 # Convert a downward-pointing unit direction cosine vector to [Trend, Plunge].
 # Replicates Hansen's atan() + quadrant-correction block exactly.
 .tp <- function(v) {
-  r2d <- 180 / pi
-  trend  <- (atan(v[1] / v[2]) * r2d)
-  if      (v[1] >= 0 && v[2] <  0) trend <- trend + 180
-  else if (v[1] <  0 && v[2] <  0) trend <- trend + 180
-  else if (v[1] <  0 && v[2] >= 0) trend <- trend + 360
-  plunge <- (asin(-v[3]) * r2d)
-  c(trend, plunge)
+  c((atan2(v[1], v[2]) * 180 / pi),
+    asin(-v[3]) * 180 / pi)
 }
-

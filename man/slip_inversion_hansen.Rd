@@ -9,7 +9,8 @@ slip_inversion_hansen(x, flip = FALSE)
 \arguments{
 \item{x}{object of class \code{"Pair"} or \code{"Fault"}}
 
-\item{flip}{logical. Flip if you want to have the negative stress tensor, i.e. sigma 1 and 3 will be flipped.}
+\item{flip}{logical. Flip if you want to have the negative stress tensor, i.e.
+sigma 1 and 3 will be flipped.}
 }
 \value{
 list
@@ -21,7 +22,9 @@ Direct inversion of stress, strain or strain rate including vorticity using
 \examples{
 par(mfrow = c(1, 2))
 invisible(lapply(angelier1990, function(x){
-res <- slip_inversion_hansen(x, TRUE)
+
+res <- slip_inversion_hansen(x, FALSE)
+
 plot(x, col = 'lightgrey')
 title(sub = paste0("R = ", round(res$phi, 2)))
 points(res$principal_axes, col = 2:4, pch = 16, cex = 2)

@@ -54,7 +54,7 @@ fault_plot(x, col = "gray80")
 points(res_michael$principal_axes, pch = 3, col = 2:4)
 points(res_angelier$principal_axes, pch = 2, col = 2:4)
 #points(res_hansen$nine$principal_axes, pch = 1, col = 2:4)
-legend("topleft", col = 1, legend = c("Michael (1984)", "Angelier (1990)", "Hansen (2013)"), pch = c(3, 2, 1))
+legend("topleft", col = 1, legend = c("Michael (1984)", "Angelier (1990)"), pch = c(3, 2, 1))
 }))
 }
 \references{

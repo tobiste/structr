@@ -617,6 +617,7 @@ dist.Plane <- function(x, ...) v_dist(x, ...)
 
 #' @rdname sph-dist
 #' @exportS3Method stats::dist
+#' @importFrom stats as.dist
 dist.Pair <- function(x, ...) {
   x <- pair2rot(x)
   n <- length(x)
@@ -634,7 +635,7 @@ dist.Pair <- function(x, ...) {
   d[idx] <- vals
   d[idx[, 2:1, drop = FALSE]] <- vals # mirror to lower triangle
 
-  as.dist(d)
+  stats::as.dist(d)
 }
 
 

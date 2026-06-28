@@ -61,7 +61,7 @@
 #' points(res_michael$principal_axes, pch = 3, col = 2:4)
 #' points(res_angelier$principal_axes, pch = 2, col = 2:4)
 #' #points(res_hansen$nine$principal_axes, pch = 1, col = 2:4)
-#' legend("topleft", col = 1, legend = c("Michael (1984)", "Angelier (1990)", "Hansen (2013)"), pch = c(3, 2, 1))
+#' legend("topleft", col = 1, legend = c("Michael (1984)", "Angelier (1990)"), pch = c(3, 2, 1))
 #' }))
 slip_inversion <- function(x, method = c("michael", "angelier", "hansen"), ...) {
   method <- match.arg(method)
@@ -1023,7 +1023,7 @@ reduced_stress <- function(fault, method = c('michael', 'angelier')) {
   }
   
   # --- Step 1: initial Angelier (1990) inversion with global lambda ---
-    .angelier_step(normals, slips, lambda = sqrt(3) / 2)$TR
+    .angelier_step(normals, slips, lambdas = sqrt(3) / 2)$TR
   } else {
     linear_stress_inversion(normals, slips)
   }
