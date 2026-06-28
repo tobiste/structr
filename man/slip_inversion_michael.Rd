@@ -9,7 +9,7 @@ slip_inversion_michael(
   n_iter = 100L,
   conf.level = 0.95,
   friction = 0.6,
-  flip = flip,
+  flip = FALSE,
   ...
 )
 }

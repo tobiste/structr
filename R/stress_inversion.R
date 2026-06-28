@@ -48,17 +48,20 @@
 #' par(mfrow = c(1, length(angelier1990)))
 #' invisible(lapply(angelier1990, function(x){
 #' 
-#' # Linear inversion
+#' # Inversion after Michael (1984)
 #' res_michael <- slip_inversion(x, method = "michael", n_iter = 100, n = 100, res = 100)
 #' 
-#' # Direct inversion
+#' # Inversion after Angelier (1990)
 #' res_angelier <- slip_inversion(x, method = "angelier")
+#' 
+#' #res_hansen <- slip_inversion(x, method = "hansen")
 #' 
 #' stereoplot(guides = FALSE)
 #' fault_plot(x, col = "gray80")
 #' points(res_michael$principal_axes, pch = 3, col = 2:4)
 #' points(res_angelier$principal_axes, pch = 2, col = 2:4)
-#' legend("topleft", col = 1, legend = c("Michael (1984)", "Angelier (1990)"), pch = c(3, 2))
+#' #points(res_hansen$nine$principal_axes, pch = 1, col = 2:4)
+#' legend("topleft", col = 1, legend = c("Michael (1984)", "Angelier (1990)", "Hansen (2013)"), pch = c(3, 2, 1))
 #' }))
 slip_inversion <- function(x, method = c("michael", "angelier", "hansen"), ...) {
   method <- match.arg(method)
@@ -152,7 +155,7 @@ slip_inversion <- function(x, method = c("michael", "angelier", "hansen"), ...) 
 #' legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
 #' title(sub = bquote(varphi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * '%'))
 #' }))
-slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction = 0.6, flip = flip, ...) {
+slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction = 0.6, flip = FALSE, ...) {
   best.fit <- .slip_inversion_michael(x, friction, flip = flip)
   fault_df <- best.fit$fault_data
   nx <- nrow(x)
@@ -253,10 +256,11 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
 #' @noRd
 #'
 #' @examples
+#' \dontrun{
 #' # Use Angelier examples:
 #' 
 #' # inversion
-#' res <- .slip_inversion_michael(angelier1990$TYM, T)
+#' res <- .slip_inversion_michael(angelier1990$TYM, FALSE)
 #' 
 #' # some stress shape
 #' phi_val <- round(res$stress_shape$phi, 2)
@@ -275,6 +279,7 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
 #' legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
 #' title(sub = bquote(varphi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * 
 #' '% |'~bar(beta) == .(beta)~"|"~bar(tau) == .(ss)))
+#' }
 .slip_inversion_michael <- function(x, friction = 0.6, flip = FALSE) {
   tsign <- if(flip) -1 else 1
   

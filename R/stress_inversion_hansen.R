@@ -38,235 +38,151 @@
 #' @examples
 #' par(mfrow = c(1, 2))
 #' invisible(lapply(angelier1990, function(x){
-#' res <- slip_inversion_hansen(x)
-#' plot(x)
-#' title(sub = paste0("R = ", round(res$nine$phi, 2)))
-#' points(res$nine$principal_axes, col = 2:4, pch = 16, cex = 2)
-#' text(res$nine$principal_axes, labels = rownames(res$nine$principal_axes), col = 2:4, adj = -0.5)
-#' points(res$six$principal_axes, col = 2:4, pch = 15, cex = 1)
-#' points(res$nine$vorticity_axis, col = 5, pch = 17, cex = 2)
+#' res <- slip_inversion_hansen(x, TRUE)
+#' plot(x, col = 'lightgrey')
+#' title(sub = paste0("R = ", round(res$phi, 2)))
+#' points(res$principal_axes, col = 2:4, pch = 16, cex = 2)
+#' text(res$principal_axes, labels = 1:3, col = 2:4, adj = -1)
+#' points(res$vorticity_axis, col = 5, pch = 17, cex = 2)
 #' }))
 slip_inversion_hansen <- function(x, flip = FALSE) {
   tsign <- if(flip) -1 else 1
   
-  
   stopifnot(is.Pair(x))
-  
-  normals <- Plane(x)
+  normals <- unclass(Vec3(Plane(x)))
   slips <- if(is.Fault(x)) Ray(x) else Line(x)
+  slips <- unclass(Vec3(slips))
   
-  # ---- 1. Read data ---------------------------------------------------------
+  n <- nrow(normals)
+  if (n < 7L)
+    warning("Fewer than 7 fault-slip measurements: solution may be ",
+            "underdetermined (Hansen 2013, §4).")
   
-  # inn <- unclass(x)
-  n   <- nrow(x)
+  # Row-wise unit normalisation
+  # normals <- normals / sqrt(rowSums(normals^2))
+  # slips   <- slips   / sqrt(rowSums(slips^2))
   
-  # ---- 2. Allocate arrays ---------------------------------------------------
-  ddr    <- matrix(0, n, 2)   # dip direction, dip
-  ldr    <- matrix(0, n, 2)   # lineation trend, plunge
-  dcos_p <- matrix(0, n, 3)   # direction cosines of pole to plane
-  dcos_l <- matrix(0, n, 3)   # direction cosines of lineation
-  dcos_m <- matrix(0, n, 3)   # direction cosines of pole to M-plane
-  f      <- matrix(0, n, 9)   # 9D f-poles
-  f6     <- matrix(0, n, 6)   # 6D f-poles
+  # --------------------------------------------------------------------------
+  # 1. Compute poles to M-planes and f-poles  (Eqs. 14, 19)
+  # --------------------------------------------------------------------------
+  # n_vec = fault plane normal  (n in paper)
+  # b_vec = pole to M-plane     (b in paper) = n x v  (Fig. 1)
+  # f-pole (bf, Eq. 19): bf = [b1n1, b1n2, b1n3, b2n1, ..., b3n3] / |.|
   
-  # ---- 3. Direction cosines and f-poles -------------------------------------
-  deg2rad <- pi / 180
-  
-  # Dip direction and dip of fault plane
-  # ddr[i, 1] <- (inn[i, 1] + 90) %% 360
-  #ddr[i, 1] <- inn[i, 1]
-  #ddr[i, 2] <- inn[i, 2]
-  
-  # Lineation
-  #ldr[i, 1] <- inn[i, 3]
-  #ldr[i, 2] <- inn[i, 4]
-  
-  dd <- normals[, 1] * deg2rad
-  dp <- normals[, 2] * deg2rad
-  lt <- slips[, 1] * deg2rad
-  lp <- slips[, 2] * deg2rad
+  f <- matrix(0, n, 9)
   
   for (i in seq_len(n)) {
-    # Pole to plane (downward-pointing normal)
-    dcos_p[i, ] <- c(
-      -sin(dp[i]) * sin(dd[i]),
-      -sin(dp[i]) * cos(dd[i]),
-      -cos(dp[i])
-    )
+    p <- normals[i, ]                      # n in paper
+    m <- .cross3(p, slips[i, ])            # b in paper = n x v
     
-    # Lineation vector
-    dcos_l[i, ] <- c(
-      cos(lp[i]) * sin(lt[i]),
-      cos(lp[i]) * cos(lt[i]),
-      -sin(lp[i])
-    )
-    
-    # Pole to M-plane (cross product of pole and lineation)
-    dcos_m[i, ] <- .cross3(dcos_p[i, ], dcos_l[i, ])
-    
-    p <- dcos_p[i, ]
-    m <- dcos_m[i, ]
-    
-    # 9D f-pole (outer product, vectorised, then normalised)
-    fi <- c(
-      m[1]*p[1], m[1]*p[2], m[1]*p[3],
-      m[2]*p[1], m[2]*p[2], m[2]*p[3],
-      m[3]*p[1], m[3]*p[2], m[3]*p[3]
-    )
-    f[i, ] <- fi / sqrt(sum(fi^2))
-    
-    # 6D f-pole (Voigt-like symmetric reduction, then normalised)
-    f6i <- c(
-      m[1]*p[1],
-      m[2]*p[2],
-      m[3]*p[3],
-      m[1]*p[2] + m[2]*p[1],
-      m[2]*p[3] + m[3]*p[2],
-      m[1]*p[3] + m[3]*p[1]
-    )
-    f6[i, ] <- f6i / sqrt(sum(f6i^2))
+    fi <- c(m[1]*p[1], m[1]*p[2], m[1]*p[3],
+            m[2]*p[1], m[2]*p[2], m[2]*p[3],
+            m[3]*p[1], m[3]*p[2], m[3]*p[3])
+    f[i, ] <- fi / sqrt(sum(fi * fi))
   }
   
-  # ---- 4. Second moment tensors ---------------------------------------------
-  M  <- crossprod(f)    # t(f) %*% f  — same as summing outer products
-  M6 <- crossprod(f6)
+  # --------------------------------------------------------------------------
+  # 2. Second moment tensor  (Eq. 21)
+  # --------------------------------------------------------------------------
+  M <- matrix(0, 9, 9)
+  for (i in seq_len(n)) M <- M + f[i, ] %o% f[i, ]
   
-  # ---- 5. Eigen-decomposition -----------------------------------------------
-  eM  <- eigen(M,  symmetric = TRUE)   # returns values in *decreasing* order
-  eM6 <- eigen(M6, symmetric = TRUE)
+  # --------------------------------------------------------------------------
+  # 3. Eigen-decomposition; second-lowest eigenvector = best estimate of bs
+  #    (Eq. 20)
+  # --------------------------------------------------------------------------
+  eM    <- eigen(M)
+  MSort <- order(Re(eM$values))              # ascending
+  val_M <- Re(eM$values)[MSort]
+  vec_M <- t(Re(eM$vectors))[MSort, ]       # rows = eigenvectors
   
-  # Reorder ascending (Python argsort default), then take index [2] (middle)
-  ord  <- order(eM$values)
-  ord6 <- order(eM6$values)
+  s <- vec_M[2, ]   # second eigenvector in ascending rank
   
-  s  <- eM$vectors[, ord[2]]    # eigenvector for median eigenvalue
-  s6 <- eM6$vectors[, ord6[2]]
+  # --------------------------------------------------------------------------
+  # 4. Build inverted slip tensor; symmetric + antisymmetric decomposition
+  #    (Eqs. 8–10; algorithm steps 6–7)
+  # --------------------------------------------------------------------------
+  T_mat      <- matrix(s, 3, 3, byrow = TRUE) * tsign
+  Ts         <- (T_mat + t(T_mat)) / 2   # b_T_hat_S
+  Ta         <- (T_mat - t(T_mat)) / 2   # b_T_hat_A
   
-  # ---- 6. Build stress tensors ----------------------------------------------
-  T_mat <- matrix(s, 3, 3, byrow = TRUE) * tsign
-  
-  Ts <- (T_mat + t(T_mat)) / 2   # symmetric part
-  Ta <- (T_mat - t(T_mat)) / 2   # antisymmetric part
-  
-  T6_mat <- matrix(0, 3, 3)
-  T6_mat[1, 1] <- s6[1]; T6_mat[2, 2] <- s6[2]; T6_mat[3, 3] <- s6[3]
-  T6_mat[1, 2] <- T6_mat[2, 1] <- s6[4]
-  T6_mat[2, 3] <- T6_mat[3, 2] <- s6[5]
-  T6_mat[1, 3] <- T6_mat[3, 1] <- s6[6]
-  T6_mat <- T6_mat * tsign
-  
-  # ---- 7. Principal axes and shape ratio ------------------------------------
-  eTs <- eigen(Ts, symmetric = TRUE)
-  #oTs <- order(eTs$values, decreasing = TRUE)
-  val_Ts <- eTs$values
-  vec_Ts <- t(eTs$vectors)  # rows = eigenvectors
+  # --------------------------------------------------------------------------
+  # 5. Principal axes and shape ratio from symmetric part  (Eqs. 2–5)
+  # --------------------------------------------------------------------------
+  eTs    <- eigen(Ts, symmetric = TRUE)
+  #TsSort <- order(Re(eTs$values), decreasing = TRUE)
+  #val_Ts <- Re(eTs$values)[TsSort]
+  val_Ts <- eTs$values 
+  #vec_Ts <- t(Re(eTs$vectors))[TsSort, ]   # rows = eigenvectors (s1, s2, s3)
+  vec_Ts <- t(eTs$vectors)  
   
   nval_Ts <- (val_Ts - val_Ts[3]) / (val_Ts[1] - val_Ts[3])
   phi     <- nval_Ts[2]
   
-  # Normalised tensor (for vorticity scaling)
-  Norm <- vec_Ts %*% diag(c(nval_Ts[1], nval_Ts[2], 0)) %*% t(vec_Ts)
+  # Reconstruct reduced symmetric tensor T_S = V D V^T  (Eq. 5)
+  # V has eigenvectors as columns = t(vec_Ts)
+  Norm <- t(vec_Ts) %*% diag(c(nval_Ts[1], nval_Ts[2], 0)) %*% vec_Ts
   
-  eT6 <- eigen(T6_mat, symmetric = TRUE)
-  # oT6 <- order(eT6$values, decreasing = TRUE)
-  val_T6 <- eT6$values
-  vec_T6 <- t(eT6$vectors)
+  # --------------------------------------------------------------------------
+  # 6. Vorticity axis and magnitude  (Eqs. 12–13, 22)
+  # --------------------------------------------------------------------------
+  # Normalise antisymmetric part: b_T_A = b_T_hat_A * (T_S / b_T_hat_S)
+  ratio          <- Norm / Ts
+  ratio[Ts == 0 & Norm == 0] <- 0          # guard 0/0 -> 0
+  Ta             <- Ta * ratio
   
-  nval_T6 <- (val_T6 - val_T6[3]) / (val_T6[1] - val_T6[3])
-  phi6    <- nval_T6[2]
-  
-  # ---- 8. Vorticity axis ----------------------------------------------------
-  Ta_norm <- Ta * (Norm / Ts)    # element-wise scale (mirrors Python)
-  w    <- c(Ta_norm[3, 2], Ta_norm[1, 3], Ta_norm[2, 1])
-  wlen <- sqrt(sum(w^2))
+  # Axial vector of b_T_A (Eq. 10 sign layout; matches Python index convention)
+  w    <- c(Ta[3, 2], Ta[1, 3], Ta[2, 1])
+  wlen <- sqrt(sum(w * w))
   nw   <- w / wlen
   
   # Enforce downward-pointing convention
-  if (nw[3] >= 0) {
-    nw <- -nw
-  } else {
-    wlen <- -wlen
+  if (nw[3] >= 0) nw <- -nw else wlen <- -wlen
+  
+  # --------------------------------------------------------------------------
+  # 7. Convert to [Trend, Plunge]  (Hansen's atan + quadrant logic)
+  # --------------------------------------------------------------------------
+  Stp <- matrix(0, 3, 2)
+  for (i in 1:3) {
+    if (vec_Ts[i, 3] >= 0) vec_Ts[i, ] <- -vec_Ts[i, ]
+    Stp[i, ] <- .tp(vec_Ts[i, ])
   }
+  Wtp <- .tp(nw)
   
-  # ---- 9. Convert eigenvectors to trend / plunge ----------------------------
-  Stp  <- .vec_to_tp(vec_Ts) 
-  S6tp <- .vec_to_tp(vec_T6) 
-  Wtp  <- .dir_to_tp(nw) 
-  rownames(Stp) <- rownames(S6tp) <- c("sigma1", "sigma2", "sigma3")
+  # --------------------------------------------------------------------------
+  # 8. Print results
+  # --------------------------------------------------------------------------
   
-  # ---- 10. Print results ----------------------------------------------------
-  # cat(".......................\n\n")
-  # cat("9d-space:\n")
-  # cat("phi =", round(phi, 2), "\n")
-  # cat("s1  =", Stp[1, ], "\n")
-  # cat("s2  =", Stp[2, ], "\n")
-  # cat("s3  =", Stp[3, ], "\n\n")
-  # cat("|vorticity| =", round(wlen * 2, 2), "\n")
-  # cat("vorticity   =", Wtp, "\n\n")
-  # cat("Eigenvalues:\n"); print(eM$values[ord])
-  # cat("\n6d-space:\n")
-  # cat("phi =", round(phi6, 2), "\n")
-  # cat("s1  =", S6tp[1, ], "\n")
-  # cat("s2  =", S6tp[2, ], "\n")
-  # cat("s3  =", S6tp[3, ], "\n\n")
-  # cat("Eigenvalues:\n"); print(eM6$values[ord6])
-  
-  # invisible(list(
-  #   phi = phi, phi6 = phi6,
-  #   s1 = Stp[1, ], s2 = Stp[2, ], s3 = Stp[3, ],
-  #   s1_6d = S6tp[1, ], s2_6d = S6tp[2, ], s3_6d = S6tp[3, ],
-  #   vorticity_mag = round(wlen * 2, 2),
-  #   vorticity_axis = Wtp,
-  #   eigenvalues_9d = eM$values[ord],
-  #   eigenvalues_6d = eM6$values[ord6]
-  # ))
-  
-  # invisible(
     list(
-    nine = list(
-      stress_tensor = Ts,
-      principal_axes = as.Line(Stp),
-      phi = phi,
+      stress_tensor = as.ellipsoid(Ts),
+      principal_axes = as.Ray(Stp),
       principal_vals = val_Ts,
-      vorticity_mag = wlen * 2,
-      vorticity_axis = as.Line(Wtp)
-    ),
-    six = list(
-      stress_tensor = T6_mat,
-      principal_axes = as.Line(S6tp),
-      phi = phi6,
-      principal_vals = val_T6
-    )
+      phi = phi,
+      #full = T_mat,
+      #assymmetric = as.ellipsoid(Ta),
+      vorticity_mag = wlen * 2 * tsign,
+      vorticity_axis = as.Ray(Wtp)
   )
-  # )
+
 }
 
 # ---- Internal helpers -------------------------------------------------------
 
-# 3-vector cross product
 .cross3 <- function(a, b) {
-  c(
-    a[2]*b[3] - a[3]*b[2],
+  c(a[2]*b[3] - a[3]*b[2],
     a[3]*b[1] - a[1]*b[3],
-    a[1]*b[2] - a[2]*b[1]
-  )
+    a[1]*b[2] - a[2]*b[1])
 }
 
-# Convert a direction cosine vector to [trend, plunge] in degrees.
-# Enforces downward-pointing (z >= 0 flipped) before conversion.
-.dir_to_tp <- function(v) {
-  if (v[3] >= 0) v <- -v
-  trend <- (atan2(v[1], v[2]) * 180 / pi) %% 360
-  plunge <- (asin(-v[3]) * 180 / pi)
+# Convert a downward-pointing unit direction cosine vector to [Trend, Plunge].
+# Replicates Hansen's atan() + quadrant-correction block exactly.
+.tp <- function(v) {
+  r2d <- 180 / pi
+  trend  <- (atan(v[1] / v[2]) * r2d)
+  if      (v[1] >= 0 && v[2] <  0) trend <- trend + 180
+  else if (v[1] <  0 && v[2] <  0) trend <- trend + 180
+  else if (v[1] <  0 && v[2] >= 0) trend <- trend + 360
+  plunge <- (asin(-v[3]) * r2d)
   c(trend, plunge)
-}
-
-# Apply .dir_to_tp row-wise to a matrix of eigenvectors (one per row).
-.vec_to_tp <- function(vecs) {
-  tp <- matrix(0, nrow(vecs), 2)
-  for (i in seq_len(nrow(vecs))) {
-    tp[i, ] <- .dir_to_tp(vecs[i, ])
-  }
-  tp
 }
 

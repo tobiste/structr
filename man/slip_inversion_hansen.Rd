@@ -21,13 +21,12 @@ Direct inversion of stress, strain or strain rate including vorticity using
 \examples{
 par(mfrow = c(1, 2))
 invisible(lapply(angelier1990, function(x){
-res <- slip_inversion_hansen(x)
-plot(x)
-title(sub = paste0("R = ", round(res$nine$phi, 2)))
-points(res$nine$principal_axes, col = 2:4, pch = 16, cex = 2)
-text(res$nine$principal_axes, labels = rownames(res$nine$principal_axes), col = 2:4, adj = -0.5)
-points(res$six$principal_axes, col = 2:4, pch = 15, cex = 1)
-points(res$nine$vorticity_axis, col = 5, pch = 17, cex = 2)
+res <- slip_inversion_hansen(x, TRUE)
+plot(x, col = 'lightgrey')
+title(sub = paste0("R = ", round(res$phi, 2)))
+points(res$principal_axes, col = 2:4, pch = 16, cex = 2)
+text(res$principal_axes, labels = 1:3, col = 2:4, adj = -1)
+points(res$vorticity_axis, col = 5, pch = 17, cex = 2)
 }))
 }
 \references{
