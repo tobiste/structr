@@ -34,7 +34,7 @@
 #'
 #' @examples
 #' set.seed(20250411)
-#' ce <- confidence_ellipse(example_lines, n_iter = 1000, res = 10)
+#' ce <- confidence_ellipse(Ray(example_lines), n_iter = 1000, res = 10)
 #' # print(ce)
 #'
 #' # Check how many vectors lie outside quantiles:
@@ -51,6 +51,7 @@ confidence_ellipse <- function(x, n_iter = 10000L, alpha = 0.05, res = 512L, iso
     ce <- rayBootstrapInference(xl, numBoots = n_iter, alpha = alpha, numPoints = res, doIsotropic = isotropic)
     pvalues <- sapply(ce$us, ce$pvalue)
     pvalue.FUN <- ce$pvalue
+    ce$center <- as.vector(ce$center)
   } else {
     ce <- lineBootstrapInference(xl, numBoots = n_iter, alpha = alpha, numPoints = res, doIsotropic = isotropic)
     pvalues <- sapply(ce$us, ce$pvalueLine)

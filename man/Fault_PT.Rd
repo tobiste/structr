@@ -36,6 +36,7 @@ invisible(lapply(angelier1990, function(x){
 Other stress-inversion: 
 \code{\link{slip_inversion}()},
 \code{\link{slip_inversion_angelier}()},
+\code{\link{slip_inversion_hansen}()},
 \code{\link{slip_inversion_michael}()},
 \code{\link{slip_inversion_simple}()}
 }

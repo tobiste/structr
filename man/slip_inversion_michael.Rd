@@ -9,6 +9,7 @@ slip_inversion_michael(
   n_iter = 100L,
   conf.level = 0.95,
   friction = 0.6,
+  flip = flip,
   ...
 )
 }
@@ -20,6 +21,8 @@ slip_inversion_michael(
 \item{conf.level}{numeric. Confidence level of the interval (0.95 by default)}
 
 \item{friction}{numeric. Coefficient of friction (0.6 by default)}
+
+\item{flip}{logical. Flip if you want to have the negative stress tensor, i.e. sigma 1 and 3 will be flipped.}
 
 \item{...}{optional parameters passed to \code{\link[=confidence_ellipse]{confidence_ellipse()}}}
 }
@@ -34,7 +37,7 @@ Additionally, this child functions appends the following list components:
 }
 }
 \description{
-Linear stress inversion (based on Michael, 1984) determines the orientation
+Direct stress inversion (based on Michael, 1984) determines the orientation
 of the principal stresses from fault slip data.
 Confidence intervals are estimated by bootstrapping.
 This inversion is simplified by the assumption that the magnitude of the
@@ -52,21 +55,23 @@ that a single a that best satisfies all of the faults is found.
 }
 \examples{
 # Use Angelier examples:
+nx <- length(angelier1990)
 par(mfrow = c(1, length(angelier1990)))
 
-invisible(lapply(angelier1990, function(x){
+invisible(lapply(seq_len(nx), function(i){
 
 # inversion
+x <- angelier1990[[i]]
 res <- slip_inversion_michael(x, n_iter = 100, n = 1000, res = 100)
 
 # some stress shape
-R_val <- round(res$stress_shape$R, 2)
+phi_val <- round(res$stress_shape$phi, 2)
 
 # misfit
 rup_val <- round(res$misfit$rup_mean, 2)
 
 # Plot the faults (color-coded by RUP\%) and show the principal stress axes
-stereoplot(title = "Bootstrapped linear inversion", guides = FALSE)
+stereoplot(title = names(angelier1990)[i], guides = FALSE)
 stereo_shmax(res$SHmax)
 fault_plot(x, col = assign_col(res$misfit$rup))
 stereo_confidence(res$principal_axes_CI$sigma1, col = 2)
@@ -74,7 +79,7 @@ stereo_confidence(res$principal_axes_CI$sigma2, col = 3)
 stereo_confidence(res$principal_axes_CI$sigma3, col = 4)
 text(res$principal_axes, label = rownames(res$principal_axes), col = 2:4, adj = -.25)
 legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
-title(sub = bquote(R == .(R_val) ~ "|" ~ bar("RUP") == .(rup_val) * '\%'))
+title(sub = bquote(varphi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * '\%'))
 }))
 }
 \references{
@@ -91,6 +96,7 @@ Other stress-inversion:
 \code{\link{Fault_PT}()},
 \code{\link{slip_inversion}()},
 \code{\link{slip_inversion_angelier}()},
+\code{\link{slip_inversion_hansen}()},
 \code{\link{slip_inversion_simple}()}
 }
 \concept{stress-inversion}

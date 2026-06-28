@@ -9,8 +9,10 @@ reduced_stress(fault, method = c("michael", "angelier"))
 \arguments{
 \item{fault}{\code{"Fault"} object where the rows are the observations, and the columns the coordinates.}
 
-\item{method}{character. The inversion algorithm. One of \code{"michael"} (the default) for a bootstrapped linear inversion,
-or \code{"angelier"} for an iterative direct inversion.}
+\item{method}{character. The inversion algorithm, one of \code{"michael"} (the default)
+for a bootstrapped linear inversion after Micheal (1984), \code{"angelier"}
+for an iterative direct inversion after Angelier (1990) and Mostafa (2005), and
+\code{"hansen"} for direct inversion using the 9d parameter space after Hansen (2013).}
 }
 \value{
 \code{"ellipsoid"} object. 3x3 matrix (i.e. 2nd rank tensor).

@@ -52,7 +52,7 @@ region seriously.
 }
 \examples{
 set.seed(20250411)
-ce <- confidence_ellipse(example_lines, n_iter = 1000, res = 10)
+ce <- confidence_ellipse(Ray(example_lines), n_iter = 1000, res = 10)
 # print(ce)
 
 # Check how many vectors lie outside quantiles:

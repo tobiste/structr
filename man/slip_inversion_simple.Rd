@@ -46,6 +46,7 @@ Other stress-inversion:
 \code{\link{Fault_PT}()},
 \code{\link{slip_inversion}()},
 \code{\link{slip_inversion_angelier}()},
+\code{\link{slip_inversion_hansen}()},
 \code{\link{slip_inversion_michael}()}
 }
 \concept{stress-inversion}

@@ -24,7 +24,7 @@ for each fault in \code{fault}.
 \description{
 \code{tau2stress()} calculate normal and shear stress components, while
 \code{tau2tendency()} computes the tendency for slip and dilatency for a given set
-of faults and a given strerss tensor.
+of faults and a given stress tensor.
 }
 \examples{
 f <- angelier1990$TYM

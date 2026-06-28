@@ -4,13 +4,15 @@
 \alias{slip_inversion}
 \title{Stress Inversion for Fault-Slip Data}
 \usage{
-slip_inversion(x, method = c("michael", "angelier"), ...)
+slip_inversion(x, method = c("michael", "angelier", "hansen"), ...)
 }
 \arguments{
 \item{x}{\code{"Fault"} object where the rows are the observations, and the columns the coordinates.}
 
-\item{method}{character. The inversion algorithm. One of \code{"michael"} (the default) for a bootstrapped linear inversion,
-or \code{"angelier"} for an iterative direct inversion.}
+\item{method}{character. The inversion algorithm, one of \code{"michael"} (the default)
+for a bootstrapped linear inversion after Micheal (1984), \code{"angelier"}
+for an iterative direct inversion after Angelier (1990) and Mostafa (2005), and
+\code{"hansen"} for direct inversion using the 9d parameter space after Hansen (2013).}
 
 \item{...}{arguments passed to \code{\link[=slip_inversion_angelier]{slip_inversion_angelier()}} or \code{\link[=slip_inversion_michael]{slip_inversion_michael()}}}
 }
@@ -57,6 +59,11 @@ Angelier, J. (1990). Inversion of field data in fault tectonics to obtain
 the regional stress—III. A new rapid direct inversion method by analytical
 means. Geophys. J. Int, 103, 363–376. \url{https://doi.org/10.1111/j.1365-246X.1990.tb01777.x}
 
+Hansen, J. A. (2013). Direct inversion of stress, strain or strain rate
+including vorticity: A linear method of homogenous fault-slip data inversion
+independent of adopted hypothesis. Journal of Structural Geology, 51, 3–13.
+https://doi.org/10.1016/j.jsg.2013.03.014
+
 Michael, A. J. (1984). Determination of stress from slip data: Faults and
 folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526.
 \url{https://doi.org/10.1029/JB089iB13p11517}
@@ -65,6 +72,7 @@ folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526.
 Other stress-inversion: 
 \code{\link{Fault_PT}()},
 \code{\link{slip_inversion_angelier}()},
+\code{\link{slip_inversion_hansen}()},
 \code{\link{slip_inversion_michael}()},
 \code{\link{slip_inversion_simple}()}
 }

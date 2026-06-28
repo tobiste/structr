@@ -7,10 +7,11 @@
 slip_inversion_angelier(
   x,
   weights = NULL,
-  max_iter = 50L,
+  max_iter = 100L,
   tol = 1e-06,
   n_psi = 361L,
-  friction = 0.6
+  friction = 0.6,
+  flip = FALSE
 )
 }
 \arguments{
@@ -19,13 +20,16 @@ the coordinates. Must have at least 4 fault measurements.}
 
 \item{weights}{numeric. Weightings for the faults. Must have the same length as \code{x}}
 
-\item{max_iter}{integer. Maximum iteration count (default \code{50}) for Mostafa (2005) optimization.}
+\item{max_iter}{integer. Maximum iteration count (default \code{50}) for Mostafa (2005)
+optimization. Set to \code{0} for no optimization.}
 
 \item{tol}{numeric. Convergence tolerance on max absolute change in TR elements between iterations (default \code{1e-6})}
 
 \item{n_psi}{integer. Number of psi grid points for each step (default \code{361})}
 
 \item{friction}{numeric. Coefficient of friction (0.6 by default)}
+
+\item{flip}{logical. Flip if you want to have the negative stress tensor, i.e. sigma 1 and 3 will be flipped.}
 }
 \value{
 a named list with the following components:
@@ -43,7 +47,8 @@ a named list with the following components:
 }
 }
 \description{
-Iterative direct inversion after the algorithm of Angelier (1990) and Mostafa (2005)
+Direct inversion after the algorithm of Angelier (1990) with
+iterative refinement after Mostafa (2005)
 }
 \details{
 The reduced stress tensor (Eq. 4.87) is parameterised as:
@@ -71,7 +76,7 @@ Mostafa (2005) replaces the global \eqn{\lambda} with per-fault \eqn{\lambda_i} 
 the shear traction magnitude on each plane and iterates until convergence.
 }
 \note{
-The solution can be refined by iteratively by weighting the faults using the RUP values.
+The solution can be refined iteratively by weighting the faults using the RUP values.
 This could be done using \code{\link[=scale_weights]{scale_weights()}} which scales the RUP values:
 
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{ # run a first inversion:
@@ -84,29 +89,30 @@ This could be done using \code{\link[=scale_weights]{scale_weights()}} which sca
 }\if{html}{\out{</div>}}
 }
 \examples{
-# Use Angelier examples:
-par(mfrow = c(1, length(angelier1990)))
+nx <- length(angelier1990)
+par(mfrow = c(1, nx))
 
-# loop through dataset
-invisible(lapply(angelier1990, function(x){
+invisible(lapply(seq_len(nx), function(i){
 
-res <- slip_inversion_angelier(x)
+# inversion
+x <- angelier1990[[i]]
+res <- slip_inversion_angelier(x, max_iter = 0)
 
 # some stress shape
-R_val <- round(res$stress_shape$R, 2)
+phi_val <- round(res$stress_shape$phi, 2)
 
 # misfit
 rup_val <- round(res$misfit$rup_mean, 2)
 
-# Plot the faults (color-coded by RUO\%) and show the principal stress axes
-stereoplot(title = "Iterative direct inversion", guides = FALSE)
+# Plot the faults (color-coded by RUP\%) and show the principal stress axes
+stereoplot(title = names(angelier1990)[i], guides = FALSE)
 stereo_shmax(res$SHmax)
 fault_plot(x, col = assign_col(res$misfit$rup))
 points(res$principal_axes, col = 1:3, pch = 16, cex = 1.5)
 text(res$principal_axes, label = rownames(res$principal_axes), 
 col = 1:3, adj = -.25)
 legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
-title(sub = bquote(R == .(R_val) ~ "|" ~ bar("RUP") == .(rup_val) * '\%'))
+title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * '\%'))
 }))
 }
 \references{
@@ -124,6 +130,7 @@ solution for inverting fault-slip data to obtain palaeostresses. Computers
 Other stress-inversion: 
 \code{\link{Fault_PT}()},
 \code{\link{slip_inversion}()},
+\code{\link{slip_inversion_hansen}()},
 \code{\link{slip_inversion_michael}()},
 \code{\link{slip_inversion_simple}()}
 }
