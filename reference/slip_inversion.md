@@ -6,7 +6,7 @@ data to derive the reduced stress tensor.
 ## Usage
 
 ``` r
-slip_inversion(x, method = c("michael", "angelier"), ...)
+slip_inversion(x, method = c("michael", "angelier", "hansen"), ...)
 ```
 
 ## Arguments
@@ -18,9 +18,11 @@ slip_inversion(x, method = c("michael", "angelier"), ...)
 
 - method:
 
-  character. The inversion algorithm. One of `"michael"` (the default)
-  for a bootstrapped linear inversion, or `"angelier"` for an iterative
-  direct inversion.
+  character. The inversion algorithm, one of `"michael"` (the default)
+  for a bootstrapped linear inversion after Micheal (1984), `"angelier"`
+  for an iterative direct inversion after Angelier (1990) and Mostafa
+  (2005), and `"hansen"` for direct inversion using the 9d parameter
+  space after Hansen (2013).
 
 - ...:
 
@@ -90,6 +92,11 @@ obtain the regional stress—III. A new rapid direct inversion method by
 analytical means. Geophys. J. Int, 103, 363–376.
 <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
 
+Hansen, J. A. (2013). Direct inversion of stress, strain or strain rate
+including vorticity: A linear method of homogenous fault-slip data
+inversion independent of adopted hypothesis. Journal of Structural
+Geology, 51, 3–13. https://doi.org/10.1016/j.jsg.2013.03.014
+
 Michael, A. J. (1984). Determination of stress from slip data: Faults
 and folds. Journal of Geophysical Research: Solid Earth, 89(B13),
 11517–11526. <https://doi.org/10.1029/JB089iB13p11517>
@@ -99,6 +106,7 @@ and folds. Journal of Geophysical Research: Solid Earth, 89(B13),
 Other stress-inversion:
 [`Fault_PT()`](https://tobiste.github.io/structr/reference/Fault_PT.md),
 [`slip_inversion_angelier()`](https://tobiste.github.io/structr/reference/slip_inversion_angelier.md),
+[`slip_inversion_hansen()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen.md),
 [`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md),
 [`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md)
 
@@ -110,16 +118,19 @@ set.seed(20250411)
 par(mfrow = c(1, length(angelier1990)))
 invisible(lapply(angelier1990, function(x){
 
-# Linear inversion
+# Inversion after Michael (1984)
 res_michael <- slip_inversion(x, method = "michael", n_iter = 100, n = 100, res = 100)
 
-# Direct inversion
+# Inversion after Angelier (1990)
 res_angelier <- slip_inversion(x, method = "angelier")
+
+#res_hansen <- slip_inversion(x, method = "hansen")
 
 stereoplot(guides = FALSE)
 fault_plot(x, col = "gray80")
 points(res_michael$principal_axes, pch = 3, col = 2:4)
 points(res_angelier$principal_axes, pch = 2, col = 2:4)
-legend("topleft", col = 1, legend = c("Michael (1984)", "Angelier (1990)"), pch = c(3, 2))
+#points(res_hansen$nine$principal_axes, pch = 1, col = 2:4)
+legend("topleft", col = 1, legend = c("Michael (1984)", "Angelier (1990)", "Hansen (2013)"), pch = c(3, 2, 1))
 }))
 ```

@@ -66,7 +66,7 @@ derive the reduced stress tensor.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">slip_inversion</span><span class="op">(</span><span class="va">x</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"michael"</span>, <span class="st">"angelier"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">slip_inversion</span><span class="op">(</span><span class="va">x</span>, method <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"michael"</span>, <span class="st">"angelier"</span>, <span class="st">"hansen"</span><span class="op">)</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -78,8 +78,10 @@ derive the reduced stress tensor.</p>
 
 
 <dt id="arg-method">method<a class="anchor" aria-label="anchor" href="#arg-method"></a></dt>
-<dd><p>character. The inversion algorithm. One of <code>"michael"</code> (the default) for a bootstrapped linear inversion,
-or <code>"angelier"</code> for an iterative direct inversion.</p></dd>
+<dd><p>character. The inversion algorithm, one of <code>"michael"</code> (the default)
+for a bootstrapped linear inversion after Micheal (1984), <code>"angelier"</code>
+for an iterative direct inversion after Angelier (1990) and Mostafa (2005), and
+<code>"hansen"</code> for direct inversion using the 9d parameter space after Hansen (2013).</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -125,6 +127,10 @@ or <code>"angelier"</code> for an iterative direct inversion.</p></dd>
     <p>Angelier, J. (1990). Inversion of field data in fault tectonics to obtain
 the regional stress—III. A new rapid direct inversion method by analytical
 means. Geophys. J. Int, 103, 363–376. <a href="https://doi.org/10.1111/j.1365-246X.1990.tb01777.x" class="external-link">https://doi.org/10.1111/j.1365-246X.1990.tb01777.x</a></p>
+<p>Hansen, J. A. (2013). Direct inversion of stress, strain or strain rate
+including vorticity: A linear method of homogenous fault-slip data inversion
+independent of adopted hypothesis. Journal of Structural Geology, 51, 3–13.
+https://doi.org/10.1016/j.jsg.2013.03.014</p>
 <p>Michael, A. J. (1984). Determination of stress from slip data: Faults and
 folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526.
 <a href="https://doi.org/10.1029/JB089iB13p11517" class="external-link">https://doi.org/10.1029/JB089iB13p11517</a></p>
@@ -134,6 +140,7 @@ folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526.
     <div class="dont-index"><p>Other stress-inversion:
 <code><a href="Fault_PT.html">Fault_PT()</a></code>,
 <code><a href="slip_inversion_angelier.html">slip_inversion_angelier()</a></code>,
+<code><a href="slip_inversion_hansen.html">slip_inversion_hansen()</a></code>,
 <code><a href="slip_inversion_michael.html">slip_inversion_michael()</a></code>,
 <code><a href="slip_inversion_simple.html">slip_inversion_simple()</a></code></p></div>
     </div>
@@ -145,17 +152,20 @@ folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526.
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">angelier1990</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">angelier1990</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Linear inversion</span></span></span>
+<span class="r-in"><span><span class="co"># Inversion after Michael (1984)</span></span></span>
 <span class="r-in"><span><span class="va">res_michael</span> <span class="op">&lt;-</span> <span class="fu">slip_inversion</span><span class="op">(</span><span class="va">x</span>, method <span class="op">=</span> <span class="st">"michael"</span>, n_iter <span class="op">=</span> <span class="fl">100</span>, n <span class="op">=</span> <span class="fl">100</span>, res <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="co"># Direct inversion</span></span></span>
+<span class="r-in"><span><span class="co"># Inversion after Angelier (1990)</span></span></span>
 <span class="r-in"><span><span class="va">res_angelier</span> <span class="op">&lt;-</span> <span class="fu">slip_inversion</span><span class="op">(</span><span class="va">x</span>, method <span class="op">=</span> <span class="st">"angelier"</span><span class="op">)</span></span></span>
+<span class="r-in"><span></span></span>
+<span class="r-in"><span><span class="co">#res_hansen &lt;- slip_inversion(x, method = "hansen")</span></span></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="stereoplot.html">stereoplot</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">x</span>, col <span class="op">=</span> <span class="st">"gray80"</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">res_michael</span><span class="op">$</span><span class="va">principal_axes</span>, pch <span class="op">=</span> <span class="fl">3</span>, col <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">res_angelier</span><span class="op">$</span><span class="va">principal_axes</span>, pch <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">4</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>, col <span class="op">=</span> <span class="fl">1</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Michael (1984)"</span>, <span class="st">"Angelier (1990)"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">2</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="co">#points(res_hansen$nine$principal_axes, pch = 1, col = 2:4)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topleft"</span>, col <span class="op">=</span> <span class="fl">1</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Michael (1984)"</span>, <span class="st">"Angelier (1990)"</span>, <span class="st">"Hansen (2013)"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">3</span>, <span class="fl">2</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="slip_inversion-1.png" alt="" width="700" height="433"></span>
 </code></pre></div>

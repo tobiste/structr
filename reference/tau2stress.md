@@ -49,7 +49,7 @@ tau2stress(tau)
 #>  1.5186760 -0.6378677 -0.8808083 
 #> 
 #> $principal_axes
-#> Line object (n = 3):
+#> Ray object (n = 3):
 #>          azimuth    plunge
 #> sigma1 225.71104 84.219427
 #> sigma2  62.26628  5.542466

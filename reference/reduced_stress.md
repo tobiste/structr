@@ -17,9 +17,11 @@ reduced_stress(fault, method = c("michael", "angelier"))
 
 - method:
 
-  character. The inversion algorithm. One of `"michael"` (the default)
-  for a bootstrapped linear inversion, or `"angelier"` for an iterative
-  direct inversion.
+  character. The inversion algorithm, one of `"michael"` (the default)
+  for a bootstrapped linear inversion after Micheal (1984), `"angelier"`
+  for an iterative direct inversion after Angelier (1990) and Mostafa
+  (2005), and `"hansen"` for direct inversion using the 9d parameter
+  space after Hansen (2013).
 
 ## Value
 

@@ -3,7 +3,7 @@
 [`tau2stress()`](https://tobiste.github.io/structr/reference/tau2stress.md)
 calculate normal and shear stress components, while `tau2tendency()`
 computes the tendency for slip and dilatency for a given set of faults
-and a given strerss tensor.
+and a given stress tensor.
 
 ## Usage
 

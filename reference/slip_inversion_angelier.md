@@ -1,7 +1,7 @@
 # Stress Inversion for Fault-Slip Data after Angelier (1990)
 
-Iterative direct inversion after the algorithm of Angelier (1990) and
-Mostafa (2005)
+Direct inversion after the algorithm of Angelier (1990) with iterative
+refinement after Mostafa (2005)
 
 ## Usage
 
@@ -9,10 +9,11 @@ Mostafa (2005)
 slip_inversion_angelier(
   x,
   weights = NULL,
-  max_iter = 50L,
+  max_iter = 100L,
   tol = 1e-06,
   n_psi = 361L,
-  friction = 0.6
+  friction = 0.6,
+  flip = FALSE
 )
 ```
 
@@ -30,7 +31,7 @@ slip_inversion_angelier(
 - max_iter:
 
   integer. Maximum iteration count (default `50`) for Mostafa (2005)
-  optimization.
+  optimization. Set to `0` for no optimization.
 
 - tol:
 
@@ -44,6 +45,11 @@ slip_inversion_angelier(
 - friction:
 
   numeric. Coefficient of friction (0.6 by default)
+
+- flip:
+
+  logical. Flip if you want to have the negative stress tensor, i.e.
+  sigma 1 and 3 will be flipped.
 
 ## Value
 
@@ -126,7 +132,7 @@ iterates until convergence.
 
 ## Note
 
-The solution can be refined by iteratively by weighting the faults using
+The solution can be refined iteratively by weighting the faults using
 the RUP values. This could be done using
 [`scale_weights()`](https://tobiste.github.io/structr/reference/scale_weights.md)
 which scales the RUP values:
@@ -159,34 +165,36 @@ palaeostresses. Computers & Geosciences, 31(8), 1059–1070.
 Other stress-inversion:
 [`Fault_PT()`](https://tobiste.github.io/structr/reference/Fault_PT.md),
 [`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md),
+[`slip_inversion_hansen()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen.md),
 [`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md),
 [`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md)
 
 ## Examples
 
 ``` r
-# Use Angelier examples:
-par(mfrow = c(1, length(angelier1990)))
+nx <- length(angelier1990)
+par(mfrow = c(1, nx))
 
-# loop through dataset
-invisible(lapply(angelier1990, function(x){
+invisible(lapply(seq_len(nx), function(i){
 
-res <- slip_inversion_angelier(x)
+# inversion
+x <- angelier1990[[i]]
+res <- slip_inversion_angelier(x, max_iter = 0)
 
 # some stress shape
-R_val <- round(res$stress_shape$R, 2)
+phi_val <- round(res$stress_shape$phi, 2)
 
 # misfit
 rup_val <- round(res$misfit$rup_mean, 2)
 
-# Plot the faults (color-coded by RUO%) and show the principal stress axes
-stereoplot(title = "Iterative direct inversion", guides = FALSE)
+# Plot the faults (color-coded by RUP%) and show the principal stress axes
+stereoplot(title = names(angelier1990)[i], guides = FALSE)
 stereo_shmax(res$SHmax)
 fault_plot(x, col = assign_col(res$misfit$rup))
 points(res$principal_axes, col = 1:3, pch = 16, cex = 1.5)
 text(res$principal_axes, label = rownames(res$principal_axes), 
 col = 1:3, adj = -.25)
 legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
-title(sub = bquote(R == .(R_val) ~ "|" ~ bar("RUP") == .(rup_val) * '%'))
+title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * '%'))
 }))
 ```
