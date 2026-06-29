@@ -90,7 +90,10 @@ tangential traction on the various fault planes, at the time of rupture, is simi
 
 
 <dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
-<dd><p><code>"Fault"</code> object where the rows are the observations, and the columns the coordinates.</p></dd>
+<dd><p><code>"Fault"</code> object where the rows are the observations, and the
+columns the coordinates. Object must be cmpolete, i.e. no <code>NA</code> values.
+For Michael's and Angelier's methods, at least 4 rows
+of fault measurements are required, while Hansen's method requires at least 7.</p></dd>
 
 
 <dt id="arg-n-iter">n_iter<a class="anchor" aria-label="anchor" href="#arg-n-iter"></a></dt>

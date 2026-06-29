@@ -429,7 +429,7 @@
   : Stress Inversion for Fault-Slip Data after Angelier (1990)
 
 - [`slip_inversion_hansen()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen.md)
-  : 9D Direct Inversion of Fault Slip
+  : 9D Direct Inversion for Fault Slip Including Vorticity
 
 - [`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md)
   : Stress Inversion for Fault-Slip Data after Michael (1984)

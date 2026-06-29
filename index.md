@@ -28,8 +28,8 @@ includes
   [`velgrad()`](https://tobiste.github.io/structr/reference/gradient.md)
 
 - **Stress analysis**: reconstruction of stress orientation and
-  magnitudes from fault-slip data (stress inversion based on **Michael,
-  1984** or **Angelier, 1990**:
+  magnitudes from fault-slip data (direct stress inversion based on
+  **Michael, 1984**, **Angelier, 1990**, or **Hansen, 2013**:
   [`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md)),
   extracting the **maximum horizontal stress** of a 3D stress tensor
   ([`SH()`](https://tobiste.github.io/structr/reference/SH.md)), and
@@ -279,8 +279,9 @@ hoeppener(faults, points = FALSE, col = "grey20")
 
 ### Fault-Slip Inversion
 
-Compute reduced stress tensor using linear inversion (Michael, 1984) and
-calculate 95% confidence intervals using bootstrap samples:
+Compute reduced stress tensor using direct fault-slip inversion
+(Michael, 1984) and calculate 95% confidence intervals using bootstrap
+samples:
 
 ``` r
 

@@ -279,24 +279,29 @@ best satisfies all of the faults is found.</p>
 tensor within the region being studied for the duration of the faulting
 event.</p>
 </blockquote>
-<p>{structr} provides two numerical solutions to determine the
+<p>{structr} provides three numerical solutions to determine the
 orientation of the principal stresses from fault slip data.</p>
 <ul>
-<li><p>Michael (1984) linear inversion method<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Michael, A. J. (1984). Determination of stress from slip
+<li><p><em>Michael (1984)</em>: Direct inversion method<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Michael, A. J. (1984). Determination of stress from slip
 data: Faults and folds. Journal of Geophysical Research: Solid Earth,
 89(B13), 11517–11526. &lt;a href="https://doi.org/10.1029/JB089iB13p11517" class="external-link uri"&gt;https://doi.org/10.1029/JB089iB13p11517&lt;/a&gt;&lt;/p&gt;'><sup>2</sup></a> which uses
 bootstrapping for confidence intervals of the stress estimates.</p></li>
-<li><p>Angelier (1990) direct inversion method<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Angelier, J. (1990). Inversion of field data in fault
+<li><p><em>Angelier (1990)</em>: Direct inversion method<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Angelier, J. (1990). Inversion of field data in fault
 tectonics to obtain the regional stress—III. A new rapid direct
 inversion method by analytical means. Geophys. J. Int, 103, 363–376. &lt;a href="https://doi.org/10.1111/j.1365-246X.1990.tb01777.x" class="external-link uri"&gt;https://doi.org/10.1111/j.1365-246X.1990.tb01777.x&lt;/a&gt;&lt;/p&gt;'><sup>3</sup></a> coupled with the
 iterative optimization after Mostafa (2005)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Mostafa, M. E. (2005). Iterative direct inversion: An
 exact complementary solution for inverting fault-slip data to obtain
 palaeostresses. Computers &amp;amp; Geosciences, 31(8), 1059–1070. &lt;a href="https://doi.org/10.1016/j.cageo.2005.02.012" class="external-link uri"&gt;https://doi.org/10.1016/j.cageo.2005.02.012&lt;/a&gt;&lt;/p&gt;'><sup>4</sup></a> to find the best fit
 reduced stress tensor.</p></li>
+<li><p><em>Hansen (2013)</em>: Direct inversion using a 9-dimensional
+parameter space, useful when vorticity affects the fault-slip data<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Hansen, J. A. (2013). Direct inversion of stress, strain
+or strain rate including vorticity: A linear method of homogenous
+fault-slip data inversion independent of adopted hypothesis. Journal of
+Structural Geology, 51, 3–13. &lt;a href="https://doi.org/10.1016/j.jsg.2013.03.014" class="external-link uri"&gt;https://doi.org/10.1016/j.jsg.2013.03.014&lt;/a&gt;&lt;/p&gt;'><sup>5</sup></a>.</p></li>
 </ul>
 <p>First we load some example data (here the data from Angelier, 1990)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Angelier, J. (1990). Inversion of field data in fault
 tectonics to obtain the regional stress—III. A new rapid direct
-inversion method by analytical means. Geophys. J. Int, 103, 363–376. &lt;a href="https://doi.org/10.1111/j.1365-246X.1990.tb01777.x" class="external-link uri"&gt;https://doi.org/10.1111/j.1365-246X.1990.tb01777.x&lt;/a&gt;&lt;/p&gt;'><sup>5</sup></a></p>
+inversion method by analytical means. Geophys. J. Int, 103, 363–376. &lt;a href="https://doi.org/10.1111/j.1365-246X.1990.tb01777.x" class="external-link uri"&gt;https://doi.org/10.1111/j.1365-246X.1990.tb01777.x&lt;/a&gt;&lt;/p&gt;'><sup>6</sup></a></p>
 <div class="sourceCode" id="cb17"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_data</span> <span class="op">&lt;-</span> <span class="va">angelier1990</span><span class="op">$</span><span class="va">TYM</span></span>
 <span></span>
@@ -350,14 +355,14 @@ from {structr}</p>
 <p><img src="Faults_files/figure-html/slip_inversion_plot-1.png" class="r-plt" alt="Diagram showing principal stress vector results in a stereoplot" width="700"></p>
 <p>The stress shape ratio Φ (Angelier 1979)<a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content='&lt;p&gt;Angelier, J. (1979). Determination of the mean principal
 directions of stresses for a given fault population. Tectonophysics,
-56(3–4), T17–T26. &lt;a href="https://doi.org/10.1016/0040-1951(79)90081-7" class="external-link uri"&gt;https://doi.org/10.1016/0040-1951(79)90081-7&lt;/a&gt;&lt;/p&gt;'><sup>6</sup></a></p>
+56(3–4), T17–T26. &lt;a href="https://doi.org/10.1016/0040-1951(79)90081-7" class="external-link uri"&gt;https://doi.org/10.1016/0040-1951(79)90081-7&lt;/a&gt;&lt;/p&gt;'><sup>7</sup></a></p>
 <div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">test_res</span><span class="op">$</span><span class="va">stress_shape</span><span class="op">$</span><span class="va">phi</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0.101247</span></span></code></pre>
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 95% confidence interval</span></span>
 <span><span class="va">test_res</span><span class="op">$</span><span class="va">phi_CI</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 0.08715034 0.15052106</span></span>
+<pre><code><span><span class="co">## [1] 0.15052106 0.08715034</span></span>
 <span><span class="co">## attr(,"conf.level")</span></span>
 <span><span class="co">## [1] 0.95</span></span></code></pre>
 <p>The angle $alpha; is the angle between the tangential traction
@@ -499,7 +504,7 @@ magnitudes(<math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><se
 <a class="footnote-ref" tabindex="0" data-bs-toggle="popover" data-bs-content="&lt;p&gt;Lund &amp;amp; Townend (2007): Calculating horizontal stress
 orientations with full or partial knowledge of the tectonic stress
 tensor. &lt;em&gt;Geophys. J. Int.&lt;/em&gt;, 170, 1328—1335. doi:
-10.1111/j.1365-246X.2007.03468.x&lt;/p&gt;"><sup>7</sup></a>.</p>
+10.1111/j.1365-246X.2007.03468.x&lt;/p&gt;"><sup>8</sup></a>.</p>
 <p>First, we define the orientation of the principle stress axes:</p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">S1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">250.89</span>, <span class="fl">70.07</span><span class="op">)</span></span>
@@ -876,6 +881,10 @@ T17–T26. <a href="https://doi.org/10.1016/0040-1951(79)90081-7" class="externa
 <p>Angelier, J. (1990). Inversion of field data in fault tectonics to
 obtain the regional stress—III. A new rapid direct inversion method by
 analytical means. Geophys. J. Int, 103, 363–376. <a href="https://doi.org/10.1111/j.1365-246X.1990.tb01777.x" class="external-link uri">https://doi.org/10.1111/j.1365-246X.1990.tb01777.x</a></p>
+<p>Hansen, J. A. (2013). Direct inversion of stress, strain or strain
+rate including vorticity: A linear method of homogenous fault-slip data
+inversion independent of adopted hypothesis. Journal of Structural
+Geology, 51, 3–13. <a href="https://doi.org/10.1016/j.jsg.2013.03.014" class="external-link uri">https://doi.org/10.1016/j.jsg.2013.03.014</a></p>
 <p>Lund, B., &amp; Townend, J. (2007). Calculating horizontal stress
 orientations with full or partial knowledge of the tectonic stress
 tensor. Geophysical Journal International, 170(3), 1328–1335. <a href="https://doi.org/10.1111/j.1365-246X.2007.03468.x" class="external-link uri">https://doi.org/10.1111/j.1365-246X.2007.03468.x</a></p>

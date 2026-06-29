@@ -16,7 +16,9 @@ Fault_PT(x, ptangle = 90)
 - x:
 
   `"Fault"` object where the rows are the observations, and the columns
-  the coordinates.
+  the coordinates. Object must be cmpolete, i.e. no `NA` values. For
+  Michael's and Angelier's methods, at least 4 rows of fault
+  measurements are required, while Hansen's method requires at least 7.
 
 - ptangle:
 

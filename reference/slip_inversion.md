@@ -1,6 +1,6 @@
 # Stress Inversion for Fault-Slip Data
 
-Convenient function for linear and direction inversion of fault-slip
+Convenience function for linear and direction inversion of fault-slip
 data to derive the reduced stress tensor.
 
 ## Usage
@@ -14,7 +14,9 @@ slip_inversion(x, method = c("michael", "angelier", "hansen"), ...)
 - x:
 
   `"Fault"` object where the rows are the observations, and the columns
-  the coordinates.
+  the coordinates. Object must be cmpolete, i.e. no `NA` values. For
+  Michael's and Angelier's methods, at least 4 rows of fault
+  measurements are required, while Hansen's method requires at least 7.
 
 - method:
 
@@ -124,13 +126,15 @@ res_michael <- slip_inversion(x, method = "michael", n_iter = 100, n = 100, res 
 # Inversion after Angelier (1990)
 res_angelier <- slip_inversion(x, method = "angelier")
 
-#res_hansen <- slip_inversion(x, method = "hansen")
+res_hansen <- slip_inversion(x, method = "hansen")
 
 stereoplot(guides = FALSE)
 fault_plot(x, col = "gray80")
 points(res_michael$principal_axes, pch = 3, col = 2:4)
 points(res_angelier$principal_axes, pch = 2, col = 2:4)
-#points(res_hansen$nine$principal_axes, pch = 1, col = 2:4)
-legend("topleft", col = 1, legend = c("Michael (1984)", "Angelier (1990)"), pch = c(3, 2, 1))
+points(res_hansen$principal_axes, pch = 1, col = 2:4)
+legend("topleft", col = 1, 
+  legend = c("Michael (1984)", "Angelier (1990)", "Hansen (2013)"), 
+  pch = c(3, 2, 1))
 }))
 ```

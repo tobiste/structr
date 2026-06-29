@@ -223,17 +223,20 @@ best satisfies all of the faults is found.
 > tensor within the region being studied for the duration of the
 > faulting event.
 
-{structr} provides two numerical solutions to determine the orientation
-of the principal stresses from fault slip data.
+{structr} provides three numerical solutions to determine the
+orientation of the principal stresses from fault slip data.
 
-- Michael (1984) linear inversion method[^2] which uses bootstrapping
+- *Michael (1984)*: Direct inversion method[^2] which uses bootstrapping
   for confidence intervals of the stress estimates.
 
-- Angelier (1990) direct inversion method[^3] coupled with the iterative
-  optimization after Mostafa (2005)[^4] to find the best fit reduced
-  stress tensor.
+- *Angelier (1990)*: Direct inversion method[^3] coupled with the
+  iterative optimization after Mostafa (2005)[^4] to find the best fit
+  reduced stress tensor.
 
-First we load some example data (here the data from Angelier, 1990)[^5]
+- *Hansen (2013)*: Direct inversion using a 9-dimensional parameter
+  space, useful when vorticity affects the fault-slip data[^5].
+
+First we load some example data (here the data from Angelier, 1990)[^6]
 
 ``` r
 
@@ -306,7 +309,7 @@ legend("topleft",
 ![Diagram showing principal stress vector results in a
 stereoplot](Faults_files/figure-html/slip_inversion_plot-1.png)
 
-The stress shape ratio Φ (Angelier 1979)[^6]
+The stress shape ratio Φ (Angelier 1979)[^7]
 
 ``` r
 
@@ -321,7 +324,7 @@ test_res$stress_shape$phi
 test_res$phi_CI
 ```
 
-    ## [1] 0.08715034 0.15052106
+    ## [1] 0.15052106 0.08715034
     ## attr(,"conf.level")
     ## [1] 0.95
 
@@ -371,7 +374,7 @@ result](Faults_files/figure-html/slip_inversion_mohr-1.png)
 The orientation of the maximum horizontal stress
 ($`\sigma_\text{Hmax}`$) can be calculated from the stress tensor the
 the orientation of the principal stress ($`\sigma_1`$, $`\sigma_2`$,
-$`\sigma_3`$) axes their their relative magnitudes($`R`$) [^7].
+$`\sigma_3`$) axes their their relative magnitudes($`R`$) [^8].
 
 First, we define the orientation of the principle stress axes:
 
@@ -637,6 +640,11 @@ obtain the regional stress—III. A new rapid direct inversion method by
 analytical means. Geophys. J. Int, 103, 363–376.
 <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
 
+Hansen, J. A. (2013). Direct inversion of stress, strain or strain rate
+including vorticity: A linear method of homogenous fault-slip data
+inversion independent of adopted hypothesis. Journal of Structural
+Geology, 51, 3–13. <https://doi.org/10.1016/j.jsg.2013.03.014>
+
 Lund, B., & Townend, J. (2007). Calculating horizontal stress
 orientations with full or partial knowledge of the tectonic stress
 tensor. Geophysical Journal International, 170(3), 1328–1335.
@@ -670,16 +678,22 @@ palaeostresses. Computers & Geosciences, 31(8), 1059–1070.
     palaeostresses. Computers & Geosciences, 31(8), 1059–1070.
     <https://doi.org/10.1016/j.cageo.2005.02.012>
 
-[^5]: Angelier, J. (1990). Inversion of field data in fault tectonics to
+[^5]: Hansen, J. A. (2013). Direct inversion of stress, strain or strain
+    rate including vorticity: A linear method of homogenous fault-slip
+    data inversion independent of adopted hypothesis. Journal of
+    Structural Geology, 51, 3–13.
+    <https://doi.org/10.1016/j.jsg.2013.03.014>
+
+[^6]: Angelier, J. (1990). Inversion of field data in fault tectonics to
     obtain the regional stress—III. A new rapid direct inversion method
     by analytical means. Geophys. J. Int, 103, 363–376.
     <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
 
-[^6]: Angelier, J. (1979). Determination of the mean principal
+[^7]: Angelier, J. (1979). Determination of the mean principal
     directions of stresses for a given fault population. Tectonophysics,
     56(3–4), T17–T26. <https://doi.org/10.1016/0040-1951(79)90081-7>
 
-[^7]: Lund & Townend (2007): Calculating horizontal stress orientations
+[^8]: Lund & Townend (2007): Calculating horizontal stress orientations
     with full or partial knowledge of the tectonic stress tensor.
     *Geophys. J. Int.*, 170, 1328—1335. doi:
     10.1111/j.1365-246X.2007.03468.x
