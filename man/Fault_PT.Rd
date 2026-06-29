@@ -7,7 +7,10 @@
 Fault_PT(x, ptangle = 90)
 }
 \arguments{
-\item{x}{\code{"Fault"} object where the rows are the observations, and the columns the coordinates.}
+\item{x}{\code{"Fault"} object where the rows are the observations, and the
+columns the coordinates. Object must be cmpolete, i.e. no \code{NA} values.
+For Michael's and Angelier's methods, at least 4 rows
+of fault measurements are required, while Hansen's method requires at least 7.}
 
 \item{ptangle}{numeric. angle between P and T axes in degrees (90° by default).}
 }

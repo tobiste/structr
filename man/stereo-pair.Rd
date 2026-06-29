@@ -19,7 +19,10 @@ stereo_pair(
 )
 }
 \arguments{
-\item{x}{\code{"Fault"} object where the rows are the observations, and the columns the coordinates.}
+\item{x}{\code{"Fault"} object where the rows are the observations, and the
+columns the coordinates. Object must be cmpolete, i.e. no \code{NA} values.
+For Michael's and Angelier's methods, at least 4 rows
+of fault measurements are required, while Hansen's method requires at least 7.}
 
 \item{pch, col, lwd, lty}{plotting parameters for planes and lines}
 

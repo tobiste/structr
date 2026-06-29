@@ -1,9 +1,12 @@
 #' @title Stress Inversion for Fault-Slip Data
 #' 
-#' @description Convenient function for linear and direction inversion of fault-slip data to 
+#' @description Convenience function for linear and direction inversion of fault-slip data to 
 #' derive the reduced stress tensor.
 #'
-#' @param x `"Fault"` object where the rows are the observations, and the columns the coordinates.
+#' @param x `"Fault"` object where the rows are the observations, and the 
+#'  columns the coordinates. Object must be cmpolete, i.e. no `NA` values. 
+#'  For Michael's and Angelier's methods, at least 4 rows 
+#'  of fault measurements are required, while Hansen's method requires at least 7.
 #' @param method character. The inversion algorithm, one of `"michael"` (the default) 
 #' for a bootstrapped linear inversion after Micheal (1984), `"angelier"` 
 #' for an iterative direct inversion after Angelier (1990) and Mostafa (2005), and
@@ -54,14 +57,16 @@
 #' # Inversion after Angelier (1990)
 #' res_angelier <- slip_inversion(x, method = "angelier")
 #' 
-#' #res_hansen <- slip_inversion(x, method = "hansen")
+#' res_hansen <- slip_inversion(x, method = "hansen")
 #' 
 #' stereoplot(guides = FALSE)
 #' fault_plot(x, col = "gray80")
 #' points(res_michael$principal_axes, pch = 3, col = 2:4)
 #' points(res_angelier$principal_axes, pch = 2, col = 2:4)
-#' #points(res_hansen$nine$principal_axes, pch = 1, col = 2:4)
-#' legend("topleft", col = 1, legend = c("Michael (1984)", "Angelier (1990)"), pch = c(3, 2, 1))
+#' points(res_hansen$principal_axes, pch = 1, col = 2:4)
+#' legend("topleft", col = 1, 
+#'   legend = c("Michael (1984)", "Angelier (1990)", "Hansen (2013)"), 
+#'   pch = c(3, 2, 1))
 #' }))
 slip_inversion <- function(x, method = c("michael", "angelier", "hansen"), ...) {
   method <- match.arg(method)
@@ -158,12 +163,12 @@ slip_inversion <- function(x, method = c("michael", "angelier", "hansen"), ...) 
 slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction = 0.6, flip = FALSE, ...) {
   best.fit <- .slip_inversion_michael(x, friction, flip = flip)
   fault_df <- best.fit$fault_data
-  nx <- nrow(x)
-
   
   normals <- unclass(Vec3(Plane(x)))
   slips <- if(is.Fault(x)) Ray(x) else Line(x)
   slips <- unclass(Vec3(slips))
+  
+  nx <- nrow(normals)
   
   tsign <- if(flip) -1 else 1
   
@@ -171,8 +176,8 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
   tau_boot <- future.apply::future_lapply(seq_len(n_iter), function(i) {
     idx <- sample.int(nx, replace = TRUE)
     x_sample <- x[idx, ]
-    linear_stress_inversion(normals[idx, ], slips[idx, ])
-  }, future.seed = TRUE) * tsign
+    linear_stress_inversion(normals[idx, ], slips[idx, ]) * tsign
+  }, future.seed = TRUE) 
 
   princ_boot <- lapply(tau_boot, tau2stress)
 
@@ -296,6 +301,7 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
   TR <- linear_stress_inversion(normals, slips) * tsign
 
   nx <- nrow(x)
+  
   # tau0 <- tau / sqrt(sum(tau^2)) # normalize Frobenius norm
 
   p <- tau2stress(TR)
@@ -346,6 +352,10 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
 linear_stress_inversion <- function(n, s) {
   m <- nrow(n)
 
+  if (m < 4L) {
+    stop("At least 4 fault slip measurements are required.")
+  }
+  
   # Eq 8:
   A <- do.call(
     rbind,
@@ -511,18 +521,17 @@ slip_inversion_angelier <- function(x,
   stopifnot(all(complete.cases(x)))
   tsign <- if(flip) -1 else 1
   
-  
   normals <- unclass(Vec3(Plane(x)))
   slips <- if(is.Fault(x)) Ray(x) else Line(x)
   slips <- unclass(Vec3(slips))
   
-  if (nrow(normals) < 4L) {
+  N <- nrow(normals)
+  
+  if (N < 4L) {
     stop("At least 4 fault slip measurements are required.")
   }
   
-  N <- nrow(normals)
   lambda <- sqrt(3) / 2 # global lambda from normalised TR, Eq. 4.106
-  
   
   # --- weights -----------------------------------------------------------
   # omega_i enters F4 as sqrt(omega_i) * lambda_i (see derivation above).

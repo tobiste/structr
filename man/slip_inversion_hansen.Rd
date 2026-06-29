@@ -2,34 +2,44 @@
 % Please edit documentation in R/stress_inversion_hansen.R
 \name{slip_inversion_hansen}
 \alias{slip_inversion_hansen}
-\title{9D Direct Inversion of Fault Slip}
+\title{9D Direct Inversion for Fault Slip Including Vorticity}
 \usage{
-slip_inversion_hansen(x, flip = FALSE)
+slip_inversion_hansen(x, flip = FALSE, friction = 0.6)
 }
 \arguments{
-\item{x}{object of class \code{"Pair"} or \code{"Fault"}}
+\item{x}{object of class \code{"Pair"} or \code{"Fault"} with at least 7 rows.}
 
 \item{flip}{logical. Flip if you want to have the negative stress tensor, i.e.
 sigma 1 and 3 will be flipped.}
+
+\item{friction}{numeric. Coefficient of friction (0.6 by default)}
 }
 \value{
 list
 }
 \description{
 Direct inversion of stress, strain or strain rate including vorticity using
-9D parameter space using the method by Hansen (2013)
+9D parameter space using the method by Hansen (2013). It can be applied
+regardless whether the dynamic or the kinematic hypothesis is adopted;
+it can handle datasets representing two to seven degrees of freedom; and it
+is not dependent on the correct assessment of slip sense.
 }
 \examples{
 par(mfrow = c(1, 2))
 invisible(lapply(angelier1990, function(x){
 
-res <- slip_inversion_hansen(x, FALSE)
+res <- slip_inversion_hansen(x, TRUE)
+phi_val <- round(res$stress_shape$phi, 2)
+rup_val <-  round(res$misfit$rup, 2)
+w_val <- round(res$vorticity_mag, 2)
 
 plot(x, col = 'lightgrey')
-title(sub = paste0("R = ", round(res$phi, 2)))
 points(res$principal_axes, col = 2:4, pch = 16, cex = 2)
-text(res$principal_axes, labels = 1:3, col = 2:4, adj = -1)
+text(res$principal_axes, labels = rownames(res$principal_axes), col = 2:4, adj = -.5)
 points(res$vorticity_axis, col = 5, pch = 17, cex = 2)
+text(res$vorticity_axis, labels = bquote(omega), col = 5, adj = -.5)
+
+title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * '\%'~"|"~omega == .(w_val)))
 }))
 }
 \references{
