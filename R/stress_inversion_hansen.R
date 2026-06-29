@@ -95,7 +95,7 @@ slip_inversion_hansen <- function(x, flip = FALSE) {
   #    (Eq. 20)
   # --------------------------------------------------------------------------
   eM    <- eigen(M)
-  SMSort <- order(Re(eM$values))              # ascending
+  MSort <- order(Re(eM$values))              # ascending
   val_M <- Re(eM$values)[MSort]
   vec_M <- t(Re(eM$vectors))[MSort, ]       # rows = eigenvectors
   #val_M <- Re(eM$values)

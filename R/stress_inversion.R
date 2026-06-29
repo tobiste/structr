@@ -307,7 +307,7 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
   }, numeric(1))
 
   # Theoretically resolved shear stress on plane
-  sigma_s_mean <- mean(shear_stress(p$sigma_vals[1], p$sigma_vals[3], theta))
+  sigma_s_mean <- mean(abs(shear_stress(p$sigma_vals[1], p$sigma_vals[3], theta)))
 
   shearnorm <- tau2shearnorm(TR, x, friction = friction)
   tendency <- tau2tendency(TR, x, friction = friction)
@@ -578,7 +578,7 @@ slip_inversion_angelier <- function(x,
   }, numeric(1))
 
   # Theoretically resolved shear stress on plane
-  sigma_s_mean <- mean(shear_stress(p$sigma_vals[1], p$sigma_vals[3], theta))
+  sigma_s_mean <- mean(abs(shear_stress(p$sigma_vals[1], p$sigma_vals[3], theta)))
   
   shearnorm <- tau2shearnorm(TR, x, friction = friction)
   tendency <- tau2tendency(TR, x, friction = friction)
