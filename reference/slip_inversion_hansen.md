@@ -54,5 +54,4 @@ points(res$principal_axes, col = 2:4, pch = 16, cex = 2)
 text(res$principal_axes, labels = 1:3, col = 2:4, adj = -1)
 points(res$vorticity_axis, col = 5, pch = 17, cex = 2)
 }))
-#> Error in slip_inversion_hansen(x, FALSE): object 'MSort' not found
 ```
