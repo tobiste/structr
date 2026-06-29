@@ -17,7 +17,8 @@ for a bootstrapped linear inversion after Micheal (1984), \code{"angelier"}
 for an iterative direct inversion after Angelier (1990) and Mostafa (2005), and
 \code{"hansen"} for direct inversion using the 9d parameter space after Hansen (2013).}
 
-\item{...}{arguments passed to \code{\link[=slip_inversion_angelier]{slip_inversion_angelier()}} or \code{\link[=slip_inversion_michael]{slip_inversion_michael()}}}
+\item{...}{arguments passed to \code{\link[=slip_inversion_angelier]{slip_inversion_angelier()}},  \code{\link[=slip_inversion_michael]{slip_inversion_michael()}}, or
+\code{\link[=slip_inversion_hansen]{slip_inversion_hansen()}} depending on \code{method}.}
 }
 \value{
 a named list with the following components:

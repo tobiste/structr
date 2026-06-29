@@ -41,15 +41,23 @@
 #' @family stress-inversion
 #'
 #' @examples
-#' par(mfrow = c(1, 2))
-#' invisible(lapply(angelier1990, function(x){
+#' # Use Angelier examples:
+#' nx <- length(angelier1990)
+#' par(mfrow = c(1, length(angelier1990)))
 #' 
+#' invisible(lapply(seq_len(nx), function(i){
+#' 
+#' # inversion
+#' x <- angelier1990[[i]]
 #' res <- slip_inversion_hansen(x, TRUE)
+#' 
 #' phi_val <- round(res$stress_shape$phi, 2)
 #' rup_val <-  round(res$misfit$rup, 2)
 #' w_val <- round(res$vorticity_mag, 2)
 #' 
-#' plot(x, col = 'lightgrey')
+#' stereoplot(title = names(angelier1990)[i], guides = FALSE)
+#' stereo_shmax(res$SHmax)
+#' fault_plot(x, col = assign_col(res$misfit$rup))
 #' points(res$principal_axes, col = 2:4, pch = 16, cex = 2)
 #' text(res$principal_axes, labels = rownames(res$principal_axes), col = 2:4, adj = -.5)
 #' points(res$vorticity_axis, col = 5, pch = 17, cex = 2)

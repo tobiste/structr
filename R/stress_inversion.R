@@ -11,7 +11,8 @@
 #' for a bootstrapped linear inversion after Micheal (1984), `"angelier"` 
 #' for an iterative direct inversion after Angelier (1990) and Mostafa (2005), and
 #' `"hansen"` for direct inversion using the 9d parameter space after Hansen (2013).
-#' @param ... arguments passed to [slip_inversion_angelier()] or [slip_inversion_michael()]
+#' @param ... arguments passed to [slip_inversion_angelier()],  [slip_inversion_michael()], or
+#'  [slip_inversion_hansen()] depending on `method`.
 #'
 #' @returns a named list with the following components:
 #'  \describe{
