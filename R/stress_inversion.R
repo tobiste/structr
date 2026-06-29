@@ -160,16 +160,19 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
   fault_df <- best.fit$fault_data
   nx <- nrow(x)
 
+  
   normals <- unclass(Vec3(Plane(x)))
   slips <- if(is.Fault(x)) Ray(x) else Line(x)
   slips <- unclass(Vec3(slips))
+  
+  tsign <- if(flip) -1 else 1
   
   # bootstrap results
   tau_boot <- future.apply::future_lapply(seq_len(n_iter), function(i) {
     idx <- sample.int(nx, replace = TRUE)
     x_sample <- x[idx, ]
     linear_stress_inversion(normals[idx, ], slips[idx, ])
-  }, future.seed = TRUE)
+  }, future.seed = TRUE) * tsign
 
   princ_boot <- lapply(tau_boot, tau2stress)
 
@@ -197,10 +200,11 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
   }, FUN.VALUE = numeric(1)) |>
     stats::t.test(conf.level = conf.level)
 
-  phi_boot <- vapply(params_boot, function(x) {
-    x$phi
-  }, FUN.VALUE = numeric(1)) |>
-    stats::t.test(conf.level = conf.level)
+  phi_boot <- 1 - R_boot$conf.int
+  # phi_boot <- vapply(params_boot, function(x) {
+  #   x$phi
+  # }, FUN.VALUE = numeric(1)) |>
+  #   stats::t.test(conf.level = conf.level)
 
   bott_boot <- vapply(params_boot, function(x) {
     x$bott
@@ -238,7 +242,7 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
     principal_vals_CI = sigma_boot,
     SHmax_CI = SHmax_CI$conf.int,
     R_CI = R_boot$conf.int,
-    phi_CI = phi_boot$conf.int,
+    phi_CI = phi_boot,
     bott_CI = bott_boot$conf.int,
     alpha_CI = alpha_CI$conf.int#,
     #tau_mean_CI = tau_mean_CI$conf.int
@@ -1289,7 +1293,8 @@ stress_shape <- function(tau) {
 
   # stress ratios:
   R <- (sigma_vals[1] - sigma_vals[2]) / (sigma_vals[1] - sigma_vals[3]) # Gephart & Forsyth 1984
-  phi <- (sigma_vals[2] - sigma_vals[3]) / (sigma_vals[1] - sigma_vals[3]) # Angelier 1979
+  # phi <- (sigma_vals[2] - sigma_vals[3]) / (sigma_vals[1] - sigma_vals[3]) # Angelier 1979
+  phi <- 1 - R
   shape_ratio_bott <- (sigma_vals[3] - sigma_vals[1]) / (sigma_vals[2] - sigma_vals[1]) # Bott, Simon-Gomez
   list(R = R, phi = phi, bott = shape_ratio_bott)
 }
