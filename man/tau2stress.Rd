@@ -23,7 +23,7 @@ relative magnitudes of the principal stress axes.
 \examples{
 f <- angelier1990$TYM
 tau <- reduced_stress(f)
-tau2stress(tau)  
+tau2stress(tau)
 }
 \seealso{
 \code{\link[=slip_inversion]{slip_inversion()}}

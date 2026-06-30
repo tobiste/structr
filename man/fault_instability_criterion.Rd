@@ -32,7 +32,7 @@ are the shear traction and effective normal traction along the analysed fault pl
 \examples{
 f <- angelier1990$TYM
 tau <- reduced_stress(f)
-s <- stress_shape(tau)  
+s <- stress_shape(tau)
 
 fault_instability_criterion(f, s$R)
 }

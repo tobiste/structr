@@ -43,24 +43,25 @@ derive the reduced stress tensor.
 set.seed(20250411)
 # Use Angelier examples
 par(mfrow = c(1, length(angelier1990)))
-invisible(lapply(angelier1990, function(x){
+invisible(lapply(angelier1990, function(x) {
+  # Inversion after Michael (1984)
+  res_michael <- slip_inversion(x, method = "michael", n_iter = 100, n = 100, res = 100)
 
-# Inversion after Michael (1984)
-res_michael <- slip_inversion(x, method = "michael", n_iter = 100, n = 100, res = 100)
+  # Inversion after Angelier (1990)
+  res_angelier <- slip_inversion(x, method = "angelier")
 
-# Inversion after Angelier (1990)
-res_angelier <- slip_inversion(x, method = "angelier")
+  res_hansen <- slip_inversion(x, method = "hansen")
 
-res_hansen <- slip_inversion(x, method = "hansen")
-
-stereoplot(guides = FALSE)
-fault_plot(x, col = "gray80")
-points(res_michael$principal_axes, pch = 3, col = 2:4)
-points(res_angelier$principal_axes, pch = 2, col = 2:4)
-points(res_hansen$principal_axes, pch = 1, col = 2:4)
-legend("topleft", col = 1, 
-  legend = c("Michael (1984)", "Angelier (1990)", "Hansen (2013)"), 
-  pch = c(3, 2, 1))
+  stereoplot(guides = FALSE)
+  fault_plot(x, col = "gray80")
+  points(res_michael$principal_axes, pch = 3, col = 2:4)
+  points(res_angelier$principal_axes, pch = 2, col = 2:4)
+  points(res_hansen$principal_axes, pch = 1, col = 2:4)
+  legend("topleft",
+    col = 1,
+    legend = c("Michael (1984)", "Angelier (1990)", "Hansen (2013)"),
+    pch = c(3, 2, 1)
+  )
 }))
 }
 \references{
@@ -82,6 +83,7 @@ Other stress-inversion:
 \code{\link{Fault_PT}()},
 \code{\link{slip_inversion_angelier}()},
 \code{\link{slip_inversion_hansen}()},
+\code{\link{slip_inversion_hansen_boot}()},
 \code{\link{slip_inversion_michael}()},
 \code{\link{slip_inversion_simple}()}
 }

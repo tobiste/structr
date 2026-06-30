@@ -9,6 +9,7 @@ slip_inversion_angelier(
   weights = NULL,
   max_iter = 100L,
   tol = 1e-06,
+  boot = FALSE,
   n_psi = 361L,
   friction = 0.6,
   flip = FALSE
@@ -82,8 +83,8 @@ This could be done using \code{\link[=scale_weights]{scale_weights()}} which sca
 \if{html}{\out{<div class="sourceCode r">}}\preformatted{ # run a first inversion:
  first <- slip_inversion_angelier(x)
  first$
- 
- # in the 
+
+ # in the
  second <- slip_inversion_angelier(x, weights = scale_weights(first$misfit$rup, error_type = 'rup'))
  print(second)
 }\if{html}{\out{</div>}}
@@ -92,27 +93,28 @@ This could be done using \code{\link[=scale_weights]{scale_weights()}} which sca
 nx <- length(angelier1990)
 par(mfrow = c(1, nx))
 
-invisible(lapply(seq_len(nx), function(i){
+invisible(lapply(seq_len(nx), function(i) {
+  # inversion
+  x <- angelier1990[[i]]
+  res <- slip_inversion_angelier(x, max_iter = 0)
 
-# inversion
-x <- angelier1990[[i]]
-res <- slip_inversion_angelier(x, max_iter = 0)
+  # some stress shape
+  phi_val <- round(res$stress_shape$phi, 2)
 
-# some stress shape
-phi_val <- round(res$stress_shape$phi, 2)
+  # misfit
+  rup_val <- round(res$misfit$rup_mean, 2)
 
-# misfit
-rup_val <- round(res$misfit$rup_mean, 2)
-
-# Plot the faults (color-coded by RUP\%) and show the principal stress axes
-stereoplot(title = names(angelier1990)[i], guides = FALSE)
-stereo_shmax(res$SHmax)
-fault_plot(x, col = assign_col(res$misfit$rup))
-points(res$principal_axes, col = 1:3, pch = 16, cex = 1.5)
-text(res$principal_axes, label = rownames(res$principal_axes), 
-col = 1:3, adj = -.25)
-legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
-title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * '\%'))
+  # Plot the faults (color-coded by RUP\%) and show the principal stress axes
+  stereoplot(title = names(angelier1990)[i], guides = FALSE)
+  stereo_shmax(res$SHmax)
+  fault_plot(x, col = assign_col(res$misfit$rup))
+  points(res$principal_axes, col = 1:3, pch = 16, cex = 1.5)
+  text(res$principal_axes,
+    label = rownames(res$principal_axes),
+    col = 1:3, adj = -.25
+  )
+  legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
+  title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "\%"))
 }))
 }
 \references{
@@ -131,6 +133,7 @@ Other stress-inversion:
 \code{\link{Fault_PT}()},
 \code{\link{slip_inversion}()},
 \code{\link{slip_inversion_hansen}()},
+\code{\link{slip_inversion_hansen_boot}()},
 \code{\link{slip_inversion_michael}()},
 \code{\link{slip_inversion_simple}()}
 }

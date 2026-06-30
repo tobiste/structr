@@ -254,3 +254,26 @@
 #' data("shebandowan")
 #' head(shebandowan)
 "shebandowan"
+
+
+#' Fault-Slip Data from Northern Norway
+#'
+#' 198 measurements fault-slip measurements from a quarry in Røsand on the 
+#' Lofoten-Vesterålen archipelago in Northern Norway
+#'
+#' @docType data
+#'
+#' @usage data('osmundsen2010')
+#'
+#' @references
+#' Osmundsen, P.T., Redfield, T.F., Hendriks, B.H.W., Bergh, S.G., Hansen, J.-A., 
+#' Henderson, I.H.C., Dehls, J., Lauknes, T.R., Larsen, Y., Anda, E., Davidsen, 
+#' B., 2010. Fault-controlled Alpine topography in Norway. Journal of the 
+#' Geological Society 167, 83-98.
+#'
+#' @format An object of class `Pair`
+#' @family datasets
+#' @keywords datasets
+#' @examples
+#' data("osmundsen2010")
+#' head(osmundsen2010)

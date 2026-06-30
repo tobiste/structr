@@ -35,7 +35,7 @@ where \eqn{\lambda = \frac{\sqrt{3}}{2}} is the maximum shear stress.
 \examples{
 f <- angelier1990$TYM
 tau <- reduced_stress(f)
-tau2rup(tau, f) 
+tau2rup(tau, f)
 }
 \references{
 Angelier, J. (1990). Inversion of field data in fault tectonics to obtain the

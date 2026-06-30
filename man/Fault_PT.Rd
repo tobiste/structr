@@ -24,22 +24,23 @@ It calculates PT-axes, kinematic planes (also movement planes), and the dihedra 
 }
 \examples{
 par(mfrow = c(1, length(angelier1990)))
-invisible(lapply(angelier1990, function(x){ 
+invisible(lapply(angelier1990, function(x) {
   xpt <- Fault_PT(x)
-  
+
   stereoplot(guides = FALSE)
-  angelier(x, col = 'grey')
+  angelier(x, col = "grey")
   points(xpt$p, pch = 16, cex = 0.6, col = 1)
   points(xpt$t, pch = 16, cex = 0.6, col = 2)
   stereo_confidence(xpt$p, pch = 16, cex = 1.5, col = 1, params = c(n_iter = 1e3))
   stereo_confidence(xpt$t, pch = 16, cex = 1.5, col = 2, params = c(n_iter = 1e3))
-  }))
+}))
 }
 \seealso{
 Other stress-inversion: 
 \code{\link{slip_inversion}()},
 \code{\link{slip_inversion_angelier}()},
 \code{\link{slip_inversion_hansen}()},
+\code{\link{slip_inversion_hansen_boot}()},
 \code{\link{slip_inversion_michael}()},
 \code{\link{slip_inversion_simple}()}
 }

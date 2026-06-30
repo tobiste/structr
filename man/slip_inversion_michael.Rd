@@ -57,32 +57,37 @@ therefore it is necessary to simultaneously solve for a number of faults, so
 that a single a that best satisfies all of the faults is found.
 }
 \examples{
+set.seed(20250411)
+
 # Use Angelier examples:
 nx <- length(angelier1990)
 par(mfrow = c(1, length(angelier1990)))
 
-invisible(lapply(seq_len(nx), function(i){
+invisible(lapply(seq_len(nx), function(i) {
+  # inversion
+  x <- angelier1990[[i]]
+  res <- slip_inversion_michael(x, n_iter = 100, n = 1000, res = 100)
 
-# inversion
-x <- angelier1990[[i]]
-res <- slip_inversion_michael(x, n_iter = 100, n = 1000, res = 100)
+  # some stress shape
+  phi_val <- round(res$phi_CI, 2)
 
-# some stress shape
-phi_val <- round(res$stress_shape$phi, 2)
+  # misfit
+  rup_val <- round(res$rup_CI, 2)
 
-# misfit
-rup_val <- round(res$misfit$rup_mean, 2)
-
-# Plot the faults (color-coded by RUP\%) and show the principal stress axes
-stereoplot(title = names(angelier1990)[i], guides = FALSE)
-stereo_shmax(res$SHmax)
-fault_plot(x, col = assign_col(res$misfit$rup))
-stereo_confidence(res$principal_axes_CI$sigma1, col = 2)
-stereo_confidence(res$principal_axes_CI$sigma2, col = 3)
-stereo_confidence(res$principal_axes_CI$sigma3, col = 4)
-text(res$principal_axes, label = rownames(res$principal_axes), col = 2:4, adj = -.25)
-legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
-title(sub = bquote(varphi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * '\%'))
+  # Plot the faults (color-coded by RUP\%) and show the principal stress axes
+  stereoplot(guides = FALSE)
+  stereo_shmax(res$SHmax)
+  fault_plot(x, col = assign_col(res$misfit$rup))
+  stereo_confidence(res$principal_axes_CI$sigma1, col = 2)
+  stereo_confidence(res$principal_axes_CI$sigma2, col = 3)
+  stereo_confidence(res$principal_axes_CI$sigma3, col = 4)
+  text(res$principal_axes, label = rownames(res$principal_axes), col = 2:4, adj = -.25)
+  legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
+  title(
+  main = names(angelier1990)[i],
+  sub = bquote(atop(varphi ~ "(95\% CI)" == "[" * .(phi_val[1]) * "," ~ .(phi_val[2]) * "]",
+  ~ bar("RUP") ~ "(95\% CI)" == "[" * .(rup_val[1]) * "," ~ .(rup_val[2]) * "] \%")
+  ))
 }))
 }
 \references{
@@ -100,6 +105,7 @@ Other stress-inversion:
 \code{\link{slip_inversion}()},
 \code{\link{slip_inversion_angelier}()},
 \code{\link{slip_inversion_hansen}()},
+\code{\link{slip_inversion_hansen_boot}()},
 \code{\link{slip_inversion_simple}()}
 }
 \concept{stress-inversion}

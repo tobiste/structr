@@ -178,7 +178,11 @@ shebandowan <- read.csv("inst/vorticity_example.csv") |>
 usethis::use_data(shebandowan, overwrite = TRUE)
 
 
-# hossack 1968
-hossack1968 <- read.table("inst/hossack1968.txt", header = TRUE, row.names = 1) |>
-  mutate(Z = 1.0, .before = Y)
-usethis::use_data(hossack1968, overwrite = TRUE)
+# Osmundsen et al. 2010 / Hansen (2013) fault data
+osmundsen2010 <- read.delim("C:/Users/tstephan/Downloads/hanson_ds6.txt", sep = '\t', header = F) |> 
+    mutate(V1 = rhr2dd(V1)) |>
+    as.Pair()
+usethis::use_data(osmundsen2010, overwrite = TRUE)
+
+
+

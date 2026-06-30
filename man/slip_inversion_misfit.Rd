@@ -33,5 +33,5 @@ Misfit parameters of slip inversion
 \examples{
 f <- angelier1990$TYM
 tau <- reduced_stress(f)
-slip_inversion_misfit(tau, f) 
+slip_inversion_misfit(tau, f)
 }

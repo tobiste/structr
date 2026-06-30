@@ -29,9 +29,9 @@ of faults and a given stress tensor.
 \examples{
 f <- angelier1990$TYM
 tau <- reduced_stress(f)
-tau2shearnorm(tau, f)  
+tau2shearnorm(tau, f)
 
-tau2tendency(tau, f)  
+tau2tendency(tau, f)
 }
 \seealso{
 \code{\link[=slip_inversion]{slip_inversion()}}

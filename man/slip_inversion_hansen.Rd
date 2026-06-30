@@ -15,6 +15,10 @@ sigma 1 and 3 will be flipped.}
 \item{friction}{numeric. Coefficient of friction (0.6 by default)}
 }
 \value{
+list. See \code{\link[=slip_inversion_michael]{slip_inversion_michael()}} for out put. Additionally outputs are
+the vorticity axis (\code{"vorticity_axis"}, a \code{Vec3} object) and the magnitude of
+vorticity (\code{"vorticity_mag"}, a numeric).
+
 list
 }
 \description{
@@ -25,30 +29,22 @@ it can handle datasets representing two to seven degrees of freedom; and it
 is not dependent on the correct assessment of slip sense.
 }
 \examples{
-# Use Angelier examples:
-nx <- length(angelier1990)
-par(mfrow = c(1, length(angelier1990)))
-
-invisible(lapply(seq_len(nx), function(i){
-
-# inversion
-x <- angelier1990[[i]]
-res <- slip_inversion_hansen(x, TRUE)
+res <- slip_inversion_hansen(osmundsen2010, TRUE)
 
 phi_val <- round(res$stress_shape$phi, 2)
-rup_val <-  round(res$misfit$rup, 2)
+rup_val <- round(res$misfit$rup, 2)
 w_val <- round(res$vorticity_mag, 2)
 
-stereoplot(title = names(angelier1990)[i], guides = FALSE)
+stereoplot(title = "Lofoten / Northern Norway\n(Osmundsen et al. 2010)", guides = FALSE)
 stereo_shmax(res$SHmax)
-fault_plot(x, col = assign_col(res$misfit$rup))
+points(Plane(osmundsen2010), col = assign_col(res$misfit$rup), pch = 0, cex = 0.5)
+points(Line(osmundsen2010), col = assign_col(res$misfit$rup), pch = 16, cex = 0.5)
 points(res$principal_axes, col = 2:4, pch = 16, cex = 2)
 text(res$principal_axes, labels = rownames(res$principal_axes), col = 2:4, adj = -.5)
 points(res$vorticity_axis, col = 5, pch = 17, cex = 2)
 text(res$vorticity_axis, labels = bquote(omega), col = 5, adj = -.5)
 
-title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * '\%'~"|"~omega == .(w_val)))
-}))
+title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "\%" ~ "|" ~ omega == .(w_val)))
 }
 \references{
 Hansen, J. A. (2013). Direct inversion of stress, strain or strain rate
@@ -61,6 +57,7 @@ Other stress-inversion:
 \code{\link{Fault_PT}()},
 \code{\link{slip_inversion}()},
 \code{\link{slip_inversion_angelier}()},
+\code{\link{slip_inversion_hansen_boot}()},
 \code{\link{slip_inversion_michael}()},
 \code{\link{slip_inversion_simple}()}
 }

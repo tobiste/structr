@@ -40,7 +40,7 @@ Values range between \eqn{-\infty} and \eqn{+\infty}.
 \examples{
 f <- angelier1990$TYM
 tau <- reduced_stress(f)
-stress_shape(tau) 
+stress_shape(tau)
 }
 \references{
 Angelier, J., 1979. Determination of the mean principal directions of stresses for a given fault population.

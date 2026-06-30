@@ -1,14 +1,14 @@
 #' @title Stress Inversion for Fault-Slip Data
-#' 
-#' @description Convenience function for linear and direction inversion of fault-slip data to 
+#'
+#' @description Convenience function for linear and direction inversion of fault-slip data to
 #' derive the reduced stress tensor.
 #'
-#' @param x `"Fault"` object where the rows are the observations, and the 
-#'  columns the coordinates. Object must be cmpolete, i.e. no `NA` values. 
-#'  For Michael's and Angelier's methods, at least 4 rows 
+#' @param x `"Fault"` object where the rows are the observations, and the
+#'  columns the coordinates. Object must be cmpolete, i.e. no `NA` values.
+#'  For Michael's and Angelier's methods, at least 4 rows
 #'  of fault measurements are required, while Hansen's method requires at least 7.
-#' @param method character. The inversion algorithm, one of `"michael"` (the default) 
-#' for a bootstrapped linear inversion after Micheal (1984), `"angelier"` 
+#' @param method character. The inversion algorithm, one of `"michael"` (the default)
+#' for a bootstrapped linear inversion after Micheal (1984), `"angelier"`
 #' for an iterative direct inversion after Angelier (1990) and Mostafa (2005), and
 #' `"hansen"` for direct inversion using the 9d parameter space after Hansen (2013).
 #' @param ... arguments passed to [slip_inversion_angelier()],  [slip_inversion_michael()], or
@@ -27,54 +27,55 @@
 #'   \item{`stress_components`}{matrix. The resolved shear and normal stresses, the slip and dilation tendency on each plane. See [tau2shearnorm()] and [tau2tendency()].}
 #'   \item{`n_iter`}{number of Mostafa iterations performed}
 #'  }
-#'  
+#'
 #' @family stress-inversion
-#' 
-#' @references 
-#' Angelier, J. (1990). Inversion of field data in fault tectonics to obtain 
-#' the regional stress—III. A new rapid direct inversion method by analytical 
+#'
+#' @references
+#' Angelier, J. (1990). Inversion of field data in fault tectonics to obtain
+#' the regional stress—III. A new rapid direct inversion method by analytical
 #' means. Geophys. J. Int, 103, 363–376. <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
-#' 
-#' Hansen, J. A. (2013). Direct inversion of stress, strain or strain rate 
-#' including vorticity: A linear method of homogenous fault-slip data inversion 
-#' independent of adopted hypothesis. Journal of Structural Geology, 51, 3–13. 
+#'
+#' Hansen, J. A. (2013). Direct inversion of stress, strain or strain rate
+#' including vorticity: A linear method of homogenous fault-slip data inversion
+#' independent of adopted hypothesis. Journal of Structural Geology, 51, 3–13.
 #' https://doi.org/10.1016/j.jsg.2013.03.014
-#' 
-#' Michael, A. J. (1984). Determination of stress from slip data: Faults and 
-#' folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526. 
+#'
+#' Michael, A. J. (1984). Determination of stress from slip data: Faults and
+#' folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526.
 #' <https://doi.org/10.1029/JB089iB13p11517>
-#' 
+#'
 #' @export
 #'
 #' @examples
 #' set.seed(20250411)
 #' # Use Angelier examples
 #' par(mfrow = c(1, length(angelier1990)))
-#' invisible(lapply(angelier1990, function(x){
-#' 
-#' # Inversion after Michael (1984)
-#' res_michael <- slip_inversion(x, method = "michael", n_iter = 100, n = 100, res = 100)
-#' 
-#' # Inversion after Angelier (1990)
-#' res_angelier <- slip_inversion(x, method = "angelier")
-#' 
-#' res_hansen <- slip_inversion(x, method = "hansen")
-#' 
-#' stereoplot(guides = FALSE)
-#' fault_plot(x, col = "gray80")
-#' points(res_michael$principal_axes, pch = 3, col = 2:4)
-#' points(res_angelier$principal_axes, pch = 2, col = 2:4)
-#' points(res_hansen$principal_axes, pch = 1, col = 2:4)
-#' legend("topleft", col = 1, 
-#'   legend = c("Michael (1984)", "Angelier (1990)", "Hansen (2013)"), 
-#'   pch = c(3, 2, 1))
+#' invisible(lapply(angelier1990, function(x) {
+#'   # Inversion after Michael (1984)
+#'   res_michael <- slip_inversion(x, method = "michael", n_iter = 100, n = 100, res = 100)
+#'
+#'   # Inversion after Angelier (1990)
+#'   res_angelier <- slip_inversion(x, method = "angelier")
+#'
+#'   res_hansen <- slip_inversion(x, method = "hansen")
+#'
+#'   stereoplot(guides = FALSE)
+#'   fault_plot(x, col = "gray80")
+#'   points(res_michael$principal_axes, pch = 3, col = 2:4)
+#'   points(res_angelier$principal_axes, pch = 2, col = 2:4)
+#'   points(res_hansen$principal_axes, pch = 1, col = 2:4)
+#'   legend("topleft",
+#'     col = 1,
+#'     legend = c("Michael (1984)", "Angelier (1990)", "Hansen (2013)"),
+#'     pch = c(3, 2, 1)
+#'   )
 #' }))
 slip_inversion <- function(x, method = c("michael", "angelier", "hansen"), ...) {
   method <- match.arg(method)
 
   if (method == "angelier") {
     slip_inversion_angelier(x, ...)
-  } else if(method == "michael") {
+  } else if (method == "michael") {
     slip_inversion_michael(x, ...)
   } else {
     slip_inversion_hansen(x, ...)
@@ -134,147 +135,163 @@ slip_inversion <- function(x, method = c("michael", "angelier", "hansen"), ...) 
 #'  [Mohr_plot()] for graphical representation of the deviatoric stress tensor.
 #'
 #' @examples
+#' set.seed(20250411)
+#' 
 #' # Use Angelier examples:
 #' nx <- length(angelier1990)
 #' par(mfrow = c(1, length(angelier1990)))
-#' 
-#' invisible(lapply(seq_len(nx), function(i){
-#' 
-#' # inversion
-#' x <- angelier1990[[i]]
-#' res <- slip_inversion_michael(x, n_iter = 100, n = 1000, res = 100)
-#' 
-#' # some stress shape
-#' phi_val <- round(res$stress_shape$phi, 2)
-#' 
-#' # misfit
-#' rup_val <- round(res$misfit$rup_mean, 2)
 #'
-#' # Plot the faults (color-coded by RUP%) and show the principal stress axes
-#' stereoplot(title = names(angelier1990)[i], guides = FALSE)
-#' stereo_shmax(res$SHmax)
-#' fault_plot(x, col = assign_col(res$misfit$rup))
-#' stereo_confidence(res$principal_axes_CI$sigma1, col = 2)
-#' stereo_confidence(res$principal_axes_CI$sigma2, col = 3)
-#' stereo_confidence(res$principal_axes_CI$sigma3, col = 4)
-#' text(res$principal_axes, label = rownames(res$principal_axes), col = 2:4, adj = -.25)
-#' legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
-#' title(sub = bquote(varphi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * '%'))
+#' invisible(lapply(seq_len(nx), function(i) {
+#'   # inversion
+#'   x <- angelier1990[[i]]
+#'   res <- slip_inversion_michael(x, n_iter = 100, n = 1000, res = 100)
+#'
+#'   # some stress shape
+#'   phi_val <- round(res$phi_CI, 2)
+#'
+#'   # misfit
+#'   rup_val <- round(res$rup_CI, 2)
+#'
+#'   # Plot the faults (color-coded by RUP%) and show the principal stress axes
+#'   stereoplot(guides = FALSE)
+#'   stereo_shmax(res$SHmax)
+#'   fault_plot(x, col = assign_col(res$misfit$rup))
+#'   stereo_confidence(res$principal_axes_CI$sigma1, col = 2)
+#'   stereo_confidence(res$principal_axes_CI$sigma2, col = 3)
+#'   stereo_confidence(res$principal_axes_CI$sigma3, col = 4)
+#'   text(res$principal_axes, label = rownames(res$principal_axes), col = 2:4, adj = -.25)
+#'   legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
+#'   title(
+#'   main = names(angelier1990)[i],
+#'   sub = bquote(atop(varphi ~ "(95% CI)" == "[" * .(phi_val[1]) * "," ~ .(phi_val[2]) * "]",
+#'   ~ bar("RUP") ~ "(95% CI)" == "[" * .(rup_val[1]) * "," ~ .(rup_val[2]) * "] %")
+#'   ))
 #' }))
 slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction = 0.6, flip = FALSE, ...) {
   best.fit <- .slip_inversion_michael(x, friction, flip = flip)
-  fault_df <- best.fit$fault_data
-  
-  normals <- unclass(Vec3(Plane(x)))
-  slips <- if(is.Fault(x)) Ray(x) else Line(x)
-  slips <- unclass(Vec3(slips))
-  
-  nx <- nrow(normals)
-  
-  tsign <- if(flip) -1 else 1
-  
-  # bootstrap results
-  tau_boot <- future.apply::future_lapply(seq_len(n_iter), function(i) {
-    idx <- sample.int(nx, replace = TRUE)
-    x_sample <- x[idx, ]
-    linear_stress_inversion(normals[idx, ], slips[idx, ]) * tsign
-  }, future.seed = TRUE) 
 
-  princ_boot <- lapply(tau_boot, tau2stress)
+  if (n_iter == 0) {
+    return(best.fit)
+  } else {
+    normals <- unclass(Vec3(Plane(x)))
+    slips <- if (is.Fault(x)) Ray(x) else Line(x)
+    slips <- unclass(Vec3(slips))
 
-  # calculate confidence intervals from bootstrap results
-  sigma_vec1 <- do.call(rbind, lapply(princ_boot, function(x) {
-    x$principal_axes[1, ]
-  })) |> 
-    confidence_ellipse(alpha = 1 - conf.level, ...)
+    nx <- nrow(normals)
 
-  sigma_vec2 <- do.call(rbind, lapply(princ_boot, function(x) {
-    x$principal_axes[2, ]
-  })) |> 
-    confidence_ellipse(alpha = 1 - conf.level, ...)
+    tsign <- if (flip) -1 else 1
 
-  sigma_vec3 <- do.call(rbind, lapply(princ_boot, function(x) {
-    x$principal_axes[3, ]
-  })) |> 
-    confidence_ellipse(alpha = 1 - conf.level, ...)
+    # bootstrap results
+    tau_boot <- future.apply::future_lapply(seq_len(n_iter), function(i) {
+      idx <- sample.int(nx, replace = TRUE)
+      x_sample <- x[idx, ]
+      linear_stress_inversion(normals[idx, ], slips[idx, ]) * tsign
+    }, future.seed = TRUE)
+
+    princ_boot <- lapply(tau_boot, tau2stress)
+
+    # calculate confidence regions from bootstrap results ###
+    sigma_vec1 <- do.call(rbind, lapply(princ_boot, function(x) {
+      x$principal_axes[1, ]
+    })) |>
+      confidence_ellipse(alpha = 1 - conf.level, ...)
+
+    sigma_vec2 <- do.call(rbind, lapply(princ_boot, function(x) {
+      x$principal_axes[2, ]
+    })) |>
+      confidence_ellipse(alpha = 1 - conf.level, ...)
+
+    sigma_vec3 <- do.call(rbind, lapply(princ_boot, function(x) {
+      x$principal_axes[3, ]
+    })) |>
+      confidence_ellipse(alpha = 1 - conf.level, ...)
+
+    sigma_boot0 <- vapply(princ_boot, function(x) {
+      x$sigma_vals
+    }, FUN.VALUE = numeric(3)) |>
+      t()
+    sigma_boot <- sapply(1:3, function(col) {
+      sigma_boot_col <- stats::t.test(sigma_boot0[, col], conf.level = conf.level)
+      sigma_boot_col$conf.int
+    })
+    colnames(sigma_boot) <- names(best.fit$principal_vals)
+    attr(sigma_boot, "conf.level") <- conf.level
 
 
-  params_boot <- lapply(tau_boot, stress_shape)
+    # Stress parameters ###
+    params_boot <- lapply(tau_boot, stress_shape)
 
-  R_boot <- vapply(params_boot, function(x) {
-    x$R
-  }, FUN.VALUE = numeric(1)) |>
-    stats::t.test(conf.level = conf.level)
+    R_boot <- vapply(params_boot, function(x) {
+      x$R
+    }, FUN.VALUE = numeric(1)) |>
+      stats::t.test(conf.level = conf.level)
 
-  phi_boot <- 1 - R_boot$conf.int
-  # phi_boot <- vapply(params_boot, function(x) {
-  #   x$phi
-  # }, FUN.VALUE = numeric(1)) |>
-  #   stats::t.test(conf.level = conf.level)
+    phi_boot <- 1 - rev(R_boot$conf.int)
+    # phi_boot <- vapply(params_boot, function(x) {
+    #   x$phi
+    # }, FUN.VALUE = numeric(1)) |>
+    #   stats::t.test(conf.level = conf.level)
 
-  bott_boot <- vapply(params_boot, function(x) {
-    x$bott
-  }, FUN.VALUE = numeric(1)) |>
-    stats::t.test(conf.level = conf.level)
+    bott_boot <- vapply(params_boot, function(x) {
+      x$bott
+    }, FUN.VALUE = numeric(1)) |>
+      stats::t.test(conf.level = conf.level)
 
-  sigma_boot0 <- vapply(princ_boot, function(x) {
-    x$sigma_vals
-  }, FUN.VALUE = numeric(3)) |> 
-    t()
-  sigma_boot <- sapply(1:3, function(col) {
-    sigma_boot_col <- stats::t.test(sigma_boot0[, col], conf.level = conf.level)
-    sigma_boot_col$conf.int
-  })
-  colnames(sigma_boot) <- names(best.fit$principal_vals)
 
-  alpha_CI <- stats::t.test(best.fit$misfit$alpha, conf.level = conf.level)
-  rup_CI <- stats::t.test(best.fit$misfit$rup, conf.level = conf.level)
-  
-  SHmax_CI <- vapply(tau_boot, function(x) {
-    tryCatch(
-      expr = SH_from_tensor(x),
-      error = function(e) {
-        phi <- stress_shape(x)$phi
-        principal_axes <- tau2stress(x)$principal_axes
-        SH(principal_axes[1, ], principal_axes[2, ], principal_axes[3, ], R = phi)
-      }
-    )
-  }, FUN.VALUE = numeric(1)) |>
-    #tectonicr::confidence_interval(conf.level = conf.level, axial = TRUE)
-    stats::t.test(conf.level = conf.level)
+    # Misfit ###
+    alpha_CI <- stats::t.test(best.fit$misfit$alpha, conf.level = conf.level)
+    rup_CI <- stats::t.test(best.fit$misfit$rup, conf.level = conf.level)
 
-  append(best.fit, list(
-    principal_axes_CI = list(sigma1 = sigma_vec1, sigma2 = sigma_vec2, sigma3 = sigma_vec3),
-    principal_vals_CI = sigma_boot,
-    SHmax_CI = SHmax_CI$conf.int,
-    R_CI = R_boot$conf.int,
-    phi_CI = phi_boot,
-    bott_CI = bott_boot$conf.int,
-    alpha_CI = alpha_CI$conf.int#,
-    #tau_mean_CI = tau_mean_CI$conf.int
-    #beta_CI = beta_CI$conf.interval,
-    #theta_CI = theta_CI$conf.interval
-  ))
+    # SHmax ###
+    SHmax_CI <- vapply(tau_boot, function(x) {
+      tryCatch(
+        expr = SH_from_tensor(x),
+        error = function(e) {
+          phi <- stress_shape(x)$phi
+          principal_axes <- tau2stress(x)$principal_axes
+          SH(principal_axes[1, ], principal_axes[2, ], principal_axes[3, ], R = phi)
+        }
+      )
+    }, FUN.VALUE = numeric(1)) |>
+      # tectonicr::confidence_interval(conf.level = conf.level, axial = TRUE)
+      stats::t.test(conf.level = conf.level)
+
+    append(best.fit, list(
+      principal_axes_CI = list(sigma1 = sigma_vec1, sigma2 = sigma_vec2, sigma3 = sigma_vec3),
+      principal_vals_CI = sigma_boot,
+      SHmax_CI = SHmax_CI$conf.int,
+      R_CI = R_boot$conf.int,
+      phi_CI = phi_boot,
+      bott_CI = bott_boot$conf.int,
+      alpha_CI = alpha_CI$conf.int,
+      rup_CI = rup_CI$conf.int
+      # tau_mean_CI = tau_mean_CI$conf.int
+      # beta_CI = beta_CI$conf.interval,
+      # theta_CI = theta_CI$conf.interval
+    ))
+  }
 }
 
 
-#' Title
+#' Stress Inversion for Fault-Slip Data after Michael (1984)
+#'
+#' Stress Inversion for Fault-Slip Data after Michael (1984) without bootstrapping
 #'
 #' @inheritParams slip_inversion_michael
 #'
-#' @returns list. 
+#' @returns list.
 #' @noRd
 #'
 #' @examples
 #' \dontrun{
 #' # Use Angelier examples:
-#' 
+#'
 #' # inversion
 #' res <- .slip_inversion_michael(angelier1990$TYM, FALSE)
-#' 
+#'
 #' # some stress shape
 #' phi_val <- round(res$stress_shape$phi, 2)
-#' 
+#'
 #' # misfit
 #' rup_val <- round(res$misfit$rup_mean, 2)
 #' beta <- round(res$misfit$alpha_mean, 2)
@@ -284,34 +301,34 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
 #' stereoplot(title = "TYM (central Crete)", guides = FALSE)
 #' stereo_shmax(res$SHmax)
 #' fault_plot(angelier1990$TYM, col = assign_col(res$misfit$rup))
-#' points(res$principal_axes, pch =16, col = 2:4)
+#' points(res$principal_axes, pch = 16, col = 2:4)
 #' text(res$principal_axes, label = rownames(res$principal_axes), col = 2:4, adj = -.25)
 #' legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
-#' title(sub = bquote(varphi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * 
-#' '% |'~bar(beta) == .(beta)~"|"~bar(tau) == .(ss)))
+#' title(sub = bquote(varphi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) *
+#'   "% |" ~ bar(beta) == .(beta) ~ "|" ~ bar(tau) == .(ss)))
 #' }
 .slip_inversion_michael <- function(x, friction = 0.6, flip = FALSE) {
-  tsign <- if(flip) -1 else 1
-  
+  tsign <- if (flip) -1 else 1
+
   stopifnot(all(complete.cases(x)))
-  
+
   normals <- unclass(Vec3(Plane(x)))
-  slips <- if(is.Fault(x)) Ray(x) else Line(x)
+  slips <- if (is.Fault(x)) Ray(x) else Line(x)
   slips <- unclass(Vec3(slips))
 
   TR <- linear_stress_inversion(normals, slips) * tsign
 
   nx <- nrow(x)
-  
+
   # tau0 <- tau / sqrt(sum(tau^2)) # normalize Frobenius norm
 
   p <- tau2stress(TR)
   stress_shape <- stress_shape(TR)
   # tensor_params <- c(psi = res$psi, d = res$d, e = res$e, f = res$f)
-  
+
   # --- Step 4: Per-fault diagnostics ---
   misfit <- slip_inversion_misfit(TR, x)
-  
+
   # Angle between slip planes and sigma 1
   theta <- vapply(seq_len(nx), function(i) {
     angle(Plane(x[i, ]), p$principal_axes[1, ])
@@ -322,18 +339,18 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
 
   shearnorm <- tau2shearnorm(TR, x, friction = friction)
   tendency <- tau2tendency(TR, x, friction = friction)
-  
+
   # sigma_s_mean <- mean(abs(shearnorm))
-  
+
   SHmax <- tryCatch(
     expr = SH_from_tensor(eigen(TR, symmetric = TRUE)$vectors),
     error = function(e) {
       SH(p$principal_axes[1, ], p$principal_axes[2, ], p$principal_axes[3, ], R = stress_shape$R)
     }
   )
-  
+
   pfaults <- principal_fault(p$principal_axes[1, ], p$principal_axes[3, ], friction)
-  
+
   list(
     stress_tensor = TR,
     # tensor_params = tensor_params,
@@ -356,7 +373,7 @@ linear_stress_inversion <- function(n, s) {
   if (m < 4L) {
     stop("At least 4 fault slip measurements are required.")
   }
-  
+
   # Eq 8:
   A <- do.call(
     rbind,
@@ -418,18 +435,17 @@ fault_normal_matrix <- function(n) {
 }
 
 
-
 # Angelier (1990) --------------------------------------------------------------
 
 #' @title Stress Inversion for Fault-Slip Data after Angelier (1990)
 #'
-#' @description Direct inversion after the algorithm of Angelier (1990) with 
+#' @description Direct inversion after the algorithm of Angelier (1990) with
 #' iterative refinement after Mostafa (2005)
 #'
-#' @param x `"Fault"` object where the rows are the observations, and the columns 
+#' @param x `"Fault"` object where the rows are the observations, and the columns
 #' the coordinates. Must have at least 4 fault measurements.
 #' @param weights numeric. Weightings for the faults. Must have the same length as `x`
-#' @param max_iter integer. Maximum iteration count (default `50`) for Mostafa (2005) 
+#' @param max_iter integer. Maximum iteration count (default `50`) for Mostafa (2005)
 #' optimization. Set to `0` for no optimization.
 #' @param tol numeric. Convergence tolerance on max absolute change in TR elements between iterations (default `1e-6`)
 #' @param n_psi integer. Number of psi grid points for each step (default `361`)
@@ -458,27 +474,27 @@ fault_normal_matrix <- function(n) {
 #' Mostafa (2005) replaces the global \eqn{\lambda} with per-fault \eqn{\lambda_i} equal to
 #' the shear traction magnitude on each plane and iterates until convergence.
 #'
-#' @references 
+#' @references
 #' Angelier, J. (1990). Inversion of field data in fault tectonics to obtain the
-#'  regional stress—III. A new rapid direct inversion method by analytical means. 
+#'  regional stress—III. A new rapid direct inversion method by analytical means.
 #'  Geophys. J. Int, 103, 363–376. <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
-#'  
+#'
 #' Pascal, C. (2022). Paleostress Inversion Techniques. Chapter 4, Sections 4.2.3 and 4.2.4.
-#' 
-#' Mostafa, M. E. (2005). Iterative direct inversion: An exact complementary 
-#' solution for inverting fault-slip data to obtain palaeostresses. Computers 
+#'
+#' Mostafa, M. E. (2005). Iterative direct inversion: An exact complementary
+#' solution for inverting fault-slip data to obtain palaeostresses. Computers
 #' & Geosciences, 31(8), 1059–1070. <https://doi.org/10.1016/j.cageo.2005.02.012>
-#' 
+#'
 #' @family stress-inversion
-#' 
-#' @note The solution can be refined iteratively by weighting the faults using the RUP values. 
+#'
+#' @note The solution can be refined iteratively by weighting the faults using the RUP values.
 #' This could be done using [scale_weights()] which scales the RUP values:
-#' ```r 
+#' ```r
 #'  # run a first inversion:
 #'  first <- slip_inversion_angelier(x)
 #'  first$
-#'  
-#'  # in the 
+#'
+#'  # in the
 #'  second <- slip_inversion_angelier(x, weights = scale_weights(first$misfit$rup, error_type = 'rup'))
 #'  print(second)
 #'  ```
@@ -489,103 +505,107 @@ fault_normal_matrix <- function(n) {
 #' @examples
 #' nx <- length(angelier1990)
 #' par(mfrow = c(1, nx))
-#' 
-#' invisible(lapply(seq_len(nx), function(i){
-#' 
-#' # inversion
-#' x <- angelier1990[[i]]
-#' res <- slip_inversion_angelier(x, max_iter = 0)
-#' 
-#' # some stress shape
-#' phi_val <- round(res$stress_shape$phi, 2)
-#' 
-#' # misfit
-#' rup_val <- round(res$misfit$rup_mean, 2)
 #'
-#' # Plot the faults (color-coded by RUP%) and show the principal stress axes
-#' stereoplot(title = names(angelier1990)[i], guides = FALSE)
-#' stereo_shmax(res$SHmax)
-#' fault_plot(x, col = assign_col(res$misfit$rup))
-#' points(res$principal_axes, col = 1:3, pch = 16, cex = 1.5)
-#' text(res$principal_axes, label = rownames(res$principal_axes), 
-#' col = 1:3, adj = -.25)
-#' legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
-#' title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * '%'))
+#' invisible(lapply(seq_len(nx), function(i) {
+#'   # inversion
+#'   x <- angelier1990[[i]]
+#'   res <- slip_inversion_angelier(x, max_iter = 0)
+#'
+#'   # some stress shape
+#'   phi_val <- round(res$stress_shape$phi, 2)
+#'
+#'   # misfit
+#'   rup_val <- round(res$misfit$rup_mean, 2)
+#'
+#'   # Plot the faults (color-coded by RUP%) and show the principal stress axes
+#'   stereoplot(title = names(angelier1990)[i], guides = FALSE)
+#'   stereo_shmax(res$SHmax)
+#'   fault_plot(x, col = assign_col(res$misfit$rup))
+#'   points(res$principal_axes, col = 1:3, pch = 16, cex = 1.5)
+#'   text(res$principal_axes,
+#'     label = rownames(res$principal_axes),
+#'     col = 1:3, adj = -.25
+#'   )
+#'   legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
+#'   title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "%"))
 #' }))
 slip_inversion_angelier <- function(x,
                                     weights = NULL,
                                     max_iter = 100L,
                                     tol = 1e-6,
+                                    boot = FALSE,
                                     n_psi = 361L,
                                     friction = 0.6,
                                     flip = FALSE) {
   stopifnot(all(complete.cases(x)))
-  tsign <- if(flip) -1 else 1
-  
+  tsign <- if (flip) -1 else 1
+
   normals <- unclass(Vec3(Plane(x)))
-  slips <- if(is.Fault(x)) Ray(x) else Line(x)
+  slips <- if (is.Fault(x)) Ray(x) else Line(x)
   slips <- unclass(Vec3(slips))
-  
+
   N <- nrow(normals)
-  
+
   if (N < 4L) {
     stop("At least 4 fault slip measurements are required.")
   }
-  
+
   lambda <- sqrt(3) / 2 # global lambda from normalised TR, Eq. 4.106
-  
+
   # --- weights -----------------------------------------------------------
   # omega_i enters F4 as sqrt(omega_i) * lambda_i (see derivation above).
   # Default: uniform weights = 1.
   if (is.null(weights)) {
     w_sqrt <- rep(1, N)
   } else {
-    stopifnot(is.numeric(weights), length(weights) == N,
-              all(weights >= 0), any(weights > 0))
-    
+    stopifnot(
+      is.numeric(weights), length(weights) == N,
+      all(weights >= 0), any(weights > 0)
+    )
+
     # Normalise so mean weight = 1 (keeps lambda scale invariant)
     weights <- weights / mean(weights)
-    w_sqrt  <- sqrt(weights)
+    w_sqrt <- sqrt(weights)
   }
-  
+
   # --- Step 1: initial Angelier (1990) inversion with global lambda ---
   res <- .angelier_step(normals, slips, lambda * w_sqrt, n_psi)
   TR <- res$TR
-  
-  
+
+
   # --- Step 2: Mostafa (2005) iteration ---
   # Replace global lambda with per-fault lambda_i = |tau_i| (shear traction
   # magnitude on each plane under the current TR) and re-invert.
   # Repeat until TR converges (max absolute element change < tol).
-  
+
   for (iter in seq_len(max_iter)) {
     tau <- .shear_traction(TR, normals)
     tau_mag <- sqrt(rowSums(tau^2))
-    
+
     # Fall back to global lambda for degenerate planes (zero shear)
     lambda_i <- ifelse(tau_mag > 1e-12, tau_mag, lambda)
-    
+
     res_new <- .angelier_step(normals, slips, lambda_i * w_sqrt, n_psi)
     TR_new <- res_new$TR
-    
+
     delta <- max(abs(TR_new - TR))
     TR <- TR_new
     res <- res_new
-    
+
     if (delta < tol) break
   }
-  
-  TR <-  TR * tsign
-  
+
+  TR <- TR * tsign
+
   # --- Step 3: Extract principal stresses ---
   p <- tau2stress(TR)
   stress_shape <- stress_shape(TR)
   tensor_params <- c(psi = res$psi, d = res$d, e = res$e, f = res$f)
-  
+
   # --- Step 4: Per-fault diagnostics ---
   misfit <- slip_inversion_misfit(TR, x)
-  
-  
+
+
   # Angle between slip planes and sigma 1
   theta <- vapply(seq_len(N), function(i) {
     angle(Plane(x[i, ]), p$principal_axes[1, ])
@@ -593,21 +613,21 @@ slip_inversion_angelier <- function(x,
 
   # Theoretically resolved shear stress on plane
   sigma_s_mean <- mean(abs(shear_stress(p$sigma_vals[1], p$sigma_vals[3], theta)))
-  
+
   shearnorm <- tau2shearnorm(TR, x, friction = friction)
   tendency <- tau2tendency(TR, x, friction = friction)
-  
+
   # sigma_s_mean <- mean(abs(shearnorm))
-  
+
   SHmax <- tryCatch(
     expr = SH_from_tensor(eigen(TR, symmetric = TRUE)$vectors),
     error = function(e) {
       SH(p$principal_axes[1, ], p$principal_axes[2, ], p$principal_axes[3, ], R = stress_shape$R)
     }
   )
-  
+
   pfaults <- principal_fault(p$principal_axes[1, ], p$principal_axes[3, ], friction)
-  
+
   list(
     stress_tensor = TR,
     tensor_params = tensor_params,
@@ -624,12 +644,14 @@ slip_inversion_angelier <- function(x,
 }
 
 
+
+
 # Build the 3x3 reduced stress tensor from the four unknowns (Eq. 4.87)
 .build_TR <- function(psi, d, e, f) {
   cp <- cos(psi)
   sp <- sin(psi)
   r3 <- sqrt(3) / 2
-  
+
   # Diagonal: T11=cos(psi), T22=cos(psi+2pi/3), T33=cos(psi+4pi/3)
   # Using addition formula: cos(psi+2pi/3) = -cp/2 - sp*r3
   #                         cos(psi+4pi/3) = -cp/2 + sp*r3
@@ -660,8 +682,6 @@ slip_inversion_angelier <- function(x,
 }
 
 
-
-
 # One Angelier (1990) direct inversion step
 #
 # For a given lambda vector (scalar or length-N for Mostafa mode) this
@@ -673,12 +693,12 @@ slip_inversion_angelier <- function(x,
 #   3. Refines the minimum with Brent's method.
 #   4. Returns the optimal (psi, d, e, f) and the corresponding TR.
 #' @importFrom stats optimise
-.angelier_step <- function(normals, slips, lambdas, n_psi = 361L#,
+.angelier_step <- function(normals, slips, lambdas, n_psi = 361L # ,
                            # psi_centre = pi / 2, psi_window = pi
-                           ) {
+) {
   N <- nrow(normals)
   lv <- if (length(lambdas) == 1L) rep(lambdas, N) else lambdas
-  
+
   n1 <- normals[, 1L]
   n2 <- normals[, 2L]
   n3 <- normals[, 3L]
@@ -686,7 +706,7 @@ slip_inversion_angelier <- function(x,
   s2 <- slips[, 2L]
   s3 <- slips[, 3L]
   r3 <- sqrt(3) / 2
-  
+
   # Symbolic expansion of tau_i components in terms of (cp, sp, d, e, f)
   #
   # TR diagonal in terms of cp = cos(psi), sp = sin(psi):
@@ -716,29 +736,29 @@ slip_inversion_angelier <- function(x,
   #
   #   tau_iz = cp*(-n3/2 - Ac*n3) + sp*(r3*n3 - As*n3)
   #           + d*(-2*n1*n2*n3)   + e*(n1 - 2*n1*n3^2)  + f*(n2 - 2*n2*n3^2)
-  
+
   Ac <- n1^2 - n2^2 / 2 - n3^2 / 2
   As <- r3 * (n3^2 - n2^2)
-  
+
   # Coefficient arrays: tau_ix = Px_c*cp + Px_s*sp + Px_d*d + Px_e*e + Px_f*f
   Px_c <- n1 * (1 - Ac)
   Px_s <- -As * n1
   Px_d <- n2 * (1 - 2 * n1^2)
   Px_e <- n3 * (1 - 2 * n1^2)
   Px_f <- -2 * n1 * n2 * n3
-  
+
   Py_c <- -n2 * (0.5 + Ac)
   Py_s <- -n2 * (r3 + As)
   Py_d <- n1 * (1 - 2 * n2^2)
   Py_e <- -2 * n1 * n2 * n3
   Py_f <- n3 * (1 - 2 * n2^2)
-  
+
   Pz_c <- -n3 * (0.5 + Ac)
   Pz_s <- n3 * (r3 - As)
   Pz_d <- -2 * n1 * n2 * n3
   Pz_e <- n1 * (1 - 2 * n3^2)
   Pz_f <- n2 * (1 - 2 * n3^2)
-  
+
   # dF4/dd = 0:  sum[ d/dd(tau^2) - 2*li * d/dd(s.sigma) ] = 0
   #
   # d/dd(tau_i^2) = 2 * (dTR/dd * n_i) . tau_i
@@ -756,32 +776,32 @@ slip_inversion_angelier <- function(x,
   #   U  = sum(lv*(s1*n2 + s2*n1))
   #
   # Similarly for dF4/de (lever = (n3,0,n1)) and dF4/df (lever = (0,n3,n2)).
-  
+
   A_ <- sum(n2 * Px_d + n1 * Py_d)
   D_ <- sum(n2 * Px_e + n1 * Py_e)
   E_ <- sum(n2 * Px_f + n1 * Py_f)
   Gc_ <- sum(n2 * Px_c + n1 * Py_c)
   Gs_ <- sum(n2 * Px_s + n1 * Py_s)
   U_ <- sum(lv * (s1 * n2 + s2 * n1))
-  
+
   B_ <- sum(n3 * Px_e + n1 * Pz_e)
   F_ <- sum(n3 * Px_f + n1 * Pz_f)
   Hc_ <- sum(n3 * Px_c + n1 * Pz_c)
   Hs_ <- sum(n3 * Px_s + n1 * Pz_s)
   V_ <- sum(lv * (s1 * n3 + s3 * n1))
-  
+
   C_ <- sum(n3 * Py_f + n2 * Pz_f)
   Ic_ <- sum(n3 * Py_c + n2 * Pz_c)
   Is_ <- sum(n3 * Py_s + n2 * Pz_s)
   W_ <- sum(lv * (s2 * n3 + s3 * n2))
-  
+
   # Symmetric 3x3 coefficient matrix (constant across psi)
   lhs_mat <- matrix(c(
     A_, D_, E_,
     D_, B_, F_,
     E_, F_, C_
   ), 3L, 3L)
-  
+
   # Solve for (d, e, f) given psi
   .solve_def <- function(psi_val) {
     cp <- cos(psi_val)
@@ -793,7 +813,7 @@ slip_inversion_angelier <- function(x,
     )
     tryCatch(solve(lhs_mat, rhs), error = function(e) rep(NA_real_, 3L))
   }
-  
+
   # F4 evaluated at a given psi (after solving for d,e,f)
   .F4 <- function(psi_val) {
     def <- .solve_def(psi_val)
@@ -805,13 +825,13 @@ slip_inversion_angelier <- function(x,
     # F4 = sum[ lv^2 + |tau|^2 - 2*lv*(s.tau) ]  (Eq. 4.103)
     sum(lv^2 + rowSums(tau^2) - 2 * lv * rowSums(slips * tau))
   }
-  
+
   # Grid search over psi in [0, pi)  (F4 has period pi in psi)
   psi_grid <- seq(0, pi, length.out = n_psi)
   F4_grid <- vapply(psi_grid, .F4, numeric(1L))
   best_idx <- which.min(F4_grid)
   best_psi <- psi_grid[best_idx]
-  
+
   # Brent refinement within one grid step of the minimum
   step <- pi / (n_psi - 1L)
   opt <- tryCatch(
@@ -821,11 +841,11 @@ slip_inversion_angelier <- function(x,
     )),
     error = function(e) list(minimum = best_psi, objective = F4_grid[best_idx])
   )
-  
+
   psi_opt <- opt$minimum
   def_opt <- .solve_def(psi_opt)
   TR_opt <- .build_TR(psi_opt, def_opt[1L], def_opt[2L], def_opt[3L])
-  
+
   list(
     psi = psi_opt,
     d = def_opt[1L],
@@ -835,7 +855,6 @@ slip_inversion_angelier <- function(x,
     F4 = opt$objective
   )
 }
-
 
 
 # PT technique ------------------------------------------------------------------
@@ -857,19 +876,19 @@ slip_inversion_angelier <- function(x,
 #'
 #' @examples
 #' par(mfrow = c(1, length(angelier1990)))
-#' invisible(lapply(angelier1990, function(x){ 
+#' invisible(lapply(angelier1990, function(x) {
 #'   xpt <- Fault_PT(x)
-#'   
+#'
 #'   stereoplot(guides = FALSE)
-#'   angelier(x, col = 'grey')
+#'   angelier(x, col = "grey")
 #'   points(xpt$p, pch = 16, cex = 0.6, col = 1)
 #'   points(xpt$t, pch = 16, cex = 0.6, col = 2)
 #'   stereo_confidence(xpt$p, pch = 16, cex = 1.5, col = 1, params = c(n_iter = 1e3))
 #'   stereo_confidence(xpt$t, pch = 16, cex = 1.5, col = 2, params = c(n_iter = 1e3))
-#'   }))
+#' }))
 Fault_PT <- function(x, ptangle = 90) {
   stopifnot(all(complete.cases(x)))
-  
+
   ptangle <- rep(deg2rad(ptangle), nrow(x))
   x_corr <- misfit_pair(x)
   xp <- x_corr$fvec
@@ -890,27 +909,31 @@ Fault_PT <- function(x, ptangle = 90) {
   list(p = p, t = t, m = m, d = d)
 }
 
-rot_mean <- function(x){
-  x |> pair2rot() |> rotMean() |> as.Rotation() |> rot2pair(fault = TRUE)
+rot_mean <- function(x) {
+  x |>
+    pair2rot() |>
+    rotMean() |>
+    as.Rotation() |>
+    rot2pair(fault = TRUE)
 }
 
 #' Simple Statistical Fault-Slip Inversion
-#' 
-#' Measurements of fault-slip data are often scattered due to measurement 
-#' errors and the wavy nature of fault planes and fault striations/slickenlines. 
-#' The fault scatter is large due to noise, rather than representing the actual 
+#'
+#' Measurements of fault-slip data are often scattered due to measurement
+#' errors and the wavy nature of fault planes and fault striations/slickenlines.
+#' The fault scatter is large due to noise, rather than representing the actual
 #' geometry of
-#' the fault set. The idea of this algorithm is to cluster the fault data set to 
-#' identify the conjugate set of 
-#' faults and their the mean orientation Using the Wallace-Bott Hypothesis 
-#' and Anderson's theory, it then calculates the orientation of the principal stresses, 
-#' and uses the angles to the fault planes to derive the a best-fit stress shape parameter R. 
+#' the fault set. The idea of this algorithm is to cluster the fault data set to
+#' identify the conjugate set of
+#' faults and their the mean orientation Using the Wallace-Bott Hypothesis
+#' and Anderson's theory, it then calculates the orientation of the principal stresses,
+#' and uses the angles to the fault planes to derive the a best-fit stress shape parameter R.
 #'
 #' @param x object of class `"Fault"`
-#' @param cluster_fun function for cluster, must have number of desired cluster 
+#' @param cluster_fun function for cluster, must have number of desired cluster
 #' as second input outputs and vector `cluster`. The default is [stats::kmeans()]
 #' @param n_grid integer. Number to optimize grid search for stress shape parameter R
-#' 
+#'
 #' @family stress-inversion
 #'
 #' @returns list.
@@ -918,90 +941,94 @@ rot_mean <- function(x){
 #'
 #' @examples
 #' par(mfrow = c(1, length(angelier1990)))
-#' invisible(lapply(angelier1990, function(x){ 
-#' xres <- slip_inversion_simple(x)
-#' stereoplot(sub = paste0('beta: ', round(xres$beta, 2), 
-#' " deg | R: ", round(xres$R, 2)))
-#' hoeppener(x, col = assign_col(xres$beta_angles))
-#' angelier(xres$mean_planes, pch = 16, col = viridis::magma(2, end = 0.8), cex = 1)
-#' points(xres$principal_axes, pch = 16, col = viridis::rocket(3, end = 0.8), cex = 1)
-#' text(xres$principal_axes, labels = rownames(xres$principal_axes), 
-#' col = viridis::rocket(3, end = 0.8), cex = 1, adj = c(-.25, -.25))
+#' invisible(lapply(angelier1990, function(x) {
+#'   xres <- slip_inversion_simple(x)
+#'   stereoplot(sub = paste0(
+#'     "beta: ", round(xres$beta, 2),
+#'     " deg | R: ", round(xres$R, 2)
+#'   ))
+#'   hoeppener(x, col = assign_col(xres$beta_angles))
+#'   angelier(xres$mean_planes, pch = 16, col = viridis::magma(2, end = 0.8), cex = 1)
+#'   points(xres$principal_axes, pch = 16, col = viridis::rocket(3, end = 0.8), cex = 1)
+#'   text(xres$principal_axes,
+#'     labels = rownames(xres$principal_axes),
+#'     col = viridis::rocket(3, end = 0.8), cex = 1, adj = c(-.25, -.25)
+#'   )
 #' }))
-slip_inversion_simple <- function(x, cluster_fun = stats::kmeans, n_grid = 1000L){
+slip_inversion_simple <- function(x, cluster_fun = stats::kmeans, n_grid = 1000L) {
   td <- dist.Pair(x)
   tdcluster <- cluster_fun(td, 2)$cluster
-  
-  tsplit <- split.data.frame(unclass(x), tdcluster) |> 
+
+  tsplit <- split.data.frame(unclass(x), tdcluster) |>
     lapply(as.Fault)
-  
+
   tclustermeans <- lapply(tsplit, rot_mean)
   tclustermeansP <- lapply(tclustermeans, Plane)
-  
+
   # The intermediate stress axis (σ₂) represents the direction of no displacement within the fault plane.
   sigma2 <- crossprod(tclustermeansP[[1]], tclustermeansP[[2]])
-  
-  r <- which.max(table(tsplit[[1]][, 'sense']))
-  ang <- angle(tclustermeansP[[1]], tclustermeansP[[2]])/2
-  sigma1 <- rotate(tclustermeansP[[1]], sigma2, r*ang)
-  
-  if(!.near(angle(sigma1, tclustermeansP[[1]]), angle(sigma1, tclustermeansP[[2]]))) sigma1 <- rotate(tclustermeansP[[1]], sigma2, -r*ang)
-  
+
+  r <- which.max(table(tsplit[[1]][, "sense"]))
+  ang <- angle(tclustermeansP[[1]], tclustermeansP[[2]]) / 2
+  sigma1 <- rotate(tclustermeansP[[1]], sigma2, r * ang)
+
+  if (!.near(angle(sigma1, tclustermeansP[[1]]), angle(sigma1, tclustermeansP[[2]]))) sigma1 <- rotate(tclustermeansP[[1]], sigma2, -r * ang)
+
   sigma3 <- crossprod(sigma1, sigma2)
-  
+
   principal_axes <- rbind(sigma1, sigma2, sigma3)
-  rownames(principal_axes) <- c('sigma1', 'sigma2', 'sigma3')
-  
+  rownames(principal_axes) <- c("sigma1", "sigma2", "sigma3")
+
   # Angles between the tangential traction predicted by the best stress tensor and the slip vector on each plane
   betas <- sapply(seq_len(nrow(x)), function(i) {
     int <- crossprod(Plane(principal_axes[2, ]), Plane(x[i, ])) |> Line()
     angle(int, Line(x[i, ]))
-  }) 
+  })
   betas <- ifelse(betas > 90, 180 - betas, betas)
   beta_mean <- tectonicr::circular_mean(betas, axial = FALSE)
-  
+
   # Angle between slip planes and sigma 1
   theta <- sapply(seq_len(nrow(x)), function(i) {
     angle(Plane(x[i, ]), principal_axes[1, ])
   })
-  
+
   res <- list(principal_axes = principal_axes, beta = beta_mean, theta = theta, x_split = tsplit, mean_planes = do.call(rbind, tclustermeans), cluster = tdcluster, beta_angles = betas)
-  #Rlist <- .solve_R(stress_eigenvecs = principal_axes, faults = x, n_grid)
+  # Rlist <- .solve_R(stress_eigenvecs = principal_axes, faults = x, n_grid)
   Rlist <- list(R = NA)
   append(res, Rlist)
 }
 
 
 .solve_R <- function(stress_eigenvecs, faults, n_grid = 1000L) {
-  stress_eigenvecs = unclass(Vec3(stress_eigenvecs))
-  fault_normals = unclass(Vec3(Plane(faults)))
-  slip_dirs = unclass(Vec3(Ray(faults)))
-  
+  stress_eigenvecs <- unclass(Vec3(stress_eigenvecs))
+  fault_normals <- unclass(Vec3(Plane(faults)))
+  slip_dirs <- unclass(Vec3(Ray(faults)))
+
   e1 <- stress_eigenvecs[1L, ]
   e2 <- stress_eigenvecs[2L, ]
-  
+
   misfit <- function(R) {
     sigma <- tcrossprod(e1) + R * tcrossprod(e2)
-    tractions    <- fault_normals %*% t(sigma)
+    tractions <- fault_normals %*% t(sigma)
     normals_proj <- rowSums(tractions * fault_normals)
-    shear        <- tractions - normals_proj * fault_normals
-    shear_hat    <- shear / sqrt(rowSums(shear^2))
-    cos_alpha    <- pmax(-1, pmin(1, rowSums(shear_hat * slip_dirs)))
+    shear <- tractions - normals_proj * fault_normals
+    shear_hat <- shear / sqrt(rowSums(shear^2))
+    cos_alpha <- pmax(-1, pmin(1, rowSums(shear_hat * slip_dirs)))
     mean(acos(cos_alpha)^2)
   }
-  
-  R_grid   <- seq(0, 1, length.out = n_grid)
-  misfits  <- vapply(R_grid, misfit, numeric(1L))
+
+  R_grid <- seq(0, 1, length.out = n_grid)
+  misfits <- vapply(R_grid, misfit, numeric(1L))
   best_idx <- which.min(misfits)
-  step     <- 1 / (n_grid - 1L)
-  lower    <- max(0, R_grid[best_idx] - step)
-  upper    <- min(1, R_grid[best_idx] + step)
-  opt      <- stats::optimise(misfit, interval = c(lower, upper))
-  
+  step <- 1 / (n_grid - 1L)
+  lower <- max(0, R_grid[best_idx] - step)
+  upper <- min(1, R_grid[best_idx] + step)
+  opt <- stats::optimise(misfit, interval = c(lower, upper))
+
   list(
-    R         = opt$minimum,
+    R = opt$minimum,
     misfit_deg = sqrt(opt$objective) * 180 / pi,
-    R_grid    = R_grid[best_idx],
+    R_grid = R_grid[best_idx],
     converged = abs(opt$minimum - R_grid[best_idx]) < step
   )
 }
@@ -1009,34 +1036,34 @@ slip_inversion_simple <- function(x, cluster_fun = stats::kmeans, n_grid = 1000L
 # Stress tensor ----------------------------------------------------------------
 
 #' Reduced stress tensor
-#' 
+#'
 #' Calculates the reduced stress tensor (without optimization).
 #'
 #' @param fault `"Fault"` object where the rows are the observations, and the columns the coordinates.
 #' @inheritParams slip_inversion
 #'
-#' @returns `"ellipsoid"` object. 3x3 matrix (i.e. 2nd rank tensor). 
+#' @returns `"ellipsoid"` object. 3x3 matrix (i.e. 2nd rank tensor).
 #' @export
-#' 
+#'
 #' @family stress-tensor
 #' @seealso [slip_inversion()]
 #'
 #' @examples
 #' f <- angelier1990$TYM
 #' reduced_stress(f)
-reduced_stress <- function(fault, method = c('michael', 'angelier')) {
+reduced_stress <- function(fault, method = c("michael", "angelier")) {
   method <- match.arg(method)
-  
+
   normals <- unclass(Vec3(Plane(fault)))
-  slips <- if(is.Fault(fault)) Ray(fault) else Line(fault)
+  slips <- if (is.Fault(fault)) Ray(fault) else Line(fault)
   slips <- unclass(Vec3(slips))
-  
-  if(method == 'angelier'){
-  if (nrow(normals) < 4L) {
-    stop("At least 4 fault slip measurements are required.")
-  }
-  
-  # --- Step 1: initial Angelier (1990) inversion with global lambda ---
+
+  if (method == "angelier") {
+    if (nrow(normals) < 4L) {
+      stop("At least 4 fault slip measurements are required.")
+    }
+
+    # --- Step 1: initial Angelier (1990) inversion with global lambda ---
     .angelier_step(normals, slips, lambdas = sqrt(3) / 2)$TR
   } else {
     linear_stress_inversion(normals, slips)
@@ -1045,38 +1072,38 @@ reduced_stress <- function(fault, method = c('michael', 'angelier')) {
 
 
 #' Fault Instability Criterion
-#' 
-#' Calculates the instability criterion \eqn{I} after Vavrycuk (2013, Eq. 3). 
-#' Instability ranges from 0 (most stable) to 1 (most unstable) 
+#'
+#' Calculates the instability criterion \eqn{I} after Vavrycuk (2013, Eq. 3).
+#' Instability ranges from 0 (most stable) to 1 (most unstable)
 #' The most unstable fault is the optimally oriented fault for shear faulting.
 #'
 #' @inheritParams reduced_stress
 #' @inheritParams slip_inversion_michael
 #' @param R numeric. Stress ratio after Gephart and Forsyth (1984): \eqn{(\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3)}
-#' 
+#'
 #' @details
 #' \deqn{I = \frac{\tau - \mu(\sigma - \sigma_1)}{\tau_c - \mu(\sigma_c - \sigma_1)}}
-#' 
-#' where \eqn{\tau_c} and \eqn{\sigma_c} are the shear traction and effective 
-#' normal traction along the optimally oriented fault, and \eqn{\tau} and \eqn{\sigma} 
-#' are the shear traction and effective normal traction along the analysed fault plane. 
-#' 
-#' @references Vavrycuk, V., Bouchaala, F. & Fischer, T., 2013. High-resolution 
-#' fault image from accurate locations and focal mechanisms of the 2008 swarm 
+#'
+#' where \eqn{\tau_c} and \eqn{\sigma_c} are the shear traction and effective
+#' normal traction along the optimally oriented fault, and \eqn{\tau} and \eqn{\sigma}
+#' are the shear traction and effective normal traction along the analysed fault plane.
+#'
+#' @references Vavrycuk, V., Bouchaala, F. & Fischer, T., 2013. High-resolution
+#' fault image from accurate locations and focal mechanisms of the 2008 swarm
 #' earthquakes in West Bohemia, Czech Republic, Tectonophysics, 590, 189–195.
 #'
-#' @returns numeric. Instability ranges from 0 (most stable) to 1 (most unstable). 
+#' @returns numeric. Instability ranges from 0 (most stable) to 1 (most unstable).
 #' The most unstable fault is the optimally oriented fault for shear faulting.
-#' 
+#'
 #' @family stress-tensor
-#' 
+#'
 #' @export
 #'
 #' @examples
 #' f <- angelier1990$TYM
 #' tau <- reduced_stress(f)
-#' s <- stress_shape(tau)  
-#' 
+#' s <- stress_shape(tau)
+#'
 #' fault_instability_criterion(f, s$R)
 fault_instability_criterion <- function(fault, R, friction = 0.6) {
   n <- Plane(fault) |> Vec3()
@@ -1141,8 +1168,8 @@ principal_fault <- function(s1, s3, friction = 0.6) {
 }
 
 #' Principal Stresses from Stress Tensor
-#' 
-#' The eigenvector and eigenvalues of a stress tensor give the orientations and 
+#'
+#' The eigenvector and eigenvalues of a stress tensor give the orientations and
 #' relative magnitudes of the principal stress axes.
 #'
 #' @param tau symmetric 3x3 matrix. The (reduced) stress tensor.
@@ -1153,13 +1180,13 @@ principal_fault <- function(s1, s3, friction = 0.6) {
 #' \item{`"principal_axes"`}{The principal stress axes as `Line` objects.}
 #' }
 #' @export
-#' 
+#'
 #' @family stress-tensor
 #' @seealso [slip_inversion()]
 #' @examples
 #' f <- angelier1990$TYM
 #' tau <- reduced_stress(f)
-#' tau2stress(tau)  
+#' tau2stress(tau)
 tau2stress <- function(tau) {
   eig <- eigen(tau, symmetric = TRUE)
   sigma_vals <- eig$values
@@ -1173,28 +1200,28 @@ tau2stress <- function(tau) {
 }
 
 #' Resolved Shear and Normal Stress
-#' 
-#' `tau2stress()` calculate normal and shear stress components, while 
-#' `tau2tendency()` computes the tendency for slip and dilatency for a given set 
-#' of faults and a given stress tensor. 
+#'
+#' `tau2stress()` calculate normal and shear stress components, while
+#' `tau2tendency()` computes the tendency for slip and dilatency for a given set
+#' of faults and a given stress tensor.
 #'
 #' @inheritParams tau2stress
 #' @inheritParams fault_instability_criterion
 #'
-#' @returns 2-column numeric array giving the relative normal and shear stress components 
+#' @returns 2-column numeric array giving the relative normal and shear stress components
 #' for each fault in `fault`.
-#' 
+#'
 #' @name tau-comp
-#' 
+#'
 #' @family stress-tensor
 #' @seealso [slip_inversion()]
-#' 
+#'
 #' @examples
 #' f <- angelier1990$TYM
 #' tau <- reduced_stress(f)
-#' tau2shearnorm(tau, f)  
-#' 
-#' tau2tendency(tau, f)  
+#' tau2shearnorm(tau, f)
+#'
+#' tau2tendency(tau, f)
 NULL
 
 #' @rdname tau-comp
@@ -1236,70 +1263,70 @@ tau2shearnorm <- function(tau, fault, friction = 0.6) {
 
 #' @rdname tau-comp
 #' @export
-tau2tendency <- function(tau, fault, friction = 0.6){
+tau2tendency <- function(tau, fault, friction = 0.6) {
   p <- tau2stress(tau)
   shearnorm <- tau2shearnorm(tau, fault, friction = friction)
   sigma_s <- shearnorm[, "shear"]
   sigma_n <- shearnorm[, "normal"]
   slip_tend <- slip_tendency(sigma_s, sigma_n)
   dilat_tend <- dilatation_tendency(p$sigma_vals[1], p$sigma_vals[3], sigma_n)
-  
+
   cbind(slip_tendency = slip_tend, dilatation_tendency = dilat_tend)
 }
 
 
 #' Shape parameters of the stress ellipsoid
-#' 
-#' Calculates the stress shape (or stress ratio) after Gephart & Forsyth (1984), 
-#' Angelier (1979), and Bott (1959) from a given stress tensor. The parameter 
+#'
+#' Calculates the stress shape (or stress ratio) after Gephart & Forsyth (1984),
+#' Angelier (1979), and Bott (1959) from a given stress tensor. The parameter
 #' represents the specific shape of the stress ellipsoid, which characterizes
 #' a stress state.
 #'
 #' @inheritParams tau2stress
-#' 
+#'
 #' @details
-#' Stress shape ratio (\eqn{\Phi}) after Angelier (1979): 
-#' 
+#' Stress shape ratio (\eqn{\Phi}) after Angelier (1979):
+#'
 #' \deqn{\Phi = (\sigma_2 - \sigma_3)/(\sigma_1 - \sigma_3)}
-#' Values range between 0 (\eqn{\sigma_2 = \sigma_3}) and 1 (\eqn{\sigma_2 = \sigma_1}). 
-#' For \eqn{\Phi = 0}, the stress ellipsoids takes a prolate geometry (i.e. \eqn{\sigma_1 > \sigma_2 = \sigma_3}), 
-#' and for 
-#' \eqn{\Phi = 1}, it takes a oblate geometry (\eqn{\sigma_1 = \sigma_2}). Intermediate 
+#' Values range between 0 (\eqn{\sigma_2 = \sigma_3}) and 1 (\eqn{\sigma_2 = \sigma_1}).
+#' For \eqn{\Phi = 0}, the stress ellipsoids takes a prolate geometry (i.e. \eqn{\sigma_1 > \sigma_2 = \sigma_3}),
+#' and for
+#' \eqn{\Phi = 1}, it takes a oblate geometry (\eqn{\sigma_1 = \sigma_2}). Intermediate
 #' shapes for \eqn{0 < \Phi < 1}, i.e. \eqn{\sigma_1 > \sigma_2 > \sigma_3}.
-#' 
+#'
 #' Stress shape (\eqn{R} or \eqn{\phi}) ratio after Gephart & Forsyth (1984):
 #' \deqn{R = (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3)}
 #' Values ranging from 0 to 1, with 0 being \eqn{\sigma_1 = \sigma_2} and 1 being \eqn{\sigma_2 = \sigma_3}.
-#' 
+#'
 #' Stress shape ratio (\eqn{R}) after Bott (1959):
-#' \deqn{\R = (\sigma_3 - \sigma_1)/(\sigma_2 - \sigma_1)} 
+#' \deqn{\R = (\sigma_3 - \sigma_1)/(\sigma_2 - \sigma_1)}
 #' Values range between \eqn{-\infty} and \eqn{+\infty}.
-#' 
-#' @references 
+#'
+#' @references
 #' Angelier, J., 1979. Determination of the mean principal directions of stresses for a given fault population.
 #' Tectonophysics 56, T17–T26.
-#' 
+#'
 #' Bott, M.H.P., 1959. The mechanics of oblique slip faulting. Geol. Mag. 96, 109–117.
-#' 
-#' Gephart, J.W., Forsyth, D.W., 1984. An improved method for determining the 
-#' regional stress tensor using earthquake focal mechanism data: application to 
+#'
+#' Gephart, J.W., Forsyth, D.W., 1984. An improved method for determining the
+#' regional stress tensor using earthquake focal mechanism data: application to
 #' the San Fernando earthquake sequence. J. Geophys. Res. Solid Earth 89, 9305–9320.
 #'
-#' @returns list. Its components are the three stress shape parameters 
+#' @returns list. Its components are the three stress shape parameters
 #' `R` (after Gephart & Forsyth, 1984), `phi` (Angelier, 1979), and `bott` (Bott, 1959).
-#' 
+#'
 #' @family stress-tensor
 #' @seealso [slip_inversion()]
-#'  
+#'
 #' @export
 #' @examples
 #' f <- angelier1990$TYM
 #' tau <- reduced_stress(f)
-#' stress_shape(tau) 
+#' stress_shape(tau)
 stress_shape <- function(tau) {
   tau_stress <- tau2stress(tau)
   sigma_vals <- unname(tau_stress$sigma_vals)
-  #principal_axes <- tau_stress$principal_axes
+  # principal_axes <- tau_stress$principal_axes
 
   # stress ratios:
   R <- (sigma_vals[1] - sigma_vals[2]) / (sigma_vals[1] - sigma_vals[3]) # Gephart & Forsyth 1984
@@ -1313,44 +1340,44 @@ stress_shape <- function(tau) {
 #'
 #' The per-fault "ratio upsilon" (RUP) parameter after Angelier (1990) as
 #' an estimator for the quality-of-fit of fault-slip inversions.
-#' 
+#'
 #' The RUP estimator varies from 0%, indicating maximum shear stress parallel to fault
-#' slip and with same sense (i.e. perfect fit), to 200%, corresponding to maximum 
-#' shear stress parallel to fault slip but with opposite sense (i.e. largest misfit). 
-#' The quality of the fit is good if RUP \eqn{\le} 50%, (potentially) acceptable 
+#' slip and with same sense (i.e. perfect fit), to 200%, corresponding to maximum
+#' shear stress parallel to fault slip but with opposite sense (i.e. largest misfit).
+#' The quality of the fit is good if RUP \eqn{\le} 50%, (potentially) acceptable
 #' if 50%<RUP\eqn{\le} 75%, and poor otherwise.
 #'
 #' @inheritParams tau2shearnorm
 #' @param lambda numeric. The maximum shear stress. \eqn{\sqrt(3)/2} by default.
-#' 
-#' @details 
-#' Angelier (1990) introduced the *ratio upsilon*, which is the ratio of \eqn{\upsilon_i} to the largest shear stress on a fault \eqn{i} 
+#'
+#' @details
+#' Angelier (1990) introduced the *ratio upsilon*, which is the ratio of \eqn{\upsilon_i} to the largest shear stress on a fault \eqn{i}
 #' expressed in percentage:
 #' \deqn{\text{RUP} = \upsilon_i / \lambda \times 100}
 #' where \eqn{\lambda = \frac{\sqrt{3}}{2}} is the maximum shear stress.
-#' 
-#' 
-#' @references 
+#'
+#'
+#' @references
 #' Angelier, J. (1990). Inversion of field data in fault tectonics to obtain the
-#'  regional stress—III. A new rapid direct inversion method by analytical means. 
+#'  regional stress—III. A new rapid direct inversion method by analytical means.
 #'  Geophys. J. Int, 103, 363–376. <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
 #'
 #' @returns numeric. The per-fault "ratio upsilon" (RUP) parameter in percent.
-#' 
+#'
 #' @family stress-tensor
 #' @seealso [slip_inversion()]
-#' 
+#'
 #' @export
-#' 
-#' @examples 
+#'
+#' @examples
 #' f <- angelier1990$TYM
 #' tau <- reduced_stress(f)
-#' tau2rup(tau, f) 
-tau2rup <- function(tau, fault, lambda = sqrt(3) / 2){
+#' tau2rup(tau, f)
+tau2rup <- function(tau, fault, lambda = sqrt(3) / 2) {
   normals <- unclass(Vec3(Plane(fault)))
-  slips <- if(is.Fault(fault)) Ray(fault) else Line(fault)
+  slips <- if (is.Fault(fault)) Ray(fault) else Line(fault)
   slips <- unclass(Vec3(slips))
-  
+
   .rup(tau, normals, slips, lambda)
 }
 
@@ -1360,16 +1387,16 @@ tau2rup <- function(tau, fault, lambda = sqrt(3) / 2){
 #' @inheritParams tau2shearnorm
 #'
 #' @returns list. \describe{
-#' \item{`alpha`}{numeric. Deviation angle between slickenline and shear traction as a line 
-#' (0-90&degree). This is the standard misfit used in Angelier (1990) because 
-#' field slickenlines are geometrically lines, not vectors. Ranging from 0&degree; 
+#' \item{`alpha`}{numeric. Deviation angle between slickenline and shear traction as a line
+#' (0-90&degree). This is the standard misfit used in Angelier (1990) because
+#' field slickenlines are geometrically lines, not vectors. Ranging from 0&degree;
 #' (perfect fit) to 90&deg; (inconsistent fit).}
-# #' \item{`"alpha_signed`}{numeric. Deviation angle between slip RAY and shear traction (0-180&deg;). 
-# #'  Values > 90&deg; reveal that the dot product is negative, i.e. the recorded 
+# #' \item{`"alpha_signed`}{numeric. Deviation angle between slip RAY and shear traction (0-180&deg;).
+# #'  Values > 90&deg; reveal that the dot product is negative, i.e. the recorded
 # #'  slip sense is opposite to the predicted shear direction.}
-#'  \item{`alpha_mean`}{numeric. The mean of `alpha`, the ie. the mean deviation 
+#'  \item{`alpha_mean`}{numeric. The mean of `alpha`, the ie. the mean deviation
 #'  of predicted from observed slip.}
-# #' \item{`"beta"`}{numeric. Michael (1984)'s angles between the tangential 
+# #' \item{`"beta"`}{numeric. Michael (1984)'s angles between the tangential
 # #' traction predicted by the best stress tensor and the slip vector on each plane, ranging from 0 to 90&deg;.}
 # #' \item{`"theta"`}{numeric. Angle between slip planes and \eqn{\sigma_1} ranging from 0 to 180&deg;.}
 #' \item{`rup`}{numeric. "Ratio Upsilon" (RUP) parameter after Angelier (1990), ranging frm 0 (perfect fit) to 200% (misfit). See [tau2rup()].}
@@ -1377,93 +1404,95 @@ tau2rup <- function(tau, fault, lambda = sqrt(3) / 2){
 #' \item{`rup_mean`}{numeric. The mean RUP.}
 #' \item{`quality_summary`}{integer. Counts of faults in the RUP-based quality ranks.}
 # #' \item{`"misfit_means"`}{Mean values of `alpha`, `beta`, `theta`, and `rup.`}
-#' \item{`flipped`}{logical. Are the signs of slip vectors flipped, i.e., 
+#' \item{`flipped`}{logical. Are the signs of slip vectors flipped, i.e.,
 #' dot product of the slip ray and the predicted shear traction is negative?}
 #' }
-#' 
+#'
 #' @export
-#' @examples 
+#' @examples
 #' f <- angelier1990$TYM
 #' tau <- reduced_stress(f)
-#' slip_inversion_misfit(tau, f) 
-slip_inversion_misfit <- function(tau, fault){
+#' slip_inversion_misfit(tau, f)
+slip_inversion_misfit <- function(tau, fault) {
   normals <- unclass(Vec3(Plane(fault)))
-  slips <- if(is.Fault(fault)) Ray(fault) else Line(fault)
+  slips <- if (is.Fault(fault)) Ray(fault) else Line(fault)
   slips <- unclass(Vec3(slips))
-  
+
   nx <- nrow(normals)
-  
+
   tau_f <- .shear_traction(tau, normals)
   tau_norm <- sqrt(rowSums(tau_f^2))
   valid <- tau_norm > 1e-12
-  
+
   tau_hat <- tau_f
   tau_hat[valid, ] <- tau_f[valid, ] / tau_norm[valid]
-  
-  
+
+
   # Raw dot product s_i . tau_hat_i
   # Positive: slip and predicted shear are in the same hemisphere (correct sense)
   # Negative: antiparallel (possibly incorrect slip sense recording)
   dot <- vdot(slips, tau_hat)
-  
+
   # Row indices of faults with negative dot product = suspected flipped sense
   flipped <- dot < 0
-  
-  
+
+
   # Unsigned alpha: angle between slickenline and shear traction as a LINE
   # (0-90 deg). This is the standard misfit used in the literature because
   # field slickenlines are geometrically lines, not vectors.
-  alphas <- acosd(pmax(-1, pmin(1, abs(dot)))) 
-  #alpha_mean <- tectonicr::circular_mean(4*alphas, axial = FALSE)/4
+  alphas <- acosd(pmax(-1, pmin(1, abs(dot))))
+  # alpha_mean <- tectonicr::circular_mean(4*alphas, axial = FALSE)/4
   alpha_mean <- mean(alphas)
   # Signed alpha: angle between slip VECTOR and shear traction (0-180 deg).
   # Values > 90 deg reveal that the dot product is negative, i.e. the recorded
   # slip sense is opposite to the predicted shear direction.
   # alphas_signed <- acosd(pmax(-1, pmin(1, dot)))
-  
-  
+
+
   rup <- .rup(tau, normals, slips)
   quality <- ifelse(rup <= 50, "good",
-                    ifelse(rup <= 75, "acceptable", "poor")
+    ifelse(rup <= 75, "acceptable", "poor")
   )
-  quality <- factor(quality, levels = c('good', 'acceptable', 'poor'))
-  quality_summary <- c(n_good = sum(rup <= 50), n_acceptable = sum(rup > 50 & rup <= 75),
-                       n_poor = sum(rup > 75))
-  
-  #p <- tau2stress(tau)
-  
+  quality <- factor(quality, levels = c("good", "acceptable", "poor"))
+  quality_summary <- c(
+    n_good = sum(rup <= 50), n_acceptable = sum(rup > 50 & rup <= 75),
+    n_poor = sum(rup > 75)
+  )
+
+  # p <- tau2stress(tau)
+
   # Angles between the tangential traction predicted by the best stress tensor and the slip vector on each plane
   # betas <- sapply(seq_len(nx), function(i) {
   #   int <- crossprod(Plane(p$principal_axes[2, ]), Plane(fault[i, ])) |> Line()
   #   angle(int, Line(fault[i, ]))
-  # }) 
+  # })
   # # betas <- ifelse(betas > 90, 180 - betas, betas)
   # beta_mean <- tectonicr::circular_mean(betas, axial = TRUE)
-  
-  
+
+
   # Angle between slip planes and sigma 1
   # thetas <- vapply(seq_len(nx), function(i) {
   #   angle(Plane(fault[i, ]), p$principal_axes[1, ])
   # }, numeric(1))
   # theta_mean <- tectonicr::circular_mean(thetas, axial = TRUE)
-  
-  
+
+
   list(
-    alpha = alphas, 
-    #alpha_signed = alphas_signed, 
+    alpha = alphas,
+    # alpha_signed = alphas_signed,
     alpha_mean = alpha_mean,
-    #beta = betas, 
-    #theta = thetas, 
-    rup = rup, 
+    # beta = betas,
+    # theta = thetas,
+    rup = rup,
     rup_mean = mean(rup),
     quality = quality,
     # misfit_means = c(
-    #   alpha = alpha_mean, 
-    #   # beta = beta_mean, 
-    #   theta = theta_mean, 
+    #   alpha = alpha_mean,
+    #   # beta = beta_mean,
+    #   theta = theta_mean,
     #   rup = mean(rup)
     #   ),
-    quality_summary = quality_summary, 
+    quality_summary = quality_summary,
     flipped = flipped
   )
 }
