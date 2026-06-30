@@ -156,12 +156,10 @@ SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 0.005) 
 #' S <- cbind(S1, S2, S3) * cbind(rep(3, 3), rep(2, 3), rep(1, 3)) / 3
 #' SH_from_tensor(S)
 SH_from_tensor <- function(S) {
-  SM <- eigen(S %*% t(S), TRUE)
+  SM <- eigen(S %*% t(S), symmetric = TRUE)
   S1 <- SM$values[1]
   S2 <- SM$values[2]
   S3 <- SM$values[3]
-
-  # rownames(S) <- c('x', 'y', 'z')
 
   SH(
     as.Vec3(S[, 1]),

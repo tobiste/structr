@@ -30,7 +30,7 @@ for structural geology. The toolset includes
 
 - **Stress analysis**: reconstruction of stress orientation and
   magnitudes from fault-slip data (direct stress inversion based on
-  **Michael, 1984**, **Angelier, 1990**, or **Hansen, 2013**:
+  **Michael (1984)**, **Angelier (1990)**, or **Hansen (2013)**:
   `slip_inversion()`), extracting the **maximum horizontal stress** of a
   3D stress tensor (`SH()`), and visualization of magnitudes of stress
   in the **Mohr circle** (`Mohr_plot()`),

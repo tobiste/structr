@@ -27,6 +27,7 @@ Other datasets:
 \code{\link{gray_example}},
 \code{\link{holst}},
 \code{\link{hossack1968}},
+\code{\link{osmundsen2010}},
 \code{\link{shebandowan}},
 \code{\link{simongomez}},
 \code{\link{strabo_prj}}

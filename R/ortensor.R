@@ -180,8 +180,7 @@ inertia_tensor <- function(x, w = NULL) UseMethod("inertia_tensor")
 #' @importFrom stats complete.cases
 inertia_tensor.default <- function(x, w = NULL) {
   # remove NA values
-  noNA <- which(stats::complete.cases(x))
-  noNA
+  noNA <- stats::complete.cases(x)
   x <- x[noNA, ]
   
   w <- if (is.null(w)) {

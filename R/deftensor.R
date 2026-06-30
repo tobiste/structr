@@ -372,7 +372,7 @@ velgrad.default <- function(x, ...) {
 
 #' @rdname gradient
 #' @export
-velgrad.defgrad <- function(x, time = 1, ...) {
+velgrad.defgrad <- function(x, time = 1L, ...) {
   # L = pracma::logm(R) / time
   L <- expm::logm(x) / time
   as.velgrad(L)

@@ -533,7 +533,6 @@ slip_inversion_angelier <- function(x,
                                     weights = NULL,
                                     max_iter = 100L,
                                     tol = 1e-6,
-                                    boot = FALSE,
                                     n_psi = 361L,
                                     friction = 0.6,
                                     flip = FALSE) {
@@ -1193,7 +1192,7 @@ tau2stress <- function(tau) {
 
   principal_axes <- t(eig$vectors) |>
     as.Vec3() |>
-    Ray() # sigma1, sigma2, sigma3
+    Line() # sigma1, sigma2, sigma3
   names(sigma_vals) <- rownames(principal_axes) <- c("sigma1", "sigma2", "sigma3")
 
   list(sigma_vals = sigma_vals, principal_axes = principal_axes)

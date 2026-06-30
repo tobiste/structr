@@ -1,21 +1,3 @@
-# FSinvert - Fault-slip data inversion
-# Translated from Python by John Are Hansen (GPL-3) to R.
-#
-# Input:  tab/space-delimited text file with columns [Strike, Dip, Trend, Plunge]
-#         (no header). Strike in RHR convention, all values in degrees.
-#
-#         Note that the dataset represents the slip vector, not necessarily correct slip sense.
-#         The datasets are given in ‘strike’ and ‘dip’ of the fault plane and
-#         ‘trend’ and ‘plunge’ of the slip-lineation using the convention illustrated
-#         in Fig. 1, i.e. with the direction of strike defined 90&deg; counter-clockwise
-#         to the dip direction. Note that negative plunge represent reverse slip
-#         in the direction opposite the given trend. To use the datasets in the
-#         FSinvert script, copy and paste the data excluding the header into a
-#         .txt file and assign the correct path to the dataset in the script.
-#
-# Output: principal stress axes (trend/plunge), shape ratio phi, vorticity axis
-#         and magnitude — for both the 9D and 6D formulations of Angelier (1990).
-
 #' 9D Direct Inversion for Fault Slip Including Vorticity
 #'
 #' Direct inversion of stress, strain or strain rate including vorticity using
@@ -60,7 +42,8 @@
 #' points(res$vorticity_axis, col = 5, pch = 17, cex = 2)
 #' text(res$vorticity_axis, labels = bquote(omega), col = 5, adj = -.5)
 #'
-#' title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "%" ~ "|" ~ omega == .(w_val)))
+#' title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "%" ~ 
+#'   "|" ~ omega == .(w_val)))
 slip_inversion_hansen <- function(x, flip = FALSE, friction = 0.6) {
   tsign <- if (flip) -1 else 1
 
@@ -77,20 +60,10 @@ slip_inversion_hansen <- function(x, flip = FALSE, friction = 0.6) {
     )
   }
 
-  # Row-wise unit normalisation
-  # normals <- normals / sqrt(rowSums(normals^2))
-  # slips   <- slips   / sqrt(rowSums(slips^2))
-
   # 1. Compute poles to M-planes and f-poles  (Eqs. 14, 19)
   # n_vec = fault plane normal  (n in paper)
   # b_vec = pole to M-plane     (b in paper) = n x v  (Fig. 1)
   # f-pole (bf, Eq. 19): bf = [b1n1, b1n2, b1n3, b2n1, ..., b3n3] / |.|
-
-  #  b <- cbind(
-  #   normals[, 2] * slips[, 3] - normals[, 3] * slips[, 2],
-  #   normals[, 3] * slips[, 1] - normals[, 1] * slips[, 3],
-  #   normals[, 1] * slips[, 2] - normals[, 2] * slips[, 1]
-  # )
   b <- crossprod(normals, slips)
 
   f <- cbind(
@@ -109,9 +82,7 @@ slip_inversion_hansen <- function(x, flip = FALSE, friction = 0.6) {
   MSort <- order(Re(eM$values)) # ascending
   val_M <- Re(eM$values)[MSort]
   vec_M <- t(Re(eM$vectors))[MSort, ] # rows = eigenvectors
-  # val_M <- Re(eM$values)
-  # vec_M <- Re(eM$vectors)
-
+ 
   s <- vec_M[2, ] # second eigenvector in ascending rank
 
   # 4. Build inverted slip tensor; symmetric + antisymmetric decomposition
@@ -122,12 +93,13 @@ slip_inversion_hansen <- function(x, flip = FALSE, friction = 0.6) {
 
   # 5. Principal axes and shape ratio from symmetric part  (Eqs. 2–5)
   eTs <- eigen(Ts, symmetric = TRUE)
-  # TsSort <- order(Re(eTs$values), decreasing = TRUE)
-  # val_Ts <- Re(eTs$values)[TsSort]
   val_Ts <- eTs$values
-  # vec_Ts <- t(Re(eTs$vectors))[TsSort, ]   # rows = eigenvectors (s1, s2, s3)
   vec_Ts <- eTs$vectors
 
+  principal_axes <- as.Vec3(t(vec_Ts))
+  rownames(principal_axes) <- names(val_Ts) <- c("sigma1", "sigma2", "sigma3")
+  
+  
   phi <- (val_Ts[2] - val_Ts[3]) / (val_Ts[1] - val_Ts[3])
 
   # Reconstruct reduced symmetric tensor T_S = V D V^T  (Eq. 5)
@@ -154,20 +126,7 @@ slip_inversion_hansen <- function(x, flip = FALSE, friction = 0.6) {
   # if (nw[3] >= 0) nw <- -nw else wlen <- -wlen
 
 
-  # 7. Convert to [Trend, Plunge]  (Hansen's atan + quadrant logic)
-  # vec_Ts <- vec_Ts * ifelse(vec_Ts[, 3] >= 0, -1, 1)
-  # Stp <- cbind(
-  #   (atan2(vec_Ts[, 1], vec_Ts[, 2]) * 180 / pi) %% 360,
-  #   (asin(-vec_Ts[, 3]) * 180 / pi)
-  # )
-  # Wtp <- .tp(nw)
-  principal_axes <- as.Vec3(t(vec_Ts))
-  rownames(principal_axes) <- names(val_Ts) <- c("sigma1", "sigma2", "sigma3")
-
-
   # 8.
-
-  # p <- tau2stress(Ts)
   stress_shape <- stress_shape(Ts)
 
   # --- Step 4: Per-fault diagnostics ---

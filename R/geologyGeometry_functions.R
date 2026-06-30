@@ -733,7 +733,7 @@ rayProjectedMean <- function(us) rayNormalized(arithmeticMean(us))
 
 #' @source `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
 lineMeanScatter <- function(us) {
-  tMatrices <- lapply(us, function(u) outer(u, u))
+  tMatrices <- lapply(us, function(u) nnmat(u)) #.fouter(u, u))
   tMatrix <- arithmeticMean(tMatrices)
   eig <- eigen(tMatrix, symmetric = TRUE)
   eig
@@ -1112,7 +1112,7 @@ rayPrincipalComponentAnalysis <- function(us, center, numPoints = 0) {
   vs <- lapply(us, rayTangentVectorFromPoint, rot)
   # Compute the usual covariance stuff.
   covar <- arithmeticMean(lapply(vs, function(v) {
-    outer(v, v)
+    nnmat(v) #.fouter(v, v)
   }))
   eig <- eigen(covar, symmetric = TRUE)
   mags <- sqrt(eig$values)
@@ -1270,7 +1270,7 @@ rayPointFromTangentVector <- function(w, rotation) {
 rotLeftCovariance <- function(rs, center) {
   vs <- lapply(rs, rotLeftTangentFromMatrix, center)
   ms <- lapply(vs, function(v) {
-    outer(v, v)
+    nnmat(v)#outer(v, v)
   })
   arithmeticMean(ms)
 }
@@ -1376,33 +1376,6 @@ rotMatrixFromLeftTangent <- function(v, center) {
 
 # Inference --------------------------------------------------------------------
 
-#' @source `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
-lineBootstrapInference <- function(ls, numBoots, ...) {
-  boots <- future.apply::future_replicate(numBoots, lineProjectedMean(sample(ls,
-    length(ls),
-    replace = TRUE
-  )), simplify = FALSE, future.seed = TRUE)
-  bootMean <- lineProjectedMean(boots)
-  boots <- lapply(boots, function(u) {
-    if (dot(u, bootMean) >= 0) {
-      u
-    } else {
-      -u
-    }
-  })
-  inf <- rayMahalanobisPercentiles(boots, center = bootMean, ...)
-
-  inf$pvalueLine <- function(l) {
-    if (is.spherical(l)) l <- unclass(Vec3(l))
-    if (dot(l, inf$center) < 0) {
-      inf$pvalue(-l)
-    } else {
-      inf$pvalue(l)
-    }
-  }
-  inf
-}
-
 #' Bootstrapped extrinsic mean with percentile confidence region and hypothesis
 #' tests.
 #'
@@ -1422,15 +1395,67 @@ lineBootstrapInference <- function(ls, numBoots, ...) {
 #' @noRd
 #'
 #' @source modified after `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
-#' @importFrom future.apply future_replicate
+#' @importFrom future.apply future_lapply
 rayBootstrapInference <- function(ls, numBoots, ...) {
-  boots <- future.apply::future_replicate(numBoots, rayProjectedMean(sample(ls,
-    length(ls),
-    replace = TRUE
-  )), simplify = FALSE, future.seed = TRUE)
+  n <- length(ls)
+  # boots <- future.apply::future_replicate(numBoots, 
+  #                                         rayProjectedMean(sample(ls, n, replace = TRUE)
+  #                                                          ), simplify = FALSE, future.seed = TRUE)
+  boots <- future.apply::future_lapply(
+    seq_len(numBoots),
+    function(i)
+      rayProjectedMean(sample(ls, n, replace = TRUE)),
+    future.seed = TRUE
+  )
+  
   bootMean <- rayProjectedMean(boots)
   rayMahalanobisPercentiles(boots, bootMean, ...)
 }
+
+#' @source `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
+lineBootstrapInference <- function(ls, numBoots, ...) {
+  n <- length(ls)
+  # boots <- future.apply::future_replicate(numBoots, 
+  #                                         lineProjectedMean(
+  #                                           sample(ls, n, replace = TRUE)
+  #                                           ), simplify = FALSE, future.seed = TRUE)
+  
+  boots <- future.apply::future_lapply(
+    seq_len(numBoots),
+    function(i)
+      lineProjectedMean(sample(ls, n, replace = TRUE)),
+    future.seed = TRUE
+  )
+                                         
+  bootMean <- lineProjectedMean(boots)
+
+    # boots <- lapply(boots, function(u) {
+  #   if (dot(u, bootMean) >= 0) {
+  #     u
+  #   } else {
+  #     -u
+  #   }
+  # })
+  for (i in seq_along(boots)) {
+    if (dot(boots[[i]], bootMean) < 0)
+      boots[[i]] <- -boots[[i]]
+  }
+  
+  
+  inf <- rayMahalanobisPercentiles(boots, center = bootMean, ...)
+  
+  inf$pvalueLine <- function(l) {
+    if (is.spherical(l)) l <- unclass(Vec3(l))
+    if (dot(l, inf$center) < 0) {
+      inf$pvalue(-l)
+    } else {
+      inf$pvalue(l)
+    }
+  }
+  inf
+}
+
+
 
 #' Elliptical region based on percentiles of Mahalanobis distance in the tangent
 #' space.
@@ -1469,7 +1494,7 @@ rayMahalanobisPercentiles <- function(us, center, alpha = 0.05, numPoints = 0, d
     covarInv <- diag(c(1, 1))
   } else {
     covar <- arithmeticMean(lapply(vs, function(v) {
-      outer(v, v)
+      nnmat(v) #outer(v, v)
     }))
     covarInv <- solve(covar)
   }
@@ -1600,7 +1625,7 @@ lineBinghamMLE <- function(us, weights = replicate(length(us), 1), numNonAdapt =
 
   # In eigen, the eigenvectors are descending and the eigenvectors are unit.
   ts <- lapply(seq_len(n), function(i) {
-    ws[[i]] * outer(us[[i]], us[[i]])
+    ws[[i]] * nnmat(us[[i]])#.fouter(us[[i]], us[[i]])
   })
   tBar <- Reduce("+", ts)
   eig <- eigen(tBar, symmetric = TRUE)

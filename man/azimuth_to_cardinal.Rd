@@ -4,7 +4,7 @@
 \alias{azimuth_to_cardinal}
 \title{Converts azimuth angles into Cardinal directions}
 \usage{
-azimuth_to_cardinal(x, n_directions = 8)
+azimuth_to_cardinal(x, n_directions = 8L)
 }
 \arguments{
 \item{x}{angles in degree.}

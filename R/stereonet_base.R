@@ -1292,7 +1292,7 @@ slerp_matrix <- function(M, FUN = slerp, ...) {
 #' axes <- Vec3(c(1, 0, 0), c(0, 1, 0), c(0, 0, 1))
 #' stereo_path(l_trans, type = "l", add = FALSE)
 #' stereo_path(l_trans, type = "p", col = assign_col(seq_along(l_trans)), pch = 16, cex = .4)
-stereo_path <- function(x, type = c("l", "p", "b"), add = TRUE, n = 5, upper.hem = FALSE, earea = TRUE, ...) {
+stereo_path <- function(x, type = c("l", "p", "b"), add = TRUE, n = 5L, upper.hem = FALSE, earea = TRUE, ...) {
   if (isFALSE(add)) {
     stereoplot(earea = earea)
   }

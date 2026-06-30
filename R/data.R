@@ -277,3 +277,4 @@
 #' @examples
 #' data("osmundsen2010")
 #' head(osmundsen2010)
+"osmundsen2010"

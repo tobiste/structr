@@ -15,32 +15,41 @@
 #' vresultant(x, mean = FALSE)
 #' vresultant(x, mean = TRUE)
 vresultant <- function(x, w = NULL, mean = FALSE, na.rm = TRUE) {
-  if (isTRUE(na.rm)) x <- x[!rowSums(!is.finite(x)), ]
-
-  w <- if (is.null(w)) rep(1, times = nrow(x)) else as.numeric(w)
-
-  R <- vsum(w * x)
-  if (mean) {
-    N <- sum(w)
-    R <- R / N
+  if (isTRUE(na.rm)) {
+    idx <- stats::complete.cases(x)
+    x <- x[idx, ]
+    w <- w[idx]
   }
+
+  if (is.null(w)) {
+    R <- vsum(x)
+    if (mean) R <- R / nrow(x) 
+  } else {
+    w <- as.numeric(w)
+    R <- vsum(x * w)
+    if (mean) R <- R / sum(w)
+  }
+  
   R
 }
 
 #' @keywords internal
 mrl <- function(x, w = NULL, na.rm = TRUE, length = TRUE) {
-  if (isTRUE(na.rm)) x <- x[!rowSums(!is.finite(x)), ]
   x_norm <- vnorm(x)
-  Rbar <- vresultant(x_norm, w = w, mean = TRUE, na.rm = FALSE)
+  Rbar <- vresultant(x_norm, w = w, mean = TRUE, na.rm = na.rm)
   if (length) vlength(Rbar) else Rbar
 }
 
 #' @keywords internal
 v_mean <- function(x, w = NULL, na.rm = TRUE) {
-  if (isTRUE(na.rm)) x <- x[!rowSums(!is.finite(x)), ]
-
+  if (isTRUE(na.rm)) {
+    idx <- stats::complete.cases(x)
+    x <- x[idx, ]
+    w <- w[idx]
+  }
+  
   w <- if (is.null(w)) {
-    rep(1, times = nrow(x))
+    1
   } else {
     as.numeric(w)
   }
@@ -50,8 +59,6 @@ v_mean <- function(x, w = NULL, na.rm = TRUE) {
   Rbar <- vlength(xbar)
   xbar / Rbar
 }
-
-
 
 
 
@@ -78,7 +85,12 @@ v_delta <- function(x, w = NULL, na.rm = TRUE) {
 
 #' @keywords internal
 v_rdegree <- function(x, w = NULL, na.rm = FALSE) {
-  if (isTRUE(na.rm)) x <- x[!rowSums(!is.finite(x)), ]
+  if (isTRUE(na.rm)) {
+    idx <- stats::complete.cases(x)
+    x <- x[idx, ]
+    w <- w[idx]
+  }
+  
   w <- if (is.null(w)) rep(1, times = nrow(x)) else as.numeric(w)
 
   N <- sum(w)
@@ -89,8 +101,12 @@ v_rdegree <- function(x, w = NULL, na.rm = FALSE) {
 
 #' @keywords internal
 v_sde <- function(x, w = NULL, na.rm = FALSE) {
-  if (isTRUE(na.rm)) x <- x[!rowSums(!is.finite(x)), ]
-
+  if (isTRUE(na.rm)) {
+    idx <- stats::complete.cases(x)
+    x <- x[idx, ]
+    w <- w[idx]
+  }
+  
   w <- if (is.null(w)) {
     rep(1, times = nrow(x))
   } else {
@@ -99,7 +115,7 @@ v_sde <- function(x, w = NULL, na.rm = FALSE) {
 
   N <- sum(w)
 
-  if (N < 25) warning("The standard error might not be a good estimator for N < 25")
+  if (N < 25L) warning("The standard error might not be a good estimator for N < 25")
   xbar <- vsum(x * w) / N
   Rbar <- vlength(xbar)
   mu <- xbar / Rbar
@@ -305,7 +321,7 @@ delta <- function(x, w = NULL, na.rm = TRUE) {
 #' @rdname stats
 #' @param p integer. Number of parameters in the data space (2 for circle, 3 for a sphere)
 #' @export
-estimate_k <- function(x, w = NULL, na.rm = FALSE, p = 3) {
+estimate_k <- function(x, w = NULL, na.rm = FALSE, p = 3L) {
   Rbar <- vresultant(Vec3(x), w = w, mean = TRUE, na.rm = na.rm) |>
     vlength()
 
@@ -428,7 +444,7 @@ bingham_statistics <- function(x, w = NULL, na.rm = TRUE) {
   inertia <- inertia_tensor.spherical(v, w)
   abc <- diag(inertia)
 
-  k_ellipse <- numeric(2)
+  k_ellipse <- numeric(2L)
   k_ellipse[2] <- (abc[1] + abc[2]) / (abc[3] + abc[2] - abc[1]) # max
   k_ellipse[1] <- (abc[1] + abc[2]) / (abc[3] - abc[2] + abc[1]) # min
 

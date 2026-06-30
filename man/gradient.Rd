@@ -20,7 +20,7 @@ velgrad(x, time, ...)
 
 \method{velgrad}{default}(x, ...)
 
-\method{velgrad}{defgrad}(x, time = 1, ...)
+\method{velgrad}{defgrad}(x, time = 1L, ...)
 }
 \arguments{
 \item{x}{3x3 matrix. Deformation gradient tensor.}

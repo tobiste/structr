@@ -26,6 +26,7 @@ Other datasets:
 \code{\link{example_planes_df}},
 \code{\link{holst}},
 \code{\link{hossack1968}},
+\code{\link{osmundsen2010}},
 \code{\link{ramsay}},
 \code{\link{shebandowan}},
 \code{\link{simongomez}},

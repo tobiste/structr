@@ -71,7 +71,7 @@ wellner.Line <- function(x, y) {
   p <- length(xs[[1]]) - 1
   # Compute m Tx and n Ty.
   f <- function(v) {
-    outer(v, v)
+    nnmat(v)#outer(v, v)
   }
   mTx <- Reduce("+", lapply(xs, f))
   nTy <- Reduce("+", lapply(ys, f))
@@ -168,7 +168,7 @@ wellner_shortcut_line <- function(xys, choices, mTxPlusnTy) {
   p <- length(xys[[1]]) - 1
   # Compute m Tx and n Ty.
   mTx <- Reduce("+", lapply(choices, function(i) {
-    outer(xys[[i]], xys[[i]])
+    nnmat(xys[[i]]) #outer(xys[[i]], xys[[i]])
   }))
   nTy <- mTxPlusnTy - mTx
   # Compute Wellner's statistic.
@@ -196,7 +196,7 @@ wellner_inference.Line <- function(x, y, n_perm = 1000) {
   n <- length(ys)
   xys <- c(xs, ys)
   mTxPlusnTy <- Reduce("+", lapply(xys, function(v) {
-    outer(v, v)
+    nnmat(v) #outer(v, v)
   }))
   # Compute Wellner's statistic for the actual data.
   t <- wellner_shortcut_line(xys, 1:m, mTxPlusnTy)

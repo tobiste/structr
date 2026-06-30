@@ -21,21 +21,18 @@ NULL
 
 #' @rdname rhr
 #' @export
-rhr2dd <- function(strike) {
-  (strike + 90) %% 360
-}
+rhr2dd <- function(strike) (strike + 90) %% 360
 
 #' @rdname rhr
 #' @export
-dd2rhr <- function(dipdirection) {
-  (dipdirection - 90) %% 360
-}
+dd2rhr <- function(dipdirection) (dipdirection - 90) %% 360
 
 #' @keywords internal
 #' @noRd
 parse_strike_dip <- function(strike, dip) {
   strike <- parse_azimuth(strike)
   dd <- split_trailing_letters(dip)$measurement
+  list(strike, dip = dd)
 }
 
 
@@ -130,7 +127,7 @@ quadrantletter_to_azimuth <- function(x) {
 #' azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350), 4) # 8-point compass
 #' azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350), 8) # 8-point compass
 #' azimuth_to_cardinal(c(0, 23, 45, 100, 190, 270, 350), 16) # 16-point compass
-azimuth_to_cardinal <- function(x, n_directions = 8) {
+azimuth_to_cardinal <- function(x, n_directions = 8L) {
   # Normalize to 0–360
   azimuth <- x %% 360
 
@@ -387,7 +384,7 @@ assign_col <- function(x, n = length(x), pal = viridis::viridis, ...) {
 
 #' @rdname assign-color
 #' @export
-assign_col_binned <- function(x, breaks = 5, pal = viridis::viridis, ...) {
+assign_col_binned <- function(x, breaks = 5L, pal = viridis::viridis, ...) {
   breaks <- pretty(x, n = breaks)
   n2 <- length(breaks) - 1
   cols <- do.call(pal, args = list(n2, ...)) # [order]
@@ -862,3 +859,6 @@ transpose_list <- function(x) {
 
   return(x_rearranged)
 }
+
+# Fast implementation of outer(x, x, FUN = "*")
+nnmat <- function(n)  n %*% t(n)

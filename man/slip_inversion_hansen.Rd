@@ -44,7 +44,8 @@ text(res$principal_axes, labels = rownames(res$principal_axes), col = 2:4, adj =
 points(res$vorticity_axis, col = 5, pch = 17, cex = 2)
 text(res$vorticity_axis, labels = bquote(omega), col = 5, adj = -.5)
 
-title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "\%" ~ "|" ~ omega == .(w_val)))
+title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "\%" ~ 
+  "|" ~ omega == .(w_val)))
 }
 \references{
 Hansen, J. A. (2013). Direct inversion of stress, strain or strain rate

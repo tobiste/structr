@@ -8,7 +8,7 @@ stereo_path(
   x,
   type = c("l", "p", "b"),
   add = TRUE,
-  n = 5,
+  n = 5L,
   upper.hem = FALSE,
   earea = TRUE,
   ...

@@ -26,7 +26,7 @@
 #' @examples
 #' data(ramsay)
 #' mean_strain_ellipse_ramsay(ramsay[, "R"], ramsay[, "phi"])
-mean_strain_ellipse_ramsay <- function(r, phi = NULL, boot = TRUE, n_iter = 1000, boot.values = FALSE) {
+mean_strain_ellipse_ramsay <- function(r, phi = NULL, boot = TRUE, n_iter = 1000L, boot.values = FALSE) {
   res <- mean_strain_ellipse_ramsay0(r, phi)
 
   if (boot) {
@@ -110,7 +110,7 @@ mean_strain_ellipse_ramsay0 <- function(r, phi = NULL) {
 #' set.seed(20250411)
 #' data(ramsay)
 #' mean_strain_ellipse(ramsay[, "R"], ramsay[, "phi"])
-mean_strain_ellipse <- function(r, phi, boot = TRUE, n_iter = 1000, boot.values = FALSE) {
+mean_strain_ellipse <- function(r, phi, boot = TRUE, n_iter = 1000L, boot.values = FALSE) {
   res <- mean_strain_ellipse0(r, phi)
 
   if (boot) {

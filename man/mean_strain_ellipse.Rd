@@ -4,7 +4,7 @@
 \alias{mean_strain_ellipse}
 \title{Mean strain ellipse}
 \usage{
-mean_strain_ellipse(r, phi, boot = TRUE, n_iter = 1000, boot.values = FALSE)
+mean_strain_ellipse(r, phi, boot = TRUE, n_iter = 1000L, boot.values = FALSE)
 }
 \arguments{
 \item{r}{numeric. Aspect ratio of deformed object (long axis / short axis)}

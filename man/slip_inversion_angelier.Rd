@@ -9,7 +9,6 @@ slip_inversion_angelier(
   weights = NULL,
   max_iter = 100L,
   tol = 1e-06,
-  boot = FALSE,
   n_psi = 361L,
   friction = 0.6,
   flip = FALSE

@@ -46,12 +46,19 @@ vlength <- function(x) {
 #' @export
 #' @rdname vecmath
 vector_length <- function(x) {
-  Vec3(x) |> vlength()
+  vlength(Vec3(x))
 }
 
 #' @keywords internal
 vsum <- function(x) {
-  cbind(x = sum(x[, 1]), y = sum(x[, 2]), z = sum(x[, 3])) # vector sum
+  matrix(
+    c(sum(x[, 1]), sum(x[, 2]), sum(x[, 3])), # vector sum
+    ncol = 3,
+    dimnames = list(
+      rn = rownames(x),
+      cn = c("x", "y", "z")
+    )
+  )
 }
 
 
@@ -63,7 +70,7 @@ vnorm <- function(x) {
 #' @export
 #' @rdname vecmath
 vector_norm <- function(x) {
-  Vec3(x) |> vnorm()
+  vnorm(Vec3(x))
 }
 
 
@@ -75,10 +82,17 @@ vscale <- function(x, l) {
 
 #' @keywords internal
 vcross <- function(x, y) {
-  cbind(
-    x = x[, 2] * y[, 3] - x[, 3] * y[, 2],
-    y = x[, 3] * y[, 1] - x[, 1] * y[, 3],
-    z = x[, 1] * y[, 2] - x[, 2] * y[, 1]
+  matrix(
+    c(
+      x[, 2] * y[, 3] - x[, 3] * y[, 2],
+      x[, 3] * y[, 1] - x[, 1] * y[, 3],
+      x[, 1] * y[, 2] - x[, 2] * y[, 1]
+    ),
+    ncol = 3,
+    dimnames = list(
+      rn = rownames(x),
+      cn = c("x", "y", "z")
+    )
   )
 }
 
@@ -94,10 +108,9 @@ vcross <- function(x, y) {
 #' @exportS3Method base::crossprod
 crossprod.Vec3 <- function(x, y = NULL, ...) {
   xv <- unclass(x)
-  if (is.null(y)) yv <- xv else yv <- Vec3(y) |> unclass()
+  yv <- if (is.null(y)) xv else unclass(Vec3(y))
 
-  vcross(xv, yv) |>
-    as.Vec3()
+  as.Vec3(vcross(xv, yv))
 }
 
 #' @rdname vecmath
