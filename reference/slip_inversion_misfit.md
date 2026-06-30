@@ -65,7 +65,7 @@ list.
 ``` r
 f <- angelier1990$TYM
 tau <- reduced_stress(f)
-slip_inversion_misfit(tau, f) 
+slip_inversion_misfit(tau, f)
 #> $alpha
 #>  [1] 19.0581833  0.4300616 17.6971171  8.5078919  9.3257870  5.9565593
 #>  [7] 15.0070188  1.1696222 12.2657156  6.2970707 12.1518725  7.3901878

@@ -17,7 +17,7 @@ velgrad(x, time, ...)
 velgrad(x, ...)
 
 # S3 method for class 'defgrad'
-velgrad(x, time = 1, ...)
+velgrad(x, time = 1L, ...)
 ```
 
 ## Source

@@ -5,7 +5,7 @@ Converts azimuth angles into Cardinal directions
 ## Usage
 
 ``` r
-azimuth_to_cardinal(x, n_directions = 8)
+azimuth_to_cardinal(x, n_directions = 8L)
 ```
 
 ## Arguments

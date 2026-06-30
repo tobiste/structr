@@ -175,17 +175,17 @@ print(my_fault2_PT)
     ## 
     ## $m
     ## Plane object (n = 3):
-    ##      dip_direction      dip
-    ## [1,]      42.11395 81.26433
-    ## [2,]     223.18909 81.43997
-    ## [3,]     265.80721 58.54232
+    ##      dip_direction       dip
+    ## [1,]     222.11395  98.73567
+    ## [2,]     223.18909  81.43997
+    ## [3,]      85.80721 121.45768
     ## 
     ## $d
     ## Plane object (n = 3):
     ##      dip_direction      dip
-    ## [1,]      297.0135 30.53350
-    ## [2,]      326.8990 32.41955
-    ## [3,]      107.5304 33.36705
+    ## [1,]      117.0135 149.4665
+    ## [2,]      146.8990 147.5804
+    ## [3,]      287.5304 146.6330
 
 Plot the results
 
@@ -324,9 +324,7 @@ test_res$stress_shape$phi
 test_res$phi_CI
 ```
 
-    ## [1] 0.15052106 0.08715034
-    ## attr(,"conf.level")
-    ## [1] 0.95
+    ## [1] 0.08715034 0.15052106
 
 The angle \$alpha; is the angle between the tangential traction
 predicted by the best stress tensor and the slip vector. This deviation

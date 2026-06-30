@@ -25,6 +25,7 @@ Other datasets:
 [`example_planes_df`](https://tobiste.github.io/structr/reference/example_planes_df.md),
 [`gray_example`](https://tobiste.github.io/structr/reference/gray_example.md),
 [`holst`](https://tobiste.github.io/structr/reference/holst.md),
+[`osmundsen2010`](https://tobiste.github.io/structr/reference/osmundsen2010.md),
 [`ramsay`](https://tobiste.github.io/structr/reference/ramsay.md),
 [`shebandowan`](https://tobiste.github.io/structr/reference/shebandowan.md),
 [`simongomez`](https://tobiste.github.io/structr/reference/simongomez.md),

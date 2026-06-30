@@ -30,6 +30,12 @@ slip_inversion_hansen(x, flip = FALSE, friction = 0.6)
 
 ## Value
 
+list. See
+[`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md)
+for out put. Additionally outputs are the vorticity axis
+(`"vorticity_axis"`, a `Vec3` object) and the magnitude of vorticity
+(`"vorticity_mag"`, a numeric).
+
 list
 
 ## References
@@ -45,26 +51,28 @@ Other stress-inversion:
 [`Fault_PT()`](https://tobiste.github.io/structr/reference/Fault_PT.md),
 [`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md),
 [`slip_inversion_angelier()`](https://tobiste.github.io/structr/reference/slip_inversion_angelier.md),
+[`slip_inversion_hansen_boot()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen_boot.md),
 [`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md),
 [`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md)
 
 ## Examples
 
 ``` r
-par(mfrow = c(1, 2))
-invisible(lapply(angelier1990, function(x){
+res <- slip_inversion_hansen(osmundsen2010, TRUE)
 
-res <- slip_inversion_hansen(x, TRUE)
 phi_val <- round(res$stress_shape$phi, 2)
-rup_val <-  round(res$misfit$rup, 2)
+rup_val <- round(res$misfit$rup, 2)
 w_val <- round(res$vorticity_mag, 2)
 
-plot(x, col = 'lightgrey')
+stereoplot(title = "Lofoten / Northern Norway\n(Osmundsen et al. 2010)", guides = FALSE)
+stereo_shmax(res$SHmax)
+points(Plane(osmundsen2010), col = assign_col(res$misfit$rup), pch = 0, cex = 0.5)
+points(Line(osmundsen2010), col = assign_col(res$misfit$rup), pch = 16, cex = 0.5)
 points(res$principal_axes, col = 2:4, pch = 16, cex = 2)
 text(res$principal_axes, labels = rownames(res$principal_axes), col = 2:4, adj = -.5)
 points(res$vorticity_axis, col = 5, pch = 17, cex = 2)
 text(res$vorticity_axis, labels = bquote(omega), col = 5, adj = -.5)
 
-title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * '%'~"|"~omega == .(w_val)))
-}))
+title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "%" ~ 
+  "|" ~ omega == .(w_val)))
 ```

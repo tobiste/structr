@@ -328,6 +328,9 @@
   [`ortensor()`](https://tobiste.github.io/structr/reference/ortensor.md)
   : Orientation Tensor
 
+- [`osmundsen2010`](https://tobiste.github.io/structr/reference/osmundsen2010.md)
+  : Fault-Slip Data from Northern Norway
+
 - [`ot_eigen()`](https://tobiste.github.io/structr/reference/ot_eigen.md)
   : Eigenvalues and Eigenvectors of a Set of Vectors
 
@@ -430,6 +433,10 @@
 
 - [`slip_inversion_hansen()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen.md)
   : 9D Direct Inversion for Fault Slip Including Vorticity
+
+- [`slip_inversion_hansen_boot()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen_boot.md)
+  : 9D Direct Inversion for Fault Slip Including Vorticity with
+  Confidence Intervals
 
 - [`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md)
   : Stress Inversion for Fault-Slip Data after Michael (1984)

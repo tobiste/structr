@@ -75,7 +75,7 @@ set.seed(20250411)
 geodesic_mean(example_planes)
 #> Plane object (n = 1):
 #> dip_direction           dip 
-#>     345.92363      75.35166 
+#>      165.9236      104.6483 
 
 # Pair data
 p <- Pair(strabo_prj$planar, strabo_prj$linear)

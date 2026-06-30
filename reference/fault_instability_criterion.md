@@ -63,7 +63,7 @@ Other stress-tensor:
 ``` r
 f <- angelier1990$TYM
 tau <- reduced_stress(f)
-s <- stress_shape(tau)  
+s <- stress_shape(tau)
 
 fault_instability_criterion(f, s$R)
 #>  [1] 0.80583583 0.96786690 0.05589429 0.57145143 0.76778700 0.15189430

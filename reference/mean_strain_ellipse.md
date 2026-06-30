@@ -7,7 +7,7 @@ the mean shape matrix and its eigenvalues (Shimamoto and Ikeda, 1976).
 ## Usage
 
 ``` r
-mean_strain_ellipse(r, phi, boot = TRUE, n_iter = 1000, boot.values = FALSE)
+mean_strain_ellipse(r, phi, boot = TRUE, n_iter = 1000L, boot.values = FALSE)
 ```
 
 ## Arguments

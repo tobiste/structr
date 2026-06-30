@@ -35,6 +35,7 @@ Other datasets:
 [`gray_example`](https://tobiste.github.io/structr/reference/gray_example.md),
 [`holst`](https://tobiste.github.io/structr/reference/holst.md),
 [`hossack1968`](https://tobiste.github.io/structr/reference/hossack1968.md),
+[`osmundsen2010`](https://tobiste.github.io/structr/reference/osmundsen2010.md),
 [`ramsay`](https://tobiste.github.io/structr/reference/ramsay.md),
 [`simongomez`](https://tobiste.github.io/structr/reference/simongomez.md),
 [`strabo_prj`](https://tobiste.github.io/structr/reference/strabo_prj.md)

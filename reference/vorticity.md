@@ -39,9 +39,9 @@ l <- velgrad(d, time = 10)
 
 flow_apophyses(l)
 #> Plane object (n = 2):
-#>   dip_direction dip
-#> y      135.5139  90
-#> y      270.0000  90
+#>      dip_direction dip
+#> [1,]      135.5139  90
+#> [2,]      270.0000  90
 vorticity_axis(l)
 #> Vector (Vec3) object (n = 1):
 #> x y z 

@@ -19,7 +19,7 @@ sd_error(x, w = NULL, na.rm = FALSE)
 
 delta(x, w = NULL, na.rm = TRUE)
 
-estimate_k(x, w = NULL, na.rm = FALSE, p = 3)
+estimate_k(x, w = NULL, na.rm = FALSE, p = 3L)
 ```
 
 ## Arguments

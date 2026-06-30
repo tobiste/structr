@@ -43,13 +43,13 @@ Other stress-tensor:
 ``` r
 f <- angelier1990$TYM
 tau <- reduced_stress(f)
-tau2stress(tau)  
+tau2stress(tau)
 #> $sigma_vals
 #>     sigma1     sigma2     sigma3 
 #>  1.5186760 -0.6378677 -0.8808083 
 #> 
 #> $principal_axes
-#> Ray object (n = 3):
+#> Line object (n = 3):
 #>          azimuth    plunge
 #> sigma1 225.71104 84.219427
 #> sigma2  62.26628  5.542466

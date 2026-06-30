@@ -85,7 +85,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2026-06-29</h4>
+            <h4 data-toc-skip class="date">2026-06-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/Faults.Rmd" class="external-link"><code>vignettes/Faults.Rmd</code></a></small>
       <div class="d-none name"><code>Faults.Rmd</code></div>
@@ -236,17 +236,17 @@ inversion method by analytical means. Geophys. J. Int, 103, 363–376. &lt;a hre
 <span><span class="co">## </span></span>
 <span><span class="co">## $m</span></span>
 <span><span class="co">## Plane object (n = 3):</span></span>
-<span><span class="co">##      dip_direction      dip</span></span>
-<span><span class="co">## [1,]      42.11395 81.26433</span></span>
-<span><span class="co">## [2,]     223.18909 81.43997</span></span>
-<span><span class="co">## [3,]     265.80721 58.54232</span></span>
+<span><span class="co">##      dip_direction       dip</span></span>
+<span><span class="co">## [1,]     222.11395  98.73567</span></span>
+<span><span class="co">## [2,]     223.18909  81.43997</span></span>
+<span><span class="co">## [3,]      85.80721 121.45768</span></span>
 <span><span class="co">## </span></span>
 <span><span class="co">## $d</span></span>
 <span><span class="co">## Plane object (n = 3):</span></span>
 <span><span class="co">##      dip_direction      dip</span></span>
-<span><span class="co">## [1,]      297.0135 30.53350</span></span>
-<span><span class="co">## [2,]      326.8990 32.41955</span></span>
-<span><span class="co">## [3,]      107.5304 33.36705</span></span></code></pre>
+<span><span class="co">## [1,]      117.0135 149.4665</span></span>
+<span><span class="co">## [2,]      146.8990 147.5804</span></span>
+<span><span class="co">## [3,]      287.5304 146.6330</span></span></code></pre>
 <p>Plot the results</p>
 <div class="sourceCode" id="cb16"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"PT results"</span>, guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span>
@@ -362,9 +362,7 @@ directions of stresses for a given fault population. Tectonophysics,
 <div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 95% confidence interval</span></span>
 <span><span class="va">test_res</span><span class="op">$</span><span class="va">phi_CI</span></span></code></pre></div>
-<pre><code><span><span class="co">## [1] 0.15052106 0.08715034</span></span>
-<span><span class="co">## attr(,"conf.level")</span></span>
-<span><span class="co">## [1] 0.95</span></span></code></pre>
+<pre><code><span><span class="co">## [1] 0.08715034 0.15052106</span></span></code></pre>
 <p>The angle $alpha; is the angle between the tangential traction
 predicted by the best stress tensor and the slip vector. This deviation
 can be visualized in the stereoplot:</p>

@@ -72,7 +72,7 @@ Other stress-tensor:
 ``` r
 f <- angelier1990$TYM
 tau <- reduced_stress(f)
-stress_shape(tau) 
+stress_shape(tau)
 #> $R
 #> [1] 0.898753
 #> 

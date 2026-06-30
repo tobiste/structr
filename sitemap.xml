@@ -98,6 +98,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/mean_strain_ellipse_ramsay.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/na.omit.spherical.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ortensor.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/osmundsen2010.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/ot_eigen.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/pair_correct.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/perm-rsq.html</loc></url>
@@ -129,6 +130,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion_angelier.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion_hansen.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/slip_inversion_hansen_boot.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion_michael.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion_misfit.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion_simple.html</loc></url>

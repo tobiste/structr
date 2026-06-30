@@ -35,6 +35,7 @@ Other stress-inversion:
 [`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md),
 [`slip_inversion_angelier()`](https://tobiste.github.io/structr/reference/slip_inversion_angelier.md),
 [`slip_inversion_hansen()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen.md),
+[`slip_inversion_hansen_boot()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen_boot.md),
 [`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md),
 [`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md)
 
@@ -42,14 +43,14 @@ Other stress-inversion:
 
 ``` r
 par(mfrow = c(1, length(angelier1990)))
-invisible(lapply(angelier1990, function(x){ 
+invisible(lapply(angelier1990, function(x) {
   xpt <- Fault_PT(x)
-  
+
   stereoplot(guides = FALSE)
-  angelier(x, col = 'grey')
+  angelier(x, col = "grey")
   points(xpt$p, pch = 16, cex = 0.6, col = 1)
   points(xpt$t, pch = 16, cex = 0.6, col = 2)
   stereo_confidence(xpt$p, pch = 16, cex = 1.5, col = 1, params = c(n_iter = 1e3))
   stereo_confidence(xpt$t, pch = 16, cex = 1.5, col = 2, params = c(n_iter = 1e3))
-  }))
+}))
 ```

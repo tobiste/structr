@@ -166,6 +166,7 @@ Other stress-inversion:
 [`Fault_PT()`](https://tobiste.github.io/structr/reference/Fault_PT.md),
 [`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md),
 [`slip_inversion_hansen()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen.md),
+[`slip_inversion_hansen_boot()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen_boot.md),
 [`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md),
 [`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md)
 
@@ -175,26 +176,27 @@ Other stress-inversion:
 nx <- length(angelier1990)
 par(mfrow = c(1, nx))
 
-invisible(lapply(seq_len(nx), function(i){
+invisible(lapply(seq_len(nx), function(i) {
+  # inversion
+  x <- angelier1990[[i]]
+  res <- slip_inversion_angelier(x, max_iter = 0)
 
-# inversion
-x <- angelier1990[[i]]
-res <- slip_inversion_angelier(x, max_iter = 0)
+  # some stress shape
+  phi_val <- round(res$stress_shape$phi, 2)
 
-# some stress shape
-phi_val <- round(res$stress_shape$phi, 2)
+  # misfit
+  rup_val <- round(res$misfit$rup_mean, 2)
 
-# misfit
-rup_val <- round(res$misfit$rup_mean, 2)
-
-# Plot the faults (color-coded by RUP%) and show the principal stress axes
-stereoplot(title = names(angelier1990)[i], guides = FALSE)
-stereo_shmax(res$SHmax)
-fault_plot(x, col = assign_col(res$misfit$rup))
-points(res$principal_axes, col = 1:3, pch = 16, cex = 1.5)
-text(res$principal_axes, label = rownames(res$principal_axes), 
-col = 1:3, adj = -.25)
-legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
-title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * '%'))
+  # Plot the faults (color-coded by RUP%) and show the principal stress axes
+  stereoplot(title = names(angelier1990)[i], guides = FALSE)
+  stereo_shmax(res$SHmax)
+  fault_plot(x, col = assign_col(res$misfit$rup))
+  points(res$principal_axes, col = 1:3, pch = 16, cex = 1.5)
+  text(res$principal_axes,
+    label = rownames(res$principal_axes),
+    col = 1:3, adj = -.25
+  )
+  legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
+  title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "%"))
 }))
 ```

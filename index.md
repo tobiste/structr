@@ -29,7 +29,7 @@ includes
 
 - **Stress analysis**: reconstruction of stress orientation and
   magnitudes from fault-slip data (direct stress inversion based on
-  **Michael, 1984**, **Angelier, 1990**, or **Hansen, 2013**:
+  **Michael (1984)**, **Angelier (1990)**, or **Hansen (2013)**:
   [`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md)),
   extracting the **maximum horizontal stress** of a 3D stress tensor
   ([`SH()`](https://tobiste.github.io/structr/reference/SH.md)), and

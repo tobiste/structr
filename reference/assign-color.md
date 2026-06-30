@@ -9,7 +9,7 @@ assign_col_d(x, pal = viridis::viridis, ...)
 
 assign_col(x, n = length(x), pal = viridis::viridis, ...)
 
-assign_col_binned(x, breaks = 5, pal = viridis::viridis, ...)
+assign_col_binned(x, breaks = 5L, pal = viridis::viridis, ...)
 
 legend_col(breaks, title = NULL, pal = viridis::viridis, cex = 1, ...)
 
