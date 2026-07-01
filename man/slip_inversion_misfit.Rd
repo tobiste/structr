@@ -13,10 +13,8 @@ slip_inversion_misfit(tau, fault)
 }
 \value{
 list. \describe{
-\item{\code{alpha}}{numeric. Deviation angle between slickenline and shear traction as a line
-(0-90&degree). This is the standard misfit used in Angelier (1990) because
-field slickenlines are geometrically lines, not vectors. Ranging from 0&degree;
-(perfect fit) to 90° (inconsistent fit).}
+\item{\code{alpha}}{numeric. Deviation angle between slickenline and shear traction.
+Ranging from 0&degree; (perfect fit) to 90° (inconsistent fit).}
 \item{\code{alpha_mean}}{numeric. The mean of \code{alpha}, the ie. the mean deviation
 of predicted from observed slip.}
 \item{\code{rup}}{numeric. "Ratio Upsilon" (RUP) parameter after Angelier (1990), ranging frm 0 (perfect fit) to 200\% (misfit). See \code{\link[=tau2rup]{tau2rup()}}.}

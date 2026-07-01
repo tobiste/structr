@@ -1386,10 +1386,8 @@ tau2rup <- function(tau, fault, lambda = sqrt(3) / 2) {
 #' @inheritParams tau2shearnorm
 #'
 #' @returns list. \describe{
-#' \item{`alpha`}{numeric. Deviation angle between slickenline and shear traction as a line
-#' (0-90&degree). This is the standard misfit used in Angelier (1990) because
-#' field slickenlines are geometrically lines, not vectors. Ranging from 0&degree;
-#' (perfect fit) to 90&deg; (inconsistent fit).}
+#' \item{`alpha`}{numeric. Deviation angle between slickenline and shear traction.
+#'  Ranging from 0&degree; (perfect fit) to 90&deg; (inconsistent fit).}
 # #' \item{`"alpha_signed`}{numeric. Deviation angle between slip RAY and shear traction (0-180&deg;).
 # #'  Values > 90&deg; reveal that the dot product is negative, i.e. the recorded
 # #'  slip sense is opposite to the predicted shear direction.}
