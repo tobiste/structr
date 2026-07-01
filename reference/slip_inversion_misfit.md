@@ -25,11 +25,8 @@ list.
 
 - `alpha`:
 
-  numeric. Deviation angle between slickenline and shear traction as a
-  line (0-90&degree). This is the standard misfit used in
-  Angelier (1990) because field slickenlines are geometrically lines,
-  not vectors. Ranging from 0&degree; (perfect fit) to 90° (inconsistent
-  fit).
+  numeric. Deviation angle between slickenline and shear traction.
+  Ranging from 0&degree; (perfect fit) to 90° (inconsistent fit).
 
 - `alpha_mean`:
 
