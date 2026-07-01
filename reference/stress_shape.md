@@ -3,7 +3,10 @@
 Calculates the stress shape (or stress ratio) after Gephart & Forsyth
 (1984), Angelier (1979), and Bott (1959) from a given stress tensor. The
 parameter represents the specific shape of the stress ellipsoid, which
-characterizes a stress state.
+characterizes a stress state. The Generalized stress shape ratio
+(\\A\_\phi\\) after Simpson (1997) distinguishes between the Andersonian
+fault regimes (normal, strike-slip, reverse) based on the number of
+principal stresses larger than the vertical stress.
 
 ## Usage
 
@@ -20,8 +23,9 @@ stress_shape(tau)
 ## Value
 
 list. Its components are the three stress shape parameters `R` (after
-Gephart & Forsyth, 1984), `phi` (Angelier, 1979), and `bott` (Bott,
-1959).
+Gephart & Forsyth, 1984), `phi` (Angelier, 1979), `bott` (Bott, 1959),
+`A_phi` (Simpson, 1997), and the fault regime `type` (N (normal), S
+(strike-slip), T (reverse/thrust)).
 
 ## Details
 
@@ -43,6 +47,12 @@ Stress shape ratio (\\R\\) after Bott (1959): \$\$\R = (\sigma_3 -
 \sigma_1)/(\sigma_2 - \sigma_1)\$\$ Values range between \\-\infty\\ and
 \\+\infty\\.
 
+Generalized stress shape ratio (\\A\_\phi\\) after Angelier (Simpson
+1997): \$\$A\_\phi = (n + 0.5) + (-1)^n \* (\phi - 0.5)\$\$ where \\n\\
+equals the number of principal stresses larger than the vertical stress.
+Values range from 0 to 1 for normal, 1 to 2 for strike-slip, and 2 to 3
+for reverse faults.
+
 ## References
 
 Angelier, J., 1979. Determination of the mean principal directions of
@@ -55,6 +65,10 @@ Gephart, J.W., Forsyth, D.W., 1984. An improved method for determining
 the regional stress tensor using earthquake focal mechanism data:
 application to the San Fernando earthquake sequence. J. Geophys. Res.
 Solid Earth 89, 9305–9320.
+
+Simpson, R. W. (1997). Quantifying Anderson’s fault types. Journal of
+Geophysical Research: Solid Earth, 102(B8), 17909–17919.
+https://doi.org/10.1029/97JB01274
 
 ## See also
 
@@ -81,5 +95,11 @@ stress_shape(tau)
 #> 
 #> $bott
 #> [1] 1.112653
+#> 
+#> $A_phi
+#> [1] 0.101247
+#> 
+#> $type
+#> [1] "N"
 #> 
 ```
