@@ -105,6 +105,10 @@ a named list with the following components:
 
   number of Mostafa iterations performed
 
+- `method`:
+
+  character. The inversion method used, equal to `method` argument.
+
 ## Details
 
 The reduced stress tensor (Eq. 4.87) is parameterised as: \$\$T_R =

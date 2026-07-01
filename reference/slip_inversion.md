@@ -89,6 +89,10 @@ a named list with the following components:
 
   number of Mostafa iterations performed
 
+- `method`:
+
+  character. The inversion method used, equal to `method` argument.
+
 ## References
 
 Angelier, J. (1990). Inversion of field data in fault tectonics to
@@ -142,7 +146,7 @@ invisible(lapply(angelier1990, function(x) {
   )
   legend("bottomright",
     pch = 1:3,
-    legend = c("σ1", "σ2", "σ3")
+    legend = c("S1", "S2", "S3")
   )
 }))
 ```
