@@ -1286,7 +1286,9 @@ tau2tendency <- function(tau, fault, friction = 0.6) {
 #' Calculates the stress shape (or stress ratio) after Gephart & Forsyth (1984),
 #' Angelier (1979), and Bott (1959) from a given stress tensor. The parameter
 #' represents the specific shape of the stress ellipsoid, which characterizes
-#' a stress state.
+#' a stress state. The Generalized stress shape ratio (\eqn{A_\phi}) after Simpson (1997) 
+#' distinguishes between the Andersonian fault regimes (normal, strike-slip, reverse) 
+#' based on the number of principal stresses larger than the vertical stress.
 #'
 #' @inheritParams tau2stress
 #'
@@ -1307,6 +1309,11 @@ tau2tendency <- function(tau, fault, friction = 0.6) {
 #' Stress shape ratio (\eqn{R}) after Bott (1959):
 #' \deqn{\R = (\sigma_3 - \sigma_1)/(\sigma_2 - \sigma_1)}
 #' Values range between \eqn{-\infty} and \eqn{+\infty}.
+#' 
+#' Generalized stress shape ratio (\eqn{A_\phi}) after Angelier (Simpson 1997):
+#' \deqn{A_\phi = (n + 0.5) + (-1)^n * (\phi - 0.5)}
+#' where \eqn{n} equals the number of principal stresses larger than the vertical stress. 
+#' Values range from 0 to 1 for normal, 1 to 2 for strike-slip, and 2 to 3 for reverse faults.
 #'
 #' @references
 #' Angelier, J., 1979. Determination of the mean principal directions of stresses for a given fault population.
@@ -1317,9 +1324,13 @@ tau2tendency <- function(tau, fault, friction = 0.6) {
 #' Gephart, J.W., Forsyth, D.W., 1984. An improved method for determining the
 #' regional stress tensor using earthquake focal mechanism data: application to
 #' the San Fernando earthquake sequence. J. Geophys. Res. Solid Earth 89, 9305–9320.
+#' 
+#' Simpson, R. W. (1997). Quantifying Anderson’s fault types. Journal of 
+#' Geophysical Research: Solid Earth, 102(B8), 17909–17919. https://doi.org/10.1029/97JB01274
 #'
 #' @returns list. Its components are the three stress shape parameters
-#' `R` (after Gephart & Forsyth, 1984), `phi` (Angelier, 1979), and `bott` (Bott, 1959).
+#' `R` (after Gephart & Forsyth, 1984), `phi` (Angelier, 1979), `bott` (Bott, 1959), 
+#' `A_phi` (Simpson, 1997), and the fault regime `type` (N (normal), S (strike-slip), T (reverse/thrust)).
 #'
 #' @family stress-tensor
 #' @seealso [slip_inversion()]
@@ -1333,13 +1344,19 @@ stress_shape <- function(tau) {
   tau_stress <- tau2stress(tau)
   sigma_vals <- unname(tau_stress$sigma_vals)
   # principal_axes <- tau_stress$principal_axes
-
+  
   # stress ratios:
   R <- (sigma_vals[1] - sigma_vals[2]) / (sigma_vals[1] - sigma_vals[3]) # Gephart & Forsyth 1984
   # phi <- (sigma_vals[2] - sigma_vals[3]) / (sigma_vals[1] - sigma_vals[3]) # Angelier 1979
   phi <- 1 - R
   shape_ratio_bott <- (sigma_vals[3] - sigma_vals[1]) / (sigma_vals[2] - sigma_vals[1]) # Bott, Simon-Gomez
-  list(R = R, phi = phi, bott = shape_ratio_bott)
+  
+  
+  n <- which.max(Line(tau_stress$principal_axes[, 2])) - 1
+  aphi <- (n + 0.5) + (-1)^n * (phi - 0.5)
+  type <- c("N", "S", "T")[findInterval(aphi, c(1, 2)) + 1L]
+  
+  list(R = R, phi = phi, bott = shape_ratio_bott, A_phi = aphi, type = type)
 }
 
 #' Angelier's Ratio Upsilon (RUP)

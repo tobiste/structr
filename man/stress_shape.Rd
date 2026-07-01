@@ -11,13 +11,16 @@ stress_shape(tau)
 }
 \value{
 list. Its components are the three stress shape parameters
-\code{R} (after Gephart & Forsyth, 1984), \code{phi} (Angelier, 1979), and \code{bott} (Bott, 1959).
+\code{R} (after Gephart & Forsyth, 1984), \code{phi} (Angelier, 1979), \code{bott} (Bott, 1959),
+\code{A_phi} (Simpson, 1997), and the fault regime \code{type} (N (normal), S (strike-slip), T (reverse/thrust)).
 }
 \description{
 Calculates the stress shape (or stress ratio) after Gephart & Forsyth (1984),
 Angelier (1979), and Bott (1959) from a given stress tensor. The parameter
 represents the specific shape of the stress ellipsoid, which characterizes
-a stress state.
+a stress state. The Generalized stress shape ratio (\eqn{A_\phi}) after Simpson (1997)
+distinguishes between the Andersonian fault regimes (normal, strike-slip, reverse)
+based on the number of principal stresses larger than the vertical stress.
 }
 \details{
 Stress shape ratio (\eqn{\Phi}) after Angelier (1979):
@@ -36,6 +39,11 @@ Values ranging from 0 to 1, with 0 being \eqn{\sigma_1 = \sigma_2} and 1 being \
 Stress shape ratio (\eqn{R}) after Bott (1959):
 \deqn{\R = (\sigma_3 - \sigma_1)/(\sigma_2 - \sigma_1)}
 Values range between \eqn{-\infty} and \eqn{+\infty}.
+
+Generalized stress shape ratio (\eqn{A_\phi}) after Angelier (Simpson 1997):
+\deqn{A_\phi = (n + 0.5) + (-1)^n * (\phi - 0.5)}
+where \eqn{n} equals the number of principal stresses larger than the vertical stress.
+Values range from 0 to 1 for normal, 1 to 2 for strike-slip, and 2 to 3 for reverse faults.
 }
 \examples{
 f <- angelier1990$TYM
@@ -51,6 +59,9 @@ Bott, M.H.P., 1959. The mechanics of oblique slip faulting. Geol. Mag. 96, 109�
 Gephart, J.W., Forsyth, D.W., 1984. An improved method for determining the
 regional stress tensor using earthquake focal mechanism data: application to
 the San Fernando earthquake sequence. J. Geophys. Res. Solid Earth 89, 9305–9320.
+
+Simpson, R. W. (1997). Quantifying Anderson’s fault types. Journal of
+Geophysical Research: Solid Earth, 102(B8), 17909–17919. https://doi.org/10.1029/97JB01274
 }
 \seealso{
 \code{\link[=slip_inversion]{slip_inversion()}}
