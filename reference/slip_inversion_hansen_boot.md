@@ -10,6 +10,7 @@ slip_inversion_hansen_boot(
   x,
   friction = 0.6,
   flip = FALSE,
+  type = c("9d", "6d"),
   n_iter = 100,
   conf.level = 0.95,
   ...
@@ -30,6 +31,11 @@ slip_inversion_hansen_boot(
 
   logical. Flip if you want to have the negative stress tensor, i.e.
   sigma 1 and 3 will be flipped.
+
+- type:
+
+  character. Inversion method, either `"9d"` (the default) for using the
+  9-dimensional or `"6d"` for the 6-dimensional parameter space.
 
 - n_iter:
 
@@ -83,7 +89,9 @@ text(res$principal_axes, label = rownames(res$principal_axes), col = 2:4, adj = 
 text(res$vorticity_axis, labels = bquote(omega), col = 5, adj = -.5)
 title(
   main = "Lofoten / Northern Norway\n(Osmundsen et al. 2010)",
-  sub = bquote(atop(varphi ~ "(95% CI)" == "[" * .(phi_val[1]) * "," ~ .(phi_val[2]) * "]",
-  ~ omega ~ "(95%)" == "[" * .(w_val[1]) * "," ~ .(w_val[2]) * "]"))
+  sub = bquote(atop(
+    varphi ~ "(95% CI)" == "[" * .(phi_val[1]) * "," ~ .(phi_val[2]) * "]",
+    ~omega ~ "(95%)" == "[" * .(w_val[1]) * "," ~ .(w_val[2]) * "]"
+  ))
 )
 ```

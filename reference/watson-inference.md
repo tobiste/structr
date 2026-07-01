@@ -95,8 +95,8 @@ print(r)
 #>         t1))
 #>     1 - stats::pf(f, 2, 2 * n - 2)
 #> }
-#> <bytecode: 0x564fbd6a5f70>
-#> <environment: 0x564fbd67d718>
+#> <bytecode: 0x5655002a5df0>
+#> <environment: 0x56550029ef70>
 #> 
 
 r$pvalue(Line(60, 10))
