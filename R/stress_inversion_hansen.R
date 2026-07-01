@@ -4,14 +4,20 @@
 #' 9D parameter space using the method by Hansen (2013). It can be applied
 #' regardless whether the dynamic or the kinematic hypothesis is adopted;
 #' it can handle datasets representing two to seven degrees of freedom; and it
-#' is not dependent on the correct assessment of slip sense.
+#' is not dependent on the correct assessment of slip sense. 
+#' 
+#' If no vorticity is involved, the inversion can be done by using a 6-dimensional 
+#' parameter space only (`type = '6d'`).
 #'
 #' @param x object of class `"Pair"` or `"Fault"` with at least 7 rows.
 #' @param flip logical. Flip if you want to have the negative stress tensor, i.e.
 #' sigma 1 and 3 will be flipped.
+#' @param type character. Inversion method, either `"9d"` (the default) for using the 
+#' 9-dimensional or `"6d"` for the 6-dimensional parameter space.
 #' @inheritParams slip_inversion_michael
 #'
-#' @returns list. See [slip_inversion_michael()] for out put. Additionally outputs are
+#' @returns list. See [slip_inversion_michael()] for output description. 
+#' If `type == '9d`, additional outputs are
 #' the vorticity axis (`"vorticity_axis"`, a `Vec3` object) and the magnitude of
 #' vorticity (`"vorticity_mag"`, a numeric).
 #'
@@ -27,13 +33,15 @@
 #' @family stress-inversion
 #'
 #' @examples
-#' res <- slip_inversion_hansen(osmundsen2010, TRUE)
+#' # Osmundsen et al. 2010 dataset
+#' ## 9D solution
+#' res <- slip_inversion_hansen(osmundsen2010, flip = TRUE)
 #'
 #' phi_val <- round(res$stress_shape$phi, 2)
 #' rup_val <- round(res$misfit$rup, 2)
 #' w_val <- round(res$vorticity_mag, 2)
 #'
-#' stereoplot(title = "Lofoten / Northern Norway\n(Osmundsen et al. 2010)", guides = FALSE)
+#' stereoplot(title = "9D: Lofoten / Northern Norway\n(Osmundsen et al. 2010)", guides = FALSE)
 #' stereo_shmax(res$SHmax)
 #' points(Plane(osmundsen2010), col = assign_col(res$misfit$rup), pch = 0, cex = 0.5)
 #' points(Line(osmundsen2010), col = assign_col(res$misfit$rup), pch = 16, cex = 0.5)
@@ -42,10 +50,54 @@
 #' points(res$vorticity_axis, col = 5, pch = 17, cex = 2)
 #' text(res$vorticity_axis, labels = bquote(omega), col = 5, adj = -.5)
 #'
-#' title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "%" ~ 
+#' title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "%" ~
 #'   "|" ~ omega == .(w_val)))
-slip_inversion_hansen <- function(x, flip = FALSE, friction = 0.6) {
+#'
+#' ## 6D inversion
+#' res6 <- slip_inversion_hansen(osmundsen2010, flip = TRUE, type = "6d")
+#'
+#' phi6_val <- round(res6$stress_shape$phi, 2)
+#' rup6_val <- round(res6$misfit$rup, 2)
+#'
+#' stereoplot(title = "6D: Lofoten / Northern Norway\n(Osmundsen et al. 2010)", guides = FALSE)
+#' stereo_shmax(res6$SHmax)
+#' points(Plane(osmundsen2010), col = assign_col(res6$misfit$rup), pch = 0, cex = 0.5)
+#' points(Line(osmundsen2010), col = assign_col(res6$misfit$rup), pch = 16, cex = 0.5)
+#' points(res6$principal_axes, col = 2:4, pch = 16, cex = 2)
+#' text(res6$principal_axes, labels = rownames(res6$principal_axes), col = 2:4, adj = -.5)
+#'
+#' title(sub = bquote(Phi == .(phi6_val) ~ "|" ~ bar("RUP") == .(rup6_val) * "%"))
+#'
+#' # Angelier 1990 dataset
+#' nx <- length(angelier1990)
+#' par(mfrow = c(1, nx))
+#'
+#' invisible(lapply(seq_len(nx), function(i) {
+#'   # inversion
+#'   x <- angelier1990[[i]]
+#'   res <- slip_inversion_hansen(x, type = "6d")
+#'
+#'   # some stress shape
+#'   phi_val <- round(res$stress_shape$phi, 2)
+#'
+#'   # misfit
+#'   rup_val <- round(res$misfit$rup_mean, 2)
+#'
+#'   # Plot the faults (color-coded by RUP%) and show the principal stress axes
+#'   stereoplot(title = names(angelier1990)[i], guides = FALSE)
+#'   stereo_shmax(res$SHmax)
+#'   fault_plot(x, col = assign_col(res$misfit$rup))
+#'   points(res$principal_axes, col = 1:3, pch = 16, cex = 1.5)
+#'   text(res$principal_axes,
+#'     label = rownames(res$principal_axes),
+#'     col = 1:3, adj = -.25
+#'   )
+#'   legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
+#'   title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "%"))
+#' }))
+slip_inversion_hansen <- function(x, flip = FALSE, friction = 0.6, type = c("9d", "6d")) {
   tsign <- if (flip) -1 else 1
+  type <- match.arg(type)
 
   stopifnot(is.Pair(x))
   normals <- Vec3(Plane(x))
@@ -66,65 +118,111 @@ slip_inversion_hansen <- function(x, flip = FALSE, friction = 0.6) {
   # f-pole (bf, Eq. 19): bf = [b1n1, b1n2, b1n3, b2n1, ..., b3n3] / |.|
   b <- crossprod(normals, slips)
 
-  f <- cbind(
-    b[, 1] * normals[, 1], b[, 1] * normals[, 2], b[, 1] * normals[, 3],
-    b[, 2] * normals[, 1], b[, 2] * normals[, 2], b[, 2] * normals[, 3],
-    b[, 3] * normals[, 1], b[, 3] * normals[, 2], b[, 3] * normals[, 3]
-  )
-  f <- f / sqrt(rowSums(f^2))
+  n1 <- normals[, 1]
+  n2 <- normals[, 2]
+  n3 <- normals[, 3]
 
-  # 2. Second moment tensor  (Eq. 21)
-  M <- crossprod(f)
+  b1 <- b[, 1]
+  b2 <- b[, 2]
+  b3 <- b[, 3]
 
-  # 3. Eigen-decomposition; second eigenvector = best estimate of the slip vector
-  #    (Eq. 20)
-  eM <- eigen(M, symmetric = TRUE)
-  MSort <- order(Re(eM$values)) # ascending
-  val_M <- Re(eM$values)[MSort]
-  vec_M <- t(Re(eM$vectors))[MSort, ] # rows = eigenvectors
- 
-  s <- vec_M[2, ] # second eigenvector in ascending rank
+  if (type == "9d") {
+    f <- cbind(
+      b1 * n1, b1 * n2, b1 * n3,
+      b2 * n1, b2 * n2, b2 * n3,
+      b3 * n1, b3 * n2, b3 * n3
+    )
+    f <- f / sqrt(rowSums(f * f))
 
-  # 4. Build inverted slip tensor; symmetric + antisymmetric decomposition
-  #    (Eqs. 8–10; algorithm steps 6–7)
-  T_mat <- matrix(s, 3, 3, byrow = TRUE) * tsign
-  Ts <- (T_mat + t(T_mat)) / 2 # b_T_hat_S
-  Ta <- (T_mat - t(T_mat)) / 2 # b_T_hat_A
+    # 2. Second moment tensor  (Eq. 21)
+    M <- crossprod(f)
 
-  # 5. Principal axes and shape ratio from symmetric part  (Eqs. 2–5)
-  eTs <- eigen(Ts, symmetric = TRUE)
-  val_Ts <- eTs$values
-  vec_Ts <- eTs$vectors
+    # 3. Eigen-decomposition; second eigenvector = best estimate of the slip vector
+    #    (Eq. 20)
+    eM <- eigen(M, symmetric = TRUE)
+    MSort <- order(Re(eM$values)) # ascending
+    val_M <- Re(eM$values)[MSort]
+    vec_M <- t(Re(eM$vectors))[MSort, ] # rows = eigenvectors
+
+    s <- vec_M[2, ] # second eigenvector in ascending rank
+
+    # 4. Build inverted slip tensor; symmetric + antisymmetric decomposition
+    #    (Eqs. 8–10; algorithm steps 6–7)
+    T_mat <- matrix(s, 3, 3, byrow = TRUE) * tsign
+    Ts <- (T_mat + t(T_mat)) / 2 # b_T_hat_S
+    Ta <- (T_mat - t(T_mat)) / 2 # b_T_hat_A
+
+
+    # 5. Principal axes and shape ratio from symmetric part  (Eqs. 2–5)
+    eTs <- eigen(Ts, symmetric = TRUE)
+    val_Ts <- eTs$values
+    vec_Ts <- eTs$vectors
+
+    phi <- (val_Ts[2] - val_Ts[3]) / (val_Ts[1] - val_Ts[3])
+
+    # Reconstruct reduced symmetric tensor T_S = V D V^T  (Eq. 5)
+    # V has eigenvectors as columns = t(vec_Ts)
+    # Norm <- t(vec_Ts) %*% diag(c(nval_Ts[1], nval_Ts[2], 0)) %*% vec_Ts
+
+    # Because the diagonal is (1, phi, 0), the Eq. is actually equivalent to:
+    v1 <- vec_Ts[, 1]
+    v2 <- vec_Ts[, 2]
+    Norm <- tcrossprod(v1) + phi * tcrossprod(v2)
+
+    # 6. Vorticity axis and magnitude  (Eqs. 12–13, 22)
+    # Normalise antisymmetric part: b_T_A = b_T_hat_A * (T_S / b_T_hat_S)
+    ratio <- Norm / Ts
+    ratio[Ts == 0 & Norm == 0] <- 0 # guard 0/0 -> 0
+    Ta <- Ta * ratio
+
+    # Axial vector of T_A (Eq. 10)
+    w <- as.Vec3(c(Ta[3, 2], Ta[1, 3], Ta[2, 1]))
+    w_xyz <- vnorm(w)
+    w_mag <- -2 * vlength(w)
+
+    # Enforce downward-pointing convention
+    # if (nw[3] >= 0) nw <- -nw else wlen <- -wlen
+  } else {
+    # --- 6D f-pole (Eq. 15): f = [b1n1, b2n2, b3n3, b1n2+b2n1, ...] ---
+    f6 <- cbind(
+      b1 * n1,
+      b2 * n2,
+      b3 * n3,
+      b1 * n2 + b2 * n1,
+      b2 * n3 + b3 * n2,
+      b1 * n3 + b3 * n1
+    )
+    f6 <- f6 / sqrt(rowSums(f6 * f6))
+
+    M6 <- crossprod(f6)
+
+    eM6 <- eigen(M6, symmetric = TRUE)
+    M6Sort <- order(eM6$values)
+    val_M6 <- eM6$values[M6Sort]
+    vec_M6 <- t(eM6$vectors)[M6Sort, ]
+
+    s6 <- vec_M6[2, ] # second eigenvector in ascending rank (Eq. 16)
+
+
+    # 6D: symmetric by construction (Eq. 16)
+    T6_mat <- matrix(
+      c(
+        s6[1], s6[4], s6[6],
+        s6[4], s6[2], s6[5],
+        s6[6], s6[5], s6[3]
+      ),
+      nrow = 3,
+      byrow = TRUE
+    )
+    Ts <- T6_mat * tsign
+
+    eT6 <- eigen(Ts, symmetric = TRUE)
+    val_Ts <- eT6$values
+    vec_Ts <- eT6$vectors
+  }
 
   principal_axes <- as.Vec3(t(vec_Ts))
   rownames(principal_axes) <- names(val_Ts) <- c("sigma1", "sigma2", "sigma3")
-  
-  
-  phi <- (val_Ts[2] - val_Ts[3]) / (val_Ts[1] - val_Ts[3])
-
-  # Reconstruct reduced symmetric tensor T_S = V D V^T  (Eq. 5)
-  # V has eigenvectors as columns = t(vec_Ts)
-  # Norm <- t(vec_Ts) %*% diag(c(nval_Ts[1], nval_Ts[2], 0)) %*% vec_Ts
-
-  # Because the diagonal is (1, phi, 0), the Eq. is actually equivalent to:
-  v1 <- vec_Ts[, 1]
-  v2 <- vec_Ts[, 2]
-  Norm <- tcrossprod(v1) + phi * tcrossprod(v2)
-
-  # 6. Vorticity axis and magnitude  (Eqs. 12–13, 22)
-  # Normalise antisymmetric part: b_T_A = b_T_hat_A * (T_S / b_T_hat_S)
-  ratio <- Norm / Ts
-  ratio[Ts == 0 & Norm == 0] <- 0 # guard 0/0 -> 0
-  Ta <- Ta * ratio
-
-  # Axial vector of T_A (Eq. 10)
-  w <- as.Vec3(c(Ta[3, 2], Ta[1, 3], Ta[2, 1]))
-  w_xyz <- vnorm(w)
-  w_mag <- -2 * vlength(w)
-
-  # Enforce downward-pointing convention
-  # if (nw[3] >= 0) nw <- -nw else wlen <- -wlen
-
 
   # 8.
   stress_shape <- stress_shape(Ts)
@@ -155,19 +253,26 @@ slip_inversion_hansen <- function(x, flip = FALSE, friction = 0.6) {
 
   # 9 results
 
-  list(
+  res <- list(
     stress_tensor = as.ellipsoid(Ts),
     principal_axes = Line(principal_axes),
     principal_vals = val_Ts,
     principal_faults = pfaults,
-    vorticity_mag = w_mag,
-    vorticity_axis = w,
     stress_shape = stress_shape,
     tau_mean = sigma_s_mean,
     stress_components = cbind(shearnorm, tendency),
     misfit = misfit,
     SHmax = SHmax
   )
+
+  if (type == "9d") {
+    append(res, list(
+      vorticity_mag = w_mag,
+      vorticity_axis = w
+    ))
+  } else {
+    res
+  }
 }
 
 #' 9D Direct Inversion for Fault Slip Including Vorticity with Confidence Intervals
@@ -201,12 +306,23 @@ slip_inversion_hansen <- function(x, flip = FALSE, friction = 0.6) {
 #' text(res$vorticity_axis, labels = bquote(omega), col = 5, adj = -.5)
 #' title(
 #'   main = "Lofoten / Northern Norway\n(Osmundsen et al. 2010)",
-#'   sub = bquote(atop(varphi ~ "(95% CI)" == "[" * .(phi_val[1]) * "," ~ .(phi_val[2]) * "]",
-#'   ~ omega ~ "(95%)" == "[" * .(w_val[1]) * "," ~ .(w_val[2]) * "]"))
+#'   sub = bquote(atop(
+#'     varphi ~ "(95% CI)" == "[" * .(phi_val[1]) * "," ~ .(phi_val[2]) * "]",
+#'     ~omega ~ "(95%)" == "[" * .(w_val[1]) * "," ~ .(w_val[2]) * "]"
+#'   ))
 #' )
-slip_inversion_hansen_boot <- function(x, friction = 0.6, flip = FALSE, n_iter = 100, conf.level = 0.95, ...) {
-  best.fit <- slip_inversion_hansen(x, friction = friction, flip = flip)
-  
+slip_inversion_hansen_boot <- function(
+  x,
+  friction = 0.6,
+  flip = FALSE,
+  type = c("9d", "6d"),
+  n_iter = 100,
+  conf.level = 0.95,
+  ...
+) {
+  type <- match.arg(type)
+  best.fit <- slip_inversion_hansen(x, friction = friction, flip = flip, type = type)
+
   if (n_iter == 0) {
     return(best.fit)
   } else {
@@ -222,7 +338,7 @@ slip_inversion_hansen_boot <- function(x, friction = 0.6, flip = FALSE, n_iter =
     res_boot <- future.apply::future_lapply(seq_len(n_iter), function(i) {
       idx <- sample.int(nx, replace = TRUE)
       x_sample <- x[idx, ]
-      res <- slip_inversion_hansen(x[idx, ], friction = friction, flip = flip)
+      res <- slip_inversion_hansen(x[idx, ], friction = friction, flip = flip, type = type)
       tau <- res$stress_tensor
       w <- res$vorticity_axis
       list(tau = tau, w = w)
@@ -249,15 +365,18 @@ slip_inversion_hansen_boot <- function(x, friction = 0.6, flip = FALSE, n_iter =
     })) |>
       confidence_ellipse(alpha = 1 - conf.level, ...)
 
-    # Vorticity
-    vort_boot <- lapply(res_boot, function(x) x$w)
-    vorticity_mag <- do.call(rbind, lapply(vort_boot, function(x) {
-      -2 * vlength(x)
-    })) |>
-      stats::t.test(conf.level = conf.level)
 
-    vort_vec3 <- do.call(rbind, vort_boot) |>
-      confidence_ellipse(alpha = 1 - conf.level, ...)
+    # Vorticity
+    if (type == "9d") {
+      vort_boot <- lapply(res_boot, function(x) x$w)
+      vorticity_mag <- do.call(rbind, lapply(vort_boot, function(x) {
+        -2 * vlength(x)
+      })) |>
+        stats::t.test(conf.level = conf.level)
+
+      vort_vec3 <- do.call(rbind, vort_boot) |>
+        confidence_ellipse(alpha = 1 - conf.level, ...)
+    }
 
     params_boot <- lapply(tau_boot, stress_shape)
 
@@ -301,7 +420,7 @@ slip_inversion_hansen_boot <- function(x, friction = 0.6, flip = FALSE, n_iter =
     }, FUN.VALUE = numeric(1)) |>
       stats::t.test(conf.level = conf.level)
 
-    append(best.fit, list(
+    res <- append(best.fit, list(
       principal_axes_CI = list(sigma1 = sigma_vec1, sigma2 = sigma_vec2, sigma3 = sigma_vec3),
       principal_vals_CI = sigma_boot,
       SHmax_CI = SHmax_CI$conf.int,
@@ -309,9 +428,16 @@ slip_inversion_hansen_boot <- function(x, friction = 0.6, flip = FALSE, n_iter =
       phi_CI = phi_boot,
       bott_CI = bott_boot$conf.int,
       alpha_CI = alpha_CI$conf.int,
-      rup_CI = rup_CI$conf.int,
-      vorticity_mag_CI = vorticity_mag$conf.int,
-      vorticity_axis_CI = vort_vec3
+      rup_CI = rup_CI$conf.int
     ))
+
+    if (type == "9d") {
+      append(res, list(
+        vorticity_mag_CI = vorticity_mag$conf.int,
+        vorticity_axis_CI = vort_vec3
+      ))
+    } else {
+      res
+    }
   }
 }

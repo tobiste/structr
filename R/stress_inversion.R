@@ -57,17 +57,21 @@
 #'   # Inversion after Angelier (1990)
 #'   res_angelier <- slip_inversion(x, method = "angelier")
 #'
-#'   res_hansen <- slip_inversion(x, method = "hansen")
+#'   res_hansen <- slip_inversion(x, method = "hansen", type = "6d")
 #'
 #'   stereoplot(guides = FALSE)
 #'   fault_plot(x, col = "gray80")
-#'   points(res_michael$principal_axes, pch = 3, col = 2:4)
-#'   points(res_angelier$principal_axes, pch = 2, col = 2:4)
-#'   points(res_hansen$principal_axes, pch = 1, col = 2:4)
+#'   points(res_michael$principal_axes, pch = 1:3, col = 2)
+#'   points(res_angelier$principal_axes, pch = 1:3, col = 3)
+#'   points(res_hansen$principal_axes, pch = 1:3, col = 4)
 #'   legend("topleft",
-#'     col = 1,
+#'     pch = 1,
 #'     legend = c("Michael (1984)", "Angelier (1990)", "Hansen (2013)"),
-#'     pch = c(3, 2, 1)
+#'     col = 2:4
+#'   )
+#'   legend("bottomright",
+#'     pch = 1:3,
+#'     legend = c("σ1", "σ2", "σ3")
 #'   )
 #' }))
 slip_inversion <- function(x, method = c("michael", "angelier", "hansen"), ...) {
