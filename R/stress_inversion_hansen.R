@@ -268,10 +268,11 @@ slip_inversion_hansen <- function(x, flip = FALSE, friction = 0.6, type = c("9d"
   if (type == "9d") {
     append(res, list(
       vorticity_mag = w_mag,
-      vorticity_axis = w
+      vorticity_axis = w,
+      method = "hansen (9d)"
     ))
   } else {
-    res
+    append(res, list(method = "hansen (6d)"))
   }
 }
 

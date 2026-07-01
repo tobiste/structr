@@ -26,6 +26,7 @@
 #'   \item{`tau_mean`}{numeric. Average resolved shear stress on each plane. Should be close to 1.}
 #'   \item{`stress_components`}{matrix. The resolved shear and normal stresses, the slip and dilation tendency on each plane. See [tau2shearnorm()] and [tau2tendency()].}
 #'   \item{`n_iter`}{number of Mostafa iterations performed}
+#'   \item{`method`}{character. The inversion method used, equal to `method` argument.}
 #'  }
 #'
 #' @family stress-inversion
@@ -71,7 +72,7 @@
 #'   )
 #'   legend("bottomright",
 #'     pch = 1:3,
-#'     legend = c("σ1", "σ2", "σ3")
+#'     legend = c("S1", "S2", "S3")
 #'   )
 #' }))
 slip_inversion <- function(x, method = c("michael", "angelier", "hansen"), ...) {
@@ -268,10 +269,11 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
       phi_CI = phi_boot,
       bott_CI = bott_boot$conf.int,
       alpha_CI = alpha_CI$conf.int,
-      rup_CI = rup_CI$conf.int
+      rup_CI = rup_CI$conf.int,
       # tau_mean_CI = tau_mean_CI$conf.int
       # beta_CI = beta_CI$conf.interval,
-      # theta_CI = theta_CI$conf.interval
+      # theta_CI = theta_CI$conf.interval,
+      method = "michael"
     ))
   }
 }
@@ -642,7 +644,8 @@ slip_inversion_angelier <- function(x,
     stress_components = cbind(shearnorm, tendency),
     misfit = misfit,
     SHmax = SHmax,
-    n_iter = iter
+    n_iter = iter,
+    method = 'angelier'
   )
 }
 

@@ -44,6 +44,7 @@ a named list with the following components:
 \item{\code{tau_mean}}{numeric. Average resolved shear stress on each plane. Should be close to 1.}
 \item{\code{stress_components}}{matrix. The resolved shear and normal stresses, the slip and dilation tendency on each plane. See \code{\link[=tau2shearnorm]{tau2shearnorm()}} and \code{\link[=tau2tendency]{tau2tendency()}}.}
 \item{\code{n_iter}}{number of Mostafa iterations performed}
+\item{\code{method}}{character. The inversion method used, equal to \code{method} argument.}
 }
 }
 \description{
