@@ -68,7 +68,7 @@ p <- Pair(strabo_prj$planar, strabo_prj$linear)
 geodesic_mean_pair(p)
 #> Pair object (n = 1):
 #> dip_direction           dip       azimuth        plunge 
-#>    333.187406     86.125819     62.754928      6.359914 
+#>    154.638414     94.928017     64.047124      6.825105 
 geodesic_var_pair(p)
-#> [1] 0.2216458
+#> [1] 0.2259915
 ```

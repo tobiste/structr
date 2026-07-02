@@ -100,32 +100,32 @@ columns of <code>"x"</code>.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">strabo_prj</span>, <span class="va">strabo_prj</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">quality</span> <span class="op">&gt;</span> <span class="fl">3</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $data</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                        id dip_direction   dip strike plunge</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>                                    &lt;char&gt;         &lt;num&gt; &lt;num&gt;  &lt;num&gt;  &lt;num&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1: d951938c-6bee-4ce4-bee7-6cf17693a090           332    87    242      8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2: 4a0aba4f-4707-4852-9811-f8457fd226e7           337    89    247      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3: 86c34f8d-b277-4a27-8f49-9339df976f66           145    84     55      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4: ec15d95a-e23c-4ba5-8280-63019e7ce553           330    82    240      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5: ad910789-d6b2-4179-9c38-9e95149d7b56           334    81    244     14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                       </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 257: 5b304433-6dae-4938-9a15-5816e18f55df           347    82    257      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 258: fdde53fa-f8e2-4b06-9c93-9b05e538a8da           348    88    258      9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 259: 3ae2760c-136b-4cb4-bc37-95c852642185           325    82    235     12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 260: 2810a725-9eee-47d7-9c97-5b5812092240           314    73    224      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 261: e9b4bca6-37d7-4a2b-8833-ddc711da0a79           320    82    230     14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      trend associated planar_type quality unix_timestamp  notes</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>      &lt;num&gt;     &lt;lgcl&gt;      &lt;char&gt;  &lt;char&gt;          &lt;num&gt; &lt;char&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   1:    62       TRUE        &lt;NA&gt;       5   1.665089e+12   &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   2:    67       TRUE        &lt;NA&gt;       5   1.665089e+12   &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   3:   235       TRUE        &lt;NA&gt;       5   1.665089e+12   &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   4:    60       TRUE        &lt;NA&gt;       5   1.665089e+12   &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>   5:   246       TRUE        &lt;NA&gt;       5   1.665089e+12   &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 257:    76       TRUE        &lt;NA&gt;       5   1.721835e+12   &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 258:    78       TRUE        &lt;NA&gt;       4   1.721928e+12   &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 259:   237       TRUE        &lt;NA&gt;       4   1.721928e+12   &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 260:    44       TRUE        &lt;NA&gt;       5   1.721928e+12   &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 261:   232       TRUE        &lt;NA&gt;       5   1.721930e+12   &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                        id dip_direction   dip strike trend</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>                                    &lt;char&gt;         &lt;num&gt; &lt;num&gt;  &lt;num&gt; &lt;num&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1: d951938c-6bee-4ce4-bee7-6cf17693a090           332    87    242    62</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2: 4a0aba4f-4707-4852-9811-f8457fd226e7           337    89    247    67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3: 86c34f8d-b277-4a27-8f49-9339df976f66           145    84     55   235</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4: ec15d95a-e23c-4ba5-8280-63019e7ce553           330    82    240    60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5: ad910789-d6b2-4179-9c38-9e95149d7b56           334    81    244   246</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                      </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 233: 5b304433-6dae-4938-9a15-5816e18f55df           347    82    257    76</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 234: fdde53fa-f8e2-4b06-9c93-9b05e538a8da           348    88    258    78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 235: 3ae2760c-136b-4cb4-bc37-95c852642185           325    82    235   237</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 236: 2810a725-9eee-47d7-9c97-5b5812092240           314    73    224    44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 237: e9b4bca6-37d7-4a2b-8833-ddc711da0a79           320    82    230   232</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      plunge associated planar_type quality unix_timestamp  notes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>       &lt;num&gt;     &lt;lgcl&gt;      &lt;char&gt;  &lt;char&gt;          &lt;num&gt; &lt;char&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   1:      8       TRUE        &lt;NA&gt;       5   1.665089e+12   &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   2:      4       TRUE        &lt;NA&gt;       5   1.665089e+12   &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   3:      2       TRUE        &lt;NA&gt;       5   1.665089e+12   &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   4:      0       TRUE        &lt;NA&gt;       5   1.665089e+12   &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>   5:     14       TRUE        &lt;NA&gt;       5   1.665089e+12   &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                            </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 233:      4       TRUE        &lt;NA&gt;       5   1.721835e+12   &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 234:      9       TRUE        &lt;NA&gt;       4   1.721928e+12   &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 235:     12       TRUE        &lt;NA&gt;       4   1.721928e+12   &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 236:      1       TRUE        &lt;NA&gt;       5   1.721928e+12   &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 237:     14       TRUE        &lt;NA&gt;       5   1.721930e+12   &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      modified_timestamp          spot        spot_id feature_type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;num&gt;        &lt;char&gt;         &lt;char&gt;       &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1:                 NA 22-TS-Moss-02 16650869118218    foliation</span>
@@ -134,11 +134,11 @@ columns of <code>"x"</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   4:                 NA 22-TS-Moss-02 16650869118218    foliation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   5:                 NA 22-TS-Moss-02 16650869118218    foliation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                             </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 257:                 NA        24TS-2 17218339990191    foliation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 258:                 NA       24TS-16 17219277194544    foliation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 259:                 NA       24TS-16 17219277194544    foliation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 260:                 NA       24TS-16 17219277194544    foliation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 261:                 NA       24TS-17 17219297078328    foliation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 233:                 NA        24TS-2 17218339990191    foliation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 234:                 NA       24TS-16 17219277194544    foliation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 235:                 NA       24TS-16 17219277194544    foliation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 236:                 NA       24TS-16 17219277194544    foliation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 237:                 NA       24TS-17 17219297078328    foliation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      foliation_type         label contact_type fault_or_sz_type bedding_type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>              &lt;char&gt;        &lt;char&gt;       &lt;char&gt;           &lt;char&gt;       &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1:       cleavage foliation 242         &lt;NA&gt;             &lt;NA&gt;         &lt;NA&gt;</span>
@@ -147,11 +147,11 @@ columns of <code>"x"</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   4:       cleavage foliation 240         &lt;NA&gt;             &lt;NA&gt;         &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   5:       cleavage foliation 244         &lt;NA&gt;             &lt;NA&gt;         &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 257:           &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;             &lt;NA&gt;         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 258:           &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;             &lt;NA&gt;         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 259:           &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;             &lt;NA&gt;         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 260:           &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;             &lt;NA&gt;         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 261:           &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;             &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 233:           &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;             &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 234:           &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;             &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 235:           &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;             &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 236:           &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;             &lt;NA&gt;         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 237:           &lt;NA&gt;          &lt;NA&gt;         &lt;NA&gt;             &lt;NA&gt;         &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      vein_fill directional_indicators vein_type other_vein_fill</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>         &lt;char&gt;                 &lt;char&gt;    &lt;char&gt;          &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1:      &lt;NA&gt;                   &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;</span>
@@ -160,11 +160,11 @@ columns of <code>"x"</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   4:      &lt;NA&gt;                   &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   5:      &lt;NA&gt;                   &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                           </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 257:      &lt;NA&gt;                   &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 258:      &lt;NA&gt;                   &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 259:      &lt;NA&gt;                   &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 260:      &lt;NA&gt;                   &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 261:      &lt;NA&gt;                   &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 233:      &lt;NA&gt;                   &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 234:      &lt;NA&gt;                   &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 235:      &lt;NA&gt;                   &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 236:      &lt;NA&gt;                   &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 237:      &lt;NA&gt;                   &lt;NA&gt;      &lt;NA&gt;            &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      foliation_defined_by movement other_feature fracture_type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                    &lt;char&gt;   &lt;char&gt;        &lt;char&gt;        &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1:                 &lt;NA&gt;     &lt;NA&gt;          &lt;NA&gt;          &lt;NA&gt;</span>
@@ -173,11 +173,11 @@ columns of <code>"x"</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   4:                 &lt;NA&gt;     &lt;NA&gt;          &lt;NA&gt;          &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   5:                 &lt;NA&gt;     &lt;NA&gt;          &lt;NA&gt;          &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                          </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 257:                 &lt;NA&gt;     &lt;NA&gt;          &lt;NA&gt;          &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 258:                 &lt;NA&gt;     &lt;NA&gt;          &lt;NA&gt;          &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 259:                 &lt;NA&gt;     &lt;NA&gt;          &lt;NA&gt;          &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 260:                 &lt;NA&gt;     &lt;NA&gt;          &lt;NA&gt;          &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 261:                 &lt;NA&gt;     &lt;NA&gt;          &lt;NA&gt;          &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 233:                 &lt;NA&gt;     &lt;NA&gt;          &lt;NA&gt;          &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 234:                 &lt;NA&gt;     &lt;NA&gt;          &lt;NA&gt;          &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 235:                 &lt;NA&gt;     &lt;NA&gt;          &lt;NA&gt;          &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 236:                 &lt;NA&gt;     &lt;NA&gt;          &lt;NA&gt;          &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 237:                 &lt;NA&gt;     &lt;NA&gt;          &lt;NA&gt;          &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      movement_justification        linear_type linear_quality linear_notes</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      &lt;char&gt;             &lt;char&gt;         &lt;char&gt;       &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1:                   &lt;NA&gt; linear_orientation              5         &lt;NA&gt;</span>
@@ -186,11 +186,11 @@ columns of <code>"x"</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   4:                   &lt;NA&gt; linear_orientation              5         &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   5:                   &lt;NA&gt; linear_orientation              5         &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 257:                   &lt;NA&gt; linear_orientation              5         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 258:                   &lt;NA&gt; linear_orientation              4         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 259:                   &lt;NA&gt; linear_orientation              4         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 260:                   &lt;NA&gt; linear_orientation              5         &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 261:                   &lt;NA&gt; linear_orientation              5         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 233:                   &lt;NA&gt; linear_orientation              5         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 234:                   &lt;NA&gt; linear_orientation              4         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 235:                   &lt;NA&gt; linear_orientation              4         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 236:                   &lt;NA&gt; linear_orientation              5         &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 237:                   &lt;NA&gt; linear_orientation              5         &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      linear_feature_type linear_defined_by   linear_label               type</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                   &lt;char&gt;            &lt;char&gt;         &lt;char&gt;             &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1:          stretching              &lt;NA&gt;  stretching 62 planar_orientation</span>
@@ -199,11 +199,11 @@ columns of <code>"x"</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   4:          stretching              &lt;NA&gt;  stretching 60 planar_orientation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   5:          stretching              &lt;NA&gt; stretching 246 planar_orientation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                        </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 257:       mineral_align              &lt;NA&gt;           &lt;NA&gt; planar_orientation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 258:       mineral_align              &lt;NA&gt;           &lt;NA&gt; planar_orientation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 259:       mineral_align              &lt;NA&gt;           &lt;NA&gt; planar_orientation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 260:       mineral_align              &lt;NA&gt;           &lt;NA&gt; planar_orientation</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 261:       mineral_align              &lt;NA&gt;           &lt;NA&gt; planar_orientation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 233:       mineral_align              &lt;NA&gt;           &lt;NA&gt; planar_orientation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 234:       mineral_align              &lt;NA&gt;           &lt;NA&gt; planar_orientation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 235:       mineral_align              &lt;NA&gt;           &lt;NA&gt; planar_orientation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 236:       mineral_align              &lt;NA&gt;           &lt;NA&gt; planar_orientation</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 237:       mineral_align              &lt;NA&gt;           &lt;NA&gt; planar_orientation</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      linear_unix_timestamp                            linear_id defined_by</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                      &lt;num&gt;                               &lt;char&gt;     &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1:          1.665089e+12 50b1dbef-5d64-4a8c-b427-7b1bb8c6053e       &lt;NA&gt;</span>
@@ -212,11 +212,11 @@ columns of <code>"x"</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   4:          1.665089e+12 c8d4b893-6d70-4f89-b46b-ace81a01136d       &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   5:          1.665089e+12 bf08e531-8c0e-4337-b9a3-7eccd8019486       &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---                                                                      </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 257:          1.721835e+12 38f0198f-7a4e-4756-9b13-cac240b27edc       &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 258:          1.721928e+12 3a710a92-3513-44c1-95bf-79fc3ebd32a7       &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 259:          1.721928e+12 84bcb839-a8fa-4a25-b28e-16b97ecbdce6       &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 260:          1.721928e+12 9470b29b-550a-4613-9834-8667684f2aa6       &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 261:          1.721930e+12 9ff0f807-d54e-4dd9-b79c-57f1a1ff1116       &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 233:          1.721835e+12 38f0198f-7a4e-4756-9b13-cac240b27edc       &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 234:          1.721928e+12 3a710a92-3513-44c1-95bf-79fc3ebd32a7       &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 235:          1.721928e+12 84bcb839-a8fa-4a25-b28e-16b97ecbdce6       &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 236:          1.721928e+12 9470b29b-550a-4613-9834-8667684f2aa6       &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 237:          1.721930e+12 9ff0f807-d54e-4dd9-b79c-57f1a1ff1116       &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>      linear_other_feature</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>                    &lt;char&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   1:                 &lt;NA&gt;</span>
@@ -225,14 +225,14 @@ columns of <code>"x"</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   4:                 &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   5:                 &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  ---                     </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 257:                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 258:                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 259:                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 260:                 &lt;NA&gt;</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 261:                 &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 233:                 &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 234:                 &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 235:                 &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 236:                 &lt;NA&gt;</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 237:                 &lt;NA&gt;</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $planar</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Plane object (n = 261):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Plane object (n = 237):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        dip_direction dip</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1,]           332  87</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [2,]           337  89</span>
@@ -243,261 +243,237 @@ columns of <code>"x"</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [7,]           167  89</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [8,]           138  84</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [9,]           306  77</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [10,]           306  77</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [11,]           186  83</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [12,]           313  82</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [13,]           148  79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [10,]           186  83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [11,]           313  82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [12,]           148  79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [13,]           142  79</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [14,]           142  79</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [15,]           142  79</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [16,]           151  76</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [17,]           165  78</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [18,]           167  68</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [19,]           126  73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [20,]           127  74</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [21,]           139  73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [22,]           194  76</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [23,]           160  85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [24,]           166  81</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [25,]           165  75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [26,]           162  84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [27,]           165  81</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [28,]           166  85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [29,]           152  47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [30,]           323  75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [31,]           337  72</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [32,]           163  79</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [33,]           343  84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [34,]           156  88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [35,]           161  80</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [36,]           348  86</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [37,]           328  89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [38,]           337  77</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [39,]           109  67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [40,]           113  83</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [41,]           113  83</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [42,]           113  75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [43,]           113  75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [44,]           115  68</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [45,]           115  68</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [46,]           117  63</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [47,]           117  63</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [48,]           106  73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [49,]           111  70</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [50,]           117  69</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [51,]           129  66</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [52,]           129  66</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [53,]           129  69</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [54,]           129  69</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [55,]           134  73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [56,]           134  73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [57,]           111  74</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [58,]           111  74</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [59,]           108  65</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [60,]           108  65</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [61,]           118  80</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [62,]           297  74</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [63,]           143  79</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [64,]           140  77</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [65,]           153  88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [66,]           153  88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [67,]           158  77</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [68,]           158  77</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [69,]           137  78</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [70,]           137  78</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [71,]           128  80</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [72,]           128  80</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [73,]           327  89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [74,]           327  89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [75,]           329  83</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [76,]           329  83</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [77,]           334  87</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [78,]           334  87</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [79,]           144  87</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [80,]           144  87</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [81,]           146  84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [82,]           146  84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [83,]           334  87</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [84,]           334  87</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [85,]           142  80</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [86,]           142  80</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [87,]           151  78</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [88,]           151  78</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [89,]           137  56</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [90,]           137  56</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [91,]           141  75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [92,]           141  75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [93,]           155  84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [94,]           348  82</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [95,]           340  84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [96,]           338  84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [97,]           349  85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [98,]           154  89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [99,]           336  84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [100,]           352  89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [101,]           344  88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [102,]           180  87</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [103,]           346  82</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [104,]           320  74</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [105,]           135  85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [106,]           309  85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [107,]           326  80</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [108,]           330  78</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [109,]           311  78</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [110,]           146  88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [111,]           332  87</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [112,]           338  87</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [113,]             3  81</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [114,]           195  82</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [115,]           150  81</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [116,]           311  72</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [117,]           315  79</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [118,]           333  85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [119,]           313  81</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [120,]           162  76</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [121,]           286  68</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [122,]           161  87</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [123,]           335  81</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [124,]           327  83</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [125,]           313  68</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [126,]           316  71</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [127,]           333  75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [128,]           319  89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [129,]           332  74</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [130,]           149  89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [131,]            86  38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [132,]           320  68</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [133,]           285  86</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [134,]           330  76</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [135,]           337  83</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [136,]           130  89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [137,]           304  71</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [138,]           148  86</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [139,]           346  85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [140,]           347  89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [141,]           339  83</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [142,]           151  84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [143,]           318  87</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [144,]           146  89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [145,]           169  89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [146,]           328  88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [147,]           321  47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [148,]           191  47</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [149,]           299  48</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [150,]           178  78</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [151,]           191  84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [152,]           295  77</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [153,]           305  89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [154,]           192  76</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [155,]           164  73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [156,]           160  55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [157,]           161  84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [158,]           341  87</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [159,]           322  54</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [160,]           299  70</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [161,]           169  67</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [162,]           166  75</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [163,]           154  70</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [164,]           353  89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [165,]           336  85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [166,]           193  79</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [167,]           329  83</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [168,]           330  84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [169,]           325  66</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [170,]           329  80</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [171,]           166  89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [172,]           352  53</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [173,]           152  43</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [174,]           150  48</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [175,]           145  49</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [176,]           146  63</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [177,]           344  76</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [178,]           345  74</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [179,]           316  85</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [180,]           145  86</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [181,]           311  46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [182,]           297  40</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [183,]           323  77</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [184,]           318  73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [185,]           314  88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [186,]           319  71</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [187,]           159  86</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [188,]           335  84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [189,]           339  86</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [190,]           330  89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [191,]           326  88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [192,]           334  81</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [193,]           330  89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [194,]           333  81</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [195,]           336  88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [196,]           332  84</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [197,]           334  78</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [198,]           141  88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [199,]           327  82</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [200,]           341  81</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [201,]           190  33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [202,]           195  36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [203,]           167  30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [204,]           194  32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [205,]           187  35</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [206,]           342  86</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [207,]           334  78</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [208,]           353  82</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [209,]             4  72</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [210,]             5  32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [211,]             0  61</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [212,]             9  73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [213,]            10  36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [214,]            23  35</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [215,]           326  26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [216,]           328  37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [217,]           339  60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [218,]           338  58</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [219,]             8  59</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [220,]             5  58</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [221,]           353  35</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [222,]           329  66</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [223,]           331  70</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [224,]           337  74</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [225,]           333  81</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [226,]           157  82</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [227,]            12  22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [228,]            89  57</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [229,]            62  40</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [230,]            34  64</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [231,]           350  59</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [232,]            14  51</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [233,]           353  60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [234,]           119  56</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [235,]           323  73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [236,]           341  89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [237,]           350  29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [238,]           348  50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [239,]           334  55</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [240,]           342  86</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [241,]           350  74</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [242,]           345  71</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [243,]           329  73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [244,]           336  72</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [245,]           341  73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [246,]           306  59</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [247,]           331  66</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [248,]           161  72</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [249,]           348  86</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [250,]           173  89</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [251,]           342  78</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [252,]           164  87</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [253,]           343  74</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [254,]           161  88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [255,]            50  60</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [256,]           342  57</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [257,]           347  82</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [258,]           348  88</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [259,]           325  82</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [260,]           314  73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [261,]           320  82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [15,]           151  76</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [16,]           165  78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [17,]           167  68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [18,]           126  73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [19,]           127  74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [20,]           139  73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [21,]           194  76</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [22,]           160  85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [23,]           166  81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [24,]           165  75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [25,]           162  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [26,]           165  81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [27,]           166  85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [28,]           152  47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [29,]           323  75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [30,]           337  72</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [31,]           163  79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [32,]           343  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [33,]           156  88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [34,]           161  80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [35,]           348  86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [36,]           328  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [37,]           337  77</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [38,]           109  67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [39,]           113  83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [40,]           113  75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [41,]           115  68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [42,]           117  63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [43,]           106  73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [44,]           111  70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [45,]           117  69</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [46,]           129  66</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [47,]           129  69</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [48,]           134  73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [49,]           111  74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [50,]           108  65</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [51,]           118  80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [52,]           297  74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [53,]           143  79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [54,]           140  77</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [55,]           153  88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [56,]           158  77</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [57,]           137  78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [58,]           128  80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [59,]           327  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [60,]           329  83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [61,]           334  87</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [62,]           144  87</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [63,]           146  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [64,]           334  87</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [65,]           142  80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [66,]           151  78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [67,]           137  56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [68,]           141  75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [69,]           155  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [70,]           348  82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [71,]           340  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [72,]           338  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [73,]           349  85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [74,]           154  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [75,]           336  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [76,]           352  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [77,]           344  88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [78,]           180  87</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [79,]           346  82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [80,]           320  74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [81,]           135  85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [82,]           309  85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [83,]           326  80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [84,]           330  78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [85,]           311  78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [86,]           146  88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [87,]           332  87</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [88,]           338  87</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [89,]             3  81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [90,]           195  82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [91,]           150  81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [92,]           311  72</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [93,]           315  79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [94,]           333  85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [95,]           313  81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [96,]           162  76</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [97,]           286  68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [98,]           161  87</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [99,]           335  81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [100,]           327  83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [101,]           313  68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [102,]           316  71</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [103,]           333  75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [104,]           319  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [105,]           332  74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [106,]           149  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [107,]            86  38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [108,]           320  68</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [109,]           285  86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [110,]           330  76</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [111,]           337  83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [112,]           130  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [113,]           304  71</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [114,]           148  86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [115,]           346  85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [116,]           347  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [117,]           339  83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [118,]           151  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [119,]           318  87</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [120,]           146  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [121,]           169  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [122,]           328  88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [123,]           321  47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [124,]           191  47</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [125,]           299  48</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [126,]           178  78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [127,]           191  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [128,]           295  77</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [129,]           305  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [130,]           192  76</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [131,]           164  73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [132,]           160  55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [133,]           161  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [134,]           341  87</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [135,]           322  54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [136,]           299  70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [137,]           169  67</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [138,]           166  75</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [139,]           154  70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [140,]           353  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [141,]           336  85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [142,]           193  79</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [143,]           329  83</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [144,]           330  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [145,]           325  66</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [146,]           329  80</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [147,]           166  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [148,]           352  53</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [149,]           152  43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [150,]           150  48</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [151,]           145  49</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [152,]           146  63</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [153,]           344  76</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [154,]           345  74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [155,]           316  85</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [156,]           145  86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [157,]           311  46</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [158,]           297  40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [159,]           323  77</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [160,]           318  73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [161,]           314  88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [162,]           319  71</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [163,]           159  86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [164,]           335  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [165,]           339  86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [166,]           330  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [167,]           326  88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [168,]           334  81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [169,]           330  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [170,]           333  81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [171,]           336  88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [172,]           332  84</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [173,]           334  78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [174,]           141  88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [175,]           327  82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [176,]           341  81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [177,]           190  33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [178,]           195  36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [179,]           167  30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [180,]           194  32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [181,]           187  35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [182,]           342  86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [183,]           334  78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [184,]           353  82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [185,]             4  72</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [186,]             5  32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [187,]             0  61</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [188,]             9  73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [189,]            10  36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [190,]            23  35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [191,]           326  26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [192,]           328  37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [193,]           339  60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [194,]           338  58</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [195,]             8  59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [196,]             5  58</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [197,]           353  35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [198,]           329  66</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [199,]           331  70</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [200,]           337  74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [201,]           333  81</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [202,]           157  82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [203,]            12  22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [204,]            89  57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [205,]            62  40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [206,]            34  64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [207,]           350  59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [208,]            14  51</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [209,]           353  60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [210,]           119  56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [211,]           323  73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [212,]           341  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [213,]           350  29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [214,]           348  50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [215,]           334  55</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [216,]           342  86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [217,]           350  74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [218,]           345  71</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [219,]           329  73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [220,]           336  72</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [221,]           341  73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [222,]           306  59</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [223,]           331  66</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [224,]           161  72</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [225,]           348  86</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [226,]           173  89</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [227,]           342  78</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [228,]           164  87</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [229,]           343  74</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [230,]           161  88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [231,]            50  60</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [232,]           342  57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [233,]           347  82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [234,]           348  88</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [235,]           325  82</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [236,]           314  73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [237,]           320  82</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $linear</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> Line object (n = 261):</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> Line object (n = 237):</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>        azimuth plunge</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [1,]      62      8</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [2,]      67      4</span>
@@ -508,258 +484,234 @@ columns of <code>"x"</code>.</p>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [7,]      77      5</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [8,]      48      4</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>   [9,]      34      7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [10,]      34      7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [11,]      96      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [12,]      37     38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [13,]     228     44</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [14,]     220     48</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [15,]     224     37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [16,]     208     66</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [17,]     199     76</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [18,]      87     24</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [19,]      49     36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [20,]      53     46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [21,]      72     53</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [22,]     105      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [23,]      73     27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [24,]      76      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [25,]      81     20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [26,]      72      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [27,]     255      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [28,]      77     10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [29,]     241      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [30,]      48     17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [31,]      62     16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [32,]      78     25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [33,]      70     22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [34,]      67     22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [35,]      74     20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [36,]      76     23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [37,]      58      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [38,]      62     24</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [39,]     183     35</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [40,]      24      7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [41,]      24      7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [42,]      26     11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [43,]      26     11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [44,]      29     10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [45,]      29     10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [46,]      31      7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [47,]      31      7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [48,]      17      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [49,]      22      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [50,]      28      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [51,]     213     13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [52,]     213     13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [53,]     213     15</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [54,]     213     15</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [55,]     217     23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [56,]     217     23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [57,]     201      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [58,]     201      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [59,]      19      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [60,]      19      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [61,]      29      7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [62,]      20     24</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [63,]      58     24</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [64,]      55     22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [65,]      63     12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [66,]      63     12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [67,]     247      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [68,]     247      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [69,]      47      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [70,]      47      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [71,]      39      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [72,]      39      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [73,]      56      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [74,]      56      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [75,]     239      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [76,]     239      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [77,]      64     10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [78,]      64     10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [79,]      55     12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [80,]      55     12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [81,]      57      7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [82,]      57      7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [83,]      64      5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [84,]      64      5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [85,]      55     16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [86,]      55     16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [87,]      62      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [88,]      62      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [89,]      52      7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [90,]      52      7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [91,]      52      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [92,]      52      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [93,]      67     21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [94,]      75     17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [95,]      64     46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [96,]      65     23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [97,]      76     32</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [98,]     244      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>  [99,]      63     23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [100,]      82     17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [101,]      74     23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [102,]      91     27</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [103,]      75     10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [104,]     231      6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [105,]      48     33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [106,]      38      7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [107,]      51     30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [108,]      57     15</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [109,]      29     43</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [110,]      57     19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [111,]      62      8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [112,]     248     13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [113,]      92      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [114,]     106      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [115,]      66     33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [116,]      41      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [117,]     227     10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [118,]     243      8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [119,]     223      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [120,]     252      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [121,]     198      5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [122,]      71     10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [123,]      62     18</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [124,]     237      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [125,]      35     17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [126,]     226      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [127,]      60     11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [128,]      49     10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [129,]      56     21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [130,]     239     14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [131,]      94     37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [132,]     236     13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [133,]      14     17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [134,]     245     21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [135,]     250     25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [136,]      40     19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [137,]      31      8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [138,]      60     35</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [139,]      75     15</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [140,]      77     16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [141,]      66     23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [142,]      64     29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [143,]     228      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [144,]     236     19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [145,]      79      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [146,]      57     21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [147,]     268     33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [148,]     227     41</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [149,]     252     37</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [150,]     266     10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [151,]     103     19</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [152,]     206      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [153,]      35     73</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [154,]     281      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [155,]      92     46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [156,]      95     33</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [157,]      74     26</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [158,]      71      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [159,]      16     38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [160,]     213     12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [161,]      86     18</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [162,]      84     28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [163,]      79     35</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [164,]      83     17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [165,]     248     22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [166,]     104      7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [167,]     240     10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [168,]     241     12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [169,]     236      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [170,]     240      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [171,]      76      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [172,]      73     11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [173,]      81     16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [174,]      75     16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [175,]      67     13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [176,]      64     15</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [177,]     254      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [178,]     256      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [179,]     226      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [180,]      55      9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [181,]     228      7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [182,]     222     12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [183,]      50     15</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [184,]      47      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [185,]      43     22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [186,]      41     23</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [187,]      70     11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [188,]     248     30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [189,]     253     39</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [190,]     240     14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [191,]     237     16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [192,]     252     46</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [193,]     240     35</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [194,]     249     30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [195,]     247     38</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [196,]     245     31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [197,]     245      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [198,]     230     44</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [199,]      57      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [200,]     251      5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [201,]     261     12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [202,]     197     36</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [203,]     174     30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [204,]     200     31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [205,]     151     30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [206,]      72      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [207,]      39     64</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [208,]      72     54</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [209,]      65     57</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [210,]     347     31</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [211,]     312     50</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [212,]      93     17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [213,]      61     25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [214,]      65     28</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [215,]      54      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [216,]      51      5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [217,]     252      5</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [218,]     255     10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [219,]      86     20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [220,]      81     22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [221,]      64     13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [222,]     245     11</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [223,]     244      8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [224,]      65      6</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [225,]      63      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [226,]      67      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [227,]      31     20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [228,]      73     56</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [229,]      49     40</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [230,]     111     25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [231,]      66     22</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [232,]     293     10</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [233,]      71     20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [234,]      51     29</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [235,]      36     45</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [236,]      70     25</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [237,]      67      7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [238,]      60     20</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [239,]      53     16</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [240,]      71     12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [241,]      74     21</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [242,]     261     17</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [243,]      49     30</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [244,]      61     13</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [245,]      57     39</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [246,]     218      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [247,]      54     15</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [248,]      76     14</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [249,]      78      0</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [250,]      83      8</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [251,]     253      7</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [252,]     254     12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [253,]      72      3</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [254,]      71      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [255,]     139      2</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [256,]      61     18</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [257,]      76      4</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [258,]      78      9</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [259,]     237     12</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [260,]      44      1</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [261,]     232     14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [10,]      96      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [11,]      37     38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [12,]     228     44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [13,]     220     48</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [14,]     224     37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [15,]     208     66</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [16,]     199     76</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [17,]      87     24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [18,]      49     36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [19,]      53     46</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [20,]      72     53</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [21,]     105      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [22,]      73     27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [23,]      76      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [24,]      81     20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [25,]      72      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [26,]     255      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [27,]      77     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [28,]     241      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [29,]      48     17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [30,]      62     16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [31,]      78     25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [32,]      70     22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [33,]      67     22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [34,]      74     20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [35,]      76     23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [36,]      58      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [37,]      62     24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [38,]     183     35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [39,]      24      7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [40,]      26     11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [41,]      29     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [42,]      31      7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [43,]      17      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [44,]      22      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [45,]      28      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [46,]     213     13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [47,]     213     15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [48,]     217     23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [49,]     201      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [50,]      19      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [51,]      29      7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [52,]      20     24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [53,]      58     24</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [54,]      55     22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [55,]      63     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [56,]     247      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [57,]      47      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [58,]      39      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [59,]      56      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [60,]     239      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [61,]      64     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [62,]      55     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [63,]      57      7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [64,]      64      5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [65,]      55     16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [66,]      62      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [67,]      52      7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [68,]      52      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [69,]      67     21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [70,]      75     17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [71,]      64     46</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [72,]      65     23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [73,]      76     32</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [74,]     244      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [75,]      63     23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [76,]      82     17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [77,]      74     23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [78,]      91     27</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [79,]      75     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [80,]     231      6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [81,]      48     33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [82,]      38      7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [83,]      51     30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [84,]      57     15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [85,]      29     43</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [86,]      57     19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [87,]      62      8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [88,]     248     13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [89,]      92      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [90,]     106      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [91,]      66     33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [92,]      41      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [93,]     227     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [94,]     243      8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [95,]     223      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [96,]     252      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [97,]     198      5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [98,]      71     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  [99,]      62     18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [100,]     237      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [101,]      35     17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [102,]     226      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [103,]      60     11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [104,]      49     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [105,]      56     21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [106,]     239     14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [107,]      94     37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [108,]     236     13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [109,]      14     17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [110,]     245     21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [111,]     250     25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [112,]      40     19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [113,]      31      8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [114,]      60     35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [115,]      75     15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [116,]      77     16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [117,]      66     23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [118,]      64     29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [119,]     228      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [120,]     236     19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [121,]      79      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [122,]      57     21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [123,]     268     33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [124,]     227     41</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [125,]     252     37</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [126,]     266     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [127,]     103     19</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [128,]     206      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [129,]      35     73</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [130,]     281      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [131,]      92     46</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [132,]      95     33</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [133,]      74     26</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [134,]      71      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [135,]      16     38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [136,]     213     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [137,]      86     18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [138,]      84     28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [139,]      79     35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [140,]      83     17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [141,]     248     22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [142,]     104      7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [143,]     240     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [144,]     241     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [145,]     236      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [146,]     240      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [147,]      76      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [148,]      73     11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [149,]      81     16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [150,]      75     16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [151,]      67     13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [152,]      64     15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [153,]     254      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [154,]     256      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [155,]     226      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [156,]      55      9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [157,]     228      7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [158,]     222     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [159,]      50     15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [160,]      47      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [161,]      43     22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [162,]      41     23</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [163,]      70     11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [164,]     248     30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [165,]     253     39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [166,]     240     14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [167,]     237     16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [168,]     252     46</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [169,]     240     35</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [170,]     249     30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [171,]     247     38</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [172,]     245     31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [173,]     245      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [174,]     230     44</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [175,]      57      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [176,]     251      5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [177,]     261     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [178,]     197     36</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [179,]     174     30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [180,]     200     31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [181,]     151     30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [182,]      72      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [183,]      39     64</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [184,]      72     54</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [185,]      65     57</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [186,]     347     31</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [187,]     312     50</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [188,]      93     17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [189,]      61     25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [190,]      65     28</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [191,]      54      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [192,]      51      5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [193,]     252      5</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [194,]     255     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [195,]      86     20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [196,]      81     22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [197,]      64     13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [198,]     245     11</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [199,]     244      8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [200,]      65      6</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [201,]      63      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [202,]      67      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [203,]      31     20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [204,]      73     56</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [205,]      49     40</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [206,]     111     25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [207,]      66     22</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [208,]     293     10</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [209,]      71     20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [210,]      51     29</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [211,]      36     45</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [212,]      70     25</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [213,]      67      7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [214,]      60     20</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [215,]      53     16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [216,]      71     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [217,]      74     21</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [218,]     261     17</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [219,]      49     30</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [220,]      61     13</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [221,]      57     39</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [222,]     218      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [223,]      54     15</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [224,]      76     14</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [225,]      78      0</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [226,]      83      8</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [227,]     253      7</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [228,]     254     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [229,]      72      3</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [230,]      71      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [231,]     139      2</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [232,]      61     18</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [233,]      76      4</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [234,]      78      9</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [235,]     237     12</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [236,]      44      1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [237,]     232     14</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> attr(,"class")</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] "list"   "strabo"</span>

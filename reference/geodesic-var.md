@@ -102,5 +102,5 @@ geodesic_var(example_planes)
 # Pair data
 p <- Pair(strabo_prj$planar, strabo_prj$linear)
 geodesic_var(p)
-#> [1] 0.2216458
+#> [1] 0.2259915
 ```
