@@ -476,7 +476,7 @@ read_strabo_JSON <- function(file, sf = TRUE) {
     orient_dt2$strike <- dd2rhr(orient_dt2$dip_direction)
   }
   
-  setcolorder(orient_dt2, c("id", "dip_direction", "dip", "strike", "plunge", "trend", "associated"))
+  setcolorder(orient_dt2, c("id", "dip_direction", "dip", "strike", "trend", "plunge", "associated"))
 
   # drop all empty columns
   orient_dt2[, which(sapply(orient_dt2, \(x) all(is.na(x)))) := NULL]
@@ -484,6 +484,13 @@ read_strabo_JSON <- function(file, sf = TRUE) {
   # sort the data
   setorder(orient_dt2, unix_timestamp)
 
+  # remove duplicated planes
+  dup_ids <- orient_dt2[duplicated(id) | duplicated(id, fromLast = TRUE), unique(id)]
+  orient_dt2 <- orient_dt2[!(id %in% dup_ids) | (!is.na(dip) & !is.na(plunge))]
+  orient_dt2 <- unique(orient_dt2, by = c("id", "dip", "dip_direction"))
+  orient_dt2 <- unique(orient_dt2, by = c("id", "plunge", "trend"))
+  
+  
   if (nrow(orient_dt2) > 0) {
     planes <- Plane(rhr2dd(orient_dt2$strike), orient_dt2$dip)
     lines <- Line(orient_dt2$trend, orient_dt2$plunge)

@@ -58,9 +58,9 @@ test_that("import json", {
   import <- read_strabo_JSON(data_path)
 
   expect_s3_class(import, 'strabo')
-  expect_equal(nrow(import$data), 23)
-  expect_equal(nrow(import$linear), 23)
-  expect_equal(nrow(import$planar), 23)                
+  expect_equal(nrow(import$data), 20)
+  expect_equal(nrow(import$linear), 20)
+  expect_equal(nrow(import$planar), 20)                
 })
 
 
