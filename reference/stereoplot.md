@@ -1,7 +1,7 @@
-# Stereographic Projection
+# Stereographic and Equal Area Projection
 
-Initialize the plot for equal-area stereographic projections (Wulff) or
-Lambert Equal-Area projections (Schmidt).
+Initialize the plot for equal-angle stereographic projections (Wulff) or
+Lambert equal-area projections (Schmidt).
 
 ## Usage
 
@@ -48,15 +48,15 @@ Adapted from the `RFOC` package
 
 - col:
 
-  color of guide lines
+  Color of guide lines
 
 - lwd:
 
-  linewidth of guide lines
+  Width of guide lines
 
 - lty:
 
-  linetype of guide lines
+  Type of guide lines
 
 - border.col:
 
@@ -69,17 +69,17 @@ Adapted from the `RFOC` package
 
 - origin.text:
 
-  character. Text at origin of stereoplot.
+  character. Text at origin of plot
 
 - labels:
 
   this can either be a logical value specifying whether (numerical)
-  annotations are to be made next to the tickmarks, or a character or
-  expression vector of labels to be placed next to the tickpoints.
+  annotations are to be made next to the tick marks, or a character or
+  expression vector of labels to be placed next to the tick points.
 
 - ladj:
 
-  adjustment for all labels away from origin of stereoplot circle. This
+  adjustment for all labels away from origin of projection circle. This
   essentially an amount that is added to `radius` and the length of the
   ticks.
 
@@ -99,7 +99,7 @@ Adapted from the `RFOC` package
 - center:
 
   An object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`
-  specifying the center of the stereoplot. If `NULL` (the default), the
+  specifying the center of the projection If `NULL` (the default), the
   center is at the origin of the plot.
 
 ## See also

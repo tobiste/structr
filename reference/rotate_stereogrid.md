@@ -20,15 +20,15 @@ rotate_stereogrid(x, d = 10, col = "gray90", lwd = 0.5, lty = 1, ...)
 
 - col:
 
-  color of guide lines
+  Color of guide lines
 
 - lwd:
 
-  linewidth of guide lines
+  Width of guide lines
 
 - lty:
 
-  linetype of guide lines
+  Type of guide lines
 
 - ...:
 

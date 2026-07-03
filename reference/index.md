@@ -517,7 +517,7 @@
   : Horizontal directions
 
 - [`stereoplot()`](https://tobiste.github.io/structr/reference/stereoplot.md)
-  : Stereographic Projection
+  : Stereographic and Equal Area Projection
 
 - [`stereoplot_frame()`](https://tobiste.github.io/structr/reference/stereoplot_frame.md)
   : Stereoplot frame
