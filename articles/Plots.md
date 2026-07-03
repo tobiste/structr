@@ -119,51 +119,6 @@ transpression).
 ``` r
 
 balebrun_plot(my_pairs, col = assign_col_d(strabo_prj$data$spot_id), pch = 16)
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
-#> Warning in asin(x): NaNs produced
 ```
 
 ![](Plots_files/figure-html/bale-1.png)
