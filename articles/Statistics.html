@@ -182,7 +182,7 @@ and the 95% confidence cone around the mean:</p>
 <span><span class="fu"><a href="../reference/lines.html">lines</a></span><span class="op">(</span><span class="va">lines_mean</span>, ang <span class="op">=</span> <span class="va">lines_confangle</span>, col <span class="op">=</span> <span class="st">"#E65164FF"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/lines.html">lines</a></span><span class="op">(</span><span class="va">lines_mean</span>, ang <span class="op">=</span> <span class="va">lines_delta</span>, col <span class="op">=</span> <span class="st">"#FB8861FF"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"topright"</span>, legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Mean line"</span>, <span class="st">"95% confidence cone"</span>, <span class="st">"63% data cone"</span><span class="op">)</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679"</span>, <span class="st">"#E65164FF"</span>, <span class="st">"#FB8861FF"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">19</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="fl">1</span>, <span class="fl">1</span><span class="op">)</span>, cex <span class="op">=</span> <span class="fl">.75</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Statistics_files/figure-html/stat_plot-1.png" class="r-plt" alt="Diagram showing statistical results of some example data plotted in an equal-area projection" width="700"></p>
+<p><img src="Statistics_files/figure-html/stat_plot-1.png" class="r-plt" alt="Diagram showing statistical results of some example data plotted in an equal-area projection" width="1093.75"></p>
 </div>
 <div class="section level3">
 <h3 id="geodesic-mean-and-variance">Geodesic Mean and Variance<a class="anchor" aria-label="anchor" href="#geodesic-mean-and-variance"></a>
@@ -197,7 +197,7 @@ showing the (geodesic) angle distances between all lines and the first
 line in the same data set:</p>
 <div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/variance_plot.html">variance_plot</a></span><span class="op">(</span><span class="va">lines</span>, y <span class="op">=</span> <span class="va">lines</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Statistics_files/figure-html/variance-1.png" class="r-plt" alt="Diagram showing the distances of a set of vectors to a specified vector" width="700"></p>
+<p><img src="Statistics_files/figure-html/variance-1.png" class="r-plt" alt="Diagram showing the distances of a set of vectors to a specified vector" width="1093.75"></p>
 <blockquote>
 <p>The Fréchet mean is the vector that minimizes the sum of the squared
 angle distances to all data vectors. The Fréchet variance about this
@@ -260,7 +260,7 @@ distributions</em>.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="fu"><a href="../reference/geodesic-mean.html">geodesic_mean</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="fu"><a href="../reference/projected_mean.html">projected_mean</a></span><span class="op">(</span><span class="va">example_planes</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">"#FEC287FF"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Planes"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Statistics_files/figure-html/mean_plot-1.png" class="r-plt" alt="Equal area projections showing the different estimators of the mean" width="700"></p>
+<p><img src="Statistics_files/figure-html/mean_plot-1.png" class="r-plt" alt="Equal area projections showing the different estimators of the mean" width="1093.75"></p>
 </div>
 </div>
 <div class="section level2">
@@ -318,7 +318,7 @@ you can call the vectors and values of the object returned by
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">'right'</span>, </span>
 <span>       legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Eigen-1"</span>, <span class="st">"Eigen-2"</span>, <span class="st">"Eigen-3"</span><span class="op">)</span>, </span>
 <span>       col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#000004"</span>, <span class="st">"#B63679FF"</span>, <span class="st">"#FEC287FF"</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span>, lty <span class="op">=</span> <span class="fl">1</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Statistics_files/figure-html/oteigen_plot-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="Statistics_files/figure-html/oteigen_plot-1.png" class="r-plt" alt="" width="1093.75"></p>
 <div class="section level4">
 <h4 id="shape-parameters">Shape Parameters<a class="anchor" aria-label="anchor" href="#shape-parameters"></a>
 </h4>
@@ -403,7 +403,7 @@ the orientation tensor:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x4</span>, col <span class="op">=</span> <span class="st">'grey'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">r4</span><span class="op">$</span><span class="va">vectors</span>, col <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">'Bingham'</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Statistics_files/figure-html/mle-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="Statistics_files/figure-html/mle-1.png" class="r-plt" alt="" width="1093.75"></p>
 </div>
 <div class="section level2">
 <h2 id="hypothesis-testing">Hypothesis Testing<a class="anchor" aria-label="anchor" href="#hypothesis-testing"></a>
@@ -431,7 +431,7 @@ from a von Mises-Fisher distribution.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">cep</span><span class="op">$</span><span class="va">muHat</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/lines.html">lines</a></span><span class="op">(</span><span class="va">cep</span><span class="op">$</span><span class="va">muHat</span>, ang <span class="op">=</span> <span class="va">cep</span><span class="op">$</span><span class="va">angle</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">line_NULL</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Statistics_files/figure-html/test_param2-1.png" class="r-plt" alt="Diagram showing the Fisher confidence region of a mean" width="700"></p>
+<p><img src="Statistics_files/figure-html/test_param2-1.png" class="r-plt" alt="Diagram showing the Fisher confidence region of a mean" width="1093.75"></p>
 <!-- ### Two-Sample Test -->
 <!-- Using the **Fisher F-test**, We can now derive a p-value for the  -->
 <!-- Null-Hypothesis that the samples are drawn from the same von Mises Fisher distribution. -->
@@ -460,7 +460,7 @@ permutation techniques.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">lines</span>, col <span class="op">=</span> <span class="st">"grey"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">cenp</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">line_NULL</span>, col <span class="op">=</span> <span class="st">"#000004"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Statistics_files/figure-html/test2-1.png" class="r-plt" alt="Diagram showing the confidence region of a mean" width="700"></p>
+<p><img src="Statistics_files/figure-html/test2-1.png" class="r-plt" alt="Diagram showing the confidence region of a mean" width="1093.75"></p>
 <p>The
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mi>p</mi><annotation encoding="application/x-tex">p</annotation></semantics></math>-value
 for our hypothesis line:</p>
@@ -517,7 +517,7 @@ stronger evidence that the two populations differ significantly.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x123</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col_d</a></span><span class="op">(</span><span class="va">cl</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/assign-color.html">legend_col_d</a></span><span class="op">(</span><span class="fu"><a href="../reference/assign-color.html">assign_col_d</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/unique.html" class="external-link">unique</a></span><span class="op">(</span><span class="va">cl</span><span class="op">$</span><span class="va">cluster</span><span class="op">)</span><span class="op">)</span>, title <span class="op">=</span> <span class="st">"Cluster"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Statistics_files/figure-html/cluster-1.png" class="r-plt" alt="Stereoplot showing the the cluster result of an example dataset" width="700"></p>
+<p><img src="Statistics_files/figure-html/cluster-1.png" class="r-plt" alt="Stereoplot showing the the cluster result of an example dataset" width="1093.75"></p>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

@@ -325,7 +325,7 @@ already converted into {structr} data objects.</p>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">strabo_data</span><span class="op">$</span><span class="va">linear</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col_d</a></span><span class="op">(</span><span class="va">strabo_data</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">spot_id</span><span class="op">)</span><span class="op">)</span> </span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">'All linear elements'</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Import_files/figure-html/strabi_plot1-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="Import_files/figure-html/strabi_plot1-1.png" class="r-plt" alt="" width="1093.75"></p>
 <p>The <code>"strabo"</code> objects are list objects containing
 orientation data as planar and linear objects as well as several slots
 containing your metadata (<code>data</code>) and geospatial information
@@ -338,7 +338,7 @@ fault).</p>
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/classes.html">Pair</a></span><span class="op">(</span><span class="va">strabo_data</span><span class="op">$</span><span class="va">planar</span>, <span class="va">strabo_data</span><span class="op">$</span><span class="va">linear</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col_d</a></span><span class="op">(</span><span class="va">strabo_data</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">spot_id</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">'Planar+Linear'</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Import_files/figure-html/strabi_plot_pair-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="Import_files/figure-html/strabi_plot_pair-1.png" class="r-plt" alt="" width="1093.75"></p>
 <blockquote>
 <p>This import allows that the connection of simultaneously measured
 plane and lines (such as faults and their striae) will be preserved.
@@ -371,7 +371,7 @@ elements of the list, including the orientation data:</p>
 <code class="sourceCode R"><span><span class="va">strabo_prj_subset</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/subset.html" class="external-link">subset</a></span><span class="op">(</span><span class="va">strabo_prj</span>, <span class="va">strabo_prj</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">quality</span> <span class="op">&gt;</span> <span class="fl">3</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">strabo_prj_subset</span><span class="op">$</span><span class="va">linear</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col_d</a></span><span class="op">(</span><span class="va">strabo_prj_subset</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">spot_id</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">'Subset of linear elements'</span><span class="op">)</span></span></code></pre></div>
-<p><img src="Import_files/figure-html/subset-1.png" class="r-plt" alt="" width="700"></p>
+<p><img src="Import_files/figure-html/subset-1.png" class="r-plt" alt="" width="1093.75"></p>
 </div>
 <div class="section level3">
 <h3 id="sort-strabo-objects">Sort Strabo objects<a class="anchor" aria-label="anchor" href="#sort-strabo-objects"></a>

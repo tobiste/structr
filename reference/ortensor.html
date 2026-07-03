@@ -150,10 +150,10 @@ The Journal of Geology, 97(3), 360-364.</p>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="rfb.html">rfb</a></span><span class="op">(</span><span class="fl">100</span>, mu <span class="op">=</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">50</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">1</span>, A <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">10</span>, <span class="fl">0</span>, <span class="fl">0</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">ortensor</span><span class="op">(</span><span class="va">x</span>, w <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> Orientation tensor</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>              [,1]        [,2]         [,3]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.070068571 -0.08328132 -0.005802996</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] -0.083281325  0.26782013 -0.072426834</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.005802996 -0.07242683  0.316371849</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>             [,1]          [,2]          [,3]</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,]  0.08736216 -0.0753134902 -0.0523330267</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] -0.07531349  0.2173408043 -0.0006601712</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] -0.05233303 -0.0006601712  0.3793423089</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">test</span> <span class="op">&lt;-</span> <span class="fu">as.ortensor</span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/diag.html" class="external-link">diag</a></span><span class="op">(</span><span class="fl">3</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">is.ortensor</span><span class="op">(</span><span class="va">test</span><span class="op">)</span></span></span>
