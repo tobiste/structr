@@ -476,31 +476,31 @@ stereoplot_frame <- function(n = 512L, radius = 1, ...) {
 }
 
 
-#' Stereographic Projection
+#' Stereographic and Equal Area Projection
 #'
-#' Initialize the plot for equal-area stereographic projections (Wulff) or Lambert
-#' Equal-Area projections (Schmidt).
+#' Initialize the plot for equal-angle stereographic projections (Wulff) or Lambert
+#' equal-area projections (Schmidt).
 #'
 #' @param earea logical. Projection, either `TRUE` for Lambert equal-area
 #' projection (the default), or `FALSE` for meridional stereographic projection.
 #' @param guides logical. Whether guides should be added to the plot (`TRUE` by default)
 #' @param d integer. Angle distance between guides. Default: 10
-#' @param col color of guide lines
-#' @param lwd linewidth of guide lines
-#' @param lty linetype of guide lines
+#' @param col Color of guide lines
+#' @param lwd Width of guide lines
+#' @param lty Type of guide lines
 #' @param border.col color of primitive circle (frame), center-cross and ticks of the stereo plot
 #' @param centercross logical. Whether a center cross should be added (`TRUE` by default)
 #' @param ticks integer. Angle between ticks. if `NULL` (the default), no ticks are drawn.
 #' @param title,sub character. Title and subtitle of plot
-#' @param origin.text character. Text at origin of stereoplot.
+#' @param origin.text character. Text at origin of plot
 #' @param labels this can either be a logical value specifying whether (numerical)
-#' annotations are to be made next to the tickmarks, or a character or expression
-#' vector of labels to be placed next to the tickpoints.
-#' @param ladj adjustment for all labels away from origin of stereoplot circle.
+#' annotations are to be made next to the tick marks, or a character or expression
+#' vector of labels to be placed next to the tick points.
+#' @param ladj adjustment for all labels away from origin of projection circle.
 #' This essentially an amount that is added to `radius` and the length of the ticks.
 #' @param radius numeric. Radius of circle
 #' @param center An object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`
-#' specifying the center of the stereoplot. If `NULL` (the default), the center
+#' specifying the center of the projection If `NULL` (the default), the center
 #' is at the origin of the plot.
 #'
 #' @source Adapted from the `RFOC` package
@@ -526,13 +526,15 @@ stereoplot <- function(earea = TRUE, guides = TRUE, d = 10, col = "gray90",
   )
 
   graphics::title(main = title, sub = sub)
-  graphics::mtext(origin.text, col = border.col, font = 2)
+  # graphics::mtext(origin.text, col = border.col, font = 2)
+  
+  graphics::text(0, (3*ladj) + radius, label = "N", col = border.col, font = 2)
 
   if (guides) stereoplot_guides(d = d, earea = earea, col = col, lwd = lwd, lty = lty, radius = radius, center = center)
 
   if (!is.null(ticks)) stereoplot_ticks(angle = ticks, col = border.col, radius = radius, labels = labels, ladj = ladj)
 
-  if (centercross) points(0, 0, pch = 3, col = border.col)
+  if (centercross) graphics::points(0, 0, pch = 3, col = border.col)
 
   stereoplot_frame(col = border.col, radius = radius)
 }

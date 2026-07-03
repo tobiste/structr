@@ -21,10 +21,10 @@ stereoplot_ticks(
 \item{angle}{numeric. Division angle in degrees}
 
 \item{labels}{this can either be a logical value specifying whether (numerical)
-annotations are to be made next to the tickmarks, or a character or expression
-vector of labels to be placed next to the tickpoints.}
+annotations are to be made next to the tick marks, or a character or expression
+vector of labels to be placed next to the tick points.}
 
-\item{ladj}{adjustment for all labels away from origin of stereoplot circle.
+\item{ladj}{adjustment for all labels away from origin of projection circle.
 This essentially an amount that is added to \code{radius} and the length of the ticks.}
 
 \item{radius}{numeric. Radius of circle}

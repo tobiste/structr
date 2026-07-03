@@ -11,11 +11,11 @@ rotate_stereogrid(x, d = 10, col = "gray90", lwd = 0.5, lty = 1, ...)
 
 \item{d}{integer. Angle distance between guides. Default: 10}
 
-\item{col}{color of guide lines}
+\item{col}{Color of guide lines}
 
-\item{lwd}{linewidth of guide lines}
+\item{lwd}{Width of guide lines}
 
-\item{lty}{linetype of guide lines}
+\item{lty}{Type of guide lines}
 
 \item{...}{arguments passed to \code{\link[graphics:lines]{graphics::lines()}}}
 }

@@ -330,13 +330,13 @@ vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5),
 #' balebrun_plot(Pair_from_pitch(Plane(0, 80), 10), "strike-slip", col = 2, add = TRUE)
 #' balebrun_plot(Pair_from_pitch(Plane(0, 10), 10), "horizontal flow", col = 3, add = TRUE)
 balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", extra_labels = TRUE, add = FALSE, ...) {
-  stopifnot(is.Pair(x))
   # plunge <- x[, "plunge"]
-  pitch <- Pair_pitch(x)
-  dip <- x[, "dip"]
-
-  crds <- .ternary_from_pitchdip(pitch, dip)
-
+  # pitch <- Pair_pitch(x)
+  # dip <- x[, "dip"]
+  # 
+  # crds <- .ternary_from_pitchdip(pitch, dip)
+  crds <- .balebrun_coords(x)
+  
 
   if (isFALSE(add)) {
     .ternary_plot(
@@ -379,6 +379,14 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
 
   invisible(crds)
 }
+
+.balebrun_coords <- function(x){
+  stopifnot(is.Pair(x))
+  pitch <- Pair_pitch(x)
+  dip <- x[, "dip"]
+  .ternary_from_pitchdip(pitch, dip)
+}
+  
 
 .ternary_from_pitchdip <- function(pitch, dip) {
   plunge <- plunge_from_pitchdip(pitch = pitch, dip = dip)
@@ -424,13 +432,43 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
   }
 
   # --- Constant pitch lines (pitch fixed, dip varies) ---
-  dip_corner <- cbind(1, 0)
+  # dip_corner <- cbind(1, 0)
+  # pitch_seq_s <- sort(pitch_seq)
+  # pitch_seq_sr <- pitch_seq_s[-c(1L, length(pitch_seq_s))] # remove first and last line 
+  # 
+  # pitch_lines_sr <- .ternary_from_pitchdip(pitch_seq_sr, dip = 90)
+  # graphics::segments(x0 = dip_corner[, 1], y0 = dip_corner[, 2], x1 = pitch_lines_sr[, 1], y1 = pitch_lines_sr[, 2], col = col, lty = lty, ...)
+
   pitch_seq_s <- sort(pitch_seq)
   pitch_seq_sr <- pitch_seq_s[-c(1L, length(pitch_seq_s))] # remove first and last line 
   
-  pitch_lines_sr <- .ternary_from_pitchdip(pitch_seq_sr, dip = 90)
-  graphics::segments(x0 = dip_corner[, 1], y0 = dip_corner[, 2], x1 = pitch_lines_sr[, 1], y1 = pitch_lines_sr[, 2], col = col, lty = lty, ...)
+  dip_seq2 <- seq(min(dip_seq), max(dip_seq), length.out = n_interp)
+  dip_seq2 <- dip_seq2[-c(1L, length(dip_seq2))] # remove first and last line 
+  
+  invisible(lapply(pitch_seq_sr, function(p){
+    pitch_lines_sr <- t(vapply(dip_seq2, function(d){
+      pitch_lines_sr <- .ternary_from_pitchdip(p, dip = d)
+    }, numeric(2)))
+    graphics::lines(pitch_lines_sr[, 1], pitch_lines_sr[, 2], col = col, lty = lty)
+    
+  })
+  )
+  
+  plunge_seq_s <- sort(plunge_seq)
+  plunge_seq_sr <- plunge_seq_s[-c(1L, length(plunge_seq_s))] # remove first and last line 
 
+ 
+  invisible(lapply(pitch_seq, function(pl){
+    crds <- t(vapply(pitch_seq, function(pi){
+      di <- dip_from_pitchplunge(pi, pl)
+      .ternary_from_pitchdip(pi, di)
+    }, numeric(2))
+    )
+    lines(crds[, 1], crds[, 2], col = col, lty = lty)
+  }))
+  
+  
+  
   # --- Constant plunge lines ---
   # plunge_seq_s <- sort(plunge_seq)
   # plunge_seq_sr <- plunge_seq_s[-c(1L, length(plunge_seq_s))] # remove first and last line 
@@ -458,6 +496,12 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
     
     graphics::text(dip_seq/90, 0, rev(dip_seq), pos = 1, cex = 0.8) # dip 
   }
+  
+  A <- c(0, 0) # left
+  B <- c(1, 0) # right
+  C <- c(1 / 2, sqrt(3) / 2) # top
+  abc <- rbind(A, B, C)
+  graphics::polygon(abc)
 }
 
 #' Fabric Plot of Woodcock (1977)

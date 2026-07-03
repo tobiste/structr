@@ -2,7 +2,7 @@
 % Please edit documentation in R/stereonet_base.R
 \name{stereoplot}
 \alias{stereoplot}
-\title{Stereographic Projection}
+\title{Stereographic and Equal Area Projection}
 \source{
 Adapted from the \code{RFOC} package
 }
@@ -34,23 +34,23 @@ projection (the default), or \code{FALSE} for meridional stereographic projectio
 
 \item{d}{integer. Angle distance between guides. Default: 10}
 
-\item{col}{color of guide lines}
+\item{col}{Color of guide lines}
 
-\item{lwd}{linewidth of guide lines}
+\item{lwd}{Width of guide lines}
 
-\item{lty}{linetype of guide lines}
+\item{lty}{Type of guide lines}
 
 \item{border.col}{color of primitive circle (frame), center-cross and ticks of the stereo plot}
 
 \item{title, sub}{character. Title and subtitle of plot}
 
-\item{origin.text}{character. Text at origin of stereoplot.}
+\item{origin.text}{character. Text at origin of plot}
 
 \item{labels}{this can either be a logical value specifying whether (numerical)
-annotations are to be made next to the tickmarks, or a character or expression
-vector of labels to be placed next to the tickpoints.}
+annotations are to be made next to the tick marks, or a character or expression
+vector of labels to be placed next to the tick points.}
 
-\item{ladj}{adjustment for all labels away from origin of stereoplot circle.
+\item{ladj}{adjustment for all labels away from origin of projection circle.
 This essentially an amount that is added to \code{radius} and the length of the ticks.}
 
 \item{centercross}{logical. Whether a center cross should be added (\code{TRUE} by default)}
@@ -60,12 +60,12 @@ This essentially an amount that is added to \code{radius} and the length of the 
 \item{radius}{numeric. Radius of circle}
 
 \item{center}{An object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}
-specifying the center of the stereoplot. If \code{NULL} (the default), the center
+specifying the center of the projection If \code{NULL} (the default), the center
 is at the origin of the plot.}
 }
 \description{
-Initialize the plot for equal-area stereographic projections (Wulff) or Lambert
-Equal-Area projections (Schmidt).
+Initialize the plot for equal-angle stereographic projections (Wulff) or Lambert
+equal-area projections (Schmidt).
 }
 \examples{
 stereoplot()
