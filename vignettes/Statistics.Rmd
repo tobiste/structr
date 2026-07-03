@@ -22,7 +22,8 @@ testing, orientation tensors, and clustering of orientation data.
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>", 
+  dev = "ragg_png"
 )
 set.seed(20250411)
 ```

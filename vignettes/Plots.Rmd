@@ -21,7 +21,8 @@ fabric plots, density plots, and fault plots.
 ```{r, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
-  comment = "#>"
+  comment = "#>", 
+  dev = "ragg_png"
 )
 ```
 

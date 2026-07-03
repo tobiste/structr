@@ -8,6 +8,10 @@ authors:
   Tobias Stephan:
     href: https://tobiste.github.io/
 
+figures:
+  dev: ragg::agg_png
+  dpi: 150
+
 articles:
 - title: Basics and Data Imports
   navbar: "Basics and Import"
