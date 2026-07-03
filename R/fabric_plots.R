@@ -350,7 +350,7 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
       invert = c(FALSE, TRUE, TRUE)
     )
 
-    .ternary_grid_pitchdip()
+    suppressWarnings(.ternary_grid_pitchdip())
 
 
     if (isTRUE(extra_labels)) {
