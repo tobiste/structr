@@ -145,6 +145,9 @@
   [`Spherical()`](https://tobiste.github.io/structr/reference/classes.md)
   : Structr Classes
 
+- [`colorblind_pal()`](https://tobiste.github.io/structr/reference/colorblind_pal.md)
+  : Colorblind Color Palette (Discrete) and Scales
+
 - [`confidence_ellipse()`](https://tobiste.github.io/structr/reference/confidence_ellipse.md)
   : Confidence ellipse
 

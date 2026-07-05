@@ -167,6 +167,8 @@ lineations on bedding planes etc.</p>
 <span><span class="va">my_pairs</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Pair</a></span><span class="op">(</span><span class="va">strabo_prj</span><span class="op">$</span><span class="va">planar</span>, <span class="va">strabo_prj</span><span class="op">$</span><span class="va">linear</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">my_pairs</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col_d</a></span><span class="op">(</span><span class="va">strabo_prj</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">spot_id</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in (function (n) : This manual palette can handle a maximum of 8</span></span>
+<span><span class="co">#&gt; values. You have supplied 93</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span><span class="st">"Pairs"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Plots_files/figure-html/pair-1.png" class="r-plt" alt="" width="1093.75">
 ### Dip-Pitch-Plunge Ternary diagram</p>
@@ -178,7 +180,9 @@ lineation (X) and the dip of the foliation plane (XY). This can be used
 to show three-dimensional geometries of fabrics (useful for
 transpression).</p>
 <div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/balebrun_plot.html">balebrun_plot</a></span><span class="op">(</span><span class="va">my_pairs</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col_d</a></span><span class="op">(</span><span class="va">strabo_prj</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">spot_id</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/balebrun_plot.html">balebrun_plot</a></span><span class="op">(</span><span class="va">my_pairs</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col_d</a></span><span class="op">(</span><span class="va">strabo_prj</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">spot_id</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
+<span><span class="co">#&gt; Warning in (function (n) : This manual palette can handle a maximum of 8</span></span>
+<span><span class="co">#&gt; values. You have supplied 93</span></span></code></pre></div>
 <p><img src="Plots_files/figure-html/bale-1.png" class="r-plt" alt="" width="1093.75"></p>
 </div>
 <div class="section level2">

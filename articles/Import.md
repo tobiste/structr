@@ -252,6 +252,8 @@ names(strabo_data)
 ``` r
 
 plot(strabo_data$linear, col = assign_col_d(strabo_data$data$spot_id)) 
+#> Warning in (function (n) : This manual palette can handle a maximum of 8
+#> values. You have supplied 93
 title(main = 'All linear elements')
 ```
 
@@ -269,6 +271,8 @@ indices have been measured simultaneously (e.g. as a fault).
 
 Pair(strabo_data$planar, strabo_data$linear) |> 
   plot(col = assign_col_d(strabo_data$data$spot_id))
+#> Warning in (function (n) : This manual palette can handle a maximum of 8
+#> values. You have supplied 93
 title(main = 'Planar+Linear')
 ```
 
@@ -307,6 +311,8 @@ the list, including the orientation data:
 
 strabo_prj_subset <- subset(strabo_prj, strabo_prj$data$quality > 3)
 plot(strabo_prj_subset$linear, col = assign_col_d(strabo_prj_subset$data$spot_id))
+#> Warning in (function (n) : This manual palette can handle a maximum of 8
+#> values. You have supplied 78
 title(main = 'Subset of linear elements')
 ```
 

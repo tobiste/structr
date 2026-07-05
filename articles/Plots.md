@@ -104,6 +104,8 @@ data(strabo_prj)
 my_pairs <- Pair(strabo_prj$planar, strabo_prj$linear)
 
 plot(my_pairs, col = assign_col_d(strabo_prj$data$spot_id))
+#> Warning in (function (n) : This manual palette can handle a maximum of 8
+#> values. You have supplied 93
 title("Pairs")
 ```
 
@@ -119,6 +121,8 @@ transpression).
 ``` r
 
 balebrun_plot(my_pairs, col = assign_col_d(strabo_prj$data$spot_id), pch = 16)
+#> Warning in (function (n) : This manual palette can handle a maximum of 8
+#> values. You have supplied 93
 ```
 
 ![](Plots_files/figure-html/bale-1.png)
