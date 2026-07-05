@@ -9,7 +9,13 @@
 \alias{legend_col_d}
 \title{Helper functions to assign plotting colors to a vector}
 \usage{
-assign_col_d(x, pal = viridis::viridis, na.values = "grey", ...)
+assign_col_d(
+  x,
+  pal = viridis::viridis,
+  na.translate = TRUE,
+  na.values = "grey",
+  ...
+)
 
 assign_col(x, n = length(x), pal = viridis::viridis, ...)
 
@@ -23,6 +29,10 @@ legend_col_d(fill, legend = names(fill), position = "topright", ...)
 \item{x}{vector to colorize}
 
 \item{pal}{color function; Default is \code{\link[viridis:reexports]{viridis::viridis()}}}
+
+\item{na.translate}{Unlike continuous scales, discrete scales can easily show
+missing values, and do so by default. If you want to remove missing values
+from a discrete scale, specify \code{na.translate = FALSE}.}
 
 \item{...}{arguments passed to color function}
 
@@ -44,7 +54,8 @@ Can be ignored when \code{cols} is a named vector.}
 keyword from the list \code{"bottomright"}, \code{"bottom"}, \code{"bottomleft"}, \code{"left"},
 \code{"topleft"}, \code{"top"}, \code{"topright"}, \code{"right"} and \code{"center"}.}
 
-\item{na.value}{The color for \code{NA} values in \code{x} (\code{grey} by default)}
+\item{na.value}{If \code{na.translate = TRUE}, what color should the
+missing values be displayed as?}
 }
 \value{
 character vector of colors in hexadecimal code
@@ -58,6 +69,7 @@ set.seed(20250411)
 # example for discrete colors
 x <- rvmf(5, mu = Line(120, 50), k = 5)
 key <- letters[round(runif(5, 1, 26))]
+key[2] <- NA
 plot(x, col = assign_col_d(key), grid.params = list(guides = FALSE))
 legend_col_d(assign_col_d(key))
 

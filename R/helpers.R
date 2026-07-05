@@ -339,7 +339,11 @@ scales <- function(ys) {
 #' @param position Legend position. Either a two-column vector of the x and y coordinates, or a
 #' keyword from the list `"bottomright"`, `"bottom"`, `"bottomleft"`, `"left"`, 
 #' `"topleft"`, `"top"`, `"topright"`, `"right"` and `"center"`.
-#' @param na.value The color for `NA` values in `x` (`grey` by default)
+#' @param na.translate Unlike continuous scales, discrete scales can easily show 
+#' missing values, and do so by default. If you want to remove missing values 
+#' from a discrete scale, specify `na.translate = FALSE`.
+#' @param na.value If `na.translate = TRUE`, what color should the 
+#' missing values be displayed as?
 #' @param ... arguments passed to color function
 #'
 #' @return character vector of colors in hexadecimal code
@@ -356,6 +360,7 @@ scales <- function(ys) {
 #' # example for discrete colors
 #' x <- rvmf(5, mu = Line(120, 50), k = 5)
 #' key <- letters[round(runif(5, 1, 26))]
+#' key[2] <- NA
 #' plot(x, col = assign_col_d(key), grid.params = list(guides = FALSE))
 #' legend_col_d(assign_col_d(key))
 #'
@@ -367,7 +372,9 @@ NULL
 
 #' @rdname assign-color
 #' @export
-assign_col_d <- function(x, pal = viridis::viridis,  na.values = 'grey', ...) {
+assign_col_d <- function(x, pal = viridis::viridis, na.translate = TRUE, na.values = 'grey', ...) {
+  if(!na.translate) na.values <- NA
+  
   groups <- unique(na.omit(x))
   n <- length(groups)
   cols <- do.call(pal, args = list(n = n, ...))
@@ -376,8 +383,8 @@ assign_col_d <- function(x, pal = viridis::viridis,  na.values = 'grey', ...) {
   # Map values to colors
   mapped_colors <- named_cols[as.character(x)]
   
-  # Assign grey to NA
-  mapped_colors[is.na(x)] <- na.color
+  # Assign specified color to NA
+  mapped_colors[is.na(x)] <- na.values
   names(mapped_colors)[is.na(x)] <- "NA"
   
   return(mapped_colors)
