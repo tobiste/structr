@@ -366,12 +366,20 @@ NULL
 
 #' @rdname assign-color
 #' @export
-assign_col_d <- function(x, pal = viridis::viridis, ...) {
-  groups <- unique(x)
+assign_col_d <- function(x, pal = viridis::viridis,  na.values = 'grey', ...) {
+  groups <- unique(na.omit(x))
   n <- length(groups)
   cols <- do.call(pal, args = list(n = n, ...))
   named_cols <- stats::setNames(cols, groups)
-  named_cols[x]
+  
+  # Map values to colors
+  mapped_colors <- named_cols[as.character(x)]
+  
+  # Assign grey to NA
+  mapped_colors[is.na(x)] <- na.color
+  names(mapped_colors)[is.na(x)] <- "NA"
+  
+  return(mapped_colors)
 }
 
 #' @rdname assign-color
