@@ -342,7 +342,7 @@ scales <- function(ys) {
 #' @param na.translate Unlike continuous scales, discrete scales can easily show 
 #' missing values, and do so by default. If you want to remove missing values 
 #' from a discrete scale, specify `na.translate = FALSE`.
-#' @param na.value If `na.translate = TRUE`, what color should the 
+#' @param na.values If `na.translate = TRUE`, what color should the 
 #' missing values be displayed as?
 #' @param ... arguments passed to color function
 #'
@@ -366,13 +366,15 @@ scales <- function(ys) {
 #'
 #' # example for continuous colors:
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)
-#' plot(x, col = assign_col(runif(100)), grid.params = list(guides = FALSE))
+#' cols <- runif(100)
+#' cols[sample.int(length(cols), size = 10)] <- NA
+#' plot(x, col = assign_col(cols), grid.params = list(guides = FALSE))
 #' legend_col(seq(0, 1, .1), title = "test")
 NULL
 
 #' @rdname assign-color
 #' @export
-assign_col_d <- function(x, pal = viridis::viridis, na.translate = TRUE, na.values = 'grey', ...) {
+assign_col_d <- function(x, pal = colorblind_pal, na.translate = TRUE, na.values = 'grey', ...) {
   if(!na.translate) na.values <- NA
   
   groups <- unique(na.omit(x))
@@ -392,10 +394,16 @@ assign_col_d <- function(x, pal = viridis::viridis, na.translate = TRUE, na.valu
 
 #' @rdname assign-color
 #' @export
-assign_col <- function(x, n = length(x), pal = viridis::viridis, ...) {
+assign_col <- function(x, n = length(x), pal = viridis::viridis, na.translate = TRUE, na.values = 'grey', ...) {
+  if(!na.translate) na.values <- NA
+  
   normalized_data <- .normalize(x)
-  colors <- do.call(pal, args = list(n = n, ...))
-  colors[as.numeric(cut(normalized_data, breaks = n))]
+  colors <- rep(na.values, n)
+  
+  n2 <- length(na.omit(x))
+  colors[!is.na(x)] <- do.call(pal, args = list(n = n2, ...))
+  # names(colors) <- colors[as.numeric(cut(normalized_data, breaks = n))]
+  return(colors)
 }
 
 #' @rdname assign-color
@@ -455,6 +463,25 @@ legend_col_d <- function(fill, legend = names(fill), position = "topright", ...)
   )
 }
 
+
+#' Colorblind Color Palette (Discrete) and Scales
+#'
+#' @param n number of colors to extract. Gives a warning when `n` exceeds 8.
+#'
+#' @returns character vector with color values
+#' @export
+#'
+#' @examples
+#' colorblind_pal(3)
+colorblind_pal <- function(n){
+  colblind <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
+  
+  n_values <- length(colblind)
+  if (n > n_values) {
+    warning(paste("This manual palette can handle a maximum of", n_values, "values. You have supplied", n))
+  }
+  unname(colblind[seq_len(n)])
+}
 
 
 #' Assign plotting size (cex values) to a vector
