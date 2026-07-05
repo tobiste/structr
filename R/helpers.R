@@ -339,6 +339,7 @@ scales <- function(ys) {
 #' @param position Legend position. Either a two-column vector of the x and y coordinates, or a
 #' keyword from the list `"bottomright"`, `"bottom"`, `"bottomleft"`, `"left"`, 
 #' `"topleft"`, `"top"`, `"topright"`, `"right"` and `"center"`.
+#' @param na.value The color for `NA` values in `x` (`grey` by default)
 #' @param ... arguments passed to color function
 #'
 #' @return character vector of colors in hexadecimal code

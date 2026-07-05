@@ -2,22 +2,28 @@
 % Please edit documentation in R/vector_stats.R
 \name{sph-dist}
 \alias{sph-dist}
-\alias{dist.Vec3}
-\alias{dist.Line}
-\alias{dist.Ray}
-\alias{dist.Plane}
-\alias{dist.Pair}
+\alias{sph_dist}
+\alias{sph_dist.default}
+\alias{sph_dist.Vec3}
+\alias{sph_dist.Line}
+\alias{sph_dist.Ray}
+\alias{sph_dist.Plane}
+\alias{sph_dist.Pair}
 \title{Angular Distance Matrix for Orientation Vectors}
 \usage{
-\method{dist}{Vec3}(x, ...)
+sph_dist(x, ...)
 
-\method{dist}{Line}(x, ...)
+\method{sph_dist}{default}(x, ...)
 
-\method{dist}{Ray}(x, ...)
+\method{sph_dist}{Vec3}(x, ...)
 
-\method{dist}{Plane}(x, ...)
+\method{sph_dist}{Line}(x, ...)
 
-\method{dist}{Pair}(x, ...)
+\method{sph_dist}{Ray}(x, ...)
+
+\method{sph_dist}{Plane}(x, ...)
+
+\method{sph_dist}{Pair}(x, ...)
 }
 \arguments{
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"},
@@ -26,7 +32,27 @@ where the rows are the observations and the columns are the coordinates.}
 \item{...}{optional parameters passed to \code{\link[stats:dist]{stats::as.dist()}}}
 }
 \value{
-distance matrix
+\code{dist} returns an object of class \code{"dist"}.
+
+  The lower triangle of the distance matrix stored by columns in a
+  vector, say \code{do}. If \code{n} is the number of
+  observations, i.e., \code{n <- attr(do, "Size")}, then
+  for \eqn{i < j \le n}, the dissimilarity between (row) i and j is
+  \code{do[n*(i-1) - i*(i-1)/2 + j-i]}.
+  The length of the vector is \eqn{n*(n-1)/2}, i.e., of order \eqn{n^2}.
+
+  The object has the following attributes (besides \code{"class"} equal
+  to \code{"dist"}):
+  \item{Size}{integer, the number of observations in the dataset.}
+  \item{Labels}{optionally, contains the labels, if any, of the
+    observations of the dataset.}
+  \item{Diag, Upper}{logicals corresponding to the arguments \code{diag}
+    and \code{upper} above, specifying how the object should be printed.}
+  \item{call}{optionally, the \code{\link{call}} used to create the
+    object.}
+  \item{method}{optionally, the distance method used; resulting from
+    \code{dist()}, the (\code{\link{match.arg}()}ed) \code{method}
+    argument.}
 }
 \description{
 This function computes and returns the distance matrix computed by using the
@@ -34,5 +60,5 @@ Cosine similarity to compute the distances between the rows of a data matrix.
 }
 \examples{
 set.seed(20250411)
-dist(rvmf(100, mu = Line(90, 0), k = 20))
+sph_dist(rvmf(100, mu = Line(90, 0), k = 20))
 }

@@ -554,7 +554,7 @@ fisher_ftest <- function(x, y, alpha = 0.05, na.rm = TRUE) {
 #' # sph_cluster(simongomez, k = 3)
 sph_cluster <- function(x, k, method = c("hclust", "kmeans", "diana", "agnes", "pam", "clara", "fanny"), ...) {
   method <- match.arg(method)
-  dmat <- if (is.Pair(x)) dist.Pair(x) else dist.Vec3(Vec3(x))
+  dmat <- sph_dist(x)
 
   switch(method,
     hclust = v_hcut(dmat, k = k, FUN = stats::hclust, ...),
@@ -607,34 +607,45 @@ rot_dist <- function(x, ...) .dist.helper(x, ...)
 #'
 #' @inheritParams geodesic_mean
 #' @param ... optional parameters passed to [stats::as.dist()]
-#' @returns distance matrix
+#' 
+#' @inherit stats::dist return
+#' 
 #' @name sph-dist
+#' 
+#' @importFrom stats as.dist
 #'
 #' @examples
 #' set.seed(20250411)
-#' dist(rvmf(100, mu = Line(90, 0), k = 20))
+#' sph_dist(rvmf(100, mu = Line(90, 0), k = 20))
 NULL
 
 #' @rdname sph-dist
-#' @exportS3Method stats::dist
-dist.Vec3 <- function(x, ...) v_dist(x, ...)
+#' @export
+sph_dist <- function(x, ...) UseMethod("sph_dist")
 
 #' @rdname sph-dist
-#' @exportS3Method stats::dist
-dist.Line <- function(x, ...) v_dist(x, ...)
+#' @export
+sph_dist.default <- function(x, ...) v_dist(x, ...)
 
 #' @rdname sph-dist
-#' @exportS3Method stats::dist
-dist.Ray <- function(x, ...) v_dist(x, ...)
+#' @export
+sph_dist.Vec3 <- function(x, ...) v_dist(x, ...)
 
 #' @rdname sph-dist
-#' @exportS3Method stats::dist
-dist.Plane <- function(x, ...) v_dist(x, ...)
+#' @export
+sph_dist.Line <- function(x, ...) v_dist(x, ...)
 
 #' @rdname sph-dist
-#' @exportS3Method stats::dist
-#' @importFrom stats as.dist
-dist.Pair <- function(x, ...) {
+#' @export
+sph_dist.Ray <- function(x, ...) v_dist(x, ...)
+
+#' @rdname sph-dist
+#' @export
+sph_dist.Plane <- function(x, ...) v_dist(x, ...)
+
+#' @rdname sph-dist
+#' @export
+sph_dist.Pair <- function(x, ...) {
   x <- pair2rot(x)
   n <- length(x)
 
@@ -651,7 +662,7 @@ dist.Pair <- function(x, ...) {
   d[idx] <- vals
   d[idx[, 2:1, drop = FALSE]] <- vals # mirror to lower triangle
 
-  stats::as.dist(d)
+  stats::as.dist(d, ...)
 }
 
 

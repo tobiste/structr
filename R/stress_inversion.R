@@ -962,7 +962,7 @@ rot_mean <- function(x) {
 #'   )
 #' }))
 slip_inversion_simple <- function(x, cluster_fun = stats::kmeans, n_grid = 1000L) {
-  td <- dist.Pair(x)
+  td <- sph_dist(x)
   tdcluster <- cluster_fun(td, 2)$cluster
 
   tsplit <- split.data.frame(unclass(x), tdcluster) |>

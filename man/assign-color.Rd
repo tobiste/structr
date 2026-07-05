@@ -9,7 +9,7 @@
 \alias{legend_col_d}
 \title{Helper functions to assign plotting colors to a vector}
 \usage{
-assign_col_d(x, pal = viridis::viridis, ...)
+assign_col_d(x, pal = viridis::viridis, na.values = "grey", ...)
 
 assign_col(x, n = length(x), pal = viridis::viridis, ...)
 
@@ -43,6 +43,8 @@ Can be ignored when \code{cols} is a named vector.}
 \item{position}{Legend position. Either a two-column vector of the x and y coordinates, or a
 keyword from the list \code{"bottomright"}, \code{"bottom"}, \code{"bottomleft"}, \code{"left"},
 \code{"topleft"}, \code{"top"}, \code{"topright"}, \code{"right"} and \code{"center"}.}
+
+\item{na.value}{The color for \code{NA} values in \code{x} (\code{grey} by default)}
 }
 \value{
 character vector of colors in hexadecimal code
