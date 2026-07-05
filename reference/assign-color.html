@@ -63,7 +63,13 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">assign_col_d</span><span class="op">(</span><span class="va">x</span>, pal <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="va"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">viridis</a></span>, <span class="va">...</span><span class="op">)</span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">assign_col_d</span><span class="op">(</span></span>
+<span>  <span class="va">x</span>,</span>
+<span>  pal <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="va"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">viridis</a></span>,</span>
+<span>  na.translate <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  na.values <span class="op">=</span> <span class="st">"grey"</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">assign_col</span><span class="op">(</span><span class="va">x</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span>, pal <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="va"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">viridis</a></span>, <span class="va">...</span><span class="op">)</span></span>
 <span></span>
@@ -84,6 +90,12 @@
 
 <dt id="arg-pal">pal<a class="anchor" aria-label="anchor" href="#arg-pal"></a></dt>
 <dd><p>color function; Default is <code><a href="https://sjmgarnier.github.io/viridis/reference/reexports.html" class="external-link">viridis::viridis()</a></code></p></dd>
+
+
+<dt id="arg-na-translate">na.translate<a class="anchor" aria-label="anchor" href="#arg-na-translate"></a></dt>
+<dd><p>Unlike continuous scales, discrete scales can easily show
+missing values, and do so by default. If you want to remove missing values
+from a discrete scale, specify <code>na.translate = FALSE</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
@@ -121,6 +133,11 @@ Can be ignored when <code>cols</code> is a named vector.</p></dd>
 keyword from the list <code>"bottomright"</code>, <code>"bottom"</code>, <code>"bottomleft"</code>, <code>"left"</code>,
 <code>"topleft"</code>, <code>"top"</code>, <code>"topright"</code>, <code>"right"</code> and <code>"center"</code>.</p></dd>
 
+
+<dt id="arg-na-value">na.value<a class="anchor" aria-label="anchor" href="#arg-na-value"></a></dt>
+<dd><p>If <code>na.translate = TRUE</code>, what color should the
+missing values be displayed as?</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
@@ -142,6 +159,7 @@ color-bar in base-R plots</p>
 <span class="r-in"><span><span class="co"># example for discrete colors</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">5</span>, mu <span class="op">=</span> <span class="fu"><a href="classes.html">Line</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">50</span><span class="op">)</span>, k <span class="op">=</span> <span class="fl">5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">key</span> <span class="op">&lt;-</span> <span class="va">letters</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/Uniform.html" class="external-link">runif</a></span><span class="op">(</span><span class="fl">5</span>, <span class="fl">1</span>, <span class="fl">26</span><span class="op">)</span><span class="op">)</span><span class="op">]</span></span></span>
+<span class="r-in"><span><span class="va">key</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, col <span class="op">=</span> <span class="fu">assign_col_d</span><span class="op">(</span><span class="va">key</span><span class="op">)</span>, grid.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span>guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">legend_col_d</span><span class="op">(</span><span class="fu">assign_col_d</span><span class="op">(</span><span class="va">key</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="assign-color-1.png" alt="" width="1094" height="676"></span>

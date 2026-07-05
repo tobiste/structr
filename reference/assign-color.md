@@ -5,7 +5,13 @@ Helper functions to assign plotting colors to a vector
 ## Usage
 
 ``` r
-assign_col_d(x, pal = viridis::viridis, ...)
+assign_col_d(
+  x,
+  pal = viridis::viridis,
+  na.translate = TRUE,
+  na.values = "grey",
+  ...
+)
 
 assign_col(x, n = length(x), pal = viridis::viridis, ...)
 
@@ -26,6 +32,12 @@ legend_col_d(fill, legend = names(fill), position = "topright", ...)
 
   color function; Default is
   [`viridis::viridis()`](https://sjmgarnier.github.io/viridis/reference/reexports.html)
+
+- na.translate:
+
+  Unlike continuous scales, discrete scales can easily show missing
+  values, and do so by default. If you want to remove missing values
+  from a discrete scale, specify `na.translate = FALSE`.
 
 - ...:
 
@@ -65,6 +77,11 @@ legend_col_d(fill, legend = names(fill), position = "topright", ...)
   `"bottomleft"`, `"left"`, `"topleft"`, `"top"`, `"topright"`,
   `"right"` and `"center"`.
 
+- na.value:
+
+  If `na.translate = TRUE`, what color should the missing values be
+  displayed as?
+
 ## Value
 
 character vector of colors in hexadecimal code
@@ -86,6 +103,7 @@ set.seed(20250411)
 # example for discrete colors
 x <- rvmf(5, mu = Line(120, 50), k = 5)
 key <- letters[round(runif(5, 1, 26))]
+key[2] <- NA
 plot(x, col = assign_col_d(key), grid.params = list(guides = FALSE))
 legend_col_d(assign_col_d(key))
 

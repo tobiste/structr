@@ -962,11 +962,7 @@ MIT License
 - [`sort_by(`*`<strabo>`*`)`](https://tobiste.github.io/structr/reference/sort_by.strabo.md)
   : Sorting StraboSpot Projects
 
-- [`dist(`*`<Vec3>`*`)`](https://tobiste.github.io/structr/reference/sph-dist.md)
-  [`dist(`*`<Line>`*`)`](https://tobiste.github.io/structr/reference/sph-dist.md)
-  [`dist(`*`<Ray>`*`)`](https://tobiste.github.io/structr/reference/sph-dist.md)
-  [`dist(`*`<Plane>`*`)`](https://tobiste.github.io/structr/reference/sph-dist.md)
-  [`dist(`*`<Pair>`*`)`](https://tobiste.github.io/structr/reference/sph-dist.md)
+- [`sph_dist()`](https://tobiste.github.io/structr/reference/sph-dist.md)
   : Angular Distance Matrix for Orientation Vectors
 
 - [`prcomp(`*`<Vec3>`*`)`](https://tobiste.github.io/structr/reference/sph-prcomp.md)
