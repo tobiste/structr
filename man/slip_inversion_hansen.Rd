@@ -38,7 +38,7 @@ parameter space only (\code{type = '6d'}).
 \subsection{Pole to the M-plane}{
 
 \deqn{\mathbf{b} = \mathbf{n} \times \mathbf{v}}
-where \eqn{\mathbf{n}} is the upward unit normal to the fault plane and \mathbf{v}
+where \eqn{\mathbf{n}} is the upward unit normal to the fault plane and \eqn{\mathbf{v}}
 is the unit slip vector.
 }
 
@@ -93,7 +93,7 @@ The shape ratio is:
 \end{pmatrix}
 \mathbf{V}^{\top}
 }
-where \eqn{\mathbf{V} = [\mathbf{s}_1\ \mathbf{s}_2\ \mathbf{s}_3]} has the
+where \eqn{\mathbf{V} = \left[\mathbf{s}_1\ \mathbf{s}_2\ \mathbf{s}_3\right]} has the
 eigenvectors as columns.
 }
 
