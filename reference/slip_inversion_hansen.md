@@ -49,8 +49,8 @@ list
 ### Pole to the M-plane
 
 \$\$\mathbf{b} = \mathbf{n} \times \mathbf{v}\$\$ where \\\mathbf{n}\\
-is the upward unit normal to the fault plane and v is the unit slip
-vector.
+is the upward unit normal to the fault plane and \\\mathbf{v}\\ is the
+unit slip vector.
 
 ### 9D f-poles
 
@@ -94,8 +94,8 @@ principal stress axes \\\mathbf{s}\_1\\, \\\mathbf{s}\_2\\,
 
 \$\$\mathbf{T}\_2 = \mathbf{V} \begin{pmatrix} 1 & 0 & 0 \\ 0 & \phi & 0
 \\ 0 & 0 & 0 \end{pmatrix} \mathbf{V}^{\top} \$\$ where \\\mathbf{V} =
-\[\mathbf{s}\_1\\ \mathbf{s}\_2\\ \mathbf{s}\_3\]\\ has the eigenvectors
-as columns.
+\left\[\mathbf{s}\_1\\ \mathbf{s}\_2\\ \mathbf{s}\_3\right\]\\ has the
+eigenvectors as columns.
 
 ### Normalise the antisymmetric part
 
