@@ -4,8 +4,7 @@
 #' 9D parameter space using the method by Hansen (2013). It can be applied
 #' regardless whether the dynamic or the kinematic hypothesis is adopted;
 #' it can handle datasets representing two to seven degrees of freedom; and it
-#' is not dependent on the correct assessment of slip sense. 
-#' 
+#' is not dependent on the correct assessment of slip sense.  
 #' If no vorticity is involved, the inversion can be done by using a 6-dimensional 
 #' parameter space only (`type = '6d'`).
 #'
@@ -20,6 +19,79 @@
 #' If `type == '9d`, additional outputs are
 #' the vorticity axis (`"vorticity_axis"`, a `Vec3` object) and the magnitude of
 #' vorticity (`"vorticity_mag"`, a numeric).
+#' 
+#' @details
+#' ## Pole to the M-plane
+#' \deqn{\mathbf{b} = \mathbf{n} \times \mathbf{v}}
+#' where \eqn{\mathbf{n}} is the upward unit normal to the fault plane and \mathbf{v}
+#'  is the unit slip vector.
+#' 
+#' ## 9D f-poles
+#' \deqn{\mathbf{f}_{nr} = \left[ b_1 n_1, b_1 n_2, b_1 n_3, b_2 n_1, b_2 n_2, b_2 n_3, b_3 n_1, b_3 n_2, b_3 n_3\right]}
+#' \deqn{\hat{\mathbf{f}} = \frac{\mathbf{f}_{nr}}{|\mathbf{f}_{nr}|}}
+#' 
+#' ## Second moment tensor
+#' \deqn{\hat{M} = \sum_{r = 1}^{N} \hat{\mathbf{f}}  \otimes \hat{\mathbf{f}} }
+#' 
+#' ## Inverted slip tensor
+#' The 9D stress vector \eqn{\hat{s}} is the eigenvector of \eqn{\hat{M}} 
+#' corresponding to the second-lowest eigenvalue, reshaped into the asymmetric 
+#' inverted slip tensor:
+#' 
+#' \deqn{\hat{\dot{T}} = \begin{pmatrix}
+#'    \hat{s}_1 & \hat{s}_2 & \hat{s}_3 \\
+#'    \hat{s}_4 & \hat{s}_5 & \hat{s}_6 \\
+#'    \hat{s}_7 & \hat{s}_8 & \hat{s}_9 \\
+#' \end{pmatrix}
+#'  }
+#' 
+#' ## Symmetric and antisymmetric decomposition
+#' \deqn{\hat{\dot{T}}_S = \frac{\hat{\dot{T}} + \hat{\dot{T}}^{\top}}{2} }
+#' 
+#' \deqn{\hat{\dot{T}}_A = \frac{\hat{\dot{T}} - \hat{\dot{T}}^{\top}}{2} }
+#' 
+#' ## Principal axes and shape ratio
+#' 
+#' Eigen-decompose \eqn{\hat{\dot{T}}_S}, sort eigenvalues descending \eqn{\lambda_1 \geq \lambda_2 \geq \lambda_3}. 
+#' The eigenvectors give the principal stress axes \eqn{\mathbf{s}_1}, \eqn{\mathbf{s}_2}, \eqn{\mathbf{s}_3}. 
+#' The shape ratio is:
+#' 
+#' \deqn{\phi = \frac{\lambda_2 - \lambda_3}{\lambda_1 - \lambda_3}}
+#' 
+#' ## Reduced symmetric tensor 
+#' 
+#' \deqn{\mathbf{T}_2 = \mathbf{V} 
+#' \begin{pmatrix}
+#'    1 & 0 & 0 \\
+#'    0 & \phi & 0 \\
+#'    0 & 0 & 0
+#' \end{pmatrix}
+#' \mathbf{V}^{\top}
+#' }
+#'  where \eqn{\mathbf{V} = [\mathbf{s}_1\ \mathbf{s}_2\ \mathbf{s}_3]} has the 
+#'  eigenvectors as columns.
+#'  
+#'  ## Normalise the antisymmetric part
+#'  
+#'  \deqn{\hat{T}_A = \hat{\dot{T}}_A \odot \frac{\mathbf{T}_S}{\hat{\dot{T}}_S} }
+#'  
+#'  where \eqn{\odot} denotes element-wise multiplication and division.
+#'  
+#'  ## Vorticity axis and magnitude 
+#'  
+#'  The axial vector \eqn{\hat{T}_A} is
+#'  \deqn{\overrightarrow{\omega} = \begin{pmatrix}
+#'    \hat{T}_{A,32} \\
+#'    \hat{T}_{A,13} \\
+#'    \hat{T}_{A,21}
+#'  \end{pmatrix}
+#'  }
+#'  
+#'  The unit vorticity axis in geographic coordinates:
+#'  \deqn{\mathbf{u}_{xyz} = \frac{\overrightarrow{\omega}}{| \overrightarrow{\omega} |}}
+#'  
+#'  The vorticity magnitude:
+#'  \deqn{|\omega| = 2 | \overrightarrow{\omega} |}
 #'
 #' @references
 #' Hansen, J. A. (2013). Direct inversion of stress, strain or strain rate
