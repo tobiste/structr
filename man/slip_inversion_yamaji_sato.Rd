@@ -35,12 +35,6 @@ The sense condition (positive work) selects the physically meaningful sign,
 but requires that the majority of slip vectors have correct sense. If more
 than half the slips are recorded in the wrong sense, the opposite tensor
 will be returned. Check alpha_signed_deg and suspected_flipped accordingly.
-
-@references
-Yamaji, A., & Sato, K. (2006). Distances for the solutions of stress tensor
-inversion in relation to misfit angles that accompany the solutions.
-Geophysical Journal International, 167(2), 933–942.
-https://doi.org/10.1111/j.1365-246X.2006.03188.x
 }
 \examples{
 nx <- length(angelier1990)
@@ -70,7 +64,15 @@ invisible(lapply(seq_len(nx), function(i) {
   title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "\%"))
 }))
 }
+\references{
+Yamaji, A., & Sato, K. (2006). Distances for the solutions of stress tensor
+inversion in relation to misfit angles that accompany the solutions.
+Geophysical Journal International, 167(2), 933–942.
+https://doi.org/10.1111/j.1365-246X.2006.03188.x
+}
 \seealso{
+\code{\link[=slip_inversion_yamaji_sato_boot]{slip_inversion_yamaji_sato_boot()}}
+
 Other stress-inversion: 
 \code{\link{Fault_PT}()},
 \code{\link{slip_inversion}()},

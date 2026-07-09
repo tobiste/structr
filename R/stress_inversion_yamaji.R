@@ -153,30 +153,22 @@ yamaji_sato <- function(normals, slips, wt) {
 #' @param x object of class `"Pair"` or `"Fault"` with at least 4 rows.
 #' @inheritParams slip_inversion_angelier
 #'
-#' @note Note on opposite-tensor ambiguity
-#'
-#' The Wallace-Bott condition eps'_i . y = 0 is satisfied by both y and -y,
-#'  corresponding to stress tensors.
-#'  The sense condition (positive work) selects the physically meaningful sign,
-#'  but requires that the majority of slip vectors have correct sense. If more
-#'  than half the slips are recorded in the wrong sense, the opposite tensor
-#'  will be returned. Check alpha_signed_deg and suspected_flipped accordingly.
-#'
-#'  @references
-#'  Yamaji, A., & Sato, K. (2006). Distances for the solutions of stress tensor
+#' @references
+#' Yamaji, A., & Sato, K. (2006). Distances for the solutions of stress tensor
 #' inversion in relation to misfit angles that accompany the solutions.
 #' Geophysical Journal International, 167(2), 933–942.
 #' https://doi.org/10.1111/j.1365-246X.2006.03188.x
 #'
 #' @returns Same output as [slip_inversion()] plus
 #' \describe{
-#' \item{y}{6D unit y-vector on S^5 representing the tensor}
-#' \item{alpha}{per-fault angular misfit (unsigned, 0-90&deg;)}
-#' \item{mean_alpha}{mean angular misfit across all faults}
+#' \item{`y`}{6D unit y-vector on S^5 representing the tensor}
+#' \item{`alpha`}{per-fault angular misfit (unsigned, 0-90&deg;)}
+#' \item{`mean_alpha`}{mean angular misfit across all faults}
 #' }
 #' @export
 #'
 #' @family stress-inversion
+#' @seealso [slip_inversion_yamaji_sato_boot()]
 #'
 #' @examples
 #' nx <- length(angelier1990)
@@ -336,20 +328,20 @@ michael_distance <- function(y1, y2) {
 #'
 #' Bootstrap resampling to evaluate solution precision (Section 6).
 #' Yields B stress tensors from resampled datasets. The dispersion of these
-#' tensors on S^5 approximates the noise level of the data (Eq. 37).
+#' tensors on \eqn{S^5} approximates the noise level of the data (Eq. 37).
 #'
 #' @inheritParams slip_inversion_yamaji_sato
 #' @param n_boot integer. Number of bootstrap replicates
 #'
 #' @returns list:
 #' \describe{
-#' \item{optimal}{[slip_inversion_yamaji_sato()] result for the full dataset}
-#' \item{thetas}{length-B vector of angular stress distances from optimal}
-#' \item{dispersion_deg}{ mean angular stress distance (Theta-bar); approximates
+#' \item{`optimal`}{[slip_inversion_yamaji_sato()] result for the full dataset}
+#' \item{`thetas`}{length-B vector of angular stress distances from optimal}
+#' \item{`dispersion_deg`}{ mean angular stress distance (Theta-bar); approximates
 #' the noise level p of the data (Fig. 8 of paper)}
-#' \item{sd_deg}{standard deviation of Theta values}
-#' \item{D_bar}{mean Orife-Lisle distance from optimal}
-#' \item{DM_bar}{mean Michael distance from optimal}
+#' \item{`sd_deg`}{standard deviation of Theta values}
+#' \item{`D_bar`}{mean Orife-Lisle distance from optimal}
+#' \item{`DM_bar`}{mean Michael distance from optimal}
 #' }
 #' @export
 #'
