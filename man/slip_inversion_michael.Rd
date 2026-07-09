@@ -15,8 +15,8 @@ slip_inversion_michael(
 }
 \arguments{
 \item{x}{\code{"Fault"} object where the rows are the observations, and the
-columns the coordinates. Object must be cmpolete, i.e. no \code{NA} values.
-For Michael's and Angelier's methods, at least 4 rows
+columns the coordinates. Object must be complete, i.e. no \code{NA} values.
+For Michael's, Angelier's, and Yamaji-Sato's methods, at least 4 rows
 of fault measurements are required, while Hansen's method requires at least 7.}
 
 \item{n_iter}{integer. Number of bootstrap samples (10 by default)}
@@ -106,6 +106,7 @@ Other stress-inversion:
 \code{\link{slip_inversion_angelier}()},
 \code{\link{slip_inversion_hansen}()},
 \code{\link{slip_inversion_hansen_boot}()},
-\code{\link{slip_inversion_simple}()}
+\code{\link{slip_inversion_simple}()},
+\code{\link{slip_inversion_yamaji_sato}()}
 }
 \concept{stress-inversion}

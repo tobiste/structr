@@ -34,7 +34,7 @@ knitr::opts_chunk$set(
 
 - Deform orientation data using deformation and velocity gradient tensors: `defgrad()` and `velgrad()`
 
--   **Stress analysis**: reconstruction of stress orientation and magnitudes from fault-slip data (direct stress inversion based on **Michael (1984)**, **Angelier (1990)**, or **Hansen (2013)**: `slip_inversion()`), extracting the **maximum horizontal stress** of a 3D stress tensor (`SH()`), and visualization of magnitudes of stress in the **Mohr circle** (`Mohr_plot()`),
+-   **Stress analysis**: reconstruction of stress orientation and magnitudes from fault-slip data (direct stress inversion based on **Michael (1984)**, **Angelier (1990)**, **Yamaji & Sato (2006)**, or **Hansen (2013)**: `slip_inversion()`), extracting the **maximum horizontal stress** of a 3D stress tensor (`SH()`), and visualization of magnitudes of stress in the **Mohr circle** (`Mohr_plot()`),
 
 -   Calculation fault displacement components,
 
@@ -225,7 +225,9 @@ legend(0, -1.1,
 
 ### Fault Plots
 
-Graphical representation of fault-slip data using Angelier plot (slip vector on fault plane great circle) and Hoeppener plot (fault slip vector projected on pole to fault plane):
+Graphical representation of fault-slip data using Angelier plot (slip vector on 
+fault plane great circle) and Hoeppener plot (fault slip vector projected on 
+pole to fault plane):
 
 ```{r stereo_faults, warning=FALSE,message=FALSE}
 data("angelier1990")
@@ -241,15 +243,20 @@ hoeppener(faults, points = FALSE, col = "grey20")
 
 ### Fault-Slip Inversion
 
-Compute reduced stress tensor using direct fault-slip inversion (Michael, 1984) and 
-calculate 95% confidence intervals using bootstrap samples:
+> structr can calculate the reduced deviatoric stress tensor from fault-slip data 
+using the direct inversion methods after Michael (1984), Angelier (1990), 
+Yamajo & Sato (2006), and Hansen (2013). This allows to extract the orientation and 
+relative magnitudes of the principal stress axes.
+
+Here, we compute the reduced stress tensor using direct fault-slip inversion after 
+Michael (1984) and calculate 95% confidence intervals using bootstrap replicates:
 
 ```{r stereo_inversion1, warning=FALSE,message=FALSE}
 set.seed(20250411)
 faults_stress <- slip_inversion(faults, n_iter = 10, method = 'michael')
 ```
 
-Visualize the slip inversion results (orientation of principal stresses):
+Now we can visualize the slip inversion results, that are the orientation of principal stresses:
 
 ```{r stereo_inversion_plot, warning=FALSE,message=FALSE}
 cols <- c("#000004FF", "#B63679FF", "#FEC287FF")
@@ -271,7 +278,8 @@ text(faults_stress$principal_axes,
 )
 ```
 
-Visualize the accuracy of the slip inversion by showing the deviation angle (&alpha;) between the theoretical slip and the actual slip vector:
+You can visualize the accuracy of the slip inversion by showing the deviation 
+angle (&alpha;) between the theoretical slip and the actual slip vector:
 
 ```{r stereo_inversion_deviation, warning=FALSE,message=FALSE}
 alpha <- faults_stress$misfit$alpha
@@ -290,7 +298,7 @@ legend_col(
 )
 ```
 
-Azimuth of the maximum horizontal stress (in degrees) for the slip inversion result:
+The azimuth of the maximum horizontal stress (in degrees) for the slip inversion result is:
 
 ```{r stereo_inversion_SH, warning=FALSE,message=FALSE}
 SH(
@@ -307,7 +315,7 @@ SH(
 
 ### Mohr Circle
 
-The Mohr circle for the slip inversion result:
+The Mohr circle for the slip inversion result can be visualized:
 
 ```{r stereo_inversion_mohr, warning=FALSE,message=FALSE}
 Mohr_plot(

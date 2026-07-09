@@ -30,10 +30,10 @@ for structural geology. The toolset includes
 
 - **Stress analysis**: reconstruction of stress orientation and
   magnitudes from fault-slip data (direct stress inversion based on
-  **Michael (1984)**, **Angelier (1990)**, or **Hansen (2013)**:
-  `slip_inversion()`), extracting the **maximum horizontal stress** of a
-  3D stress tensor (`SH()`), and visualization of magnitudes of stress
-  in the **Mohr circle** (`Mohr_plot()`),
+  **Michael (1984)**, **Angelier (1990)**, **Yamaji & Sato (2006)**, or
+  **Hansen (2013)**: `slip_inversion()`), extracting the **maximum
+  horizontal stress** of a 3D stress tensor (`SH()`), and visualization
+  of magnitudes of stress in the **Mohr circle** (`Mohr_plot()`),
 
 - Calculation fault displacement components,
 
@@ -267,17 +267,23 @@ hoeppener(faults, points = FALSE, col = "grey20")
 
 ### Fault-Slip Inversion
 
-Compute reduced stress tensor using direct fault-slip inversion
-(Michael, 1984) and calculate 95% confidence intervals using bootstrap
-samples:
+> structr can calculate the reduced deviatoric stress tensor from
+> fault-slip data using the direct inversion methods after Michael
+> (1984), Angelier (1990), Yamajo & Sato (2006), and Hansen (2013). This
+> allows to extract the orientation and relative magnitudes of the
+> principal stress axes.
+
+Here, we compute the reduced stress tensor using direct fault-slip
+inversion after Michael (1984) and calculate 95% confidence intervals
+using bootstrap replicates:
 
 ``` r
 set.seed(20250411)
 faults_stress <- slip_inversion(faults, n_iter = 10, method = 'michael')
 ```
 
-Visualize the slip inversion results (orientation of principal
-stresses):
+Now we can visualize the slip inversion results, that are the
+orientation of principal stresses:
 
 ``` r
 cols <- c("#000004FF", "#B63679FF", "#FEC287FF")
@@ -301,8 +307,9 @@ text(faults_stress$principal_axes,
 
 <img src="man/figures/README-stereo_inversion_plot-1.png" width="100%" />
 
-Visualize the accuracy of the slip inversion by showing the deviation
-angle (α) between the theoretical slip and the actual slip vector:
+You can visualize the accuracy of the slip inversion by showing the
+deviation angle (α) between the theoretical slip and the actual slip
+vector:
 
 ``` r
 alpha <- faults_stress$misfit$alpha
@@ -323,8 +330,8 @@ legend_col(
 
 <img src="man/figures/README-stereo_inversion_deviation-1.png" width="100%" />
 
-Azimuth of the maximum horizontal stress (in degrees) for the slip
-inversion result:
+The azimuth of the maximum horizontal stress (in degrees) for the slip
+inversion result is:
 
 ``` r
 SH(
@@ -342,7 +349,7 @@ SH(
 
 ### Mohr Circle
 
-The Mohr circle for the slip inversion result:
+The Mohr circle for the slip inversion result can be visualized:
 
 ``` r
 Mohr_plot(

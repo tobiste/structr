@@ -1,16 +1,17 @@
 #' @title Stress Inversion for Fault-Slip Data
 #'
-#' @description Convenience function for linear and direction inversion of fault-slip data to
+#' @description Convenience function for direction inversion of fault-slip data to
 #' derive the reduced stress tensor.
 #'
 #' @param x `"Fault"` object where the rows are the observations, and the
-#'  columns the coordinates. Object must be cmpolete, i.e. no `NA` values.
-#'  For Michael's and Angelier's methods, at least 4 rows
+#'  columns the coordinates. Object must be complete, i.e. no `NA` values.
+#'  For Michael's, Angelier's, and Yamaji-Sato's methods, at least 4 rows
 #'  of fault measurements are required, while Hansen's method requires at least 7.
 #' @param method character. The inversion algorithm, one of `"michael"` (the default)
 #' for a bootstrapped linear inversion after Micheal (1984), `"angelier"`
-#' for an iterative direct inversion after Angelier (1990) and Mostafa (2005), and
-#' `"hansen"` for direct inversion using the 9d parameter space after Hansen (2013).
+#' for an iterative direct inversion after Angelier (1990) and Mostafa (2005), 
+#' `"yamaji"` for direct inversion using the 5d parameter space after Yamaji and Sato (2006),
+#' and `"hansen"` for direct inversion using the 9d parameter space after Hansen (2013).
 #' @param ... arguments passed to [slip_inversion_angelier()],  [slip_inversion_michael()], or
 #'  [slip_inversion_hansen()] depending on `method`.
 #'
@@ -44,6 +45,11 @@
 #' Michael, A. J. (1984). Determination of stress from slip data: Faults and
 #' folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526.
 #' <https://doi.org/10.1029/JB089iB13p11517>
+#' 
+#' Yamaji, A., & Sato, K. (2006). Distances for the solutions of stress tensor 
+#' inversion in relation to misfit angles that accompany the solutions. 
+#' Geophysical Journal International, 167(2), 933–942. 
+#' https://doi.org/10.1111/j.1365-246X.2006.03188.x
 #'
 #' @export
 #'
@@ -57,6 +63,8 @@
 #'
 #'   # Inversion after Angelier (1990)
 #'   res_angelier <- slip_inversion(x, method = "angelier")
+#'   
+#'   res_yamaji <- slip_inversion(x, method = "yamaji")
 #'
 #'   res_hansen <- slip_inversion(x, method = "hansen", type = "6d")
 #'
@@ -64,24 +72,27 @@
 #'   fault_plot(x, col = "gray80")
 #'   points(res_michael$principal_axes, pch = 1:3, col = 2)
 #'   points(res_angelier$principal_axes, pch = 1:3, col = 3)
-#'   points(res_hansen$principal_axes, pch = 1:3, col = 4)
+#'   points(res_yamaji$principal_axes, pch = 1:3, col = 4)
+#'   points(res_hansen$principal_axes, pch = 1:3, col = 5)
 #'   legend("topleft",
 #'     pch = 1,
-#'     legend = c("Michael (1984)", "Angelier (1990)", "Hansen (2013)"),
-#'     col = 2:4
+#'     legend = c("Michael (1984)", "Angelier (1990)", "Yamaji & Sato (2006)", "Hansen (2013)"),
+#'     col = 2:5
 #'   )
 #'   legend("bottomright",
 #'     pch = 1:3,
 #'     legend = c("S1", "S2", "S3")
 #'   )
 #' }))
-slip_inversion <- function(x, method = c("michael", "angelier", "hansen"), ...) {
+slip_inversion <- function(x, method = c("michael", "angelier", "hansen", "yamaji"), ...) {
   method <- match.arg(method)
 
   if (method == "angelier") {
     slip_inversion_angelier(x, ...)
   } else if (method == "michael") {
     slip_inversion_michael(x, ...)
+  } else if(method == "yamaji") {
+    slip_inversion_yamaji_sato(x, ...)
   } else {
     slip_inversion_hansen(x, ...)
   }

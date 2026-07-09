@@ -70,6 +70,7 @@ Other stress-inversion:
 \code{\link{slip_inversion_angelier}()},
 \code{\link{slip_inversion_hansen}()},
 \code{\link{slip_inversion_michael}()},
-\code{\link{slip_inversion_simple}()}
+\code{\link{slip_inversion_simple}()},
+\code{\link{slip_inversion_yamaji_sato}()}
 }
 \concept{stress-inversion}

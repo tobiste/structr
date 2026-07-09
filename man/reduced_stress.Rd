@@ -11,8 +11,9 @@ reduced_stress(fault, method = c("michael", "angelier"))
 
 \item{method}{character. The inversion algorithm, one of \code{"michael"} (the default)
 for a bootstrapped linear inversion after Micheal (1984), \code{"angelier"}
-for an iterative direct inversion after Angelier (1990) and Mostafa (2005), and
-\code{"hansen"} for direct inversion using the 9d parameter space after Hansen (2013).}
+for an iterative direct inversion after Angelier (1990) and Mostafa (2005),
+\code{"yamaji"} for direct inversion using the 5d parameter space after Yamaji and Sato (2006),
+and \code{"hansen"} for direct inversion using the 9d parameter space after Hansen (2013).}
 }
 \value{
 \code{"ellipsoid"} object. 3x3 matrix (i.e. 2nd rank tensor).
