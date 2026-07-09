@@ -233,10 +233,13 @@ orientation of the principal stresses from fault slip data.
   iterative optimization after Mostafa (2005)[^4] to find the best fit
   reduced stress tensor.
 
-- *Hansen (2013)*: Direct inversion using a 9-dimensional parameter
-  space, useful when vorticity affects the fault-slip data[^5].
+- *Yamaji & Sato (2006)*: Direct inversion method using the
+  5-dimensional parameter space[^5].
 
-First we load some example data (here the data from Angelier, 1990)[^6]
+- *Hansen (2013)*: Direct inversion using a 9-dimensional parameter
+  space, useful when vorticity affects the fault-slip data[^6].
+
+First we load some example data (here the data from Angelier, 1990)[^7]
 
 ``` r
 
@@ -309,7 +312,7 @@ legend("topleft",
 ![Diagram showing principal stress vector results in a
 stereoplot](Faults_files/figure-html/slip_inversion_plot-1.png)
 
-The stress shape ratio Φ (Angelier 1979)[^7]
+The stress shape ratio Φ (Angelier 1979)[^8]
 
 ``` r
 
@@ -372,7 +375,7 @@ result](Faults_files/figure-html/slip_inversion_mohr-1.png)
 The orientation of the maximum horizontal stress
 ($`\sigma_\text{Hmax}`$) can be calculated from the stress tensor the
 the orientation of the principal stress ($`\sigma_1`$, $`\sigma_2`$,
-$`\sigma_3`$) axes their their relative magnitudes($`R`$) [^8].
+$`\sigma_3`$) axes their their relative magnitudes($`R`$) [^9].
 
 First, we define the orientation of the principle stress axes:
 
@@ -657,6 +660,11 @@ complementary solution for inverting fault-slip data to obtain
 palaeostresses. Computers & Geosciences, 31(8), 1059–1070.
 <https://doi.org/10.1016/j.cageo.2005.02.012>
 
+Yamaji, A., & Sato, K. (2006). Distances for the solutions of stress
+tensor inversion in relation to misfit angles that accompany the
+solutions. Geophysical Journal International, 167(2), 933–942.
+<https://doi.org/10.1111/j.1365-246X.2006.03188.x>
+
 [^1]: Angelier, J. (1990). Inversion of field data in fault tectonics to
     obtain the regional stress—III. A new rapid direct inversion method
     by analytical means. Geophys. J. Int, 103, 363–376.
@@ -676,22 +684,27 @@ palaeostresses. Computers & Geosciences, 31(8), 1059–1070.
     palaeostresses. Computers & Geosciences, 31(8), 1059–1070.
     <https://doi.org/10.1016/j.cageo.2005.02.012>
 
-[^5]: Hansen, J. A. (2013). Direct inversion of stress, strain or strain
+[^5]: Yamaji, A., & Sato, K. (2006). Distances for the solutions of
+    stress tensor inversion in relation to misfit angles that accompany
+    the solutions. Geophysical Journal International, 167(2), 933–942.
+    <https://doi.org/10.1111/j.1365-246X.2006.03188.x>
+
+[^6]: Hansen, J. A. (2013). Direct inversion of stress, strain or strain
     rate including vorticity: A linear method of homogenous fault-slip
     data inversion independent of adopted hypothesis. Journal of
     Structural Geology, 51, 3–13.
     <https://doi.org/10.1016/j.jsg.2013.03.014>
 
-[^6]: Angelier, J. (1990). Inversion of field data in fault tectonics to
+[^7]: Angelier, J. (1990). Inversion of field data in fault tectonics to
     obtain the regional stress—III. A new rapid direct inversion method
     by analytical means. Geophys. J. Int, 103, 363–376.
     <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
 
-[^7]: Angelier, J. (1979). Determination of the mean principal
+[^8]: Angelier, J. (1979). Determination of the mean principal
     directions of stresses for a given fault population. Tectonophysics,
     56(3–4), T17–T26. <https://doi.org/10.1016/0040-1951(79)90081-7>
 
-[^8]: Lund & Townend (2007): Calculating horizontal stress orientations
+[^9]: Lund & Townend (2007): Calculating horizontal stress orientations
     with full or partial knowledge of the tectonic stress tensor.
     *Geophys. J. Int.*, 170, 1328—1335. doi:
     10.1111/j.1365-246X.2007.03468.x

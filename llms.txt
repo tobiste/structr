@@ -29,7 +29,8 @@ includes
 
 - **Stress analysis**: reconstruction of stress orientation and
   magnitudes from fault-slip data (direct stress inversion based on
-  **Michael (1984)**, **Angelier (1990)**, or **Hansen (2013)**:
+  **Michael (1984)**, **Angelier (1990)**, **Yamaji & Sato (2006)**, or
+  **Hansen (2013)**:
   [`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md)),
   extracting the **maximum horizontal stress** of a 3D stress tensor
   ([`SH()`](https://tobiste.github.io/structr/reference/SH.md)), and
@@ -279,9 +280,15 @@ hoeppener(faults, points = FALSE, col = "grey20")
 
 ### Fault-Slip Inversion
 
-Compute reduced stress tensor using direct fault-slip inversion
-(Michael, 1984) and calculate 95% confidence intervals using bootstrap
-samples:
+> structr can calculate the reduced deviatoric stress tensor from
+> fault-slip data using the direct inversion methods after Michael
+> (1984), Angelier (1990), Yamajo & Sato (2006), and Hansen (2013). This
+> allows to extract the orientation and relative magnitudes of the
+> principal stress axes.
+
+Here, we compute the reduced stress tensor using direct fault-slip
+inversion after Michael (1984) and calculate 95% confidence intervals
+using bootstrap replicates:
 
 ``` r
 
@@ -289,8 +296,8 @@ set.seed(20250411)
 faults_stress <- slip_inversion(faults, n_iter = 10, method = 'michael')
 ```
 
-Visualize the slip inversion results (orientation of principal
-stresses):
+Now we can visualize the slip inversion results, that are the
+orientation of principal stresses:
 
 ``` r
 
@@ -315,8 +322,9 @@ text(faults_stress$principal_axes,
 
 ![](reference/figures/README-stereo_inversion_plot-1.png)
 
-Visualize the accuracy of the slip inversion by showing the deviation
-angle (α) between the theoretical slip and the actual slip vector:
+You can visualize the accuracy of the slip inversion by showing the
+deviation angle (α) between the theoretical slip and the actual slip
+vector:
 
 ``` r
 
@@ -338,8 +346,8 @@ legend_col(
 
 ![](reference/figures/README-stereo_inversion_deviation-1.png)
 
-Azimuth of the maximum horizontal stress (in degrees) for the slip
-inversion result:
+The azimuth of the maximum horizontal stress (in degrees) for the slip
+inversion result is:
 
 ``` r
 
@@ -358,7 +366,7 @@ SH(
 
 ### Mohr Circle
 
-The Mohr circle for the slip inversion result:
+The Mohr circle for the slip inversion result can be visualized:
 
 ``` r
 
@@ -961,6 +969,14 @@ MIT License
 
 - [`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md)
   : Simple Statistical Fault-Slip Inversion
+
+- [`slip_inversion_yamaji_sato()`](https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato.md)
+  : Stress tensor inversion via the Yamaji and Sato (2006) eigenvector
+  method.
+
+- [`slip_inversion_yamaji_sato_boot()`](https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato_boot.md)
+  : Uncertainties of direction stress inversion after Yamaji and Sato
+  (2006)
 
 - [`sort_by(`*`<strabo>`*`)`](https://tobiste.github.io/structr/reference/sort_by.strabo.md)
   : Sorting StraboSpot Projects

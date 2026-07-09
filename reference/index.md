@@ -450,6 +450,14 @@
 - [`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md)
   : Simple Statistical Fault-Slip Inversion
 
+- [`slip_inversion_yamaji_sato()`](https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato.md)
+  : Stress tensor inversion via the Yamaji and Sato (2006) eigenvector
+  method.
+
+- [`slip_inversion_yamaji_sato_boot()`](https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato_boot.md)
+  : Uncertainties of direction stress inversion after Yamaji and Sato
+  (2006)
+
 - [`sort_by(`*`<strabo>`*`)`](https://tobiste.github.io/structr/reference/sort_by.strabo.md)
   : Sorting StraboSpot Projects
 

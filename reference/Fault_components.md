@@ -24,9 +24,10 @@ Fault_sense(x, steps = 8)
 - x:
 
   `"Fault"` object where the rows are the observations, and the columns
-  the coordinates. Object must be cmpolete, i.e. no `NA` values. For
-  Michael's and Angelier's methods, at least 4 rows of fault
-  measurements are required, while Hansen's method requires at least 7.
+  the coordinates. Object must be complete, i.e. no `NA` values. For
+  Michael's, Angelier's, and Yamaji-Sato's methods, at least 4 rows of
+  fault measurements are required, while Hansen's method requires at
+  least 7.
 
 - steps:
 

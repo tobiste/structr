@@ -16,9 +16,10 @@ Fault_PT(x, ptangle = 90)
 - x:
 
   `"Fault"` object where the rows are the observations, and the columns
-  the coordinates. Object must be cmpolete, i.e. no `NA` values. For
-  Michael's and Angelier's methods, at least 4 rows of fault
-  measurements are required, while Hansen's method requires at least 7.
+  the coordinates. Object must be complete, i.e. no `NA` values. For
+  Michael's, Angelier's, and Yamaji-Sato's methods, at least 4 rows of
+  fault measurements are required, while Hansen's method requires at
+  least 7.
 
 - ptangle:
 
@@ -37,7 +38,8 @@ Other stress-inversion:
 [`slip_inversion_hansen()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen.md),
 [`slip_inversion_hansen_boot()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen_boot.md),
 [`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md),
-[`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md)
+[`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md),
+[`slip_inversion_yamaji_sato()`](https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato.md)
 
 ## Examples
 

@@ -1,12 +1,12 @@
 # Stress Inversion for Fault-Slip Data
 
-Convenience function for linear and direction inversion of fault-slip
-data to derive the reduced stress tensor.
+Convenience function for direction inversion of fault-slip data to
+derive the reduced stress tensor.
 
 ## Usage
 
 ``` r
-slip_inversion(x, method = c("michael", "angelier", "hansen"), ...)
+slip_inversion(x, method = c("michael", "angelier", "hansen", "yamaji"), ...)
 ```
 
 ## Arguments
@@ -14,17 +14,19 @@ slip_inversion(x, method = c("michael", "angelier", "hansen"), ...)
 - x:
 
   `"Fault"` object where the rows are the observations, and the columns
-  the coordinates. Object must be cmpolete, i.e. no `NA` values. For
-  Michael's and Angelier's methods, at least 4 rows of fault
-  measurements are required, while Hansen's method requires at least 7.
+  the coordinates. Object must be complete, i.e. no `NA` values. For
+  Michael's, Angelier's, and Yamaji-Sato's methods, at least 4 rows of
+  fault measurements are required, while Hansen's method requires at
+  least 7.
 
 - method:
 
   character. The inversion algorithm, one of `"michael"` (the default)
   for a bootstrapped linear inversion after Micheal (1984), `"angelier"`
   for an iterative direct inversion after Angelier (1990) and Mostafa
-  (2005), and `"hansen"` for direct inversion using the 9d parameter
-  space after Hansen (2013).
+  (2005), `"yamaji"` for direct inversion using the 5d parameter space
+  after Yamaji and Sato (2006), and `"hansen"` for direct inversion
+  using the 9d parameter space after Hansen (2013).
 
 - ...:
 
@@ -109,6 +111,11 @@ Michael, A. J. (1984). Determination of stress from slip data: Faults
 and folds. Journal of Geophysical Research: Solid Earth, 89(B13),
 11517–11526. <https://doi.org/10.1029/JB089iB13p11517>
 
+Yamaji, A., & Sato, K. (2006). Distances for the solutions of stress
+tensor inversion in relation to misfit angles that accompany the
+solutions. Geophysical Journal International, 167(2), 933–942.
+https://doi.org/10.1111/j.1365-246X.2006.03188.x
+
 ## See also
 
 Other stress-inversion:
@@ -117,7 +124,8 @@ Other stress-inversion:
 [`slip_inversion_hansen()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen.md),
 [`slip_inversion_hansen_boot()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen_boot.md),
 [`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md),
-[`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md)
+[`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md),
+[`slip_inversion_yamaji_sato()`](https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato.md)
 
 ## Examples
 
@@ -131,6 +139,8 @@ invisible(lapply(angelier1990, function(x) {
 
   # Inversion after Angelier (1990)
   res_angelier <- slip_inversion(x, method = "angelier")
+  
+  res_yamaji <- slip_inversion(x, method = "yamaji")
 
   res_hansen <- slip_inversion(x, method = "hansen", type = "6d")
 
@@ -138,11 +148,12 @@ invisible(lapply(angelier1990, function(x) {
   fault_plot(x, col = "gray80")
   points(res_michael$principal_axes, pch = 1:3, col = 2)
   points(res_angelier$principal_axes, pch = 1:3, col = 3)
-  points(res_hansen$principal_axes, pch = 1:3, col = 4)
+  points(res_yamaji$principal_axes, pch = 1:3, col = 4)
+  points(res_hansen$principal_axes, pch = 1:3, col = 5)
   legend("topleft",
     pch = 1,
-    legend = c("Michael (1984)", "Angelier (1990)", "Hansen (2013)"),
-    col = 2:4
+    legend = c("Michael (1984)", "Angelier (1990)", "Yamaji & Sato (2006)", "Hansen (2013)"),
+    col = 2:5
   )
   legend("bottomright",
     pch = 1:3,
