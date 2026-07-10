@@ -18,23 +18,13 @@ slip_inversion_yamaji_sato(x, weights = NULL, flip = FALSE, friction = 0.6)
 \value{
 Same output as \code{\link[=slip_inversion]{slip_inversion()}} plus
 \describe{
-\item{y}{6D unit y-vector on S^5 representing the tensor}
-\item{alpha}{per-fault angular misfit (unsigned, 0-90°)}
-\item{mean_alpha}{mean angular misfit across all faults}
+\item{\code{y}}{6D unit y-vector on S^5 representing the tensor}
+\item{\code{alpha}}{per-fault angular misfit (unsigned, 0-90°)}
+\item{\code{mean_alpha}}{mean angular misfit across all faults}
 }
 }
 \description{
 Stress tensor inversion via the Yamaji and Sato (2006) eigenvector method.
-}
-\note{
-Note on opposite-tensor ambiguity
-
-The Wallace-Bott condition eps'_i . y = 0 is satisfied by both y and -y,
-corresponding to stress tensors.
-The sense condition (positive work) selects the physically meaningful sign,
-but requires that the majority of slip vectors have correct sense. If more
-than half the slips are recorded in the wrong sense, the opposite tensor
-will be returned. Check alpha_signed_deg and suspected_flipped accordingly.
 }
 \examples{
 nx <- length(angelier1990)

@@ -109,7 +109,7 @@ slip_inversion <- function(x, method = c("michael", "angelier", "hansen", "yamaj
 #' tangential traction on the various fault planes, at the time of rupture, is similar.
 #'
 #' @inheritParams slip_inversion
-#' @param n_iter integer. Number of bootstrap samples (10 by default)
+#' @param n_iter integer. Number of bootstrap replicates (100 by default)
 #' @param conf.level numeric. Confidence level of the interval (0.95 by default)
 #' @param friction numeric. Coefficient of friction (0.6 by default)
 #' @param flip logical. Flip if you want to have the negative stress tensor, i.e. sigma 1 and 3 will be flipped.

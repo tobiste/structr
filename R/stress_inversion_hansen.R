@@ -389,7 +389,7 @@ slip_inversion_hansen_boot <- function(
   friction = 0.6,
   flip = FALSE,
   type = c("9d", "6d"),
-  n_iter = 100,
+  n_iter = 100L,
   conf.level = 0.95,
   ...
 ) {

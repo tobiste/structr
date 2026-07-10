@@ -19,7 +19,7 @@ columns the coordinates. Object must be complete, i.e. no \code{NA} values.
 For Michael's, Angelier's, and Yamaji-Sato's methods, at least 4 rows
 of fault measurements are required, while Hansen's method requires at least 7.}
 
-\item{n_iter}{integer. Number of bootstrap samples (10 by default)}
+\item{n_iter}{integer. Number of bootstrap replicates (100 by default)}
 
 \item{conf.level}{numeric. Confidence level of the interval (0.95 by default)}
 

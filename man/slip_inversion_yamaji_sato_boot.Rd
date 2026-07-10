@@ -4,34 +4,81 @@
 \alias{slip_inversion_yamaji_sato_boot}
 \title{Uncertainties of direction stress inversion after Yamaji and Sato (2006)}
 \usage{
-slip_inversion_yamaji_sato_boot(x, weights = NULL, n_boot = 500L)
+slip_inversion_yamaji_sato_boot(
+  x,
+  weights = NULL,
+  n_iter = 100L,
+  conf.level = 0.95,
+  friction = 0.6,
+  flip = FALSE,
+  ...
+)
 }
 \arguments{
 \item{x}{object of class \code{"Pair"} or \code{"Fault"} with at least 4 rows.}
 
 \item{weights}{numeric. Weightings for the faults. Must have the same length as \code{x}}
 
-\item{n_boot}{integer. Number of bootstrap replicates}
+\item{n_iter}{integer. Number of bootstrap replicates (100 by default)}
+
+\item{conf.level}{numeric. Confidence level of the interval (0.95 by default)}
+
+\item{friction}{numeric. Coefficient of friction (0.6 by default)}
+
+\item{flip}{logical. Flip if you want to have the negative stress tensor, i.e. sigma 1 and 3 will be flipped.}
+
+\item{...}{optional parameters passed to \code{\link[=confidence_ellipse]{confidence_ellipse()}}}
 }
 \value{
-list:
+List identical to \code{\link[=slip_inversion_michael]{slip_inversion_michael()}} and additional list entries:
 \describe{
-\item{optimal}{\code{\link[=slip_inversion_yamaji_sato]{slip_inversion_yamaji_sato()}} result for the full dataset}
-\item{thetas}{length-B vector of angular stress distances from optimal}
-\item{dispersion_deg}{ mean angular stress distance (Theta-bar); approximates
+\item{\code{optimal}}{\code{\link[=slip_inversion_yamaji_sato]{slip_inversion_yamaji_sato()}} result for the full dataset}
+\item{\code{thetas}}{length-B vector of angular stress distances from optimal}
+\item{\code{dispersion_deg}}{ mean angular stress distance (Theta-bar); approximates
 the noise level p of the data (Fig. 8 of paper)}
-\item{sd_deg}{standard deviation of Theta values}
-\item{D_bar}{mean Orife-Lisle distance from optimal}
-\item{DM_bar}{mean Michael distance from optimal}
+\item{\code{sd_deg}}{standard deviation of Theta values}
+\item{\code{D_bar}}{mean Orife-Lisle distance from optimal}
+\item{\code{DM_bar}}{mean Michael distance from optimal}
 }
 }
 \description{
 Bootstrap resampling to evaluate solution precision (Section 6).
 Yields B stress tensors from resampled datasets. The dispersion of these
-tensors on S^5 approximates the noise level of the data (Eq. 37).
+tensors on \eqn{S^5} approximates the noise level of the data (Eq. 37).
 }
 \examples{
-slip_inversion_yamaji_sato_boot(angelier1990$AVB)
+set.seed(20250411)
+
+# Use Angelier examples:
+nx <- length(angelier1990)
+par(mfrow = c(1, length(angelier1990)))
+
+invisible(lapply(seq_len(nx), function(i) {
+  # inversion
+  x <- angelier1990[[i]]
+  res <- slip_inversion_yamaji_sato_boot(x, n_iter = 100, n = 1000, res = 100)
+
+  # some stress shape
+  phi_val <- round(res$phi_CI, 2)
+
+  # misfit
+  rup_val <- round(res$rup_CI, 2)
+
+  # Plot the faults (color-coded by RUP\%) and show the principal stress axes
+  stereoplot(guides = FALSE)
+  stereo_shmax(res$SHmax)
+  fault_plot(x, col = assign_col(res$misfit$rup))
+  stereo_confidence(res$principal_axes_CI$sigma1, col = 2)
+  stereo_confidence(res$principal_axes_CI$sigma2, col = 3)
+  stereo_confidence(res$principal_axes_CI$sigma3, col = 4)
+  text(res$principal_axes, label = rownames(res$principal_axes), col = 2:4, adj = -.25)
+  legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
+  title(
+  main = names(angelier1990)[i],
+  sub = bquote(atop(varphi ~ "(95\% CI)" == "[" * .(phi_val[1]) * "," ~ .(phi_val[2]) * "]",
+  ~ bar("RUP") ~ "(95\% CI)" == "[" * .(rup_val[1]) * "," ~ .(rup_val[2]) * "] \%")
+  ))
+}))
 }
 \seealso{
 \code{\link[=slip_inversion_yamaji_sato]{slip_inversion_yamaji_sato()}}

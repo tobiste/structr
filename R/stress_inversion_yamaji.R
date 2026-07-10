@@ -331,26 +331,58 @@ michael_distance <- function(y1, y2) {
 #' tensors on \eqn{S^5} approximates the noise level of the data (Eq. 37).
 #'
 #' @inheritParams slip_inversion_yamaji_sato
-#' @param n_boot integer. Number of bootstrap replicates
+#' @inheritParams slip_inversion_michael
 #'
-#' @returns list:
+#' @returns List identical to [slip_inversion_michael()] and additional list entries:
 #' \describe{
-#' \item{`optimal`}{[slip_inversion_yamaji_sato()] result for the full dataset}
-#' \item{`thetas`}{length-B vector of angular stress distances from optimal}
-#' \item{`dispersion_deg`}{ mean angular stress distance (Theta-bar); approximates
+#' \item{`theta`}{length-B vector of angular stress distances from optimal}
+#' \item{`dispersion`}{ mean angular stress distance (Theta-bar); approximates
 #' the noise level p of the data (Fig. 8 of paper)}
-#' \item{`sd_deg`}{standard deviation of Theta values}
+#' \item{`sd`}{standard deviation of Theta values}
 #' \item{`D_bar`}{mean Orife-Lisle distance from optimal}
 #' \item{`DM_bar`}{mean Michael distance from optimal}
 #' }
+#' 
 #' @export
 #'
 #' @seealso [slip_inversion_yamaji_sato()]
 #'
 #' @examples
-#' slip_inversion_yamaji_sato_boot(angelier1990$AVB)
+#' set.seed(20250411)
+#' 
+#' # Use Angelier examples:
+#' nx <- length(angelier1990)
+#' par(mfrow = c(1, length(angelier1990)))
+#'
+#' invisible(lapply(seq_len(nx), function(i) {
+#'   # inversion
+#'   x <- angelier1990[[i]]
+#'   res <- slip_inversion_yamaji_sato_boot(x, n_iter = 100, n = 1000, res = 100)
+#'
+#'   # some stress shape
+#'   phi_val <- round(res$phi_CI, 2)
+#'
+#'   # misfit
+#'   rup_val <- round(res$rup_CI, 2)
+#'
+#'   # Plot the faults (color-coded by RUP%) and show the principal stress axes
+#'   stereoplot(guides = FALSE)
+#'   stereo_shmax(res$SHmax)
+#'   fault_plot(x, col = assign_col(res$misfit$rup))
+#'   stereo_confidence(res$principal_axes_CI$sigma1, col = 2)
+#'   stereo_confidence(res$principal_axes_CI$sigma2, col = 3)
+#'   stereo_confidence(res$principal_axes_CI$sigma3, col = 4)
+#'   text(res$principal_axes, label = rownames(res$principal_axes), col = 2:4, adj = -.25)
+#'   legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
+#'   title(
+#'   main = names(angelier1990)[i],
+#'   sub = bquote(atop(varphi ~ "(95% CI)" == "[" * .(phi_val[1]) * "," ~ .(phi_val[2]) * "]",
+#'   ~ bar("RUP") ~ "(95% CI)" == "[" * .(rup_val[1]) * "," ~ .(rup_val[2]) * "] %")
+#'   ))
+#' }))
 slip_inversion_yamaji_sato_boot <- function(x, weights = NULL,
-                                            n_boot = 500L) {
+                                            n_iter = 100L, 
+                                            conf.level = 0.95, friction = 0.6, flip = FALSE, ...) {
   # if (!is.null(seed)) set.seed(seed)
 
   normals <- Vec3(Plane(x)) |> unclass()
@@ -371,31 +403,29 @@ slip_inversion_yamaji_sato_boot <- function(x, weights = NULL,
     wt <- weights / mean(weights)
   }
 
-  res0 <- slip_inversion_yamaji_sato(x, wt)
-  y0 <- res0$y
+  best.fit <- slip_inversion_yamaji_sato(x, wt, friction = friction, flip = flip) 
+  y0 <- best.fit$y
 
-  thetas <- vapply(seq_len(n_boot), function(b) {
+  
+  boot_y <- lapply(seq_len(n_iter), function(b) {
     idx <- sample(N, N, replace = TRUE)
-    y <- tryCatch(
+    tryCatch(
       yamaji_sato(normals[idx, ], slips[idx, ], wt[idx]),
       error = function(e) NULL
     )
-    if (is.null(y)) {
-      return(NA_real_)
-    }
+  })
+  
+  tau_boot <- lapply(boot_y, .y6_to_sigma)
+  
+  thetas <- vapply(boot_y, function(y){
     angular_stress_distance(y0, y)
   }, numeric(1L))
 
-  D_vals <- orife_lisle_distance(y0, y0) # placeholder; computed per resample below
-  DM_vals <- michael_distance(y0, y0)
+  # D_vals <- orife_lisle_distance(y0, y0) # placeholder; computed per resample below
+  # DM_vals <- michael_distance(y0, y0)
 
   # Recompute per-replicate distances properly
-  all_y <- lapply(seq_len(n_boot), function(b) {
-    idx <- sample(N, N, replace = TRUE)
-    y <- tryCatch(
-      yamaji_sato(normals[idx, ], slips[idx, ], wt[idx]),
-      error = function(e) NULL
-    )
+  all_y <- lapply(boot_y, function(y){
     if (is.null(y)) {
       return(NULL)
     } else {
@@ -409,14 +439,95 @@ slip_inversion_yamaji_sato_boot <- function(x, weights = NULL,
   DM_bar <- mean(sapply(all_y[valid], function(y) michael_distance(y0, y)))
 
 
-  list(
-    optimal        = res0,
-    thetas         = thetas2,
-    dispersion_deg = mean(thetas2, na.rm = TRUE),
-    sd_deg         = sd(thetas2, na.rm = TRUE),
+  
+  princ_boot <- lapply(tau_boot, tau2stress)
+  
+  # calculate confidence regions from bootstrap results ###
+  sigma_vec1 <- do.call(rbind, lapply(princ_boot, function(x) {
+    x$principal_axes[1, ]
+  })) |>
+    confidence_ellipse(alpha = 1 - conf.level, ...)
+  
+  sigma_vec2 <- do.call(rbind, lapply(princ_boot, function(x) {
+    x$principal_axes[2, ]
+  })) |>
+    confidence_ellipse(alpha = 1 - conf.level, ...)
+  
+  sigma_vec3 <- do.call(rbind, lapply(princ_boot, function(x) {
+    x$principal_axes[3, ]
+  })) |>
+    confidence_ellipse(alpha = 1 - conf.level, ...)
+  
+  sigma_boot0 <- vapply(princ_boot, function(x) {
+    x$sigma_vals
+  }, FUN.VALUE = numeric(3)) |>
+    t()
+  sigma_boot <- sapply(1:3, function(col) {
+    sigma_boot_col <- stats::t.test(sigma_boot0[, col], conf.level = conf.level)
+    sigma_boot_col$conf.int
+  })
+  colnames(sigma_boot) <- names(best.fit$principal_vals)
+  attr(sigma_boot, "conf.level") <- conf.level
+  
+  
+  # Stress parameters ###
+  params_boot <- lapply(tau_boot, stress_shape)
+  
+  R_boot <- vapply(params_boot, function(x) {
+    x$R
+  }, FUN.VALUE = numeric(1)) |>
+    stats::t.test(conf.level = conf.level)
+  
+  phi_boot <- 1 - rev(R_boot$conf.int)
+  # phi_boot <- vapply(params_boot, function(x) {
+  #   x$phi
+  # }, FUN.VALUE = numeric(1)) |>
+  #   stats::t.test(conf.level = conf.level)
+  
+  bott_boot <- vapply(params_boot, function(x) {
+    x$bott
+  }, FUN.VALUE = numeric(1)) |>
+    stats::t.test(conf.level = conf.level)
+  
+  
+  # Misfit ###
+  alpha_CI <- stats::t.test(best.fit$misfit$alpha, conf.level = conf.level)
+  rup_CI <- stats::t.test(best.fit$misfit$rup, conf.level = conf.level)
+  
+  # SHmax ###
+  SHmax_CI <- vapply(tau_boot, function(x) {
+    tryCatch(
+      expr = SH_from_tensor(x),
+      error = function(e) {
+        phi <- stress_shape(x)$phi
+        principal_axes <- tau2stress(x)$principal_axes
+        SH(principal_axes[1, ], principal_axes[2, ], principal_axes[3, ], R = phi)
+      }
+    )
+  }, FUN.VALUE = numeric(1)) |>
+    # tectonicr::confidence_interval(conf.level = conf.level, axial = TRUE)
+    stats::t.test(conf.level = conf.level)
+  
+  append(best.fit, list(
+    principal_axes_CI = list(sigma1 = sigma_vec1, sigma2 = sigma_vec2, sigma3 = sigma_vec3),
+    principal_vals_CI = sigma_boot,
+    SHmax_CI = SHmax_CI$conf.int,
+    R_CI = R_boot$conf.int,
+    phi_CI = phi_boot,
+    bott_CI = bott_boot$conf.int,
+    alpha_CI = alpha_CI$conf.int,
+    rup_CI = rup_CI$conf.int,
+    # tau_mean_CI = tau_mean_CI$conf.int
+    # beta_CI = beta_CI$conf.interval,
+    # theta_CI = theta_CI$conf.interval,
+    optimal        = best.fit,
+    theta         = thetas2,
+    dispersion = mean(thetas2, na.rm = TRUE),
+    sd         = sd(thetas2, na.rm = TRUE),
     D_bar          = D_bar,
-    DM_bar         = DM_bar
-  )
+    DM_bar         = DM_bar,
+    method = "yamaji"
+  ))
 }
 
 

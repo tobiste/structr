@@ -9,7 +9,7 @@ slip_inversion_hansen_boot(
   friction = 0.6,
   flip = FALSE,
   type = c("9d", "6d"),
-  n_iter = 100,
+  n_iter = 100L,
   conf.level = 0.95,
   ...
 )
@@ -25,7 +25,7 @@ sigma 1 and 3 will be flipped.}
 \item{type}{character. Inversion method, either \code{"9d"} (the default) for using the
 9-dimensional or \code{"6d"} for the 6-dimensional parameter space.}
 
-\item{n_iter}{integer. Number of bootstrap samples (10 by default)}
+\item{n_iter}{integer. Number of bootstrap replicates (100 by default)}
 
 \item{conf.level}{numeric. Confidence level of the interval (0.95 by default)}
 
