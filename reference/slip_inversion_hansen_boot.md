@@ -11,7 +11,7 @@ slip_inversion_hansen_boot(
   friction = 0.6,
   flip = FALSE,
   type = c("9d", "6d"),
-  n_iter = 100,
+  n_iter = 100L,
   conf.level = 0.95,
   ...
 )
@@ -39,7 +39,7 @@ slip_inversion_hansen_boot(
 
 - n_iter:
 
-  integer. Number of bootstrap samples (10 by default)
+  integer. Number of bootstrap replicates (100 by default)
 
 - conf.level:
 

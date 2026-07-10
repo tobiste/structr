@@ -34,28 +34,17 @@ Same output as
 [`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md)
 plus
 
-- y:
+- `y`:
 
   6D unit y-vector on S^5 representing the tensor
 
-- alpha:
+- `alpha`:
 
   per-fault angular misfit (unsigned, 0-90°)
 
-- mean_alpha:
+- `mean_alpha`:
 
   mean angular misfit across all faults
-
-## Note
-
-Note on opposite-tensor ambiguity
-
-The Wallace-Bott condition eps'\_i . y = 0 is satisfied by both y and
--y, corresponding to stress tensors. The sense condition (positive work)
-selects the physically meaningful sign, but requires that the majority
-of slip vectors have correct sense. If more than half the slips are
-recorded in the wrong sense, the opposite tensor will be returned. Check
-alpha_signed_deg and suspected_flipped accordingly.
 
 ## References
 

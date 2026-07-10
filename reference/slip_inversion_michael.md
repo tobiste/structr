@@ -31,7 +31,7 @@ slip_inversion_michael(
 
 - n_iter:
 
-  integer. Number of bootstrap samples (10 by default)
+  integer. Number of bootstrap replicates (100 by default)
 
 - conf.level:
 
