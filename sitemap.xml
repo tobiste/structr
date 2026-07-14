@@ -51,6 +51,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/class-rot.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/classes.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/colorblind_pal.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/combine_weights.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/confidence_ellipse.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/count_points.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/defgrad.html</loc></url>
@@ -126,6 +127,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/sense_from_strikeslip.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/shebandowan.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/sigma13.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/signal_to_weights.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/simongomez.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slerp.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion.html</loc></url>
@@ -135,6 +137,7 @@
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion_michael.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion_misfit.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion_simple.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/slip_inversion_wissi.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato_boot.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/sort_by.strabo.html</loc></url>
@@ -186,6 +189,9 @@
 <url><loc>https://tobiste.github.io/structr/reference/watson-mle.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/wellner.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/wellner_exact_inference_ray.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/wissi.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/wissi_bootstrap.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/wissi_polyphase.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/woodcock_plot.html</loc></url>
 </urlset>
 

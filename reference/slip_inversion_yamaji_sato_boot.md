@@ -56,21 +56,16 @@ List identical to
 [`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md)
 and additional list entries:
 
-- `optimal`:
-
-  [`slip_inversion_yamaji_sato()`](https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato.md)
-  result for the full dataset
-
-- `thetas`:
+- `theta`:
 
   length-B vector of angular stress distances from optimal
 
-- `dispersion_deg`:
+- `dispersion`:
 
   mean angular stress distance (Theta-bar); approximates the noise level
   p of the data (Fig. 8 of paper)
 
-- `sd_deg`:
+- `sd`:
 
   standard deviation of Theta values
 

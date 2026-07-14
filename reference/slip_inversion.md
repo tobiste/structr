@@ -6,7 +6,11 @@ derive the reduced stress tensor.
 ## Usage
 
 ``` r
-slip_inversion(x, method = c("michael", "angelier", "hansen", "yamaji"), ...)
+slip_inversion(
+  x,
+  method = c("michael", "angelier", "hansen", "yamaji", "wissi"),
+  ...
+)
 ```
 
 ## Arguments
@@ -125,6 +129,7 @@ Other stress-inversion:
 [`slip_inversion_hansen_boot()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen_boot.md),
 [`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md),
 [`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md),
+[`slip_inversion_wissi()`](https://tobiste.github.io/structr/reference/slip_inversion_wissi.md),
 [`slip_inversion_yamaji_sato()`](https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato.md)
 
 ## Examples
@@ -143,6 +148,8 @@ invisible(lapply(angelier1990, function(x) {
   res_yamaji <- slip_inversion(x, method = "yamaji")
 
   res_hansen <- slip_inversion(x, method = "hansen", type = "6d")
+  
+  res_wissi <- slip_inversion(x, method = 'wissi')
 
   stereoplot(guides = FALSE)
   fault_plot(x, col = "gray80")
@@ -150,14 +157,16 @@ invisible(lapply(angelier1990, function(x) {
   points(res_angelier$principal_axes, pch = 1:3, col = 3)
   points(res_yamaji$principal_axes, pch = 1:3, col = 4)
   points(res_hansen$principal_axes, pch = 1:3, col = 5)
+  points(res_wissi$principal_axes, pch = 1:3, col = 6)
   legend("topleft",
     pch = 1,
-    legend = c("Michael (1984)", "Angelier (1990)", "Yamaji & Sato (2006)", "Hansen (2013)"),
-    col = 2:5
+    legend = c("Michael (1984)", "Angelier (1990)", "Yamaji & Sato (2006)", "Hansen (2013)", "WISSI"),
+    col = 2:6
   )
   legend("bottomright",
     pch = 1:3,
     legend = c("S1", "S2", "S3")
   )
 }))
+#> Error in normals %*% TR: requires numeric/complex matrix/vector arguments
 ```
