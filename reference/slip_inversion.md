@@ -169,5 +169,4 @@ invisible(lapply(angelier1990, function(x) {
     legend = c("S1", "S2", "S3")
   )
 }))
-#> Error in slip_inversion_angelier(x, ...): object 'pfaults' not found
 ```
