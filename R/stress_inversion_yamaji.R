@@ -197,7 +197,7 @@ yamaji_sato <- function(normals, slips, wt) {
 #'   legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
 #'   title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "%"))
 #' }))
-slip_inversion_yamaji_sato <- function(x, weights = NULL, flip = FALSE, friction = 0.6) {
+slip_inversion_yamaji_sato <- function(x, weights = NULL, flip = FALSE) {
   tsign <- if (flip) -1 else 1
 
   stopifnot(is.Pair(x))
@@ -262,9 +262,7 @@ slip_inversion_yamaji_sato <- function(x, weights = NULL, flip = FALSE, friction
 
   # Theoretically resolved shear stress on plane
   sigma_s_mean <- mean(abs(shear_stress(p$sigma_vals[1], p$sigma_vals[3], theta)))
-
-  shearnorm <- tau2shearnorm(TR, x, friction = friction)
-  tendency <- tau2tendency(TR, x, friction = friction)
+ 
 
   # sigma_s_mean <- mean(abs(shearnorm))
 
@@ -275,17 +273,19 @@ slip_inversion_yamaji_sato <- function(x, weights = NULL, flip = FALSE, friction
     }
   )
 
-  pfaults <- principal_fault(p$principal_axes[1, ], p$principal_axes[3, ], friction)
+  # shearnorm <- tau2shearnorm(TR, x, friction = friction)
+  # tendency <- tau2tendency(TR, x, friction = friction)
+  # pfaults <- principal_fault(p$principal_axes[1, ], p$principal_axes[3, ], friction)
 
   list(
     stress_tensor = TR,
     # tensor_params = tensor_params,
     principal_axes = p$principal_axes,
     principal_vals = p$sigma_vals,
-    principal_faults = pfaults,
+    #principal_faults = pfaults,
     stress_shape = shape,
     tau_mean = sigma_s_mean,
-    stress_components = cbind(shearnorm, tendency),
+    #stress_components = cbind(shearnorm, tendency),
     misfit = misfit,
     SHmax = SHmax,
     alpha = alpha_deg,
@@ -382,7 +382,7 @@ michael_distance <- function(y1, y2) {
 #' }))
 slip_inversion_yamaji_sato_boot <- function(x, weights = NULL,
                                             n_iter = 100L, 
-                                            conf.level = 0.95, friction = 0.6, flip = FALSE, ...) {
+                                            conf.level = 0.95, flip = FALSE, ...) {
   # if (!is.null(seed)) set.seed(seed)
 
   normals <- Vec3(Plane(x)) |> unclass()
@@ -403,7 +403,7 @@ slip_inversion_yamaji_sato_boot <- function(x, weights = NULL,
     wt <- weights / mean(weights)
   }
 
-  best.fit <- slip_inversion_yamaji_sato(x, wt, friction = friction, flip = flip) 
+  best.fit <- slip_inversion_yamaji_sato(x, wt, flip = flip) 
   y0 <- best.fit$y
 
   

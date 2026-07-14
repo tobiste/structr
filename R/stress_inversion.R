@@ -79,7 +79,8 @@
 #'   points(res_wissi$principal_axes, pch = 1:3, col = 6)
 #'   legend("topleft",
 #'     pch = 1,
-#'     legend = c("Michael (1984)", "Angelier (1990)", "Yamaji & Sato (2006)", "Hansen (2013)", "WISSI"),
+#'     legend = c("Michael (1984)", "Angelier (1990)", "Yamaji & Sato (2006)", 
+#'       "Hansen (2013)", "WISSI"),
 #'     col = 2:6
 #'   )
 #'   legend("bottomright",
@@ -116,7 +117,6 @@ slip_inversion <- function(x, method = c("michael", "angelier", "hansen", "yamaj
 #' @inheritParams slip_inversion
 #' @param n_iter integer. Number of bootstrap replicates (100 by default)
 #' @param conf.level numeric. Confidence level of the interval (0.95 by default)
-#' @param friction numeric. Coefficient of friction (0.6 by default)
 #' @param flip logical. Flip if you want to have the negative stress tensor, i.e. sigma 1 and 3 will be flipped.
 #' @param ... optional parameters passed to [confidence_ellipse()]
 #'
@@ -188,8 +188,8 @@ slip_inversion <- function(x, method = c("michael", "angelier", "hansen", "yamaj
 #'   ~ bar("RUP") ~ "(95% CI)" == "[" * .(rup_val[1]) * "," ~ .(rup_val[2]) * "] %")
 #'   ))
 #' }))
-slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction = 0.6, flip = FALSE, ...) {
-  best.fit <- .slip_inversion_michael(x, friction, flip = flip)
+slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, flip = FALSE, ...) {
+  best.fit <- .slip_inversion_michael(x, flip = flip)
 
   if (n_iter == 0) {
     return(best.fit)
@@ -329,7 +329,7 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
 #' title(sub = bquote(varphi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) *
 #'   "% |" ~ bar(beta) == .(beta) ~ "|" ~ bar(tau) == .(ss)))
 #' }
-.slip_inversion_michael <- function(x, friction = 0.6, flip = FALSE) {
+.slip_inversion_michael <- function(x, flip = FALSE) {
   tsign <- if (flip) -1 else 1
 
   stopifnot(all(complete.cases(x)))
@@ -359,8 +359,6 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
   # Theoretically resolved shear stress on plane
   sigma_s_mean <- mean(abs(shear_stress(p$sigma_vals[1], p$sigma_vals[3], theta)))
 
-  shearnorm <- tau2shearnorm(TR, x, friction = friction)
-  tendency <- tau2tendency(TR, x, friction = friction)
 
   # sigma_s_mean <- mean(abs(shearnorm))
 
@@ -371,17 +369,19 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, friction
     }
   )
 
-  pfaults <- principal_fault(p$principal_axes[1, ], p$principal_axes[3, ], friction)
+  # shearnorm <- tau2shearnorm(TR, x, friction = friction)
+  # tendency <- tau2tendency(TR, x, friction = friction)
+  # pfaults <- principal_fault(p$principal_axes[1, ], p$principal_axes[3, ], friction)
 
   list(
     stress_tensor = TR,
     # tensor_params = tensor_params,
     principal_axes = p$principal_axes,
     principal_vals = p$sigma_vals,
-    principal_faults = pfaults,
+    # principal_faults = pfaults,
     stress_shape = stress_shape,
     tau_mean = sigma_s_mean,
-    stress_components = cbind(shearnorm, tendency),
+    # stress_components = cbind(shearnorm, tendency),
     misfit = misfit,
     SHmax = SHmax
   )
@@ -556,7 +556,6 @@ slip_inversion_angelier <- function(x,
                                     max_iter = 100L,
                                     tol = 1e-6,
                                     n_psi = 361L,
-                                    friction = 0.6,
                                     flip = FALSE) {
   stopifnot(all(complete.cases(x)))
   tsign <- if (flip) -1 else 1
@@ -635,8 +634,7 @@ slip_inversion_angelier <- function(x,
   # Theoretically resolved shear stress on plane
   sigma_s_mean <- mean(abs(shear_stress(p$sigma_vals[1], p$sigma_vals[3], theta)))
 
-  shearnorm <- tau2shearnorm(TR, x, friction = friction)
-  tendency <- tau2tendency(TR, x, friction = friction)
+  
 
   # sigma_s_mean <- mean(abs(shearnorm))
 
@@ -647,17 +645,19 @@ slip_inversion_angelier <- function(x,
     }
   )
 
-  pfaults <- principal_fault(p$principal_axes[1, ], p$principal_axes[3, ], friction)
+  # shearnorm <- tau2shearnorm(TR, x, friction = friction)
+  # tendency <- tau2tendency(TR, x, friction = friction)
+  # pfaults <- principal_fault(p$principal_axes[1, ], p$principal_axes[3, ], friction)
 
   list(
     stress_tensor = TR,
     tensor_params = tensor_params,
     principal_axes = p$principal_axes,
     principal_vals = p$sigma_vals,
-    principal_faults = pfaults,
+    Cprincipal_faults = pfaults,
     stress_shape = stress_shape,
     tau_mean = sigma_s_mean,
-    stress_components = cbind(shearnorm, tendency),
+    # stress_components = cbind(shearnorm, tendency),
     misfit = misfit,
     SHmax = SHmax,
     n_iter = iter,
@@ -1101,6 +1101,7 @@ reduced_stress <- function(fault, method = c("michael", "angelier")) {
 #'
 #' @inheritParams reduced_stress
 #' @inheritParams slip_inversion_michael
+#' @param friction numeric. Coefficient of friction (0.6 by default)
 #' @param R numeric. Stress ratio after Gephart and Forsyth (1984): \eqn{(\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3)}
 #'
 #' @details

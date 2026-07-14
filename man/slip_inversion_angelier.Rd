@@ -10,7 +10,6 @@ slip_inversion_angelier(
   max_iter = 100L,
   tol = 1e-06,
   n_psi = 361L,
-  friction = 0.6,
   flip = FALSE
 )
 }
@@ -26,8 +25,6 @@ optimization. Set to \code{0} for no optimization.}
 \item{tol}{numeric. Convergence tolerance on max absolute change in TR elements between iterations (default \code{1e-6})}
 
 \item{n_psi}{integer. Number of psi grid points for each step (default \code{361})}
-
-\item{friction}{numeric. Coefficient of friction (0.6 by default)}
 
 \item{flip}{logical. Flip if you want to have the negative stress tensor, i.e. sigma 1 and 3 will be flipped.}
 }

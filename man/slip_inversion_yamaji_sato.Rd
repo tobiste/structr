@@ -4,7 +4,7 @@
 \alias{slip_inversion_yamaji_sato}
 \title{Stress tensor inversion via the Yamaji and Sato (2006) eigenvector method.}
 \usage{
-slip_inversion_yamaji_sato(x, weights = NULL, flip = FALSE, friction = 0.6)
+slip_inversion_yamaji_sato(x, weights = NULL, flip = FALSE)
 }
 \arguments{
 \item{x}{object of class \code{"Pair"} or \code{"Fault"} with at least 4 rows.}
@@ -12,8 +12,6 @@ slip_inversion_yamaji_sato(x, weights = NULL, flip = FALSE, friction = 0.6)
 \item{weights}{numeric. Weightings for the faults. Must have the same length as \code{x}}
 
 \item{flip}{logical. Flip if you want to have the negative stress tensor, i.e. sigma 1 and 3 will be flipped.}
-
-\item{friction}{numeric. Coefficient of friction (0.6 by default)}
 }
 \value{
 Same output as \code{\link[=slip_inversion]{slip_inversion()}} plus

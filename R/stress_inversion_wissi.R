@@ -132,35 +132,38 @@
 #'                  Default: 1/x^2 (inverse variance).
 #' @param pessimistic If TRUE, impute NAs with the 75th percentile of the
 #'                  observed signal (use when missingness is informative).
-signal_to_weights <- function(signal,
-                              scale_fn = function(x) 1 / x^2,
-                              pessimistic = FALSE) {
-  stopifnot(is.numeric(signal), any(!is.na(signal)))
-  fill <- if (pessimistic) {
-    quantile(signal, 0.75, na.rm = TRUE)
-  } else {
-    mean(signal, na.rm = TRUE)
-  }
-  complete <- ifelse(is.na(signal), fill, signal)
-  scale_fn(complete)
-}
+#' @noRd 
+NULL
 
-#' Combine multiple weight vectors multiplicatively and normalise.
-#'
-#' Each element of ... is a numeric vector of length N.
-#' Returns a normalised weight vector (mean = 1).
-combine_weights <- function(...) {
-  wlist <- list(...)
-  if (length(wlist) == 0L) stop("Provide at least one weight vector.")
-  lens <- lengths(wlist)
-  if (length(unique(lens)) != 1L) {
-    stop("All weight vectors must have the same length.")
-  }
-  w <- Reduce(`*`, wlist)
-  if (any(w < 0)) stop("Combined weights must be non-negative.")
-  if (!any(w > 0)) stop("At least one weight must be positive.")
-  w / mean(w)
-}
+# signal_to_weights <- function(signal,
+#                               scale_fn = function(x) 1 / x^2,
+#                               pessimistic = FALSE) {
+#   stopifnot(is.numeric(signal), any(!is.na(signal)))
+#   fill <- if (pessimistic) {
+#     quantile(signal, 0.75, na.rm = TRUE)
+#   } else {
+#     mean(signal, na.rm = TRUE)
+#   }
+#   complete <- ifelse(is.na(signal), fill, signal)
+#   scale_fn(complete)
+# }
+
+# Combine multiple weight vectors multiplicatively and normalise.
+#
+# Each element of ... is a numeric vector of length N.
+# Returns a normalised weight vector (mean = 1).
+# combine_weights <- function(...) {
+#   wlist <- list(...)
+#   if (length(wlist) == 0L) stop("Provide at least one weight vector.")
+#   lens <- lengths(wlist)
+#   if (length(unique(lens)) != 1L) {
+#     stop("All weight vectors must have the same length.")
+#   }
+#   w <- Reduce(`*`, wlist)
+#   if (any(w < 0)) stop("Combined weights must be non-negative.")
+#   if (!any(w > 0)) stop("At least one weight must be positive.")
+#   w / mean(w)
+# }
 
 
 # ===
@@ -765,7 +768,7 @@ slip_inversion_wissi <- function(x, weights = NULL,
   
   res$slips_corrected <- as.Vec3(res$slips_corrected)
   
-  res$misfit <- slip_inversion_misfit(res$sigma, x)
+  res$misfit <- slip_inversion_misfit(res$stress_tensor, x)
   
   return(res)
 }
@@ -773,17 +776,16 @@ slip_inversion_wissi <- function(x, weights = NULL,
 
 # WISSI_POLYPHASE — Polyphase separation wrapper
 
-#
 #' Polyphase stress inversion via spectral clustering on \eqn{S^5} (Stage 5).
 #'
 #' Identifies k stress phases automatically using the eigengap heuristic,
 #' then runs wissi() on each phase subset.
 #'
 #' @inheritParams slip_inversion_wissi
-#' @param k_max       Maximum number of phases to consider. Default 4.
+#' @param k_max       Maximum number of phases to consider. Default `4`.
 #' @param sigma_K_deg Affinity bandwidth in degrees of angular stress
 #'                    distance. Faults within this distance are considered
-#'                    similar. Default 30. Increase to merge nearby phases,
+#'                    similar. Default `30.` Increase to merge nearby phases,
 #'                    decrease to split them.
 #' @param seed        Optional RNG seed for k-means reproducibility.
 #' @param ...         Additional arguments passed to wissi() for each phase.
@@ -798,7 +800,7 @@ slip_inversion_wissi <- function(x, weights = NULL,
 #' @examples
 #' res <- wissi_polyphase(angelier1990$TYM)
 #' res$k_opt
-wissi_polyphase <- function(normals, slips,
+wissi_polyphase <- function(x,
                             weights = NULL,
                             k_max = 4L,
                             sigma_K_deg = 30,
@@ -848,6 +850,8 @@ wissi_polyphase <- function(normals, slips,
 #' @param B     Number of bootstrap replicates. Default 500.
 #' @param seed  Optional RNG seed.
 #' @param ...   Additional arguments passed to wissi().
+#' 
+#' @noRd                
 #'
 #' @return A named list with:
 #'   optimal        : wissi() result for the full dataset

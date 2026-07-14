@@ -13,7 +13,7 @@
 #' sigma 1 and 3 will be flipped.
 #' @param type character. Inversion method, either `"9d"` (the default) for using the 
 #' 9-dimensional or `"6d"` for the 6-dimensional parameter space.
-#' @inheritParams slip_inversion_michael
+# #' @inheritParams slip_inversion_michael
 #'
 #' @returns list. See [slip_inversion_michael()] for output description. 
 #' If `type == '9d`, additional outputs are
@@ -167,7 +167,7 @@
 #'   legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
 #'   title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "%"))
 #' }))
-slip_inversion_hansen <- function(x, flip = FALSE, friction = 0.6, type = c("9d", "6d")) {
+slip_inversion_hansen <- function(x, flip = FALSE, type = c("9d", "6d")) {
   tsign <- if (flip) -1 else 1
   type <- match.arg(type)
 
@@ -310,8 +310,7 @@ slip_inversion_hansen <- function(x, flip = FALSE, friction = 0.6, type = c("9d"
   # Theoretically resolved shear stress on plane
   sigma_s_mean <- mean(abs(shear_stress(val_Ts[1], val_Ts[3], theta)))
 
-  shearnorm <- tau2shearnorm(Ts, x, friction = friction)
-  tendency <- tau2tendency(Ts, x, friction = friction)
+ 
 
   SHmax <- tryCatch(
     expr = SH_from_tensor(eigen(Ts, symmetric = TRUE)$vectors),
@@ -320,7 +319,9 @@ slip_inversion_hansen <- function(x, flip = FALSE, friction = 0.6, type = c("9d"
     }
   )
 
-  pfaults <- principal_fault(principal_axes[1, ], principal_axes[3, ], friction)
+  # shearnorm <- tau2shearnorm(Ts, x, friction = friction)
+  # tendency <- tau2tendency(Ts, x, friction = friction)
+  # pfaults <- principal_fault(principal_axes[1, ], principal_axes[3, ], friction)
 
 
   # 9 results
@@ -329,10 +330,10 @@ slip_inversion_hansen <- function(x, flip = FALSE, friction = 0.6, type = c("9d"
     stress_tensor = as.ellipsoid(Ts),
     principal_axes = Line(principal_axes),
     principal_vals = val_Ts,
-    principal_faults = pfaults,
+    #principal_faults = pfaults,
     stress_shape = stress_shape,
     tau_mean = sigma_s_mean,
-    stress_components = cbind(shearnorm, tendency),
+    #stress_components = cbind(shearnorm, tendency),
     misfit = misfit,
     SHmax = SHmax
   )
@@ -386,7 +387,7 @@ slip_inversion_hansen <- function(x, flip = FALSE, friction = 0.6, type = c("9d"
 #' )
 slip_inversion_hansen_boot <- function(
   x,
-  friction = 0.6,
+  # friction = 0.6,
   flip = FALSE,
   type = c("9d", "6d"),
   n_iter = 100L,
@@ -394,7 +395,7 @@ slip_inversion_hansen_boot <- function(
   ...
 ) {
   type <- match.arg(type)
-  best.fit <- slip_inversion_hansen(x, friction = friction, flip = flip, type = type)
+  best.fit <- slip_inversion_hansen(x, flip = flip, type = type)
 
   if (n_iter == 0) {
     return(best.fit)
@@ -411,7 +412,7 @@ slip_inversion_hansen_boot <- function(
     res_boot <- future.apply::future_lapply(seq_len(n_iter), function(i) {
       idx <- sample.int(nx, replace = TRUE)
       x_sample <- x[idx, ]
-      res <- slip_inversion_hansen(x[idx, ], friction = friction, flip = flip, type = type)
+      res <- slip_inversion_hansen(x[idx, ],  flip = flip, type = type)
       tau <- res$stress_tensor
       w <- res$vorticity_axis
       list(tau = tau, w = w)

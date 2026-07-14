@@ -5,8 +5,7 @@
 \title{Polyphase stress inversion via spectral clustering on \eqn{S^5} (Stage 5).}
 \usage{
 wissi_polyphase(
-  normals,
-  slips,
+  x,
   weights = NULL,
   k_max = 4L,
   sigma_K_deg = 30,
@@ -15,13 +14,15 @@ wissi_polyphase(
 )
 }
 \arguments{
+\item{x}{object of class \code{"Pair"} or \code{"Fault"} with at least 4 rows.}
+
 \item{weights}{numeric. Weightings for the faults. Must have the same length as \code{x}}
 
-\item{k_max}{Maximum number of phases to consider. Default 4.}
+\item{k_max}{Maximum number of phases to consider. Default \code{4}.}
 
 \item{sigma_K_deg}{Affinity bandwidth in degrees of angular stress
 distance. Faults within this distance are considered
-similar. Default 30. Increase to merge nearby phases,
+similar. Default \code{30.} Increase to merge nearby phases,
 decrease to split them.}
 
 \item{seed}{Optional RNG seed for k-means reproducibility.}

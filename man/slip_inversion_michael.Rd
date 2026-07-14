@@ -4,14 +4,7 @@
 \alias{slip_inversion_michael}
 \title{Stress Inversion for Fault-Slip Data after Michael (1984)}
 \usage{
-slip_inversion_michael(
-  x,
-  n_iter = 100L,
-  conf.level = 0.95,
-  friction = 0.6,
-  flip = FALSE,
-  ...
-)
+slip_inversion_michael(x, n_iter = 100L, conf.level = 0.95, flip = FALSE, ...)
 }
 \arguments{
 \item{x}{\code{"Fault"} object where the rows are the observations, and the
@@ -22,8 +15,6 @@ of fault measurements are required, while Hansen's method requires at least 7.}
 \item{n_iter}{integer. Number of bootstrap replicates (100 by default)}
 
 \item{conf.level}{numeric. Confidence level of the interval (0.95 by default)}
-
-\item{friction}{numeric. Coefficient of friction (0.6 by default)}
 
 \item{flip}{logical. Flip if you want to have the negative stress tensor, i.e. sigma 1 and 3 will be flipped.}
 

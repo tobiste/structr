@@ -4,15 +4,13 @@
 \alias{slip_inversion_hansen}
 \title{9D Direct Inversion for Fault Slip Including Vorticity}
 \usage{
-slip_inversion_hansen(x, flip = FALSE, friction = 0.6, type = c("9d", "6d"))
+slip_inversion_hansen(x, flip = FALSE, type = c("9d", "6d"))
 }
 \arguments{
 \item{x}{object of class \code{"Pair"} or \code{"Fault"} with at least 7 rows.}
 
 \item{flip}{logical. Flip if you want to have the negative stress tensor, i.e.
 sigma 1 and 3 will be flipped.}
-
-\item{friction}{numeric. Coefficient of friction (0.6 by default)}
 
 \item{type}{character. Inversion method, either \code{"9d"} (the default) for using the
 9-dimensional or \code{"6d"} for the 6-dimensional parameter space.}

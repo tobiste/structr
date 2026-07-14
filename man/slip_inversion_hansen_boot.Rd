@@ -6,7 +6,6 @@
 \usage{
 slip_inversion_hansen_boot(
   x,
-  friction = 0.6,
   flip = FALSE,
   type = c("9d", "6d"),
   n_iter = 100L,
@@ -16,8 +15,6 @@ slip_inversion_hansen_boot(
 }
 \arguments{
 \item{x}{object of class \code{"Pair"} or \code{"Fault"} with at least 7 rows.}
-
-\item{friction}{numeric. Coefficient of friction (0.6 by default)}
 
 \item{flip}{logical. Flip if you want to have the negative stress tensor, i.e.
 sigma 1 and 3 will be flipped.}
