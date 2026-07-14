@@ -8,7 +8,6 @@ confidence intervals
 ``` r
 slip_inversion_hansen_boot(
   x,
-  friction = 0.6,
   flip = FALSE,
   type = c("9d", "6d"),
   n_iter = 100L,
@@ -22,10 +21,6 @@ slip_inversion_hansen_boot(
 - x:
 
   object of class `"Pair"` or `"Fault"` with at least 7 rows.
-
-- friction:
-
-  numeric. Coefficient of friction (0.6 by default)
 
 - flip:
 

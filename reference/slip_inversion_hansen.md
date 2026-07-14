@@ -11,7 +11,7 @@ sense. If no vorticity is involved, the inversion can be done by using a
 ## Usage
 
 ``` r
-slip_inversion_hansen(x, flip = FALSE, friction = 0.6, type = c("9d", "6d"))
+slip_inversion_hansen(x, flip = FALSE, type = c("9d", "6d"))
 ```
 
 ## Arguments
@@ -24,10 +24,6 @@ slip_inversion_hansen(x, flip = FALSE, friction = 0.6, type = c("9d", "6d"))
 
   logical. Flip if you want to have the negative stress tensor, i.e.
   sigma 1 and 3 will be flipped.
-
-- friction:
-
-  numeric. Coefficient of friction (0.6 by default)
 
 - type:
 

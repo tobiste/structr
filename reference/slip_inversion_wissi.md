@@ -174,5 +174,4 @@ invisible(lapply(seq_len(nx), function(i) {
   legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
   title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "%"))
 }))
-#> Error in normals %*% TR: requires numeric/complex matrix/vector arguments
 ```

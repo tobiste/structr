@@ -12,7 +12,6 @@ slip_inversion_yamaji_sato_boot(
   weights = NULL,
   n_iter = 100L,
   conf.level = 0.95,
-  friction = 0.6,
   flip = FALSE,
   ...
 )
@@ -35,10 +34,6 @@ slip_inversion_yamaji_sato_boot(
 - conf.level:
 
   numeric. Confidence level of the interval (0.95 by default)
-
-- friction:
-
-  numeric. Coefficient of friction (0.6 by default)
 
 - flip:
 

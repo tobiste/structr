@@ -7,8 +7,7 @@ then runs wissi() on each phase subset.
 
 ``` r
 wissi_polyphase(
-  normals,
-  slips,
+  x,
   weights = NULL,
   k_max = 4L,
   sigma_K_deg = 30,
@@ -19,18 +18,22 @@ wissi_polyphase(
 
 ## Arguments
 
+- x:
+
+  object of class `"Pair"` or `"Fault"` with at least 4 rows.
+
 - weights:
 
   numeric. Weightings for the faults. Must have the same length as `x`
 
 - k_max:
 
-  Maximum number of phases to consider. Default 4.
+  Maximum number of phases to consider. Default `4`.
 
 - sigma_K_deg:
 
   Affinity bandwidth in degrees of angular stress distance. Faults
-  within this distance are considered similar. Default 30. Increase to
+  within this distance are considered similar. Default `30.` Increase to
   merge nearby phases, decrease to split them.
 
 - seed:
@@ -53,7 +56,6 @@ poles (degrees)
 
 ``` r
 res <- wissi_polyphase(angelier1990$TYM)
-#> Error in wissi_polyphase(angelier1990$TYM): object 'x' not found
 res$k_opt
-#> Error: object 'res' not found
+#> [1] 1
 ```

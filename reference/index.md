@@ -148,9 +148,6 @@
 - [`colorblind_pal()`](https://tobiste.github.io/structr/reference/colorblind_pal.md)
   : Colorblind Color Palette (Discrete) and Scales
 
-- [`combine_weights()`](https://tobiste.github.io/structr/reference/combine_weights.md)
-  : Combine multiple weight vectors multiplicatively and normalise.
-
 - [`confidence_ellipse()`](https://tobiste.github.io/structr/reference/confidence_ellipse.md)
   : Confidence ellipse
 
@@ -425,9 +422,6 @@
 - [`sigma13()`](https://tobiste.github.io/structr/reference/sigma13.md)
   : Principle stresses
 
-- [`signal_to_weights()`](https://tobiste.github.io/structr/reference/signal_to_weights.md)
-  : Convert a raw signal vector to weights with NA imputation.
-
 - [`simongomez`](https://tobiste.github.io/structr/reference/simongomez.md)
   : Example data set
 
@@ -665,9 +659,6 @@
 
 - [`wissi()`](https://tobiste.github.io/structr/reference/wissi.md) :
   Weighted Iterative Sigma-Space Inversion (WISSI)
-
-- [`wissi_bootstrap()`](https://tobiste.github.io/structr/reference/wissi_bootstrap.md)
-  : Bootstrap uncertainty for a wissi() result.
 
 - [`wissi_polyphase()`](https://tobiste.github.io/structr/reference/wissi_polyphase.md)
   : Polyphase stress inversion via spectral clustering on \\S^5\\ (Stage

@@ -67,8 +67,7 @@ then runs wissi() on each phase subset.</p>
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">wissi_polyphase</span><span class="op">(</span></span>
-<span>  <span class="va">normals</span>,</span>
-<span>  <span class="va">slips</span>,</span>
+<span>  <span class="va">x</span>,</span>
 <span>  weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  k_max <span class="op">=</span> <span class="fl">4L</span>,</span>
 <span>  sigma_K_deg <span class="op">=</span> <span class="fl">30</span>,</span>
@@ -81,18 +80,22 @@ then runs wissi() on each phase subset.</p>
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-weights">weights<a class="anchor" aria-label="anchor" href="#arg-weights"></a></dt>
+<dl><dt id="arg-x">x<a class="anchor" aria-label="anchor" href="#arg-x"></a></dt>
+<dd><p>object of class <code>"Pair"</code> or <code>"Fault"</code> with at least 4 rows.</p></dd>
+
+
+<dt id="arg-weights">weights<a class="anchor" aria-label="anchor" href="#arg-weights"></a></dt>
 <dd><p>numeric. Weightings for the faults. Must have the same length as <code>x</code></p></dd>
 
 
 <dt id="arg-k-max">k_max<a class="anchor" aria-label="anchor" href="#arg-k-max"></a></dt>
-<dd><p>Maximum number of phases to consider. Default 4.</p></dd>
+<dd><p>Maximum number of phases to consider. Default <code>4</code>.</p></dd>
 
 
 <dt id="arg-sigma-k-deg">sigma_K_deg<a class="anchor" aria-label="anchor" href="#arg-sigma-k-deg"></a></dt>
 <dd><p>Affinity bandwidth in degrees of angular stress
 distance. Faults within this distance are considered
-similar. Default 30. Increase to merge nearby phases,
+similar. Default <code>30.</code> Increase to merge nearby phases,
 decrease to split them.</p></dd>
 
 
@@ -117,9 +120,8 @@ D_mat         : N x N pairwise ASD matrix between fault poles (degrees)</p>
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">res</span> <span class="op">&lt;-</span> <span class="fu">wissi_polyphase</span><span class="op">(</span><span class="va">angelier1990</span><span class="op">$</span><span class="va">TYM</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in wissi_polyphase(angelier1990$TYM):</span> object 'x' not found</span>
 <span class="r-in"><span><span class="va">res</span><span class="op">$</span><span class="va">k_opt</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error:</span> object 'res' not found</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 1</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

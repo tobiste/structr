@@ -9,14 +9,7 @@ various fault planes, at the time of rupture, is similar.
 ## Usage
 
 ``` r
-slip_inversion_michael(
-  x,
-  n_iter = 100L,
-  conf.level = 0.95,
-  friction = 0.6,
-  flip = FALSE,
-  ...
-)
+slip_inversion_michael(x, n_iter = 100L, conf.level = 0.95, flip = FALSE, ...)
 ```
 
 ## Arguments
@@ -36,10 +29,6 @@ slip_inversion_michael(
 - conf.level:
 
   numeric. Confidence level of the interval (0.95 by default)
-
-- friction:
-
-  numeric. Coefficient of friction (0.6 by default)
 
 - flip:
 

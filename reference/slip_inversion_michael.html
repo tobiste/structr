@@ -75,14 +75,7 @@ tangential traction on the various fault planes, at the time of rupture, is simi
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">slip_inversion_michael</span><span class="op">(</span></span>
-<span>  <span class="va">x</span>,</span>
-<span>  n_iter <span class="op">=</span> <span class="fl">100L</span>,</span>
-<span>  conf.level <span class="op">=</span> <span class="fl">0.95</span>,</span>
-<span>  friction <span class="op">=</span> <span class="fl">0.6</span>,</span>
-<span>  flip <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  <span class="va">...</span></span>
-<span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">slip_inversion_michael</span><span class="op">(</span><span class="va">x</span>, n_iter <span class="op">=</span> <span class="fl">100L</span>, conf.level <span class="op">=</span> <span class="fl">0.95</span>, flip <span class="op">=</span> <span class="cn">FALSE</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -102,10 +95,6 @@ of fault measurements are required, while Hansen's method requires at least 7.</
 
 <dt id="arg-conf-level">conf.level<a class="anchor" aria-label="anchor" href="#arg-conf-level"></a></dt>
 <dd><p>numeric. Confidence level of the interval (0.95 by default)</p></dd>
-
-
-<dt id="arg-friction">friction<a class="anchor" aria-label="anchor" href="#arg-friction"></a></dt>
-<dd><p>numeric. Coefficient of friction (0.6 by default)</p></dd>
 
 
 <dt id="arg-flip">flip<a class="anchor" aria-label="anchor" href="#arg-flip"></a></dt>

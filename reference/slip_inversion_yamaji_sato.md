@@ -6,7 +6,7 @@ method.
 ## Usage
 
 ``` r
-slip_inversion_yamaji_sato(x, weights = NULL, flip = FALSE, friction = 0.6)
+slip_inversion_yamaji_sato(x, weights = NULL, flip = FALSE)
 ```
 
 ## Arguments
@@ -23,10 +23,6 @@ slip_inversion_yamaji_sato(x, weights = NULL, flip = FALSE, friction = 0.6)
 
   logical. Flip if you want to have the negative stress tensor, i.e.
   sigma 1 and 3 will be flipped.
-
-- friction:
-
-  numeric. Coefficient of friction (0.6 by default)
 
 ## Value
 

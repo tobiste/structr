@@ -243,10 +243,10 @@ First we load some example data (here the data from Angelier, 1990)[^7]
 
 ``` r
 
-test_data <- angelier1990$TYM
+fault_data <- angelier1990$TYM
 
 stereoplot(title = "Test data", guides = FALSE)
-fault_plot(test_data, col = "grey30")
+fault_plot(fault_data, col = "grey30")
 ```
 
 ![Diagram showing some fault-slip data in a
@@ -256,10 +256,10 @@ The stress inversion using the Michael method with 10 bootstraps:
 
 ``` r
 
-test_res <- slip_inversion(test_data, method = "michael", n_iter = 10)
+inv_res <- slip_inversion(fault_data, method = "michael", n_iter = 10)
 
 # Average alpha angle
-test_res$misfit$alpha
+inv_res$misfit$alpha
 ```
 
     ##  [1] 19.0581833  0.4300616 17.6971171  8.5078919  9.3257870  5.9565593
@@ -273,7 +273,7 @@ test_res$misfit$alpha
 ``` r
 
 # Average resolved shear stress
-test_res$tau_mean
+inv_res$tau_mean
 ```
 
     ## [1] 0.9289024
@@ -295,17 +295,17 @@ from {structr}
 cols <- c("#000004FF", "#B63679FF", "#FEC287FF")
 
 stereoplot(title = "Stress inversion", guides = FALSE)
-fault_plot(test_data, col = "grey75")
-stereo_confidence(test_res$principal_axes_CI$sigma1, col = cols[1])
-stereo_confidence(test_res$principal_axes_CI$sigma2, col = cols[2])
-stereo_confidence(test_res$principal_axes_CI$sigma3, col = cols[3])
-text(test_res$principal_axes,
-  label = rownames(test_res$principal_axes),
+fault_plot(fault_data, col = "grey75")
+stereo_confidence(inv_res$principal_axes_CI$sigma1, col = cols[1])
+stereo_confidence(inv_res$principal_axes_CI$sigma2, col = cols[2])
+stereo_confidence(inv_res$principal_axes_CI$sigma3, col = cols[3])
+text(inv_res$principal_axes,
+  label = rownames(inv_res$principal_axes),
   col = cols, adj = -.25
 )
 legend("topleft",
   col = cols,
-  legend = rownames(test_res$principal_axes), pch = 16
+  legend = rownames(inv_res$principal_axes), pch = 16
 )
 ```
 
@@ -316,7 +316,7 @@ The stress shape ratio Φ (Angelier 1979)[^8]
 
 ``` r
 
-test_res$stress_shape$phi
+inv_res$stress_shape$phi
 ```
 
     ## [1] 0.101247
@@ -324,7 +324,7 @@ test_res$stress_shape$phi
 ``` r
 
 # 95% confidence interval
-test_res$phi_CI
+inv_res$phi_CI
 ```
 
     ## [1] 0.08715034 0.15052106
@@ -335,15 +335,15 @@ can be visualized in the stereoplot:
 
 ``` r
 
-alpha <- test_res$misfit$alpha
+alpha <- inv_res$misfit$alpha
 
 stereoplot(
   title = "Deviation",
-  sub = bquote(bar(alpha) == .(round(test_res$alpha)) * degree),
+  sub = bquote(bar(alpha) == .(round(inv_res$alpha)) * degree),
   guides = FALSE
 )
 
-fault_plot(test_data, col = assign_col(alpha))
+fault_plot(fault_data, col = assign_col(alpha))
 legend_col(
   seq(min(alpha), max(alpha), 10),
   title = bquote("Deviation angle" ~ alpha ~ "(" * degree * ")")
@@ -355,13 +355,15 @@ stereoplot](Faults_files/figure-html/slip_inversion_alpha-1.png)
 
 ``` r
 
+stress_components <- tau2shearnorm(inv_res$stress_tensor, fault_data, friction = 0.6) 
+
 Mohr_plot(
-  sigma1 = test_res$principal_vals[1],
-  sigma2 = test_res$principal_vals[2],
-  sigma3 = test_res$principal_vals[3],
+  sigma1 = inv_res$principal_vals[1],
+  sigma2 = inv_res$principal_vals[2],
+  sigma3 = inv_res$principal_vals[3],
   unit = NULL, include.zero = FALSE
 )
-points(test_res$stress_components[, 'normal'], abs(test_res$stress_components[, 'shear']),
+points(stress_components[, 'normal'], abs(stress_components[, 'shear']),
   col = assign_col(alpha), pch = 16
 )
 ```
@@ -428,14 +430,21 @@ The $`\sigma_\text{Hmax}`$ for our slip inversion result from above:
 ``` r
 
 SH(
-  S1 = test_res$principal_axes[1, ],
-  S2 = test_res$principal_axes[2, ],
-  S3 = test_res$principal_axes[3, ],
-  R = test_res$stress_shape$R
+  S1 = inv_res$principal_axes[1, ],
+  S2 = inv_res$principal_axes[2, ],
+  S3 = inv_res$principal_axes[3, ],
+  R = inv_res$stress_shape$R
 )
 ```
 
     ## [1] 60.80844
+
+``` r
+
+SH_from_tensor(inv_res$stress_tensor)
+```
+
+    ## [1] 168.5923
 
 ## Fault offsets
 

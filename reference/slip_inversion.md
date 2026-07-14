@@ -160,7 +160,8 @@ invisible(lapply(angelier1990, function(x) {
   points(res_wissi$principal_axes, pch = 1:3, col = 6)
   legend("topleft",
     pch = 1,
-    legend = c("Michael (1984)", "Angelier (1990)", "Yamaji & Sato (2006)", "Hansen (2013)", "WISSI"),
+    legend = c("Michael (1984)", "Angelier (1990)", "Yamaji & Sato (2006)", 
+      "Hansen (2013)", "WISSI"),
     col = 2:6
   )
   legend("bottomright",
@@ -168,5 +169,5 @@ invisible(lapply(angelier1990, function(x) {
     legend = c("S1", "S2", "S3")
   )
 }))
-#> Error in normals %*% TR: requires numeric/complex matrix/vector arguments
+#> Error in slip_inversion_angelier(x, ...): object 'pfaults' not found
 ```
