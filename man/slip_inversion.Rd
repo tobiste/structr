@@ -4,7 +4,11 @@
 \alias{slip_inversion}
 \title{Stress Inversion for Fault-Slip Data}
 \usage{
-slip_inversion(x, method = c("michael", "angelier", "hansen", "yamaji"), ...)
+slip_inversion(
+  x,
+  method = c("michael", "angelier", "hansen", "yamaji", "wissi"),
+  ...
+)
 }
 \arguments{
 \item{x}{\code{"Fault"} object where the rows are the observations, and the
@@ -55,6 +59,8 @@ invisible(lapply(angelier1990, function(x) {
   res_yamaji <- slip_inversion(x, method = "yamaji")
 
   res_hansen <- slip_inversion(x, method = "hansen", type = "6d")
+  
+  res_wissi <- slip_inversion(x, method = 'wissi')
 
   stereoplot(guides = FALSE)
   fault_plot(x, col = "gray80")
@@ -62,10 +68,11 @@ invisible(lapply(angelier1990, function(x) {
   points(res_angelier$principal_axes, pch = 1:3, col = 3)
   points(res_yamaji$principal_axes, pch = 1:3, col = 4)
   points(res_hansen$principal_axes, pch = 1:3, col = 5)
+  points(res_wissi$principal_axes, pch = 1:3, col = 6)
   legend("topleft",
     pch = 1,
-    legend = c("Michael (1984)", "Angelier (1990)", "Yamaji & Sato (2006)", "Hansen (2013)"),
-    col = 2:5
+    legend = c("Michael (1984)", "Angelier (1990)", "Yamaji & Sato (2006)", "Hansen (2013)", "WISSI"),
+    col = 2:6
   )
   legend("bottomright",
     pch = 1:3,
@@ -100,6 +107,7 @@ Other stress-inversion:
 \code{\link{slip_inversion_hansen_boot}()},
 \code{\link{slip_inversion_michael}()},
 \code{\link{slip_inversion_simple}()},
+\code{\link{slip_inversion_wissi}()},
 \code{\link{slip_inversion_yamaji_sato}()}
 }
 \concept{stress-inversion}

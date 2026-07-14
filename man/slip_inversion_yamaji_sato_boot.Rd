@@ -32,11 +32,10 @@ slip_inversion_yamaji_sato_boot(
 \value{
 List identical to \code{\link[=slip_inversion_michael]{slip_inversion_michael()}} and additional list entries:
 \describe{
-\item{\code{optimal}}{\code{\link[=slip_inversion_yamaji_sato]{slip_inversion_yamaji_sato()}} result for the full dataset}
-\item{\code{thetas}}{length-B vector of angular stress distances from optimal}
-\item{\code{dispersion_deg}}{ mean angular stress distance (Theta-bar); approximates
+\item{\code{theta}}{length-B vector of angular stress distances from optimal}
+\item{\code{dispersion}}{ mean angular stress distance (Theta-bar); approximates
 the noise level p of the data (Fig. 8 of paper)}
-\item{\code{sd_deg}}{standard deviation of Theta values}
+\item{\code{sd}}{standard deviation of Theta values}
 \item{\code{D_bar}}{mean Orife-Lisle distance from optimal}
 \item{\code{DM_bar}}{mean Michael distance from optimal}
 }
