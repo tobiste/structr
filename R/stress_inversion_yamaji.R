@@ -172,8 +172,9 @@ yamaji_sato <- function(normals, slips, wt) {
 #'
 #' @examples
 #' set.seed(20250411)
+#' 
 #' nx <- length(angelier1990)
-#' par(mfrow = c(1, nx))
+#' par(mfrow = c(2, nx/2))
 #'
 #' invisible(lapply(seq_len(nx), function(i) {
 #'   # inversion
@@ -348,7 +349,7 @@ michael_distance <- function(y1, y2) {
 #' 
 #' # Use Angelier examples:
 #' nx <- length(angelier1990)
-#' par(mfrow = c(1, length(angelier1990)))
+#' par(mfrow = c(2, length(angelier1990)/2))
 #'
 #' invisible(lapply(seq_len(nx), function(i) {
 #'   # inversion

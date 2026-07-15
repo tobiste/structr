@@ -142,7 +142,7 @@
 #'
 #' # Angelier 1990 dataset
 #' nx <- length(angelier1990)
-#' par(mfrow = c(1, nx))
+#' par(mfrow = c(nx/2, nx/2))
 #'
 #' invisible(lapply(seq_len(nx), function(i) {
 #'   # inversion

@@ -47,7 +47,7 @@ set.seed(20250411)
 
 # Use Angelier examples:
 nx <- length(angelier1990)
-par(mfrow = c(1, length(angelier1990)))
+par(mfrow = c(2, length(angelier1990)/2))
 
 invisible(lapply(seq_len(nx), function(i) {
   # inversion

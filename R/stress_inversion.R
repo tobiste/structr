@@ -56,9 +56,14 @@
 #'
 #' @examples
 #' set.seed(20250411)
-#' # Use Angelier examples
-#' par(mfrow = c(1, length(angelier1990)), mar = c(4, 1, 4, 1))
-#' invisible(lapply(angelier1990, function(x) {
+#' 
+#' # Use Angelier 1990 examples
+#' nx <- length(angelier1990)
+#' 
+#' par(mfrow = c(nx/2, nx/2), mar = c(4, 1, 4, 1))
+#' invisible(lapply(seq_len(nx), function(i) {
+#'   x <- angelier1990[[i]]
+#' 
 #'   # Inversion after Michael (1984)
 #'   res_michael <- slip_inversion(x, method = "michael", n_iter = 100, n = 100, res = 100)
 #'
@@ -71,7 +76,7 @@
 #'   
 #'   res_wissi <- slip_inversion(x, method = 'wissi')
 #'
-#'   stereoplot(guides = FALSE)
+#'   stereoplot(title = names(angelier1990)[i], guides = FALSE)
 #'   fault_plot(x, col = "gray80")
 #'   points(res_michael$principal_axes, pch = 1:3, col = 2)
 #'   points(res_angelier$principal_axes, pch = 1:3, col = 3)
@@ -163,7 +168,7 @@ slip_inversion <- function(x, method = c("michael", "angelier", "hansen", "yamaj
 #' 
 #' # Use Angelier examples:
 #' nx <- length(angelier1990)
-#' par(mfrow = c(1, length(angelier1990)))
+#' par(mfrow = c(2, nx/2))
 #'
 #' invisible(lapply(seq_len(nx), function(i) {
 #'   # inversion
@@ -519,7 +524,7 @@ fault_normal_matrix <- function(n) {
 #'
 #' @examples
 #' nx <- length(angelier1990)
-#' par(mfrow = c(1, nx))
+#' par(mfrow = c(2, nx/2))
 #'
 #' invisible(lapply(seq_len(nx), function(i) {
 #'   # inversion
@@ -885,11 +890,17 @@ slip_inversion_angelier <- function(x,
 #' @family stress-inversion
 #'
 #' @examples
-#' par(mfrow = c(1, length(angelier1990)))
-#' invisible(lapply(angelier1990, function(x) {
+#' set.seed(20250411)
+#' 
+#' nx <- length(angelier1990)
+#' par(mfrow = c(2, nx/2))
+#'
+#' invisible(lapply(seq_len(nx), function(i) {
+#'   # inversion
+#'   x <- angelier1990[[i]]
 #'   xpt <- Fault_PT(x)
 #'
-#'   stereoplot(guides = FALSE)
+#'   stereoplot(title = names(angelier1990)[i], guides = FALSE)
 #'   angelier(x, col = "grey")
 #'   points(xpt$p, pch = 16, cex = 0.6, col = 1)
 #'   points(xpt$t, pch = 16, cex = 0.6, col = 2)
@@ -950,10 +961,17 @@ rot_mean <- function(x) {
 #' @export
 #'
 #' @examples
-#' par(mfrow = c(1, length(angelier1990)))
-#' invisible(lapply(angelier1990, function(x) {
+#' set.seed(20250411)
+#' 
+#' nx <- length(angelier1990)
+#' par(mfrow = c(2, nx/2))
+#'
+#' invisible(lapply(seq_len(nx), function(i) {
+#'   x <- angelier1990[[i]]
 #'   xres <- slip_inversion_simple(x)
-#'   stereoplot(sub = paste0(
+#'   
+#'   stereoplot(title = names(angelier1990)[i], guides = FALSE,
+#'   sub = paste0(
 #'     "beta: ", round(xres$beta, 2),
 #'     " deg | R: ", round(xres$R, 2)
 #'   ))
