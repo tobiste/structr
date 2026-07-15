@@ -5,13 +5,17 @@
 \alias{angelier1990}
 \title{Fault-Slip Data}
 \format{
-An object of class \code{data.frame}
+a list containing four objects, each of class \code{Fault}
 }
 \usage{
 data('angelier1990')
 }
 \description{
-List of different fault-slip data from Angelier (1990)
+List of four different fault-slip data from Angelier (1990):
+}
+\details{
+\code{"AVB"} (Agia Varvara, Crete, Greece), \code{"KAM"} (Kamogawa, Boso Peninsula, Central Japan),
+\code{"MD1"} (Arroyo Montado, Baja California, Mexico), and \code{"TYM"} (Tymbaki, Crete, Greece).
 }
 \examples{
 data("angelier1990")

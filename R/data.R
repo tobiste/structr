@@ -156,7 +156,10 @@
 
 #' Fault-Slip Data
 #'
-#' List of different fault-slip data from Angelier (1990)
+#' List of four different fault-slip data from Angelier (1990):
+#' 
+#'  `"AVB"` (Agia Varvara, Crete, Greece), `"KAM"` (Kamogawa, Boso Peninsula, Central Japan), 
+#'  `"MD1"` (Arroyo Montado, Baja California, Mexico), and `"TYM"` (Tymbaki, Crete, Greece).
 #'
 #' @docType data
 #'
@@ -167,7 +170,7 @@
 #'  regional stress-III. A new rapid direct inversion method by analytical means.
 #'  Geophysical Journal International, 103(2), 363–376. \doi{10.1111/j.1365-246X.1990.tb01777.x}
 #'
-#' @format An object of class `data.frame`
+#' @format a list containing four objects, each of class `Fault`
 #' @family datasets
 #' @keywords datasets
 #' @examples
