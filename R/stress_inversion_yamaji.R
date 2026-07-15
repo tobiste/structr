@@ -266,12 +266,7 @@ slip_inversion_yamaji_sato <- function(x, weights = NULL, flip = FALSE) {
 
   # sigma_s_mean <- mean(abs(shearnorm))
 
-  SHmax <- tryCatch(
-    expr = SH_from_tensor(eigen(TR, symmetric = TRUE)$vectors),
-    error = function(e) {
-      SH(p$principal_axes[1, ], p$principal_axes[2, ], p$principal_axes[3, ], R = shape$R)
-    }
-  )
+  SHmax <- SH(p$principal_axes[1, ], p$principal_axes[2, ], p$principal_axes[3, ], R = stress_shape$R)
 
   # shearnorm <- tau2shearnorm(TR, x, friction = friction)
   # tendency <- tau2tendency(TR, x, friction = friction)
@@ -496,14 +491,9 @@ slip_inversion_yamaji_sato_boot <- function(x, weights = NULL,
   
   # SHmax ###
   SHmax_CI <- vapply(tau_boot, function(x) {
-    tryCatch(
-      expr = SH_from_tensor(x),
-      error = function(e) {
         phi <- stress_shape(x)$phi
         principal_axes <- tau2stress(x)$principal_axes
         SH(principal_axes[1, ], principal_axes[2, ], principal_axes[3, ], R = phi)
-      }
-    )
   }, FUN.VALUE = numeric(1)) |>
     # tectonicr::confidence_interval(conf.level = conf.level, axial = TRUE)
     stats::t.test(conf.level = conf.level)

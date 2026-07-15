@@ -664,7 +664,8 @@ wissi <- function(normals,
 
 #' @title Weighted Iterative Sigma-Space Inversion (WISSI)
 #'
-#' @description Combines the four classic fault slip inversion algorithms into a single
+#' @description Combines the four classic fault slip inversion algorithms 
+#' (Michael, 1983; Angelier, 1990; Yamaji and Sato, 2006; and Hansen, 2013) into a single
 #' coherent framework operating in the Yamaji-Sato 5-sphere sigma-space.
 #'
 #' @inheritParams slip_inversion_yamaji_sato
@@ -759,12 +760,7 @@ slip_inversion_wissi <- function(x, weights = NULL,
   res$principal_axes <- as.Vec3(res$principal_axes) |> Line()
   res$stress_shape <- stress_shape(res$stress_tensor)
   
-  res$SHmax <- tryCatch(
-    expr = SH_from_tensor(eigen(res$stress_tensor, symmetric = TRUE)$vectors),
-    error = function(e) {
-      SH(res$principal_axes[1, ], res$principal_axes[2, ], res$principal_axes[3, ], R = res$stress_shape$R)
-    }
-  )
+  res$SHmax <- SH(res$principal_axes[1, ], res$principal_axes[2, ], res$principal_axes[3, ], R = res$stress_shape$R)
   
   res$slips_corrected <- as.Vec3(res$slips_corrected)
   

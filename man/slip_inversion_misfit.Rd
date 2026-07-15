@@ -17,7 +17,8 @@ list. \describe{
 Ranging from 0&degree; (perfect fit) to 90° (inconsistent fit).}
 \item{\code{alpha_mean}}{numeric. The mean of \code{alpha}, the ie. the mean deviation
 of predicted from observed slip.}
-\item{\code{rup}}{numeric. "Ratio Upsilon" (RUP) parameter after Angelier (1990), ranging frm 0 (perfect fit) to 200\% (misfit). See \code{\link[=tau2rup]{tau2rup()}}.}
+\item{\code{rup}}{numeric. "Ratio Upsilon" (RUP) parameter after Angelier (1990),
+ranging frpm 0 (perfect fit) to 200\% (misfit). See \code{\link[=tau2rup]{tau2rup()}}.}
 \item{\code{quality}}{factor. Ranked misfit classification based on RUP values. See \code{\link[=tau2rup]{tau2rup()}}.}
 \item{\code{rup_mean}}{numeric. The mean RUP.}
 \item{\code{quality_summary}}{integer. Counts of faults in the RUP-based quality ranks.}

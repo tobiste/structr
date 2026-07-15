@@ -37,6 +37,7 @@ articles:
   navbar: "Faults and Stress"
   contents:
   - Faults
+  - Fault_offsets
   - Mohr_Circle
 
 - title: Other

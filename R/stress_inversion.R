@@ -11,9 +11,10 @@
 #' for a bootstrapped linear inversion after Micheal (1984), `"angelier"`
 #' for an iterative direct inversion after Angelier (1990) and Mostafa (2005), 
 #' `"yamaji"` for direct inversion using the 5d parameter space after Yamaji and Sato (2006),
-#' and `"hansen"` for direct inversion using the 9d parameter space after Hansen (2013).
-#' @param ... arguments passed to [slip_inversion_angelier()],  [slip_inversion_michael()], or
-#'  [slip_inversion_hansen()] depending on `method`.
+#' `"hansen"` for direct inversion using the 9d parameter space after Hansen (2013), and 
+#' `"wissi"` for the Weighted Iterative Sigma-Space Inversion (WISSI).
+#' @param ... arguments passed to [slip_inversion_angelier()],  [slip_inversion_michael()], [slip_inversion_yamaji_sato()], 
+#'  [slip_inversion_hansen()], or [slip_inversion_wissi()] depending on `method`.
 #'
 #' @returns a named list with the following components:
 #'  \describe{
@@ -265,14 +266,9 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, flip = F
 
     # SHmax ###
     SHmax_CI <- vapply(tau_boot, function(x) {
-      tryCatch(
-        expr = SH_from_tensor(x),
-        error = function(e) {
           phi <- stress_shape(x)$phi
           principal_axes <- tau2stress(x)$principal_axes
           SH(principal_axes[1, ], principal_axes[2, ], principal_axes[3, ], R = phi)
-        }
-      )
     }, FUN.VALUE = numeric(1)) |>
       # tectonicr::confidence_interval(conf.level = conf.level, axial = TRUE)
       stats::t.test(conf.level = conf.level)
@@ -362,12 +358,7 @@ slip_inversion_michael <- function(x, n_iter = 100L, conf.level = 0.95, flip = F
 
   # sigma_s_mean <- mean(abs(shearnorm))
 
-  SHmax <- tryCatch(
-    expr = SH_from_tensor(eigen(TR, symmetric = TRUE)$vectors),
-    error = function(e) {
-      SH(p$principal_axes[1, ], p$principal_axes[2, ], p$principal_axes[3, ], R = stress_shape$R)
-    }
-  )
+  SHmax <- SH(p$principal_axes[1, ], p$principal_axes[2, ], p$principal_axes[3, ], R = stress_shape$R)
 
   # shearnorm <- tau2shearnorm(TR, x, friction = friction)
   # tendency <- tau2tendency(TR, x, friction = friction)
@@ -637,13 +628,8 @@ slip_inversion_angelier <- function(x,
   
 
   # sigma_s_mean <- mean(abs(shearnorm))
-
-  SHmax <- tryCatch(
-    expr = SH_from_tensor(eigen(TR, symmetric = TRUE)$vectors),
-    error = function(e) {
-      SH(p$principal_axes[1, ], p$principal_axes[2, ], p$principal_axes[3, ], R = stress_shape$R)
-    }
-  )
+  SHmax <- SH(p$principal_axes[1, ], p$principal_axes[2, ], p$principal_axes[3, ], R = stress_shape$R)
+  
 
   # shearnorm <- tau2shearnorm(TR, x, friction = friction)
   # tendency <- tau2tendency(TR, x, friction = friction)
@@ -1437,7 +1423,8 @@ tau2rup <- function(tau, fault, lambda = sqrt(3) / 2) {
 # #' \item{`"beta"`}{numeric. Michael (1984)'s angles between the tangential
 # #' traction predicted by the best stress tensor and the slip vector on each plane, ranging from 0 to 90&deg;.}
 # #' \item{`"theta"`}{numeric. Angle between slip planes and \eqn{\sigma_1} ranging from 0 to 180&deg;.}
-#' \item{`rup`}{numeric. "Ratio Upsilon" (RUP) parameter after Angelier (1990), ranging frm 0 (perfect fit) to 200% (misfit). See [tau2rup()].}
+#' \item{`rup`}{numeric. "Ratio Upsilon" (RUP) parameter after Angelier (1990), 
+#' ranging frpm 0 (perfect fit) to 200% (misfit). See [tau2rup()].}
 #' \item{`quality`}{factor. Ranked misfit classification based on RUP values. See [tau2rup()].}
 #' \item{`rup_mean`}{numeric. The mean RUP.}
 #' \item{`quality_summary`}{integer. Counts of faults in the RUP-based quality ranks.}

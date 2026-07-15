@@ -20,10 +20,11 @@ of fault measurements are required, while Hansen's method requires at least 7.}
 for a bootstrapped linear inversion after Micheal (1984), \code{"angelier"}
 for an iterative direct inversion after Angelier (1990) and Mostafa (2005),
 \code{"yamaji"} for direct inversion using the 5d parameter space after Yamaji and Sato (2006),
-and \code{"hansen"} for direct inversion using the 9d parameter space after Hansen (2013).}
+\code{"hansen"} for direct inversion using the 9d parameter space after Hansen (2013), and
+\code{"wissi"} for the Weighted Iterative Sigma-Space Inversion (WISSI).}
 
-\item{...}{arguments passed to \code{\link[=slip_inversion_angelier]{slip_inversion_angelier()}},  \code{\link[=slip_inversion_michael]{slip_inversion_michael()}}, or
-\code{\link[=slip_inversion_hansen]{slip_inversion_hansen()}} depending on \code{method}.}
+\item{...}{arguments passed to \code{\link[=slip_inversion_angelier]{slip_inversion_angelier()}},  \code{\link[=slip_inversion_michael]{slip_inversion_michael()}}, \code{\link[=slip_inversion_yamaji_sato]{slip_inversion_yamaji_sato()}},
+\code{\link[=slip_inversion_hansen]{slip_inversion_hansen()}}, or \code{\link[=slip_inversion_wissi]{slip_inversion_wissi()}} depending on \code{method}.}
 }
 \value{
 a named list with the following components:
