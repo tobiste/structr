@@ -1,6 +1,6 @@
 # Fault-Slip Data
 
-List of different fault-slip data from Angelier (1990)
+List of four different fault-slip data from Angelier (1990):
 
 ## Usage
 
@@ -10,7 +10,13 @@ data('angelier1990')
 
 ## Format
 
-An object of class `data.frame`
+a list containing four objects, each of class `Fault`
+
+## Details
+
+`"AVB"` (Agia Varvara, Crete, Greece), `"KAM"` (Kamogawa, Boso
+Peninsula, Central Japan), `"MD1"` (Arroyo Montado, Baja California,
+Mexico), and `"TYM"` (Tymbaki, Crete, Greece).
 
 ## References
 
