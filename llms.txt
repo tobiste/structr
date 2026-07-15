@@ -1244,6 +1244,11 @@ MIT License
   Introduction into the Fault object, and how to perform stress
   inversions
 
+- [Fault
+  Offsets](https://tobiste.github.io/structr/articles/Fault_offsets.md):
+
+  Introduction into extracting offset components along faults
+
 - [Mohr
   Circle](https://tobiste.github.io/structr/articles/Mohr_Circle.md):
 

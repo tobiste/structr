@@ -5,6 +5,7 @@ articles:
   Basics: Basics.html
   Data_types: Data_types.html
   deformation: deformation.html
+  Fault_offsets: Fault_offsets.html
   Faults: Faults.html
   Import: Import.html
   Mohr_Circle: Mohr_Circle.html
@@ -15,7 +16,7 @@ articles:
   Statistics: Statistics.html
   Strain_Analysis: Strain_Analysis.html
   structr: structr.html
-last_built: 2026-07-14T13:02Z
+last_built: 2026-07-15T09:05Z
 urls:
   reference: https://tobiste.github.io/structr/reference
   article: https://tobiste.github.io/structr/articles

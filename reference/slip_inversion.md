@@ -29,16 +29,19 @@ slip_inversion(
   for a bootstrapped linear inversion after Micheal (1984), `"angelier"`
   for an iterative direct inversion after Angelier (1990) and Mostafa
   (2005), `"yamaji"` for direct inversion using the 5d parameter space
-  after Yamaji and Sato (2006), and `"hansen"` for direct inversion
-  using the 9d parameter space after Hansen (2013).
+  after Yamaji and Sato (2006), `"hansen"` for direct inversion using
+  the 9d parameter space after Hansen (2013), and `"wissi"` for the
+  Weighted Iterative Sigma-Space Inversion (WISSI).
 
 - ...:
 
   arguments passed to
   [`slip_inversion_angelier()`](https://tobiste.github.io/structr/reference/slip_inversion_angelier.md),
   [`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md),
+  [`slip_inversion_yamaji_sato()`](https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato.md),
+  [`slip_inversion_hansen()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen.md),
   or
-  [`slip_inversion_hansen()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen.md)
+  [`slip_inversion_wissi()`](https://tobiste.github.io/structr/reference/slip_inversion_wissi.md)
   depending on `method`.
 
 ## Value
@@ -137,7 +140,7 @@ Other stress-inversion:
 ``` r
 set.seed(20250411)
 # Use Angelier examples
-par(mfrow = c(1, length(angelier1990)))
+par(mfrow = c(1, length(angelier1990)), mar = c(4, 1, 4, 1))
 invisible(lapply(angelier1990, function(x) {
   # Inversion after Michael (1984)
   res_michael <- slip_inversion(x, method = "michael", n_iter = 100, n = 100, res = 100)
@@ -162,11 +165,13 @@ invisible(lapply(angelier1990, function(x) {
     pch = 1,
     legend = c("Michael (1984)", "Angelier (1990)", "Yamaji & Sato (2006)", 
       "Hansen (2013)", "WISSI"),
-    col = 2:6
+    col = 2:6, cex = 0.8
   )
-  legend("bottomright",
+  legend("bottom",
     pch = 1:3,
-    legend = c("S1", "S2", "S3")
+    legend = c("S1", "S2", "S3"),
+    horiz = TRUE,
+    cex = 0.8
   )
 }))
 ```

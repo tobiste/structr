@@ -1,7 +1,9 @@
 # Weighted Iterative Sigma-Space Inversion (WISSI)
 
-Combines the four classic fault slip inversion algorithms into a single
-coherent framework operating in the Yamaji-Sato 5-sphere sigma-space.
+Combines the four classic fault slip inversion algorithms (Michael,
+1983; Angelier, 1990; Yamaji and Sato, 2006; and Hansen, 2013) into a
+single coherent framework operating in the Yamaji-Sato 5-sphere
+sigma-space.
 
 ## Usage
 

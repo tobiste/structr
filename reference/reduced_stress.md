@@ -21,8 +21,9 @@ reduced_stress(fault, method = c("michael", "angelier"))
   for a bootstrapped linear inversion after Micheal (1984), `"angelier"`
   for an iterative direct inversion after Angelier (1990) and Mostafa
   (2005), `"yamaji"` for direct inversion using the 5d parameter space
-  after Yamaji and Sato (2006), and `"hansen"` for direct inversion
-  using the 9d parameter space after Hansen (2013).
+  after Yamaji and Sato (2006), `"hansen"` for direct inversion using
+  the 9d parameter space after Hansen (2013), and `"wissi"` for the
+  Weighted Iterative Sigma-Space Inversion (WISSI).
 
 ## Value
 

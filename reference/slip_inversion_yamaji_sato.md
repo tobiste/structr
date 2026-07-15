@@ -66,6 +66,7 @@ Other stress-inversion:
 ## Examples
 
 ``` r
+set.seed(20250411)
 nx <- length(angelier1990)
 par(mfrow = c(1, nx))
 

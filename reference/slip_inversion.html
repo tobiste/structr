@@ -38,6 +38,7 @@ derive the reduced stress tensor."><meta property="og:image" content="https://to
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Faults and Stress</h6></li>
     <li><a class="dropdown-item" href="../articles/Faults.html">Faults and Paleostress</a></li>
+    <li><a class="dropdown-item" href="../articles/Fault_offsets.html">Fault Offsets</a></li>
     <li><a class="dropdown-item" href="../articles/Mohr_Circle.html">Mohr Circle</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Other</h6></li>
@@ -89,12 +90,13 @@ of fault measurements are required, while Hansen's method requires at least 7.</
 for a bootstrapped linear inversion after Micheal (1984), <code>"angelier"</code>
 for an iterative direct inversion after Angelier (1990) and Mostafa (2005),
 <code>"yamaji"</code> for direct inversion using the 5d parameter space after Yamaji and Sato (2006),
-and <code>"hansen"</code> for direct inversion using the 9d parameter space after Hansen (2013).</p></dd>
+<code>"hansen"</code> for direct inversion using the 9d parameter space after Hansen (2013), and
+<code>"wissi"</code> for the Weighted Iterative Sigma-Space Inversion (WISSI).</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
-<dd><p>arguments passed to <code><a href="slip_inversion_angelier.html">slip_inversion_angelier()</a></code>,  <code><a href="slip_inversion_michael.html">slip_inversion_michael()</a></code>, or
-<code><a href="slip_inversion_hansen.html">slip_inversion_hansen()</a></code> depending on <code>method</code>.</p></dd>
+<dd><p>arguments passed to <code><a href="slip_inversion_angelier.html">slip_inversion_angelier()</a></code>,  <code><a href="slip_inversion_michael.html">slip_inversion_michael()</a></code>, <code><a href="slip_inversion_yamaji_sato.html">slip_inversion_yamaji_sato()</a></code>,
+<code><a href="slip_inversion_hansen.html">slip_inversion_hansen()</a></code>, or <code><a href="slip_inversion_wissi.html">slip_inversion_wissi()</a></code> depending on <code>method</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -168,7 +170,7 @@ https://doi.org/10.1111/j.1365-246X.2006.03188.x</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20250411</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="co"># Use Angelier examples</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">angelier1990</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span>mfrow <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">1</span>, <span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">angelier1990</span><span class="op">)</span><span class="op">)</span>, mar <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">4</span>, <span class="fl">1</span>, <span class="fl">4</span>, <span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/invisible.html" class="external-link">invisible</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/lapply.html" class="external-link">lapply</a></span><span class="op">(</span><span class="va">angelier1990</span>, <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">{</span></span></span>
 <span class="r-in"><span>  <span class="co"># Inversion after Michael (1984)</span></span></span>
 <span class="r-in"><span>  <span class="va">res_michael</span> <span class="op">&lt;-</span> <span class="fu">slip_inversion</span><span class="op">(</span><span class="va">x</span>, method <span class="op">=</span> <span class="st">"michael"</span>, n_iter <span class="op">=</span> <span class="fl">100</span>, n <span class="op">=</span> <span class="fl">100</span>, res <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
@@ -193,11 +195,13 @@ https://doi.org/10.1111/j.1365-246X.2006.03188.x</p>
 <span class="r-in"><span>    pch <span class="op">=</span> <span class="fl">1</span>,</span></span>
 <span class="r-in"><span>    legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"Michael (1984)"</span>, <span class="st">"Angelier (1990)"</span>, <span class="st">"Yamaji &amp; Sato (2006)"</span>, </span></span>
 <span class="r-in"><span>      <span class="st">"Hansen (2013)"</span>, <span class="st">"WISSI"</span><span class="op">)</span>,</span></span>
-<span class="r-in"><span>    col <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">6</span></span></span>
+<span class="r-in"><span>    col <span class="op">=</span> <span class="fl">2</span><span class="op">:</span><span class="fl">6</span>, cex <span class="op">=</span> <span class="fl">0.8</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
-<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"bottomright"</span>,</span></span>
+<span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"bottom"</span>,</span></span>
 <span class="r-in"><span>    pch <span class="op">=</span> <span class="fl">1</span><span class="op">:</span><span class="fl">3</span>,</span></span>
-<span class="r-in"><span>    legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"S1"</span>, <span class="st">"S2"</span>, <span class="st">"S3"</span><span class="op">)</span></span></span>
+<span class="r-in"><span>    legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"S1"</span>, <span class="st">"S2"</span>, <span class="st">"S3"</span><span class="op">)</span>,</span></span>
+<span class="r-in"><span>    horiz <span class="op">=</span> <span class="cn">TRUE</span>,</span></span>
+<span class="r-in"><span>    cex <span class="op">=</span> <span class="fl">0.8</span></span></span>
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="slip_inversion-1.png" alt="" width="1094" height="676"></span>
