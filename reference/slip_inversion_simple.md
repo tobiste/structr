@@ -51,10 +51,17 @@ Other stress-inversion:
 ## Examples
 
 ``` r
-par(mfrow = c(1, length(angelier1990)))
-invisible(lapply(angelier1990, function(x) {
+set.seed(20250411)
+
+nx <- length(angelier1990)
+par(mfrow = c(2, nx/2))
+
+invisible(lapply(seq_len(nx), function(i) {
+  x <- angelier1990[[i]]
   xres <- slip_inversion_simple(x)
-  stereoplot(sub = paste0(
+  
+  stereoplot(title = names(angelier1990)[i], guides = FALSE,
+  sub = paste0(
     "beta: ", round(xres$beta, 2),
     " deg | R: ", round(xres$R, 2)
   ))

@@ -150,8 +150,10 @@ Other stress-inversion:
 ## Examples
 
 ``` r
+set.seed(20250411)
+
 nx <- length(angelier1990)
-par(mfrow = c(1, nx))
+par(mfrow = c(2, nx/2))
 
 invisible(lapply(seq_len(nx), function(i) {
   # inversion

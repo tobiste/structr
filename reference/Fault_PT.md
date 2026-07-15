@@ -45,11 +45,17 @@ Other stress-inversion:
 ## Examples
 
 ``` r
-par(mfrow = c(1, length(angelier1990)))
-invisible(lapply(angelier1990, function(x) {
+set.seed(20250411)
+
+nx <- length(angelier1990)
+par(mfrow = c(2, nx/2))
+
+invisible(lapply(seq_len(nx), function(i) {
+  # inversion
+  x <- angelier1990[[i]]
   xpt <- Fault_PT(x)
 
-  stereoplot(guides = FALSE)
+  stereoplot(title = names(angelier1990)[i], guides = FALSE)
   angelier(x, col = "grey")
   points(xpt$p, pch = 16, cex = 0.6, col = 1)
   points(xpt$t, pch = 16, cex = 0.6, col = 2)

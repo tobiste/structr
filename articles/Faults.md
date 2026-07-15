@@ -433,15 +433,36 @@ above:
 
 ``` r
 
-SH(
+inv_shmax <- SH(
   S1 = inv_res$principal_axes[1, ],
   S2 = inv_res$principal_axes[2, ],
   S3 = inv_res$principal_axes[3, ],
   R = inv_res$stress_shape$R
 )
+print(inv_shmax)
 ```
 
     ## [1] 60.80844
+
+This (or any) direction can be added as compression arrows to a
+stereoplot using \[stereo_shmax()\]:
+
+``` r
+
+stereoplot(title = "Stress inversion", guides = FALSE)
+fault_plot(fault_data, col = "grey75")
+stereo_confidence(inv_res$principal_axes_CI$sigma1, col = cols[1])
+stereo_confidence(inv_res$principal_axes_CI$sigma2, col = cols[2])
+stereo_confidence(inv_res$principal_axes_CI$sigma3, col = cols[3])
+text(inv_res$principal_axes,
+  label = rownames(inv_res$principal_axes),
+  col = cols, adj = -.25
+)
+
+stereo_shmax(inv_shmax)
+```
+
+![](Faults_files/figure-html/stereo_shmax-1.png)
 
 ## References
 

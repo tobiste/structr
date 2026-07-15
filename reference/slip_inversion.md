@@ -139,9 +139,14 @@ Other stress-inversion:
 
 ``` r
 set.seed(20250411)
-# Use Angelier examples
-par(mfrow = c(1, length(angelier1990)), mar = c(4, 1, 4, 1))
-invisible(lapply(angelier1990, function(x) {
+
+# Use Angelier 1990 examples
+nx <- length(angelier1990)
+
+par(mfrow = c(nx/2, nx/2), mar = c(4, 1, 4, 1))
+invisible(lapply(seq_len(nx), function(i) {
+  x <- angelier1990[[i]]
+
   # Inversion after Michael (1984)
   res_michael <- slip_inversion(x, method = "michael", n_iter = 100, n = 100, res = 100)
 
@@ -154,7 +159,7 @@ invisible(lapply(angelier1990, function(x) {
   
   res_wissi <- slip_inversion(x, method = 'wissi')
 
-  stereoplot(guides = FALSE)
+  stereoplot(title = names(angelier1990)[i], guides = FALSE)
   fault_plot(x, col = "gray80")
   points(res_michael$principal_axes, pch = 1:3, col = 2)
   points(res_angelier$principal_axes, pch = 1:3, col = 3)
