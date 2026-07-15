@@ -171,6 +171,7 @@ yamaji_sato <- function(normals, slips, wt) {
 #' @seealso [slip_inversion_yamaji_sato_boot()]
 #'
 #' @examples
+#' set.seed(20250411)
 #' nx <- length(angelier1990)
 #' par(mfrow = c(1, nx))
 #'
@@ -266,7 +267,7 @@ slip_inversion_yamaji_sato <- function(x, weights = NULL, flip = FALSE) {
 
   # sigma_s_mean <- mean(abs(shearnorm))
 
-  SHmax <- SH(p$principal_axes[1, ], p$principal_axes[2, ], p$principal_axes[3, ], R = stress_shape$R)
+  SHmax <- SH(p$principal_axes[1, ], p$principal_axes[2, ], p$principal_axes[3, ], R = shape$R)
 
   # shearnorm <- tau2shearnorm(TR, x, friction = friction)
   # tendency <- tau2tendency(TR, x, friction = friction)

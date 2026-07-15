@@ -49,7 +49,7 @@ derive the reduced stress tensor.
 \examples{
 set.seed(20250411)
 # Use Angelier examples
-par(mfrow = c(1, length(angelier1990)))
+par(mfrow = c(1, length(angelier1990)), mar = c(4, 1, 4, 1))
 invisible(lapply(angelier1990, function(x) {
   # Inversion after Michael (1984)
   res_michael <- slip_inversion(x, method = "michael", n_iter = 100, n = 100, res = 100)
@@ -74,11 +74,13 @@ invisible(lapply(angelier1990, function(x) {
     pch = 1,
     legend = c("Michael (1984)", "Angelier (1990)", "Yamaji & Sato (2006)", 
       "Hansen (2013)", "WISSI"),
-    col = 2:6
+    col = 2:6, cex = 0.8
   )
-  legend("bottomright",
+  legend("bottom",
     pch = 1:3,
-    legend = c("S1", "S2", "S3")
+    legend = c("S1", "S2", "S3"),
+    horiz = TRUE,
+    cex = 0.8
   )
 }))
 }

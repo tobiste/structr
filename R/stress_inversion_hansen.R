@@ -310,7 +310,7 @@ slip_inversion_hansen <- function(x, flip = FALSE, type = c("9d", "6d")) {
   # Theoretically resolved shear stress on plane
   sigma_s_mean <- mean(abs(shear_stress(val_Ts[1], val_Ts[3], theta)))
 
-  SHmax <- SH(p$principal_axes[1, ], p$principal_axes[2, ], p$principal_axes[3, ], R = stress_shape$R)
+  SHmax <- SH(principal_axes[1, ], principal_axes[2, ], principal_axes[3, ], R = stress_shape$R)
 
   # shearnorm <- tau2shearnorm(Ts, x, friction = friction)
   # tendency <- tau2tendency(Ts, x, friction = friction)

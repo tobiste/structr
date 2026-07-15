@@ -23,6 +23,10 @@ set.seed(20250411)
 ```
 
 
+```{r load_functions, include=FALSE}
+library("structr")
+```
+
 The offset along a fault can be factorized into several components.
 
 ![Fig. 1: Graphic illustration of displacement components along a fault.
