@@ -11,8 +11,8 @@ stereo_point(
   lab = NULL,
   text.pos = 4,
   cex = 1,
-  upper.hem = FALSE,
-  earea = TRUE,
+  upper.hem = NULL,
+  earea = NULL,
   ...
 )
 }
@@ -31,10 +31,12 @@ where the rows are the observations and the columns are the coordinates.}
 \item{cex}{character expansion of labels}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
-hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
+hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}). Defaults to
+\code{getOption("structr.upper.hem")}.}
 
-\item{earea}{logical \code{TRUE} for Lambert equal-area projection (also "Schmidt net"; the default), or
-\code{FALSE} for meridional stereographic projection (also "Wulff net" or "Stereonet").}
+\item{earea}{logical. Projection, either \code{TRUE} for Lambert equal-area
+projection, or \code{FALSE} for meridional stereographic projection.
+Defaults to \code{getOption("structr.earea")}.}
 
 \item{...}{optional graphical parameters}
 }

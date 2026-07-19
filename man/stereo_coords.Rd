@@ -2,28 +2,33 @@
 % Please edit documentation in R/stereonet_base.R
 \name{stereo_coords}
 \alias{stereo_coords}
-\title{Stereographic Projection}
+\title{Stereographic and Equal-Area Projection}
 \usage{
-stereo_coords(az, inc, upper.hem = FALSE, earea = TRUE, r = 1)
+stereo_coords(az, inc, upper.hem = NULL, earea = NULL, radius = 1)
 }
 \arguments{
 \item{az, inc}{numeric vectors. Azimuth and Inclination in degrees.}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
-hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
+hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}). Defaults to
+\code{getOption("structr.upper.hem")}.}
 
-\item{earea}{logical \code{TRUE} for Lambert equal-area projection (also "Schmidt net"; the default), or
-\code{FALSE} for meridional stereographic projection (also "Wulff net" or "Stereonet").}
+\item{earea}{logical. Projection, either \code{TRUE} for Lambert equal-area
+projection, or \code{FALSE} for meridional stereographic projection.
+Defaults to \code{getOption("structr.earea")}.}
 
-\item{r}{numeric. Radius of circle. Default is \code{1} for unit circle.}
+\item{radius}{numeric. Radius of circle. Defaults to \code{getOption("structr.radius")}.}
 }
 \value{
 two-column vector with the transformed coordinates
 }
 \description{
-Transformation of spherical coordinates into the stereographic projection
+Transformation of spherical coordinates into the stereographic or equal-area projection
 }
 \examples{
 stereo_coords(90, 10)
 stereo_coords(90, 10, earea = TRUE, upper.hem = TRUE)
+}
+\seealso{
+\link{structr-options}
 }

@@ -31,4 +31,15 @@ if (requireNamespace("rgl", quietly = TRUE)) {
 .onLoad <- function(libname, pkgname) {
   # if (!interactive())
   options(rgl.useNULL = TRUE)
+  
+  op <- options()
+  op.structr <- list(
+    structr.upper.hem = FALSE,
+    structr.earea = TRUE,
+    structr.guides = TRUE,
+    structr.radius = 1
+  )
+  toset <- !(names(op.structr) %in% names(op))
+  if (any(toset)) options(op.structr[toset])
+  invisible()
 }

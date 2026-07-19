@@ -12,8 +12,8 @@ stereo_arrows(
   scale = 0.1,
   angle = 10,
   length = 0.1,
-  upper.hem = FALSE,
-  earea = TRUE,
+  upper.hem = NULL,
+  earea = NULL,
   ...
 )
 
@@ -43,10 +43,12 @@ of the fault's rake (see \code{\link[=Fault_from_rake]{Fault_from_rake()}} for d
 \item{length}{numeric. Length of the edges of the arrow head (in inches).}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
-hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
+hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}). Defaults to
+\code{getOption("structr.upper.hem")}.}
 
-\item{earea}{logical \code{TRUE} for Lambert equal-area projection (also "Schmidt net"; the default), or
-\code{FALSE} for meridional stereographic projection (also "Wulff net" or "Stereonet").}
+\item{earea}{logical. Projection, either \code{TRUE} for Lambert equal-area
+projection, or \code{FALSE} for meridional stereographic projection.
+Defaults to \code{getOption("structr.earea")}.}
 
 \item{...}{arguments passed to \code{\link[graphics:arrows]{graphics::arrows()}}}
 }

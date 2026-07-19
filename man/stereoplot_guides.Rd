@@ -4,15 +4,16 @@
 \alias{stereoplot_guides}
 \title{Stereoplot Gridlines}
 \usage{
-stereoplot_guides(d = 10, earea = TRUE, radius = 1, center = NULL, ...)
+stereoplot_guides(d = 10, earea = NULL, radius = NULL, center = NULL, ...)
 }
 \arguments{
 \item{d}{angle between grid lines}
 
 \item{earea}{logical. Projection, either \code{TRUE} for Lambert equal-area
-projection (the default), or \code{FALSE} for meridional stereographic projection.}
+projection, or \code{FALSE} for meridional stereographic projection.
+Defaults to \code{getOption("structr.earea")}.}
 
-\item{radius}{numeric. Radius of circle}
+\item{radius}{numeric. Radius of circle. Defaults to \code{getOption("structr.radius")}.}
 
 \item{center}{Center position of gridlines. If \code{NULL} (the default), gridlines are centered on the origin of the stereoplot. Otherwise, this should is an spherical object.}
 
@@ -29,7 +30,7 @@ plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
 stereoplot_guides(d = 15, earea = TRUE, col = "orange", rotation = 90)
 
 plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
-stereoplot_guides(d = 15, earea = FALSE, center = Line(120, 50))
+stereoplot_guides(d = 15, earea = FALSE, center = Line(120, 50), col = 'red')
 }
 \seealso{
 Other stereo-plot: 

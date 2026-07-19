@@ -905,3 +905,5 @@ transpose_list <- function(x) {
 
 # Fast implementation of outer(x, x, FUN = "*")
 nnmat <- function(n)  n %*% t(n)
+
+`%||%` <- function(a, b) if (is.null(a)) b else a

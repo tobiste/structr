@@ -38,7 +38,8 @@ will be normalized to sum to 1, so absolute value of the \code{weights} do not
 affect the result. Defaults to \code{NULL}}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
-hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
+hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}). Defaults to
+\code{getOption("structr.upper.hem")}.}
 
 \item{r}{numeric. radius of stereonet circle}
 }

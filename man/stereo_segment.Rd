@@ -7,10 +7,10 @@
 stereo_segment(
   x,
   y,
-  upper.hem = FALSE,
-  earea = TRUE,
+  upper.hem = NULL,
+  earea = NULL,
   n = 100L,
-  BALL.radius = 1,
+  radius = NULL,
   ...
 )
 }
@@ -18,14 +18,16 @@ stereo_segment(
 \item{x, y}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
-hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
+hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}). Defaults to
+\code{getOption("structr.upper.hem")}.}
 
-\item{earea}{logical \code{TRUE} for Lambert equal-area projection (also "Schmidt net"; the default), or
-\code{FALSE} for meridional stereographic projection (also "Wulff net" or "Stereonet").}
+\item{earea}{logical. Projection, either \code{TRUE} for Lambert equal-area
+projection, or \code{FALSE} for meridional stereographic projection.
+Defaults to \code{getOption("structr.earea")}.}
 
 \item{n}{integer. number of points along great-circle (100 by default)}
 
-\item{BALL.radius}{numeric size of sphere}
+\item{radius}{numeric. Radius of circle. Defaults to \code{getOption("structr.radius")}.}
 
 \item{...}{optional graphical parameters passed to \code{\link[graphics:lines]{graphics::lines()}}}
 }

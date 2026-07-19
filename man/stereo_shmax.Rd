@@ -9,7 +9,7 @@ stereo_shmax(
   ...,
   type = c("arrows", "line"),
   shmin = FALSE,
-  BALL.radius = 1,
+  radius = NULL,
   arrow.offset = 0.02,
   arrow.length = 0.1,
   arrow.head = arrow.length
@@ -24,7 +24,7 @@ stereo_shmax(
 
 \item{shmin}{logical. Whether the minimum horizontal stress should be indicated too?}
 
-\item{BALL.radius}{numeric. Radius of the stereo plot.}
+\item{radius}{numeric. Radius of circle. Defaults to \code{getOption("structr.radius")}.}
 
 \item{arrow.offset}{numeric. Offset of the arrows from the perimeter.}
 

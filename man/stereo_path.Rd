@@ -9,8 +9,8 @@ stereo_path(
   type = c("l", "p", "b"),
   add = TRUE,
   n = 5L,
-  upper.hem = FALSE,
-  earea = TRUE,
+  upper.hem = NULL,
+  earea = NULL,
   ...
 )
 }
@@ -27,10 +27,12 @@ new one should be created?}
 \item{n}{integer. Number of points to be interpolated}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
-hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
+hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}). Defaults to
+\code{getOption("structr.upper.hem")}.}
 
-\item{earea}{logical \code{TRUE} for Lambert equal-area projection (also "Schmidt net"; the default), or
-\code{FALSE} for meridional stereographic projection (also "Wulff net" or "Stereonet").}
+\item{earea}{logical. Projection, either \code{TRUE} for Lambert equal-area
+projection, or \code{FALSE} for meridional stereographic projection.
+Defaults to \code{getOption("structr.earea")}.}
 
 \item{...}{parameters passed to \code{\link[=stereo_point]{stereo_point()}}, \code{\link[=stereo_smallcircle]{stereo_smallcircle()}}, \code{\link[=stereo_greatcircle]{stereo_greatcircle()}}, or \code{\link[=fault_plot]{fault_plot()}}}
 }

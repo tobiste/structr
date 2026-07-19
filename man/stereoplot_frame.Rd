@@ -4,12 +4,12 @@
 \alias{stereoplot_frame}
 \title{Stereoplot frame}
 \usage{
-stereoplot_frame(n = 512L, radius = 1, ...)
+stereoplot_frame(n = 512L, radius = NULL, ...)
 }
 \arguments{
 \item{n}{integer. Resolution of circle's line}
 
-\item{radius}{numeric. Radius of circle}
+\item{radius}{numeric. Radius of circle. Defaults to \code{getOption("structr.radius")}.}
 
 \item{...}{optional arguments passed to \code{\link[graphics:lines]{graphics::lines()}}}
 }

@@ -14,8 +14,8 @@ stereo_pair(
   lab = NULL,
   cex = 1,
   greatcircles = TRUE,
-  upper.hem = FALSE,
-  earea = TRUE
+  upper.hem = NULL,
+  earea = NULL
 )
 }
 \arguments{
@@ -33,10 +33,12 @@ of fault measurements are required, while Hansen's method requires at least 7.}
 \item{greatcircles}{logical. Whether greatcircles are displayed (\code{TRUE}, the default) or poles to planes (\code{FALSE})}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
-hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
+hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}). Defaults to
+\code{getOption("structr.upper.hem")}.}
 
-\item{earea}{logical \code{TRUE} for Lambert equal-area projection (also "Schmidt net"; the default), or
-\code{FALSE} for meridional stereographic projection (also "Wulff net" or "Stereonet").}
+\item{earea}{logical. Projection, either \code{TRUE} for Lambert equal-area
+projection, or \code{FALSE} for meridional stereographic projection.
+Defaults to \code{getOption("structr.earea")}.}
 }
 \description{
 Visualization of pairs (planes and lines) in a stereographic projection.

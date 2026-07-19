@@ -11,11 +11,11 @@ stereo_smallcircle(
   d = 90,
   col = 1,
   N = 1000,
-  upper.hem = FALSE,
-  earea = TRUE,
+  upper.hem = NULL,
+  earea = NULL,
   lty = 1,
   lwd = 1,
-  BALL.radius = 1,
+  radius = NULL,
   ...
 )
 
@@ -32,12 +32,14 @@ where the rows are the observations and the columns are the coordinates.}
 \item{N}{integer. number of points to calculate}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
-hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
+hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}). Defaults to
+\code{getOption("structr.upper.hem")}.}
 
-\item{earea}{logical \code{TRUE} for Lambert equal-area projection (also "Schmidt net"; the default), or
-\code{FALSE} for meridional stereographic projection (also "Wulff net" or "Stereonet").}
+\item{earea}{logical. Projection, either \code{TRUE} for Lambert equal-area
+projection, or \code{FALSE} for meridional stereographic projection.
+Defaults to \code{getOption("structr.earea")}.}
 
-\item{BALL.radius}{numeric size of sphere}
+\item{radius}{numeric. Radius of circle. Defaults to \code{getOption("structr.radius")}.}
 
 \item{...}{optional graphical parameters passed to \code{\link[graphics:lines]{graphics::lines()}}}
 }

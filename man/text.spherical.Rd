@@ -4,7 +4,7 @@
 \alias{text.spherical}
 \title{Add Points to a Plot}
 \usage{
-\method{text}{spherical}(x, labels = seq_along(x[, 1]), upper.hem = FALSE, earea = TRUE, ...)
+\method{text}{spherical}(x, labels = seq_along(x[, 1]), upper.hem = NULL, earea = NULL, ...)
 }
 \arguments{
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"},
@@ -18,10 +18,12 @@ where the rows are the observations and the columns are the coordinates.}
     \code{y}, the coordinates are recycled to the length of \code{labels}.}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
-hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}, the default).}
+hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}). Defaults to
+\code{getOption("structr.upper.hem")}.}
 
-\item{earea}{logical \code{TRUE} for Lambert equal-area projection (also "Schmidt net"; the default), or
-\code{FALSE} for meridional stereographic projection (also "Wulff net" or "Stereonet").}
+\item{earea}{logical. Projection, either \code{TRUE} for Lambert equal-area
+projection, or \code{FALSE} for meridional stereographic projection.
+Defaults to \code{getOption("structr.earea")}.}
 
 \item{...}{arguments passed to \code{\link[graphics:text]{graphics::text()}}}
 }

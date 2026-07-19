@@ -9,7 +9,7 @@ stereoplot_ticks(
   angle = 10,
   labels = FALSE,
   ladj = 2 * length,
-  radius = 1,
+  radius = NULL,
   rotation = 0,
   cex = 0.8,
   ...
@@ -27,7 +27,7 @@ vector of labels to be placed next to the tick points.}
 \item{ladj}{adjustment for all labels away from origin of projection circle.
 This essentially an amount that is added to \code{radius} and the length of the ticks.}
 
-\item{radius}{numeric. Radius of circle}
+\item{radius}{numeric. Radius of circle. Defaults to \code{getOption("structr.radius")}.}
 
 \item{rotation}{numeric. Rotation (positive for counter-clockwise) of tick marks and labels}
 

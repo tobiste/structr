@@ -8,8 +8,8 @@ Adapted from the \code{RFOC} package
 }
 \usage{
 stereoplot(
-  earea = TRUE,
-  guides = TRUE,
+  earea = NULL,
+  guides = NULL,
   d = 10,
   col = "gray90",
   lwd = 0.5,
@@ -22,15 +22,16 @@ stereoplot(
   ladj = 0.05,
   centercross = TRUE,
   ticks = 90,
-  radius = 1,
+  radius = NULL,
   center = NULL
 )
 }
 \arguments{
 \item{earea}{logical. Projection, either \code{TRUE} for Lambert equal-area
-projection (the default), or \code{FALSE} for meridional stereographic projection.}
+projection, or \code{FALSE} for meridional stereographic projection.
+Defaults to \code{getOption("structr.earea")}.}
 
-\item{guides}{logical. Whether guides should be added to the plot (\code{TRUE} by default)}
+\item{guides}{logical. Whether guides should be added to the plot. Defaults to \code{getOption("structr.guides")}.}
 
 \item{d}{integer. Angle distance between guides. Default: 10}
 
@@ -57,7 +58,7 @@ This essentially an amount that is added to \code{radius} and the length of the 
 
 \item{ticks}{integer. Angle between ticks. if \code{NULL} (the default), no ticks are drawn.}
 
-\item{radius}{numeric. Radius of circle}
+\item{radius}{numeric. Radius of circle. Defaults to \code{getOption("structr.radius")}.}
 
 \item{center}{An object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}
 specifying the center of the projection If \code{NULL} (the default), the center
@@ -75,6 +76,8 @@ stereoplot(ticks = 30, title = "title", sub = "subtitle", border.col = "purple",
 stereoplot(center = Line(120, 50))
 }
 \seealso{
+\link{structr-options}
+
 Other stereo-plot: 
 \code{\link{arrows}()},
 \code{\link{fault-plot}},
