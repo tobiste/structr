@@ -8,10 +8,10 @@ Plots the great-circle segment between two vectors
 stereo_segment(
   x,
   y,
-  upper.hem = FALSE,
-  earea = TRUE,
+  upper.hem = NULL,
+  earea = NULL,
   n = 100L,
-  BALL.radius = 1,
+  radius = NULL,
   ...
 )
 ```
@@ -25,21 +25,22 @@ stereo_segment(
 - upper.hem:
 
   logical. Whether the projection is shown for upper hemisphere (`TRUE`)
-  or lower hemisphere (`FALSE`, the default).
+  or lower hemisphere (`FALSE`). Defaults to
+  `getOption("structr.upper.hem")`.
 
 - earea:
 
-  logical `TRUE` for Lambert equal-area projection (also "Schmidt net";
-  the default), or `FALSE` for meridional stereographic projection (also
-  "Wulff net" or "Stereonet").
+  logical. Projection, either `TRUE` for Lambert equal-area projection,
+  or `FALSE` for meridional stereographic projection. Defaults to
+  `getOption("structr.earea")`.
 
 - n:
 
   integer. number of points along great-circle (100 by default)
 
-- BALL.radius:
+- radius:
 
-  numeric size of sphere
+  numeric. Radius of circle. Defaults to `getOption("structr.radius")`.
 
 - ...:
 

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9012</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9013</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -73,8 +73,8 @@
 <span>  lab <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  cex <span class="op">=</span> <span class="fl">1</span>,</span>
 <span>  greatcircles <span class="op">=</span> <span class="cn">TRUE</span>,</span>
-<span>  upper.hem <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  earea <span class="op">=</span> <span class="cn">TRUE</span></span>
+<span>  upper.hem <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  earea <span class="op">=</span> <span class="cn">NULL</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
 
@@ -107,12 +107,14 @@ of fault measurements are required, while Hansen's method requires at least 7.</
 
 <dt id="arg-upper-hem">upper.hem<a class="anchor" aria-label="anchor" href="#arg-upper-hem"></a></dt>
 <dd><p>logical. Whether the projection is shown for upper
-hemisphere (<code>TRUE</code>) or lower hemisphere (<code>FALSE</code>, the default).</p></dd>
+hemisphere (<code>TRUE</code>) or lower hemisphere (<code>FALSE</code>). Defaults to
+<code>getOption("structr.upper.hem")</code>.</p></dd>
 
 
 <dt id="arg-earea">earea<a class="anchor" aria-label="anchor" href="#arg-earea"></a></dt>
-<dd><p>logical <code>TRUE</code> for Lambert equal-area projection (also "Schmidt net"; the default), or
-<code>FALSE</code> for meridional stereographic projection (also "Wulff net" or "Stereonet").</p></dd>
+<dd><p>logical. Projection, either <code>TRUE</code> for Lambert equal-area
+projection, or <code>FALSE</code> for meridional stereographic projection.
+Defaults to <code>getOption("structr.earea")</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">

@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9012</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9013</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -64,7 +64,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">stereo_lines</span><span class="op">(</span><span class="va">x</span>, upper.hem <span class="op">=</span> <span class="cn">FALSE</span>, earea <span class="op">=</span> <span class="cn">TRUE</span>, BALL.radius <span class="op">=</span> <span class="fl">1</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">stereo_lines</span><span class="op">(</span><span class="va">x</span>, upper.hem <span class="op">=</span> <span class="cn">NULL</span>, earea <span class="op">=</span> <span class="cn">NULL</span>, radius <span class="op">=</span> <span class="cn">NULL</span>, <span class="va">...</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -78,16 +78,18 @@ where the rows are the observations and the columns are the coordinates.</p></dd
 
 <dt id="arg-upper-hem">upper.hem<a class="anchor" aria-label="anchor" href="#arg-upper-hem"></a></dt>
 <dd><p>logical. Whether the projection is shown for upper
-hemisphere (<code>TRUE</code>) or lower hemisphere (<code>FALSE</code>, the default).</p></dd>
+hemisphere (<code>TRUE</code>) or lower hemisphere (<code>FALSE</code>). Defaults to
+<code>getOption("structr.upper.hem")</code>.</p></dd>
 
 
 <dt id="arg-earea">earea<a class="anchor" aria-label="anchor" href="#arg-earea"></a></dt>
-<dd><p>logical <code>TRUE</code> for Lambert equal-area projection (also "Schmidt net"; the default), or
-<code>FALSE</code> for meridional stereographic projection (also "Wulff net" or "Stereonet").</p></dd>
+<dd><p>logical. Projection, either <code>TRUE</code> for Lambert equal-area
+projection, or <code>FALSE</code> for meridional stereographic projection.
+Defaults to <code>getOption("structr.earea")</code>.</p></dd>
 
 
-<dt id="arg-ball-radius">BALL.radius<a class="anchor" aria-label="anchor" href="#arg-ball-radius"></a></dt>
-<dd><p>numeric size of sphere</p></dd>
+<dt id="arg-radius">radius<a class="anchor" aria-label="anchor" href="#arg-radius"></a></dt>
+<dd><p>numeric. Radius of circle. Defaults to <code>getOption("structr.radius")</code>.</p></dd>
 
 
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>

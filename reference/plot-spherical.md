@@ -6,22 +6,22 @@ Plot Spherical Objects
 
 ``` r
 # S3 method for class 'Line'
-plot(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...)
+plot(x, upper.hem = NULL, earea = NULL, grid.params = list(), ...)
 
 # S3 method for class 'Vec3'
-plot(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...)
+plot(x, upper.hem = NULL, earea = NULL, grid.params = list(), ...)
 
 # S3 method for class 'Ray'
-plot(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), pch = NULL, ...)
+plot(x, upper.hem = NULL, earea = NULL, grid.params = list(), pch = NULL, ...)
 
 # S3 method for class 'Plane'
-plot(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...)
+plot(x, upper.hem = NULL, earea = NULL, grid.params = list(), ...)
 
 # S3 method for class 'Pair'
-plot(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...)
+plot(x, upper.hem = NULL, earea = NULL, grid.params = list(), ...)
 
 # S3 method for class 'Fault'
-plot(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...)
+plot(x, upper.hem = NULL, earea = NULL, grid.params = list(), ...)
 ```
 
 ## Arguments
@@ -35,13 +35,14 @@ plot(x, upper.hem = FALSE, earea = TRUE, grid.params = list(), ...)
 - upper.hem:
 
   logical. Whether the projection is shown for upper hemisphere (`TRUE`)
-  or lower hemisphere (`FALSE`, the default).
+  or lower hemisphere (`FALSE`). Defaults to
+  `getOption("structr.upper.hem")`.
 
 - earea:
 
-  logical `TRUE` for Lambert equal-area projection (also "Schmidt net";
-  the default), or `FALSE` for meridional stereographic projection (also
-  "Wulff net" or "Stereonet").
+  logical. Projection, either `TRUE` for Lambert equal-area projection,
+  or `FALSE` for meridional stereographic projection. Defaults to
+  `getOption("structr.earea")`.
 
 - grid.params:
 

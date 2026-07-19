@@ -13,9 +13,9 @@ stereo_confidence(
   col = par("col"),
   cex = par("cex"),
   pch = 16,
-  upper.hem = FALSE,
-  earea = TRUE,
-  BALL.radius = 1,
+  upper.hem = NULL,
+  earea = NULL,
+  radius = NULL,
   ...
 )
 ```
@@ -48,17 +48,18 @@ stereo_confidence(
 - upper.hem:
 
   logical. Whether the projection is shown for upper hemisphere (`TRUE`)
-  or lower hemisphere (`FALSE`, the default).
+  or lower hemisphere (`FALSE`). Defaults to
+  `getOption("structr.upper.hem")`.
 
 - earea:
 
-  logical `TRUE` for Lambert equal-area projection (also "Schmidt net";
-  the default), or `FALSE` for meridional stereographic projection (also
-  "Wulff net" or "Stereonet").
+  logical. Projection, either `TRUE` for Lambert equal-area projection,
+  or `FALSE` for meridional stereographic projection. Defaults to
+  `getOption("structr.earea")`.
 
-- BALL.radius:
+- radius:
 
-  numeric size of sphere
+  numeric. Radius of circle. Defaults to `getOption("structr.radius")`.
 
 - ...:
 

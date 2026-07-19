@@ -6,7 +6,7 @@ stereoplot.
 ## Usage
 
 ``` r
-stereoplot_guides(d = 10, earea = TRUE, radius = 1, center = NULL, ...)
+stereoplot_guides(d = 10, earea = NULL, radius = NULL, center = NULL, ...)
 ```
 
 ## Arguments
@@ -17,12 +17,13 @@ stereoplot_guides(d = 10, earea = TRUE, radius = 1, center = NULL, ...)
 
 - earea:
 
-  logical. Projection, either `TRUE` for Lambert equal-area projection
-  (the default), or `FALSE` for meridional stereographic projection.
+  logical. Projection, either `TRUE` for Lambert equal-area projection,
+  or `FALSE` for meridional stereographic projection. Defaults to
+  `getOption("structr.earea")`.
 
 - radius:
 
-  numeric. Radius of circle
+  numeric. Radius of circle. Defaults to `getOption("structr.radius")`.
 
 - center:
 
@@ -65,5 +66,5 @@ stereoplot_guides(d = 15, earea = TRUE, col = "orange", rotation = 90)
 
 
 plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
-stereoplot_guides(d = 15, earea = FALSE, center = Line(120, 50))
+stereoplot_guides(d = 15, earea = FALSE, center = Line(120, 50), col = 'red')
 ```

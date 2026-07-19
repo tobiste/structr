@@ -509,7 +509,7 @@
   : Plot Spherical Densities in a Spherical Projection
 
 - [`stereo_coords()`](https://tobiste.github.io/structr/reference/stereo_coords.md)
-  : Stereographic Projection
+  : Stereographic and Equal-Area Projection
 
 - [`stereo_lines()`](https://tobiste.github.io/structr/reference/stereo_lines.md)
   : Lines in a Stereoplot
@@ -572,6 +572,9 @@
 
 - [`strikeslip_kinematics()`](https://tobiste.github.io/structr/reference/strikeslip_kinematics.md)
   : Strike-slip Kinematics
+
+- [`structr-options`](https://tobiste.github.io/structr/reference/structr-options.md)
+  : Global projection options for yourpkg
 
 - [`structr`](https://tobiste.github.io/structr/reference/structr.md)
   [`structr-package`](https://tobiste.github.io/structr/reference/structr.md)

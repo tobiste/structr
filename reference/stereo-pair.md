@@ -14,8 +14,8 @@ stereo_pair(
   lab = NULL,
   cex = 1,
   greatcircles = TRUE,
-  upper.hem = FALSE,
-  earea = TRUE
+  upper.hem = NULL,
+  earea = NULL
 )
 ```
 
@@ -49,13 +49,14 @@ stereo_pair(
 - upper.hem:
 
   logical. Whether the projection is shown for upper hemisphere (`TRUE`)
-  or lower hemisphere (`FALSE`, the default).
+  or lower hemisphere (`FALSE`). Defaults to
+  `getOption("structr.upper.hem")`.
 
 - earea:
 
-  logical `TRUE` for Lambert equal-area projection (also "Schmidt net";
-  the default), or `FALSE` for meridional stereographic projection (also
-  "Wulff net" or "Stereonet").
+  logical. Projection, either `TRUE` for Lambert equal-area projection,
+  or `FALSE` for meridional stereographic projection. Defaults to
+  `getOption("structr.earea")`.
 
 ## Note
 

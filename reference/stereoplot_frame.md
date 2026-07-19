@@ -5,7 +5,7 @@ Adds a (primitive) circle with given radius to an existing plot
 ## Usage
 
 ``` r
-stereoplot_frame(n = 512L, radius = 1, ...)
+stereoplot_frame(n = 512L, radius = NULL, ...)
 ```
 
 ## Arguments
@@ -16,7 +16,7 @@ stereoplot_frame(n = 512L, radius = 1, ...)
 
 - radius:
 
-  numeric. Radius of circle
+  numeric. Radius of circle. Defaults to `getOption("structr.radius")`.
 
 - ...:
 

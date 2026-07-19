@@ -7,8 +7,8 @@ Lambert equal-area projections (Schmidt).
 
 ``` r
 stereoplot(
-  earea = TRUE,
-  guides = TRUE,
+  earea = NULL,
+  guides = NULL,
   d = 10,
   col = "gray90",
   lwd = 0.5,
@@ -21,7 +21,7 @@ stereoplot(
   ladj = 0.05,
   centercross = TRUE,
   ticks = 90,
-  radius = 1,
+  radius = NULL,
   center = NULL
 )
 ```
@@ -34,13 +34,14 @@ Adapted from the `RFOC` package
 
 - earea:
 
-  logical. Projection, either `TRUE` for Lambert equal-area projection
-  (the default), or `FALSE` for meridional stereographic projection.
+  logical. Projection, either `TRUE` for Lambert equal-area projection,
+  or `FALSE` for meridional stereographic projection. Defaults to
+  `getOption("structr.earea")`.
 
 - guides:
 
-  logical. Whether guides should be added to the plot (`TRUE` by
-  default)
+  logical. Whether guides should be added to the plot. Defaults to
+  `getOption("structr.guides")`.
 
 - d:
 
@@ -94,7 +95,7 @@ Adapted from the `RFOC` package
 
 - radius:
 
-  numeric. Radius of circle
+  numeric. Radius of circle. Defaults to `getOption("structr.radius")`.
 
 - center:
 
@@ -103,6 +104,8 @@ Adapted from the `RFOC` package
   center is at the origin of the plot.
 
 ## See also
+
+[structr-options](https://tobiste.github.io/structr/reference/structr-options.md)
 
 Other stereo-plot:
 [`arrows()`](https://tobiste.github.io/structr/reference/arrows.md),

@@ -10,7 +10,7 @@ stereoplot_ticks(
   angle = 10,
   labels = FALSE,
   ladj = 2 * length,
-  radius = 1,
+  radius = NULL,
   rotation = 0,
   cex = 0.8,
   ...
@@ -41,7 +41,7 @@ stereoplot_ticks(
 
 - radius:
 
-  numeric. Radius of circle
+  numeric. Radius of circle. Defaults to `getOption("structr.radius")`.
 
 - rotation:
 

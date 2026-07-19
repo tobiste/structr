@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9012</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9013</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,7 +69,7 @@
 <span>  angle <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  labels <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  ladj <span class="op">=</span> <span class="fl">2</span> <span class="op">*</span> <span class="va">length</span>,</span>
-<span>  radius <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  radius <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  rotation <span class="op">=</span> <span class="fl">0</span>,</span>
 <span>  cex <span class="op">=</span> <span class="fl">0.8</span>,</span>
 <span>  <span class="va">...</span></span>
@@ -100,7 +100,7 @@ This essentially an amount that is added to <code>radius</code> and the length o
 
 
 <dt id="arg-radius">radius<a class="anchor" aria-label="anchor" href="#arg-radius"></a></dt>
-<dd><p>numeric. Radius of circle</p></dd>
+<dd><p>numeric. Radius of circle. Defaults to <code>getOption("structr.radius")</code>.</p></dd>
 
 
 <dt id="arg-rotation">rotation<a class="anchor" aria-label="anchor" href="#arg-rotation"></a></dt>

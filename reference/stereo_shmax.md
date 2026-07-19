@@ -10,7 +10,7 @@ stereo_shmax(
   ...,
   type = c("arrows", "line"),
   shmin = FALSE,
-  BALL.radius = 1,
+  radius = NULL,
   arrow.offset = 0.02,
   arrow.length = 0.1,
   arrow.head = arrow.length
@@ -39,9 +39,9 @@ stereo_shmax(
   logical. Whether the minimum horizontal stress should be indicated
   too?
 
-- BALL.radius:
+- radius:
 
-  numeric. Radius of the stereo plot.
+  numeric. Radius of circle. Defaults to `getOption("structr.radius")`.
 
 - arrow.offset:
 

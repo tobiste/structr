@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9012</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9013</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -69,7 +69,7 @@
 <span>  <span class="va">...</span>,</span>
 <span>  type <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"arrows"</span>, <span class="st">"line"</span><span class="op">)</span>,</span>
 <span>  shmin <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  BALL.radius <span class="op">=</span> <span class="fl">1</span>,</span>
+<span>  radius <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  arrow.offset <span class="op">=</span> <span class="fl">0.02</span>,</span>
 <span>  arrow.length <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  arrow.head <span class="op">=</span> <span class="va">arrow.length</span></span>
@@ -96,8 +96,8 @@
 <dd><p>logical. Whether the minimum horizontal stress should be indicated too?</p></dd>
 
 
-<dt id="arg-ball-radius">BALL.radius<a class="anchor" aria-label="anchor" href="#arg-ball-radius"></a></dt>
-<dd><p>numeric. Radius of the stereo plot.</p></dd>
+<dt id="arg-radius">radius<a class="anchor" aria-label="anchor" href="#arg-radius"></a></dt>
+<dd><p>numeric. Radius of circle. Defaults to <code>getOption("structr.radius")</code>.</p></dd>
 
 
 <dt id="arg-arrow-offset">arrow.offset<a class="anchor" aria-label="anchor" href="#arg-arrow-offset"></a></dt>
