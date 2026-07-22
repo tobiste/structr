@@ -35,8 +35,10 @@ slip_inversion_hansen(x, flip = FALSE, type = c("9d", "6d"))
 list. See
 [`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md)
 for output description. If `type == '9d`, additional outputs are the
-vorticity axis (`"vorticity_axis"`, a `Vec3` object) and the magnitude
-of vorticity (`"vorticity_mag"`, a numeric).
+second moment tensor `M`, the inverted slip tensor `Ti`, and its
+antisymmetrial part `Ta`, the vorticity axis (`"vorticity_axis"`, a
+`Vec3` object) and the magnitude of vorticity (`"vorticity_mag"`, a
+numeric).
 
 list
 
