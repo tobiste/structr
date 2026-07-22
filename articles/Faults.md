@@ -5,6 +5,18 @@ can extract paleo-stress directions from fault slip data.
 
 ## Fault objects
 
+``` r
+
+# load the structr package
+library("structr")
+
+# set up some plotting defaults
+options(
+  structr.upper.hem = FALSE, structr.earea = TRUE, 
+  structr.guides = FALSE
+  )
+```
+
 A fault is given by the orientation of its plane (dip direction and dip
 angle), the orientation of the slip (e.g. measured from striae, given in
 azimuth and plunge angles), and the sense of displacement:
@@ -190,7 +202,7 @@ Plot the results
 
 ``` r
 
-stereoplot(title = "PT results", guides = FALSE)
+stereoplot(title = "PT results")
 fault_plot(my_fault2)
 points(my_fault2_PT$p, col = "#B63679FF", pch = 16)
 points(my_fault2_PT$t, col = "#FEC287FF", pch = 18)
@@ -244,7 +256,7 @@ First we load some example data (here the data from Angelier, 1990)[^7]
 
 fault_data <- angelier1990$TYM
 
-stereoplot(title = "Test data", guides = FALSE)
+stereoplot(title = "Test data")
 fault_plot(fault_data, col = "grey30")
 ```
 
@@ -295,7 +307,7 @@ functions from {structr}
 
 cols <- c("#000004FF", "#B63679FF", "#FEC287FF")
 
-stereoplot(title = "Stress inversion", guides = FALSE)
+stereoplot(title = "Stress inversion")
 fault_plot(fault_data, col = "grey75")
 stereo_confidence(inv_res$principal_axes_CI$sigma1, col = cols[1])
 stereo_confidence(inv_res$principal_axes_CI$sigma2, col = cols[2])
@@ -341,8 +353,7 @@ alpha <- inv_res$misfit$alpha
 
 stereoplot(
   title = "Deviation",
-  sub = bquote(bar(alpha) == .(round(inv_res$alpha)) * degree),
-  guides = FALSE
+  sub = bquote(bar(alpha) == .(round(inv_res$alpha)) * degree)
 )
 
 fault_plot(fault_data, col = assign_col(alpha))
@@ -449,7 +460,7 @@ stereoplot using \[stereo_shmax()\]:
 
 ``` r
 
-stereoplot(title = "Stress inversion", guides = FALSE)
+stereoplot(title = "Stress inversion")
 fault_plot(fault_data, col = "grey75")
 stereo_confidence(inv_res$principal_axes_CI$sigma1, col = cols[1])
 stereo_confidence(inv_res$principal_axes_CI$sigma2, col = cols[2])

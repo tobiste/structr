@@ -16,19 +16,20 @@ rotate_stereogrid(x, d = 10, col = "gray90", lwd = 0.5, lty = 1, ...)
 
 - d:
 
-  integer. Angle distance between guides. Default: 10
+  integer. Angle distance between guides. Defaults to
+  `getOption("structr.d")`.
 
 - col:
 
-  Color of guide lines
+  Color of guide lines. Defaults to `getOption("structr.col")`.
 
 - lwd:
 
-  Width of guide lines
+  Width of guide lines. Defaults to `getOption("structr.lwd")`.
 
 - lty:
 
-  Type of guide lines
+  Type of guide lines. Defaults to `getOption("structr.lty")`.
 
 - ...:
 

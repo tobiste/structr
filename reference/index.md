@@ -574,7 +574,7 @@
   : Strike-slip Kinematics
 
 - [`structr-options`](https://tobiste.github.io/structr/reference/structr-options.md)
-  : Global projection options for yourpkg
+  : Global projection options for structr
 
 - [`structr`](https://tobiste.github.io/structr/reference/structr.md)
   [`structr-package`](https://tobiste.github.io/structr/reference/structr.md)

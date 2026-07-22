@@ -9,18 +9,18 @@ Lambert equal-area projections (Schmidt).
 stereoplot(
   earea = NULL,
   guides = NULL,
-  d = 10,
-  col = "gray90",
-  lwd = 0.5,
-  lty = 1,
-  border.col = "black",
+  d = NULL,
+  col = NULL,
+  lwd = NULL,
+  lty = NULL,
+  border.col = NULL,
   title = NULL,
   sub = NULL,
-  origin.text = "N",
-  labels = FALSE,
-  ladj = 0.05,
-  centercross = TRUE,
-  ticks = 90,
+  origin.text = NULL,
+  labels = NULL,
+  ladj = NULL,
+  centercross = NULL,
+  ticks = NULL,
   radius = NULL,
   center = NULL
 )
@@ -45,24 +45,25 @@ Adapted from the `RFOC` package
 
 - d:
 
-  integer. Angle distance between guides. Default: 10
+  integer. Angle distance between guides. Defaults to
+  `getOption("structr.d")`.
 
 - col:
 
-  Color of guide lines
+  Color of guide lines. Defaults to `getOption("structr.col")`.
 
 - lwd:
 
-  Width of guide lines
+  Width of guide lines. Defaults to `getOption("structr.lwd")`.
 
 - lty:
 
-  Type of guide lines
+  Type of guide lines. Defaults to `getOption("structr.lty")`.
 
 - border.col:
 
   color of primitive circle (frame), center-cross and ticks of the
-  stereo plot
+  stereo plot. Defaults to `getOption("structr.border.col")`.
 
 - title, sub:
 
@@ -70,28 +71,31 @@ Adapted from the `RFOC` package
 
 - origin.text:
 
-  character. Text at origin of plot
+  character. Text at origin of plot. Defaults to
+  `getOption("structr.origin.text")`.
 
 - labels:
 
   this can either be a logical value specifying whether (numerical)
   annotations are to be made next to the tick marks, or a character or
   expression vector of labels to be placed next to the tick points.
+  Defaults to `getOption("structr.labels")`.
 
 - ladj:
 
   adjustment for all labels away from origin of projection circle. This
   essentially an amount that is added to `radius` and the length of the
-  ticks.
+  ticks. Defaults to `getOption("structr.ladj")`.
 
 - centercross:
 
-  logical. Whether a center cross should be added (`TRUE` by default)
+  logical. Whether a center cross should be added (`TRUE` by default).
+  Defaults to `getOption("structr.centercross")`.
 
 - ticks:
 
   integer. Angle between ticks. if `NULL` (the default), no ticks are
-  drawn.
+  drawn. Defaults to `getOption("structr.ticks")`.
 
 - radius:
 

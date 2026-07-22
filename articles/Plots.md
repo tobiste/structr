@@ -60,6 +60,14 @@ title(main = "Example data", sub = "Equal angle stereographic, upper hemisphere 
 ![Diagram showing the equal-angle stereographic projection of some
 example data](Plots_files/figure-html/stereo_eangle-1.png)
 
+> Global plotting settings can be defined using `option()`. For example
+> to turn off guides:
+
+``` r
+
+options(structr.guides = FALSE)
+```
+
 ### Great and small circles
 
 Great and small circles can be added using the
@@ -70,7 +78,7 @@ Adding great circles for the first 10 vectors in planes:
 
 ``` r
 
-stereoplot(guides = FALSE) # turn of guides for better visibility
+stereoplot()
 lines(planes[1:10, ], col = "lightgrey", lty = 1)
 points(planes[1:10, ], col = "#000004", pch = 1, cex = .5)
 ```
@@ -84,7 +92,7 @@ To plot a small circle with, e.g., a 10° radius, you need to specify the
 
 ``` r
 
-stereoplot(guides = FALSE)
+stereoplot()
 points(lines[1:5, ], col = "#B63679", pch = 19, cex = .5)
 lines(lines[1:5, ], ang = 10, col = "#B63679")
 ```
@@ -201,7 +209,7 @@ measurements have different accuracies.
 example_planes_df$quality <- ifelse(is.na(example_planes_df$quality), 6, example_planes_df$quality) # replacing NA values with 6
 plane_weightings <- 6 / example_planes_df$quality
 
-stereoplot(guides = FALSE)
+stereoplot()
 points(planes, col = "grey", pch = 16, cex = .5)
 contour(planes, add = TRUE, density.params = list(weights = plane_weightings))
 ```
@@ -223,7 +231,7 @@ for more information.
 
 ``` r
 
-stereoplot(guides = FALSE)
+stereoplot()
 points(planes, col = "grey", pch = 16, cex = .5)
 contourf(planes, add = TRUE, density.params = list(weights = plane_weightings))
 ```
