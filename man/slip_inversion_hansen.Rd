@@ -18,6 +18,7 @@ sigma 1 and 3 will be flipped.}
 \value{
 list. See \code{\link[=slip_inversion_michael]{slip_inversion_michael()}} for output description.
 If \verb{type == '9d}, additional outputs are
+the second moment tensor \code{M}, the inverted slip tensor \code{Ti}, and its antisymmetrial part \code{Ta},
 the vorticity axis (\code{"vorticity_axis"}, a \code{Vec3} object) and the magnitude of
 vorticity (\code{"vorticity_mag"}, a numeric).
 

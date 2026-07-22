@@ -17,6 +17,7 @@
 #'
 #' @returns list. See [slip_inversion_michael()] for output description. 
 #' If `type == '9d`, additional outputs are
+#' the second moment tensor `M`, the inverted slip tensor `Ti`, and its antisymmetrial part `Ta`,
 #' the vorticity axis (`"vorticity_axis"`, a `Vec3` object) and the magnitude of
 #' vorticity (`"vorticity_mag"`, a numeric).
 #' 
@@ -335,10 +336,14 @@ slip_inversion_hansen <- function(x, flip = FALSE, type = c("9d", "6d")) {
     append(res, list(
       vorticity_mag = w_mag,
       vorticity_axis = w,
+      M = M,
+      Ti = T_mat,
+      #Ts = Ts,
+      Ta = Ta,
       method = "hansen (9d)"
     ))
   } else {
-    append(res, list(method = "hansen (6d)"))
+    append(res, list(M = M6, method = "hansen (6d)"))
   }
 }
 
