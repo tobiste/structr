@@ -24,7 +24,7 @@ set.seed(20250411)
 
 ## Fault objects
 
-```{r setup, warning=FALSE, message=FALSE}
+```{r load, warning=FALSE, message=FALSE}
 # load the structr package
 library("structr")
 
