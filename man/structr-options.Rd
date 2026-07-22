@@ -2,12 +2,14 @@
 % Please edit documentation in R/structr-package.R
 \name{structr-options}
 \alias{structr-options}
-\title{Global projection options for yourpkg}
+\title{Global projection options for structr}
 \description{
-\code{structr.earea} and \code{structr.upper.hem} control the default hemisphere
+Plotting defaults for stereographic/equal-area projections.
+For example, \code{structr.earea} and \code{structr.upper.hem} control the default hemisphere
 projection used across plotting and labeling functions
-(\code{stereoplot()}, \code{plot.Vec3()}, \code{text.spherical()}, ...). Set them with
-\code{options()} to change the default for an entire session; any function
+(\code{stereoplot()}, \code{plot.Vec3()}, \code{text.spherical()}, ...).
+
+Set them with \code{options()} to change the default for an entire session; any function
 argument passed explicitly overrides the global default for that call.
 
 \describe{
@@ -15,12 +17,27 @@ argument passed explicitly overrides the global default for that call.
 equal-angle (\code{FALSE}) projection.}
 \item{\code{structr.upper.hem}}{Logical. Upper (\code{TRUE}) vs. lower
 hemisphere (\code{FALSE}, default).}
-\item{\code{structr.guides}}{Logical. logical. Whether guides should be added to the plot (\code{TRUE} by default)}
-\item{\code{structr.radius}}{numeric. Radius of the projection circle. \code{1} by default.}
+\item{\code{structr.guides}}{Logical. logical. Whether guides should be added to the plot (\code{TRUE} by default).}
+\item{\code{structr.d}}{integer. Angle distance between guides. Default: \code{10}}
+\item{\code{structr.col}}{Color of guide lines. \code{"gray90"} by default.}
+\item{\code{structr.lwd}}{Width of guide lines. \code{0.5} by default.}
+\item{\code{structr.lty}}{Type of guide lines. \code{1} by default.}
+\item{\code{structr.border.col}}{Color of primitive circle (frame), center-cross and ticks of the stereo plot. \code{"black"} by default.}
+\item{\code{structr.centercross}}{Logical. Whether a center cross should be added (\code{TRUE} by default).}
+\item{\code{structr.ticks}}{Integer. Angle between ticks. if \code{NULL} (the default), no ticks are drawn.}
+\item{\code{structr.origin.text}}{character. Text at origin of plot. \code{"N"} by default.}
+\item{\code{structr.labels}}{this can either be a logical value specifying whether (numerical)
+annotations are to be made next to the tick marks, or a character or expression}
+\item{\code{structr.ladj}}{adjustment for all labels away from origin of projection circle.
+This essentially an amount that is added to \code{radius} and the length of the ticks.}
+\item{\code{structr.radius}}{Numeric. Radius of the projection circle. \code{1} by default.}
 }
 }
 \examples{
 old <- options(structr.upper.hem = TRUE)
 # ... plotting calls now default to upper hemisphere
 options(old)  # restore
+}
+\seealso{
+\code{\link[=stereoplot]{stereoplot()}}
 }

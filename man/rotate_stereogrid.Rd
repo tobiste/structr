@@ -9,13 +9,13 @@ rotate_stereogrid(x, d = 10, col = "gray90", lwd = 0.5, lty = 1, ...)
 \arguments{
 \item{x}{center position of grid lines.}
 
-\item{d}{integer. Angle distance between guides. Default: 10}
+\item{d}{integer. Angle distance between guides. Defaults to \code{getOption("structr.d")}.}
 
-\item{col}{Color of guide lines}
+\item{col}{Color of guide lines. Defaults to \code{getOption("structr.col")}.}
 
-\item{lwd}{Width of guide lines}
+\item{lwd}{Width of guide lines. Defaults to \code{getOption("structr.lwd")}.}
 
-\item{lty}{Type of guide lines}
+\item{lty}{Type of guide lines. Defaults to \code{getOption("structr.lty")}.}
 
 \item{...}{arguments passed to \code{\link[graphics:lines]{graphics::lines()}}}
 }

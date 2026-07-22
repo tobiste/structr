@@ -37,6 +37,16 @@ if (requireNamespace("rgl", quietly = TRUE)) {
     structr.upper.hem = FALSE,
     structr.earea = TRUE,
     structr.guides = TRUE,
+    structr.d = 10, 
+    structr.col = "gray90",
+    structr.lwd = 0.5, 
+    structr.lty = 1, 
+    structr.border.col = "black", 
+    structr.origin.text = "N", 
+    structr.labels = FALSE, 
+    structr.ladj = 0.05,
+    structr.centercross = TRUE, 
+    structr.ticks = 90,
     structr.radius = 1
   )
   toset <- !(names(op.structr) %in% names(op))

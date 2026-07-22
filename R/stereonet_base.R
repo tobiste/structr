@@ -510,20 +510,23 @@ stereoplot_frame <- function(n = 512L, radius = NULL, ...) {
 #' projection, or `FALSE` for meridional stereographic projection.
 #'  Defaults to `getOption("structr.earea")`.
 #' @param guides logical. Whether guides should be added to the plot. Defaults to `getOption("structr.guides")`.
-#' @param d integer. Angle distance between guides. Default: 10
-#' @param col Color of guide lines
-#' @param lwd Width of guide lines
-#' @param lty Type of guide lines
-#' @param border.col color of primitive circle (frame), center-cross and ticks of the stereo plot
-#' @param centercross logical. Whether a center cross should be added (`TRUE` by default)
-#' @param ticks integer. Angle between ticks. if `NULL` (the default), no ticks are drawn.
+#' @param d integer. Angle distance between guides. Defaults to `getOption("structr.d")`.
+#' @param col Color of guide lines. Defaults to `getOption("structr.col")`.
+#' @param lwd Width of guide lines. Defaults to `getOption("structr.lwd")`.
+#' @param lty Type of guide lines. Defaults to `getOption("structr.lty")`.
+#' @param border.col color of primitive circle (frame), center-cross and ticks of the stereo plot. 
+#' Defaults to `getOption("structr.border.col")`.
+#' @param centercross logical. Whether a center cross should be added (`TRUE` by default). 
+#' Defaults to `getOption("structr.centercross")`.
+#' @param ticks integer. Angle between ticks. if `NULL` (the default), no ticks are drawn. 
+#' Defaults to `getOption("structr.ticks")`.
 #' @param title,sub character. Title and subtitle of plot
-#' @param origin.text character. Text at origin of plot
+#' @param origin.text character. Text at origin of plot. Defaults to `getOption("structr.origin.text")`.
 #' @param labels this can either be a logical value specifying whether (numerical)
 #' annotations are to be made next to the tick marks, or a character or expression
-#' vector of labels to be placed next to the tick points.
+#' vector of labels to be placed next to the tick points. Defaults to `getOption("structr.labels")`.
 #' @param ladj adjustment for all labels away from origin of projection circle.
-#' This essentially an amount that is added to `radius` and the length of the ticks.
+#' This essentially an amount that is added to `radius` and the length of the ticks. Defaults to `getOption("structr.ladj")`.
 #' @param radius numeric. Radius of circle. Defaults to `getOption("structr.radius")`.
 #' @param center An object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`
 #' specifying the center of the projection If `NULL` (the default), the center
@@ -542,12 +545,22 @@ stereoplot_frame <- function(n = 512L, radius = NULL, ...) {
 #' stereoplot(ticks = 30, title = "title", sub = "subtitle", border.col = "purple", labels = TRUE)
 #'
 #' stereoplot(center = Line(120, 50))
-stereoplot <- function(earea = NULL, guides = NULL, d = 10, col = "gray90",
-                       lwd = 0.5, lty = 1, border.col = "black", title = NULL,
-                       sub = NULL, origin.text = "N", labels = FALSE, ladj = 0.05,
-                       centercross = TRUE, ticks = 90, radius = NULL, center = NULL) {
+stereoplot <- function(earea = NULL, guides = NULL, d = NULL, col = NULL,
+                       lwd = NULL, lty = NULL, border.col = NULL, title = NULL,
+                       sub = NULL, origin.text = NULL, labels = NULL, ladj = NULL,
+                       centercross = NULL, ticks = NULL, radius = NULL, center = NULL) {
   earea <- earea %||% getOption("structr.earea")
   guides <- guides %||% getOption("structr.guides")
+  d <- d %||% getOption("structr.d")
+  col <- col %||% getOption("structr.col")
+  lwd <- lwd %||% getOption("structr.lwd")
+  lty <- lty %||% getOption("structr.lty")
+  border.col <- border.col %||% getOption("structr.border.col")
+  origin.text <- origin.text %||% getOption("structr.origin.text")
+  labels <- labels %||% getOption("structr.labels")
+  ladj <- ladj %||% getOption("structr.ladj")
+  centercross <- centercross %||% getOption("structr.centercross")
+  ticks <- ticks %||% getOption("structr.ticks")
   radius <- radius %||% getOption("structr.radius")
   
   

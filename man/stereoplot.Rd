@@ -10,18 +10,18 @@ Adapted from the \code{RFOC} package
 stereoplot(
   earea = NULL,
   guides = NULL,
-  d = 10,
-  col = "gray90",
-  lwd = 0.5,
-  lty = 1,
-  border.col = "black",
+  d = NULL,
+  col = NULL,
+  lwd = NULL,
+  lty = NULL,
+  border.col = NULL,
   title = NULL,
   sub = NULL,
-  origin.text = "N",
-  labels = FALSE,
-  ladj = 0.05,
-  centercross = TRUE,
-  ticks = 90,
+  origin.text = NULL,
+  labels = NULL,
+  ladj = NULL,
+  centercross = NULL,
+  ticks = NULL,
   radius = NULL,
   center = NULL
 )
@@ -33,30 +33,33 @@ Defaults to \code{getOption("structr.earea")}.}
 
 \item{guides}{logical. Whether guides should be added to the plot. Defaults to \code{getOption("structr.guides")}.}
 
-\item{d}{integer. Angle distance between guides. Default: 10}
+\item{d}{integer. Angle distance between guides. Defaults to \code{getOption("structr.d")}.}
 
-\item{col}{Color of guide lines}
+\item{col}{Color of guide lines. Defaults to \code{getOption("structr.col")}.}
 
-\item{lwd}{Width of guide lines}
+\item{lwd}{Width of guide lines. Defaults to \code{getOption("structr.lwd")}.}
 
-\item{lty}{Type of guide lines}
+\item{lty}{Type of guide lines. Defaults to \code{getOption("structr.lty")}.}
 
-\item{border.col}{color of primitive circle (frame), center-cross and ticks of the stereo plot}
+\item{border.col}{color of primitive circle (frame), center-cross and ticks of the stereo plot.
+Defaults to \code{getOption("structr.border.col")}.}
 
 \item{title, sub}{character. Title and subtitle of plot}
 
-\item{origin.text}{character. Text at origin of plot}
+\item{origin.text}{character. Text at origin of plot. Defaults to \code{getOption("structr.origin.text")}.}
 
 \item{labels}{this can either be a logical value specifying whether (numerical)
 annotations are to be made next to the tick marks, or a character or expression
-vector of labels to be placed next to the tick points.}
+vector of labels to be placed next to the tick points. Defaults to \code{getOption("structr.labels")}.}
 
 \item{ladj}{adjustment for all labels away from origin of projection circle.
-This essentially an amount that is added to \code{radius} and the length of the ticks.}
+This essentially an amount that is added to \code{radius} and the length of the ticks. Defaults to \code{getOption("structr.ladj")}.}
 
-\item{centercross}{logical. Whether a center cross should be added (\code{TRUE} by default)}
+\item{centercross}{logical. Whether a center cross should be added (\code{TRUE} by default).
+Defaults to \code{getOption("structr.centercross")}.}
 
-\item{ticks}{integer. Angle between ticks. if \code{NULL} (the default), no ticks are drawn.}
+\item{ticks}{integer. Angle between ticks. if \code{NULL} (the default), no ticks are drawn.
+Defaults to \code{getOption("structr.ticks")}.}
 
 \item{radius}{numeric. Radius of circle. Defaults to \code{getOption("structr.radius")}.}
 

@@ -24,8 +24,15 @@ set.seed(20250411)
 
 ## Fault objects
 
-```{r load_functions, include=FALSE}
+```{r setup, warning=FALSE, message=FALSE}
+# load the structr package
 library("structr")
+
+# set up some plotting defaults
+options(
+  structr.upper.hem = FALSE, structr.earea = TRUE, 
+  structr.guides = FALSE
+  )
 ```
 
 A fault is given by the orientation of its plane (dip direction and dip
@@ -150,7 +157,7 @@ Plot the results
 ```{r faults_pt_plot}
 #| fig.alt: >
 #|   Diagram showing some fault-slip data and the PT axes in a stereoplot
-stereoplot(title = "PT results", guides = FALSE)
+stereoplot(title = "PT results")
 fault_plot(my_fault2)
 points(my_fault2_PT$p, col = "#B63679FF", pch = 16)
 points(my_fault2_PT$t, col = "#FEC287FF", pch = 18)
@@ -232,7 +239,7 @@ First we load some example data (here the data from Angelier, 1990)[^7]
 #|   Diagram showing some fault-slip data in a stereoplot
 fault_data <- angelier1990$TYM
 
-stereoplot(title = "Test data", guides = FALSE)
+stereoplot(title = "Test data")
 fault_plot(fault_data, col = "grey30")
 ```
 
@@ -268,7 +275,7 @@ from {structr}
 
 cols <- c("#000004FF", "#B63679FF", "#FEC287FF")
 
-stereoplot(title = "Stress inversion", guides = FALSE)
+stereoplot(title = "Stress inversion")
 fault_plot(fault_data, col = "grey75")
 stereo_confidence(inv_res$principal_axes_CI$sigma1, col = cols[1])
 stereo_confidence(inv_res$principal_axes_CI$sigma2, col = cols[2])
@@ -310,8 +317,7 @@ alpha <- inv_res$misfit$alpha
 
 stereoplot(
   title = "Deviation",
-  sub = bquote(bar(alpha) == .(round(inv_res$alpha)) * degree),
-  guides = FALSE
+  sub = bquote(bar(alpha) == .(round(inv_res$alpha)) * degree)
 )
 
 fault_plot(fault_data, col = assign_col(alpha))
@@ -394,7 +400,7 @@ print(inv_shmax)
 This (or any) direction can be added as compression arrows to a stereoplot using [stereo_shmax()]:
 
 ```{r stereo_shmax}
-stereoplot(title = "Stress inversion", guides = FALSE)
+stereoplot(title = "Stress inversion")
 fault_plot(fault_data, col = "grey75")
 stereo_confidence(inv_res$principal_axes_CI$sigma1, col = cols[1])
 stereo_confidence(inv_res$principal_axes_CI$sigma2, col = cols[2])
