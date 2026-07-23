@@ -130,6 +130,29 @@ legend("bottomright", col = c("#000004FF", "#B63679"), lty = c(1, 1), legend = c
 
 The regression was successful. The R<sup>2</sup> values indicate a better fit for the cleavage planes, but a slightly poorer fit for the bedding planes. Hence, the poles to the bedding planes seem to be aligned along a great-circle, while the cleavage planes better fit a small-circle arrangement.
 
+
+## Alternative
+
+The Gray et al. 1989 algorithm is an alternative method for small and great-circle fits using `regression_smallcircle_gray()` or `regression_greatcircle_gray()`:
+
+```{r gray1}
+cleavage_sc2 <- regression_smallcircle_gray(cleavage)
+bedding_sc2 <- regression_smallcircle_gray(bedding)
+
+# Half-apical angle of small-circle cone (in degrees)
+cleavage_sc2$cone
+bedding_sc2$cone
+```
+`regression_gray(x, out)` is a convenience function where the `out` argument specifies the type of regression (`"small"` or `"great"` circle). If `out = "both"`, the two solutions are compared by testing whether the small-circle solution fits better than the great-circle solution:
+
+```{r gray2}
+cleavage_sc3 <- regression_gray(cleavage, out = 'both')
+bedding_sc3 <- regression_gray(bedding, out = 'both')
+
+cleavage_sc3$comparison
+bedding_sc3$comparison
+```
+
 # References
 Bachmann, F., Jupp, P. E., & Schaeben, H. (2014). Estimating the number and locations of Euler poles. International Journal on Geomathematics, 5(2), 289–301. https://doi.org/10.1007/s13137-014-0064-2
 

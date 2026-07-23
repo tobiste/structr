@@ -102,21 +102,31 @@ can be visualized, namely the Angelier and the Hoeppener plot.
     direction of the hanging wall. Useful in case of large or
     heterogeneous datasets.
 
+
+First we load some example data (here the data from Angelier, 1990)[^7]
+
+[^7]: Angelier, J. (1990). Inversion of field data in fault tectonics to
+    obtain the regional stress—III. A new rapid direct inversion method
+    by analytical means. Geophys. J. Int, 103, 363–376.
+    <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
+
 ```{r faults_plotting}
 #| fig.alt: >
 #|   Diagram showing some fault data in equa-area projection using the Angelier
 #|   and Hoeppener representation of fault-slip
-# simongomez is a example fault dataset:
+# angelier1990 is a example fault dataset:
+data("angelier1990")
+fault_data <- angelier1990$TYM
 
 # define some colors for each fault in the dataset (here the fault sense)
-fault_cols <- assign_col(simongomez[, 5], pal = viridis::magma, begin = .2, end = .8)
+fault_cols <- assign_col(fault_data[, 5], pal = viridis::magma, begin = .2, end = .8)
 
 par(mfrow = c(1, 2))
 stereoplot(title = "Angelier plot")
-angelier(simongomez, col = fault_cols)
+angelier(fault_data, col = fault_cols)
 
 stereoplot(title = "Hoeppener plot")
-hoeppener(simongomez, col = fault_cols, points = FALSE)
+hoeppener(fault_data, col = fault_cols, points = FALSE)
 ```
 
 ## Fault stress analysis
@@ -141,15 +151,14 @@ TYM dataset by from Angelier, 1990)[^1]
     <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
 
 ```{r faults_pt1}
-data("angelier1990")
-my_fault2 <- angelier1990$TYM[1:3, ]
+fault_data_subset <- sample_spherical(fault_data, 3)
 
-print(my_fault2)
+print(fault_data_subset)
 ```
 
 ```{r faults_pt2}
-my_fault2_PT <- Fault_PT(my_fault2)
-print(my_fault2_PT)
+fault_data_subset_PT <- Fault_PT(fault_data_subset)
+print(fault_data_subset)
 ```
 
 Plot the results
@@ -158,11 +167,11 @@ Plot the results
 #| fig.alt: >
 #|   Diagram showing some fault-slip data and the PT axes in a stereoplot
 stereoplot(title = "PT results")
-fault_plot(my_fault2)
-points(my_fault2_PT$p, col = "#B63679FF", pch = 16)
-points(my_fault2_PT$t, col = "#FEC287FF", pch = 18)
-lines(my_fault2_PT$t, lty = 2, col = "grey40")
-lines(my_fault2_PT$d, lty = 3, col = "grey80")
+fault_plot(fault_data_subset)
+points(fault_data_subset_PT$p, col = "#B63679FF", pch = 16)
+points(fault_data_subset_PT$t, col = "#FEC287FF", pch = 18)
+lines(fault_data_subset_PT$t, lty = 2, col = "grey40")
+lines(fault_data_subset_PT$d, lty = 3, col = "grey80")
 
 legend("right",
   legend = c("P-axis", "T-axis", "M-plane", "Diheadra"),
@@ -227,18 +236,10 @@ orientation of the principal stresses from fault slip data.
     Structural Geology, 51, 3–13.
     <https://doi.org/10.1016/j.jsg.2013.03.014>
 
-First we load some example data (here the data from Angelier, 1990)[^7]
-
-[^7]: Angelier, J. (1990). Inversion of field data in fault tectonics to
-    obtain the regional stress—III. A new rapid direct inversion method
-    by analytical means. Geophys. J. Int, 103, 363–376.
-    <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
 
 ```{r slip_inversion1}
 #| fig.alt: >
 #|   Diagram showing some fault-slip data in a stereoplot
-fault_data <- angelier1990$TYM
-
 stereoplot(title = "Test data")
 fault_plot(fault_data, col = "grey30")
 ```
@@ -272,7 +273,6 @@ from {structr}
 ```{r slip_inversion_plot}
 #| fig.alt: >
 #|   Diagram showing principal stress vector results in a stereoplot
-
 cols <- c("#000004FF", "#B63679FF", "#FEC287FF")
 
 stereoplot(title = "Stress inversion")

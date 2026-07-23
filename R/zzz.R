@@ -47,7 +47,8 @@ if (requireNamespace("rgl", quietly = TRUE)) {
     structr.ladj = 0.05,
     structr.centercross = TRUE, 
     structr.ticks = 90,
-    structr.radius = 1
+    structr.radius = 1,
+    structr.tol = sqrt(.Machine$double.eps)
   )
   toset <- !(names(op.structr) %in% names(op))
   if (any(toset)) options(op.structr[toset])

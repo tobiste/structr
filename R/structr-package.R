@@ -59,6 +59,7 @@ NULL
 #'   \item{`structr.ladj`}{adjustment for all labels away from origin of projection circle. 
 #'    This essentially an amount that is added to `radius` and the length of the ticks.}
 #'   \item{`structr.radius`}{Numeric. Radius of the projection circle. `1` by default.}
+#'   \item{`structr.tol`}{Numeric. Tolerance for calculations, i.e. smallest relative difference between two numbers the computer can recognize. Default is `sqrt(.Machine$double.eps)`}
 #' }
 #' 
 #' @seealso [stereoplot()]

@@ -31,6 +31,7 @@ annotations are to be made next to the tick marks, or a character or expression}
 \item{\code{structr.ladj}}{adjustment for all labels away from origin of projection circle.
 This essentially an amount that is added to \code{radius} and the length of the ticks.}
 \item{\code{structr.radius}}{Numeric. Radius of the projection circle. \code{1} by default.}
+\item{\code{structr.tol}}{Numeric. Tolerance for calculations, i.e. smallest relative difference between two numbers the computer can recognize. Default is \code{sqrt(.Machine$double.eps)}}
 }
 }
 \examples{
