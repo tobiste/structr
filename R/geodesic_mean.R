@@ -401,6 +401,7 @@ rot_projected_matrix <- function(x) {
 #' @param group A list of rotation matrices. The symmetry group G.
 #' @param numSeeds integer. How many seeds to try, in trying to find a global optimum.
 #' @param numSteps integer. Bound on how many iterations to use.
+#' @param eps numeric. Tolerance for comparison
 #' @return A list consisting of $mean (a special orthogonal real 3x3 matrix), $variance (a real number), $changeSquared (a real number), and $numSteps (a non-negative integer). changeSquared is the square of the size of the final step. numSteps is the number of iterations used.
 #'
 #' @noRd
@@ -420,7 +421,9 @@ rot_projected_matrix <- function(x) {
 #'
 #' res2 <- ori_mean_variance(my_fault_vec, group = oriRayInPlaneGroup())
 #' rot2pair(res2$mean, fault = TRUE)
-ori_mean_variance <- function(rs, group, numSeeds = 5L, numSteps = 1000L, eps = sqrt(.Machine$double.eps)) {
+ori_mean_variance <- function(rs, group, numSeeds = 5L, numSteps = 1000L, eps = NULL) {
+  eps <- eps %||% getOption("structr.tol")
+  
   n <- length(rs)
   g_len <- length(group)
 

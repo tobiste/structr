@@ -467,7 +467,7 @@ fault_normal_matrix <- function(n) {
 #' @param weights numeric. Weightings for the faults. Must have the same length as `x`
 #' @param max_iter integer. Maximum iteration count (default `50`) for Mostafa (2005)
 #' optimization. Set to `0` for no optimization.
-#' @param tol numeric. Convergence tolerance on max absolute change in TR elements between iterations (default `1e-6`)
+#' @param tol numeric. Convergence tolerance on max absolute change in TR elements between iterations. Defaults to `getOption("structr.tol")`. 
 #' @param n_psi integer. Number of psi grid points for each step (default `361`)
 #' @inheritParams slip_inversion_michael
 #'
@@ -552,9 +552,11 @@ fault_normal_matrix <- function(n) {
 slip_inversion_angelier <- function(x,
                                     weights = NULL,
                                     max_iter = 100L,
-                                    tol = 1e-6,
+                                    tol = NULL,
                                     n_psi = 361L,
                                     flip = FALSE) {
+  tol <- tol %||% getOption("structr.tol")
+  
   stopifnot(all(complete.cases(x)))
   tsign <- if (flip) -1 else 1
 

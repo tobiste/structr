@@ -10,7 +10,7 @@
 #' @param R numeric. Relative magnitude of `S2` with respect to `S1` and `S3`:
 #' \eqn{R = \frac{S1 - S2}{S1 - S3}}. Values ranging from 0 to 1, with 0 being
 #' `S1==S2` and 1 being `S2==S3`. Equivalent to the stress shape ratio of Gephart & Forsyth (1984).
-#' @param tol Tolerance of comparison.
+#' @param tol Tolerance of comparison. Defaults to `getOption("structr.tol")`.
 #' @param ortho.tol tolerance angle (in degree) for orthogonality check of the
 #' three principal stress vectors.
 #'
@@ -33,7 +33,9 @@
 #'
 #' R <- seq(0, 1, .05)
 #' cbind(R, SH = SH(S1, S2, S3, R = R))
-SH <- function(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 0.005) {
+SH <- function(S1, S2, S3, R, tol = NULL, ortho.tol = 0.005) {
+  tol <- tol %||% getOption("structr.tol")
+  
   # Convert to unit vectors
   all_rad <- all(is.Vec3(S1), is.Vec3(S2), is.Vec3(S3))
 

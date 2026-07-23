@@ -38,7 +38,7 @@ rows are the observations and the columns are the coordinates.}
 
 \item{out}{character. Type of regression. \code{"small"} for a small-circle fit, \code{"great"} for the great-circle fit, and \code{"both"} for small- and great-circle estimates.}
 
-\item{sigma2}{numeric. Known error in degrees for a goodness-of-fit test. Default is \code{10}}
+\item{sigma2}{numeric. Known error in degrees for a goodness-of-fit test. Default is \code{10} °}
 
 \item{tol}{numeric. Machine precision. Defaults to \code{getOption("structr.tol")}.}
 

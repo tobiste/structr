@@ -2,12 +2,9 @@
 % Please edit documentation in R/best_pole.R
 \name{best_pole}
 \alias{best_pole}
-\alias{regression_cone_ramsay}
 \alias{regression_cone_ramsay2}
 \title{Cone or Plane Best Fit of Conically or Cylindrical Disposed Plane Poles}
 \usage{
-regression_cone_ramsay(x)
-
 regression_cone_ramsay2(x)
 }
 \arguments{

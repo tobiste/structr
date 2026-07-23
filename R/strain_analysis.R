@@ -719,7 +719,8 @@ shape_factor <- function(r) {
   mean_vorticity(r)
 }
 
-.near <- function(x, y, tol = .Machine$double.eps^0.5) {
+.near <- function(x, y, tol = NULL) {
+  tol <- tol %||% getOption("structr.tol")
   abs(x - y) < tol
 }
 

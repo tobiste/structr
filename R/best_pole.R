@@ -166,9 +166,9 @@
 #' Least-squares small circle through a set of unit vectors (poles)
 #'
 #' @param A p x 3 matrix (or data.frame) of unit direction cosines
-#' @return an object of class "circle_fit": center x (unit vector),
-#'   angular radius x4 (radians), residual sum of squares r, per-point
-#'   angular residuals, and Newton-iteration diagnostics
+#' @return an object of class `"circle_fit"`: `center` x (unit vector),
+#'   angular radius `x4` (radians), residual sum of squares `r`, per-point
+#'   angular `residuals`, and Newton-iteration diagnostics
 #' @noRd
 .gray_fit_small_circle <- function(A, tol = 1e-10, max_iter = 100, verbose = FALSE) {
   A <- as.matrix(A)
@@ -201,21 +201,6 @@
   structure(c(fit, list(type = "great")), class = "gray_circle_fit")
 }
 
-# #' @exportS3Method base::print
-# print.circle_fit <- function(x, ...) {
-#   if (x$type == "small") {
-#     cat(sprintf("Least-squares small circle (Gray, Geiser & Geiser 1980)\n"))
-#     cat(sprintf("  center = (%.4f, %.4f, %.4f)\n", x$x[1], x$x[2], x$x[3]))
-#     cat(sprintf("  radius = %.2f deg\n", x$x4 * 180 / pi))
-#   } else {
-#     cat(sprintf("Least-squares great circle (Gray, Geiser & Geiser 1980)\n"))
-#     cat(sprintf("  pole = (%.4f, %.4f, %.4f)\n", x$x[1], x$x[2], x$x[3]))
-#   }
-#   cat(sprintf("  r (residual SS) = %.5f   (p = %d, iterations = %d, converged = %s)\n",
-#               x$r, x$p, x$iterations, x$converged))
-#   invisible(x)
-# }
-
 #' Least-Squares Small and Great Circle Fit for Spherical Data
 #'
 #' Finds the best small and great circles using the algorithm by Gray et al. (1980)
@@ -225,7 +210,7 @@
 #' @param tol numeric. Machine precision. Defaults to `getOption("structr.tol")`.
 #' @param max_iter integer. Number of Newton-Lagrange optimizations. Default is `100`
 #' @param verbose logical. Whether results of the iteration should be printed during the calculation. Default is `FALSE`
-#' @param sigma2 numeric. Known error in degrees for a goodness-of-fit test. Default is `10`
+#' @param sigma2 numeric. Known error in degrees for a goodness-of-fit test. Default is `10` &deg;
 #'
 #' @details
 #' ## Goodness-of-fit test
@@ -402,9 +387,10 @@ regression_greatcircle_gray <- function(x, sigma2 = 10, tol = NULL, max_iter = 1
 #' \deqn{V_r = (p-3) * [(r_g - r_c) / r_c] ~ F(1, p-3)} under the paper's
 #' normal-residual assumptions.
 #'
-#' @param fit_small a fit from fit_small_circle()
-#' @param fit_great a fit from fit_great_circle(), on the *same* data
-#' @return a list with the statistic V_r, degrees of freedom, and p-value
+#' @param fit_small a fit from .gray_fit_small_circle()
+#' @param fit_great a fit from .gray_fit_great_circle(), on the *same* data
+#' @return a list with the statistic \eqn{V_r}, degrees of freedom, and p-value
+#' @importFrom stats pf
 #' @noRd
 gray_compare_small_vs_great <- function(fit_small, fit_great) {
   stopifnot(
@@ -413,7 +399,7 @@ gray_compare_small_vs_great <- function(fit_small, fit_great) {
   )
   p <- fit_small$p
   Vr <- (p - 3) * ((fit_great$r - fit_small$r) / fit_small$r)
-  pval <- pf(Vr, df1 = 1, df2 = p - 3, lower.tail = FALSE)
+  pval <- stats::pf(Vr, df1 = 1, df2 = p - 3, lower.tail = FALSE)
   list(
     Vr = Vr, df1 = 1, df2 = p - 3, p_value = pval,
     interpretation = if (pval < 0.05) {
@@ -428,11 +414,12 @@ gray_compare_small_vs_great <- function(fit_small, fit_great) {
 #' variance sigma^2 (eq. 18): E(sum R_i^2) = (p-q)*sigma^2, q=3 (great
 #' circle) or q=4 (small circle).
 #' @noRd
+#' @importFrom stats pchisq
 gray_goodness_of_fit <- function(fit, sigma2) {
   q <- if (fit$type == "small") 4 else 3
   df <- fit$p - q
   stat <- fit$r / sigma2
-  list(statistic = stat, df = df, p_value = pchisq(stat, df, lower.tail = FALSE))
+  list(statistic = stat, df = df, p_value = stats::pchisq(stat, df, lower.tail = FALSE))
 }
 
 ## -----------------------------------------------------------------------
@@ -579,98 +566,6 @@ fit_concentric_circles <- function(groups, tol = 1e-10, max_iter = 100, verbose 
 #' }
 NULL
 
-#' @rdname best_pole
-# best_cone_ramsay <- function(x) {
-#   l <- m <- n <- l2 <- m2 <- lm <- ln <- mn <- numeric()
-#   xsum <- data.frame(l = x[, 1], m = x[, 2], n = x[, 3]) |>
-#     dplyr::mutate(
-#       l2 = l^2,
-#       m2 = m^2,
-#       lm = l * m,
-#       ln = l * n,
-#       mn = m * n
-#     ) |>
-#     dplyr::summarise(
-#       l = sum(l),
-#       m = sum(m),
-#       n = sum(n),
-#       l2 = sum(l2),
-#       m2 = sum(m2),
-#       lm = sum(lm),
-#       ln = sum(ln),
-#       mn = sum(mn)
-#     )
-#   N <- nrow(xsum)
-#
-#   D <- Da <- Db <- Dc <- matrix(nrow = 3, ncol = 3)
-#   D[1, 1] <- xsum$l2
-#   D[1, 2] <- D[2, 1] <- xsum$lm
-#   D[1, 3] <- D[3, 1] <- xsum$l
-#   D[2, 2] <- xsum$m2
-#   D[2, 3] <- D[3, 2] <- xsum$m
-#   D[3, 3] <- N
-#
-#   Da[1, 1] <- -xsum$ln
-#   Da[1, 2] <- D[1, 2]
-#   Da[1, 3] <- D[1, 3]
-#   Da[2, 1] <- -xsum$mn
-#   Da[2, 2] <- D[2, 2]
-#   Da[2, 3] <- Da[3, 2] <- D[2, 3]
-#   Da[3, 1] <- -xsum$n
-#   Da[3, 3] <- N
-#
-#   Db[1, 1] <- D[1, 1]
-#   Db[1, 2] <- Da[1, 1]
-#   Db[1, 3] <- D[1, 3]
-#   Db[2, 1] <- D[1, 2]
-#   Db[2, 2] <- Da[2, 1]
-#   Db[2, 3] <- D[2, 3]
-#   Db[3, 1] <- D[1, 3]
-#   Db[3, 2] <- Da[3, 1]
-#   Db[3, 3] <- N
-#
-#   Dc[1, 1] <- D[1, 1]
-#   Dc[1, 2] <- D[1, 2]
-#   Dc[1, 3] <- Da[1, 1]
-#   Dc[2, 1] <- D[1, 2]
-#   Dc[2, 2] <- D[2, 2]
-#   Dc[2, 3] <- Da[2, 1]
-#   Dc[3, 1] <- D[1, 3]
-#   Dc[3, 2] <- D[2, 3]
-#   Dc[3, 3] <- Da[3, 1]
-#
-#   A <- det(Da) / det(D)
-#   B <- det(Db) / det(D)
-#   C <- det(Dc) / det(D)
-#
-#   # gamma <- -acos((1 + A^2 + B^2)^(-1 / 2))
-#   # alpha <- pi - acos(A * (1 + A^2 + B^2)^(-1 / 2))
-#   # beta <- -acos(B * (1 + A^2 + B^2)^(-1 / 2))
-#   cos_gamma <- 1 / sqrt(1 + A^2 + B^2)
-#   cos_alpha <- A * cos_gamma
-#   cos_beta <- B * cos_gamma
-#   cos_K <- -C * cos_gamma
-#
-#   # half apical angle
-#   K <- acos(cos_K)
-#
-#   cart <- cbind(x = -cos_alpha, y = -cos_beta, z = -cos_gamma)
-#   e <- cos_alpha^2 + cos_beta^2 + cos_gamma^2
-#
-#   # alpha <- acos(cos_alpha)
-#   # beta <- acos(cos_beta)
-#   # gamma <- acos(cos_gamma)
-#
-#   # correct for lower hemisphere and convert to Cartesian coordinates
-#   # cart <- cbind(pi-alpha, -beta, -gamma) |>
-#   #   tectonicr::rad2deg() |>
-#   #   acoscartesian_to_cartesian()
-#   # #names(cart) <- NULL
-#   # e <- cos(alpha)^2 + cos(beta)^2 + cos(gamma)^2
-#
-#
-#   return(c(cart[, 1], cart[, 2], cart[, 3], "e" = 1 - e, "K" = K))
-# }
 regression_cone_ramsay <- function(x) {
   # ensure x is a matrix
   x <- as.matrix(x)

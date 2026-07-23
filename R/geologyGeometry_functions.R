@@ -964,8 +964,8 @@ oriVariance <- function(rs, center, group) {
 #' @return A list consisting of $mean (a special orthogonal real 3x3 matrix), $variance (a real number), $changeSquared (a real number), and $numSteps (a non-negative integer). changeSquared is the square of the size of the final step. numSteps is the number of iterations used.
 #' @noRd
 oriMeanVariance <- function(rs, group, numSeeds = 5, numSteps = 1000) {
-  epsilon <- .Machine$double.eps^0.25
-  
+  epsilon <- getOption("structr.tol")
+
   seeds <- sample(rs, numSeeds)
   # No variance is ever larger than pi^2 / 2 < 5.
   best <- list(5)
@@ -1032,17 +1032,17 @@ rotVariance <- function(rs, center) {
   sum(dists^2) / (2 * length(rs))
 }
 
-#' The Frechet (geodesic L^2) mean of a set of rotations.
+#' The Frechet (geodesic \eqn{L^2}) mean of a set of rotations.
 #'
-#' An interative algorithm for computing the Frechet mean --- the rotation that minimizes the Frechet variance. The iterations continue until error squared of epsilon is achieved or numSteps iterations have been used. Try multiple seeds, to improve your chances of finding the global optimum.
+#' An iterative algorithm for computing the Frechet mean --- the rotation that minimizes the Frechet variance. The iterations continue until error squared of epsilon is achieved or numSteps iterations have been used. Try multiple seeds, to improve your chances of finding the global optimum.
 #' @param rs A list of rotation matrices.
 #' @param numSeeds A real number (positive integer). How many rs to try as seeds.
 #' @param numSteps A real number (positive integer). Bound on how many iterations to use.
-#' @return A list consisting of $mean (a special orthogonal real 3x3 matrix), $variance (a real number), $changeSquared (a real number), and $numSteps (a non-negative integer). changeSquared is the square of the size of the final step. numSteps is the number of iterations used.
+#' @return A list consisting of `$mean` (a special orthogonal real 3x3 matrix), `$variance` (a real number), `$changeSquared` (a real number), and $numSteps (a non-negative integer). changeSquared is the square of the size of the final step. numSteps is the number of iterations used.
 #' @noRd
 #' @source `geologyGeometry` by Davis, J.R.
 rotMeanVariance <- function(rs, numSeeds = 1, numSteps = 100) {
-  epsilon <- .Machine$double.eps^0.25
+  epsilon <- getOption("structr.tol")
   
   seeds <- sample(rs, numSeeds)
   # No variance is ever as large as 5.

@@ -8,7 +8,7 @@ slip_inversion_angelier(
   x,
   weights = NULL,
   max_iter = 100L,
-  tol = 1e-06,
+  tol = NULL,
   n_psi = 361L,
   flip = FALSE
 )
@@ -22,7 +22,7 @@ the coordinates. Must have at least 4 fault measurements.}
 \item{max_iter}{integer. Maximum iteration count (default \code{50}) for Mostafa (2005)
 optimization. Set to \code{0} for no optimization.}
 
-\item{tol}{numeric. Convergence tolerance on max absolute change in TR elements between iterations (default \code{1e-6})}
+\item{tol}{numeric. Convergence tolerance on max absolute change in TR elements between iterations. Defaults to \code{getOption("structr.tol")}.}
 
 \item{n_psi}{integer. Number of psi grid points for each step (default \code{361})}
 

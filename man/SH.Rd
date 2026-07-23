@@ -4,7 +4,7 @@
 \alias{SH}
 \title{Direction of maximum horizontal stress from the stress tensor}
 \usage{
-SH(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 0.005)
+SH(S1, S2, S3, R, tol = NULL, ortho.tol = 0.005)
 }
 \arguments{
 \item{S1, S2, S3}{The principal stress orientations.
@@ -15,7 +15,7 @@ coordinate system, e.g. \code{S1 = c(s1N,s1E,s1D)}. Given as object of class \co
 \eqn{R = \frac{S1 - S2}{S1 - S3}}. Values ranging from 0 to 1, with 0 being
 \code{S1==S2} and 1 being \code{S2==S3}. Equivalent to the stress shape ratio of Gephart & Forsyth (1984).}
 
-\item{tol}{Tolerance of comparison.}
+\item{tol}{Tolerance of comparison. Defaults to \code{getOption("structr.tol")}.}
 
 \item{ortho.tol}{tolerance angle (in degree) for orthogonality check of the
 three principal stress vectors.}
