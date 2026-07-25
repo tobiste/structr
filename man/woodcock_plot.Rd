@@ -11,6 +11,7 @@ woodcock_plot(
   max = 7,
   main = "Woodcock diagram",
   weights = NULL,
+  guides = NULL,
   ...
 )
 }
@@ -28,6 +29,8 @@ rows are the observations and the columns are the coordinates, or an \code{"orte
 \item{main}{character. The main title for the plot.}
 
 \item{weights}{numeric. Weightings}
+
+\item{guides}{logical. Whether guides should be added to the plot. Defaults to \code{getOption("structr.guides")}.}
 
 \item{...}{optional graphical parameters}
 }

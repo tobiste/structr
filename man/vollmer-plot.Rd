@@ -8,7 +8,7 @@
 \alias{vollmer_plot.list}
 \title{Fabric Plot of Vollmer (1990)}
 \usage{
-vollmer_plot(x, labels, add, ngrid, main, ...)
+vollmer_plot(x, ...)
 
 \method{vollmer_plot}{default}(
   x,
@@ -16,6 +16,7 @@ vollmer_plot(x, labels, add, ngrid, main, ...)
   add = FALSE,
   ngrid = c(5, 5, 5),
   main = "Vollmer diagram",
+  guides = NULL,
   ...
 )
 
@@ -26,6 +27,7 @@ vollmer_plot(x, labels, add, ngrid, main, ...)
   ngrid = c(5, 5, 5),
   main = "Vollmer diagram",
   weights = NULL,
+  guides = NULL,
   ...
 )
 
@@ -35,12 +37,15 @@ vollmer_plot(x, labels, add, ngrid, main, ...)
   add = FALSE,
   ngrid = c(5, 5, 5),
   main = "Vollmer diagram",
+  guides = NULL,
   ...
 )
 }
 \arguments{
 \item{x}{spherical object or a three-column matrix, where the first column is
 P, the second is G, and the third one is R of the Vollmer parameters.}
+
+\item{...}{optional graphical parameters}
 
 \item{labels}{character. text labels}
 
@@ -52,7 +57,7 @@ for the P, G, and G axes. Constant grid spacing when only one integer is given.
 
 \item{main}{character. The main title for the plot.}
 
-\item{...}{optional graphical parameters}
+\item{guides}{logical. Whether guides should be added to the plot. Defaults to \code{getOption("structr.guides")}.}
 
 \item{weights}{numeric. Weightings}
 }

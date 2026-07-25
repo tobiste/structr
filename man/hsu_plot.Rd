@@ -25,7 +25,15 @@ hsu_plot(x, ...)
 
 \method{hsu_plot}{ellispoid}(x, ...)
 
-\method{hsu_plot}{default}(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...)
+\method{hsu_plot}{default}(
+  x,
+  labels = NULL,
+  add = FALSE,
+  es.max = 3,
+  main = "Hsu diagram",
+  guides = NULL,
+  ...
+)
 
 \method{hsu_plot}{list}(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...)
 }
@@ -48,6 +56,8 @@ Tensor objects can also be lists of such objects (\code{"ortensor"} and \code{"e
 \item{main}{character. The main title (on top).}
 
 \item{weights}{numeric. Weightings}
+
+\item{guides}{logical. Whether guides should be added to the plot. Defaults to \code{getOption("structr.guides")}.}
 }
 \value{
 a list containing the Lode parameter \code{lode} and the natural octahedral strain \code{es}.

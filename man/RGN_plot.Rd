@@ -12,6 +12,7 @@ RGN_plot(
   probs = 0.975,
   grid = 0.05,
   main = "Rigid-Grain-Net",
+  guides = NULL,
   ...
 )
 }
@@ -31,6 +32,8 @@ of critical hyperbole.}
 \item{grid}{numeric. Spacing of hyperboles.}
 
 \item{main}{character. The main title (on top).}
+
+\item{guides}{logical. Whether guides should be added to the plot. Defaults to \code{getOption("structr.guides")}.}
 
 \item{...}{plotting arguments passed to \code{\link[graphics:points]{graphics::points()}}}
 }

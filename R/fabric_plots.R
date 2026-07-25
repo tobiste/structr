@@ -105,12 +105,12 @@ NULL
 
 #' @rdname vollmer-plot
 #' @export
-vollmer_plot <- function(x, labels, add, ngrid, main, ...) UseMethod("vollmer_plot")
+vollmer_plot <- function(x, ...) UseMethod("vollmer_plot")
 
 #' @rdname vollmer-plot
 #' @export
-vollmer_plot.default <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), main = "Vollmer diagram", ...) {
-  if (isFALSE(add)) .vollmer_plot_blank(ngrid, main = main)
+vollmer_plot.default <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), main = "Vollmer diagram", guides = NULL, ...) {
+  if (isFALSE(add)) .vollmer_plot_blank(ngrid, main = main, guides = guides)
 
   if (!is.null(labels)) {
     .ternary_text(x, labels = labels, ...)
@@ -121,38 +121,38 @@ vollmer_plot.default <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 
 
 #' @rdname vollmer-plot
 #' @export
-vollmer_plot.spherical <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), main = "Vollmer diagram", weights = NULL, ...) {
+vollmer_plot.spherical <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), main = "Vollmer diagram", weights = NULL, guides = NULL, ...) {
   x_vollmer <- vollmer(x, w = weights)
   # P <- x_vollmer["P"]
   # G <- x_vollmer["G"]
   # R <- x_vollmer["R"]
   vollmer_plot.default(
     t(x_vollmer[c("P", "G", "R")]),
-    labels = labels, add = add, ngrid = ngrid, main = main, ...
+    labels = labels, add = add, ngrid = ngrid, main = main, guides, ...
   )
   invisible(x_vollmer)
 }
 
 #' @rdname vollmer-plot
 #' @export
-vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), main = "Vollmer diagram", ...) {
+vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), main = "Vollmer diagram",  guides = NULL, ...) {
   x_vollmer <- do.call(rbind, lapply(x, vollmer))
 
   vollmer_plot.default(
     x_vollmer[, c("P", "G", "R")],
-    labels = labels, add = add, ngrid = ngrid, main = main, ...
+    labels = labels, add = add, ngrid = ngrid, main = main, guides, ...
   )
   invisible(x_vollmer)
 }
 
-.vollmer_plot_blank <- function(ngrid = c(5, 5, 5), main = "Vollmer diagram") {
+.vollmer_plot_blank <- function(ngrid = c(5, 5, 5), main = "Vollmer diagram", guides = NULL, ...) {
   .ternary_plot(
     ngrid = ngrid, main = main,
     left_vertex_label = "Point", right_vertex_label = "Girdle", top_vertex_label = "Random",
     bottom_edge_label = expression(lambda[3] == 0),
     left_edge_label = expression(lambda[2] == lambda[3]),
     right_edge_label = expression(lambda[1] == lambda[2]),
-    ticks = FALSE
+    ticks = FALSE, guides = guides, ...
   )
 }
 
@@ -183,8 +183,12 @@ vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5),
                           left_vertex_label = NULL, right_vertex_label = NULL, top_vertex_label = NULL,
                           bottom_edge_label = NULL, left_edge_label = NULL, right_edge_label = NULL,
                           ticks = TRUE, invert_ticks = FALSE, tick_range = c(0, 1),
-                          invert = c(FALSE, FALSE, FALSE),
+                          invert = c(FALSE, FALSE, FALSE), 
+                          guides = NULL,
                           ...) {
+  guides <- guides %||% getOption("structr.guides")
+  if(isFALSE(guides)) ngrid <- NULL
+  
   A <- c(0, 0) # left
   B <- c(1, 0) # right
   C <- c(1 / 2, sqrt(3) / 2) # top
@@ -197,6 +201,7 @@ vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5),
     ...
   )
 
+  
   if (!is.null(ngrid)) {
     ngrid <- round(ngrid) + 1
     if (length(ngrid) == 1) ngrid <- rep(ngrid, 3)
@@ -514,6 +519,7 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
 #' @param add logical. Should data be plotted to an existing plot?
 #' @param max numeric. Maximum value for x and y axes. If `NULL`, it is calculated from the data.
 #' @param weights numeric. Weightings
+#' @inheritParams stereoplot
 #' @param ... optional graphical parameters
 #'
 #' @references Woodcock, N. H. (1977). Specification of fabric shapes using an eigenvalue method. Geological Society of America Bulletin88, 1231<U+2013>1236.
@@ -533,7 +539,9 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
 #' woodcock_plot(x, lab = "x")
 #' y <- rvmf(100, mu = mu, k = 20)
 #' woodcock_plot(y, lab = "y", add = TRUE, col = "red")
-woodcock_plot <- function(x, labels = NULL, add = FALSE, max = 7, main = "Woodcock diagram", weights = NULL, ...) {
+woodcock_plot <- function(x, labels = NULL, add = FALSE, max = 7, main = "Woodcock diagram", weights = NULL, guides = NULL, ...) {
+  guides <- guides %||% getOption("structr.guides")
+  
   x_eigen <- ot_eigen(x, w = weights, scaled = TRUE)
 
   max_val <- if (is.null(max)) {
@@ -559,6 +567,7 @@ woodcock_plot <- function(x, labels = NULL, add = FALSE, max = 7, main = "Woodco
     #   graphics::abline(a = j, b = -1, col = "grey", lty = 3)
     # }
 
+    if(isTRUE(guides)){
     for (i in c(.2, .5, 2, 5)) {
       graphics::abline(a = 0, b = i, col = "grey80", lty = 2)
     }
@@ -570,6 +579,7 @@ woodcock_plot <- function(x, labels = NULL, add = FALSE, max = 7, main = "Woodco
     }
 
     graphics::abline(a = 0, b = 1, col = "grey", lty = 1, lwd = 1.5)
+    }
   }
   if (!is.null(labels)) {
     graphics::text(log(x_eigen$values[2] / x_eigen$values[3]), log(x_eigen$values[1] / x_eigen$values[2]), label = labels, ...)
@@ -593,11 +603,10 @@ woodcock_plot <- function(x, labels = NULL, add = FALSE, max = 7, main = "Woodco
 #' objects of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"ortensor"` and `"ellipsoid"` objects.
 #' Tensor objects can also be lists of such objects (`"ortensor"` and `"ellipsoid"`).
 #' @inheritParams Rphi_plot
+#' @inheritParams woodcock_plot
 #' @param labels character. text labels
-#' @param add logical. Should data be plotted to an existing plot?
 #' @param ... plotting arguments passed to [graphics::points()]
 #' @param es.max maximum strain for scaling.
-#' @param weights numeric. Weightings
 #'
 #' @returns a list containing the Lode parameter `lode` and the natural octahedral strain `es`.
 #' @family fabric-plot
@@ -730,7 +739,9 @@ hsu_plot.ellispoid <- function(x, ...) {
 
 #' @rdname hsu_plot
 #' @export
-hsu_plot.default <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...) {
+hsu_plot.default <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", guides = NULL, ...) {
+  guides <- guides %||% getOption("structr.guides")
+  
   R_XY <- x[, 1]
   R_YZ <- x[, 2]
 
@@ -762,7 +773,7 @@ hsu_plot.default <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "
       lty = 1, col = "black"
     )
 
-
+    if(isTRUE(guides)){
     graphics::segments(0, 0, rmax2 * cos(pi / 2 - pi / 6 / 2), rmax2 * sin(pi / 2 - pi / 6 / 2),
       lty = 1, col = "lightgray"
     )
@@ -773,7 +784,7 @@ hsu_plot.default <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "
 
     # Draw vertical plane strain line
     graphics::segments(0, 0, 0, rmax2, lty = 1, col = "lightgray")
-
+    }
 
     # Draw cropped concentric arcs (strain magnitude ticks)
     arc_theta <- seq(pi / 2 - pi / 6, pi / 2 + pi / 6, length.out = 200)
@@ -784,6 +795,7 @@ hsu_plot.default <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "
       graphics::lines(rr * cos(arc_theta), rr * sin(arc_theta), col = col_grd, lwd = lwd_grd)
       # text(rr, 0, labels = format(rr, digits = 2), pos = 4, col = "grey40", cex = 0.8)
     }
+    
 
     # Lode parameters labels
     for (rr in rseq[-1]) {
@@ -910,7 +922,9 @@ flinn_plot <- function(x, ...) UseMethod("flinn_plot")
 
 #' @rdname flinn_plot
 #' @export
-flinn_plot.default <- function(x, main = "Flinn diagram", R.max = NULL, log = FALSE, add = FALSE, ...) {
+flinn_plot.default <- function(x, main = "Flinn diagram", R.max = NULL, log = FALSE, add = FALSE, guides = NULL, ...) {
+  guides <- guides %||% getOption("structr.guides")
+  
   R_XY <- x[, 1]
   R_YZ <- x[, 2]
 
@@ -944,9 +958,10 @@ flinn_plot.default <- function(x, main = "Flinn diagram", R.max = NULL, log = FA
       main = main
     )
 
-    graphics::abline(0, b = 1, col = "grey30", lwd = .75)
-
     rbreaks <- pretty(c(R.min, R.max))
+
+    if(isTRUE(guides)){    
+    graphics::abline(0, b = 1, col = "grey30", lwd = .75)
 
 
     for (i in c(.2, .5, 2, 5)) {
@@ -966,12 +981,13 @@ flinn_plot.default <- function(x, main = "Flinn diagram", R.max = NULL, log = FA
       }
     }
 
-    graphics::axis(side = 1, at = rbreaks, labels = rbreaks)
-    graphics::axis(side = 2, at = rbreaks, labels = rbreaks)
-
     graphics::text(R.max / 2, R.max / 2, "Plane strain", adj = 0.5, col = "grey70", srt = 45)
     graphics::text(R.max * .75, R.max * .25, "Flattening", adj = 0.5, col = "grey70")
     graphics::text(R.max * .25, R.max * .75, "Constriction", adj = 0.5, col = "grey70")
+    }
+    
+    graphics::axis(side = 1, at = rbreaks, labels = rbreaks)
+    graphics::axis(side = 2, at = rbreaks, labels = rbreaks)
   }
 
   graphics::points(R_YZ, R_XY, ...)
