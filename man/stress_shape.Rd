@@ -61,7 +61,7 @@ regional stress tensor using earthquake focal mechanism data: application to
 the San Fernando earthquake sequence. J. Geophys. Res. Solid Earth 89, 9305–9320.
 
 Simpson, R. W. (1997). Quantifying Anderson’s fault types. Journal of
-Geophysical Research: Solid Earth, 102(B8), 17909–17919. https://doi.org/10.1029/97JB01274
+Geophysical Research: Solid Earth, 102(B8), 17909–17919. \doi{10.1029/97JB01274}
 }
 \seealso{
 \code{\link[=slip_inversion]{slip_inversion()}}

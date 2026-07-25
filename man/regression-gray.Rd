@@ -38,7 +38,7 @@ rows are the observations and the columns are the coordinates.}
 
 \item{out}{character. Type of regression. \code{"small"} for a small-circle fit, \code{"great"} for the great-circle fit, and \code{"both"} for small- and great-circle estimates.}
 
-\item{sigma2}{numeric. Known error in degrees for a goodness-of-fit test. Default is \code{10} °}
+\item{sigma2}{numeric. Known error in degrees for a goodness-of-fit test. Default is \code{10}}
 
 \item{tol}{numeric. Machine precision. Defaults to \code{getOption("structr.tol")}.}
 
@@ -49,7 +49,7 @@ rows are the observations and the columns are the coordinates.}
 \value{
 list. \describe{
 \item{\code{vec}}{\code{Line} of \code{Vec3} object, sthe axis of the circle solution}
-\item{\code{cone}}{Half-apical angle of the small-circle in degrees. Alway 90 for a great-circle solution.}
+\item{\code{cone}}{Half-apical angle of the small-circle in degrees. Alway 90° for a great-circle solution.}
 \item{\code{r_squared}}{Residual sum of squares}
 \item{\code{residuals}}{Per-point residuals}
 \item{\code{iterations}, \code{converged}, \code{p}}{Newton-iteration diagnostics}

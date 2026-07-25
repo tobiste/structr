@@ -15,7 +15,7 @@ Depends:
 Imports: 
     cluster,
     data.table,
-    Directional,
+    Directional (>= 7.2),
     dplyr,
     expm,
     fields,

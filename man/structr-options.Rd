@@ -2,6 +2,8 @@
 % Please edit documentation in R/structr-package.R
 \name{structr-options}
 \alias{structr-options}
+\alias{structr.options}
+\alias{structr_options}
 \title{Global projection options for structr}
 \description{
 Plotting defaults for stereographic/equal-area projections.

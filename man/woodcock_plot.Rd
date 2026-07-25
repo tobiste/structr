@@ -47,7 +47,7 @@ y <- rvmf(100, mu = mu, k = 20)
 woodcock_plot(y, lab = "y", add = TRUE, col = "red")
 }
 \references{
-Woodcock, N. H. (1977). Specification of fabric shapes using an eigenvalue method. Geological Society of America Bulletin88, 1231<U+2013>1236. http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf
+Woodcock, N. H. (1977). Specification of fabric shapes using an eigenvalue method. Geological Society of America Bulletin88, 1231<U+2013>1236.
 }
 \seealso{
 \code{\link[=vollmer]{vollmer()}}, \code{\link[=ot_eigen]{ot_eigen()}}

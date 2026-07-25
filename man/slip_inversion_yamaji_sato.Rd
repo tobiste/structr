@@ -58,7 +58,7 @@ invisible(lapply(seq_len(nx), function(i) {
 Yamaji, A., & Sato, K. (2006). Distances for the solutions of stress tensor
 inversion in relation to misfit angles that accompany the solutions.
 Geophysical Journal International, 167(2), 933–942.
-https://doi.org/10.1111/j.1365-246X.2006.03188.x
+\doi{10.1111/j.1365-246X.2006.03188.x}
 }
 \seealso{
 \code{\link[=slip_inversion_yamaji_sato_boot]{slip_inversion_yamaji_sato_boot()}}

@@ -210,7 +210,7 @@
 #' @param tol numeric. Machine precision. Defaults to `getOption("structr.tol")`.
 #' @param max_iter integer. Number of Newton-Lagrange optimizations. Default is `100`
 #' @param verbose logical. Whether results of the iteration should be printed during the calculation. Default is `FALSE`
-#' @param sigma2 numeric. Known error in degrees for a goodness-of-fit test. Default is `10` &deg;
+#' @param sigma2 numeric. Known error in degrees for a goodness-of-fit test. Default is `10`
 #'
 #' @details
 #' ## Goodness-of-fit test
@@ -233,7 +233,7 @@
 #'
 #' @returns list. \describe{
 #' \item{`vec`}{`Line` of `Vec3` object, sthe axis of the circle solution}
-#' \item{`cone`}{Half-apical angle of the small-circle in degrees. Alway 90 for a great-circle solution.}
+#' \item{`cone`}{Half-apical angle of the small-circle in degrees. Alway 90&deg; for a great-circle solution.}
 #' \item{`r_squared`}{Residual sum of squares}
 #' \item{`residuals`}{Per-point residuals}
 #' \item{`iterations`, `converged`, `p`}{Newton-iteration diagnostics}
@@ -377,9 +377,7 @@ regression_greatcircle_gray <- function(x, sigma2 = 10, tol = NULL, max_iter = 1
 }
 
 
-## -----------------------------------------------------------------------
 ## Statistical tests (Sec. "Statistical significance of the fits obtained")
-## -----------------------------------------------------------------------
 
 #' Test whether a small-circle fit is a significant improvement over the
 #' corresponding great-circle fit (unnumbered V_r equation, p. 178)
@@ -389,10 +387,11 @@ regression_greatcircle_gray <- function(x, sigma2 = 10, tol = NULL, max_iter = 1
 #'
 #' @param fit_small a fit from .gray_fit_small_circle()
 #' @param fit_great a fit from .gray_fit_great_circle(), on the *same* data
+#' @param alpha numeric. \eqn{\alpha} value for confidence. `0.05` by default
 #' @return a list with the statistic \eqn{V_r}, degrees of freedom, and p-value
 #' @importFrom stats pf
 #' @noRd
-gray_compare_small_vs_great <- function(fit_small, fit_great) {
+gray_compare_small_vs_great <- function(fit_small, fit_great, alpha = 0.05) {
   stopifnot(
     fit_small$type == "small", fit_great$type == "great",
     fit_small$p == fit_great$p
@@ -402,7 +401,7 @@ gray_compare_small_vs_great <- function(fit_small, fit_great) {
   pval <- stats::pf(Vr, df1 = 1, df2 = p - 3, lower.tail = FALSE)
   list(
     Vr = Vr, df1 = 1, df2 = p - 3, p_value = pval,
-    interpretation = if (pval < 0.05) {
+    interpretation = if (pval < alpha) {
       "small circle is a significant improvement over the great circle (p<0.05)"
     } else {
       "no significant improvement over the great circle (p>=0.05)"
@@ -422,12 +421,10 @@ gray_goodness_of_fit <- function(fit, sigma2) {
   list(statistic = stat, df = df, p_value = stats::pchisq(stat, df, lower.tail = FALSE))
 }
 
-## -----------------------------------------------------------------------
 ## Concentric fit: one shared center, some point sets fit with a fixed
 ## radius (e.g. a great circle, radius pi/2) and (typically) one point
 ## set fit with a free radius (a small circle) -- generalises the
 ## paper's worked bedding+cleavage example (Table 2, last row).
-## -----------------------------------------------------------------------
 
 #' Fit several point sets to concentric circles about one shared center
 #'
@@ -562,7 +559,7 @@ fit_concentric_circles <- function(groups, tol = 1e-10, max_iter = 100, verbose 
 #'   c(80, 10, 90)
 #' ) |> acoscartesian_to_cartesian()
 #' regression_cone_ramsay(x) # expect: c(0.856, -0.157, -0.492, NA, 1.56207)
-#' regression_plane_ramsay(x) # expect: c(0.852, -0.154, -0.502, 1-1.002)
+#' # regression_plane_ramsay(x) # expect: c(0.852, -0.154, -0.502, 1-1.002)
 #' }
 NULL
 

@@ -63,6 +63,7 @@ NULL
 #' }
 #' 
 #' @seealso [stereoplot()]
+#' @aliases structr.options structr_options
 #'
 #' @name structr-options
 #' @examples

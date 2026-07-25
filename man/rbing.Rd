@@ -36,7 +36,7 @@ contour(re)
 points(re)
 }
 \references{
-Fallaize C. J. and Kypraios T. (2016). Exact bayesian inference for the Bingham distribution. Statistics and Computing, 26(1): 349–360. http://arxiv.org/pdf/1401.2894v1.pdf
+Fallaize C. J. and Kypraios T. (2016). Exact bayesian inference for the Bingham distribution. Statistics and Computing, 26(1): 349–360. \url{http://arxiv.org/pdf/1401.2894v1.pdf}
 }
 \seealso{
 Other random: 

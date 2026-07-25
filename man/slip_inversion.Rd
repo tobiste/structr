@@ -92,21 +92,21 @@ invisible(lapply(seq_len(nx), function(i) {
 \references{
 Angelier, J. (1990). Inversion of field data in fault tectonics to obtain
 the regional stress—III. A new rapid direct inversion method by analytical
-means. Geophys. J. Int, 103, 363–376. \url{https://doi.org/10.1111/j.1365-246X.1990.tb01777.x}
+means. Geophys. J. Int, 103, 363–376. \doi{10.1111/j.1365-246X.1990.tb01777.x}
 
 Hansen, J. A. (2013). Direct inversion of stress, strain or strain rate
 including vorticity: A linear method of homogenous fault-slip data inversion
 independent of adopted hypothesis. Journal of Structural Geology, 51, 3–13.
-https://doi.org/10.1016/j.jsg.2013.03.014
+\doi{10.1016/j.jsg.2013.03.014}
 
 Michael, A. J. (1984). Determination of stress from slip data: Faults and
 folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526.
-\url{https://doi.org/10.1029/JB089iB13p11517}
+\doi{10.1029/JB089iB13p11517}
 
 Yamaji, A., & Sato, K. (2006). Distances for the solutions of stress tensor
 inversion in relation to misfit angles that accompany the solutions.
 Geophysical Journal International, 167(2), 933–942.
-https://doi.org/10.1111/j.1365-246X.2006.03188.x
+\doi{10.1111/j.1365-246X.2006.03188.x}
 }
 \seealso{
 Other stress-inversion: 

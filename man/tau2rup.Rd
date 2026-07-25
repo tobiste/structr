@@ -40,7 +40,7 @@ tau2rup(tau, f)
 \references{
 Angelier, J. (1990). Inversion of field data in fault tectonics to obtain the
 regional stress—III. A new rapid direct inversion method by analytical means.
-Geophys. J. Int, 103, 363–376. \url{https://doi.org/10.1111/j.1365-246X.1990.tb01777.x}
+Geophys. J. Int, 103, 363–376. \doi{10.1111/j.1365-246X.1990.tb01777.x}
 }
 \seealso{
 \code{\link[=slip_inversion]{slip_inversion()}}

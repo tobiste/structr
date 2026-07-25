@@ -98,7 +98,7 @@
 #' Hansen, J. A. (2013). Direct inversion of stress, strain or strain rate
 #' including vorticity: A linear method of homogenous fault-slip data inversion
 #' independent of adopted hypothesis. Journal of Structural Geology, 51, 3–13.
-#' https://doi.org/10.1016/j.jsg.2013.03.014
+#' \doi{10.1016/j.jsg.2013.03.014}
 #'
 #' @returns list
 #' @export

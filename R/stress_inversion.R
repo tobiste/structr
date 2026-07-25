@@ -36,21 +36,21 @@
 #' @references
 #' Angelier, J. (1990). Inversion of field data in fault tectonics to obtain
 #' the regional stress—III. A new rapid direct inversion method by analytical
-#' means. Geophys. J. Int, 103, 363–376. <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
+#' means. Geophys. J. Int, 103, 363–376. \doi{10.1111/j.1365-246X.1990.tb01777.x}
 #'
 #' Hansen, J. A. (2013). Direct inversion of stress, strain or strain rate
 #' including vorticity: A linear method of homogenous fault-slip data inversion
 #' independent of adopted hypothesis. Journal of Structural Geology, 51, 3–13.
-#' https://doi.org/10.1016/j.jsg.2013.03.014
+#' \doi{10.1016/j.jsg.2013.03.014}
 #'
 #' Michael, A. J. (1984). Determination of stress from slip data: Faults and
 #' folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517–11526.
-#' <https://doi.org/10.1029/JB089iB13p11517>
+#' \doi{10.1029/JB089iB13p11517}
 #' 
 #' Yamaji, A., & Sato, K. (2006). Distances for the solutions of stress tensor 
 #' inversion in relation to misfit angles that accompany the solutions. 
 #' Geophysical Journal International, 167(2), 933–942. 
-#' https://doi.org/10.1111/j.1365-246X.2006.03188.x
+#' \doi{10.1111/j.1365-246X.2006.03188.x}
 #'
 #' @export
 #'
@@ -497,13 +497,13 @@ fault_normal_matrix <- function(n) {
 #' @references
 #' Angelier, J. (1990). Inversion of field data in fault tectonics to obtain the
 #'  regional stress—III. A new rapid direct inversion method by analytical means.
-#'  Geophys. J. Int, 103, 363–376. <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
+#'  Geophys. J. Int, 103, 363–376. \doi{10.1111/j.1365-246X.1990.tb01777.x}
 #'
 #' Pascal, C. (2022). Paleostress Inversion Techniques. Chapter 4, Sections 4.2.3 and 4.2.4.
 #'
 #' Mostafa, M. E. (2005). Iterative direct inversion: An exact complementary
 #' solution for inverting fault-slip data to obtain palaeostresses. Computers
-#' & Geosciences, 31(8), 1059–1070. <https://doi.org/10.1016/j.cageo.2005.02.012>
+#' & Geosciences, 31(8), 1059–1070. \doi{10.1016/j.cageo.2005.02.012}
 #'
 #' @family stress-inversion
 #'
@@ -1351,7 +1351,7 @@ tau2tendency <- function(tau, fault, friction = 0.6) {
 #' the San Fernando earthquake sequence. J. Geophys. Res. Solid Earth 89, 9305–9320.
 #' 
 #' Simpson, R. W. (1997). Quantifying Anderson’s fault types. Journal of 
-#' Geophysical Research: Solid Earth, 102(B8), 17909–17919. https://doi.org/10.1029/97JB01274
+#' Geophysical Research: Solid Earth, 102(B8), 17909–17919. \doi{10.1029/97JB01274}
 #'
 #' @returns list. Its components are the three stress shape parameters
 #' `R` (after Gephart & Forsyth, 1984), `phi` (Angelier, 1979), `bott` (Bott, 1959), 
@@ -1408,7 +1408,7 @@ stress_shape <- function(tau) {
 #' @references
 #' Angelier, J. (1990). Inversion of field data in fault tectonics to obtain the
 #'  regional stress—III. A new rapid direct inversion method by analytical means.
-#'  Geophys. J. Int, 103, 363–376. <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
+#'  Geophys. J. Int, 103, 363–376. \doi{10.1111/j.1365-246X.1990.tb01777.x}
 #'
 #' @returns numeric. The per-fault "ratio upsilon" (RUP) parameter in percent.
 #'

@@ -200,7 +200,7 @@ rfb <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, A) {
 #' @family random
 #'
 #' @references
-#' Fallaize C. J. and Kypraios T. (2016). Exact bayesian inference for the Bingham distribution. Statistics and Computing, 26(1): 349–360. http://arxiv.org/pdf/1401.2894v1.pdf
+#' Fallaize C. J. and Kypraios T. (2016). Exact bayesian inference for the Bingham distribution. Statistics and Computing, 26(1): 349–360. \url{http://arxiv.org/pdf/1401.2894v1.pdf}
 #'
 #' @examples
 #' a <- cov(iris[, 1:3])

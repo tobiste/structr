@@ -516,7 +516,7 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
 #' @param weights numeric. Weightings
 #' @param ... optional graphical parameters
 #'
-#' @references Woodcock, N. H. (1977). Specification of fabric shapes using an eigenvalue method. Geological Society of America Bulletin88, 1231<U+2013>1236. http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf
+#' @references Woodcock, N. H. (1977). Specification of fabric shapes using an eigenvalue method. Geological Society of America Bulletin88, 1231<U+2013>1236.
 #'
 #' @seealso [vollmer()], [ot_eigen()]
 #' @family fabric-plot
