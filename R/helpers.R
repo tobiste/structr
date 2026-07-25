@@ -988,7 +988,7 @@ nnmat <- function(n) n %*% t(n)
   }
   low <- lam[1] - 0.25 * p - 0.5 * sqrt(0.25 * p^2 + p * max(gam)^2)
   up <- lam[1] - 0.25 - 0.5 * sqrt(0.25 + min(gam)^2)
-  ela <- uniroot(saddle.equat, c(low, up), para = para, tol = 1e-08)
+  ela <- uniroot(saddle.equat, c(low, up), para = para, tol = getOption("structr.tol"))
   tau <- ela$root
   kfb <- function(j, gam, lam, ta) {
     if (j == 1) {
@@ -1077,7 +1077,10 @@ nnmat <- function(n) n %*% t(n)
 }
 
 #' @importFrom Rfast vmf.mle
-.vmf.mle <- function(x, tol = NULL) Rfast::vmf.mle(x, tol = tol)
+.vmf.mle <- function(x, tol = NULL) {
+  tol <- tol %||% getOption("structr.tol")
+  Rfast::vmf.mle(x, tol = tol)
+}
 
 #' @importFrom stats optimize
 .vmfkde.tune <- function(x, low = 0.1, up = 1) {

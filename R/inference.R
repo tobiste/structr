@@ -104,7 +104,6 @@ kent_MLE <- function(x) {
     res$G <- Plane(res$G)
   }
   
-  res$runtime <- NULL
   return(res)
 }
 
