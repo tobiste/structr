@@ -6,10 +6,6 @@ on:
   pull_request:
     branches: [main, master]
 
-- name: Test Rfast
-  run: |
-    Rscript -e 'library(Rfast); sessionInfo()'
-
 name: R-CMD-check
 
 jobs:
@@ -40,6 +36,7 @@ jobs:
 
 
       - uses: r-lib/actions/check-r-package@v2
+
 
 
 name: test-rfast
