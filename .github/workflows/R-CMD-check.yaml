@@ -9,6 +9,19 @@ on:
 name: R-CMD-check
 
 jobs:
+  test-rfast:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: r-lib/actions/setup-r@v2
+
+      - name: Install and load Rfast
+        run: |
+          Rscript -e 'install.packages("Rfast")'
+          Rscript -e 'library(Rfast)'
+          Rscript -e 'sessionInfo()'
+
+
   R-CMD-check:
     runs-on: ubuntu-latest
     env:
