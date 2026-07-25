@@ -15,7 +15,6 @@ Depends:
 Imports: 
     cluster,
     data.table,
-    Directional (>= 7.2),
     dplyr,
     expm,
     fields,
@@ -25,6 +24,7 @@ Imports:
     MASS,
     pracma,
     readxl,
+    Rfast,
     rjson,
     rlang,
     rotasym,

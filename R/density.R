@@ -4,7 +4,7 @@ blank_grid_regular <- function(n, r = 1) {
   # y_grid <- seq(-1, 1, length.out = n)
   grid_schmidt <- as.matrix(expand.grid(x_grid, x_grid))
 
-  grid_cart <- .schmidt2cart(grid_schmidt[, 1], grid_schmidt[, 2])
+  grid_cart <- .schmidt2cart(grid_schmidt[, 1], grid_schmidt[, 2], r)
   values <- rep(0, times = n^2)
   list(grid = grid_cart, density = values)
 }
@@ -39,7 +39,7 @@ blank_grid_regular <- function(n, r = 1) {
 #'  the density using `FUN`.  Each input point is weighted by the corresponding
 #'  item of `weights`. The weights are normalized to 1 before calculation.
 #'
-#' @param azi,inc degrees.
+#' @param azi,inc numeric. Azimuth and inclination in degrees.
 #' @param FUN The method of density estimation to use. Defaults to [exponential_kamb()].
 #' @param sigma (optional) numeric. The number of standard deviations defining the expected number of
 #' standard deviations by which a random sample from a uniform
@@ -53,7 +53,7 @@ blank_grid_regular <- function(n, r = 1) {
 #' The relative weight to be applied to each input measurement. The array
 #' will be normalized to sum to 1, so absolute value of the `weights` do not
 #' affect the result. Defaults to `NULL`
-#' @param r numeric. radius of stereonet circle
+#' @param r numeric. Radius of stereonet circle
 #'
 #' @returns list
 count_points <- function(azi, inc, FUN, sigma, ngrid, weights, r) {
@@ -112,7 +112,9 @@ count_points <- function(azi, inc, FUN, sigma, ngrid, weights, r) {
 #'
 #' res2 <- density_grid(x, kamb = FALSE, kernel_method = "cross")
 #' lapply(res2, head)
-density_grid <- function(x, weights = NULL, upper.hem = FALSE, kamb = TRUE, ...) {
+density_grid <- function(x, weights = NULL, upper.hem = NULL, kamb = TRUE, ...) {
+  upper.hem <- upper.hem %||% getOption("structr.upper.hem")
+  
   if (!is.Line(x)) x <- Line(x)
 
   # remove NA values
@@ -162,33 +164,27 @@ kamb_units <- function(n, radius) {
 #'
 #' The methods of density estimation in a stereonet.
 #'
-#' @param cos_dist cosine distances
-#' @param sigma (optional) numeric. The number of standard deviations defining the expected number of
-#' standard deviations by which a random sample from a uniform
-#' distribution of points would be expected to vary from being evenly
-#' distributed across the hemisphere.  This controls the size of the
-#' counting circle, and therefore the degree of smoothing.  Higher sigmas
-#' will lead to more smoothing of the resulting density distribution. This
-#' parameter only applies to Kamb-based methods.  Defaults to 3.
+#' @param cos_dist numeric. Cosine distances
+#' @inheritParams count_points
 #'
-#' @details [exponential_kamb()]: Kamb with exponential smoothing
-#' A modified Kamb method using exponential smoothing (ref1). Units are
+#' @details `exponential_kamb()`: Kamb with exponential smoothing
+#' A modified Kamb method using exponential smoothing (Vollmer 1995). Units are
 #' in numbers of standard deviations by which the density estimate
 #' differs from uniform.
 #'
-#' [linear_inverse_kamb()]: Kamb with linear smoothing
-#' A modified Kamb method using linear smoothing (ref1).  Units are in
+#' `linear_inverse_kamb()`: Kamb with linear smoothing
+#' A modified Kamb method using linear smoothing (Vollmer 1995).  Units are in
 #' numbers of standard deviations by which the density estimate differs from uniform.
 #'
-#' [square_inverse_kamb()]: Kamb with squared smoothing
-#' A modified Kamb method using squared smoothing (ref1).  Units are in
+#' `square_inverse_kamb()`: Kamb with squared smoothing
+#' A modified Kamb method using squared smoothing (Vollmer 1995).  Units are in
 #' numbers of standard deviations by which the density estimate differs from uniform.
 #'
-#' [kamb_count()]: Kamb with no smoothing
-#' Kamb's method (ref2) with no smoothing. Units are in numbers of standard
+#' `kamb_count()`: Kamb with no smoothing
+#' Kamb's method (Kamb, 1959) with no smoothing. Units are in numbers of standard
 #' deviations by which the density estimate differs from uniform.
 #'
-#' [schmidt_count()]: 1% counts. The traditional "Schmidt" (a.k.a. 1%) method.
+#' `schmidt_count()`: 1% counts. The traditional "Schmidt" (a.k.a. 1%) method.
 #' Counts points within a counting circle comprising 1% of the total area of the
 #' hemisphere. Does not take into account sample size.  Units are in points per 1% area.
 #'
@@ -197,13 +193,13 @@ kamb_units <- function(n, radius) {
 #' Orientation Data Using a Modified Kamb Method. Computers &
 #'   Geosciences, Vol. 21, No. 1, pp. 31--49.
 #'
-#'   Kamb, 1959. Ice Petrofabric Observations from Blue Glacier,
+#' Kamb, 1959. Ice Petrofabric Observations from Blue Glacier,
 #'   Washington, in Relation to Theory and Experiment. Journal of
 #'   Geophysical Research, Vol. 64, No. 11, pp. 1891--1909.
 #'
 #' @returns list
 #' @name density-funs
-#' @importFrom Directional euclid vmfkde.tune vmf.mle
+#' @family density
 NULL
 
 #' @rdname density-funs
@@ -257,17 +253,17 @@ schmidt_count <- function(cos_dist, sigma = NULL) {
 }
 
 #' @keywords internal
-vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngrid = 100) {
+vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngrid = 100, ...) {
   n <- nrow(u)
-  x <- Directional::euclid(u)
+  x <- .euclid(u)
 
   if (is.null(hw)) {
     kernel_method <- match.arg(kernel_method, c("cross", "rot"))
 
     if (kernel_method == "cross") {
-      hw <- as.numeric(Directional::vmfkde.tune(x, low = 0.1, up = 1)[1])
+      hw <- as.numeric(.vmfkde.tune(x, low = 0.1, up = 1)[1])
     } else {
-      k <- Directional::vmf.mle(x, fast = TRUE)$kappa
+      k <- .vmf.mle(x)$kappa
       hw <- ((8 * sinh(k)^2) / (k * n * ((1 + 4 * k^2) * sinh(2 * k) - 2 * k * cosh(2 * k))))^(1 / 6)
     }
   } else {
@@ -285,31 +281,13 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
   lat_grid <- seq(0, 180, length.out = ngrid)
   long_grid <- seq(0, 360, length.out = ngrid)
   
-  
-  # den_mat <- matrix(nrow = ngrid, ncol = ngrid)
-  # for (i in seq_len(ngrid)) {
-  #   for (j in seq_len(ngrid)) {
-  #     y <- Directional::euclid(c(lat_grid[i], long_grid[j]))
-  #     a <- as.vector(tcrossprod(x, y * kappa_val))
-  #     can <- sum(exp(a + log_cpk)) / ngrid
-  #     if (abs(can) < Inf) {
-  #       den_mat[i, j] <- can
-  #     }
-  #   }
-  # }
-  
   # Build all (lat, long) combinations at once and convert to Cartesian
   grid_expand <- expand.grid(lat = lat_grid, long = long_grid)  # ngrid^2 rows
-  y_mat       <- Directional::euclid(as.matrix(grid_expand))    # ngrid^2 × 3
+  y_mat       <- .euclid(as.matrix(grid_expand))    # ngrid^2 × 3
   
   # --- vectorised KDE ---
-  # dot[i, j] = x[i,] · y_mat[j,]  →  (n × ngrid^2) matrix via BLAS
   dots     <- tcrossprod(x, y_mat)                         # n × ngrid^2
-  # log-sum-exp over n data points for each grid cell
   log_dots <- kappa_val * dots                             # scale by kappa
-  # rowSums over n (sum across data pts) for each grid point
-  # log( sum_i exp(kappa * x_i·y_j + log_cpk) ) - log(ngrid)
-  # Use matrixStats or plain base R:
   den_vec  <- exp(log_cpk) * colSums(exp(log_dots)) / ngrid
   
   # Reshape: expand.grid fills lat-major (lat varies fastest)
@@ -324,28 +302,35 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 }
 
 
-#' Spherical density estimation
+#' Spherical Density Estimation
+#' 
+#' @inherit count_points description
 #'
 #' @inheritParams sph_mean
 # #' @param kamb logical. Whether to use the von Mises-Fisher kernel density estimation (`FALSE`) or Kamb's method (`TRUE`, the default).
-#' @param FUN density estimation function if `kamb=TRUE`; one of [exponential_kamb()] (the default),
+#' @param FUN Density estimation function: one of [exponential_kamb()] (the default), 
+#' [linear_inverse_kamb()], [square_inverse_kamb()],
 #'  [kamb_count], and [schmidt_count()].
-#' @param n integer. Grid size. `128` by default.
-#' @param sigma numeric. Radius for Kamb circle used for counting. 3 by default.
+#' @param n integer. The size of the grid in which the density is estimated on. `128` by default.
+#' @inheritParams count_points 
 # #' @param vmf_hw numeric. Kernel bandwidth in degree.
 # #' @param vmf_optimal character. Calculates an optimal kernel bandwidth
 # #' using the cross-validation algorithm (`'cross'`) or the rule-of-thumb (`'rot'`)
 # #' suggested by Garcia-Portugues (2013). Ignored when `vmf_hw` is specified.
 #' @param weights (optional) numeric vector of length of `nrow(x)`.
 #' The relative weight to be applied to each input measurement. The array
-#' will be normalized to sum to 1, so absolute value of the `weights` do not
+#' will be normalized to sum of 1, so absolute value of the `weights` do not
 #' affect the result. Defaults to `NULL`
 #' @inheritParams plot.Line
-#' @param r numeric. radius of stereonet circle
+#' @inheritParams stereoplot
 #' @param ... arguments passed to [density_calc()]
 #'
 #' @name density
 #' @aliases density.spherical density_spherical
+#' @family density
+#' 
+#' @returns Object of class `"sph_density"` which contains the a grid of spherical 
+#' coordinates (`x` and `y`, equal-area projection) and the density estimates for each grid point (`density`).
 #'
 #' @examples
 #' set.seed(20250411)
@@ -364,27 +349,12 @@ density_calc <- function(x,
                          FUN = exponential_kamb,
                          n = 128L, sigma = 3,
                          # vmf_hw = NULL, vmf_optimal = c("cross", "rot"),
-                         weights = NULL, upper.hem = FALSE, r = 1) {
+                         weights = NULL, upper.hem = NULL, radius = NULL) {
+  r <- radius %||% getOption("structr.radius")
   
   dg <- density_grid(x, weights = weights, upper.hem = upper.hem, kamb = TRUE, FUN = FUN, sigma = sigma, ngrid = n, r = r)
-  
   grid_pts <- seq(-1, 1, length.out = n)
-  # grid <- expand.grid(grid_pts, grid_pts) |>
-  #   as.matrix()
-
   density_matrix <- matrix(dg$density, nrow = n, byrow = FALSE)
-  
-  # dist_matrix <- grid[, 1]^2 + grid[, 2]^2
-  # 
-  # # Create a logical mask where TRUE if outside the unit circle
-  # outside <- dist_matrix > r^2
-  # density_matrix[outside] <- NA
-  # res <- list(
-  #   x = grid_pts, y = grid_pts,
-  #   density = density_matrix
-  # )
-  # class(res) <- append(class(res), "sph_density")
-  # return(res)
   
   r2 <- r^2
   outside <- outer(grid_pts^2, grid_pts^2, `+`) > r2   # n×n logical, same layout as density_matrix

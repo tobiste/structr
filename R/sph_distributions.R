@@ -157,7 +157,6 @@ runif.spherical <- function(n = 100, class = c("Vec3", "Ray", "Line", "Plane"), 
 #' @inheritParams rvmf
 #' @param A symmetric matrix
 #' @source Adapted from [Directional::rfb()]
-#' @importFrom Directional rfb
 #'
 #' @family random
 #' @export
@@ -172,7 +171,7 @@ rfb <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, A) {
     unclass() |>
     c()
 
-  res <- Directional::rfb(n = n, k = k, m = muv, A = A)
+  res <- .rfb(n = n, k = k, m = muv, A = A)
   colnames(res) <- c("x", "y", "z")
   res <- Vec3(res)
 
@@ -196,7 +195,6 @@ rfb <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, A) {
 #' @returns  A spherical object of class `.class` and length `n`
 #' @name rbing
 #'
-#' @importFrom Directional rbingham f.rbing
 #' @family random
 #'
 #' @references
@@ -215,15 +213,17 @@ NULL
 
 #' @rdname rbing
 #' @export
+#' @importFrom Rfast rbingham
 rbingham <- function(n, A, .class = c("Vec3", "Line", "Ray", "Plane")) {
   .class <- match.arg(.class)
-  Directional::rbingham(n, A) |>
+  Rfast::rbingham(n, A) |>
     as.Vec3() |>
     Spherical(.class)
 }
 
 #' @rdname rbing
 #' @export
+#' @importFrom Rfast rbing
 rbingham_eig <- function(n, eigenvalues, .class = c("Vec3", "Line", "Ray", "Plane")) {
   .class <- match.arg(.class)
   ne <- length(eigenvalues)
@@ -235,8 +235,8 @@ rbingham_eig <- function(n, eigenvalues, .class = c("Vec3", "Line", "Ray", "Plan
     eigenvalues <- eigenvalues[1:2]
   }
 
-  r <- Directional::f.rbing(n, eigenvalues, fast = TRUE)
-  Spherical(as.Vec3(r$X), .class)
+  r <- Rfast::rbing(n, eigenvalues)
+  Spherical(as.Vec3(r), .class)
 }
 
 
@@ -247,7 +247,6 @@ rbingham_eig <- function(n, eigenvalues, .class = c("Vec3", "Line", "Ray", "Plan
 #' @inheritParams rvmf
 #' @param b numeric. \eqn{\beta} (ellipticity): \eqn{0 \leq \beta < \kappa}
 #'
-#' @importFrom Directional rkent
 #' @family random
 #' @export
 #' @examples
@@ -258,7 +257,7 @@ rbingham_eig <- function(n, eigenvalues, .class = c("Vec3", "Line", "Ray", "Plan
 #' points(r)
 rkent <- function(n, mu = Vec3(1, 0, 0), k = 5, b) {
   muv <- Vec3(mu) |> c()
-  res <- Directional::rkent(n = n, k = k, m = muv, b = b)
+  res <- .rkent(n = n, k = k, m = muv, b = b)
   colnames(res) <- c("x", "y", "z")
   res <- Vec3(res)
 

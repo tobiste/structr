@@ -30,7 +30,7 @@ plot(rp)
 }
 \seealso{
 Other random: 
-\code{\link{rbing}},
+\code{\link{rbing}()},
 \code{\link{rfb}()},
 \code{\link{rkent}()},
 \code{\link{runif.spherical}()},

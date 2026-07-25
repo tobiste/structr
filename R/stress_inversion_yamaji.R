@@ -183,6 +183,7 @@ yamaji_sato <- function(normals, slips, wt) {
 #'
 #'   # some stress shape
 #'   phi_val <- round(res$stress_shape$phi, 2)
+#'F
 #'
 #'   # misfit
 #'   rup_val <- round(res$misfit$rup_mean, 2)

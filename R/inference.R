@@ -75,7 +75,6 @@ fisher_MLE.Plane <- function(x){
 #'
 #' @name dist.mle
 #' 
-#' @importFrom Directional kent.mle vmf.mle
 #'
 #' @family distribution-MLE
 #' @seealso [fisher_inference()] for confidence regions, and [rvmf()] to 
@@ -95,7 +94,7 @@ NULL
 #' @export
 kent_MLE <- function(x) {
   xv <- Vec3(x) |> unclass()
-  res <- Directional::kent.mle(xv)
+  res <- .kent.mle(xv)
   nm <- colnames(res$G)
   res$G <- t(res$G) |> Vec3()
   rownames(res$G) <- nm
@@ -114,7 +113,7 @@ kent_MLE <- function(x) {
 vmf_MLE <- function(x) {
   xv <- Vec3(x) |> unclass()
   
-  res <- Directional::vmf.mle(xv, fast = TRUE)
+  res <- .vmf.mle(xv)
   res$mu <- t(res$mu)
   colnames(res$mu) <- c("x", "y", "z")
   res$mu <- Vec3(res$mu)

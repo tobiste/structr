@@ -32,7 +32,7 @@ points(x)
 }
 \seealso{
 Other random: 
-\code{\link{rbing}},
+\code{\link{rbing}()},
 \code{\link{rkent}()},
 \code{\link{rrot}()},
 \code{\link{runif.spherical}()},

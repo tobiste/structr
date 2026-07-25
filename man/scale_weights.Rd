@@ -44,7 +44,7 @@ err <- sample(1:5, size = 10, replace = TRUE)
 # Introduce 3 random NAs
 err[sample(length(err), 3)] <- NA
 
-scale_weights(err, error_type = 'rank', scaling = 'inv_square', norm = TRUE)
+scale_weights(err, error_type = "rank", scaling = "inv_square", norm = TRUE)
 }
 \seealso{
 \code{\link[=slip_inversion_angelier]{slip_inversion_angelier()}}

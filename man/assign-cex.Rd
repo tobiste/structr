@@ -71,7 +71,7 @@ set.seed(20250411)
 x <- rvmf(100, mu = Line(120, 50), k = 5)
 key <- runif(100)
 plot(x, cex = assign_cex(key), grid.params = list(guides = FALSE))
-legend_cex(key, position = 'topright', area = TRUE)
+legend_cex(key, position = "topright", area = TRUE)
 }
 \seealso{
 \code{\link[PlotTools:SpectrumLegend]{PlotTools::SizeLegend()}} - alternative tool to generate nice

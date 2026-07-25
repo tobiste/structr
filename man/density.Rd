@@ -5,7 +5,7 @@
 \alias{density.spherical}
 \alias{density_spherical}
 \alias{density_calc}
-\title{Spherical density estimation}
+\title{Spherical Density Estimation}
 \usage{
 \method{density}{spherical}(x, ...)
 
@@ -15,8 +15,8 @@ density_calc(
   n = 128L,
   sigma = 3,
   weights = NULL,
-  upper.hem = FALSE,
-  r = 1
+  upper.hem = NULL,
+  radius = NULL
 )
 }
 \arguments{
@@ -25,29 +25,51 @@ rows are the observations and the columns are the coordinates.}
 
 \item{...}{arguments passed to \code{\link[=density_calc]{density_calc()}}}
 
-\item{FUN}{density estimation function if \code{kamb=TRUE}; one of \code{\link[=exponential_kamb]{exponential_kamb()}} (the default),
+\item{FUN}{Density estimation function: one of \code{\link[=exponential_kamb]{exponential_kamb()}} (the default),
+\code{\link[=linear_inverse_kamb]{linear_inverse_kamb()}}, \code{\link[=square_inverse_kamb]{square_inverse_kamb()}},
 \link{kamb_count}, and \code{\link[=schmidt_count]{schmidt_count()}}.}
 
-\item{n}{integer. Grid size. \code{128} by default.}
+\item{n}{integer. The size of the grid in which the density is estimated on. \code{128} by default.}
 
-\item{sigma}{numeric. Radius for Kamb circle used for counting. 3 by default.}
+\item{sigma}{(optional) numeric. The number of standard deviations defining the expected number of
+standard deviations by which a random sample from a uniform
+distribution of points would be expected to vary from being evenly
+distributed across the hemisphere.  This controls the size of the
+counting circle, and therefore the degree of smoothing.  Higher \code{sigma}s
+will lead to more smoothing of the resulting density distribution. This
+parameter only applies to Kamb-based methods.  Defaults to \code{3}.}
 
 \item{weights}{(optional) numeric vector of length of \code{nrow(x)}.
 The relative weight to be applied to each input measurement. The array
-will be normalized to sum to 1, so absolute value of the \code{weights} do not
+will be normalized to sum of 1, so absolute value of the \code{weights} do not
 affect the result. Defaults to \code{NULL}}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
 hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}). Defaults to
 \code{getOption("structr.upper.hem")}.}
 
-\item{r}{numeric. radius of stereonet circle}
+\item{radius}{numeric. Radius of circle. Defaults to \code{getOption("structr.radius")}.}
+}
+\value{
+Object of class \code{"sph_density"} which contains the a grid of spherical
+coordinates (\code{x} and \code{y}, equal-area projection) and the density estimates for each grid point (\code{density}).
 }
 \description{
-Spherical density estimation
+This function calculates the point density of the input
+spherical points at a series of counter stations. Creates
+\code{gridsize} regular grid of counter stations, calculates the
+distance to all input points at each counter station, and then calculates
+the density using \code{FUN}.  Each input point is weighted by the corresponding
+item of \code{weights}. The weights are normalized to 1 before calculation.
 }
 \examples{
 set.seed(20250411)
 test <- rfb(100, mu = Line(120, 10), k = 5, A = diag(c(-1, 0, 1)))
 density(x = test, n = 100, sigma = 3, weights = runif(100))
 }
+\seealso{
+Other density: 
+\code{\link{density-funs}},
+\code{\link{stereo_contour}}
+}
+\concept{density}

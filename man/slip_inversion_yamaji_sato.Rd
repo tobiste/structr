@@ -37,6 +37,7 @@ invisible(lapply(seq_len(nx), function(i) {
 
   # some stress shape
   phi_val <- round(res$stress_shape$phi, 2)
+F
 
   # misfit
   rup_val <- round(res$misfit$rup_mean, 2)

@@ -52,7 +52,7 @@ plot(x, col = assign_col(dx))
 }
 \seealso{
 Other random: 
-\code{\link{rbing}},
+\code{\link{rbing}()},
 \code{\link{rfb}()},
 \code{\link{rkent}()},
 \code{\link{rrot}()},

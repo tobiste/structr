@@ -52,7 +52,7 @@ contour(x4)
 }
 \seealso{
 Other random: 
-\code{\link{rbing}},
+\code{\link{rbing}()},
 \code{\link{rfb}()},
 \code{\link{rkent}()},
 \code{\link{rrot}()},

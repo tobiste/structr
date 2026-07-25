@@ -7,7 +7,7 @@
 count_points(azi, inc, FUN, sigma, ngrid, weights, r)
 }
 \arguments{
-\item{azi, inc}{degrees.}
+\item{azi, inc}{numeric. Azimuth and inclination in degrees.}
 
 \item{FUN}{The method of density estimation to use. Defaults to \code{\link[=exponential_kamb]{exponential_kamb()}}.}
 
@@ -26,7 +26,7 @@ The relative weight to be applied to each input measurement. The array
 will be normalized to sum to 1, so absolute value of the \code{weights} do not
 affect the result. Defaults to \code{NULL}}
 
-\item{r}{numeric. radius of stereonet circle}
+\item{r}{numeric. Radius of stereonet circle}
 }
 \value{
 list

@@ -20,15 +20,15 @@ kamb_count(cos_dist, sigma = 3)
 schmidt_count(cos_dist, sigma = NULL)
 }
 \arguments{
-\item{cos_dist}{cosine distances}
+\item{cos_dist}{numeric. Cosine distances}
 
 \item{sigma}{(optional) numeric. The number of standard deviations defining the expected number of
 standard deviations by which a random sample from a uniform
 distribution of points would be expected to vary from being evenly
 distributed across the hemisphere.  This controls the size of the
-counting circle, and therefore the degree of smoothing.  Higher sigmas
+counting circle, and therefore the degree of smoothing.  Higher \code{sigma}s
 will lead to more smoothing of the resulting density distribution. This
-parameter only applies to Kamb-based methods.  Defaults to 3.}
+parameter only applies to Kamb-based methods.  Defaults to \code{3}.}
 }
 \value{
 list
@@ -37,24 +37,24 @@ list
 The methods of density estimation in a stereonet.
 }
 \details{
-\code{\link[=exponential_kamb]{exponential_kamb()}}: Kamb with exponential smoothing
-A modified Kamb method using exponential smoothing (ref1). Units are
+\code{exponential_kamb()}: Kamb with exponential smoothing
+A modified Kamb method using exponential smoothing (Vollmer 1995). Units are
 in numbers of standard deviations by which the density estimate
 differs from uniform.
 
-\code{\link[=linear_inverse_kamb]{linear_inverse_kamb()}}: Kamb with linear smoothing
-A modified Kamb method using linear smoothing (ref1).  Units are in
+\code{linear_inverse_kamb()}: Kamb with linear smoothing
+A modified Kamb method using linear smoothing (Vollmer 1995).  Units are in
 numbers of standard deviations by which the density estimate differs from uniform.
 
-\code{\link[=square_inverse_kamb]{square_inverse_kamb()}}: Kamb with squared smoothing
-A modified Kamb method using squared smoothing (ref1).  Units are in
+\code{square_inverse_kamb()}: Kamb with squared smoothing
+A modified Kamb method using squared smoothing (Vollmer 1995).  Units are in
 numbers of standard deviations by which the density estimate differs from uniform.
 
-\code{\link[=kamb_count]{kamb_count()}}: Kamb with no smoothing
-Kamb's method (ref2) with no smoothing. Units are in numbers of standard
+\code{kamb_count()}: Kamb with no smoothing
+Kamb's method (Kamb, 1959) with no smoothing. Units are in numbers of standard
 deviations by which the density estimate differs from uniform.
 
-\code{\link[=schmidt_count]{schmidt_count()}}: 1\% counts. The traditional "Schmidt" (a.k.a. 1\%) method.
+\code{schmidt_count()}: 1\% counts. The traditional "Schmidt" (a.k.a. 1\%) method.
 Counts points within a counting circle comprising 1\% of the total area of the
 hemisphere. Does not take into account sample size.  Units are in points per 1\% area.
 }
@@ -67,3 +67,9 @@ Kamb, 1959. Ice Petrofabric Observations from Blue Glacier,
 Washington, in Relation to Theory and Experiment. Journal of
 Geophysical Research, Vol. 64, No. 11, pp. 1891--1909.
 }
+\seealso{
+Other density: 
+\code{\link{density}},
+\code{\link{stereo_contour}}
+}
+\concept{density}

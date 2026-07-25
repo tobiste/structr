@@ -16,51 +16,62 @@
 \method{contour}{spherical}(
   x,
   add = FALSE,
-  density.params = list(),
   nlevels = 10L,
+  density.params = list(),
   col.palette = viridis::viridis,
   col = NULL,
   col.params = list(),
+  upper.hem = NULL,
+  radius = NULL,
   ...
 )
 
 \method{contour}{sph_density}(
   x,
   add = FALSE,
-  density.params = list(),
   nlevels = 10L,
+  density.params = list(),
   col.palette = viridis::viridis,
   col = NULL,
   col.params = list(),
+  upper.hem = NULL,
+  radius = NULL,
   ...
 )
 
 contourf(
   x,
   add = FALSE,
-  density.params = list(),
   nlevels = 10L,
+  density.params = list(),
   col.palette = viridis::viridis,
-  col.params = list()
+  col.params = list(),
+  upper.hem = NULL,
+  radius = NULL,
+  ...
 )
 
 \method{image}{spherical}(
   x,
   add = FALSE,
-  density.params = list(),
   nlevels = 10L,
+  density.params = list(),
   col.palette = viridis::viridis,
   col.params = list(),
+  upper.hem = NULL,
+  radius = NULL,
   ...
 )
 
 \method{image}{sph_density}(
   x,
   add = FALSE,
-  density.params = list(),
   nlevels = 10L,
+  density.params = list(),
   col.palette = viridis::viridis,
   col.params = list(),
+  upper.hem = NULL,
+  radius = NULL,
   ...
 )
 }
@@ -69,15 +80,22 @@ contourf(
 
 \item{add}{logical. Whether the contours should be added to an existing plot.}
 
-\item{density.params}{list of parameters passed to \link{density.spherical}}
-
 \item{nlevels}{integer. Number of contour levels for plotting}
+
+\item{density.params}{list. Optional arguments passed to \code{\link[=density.spherical]{density.spherical()}},
+such as \code{FUN}, \code{n}, \code{sigma}, and \code{weights}}
 
 \item{col.palette}{a color palette function to be used to assign colors in the plot.}
 
 \item{col}{colour(s) for the contour lines drawn. If \code{NULL}, lines are color based on \code{col.palette}.}
 
 \item{col.params}{list. Arguments passed to \code{col.palette}}
+
+\item{upper.hem}{logical. Whether the projection is shown for upper
+hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}). Defaults to
+\code{getOption("structr.upper.hem")}.}
+
+\item{radius}{numeric. Radius of circle. Defaults to \code{getOption("structr.radius")}.}
 
 \item{...}{optional parameters passed to \code{\link[graphics:image]{graphics::image()}} or \code{\link[graphics:contour]{graphics::contour()}}.}
 }
@@ -89,6 +107,9 @@ the counts, and the density.
 Kamb counts and densities on the sphere. \code{contour} plots the contour lines,
 \code{contourf} displays a contour plot with the areas between the contours filled,
 and \code{image} creates a dense grid of colored rectangles.
+}
+\note{
+Densities are plotted in the equal-area projection!
 }
 \examples{
 set.seed(20250411)
@@ -142,8 +163,6 @@ title(
 )
 }
 \seealso{
-\code{\link[=count_points]{count_points()}}, \link{density}
-
 Other stereo-plot: 
 \code{\link{arrows}()},
 \code{\link{fault-plot}},
@@ -159,5 +178,10 @@ Other stereo-plot:
 \code{\link{stereoplot_guides}()},
 \code{\link{stereoplot_ticks}()},
 \code{\link{text.spherical}()}
+
+Other density: 
+\code{\link{density}},
+\code{\link{density-funs}}
 }
+\concept{density}
 \concept{stereo-plot}

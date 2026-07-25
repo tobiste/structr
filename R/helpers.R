@@ -1,6 +1,6 @@
 # deg2rad <- function(x) x * pi / 180
 # rad2deg <- function(x) x * 180 / pi
-# 
+#
 # sind <- function(x) sin(deg2rad(x))
 # cosd <- function(x) cos(deg2rad(x))
 # tand <- function(x) tan(deg2rad(x))
@@ -8,8 +8,6 @@
 # acosd <- function(x) rad2deg(acos(x))
 # atand <- function(x) rad2deg(atan(x))
 # atan2d <- function(y, x) rad2deg(atan2(y, x)) %% 360
-
-
 
 
 #' Converts strike into dip direction using right-hand rule
@@ -34,7 +32,6 @@ parse_strike_dip <- function(strike, dip) {
   dd <- split_trailing_letters(dip)$measurement
   list(strike, dip = dd)
 }
-
 
 
 #' Parse measurement and direction strings
@@ -180,7 +177,6 @@ quadrant2dd <- function(strike, dip_quadrant, n_directions = c(4L, 8L, 16L)) {
 }
 
 
-
 #' Quadrant measurement expressions to angles
 #'
 #' Interprets quadrant measurement expressions, such as "E30N" or "W10S" as azimuth angles
@@ -218,72 +214,71 @@ parse_quadrant_measurement <- function(x) {
 }
 
 #' Scaling weightings
-#' 
-#' Scales quantitative errors or qualities of orientation measurements. Useful for some 
-#' statistical summaries or fault-slip inversion. 
+#'
+#' Scales quantitative errors or qualities of orientation measurements. Useful for some
+#' statistical summaries or fault-slip inversion.
 #'
 #' @param e numeric. Weights
-#' @param error_type character. One of `"rank"` (a numeric value ranking 
-#' measurement quality), `"angle"` (a reading error expressed as angles in 
+#' @param error_type character. One of `"rank"` (a numeric value ranking
+#' measurement quality), `"angle"` (a reading error expressed as angles in
 #' degrees), and `"rup"` (RUP values from a previous fault-slip inversion)
-#' @param scaling  character. Scaling function to use. One of `"lin"` (leaves 
-#' weights \eqn{e} as is), `"inv_lin"` (\eqn{1/e}), `"inv_square"` (\eqn{1/e^2}), 
+#' @param scaling  character. Scaling function to use. One of `"lin"` (leaves
+#' weights \eqn{e} as is), `"inv_lin"` (\eqn{1/e}), `"inv_square"` (\eqn{1/e^2}),
 #' and `"exp"` (\eqn{\exp{-(x-1)}})
-#' @param replace_na logical. Imputation? Whether `NA` should be replaced by the 
+#' @param replace_na logical. Imputation? Whether `NA` should be replaced by the
 #' mean of the weights? (`TRUE` by default)
-#' @param norm logical. Whether the scaled weights should be normalized by 
+#' @param norm logical. Whether the scaled weights should be normalized by
 #' their mean? (`FALSE` by default)
 #'
-#' @returns numeric. 
+#' @returns numeric.
 #' @export
-#' 
+#'
 #' @seealso [slip_inversion_angelier()]
 #'
 #' @examples
 #' set.seed(20250411)
 #' # Generate some random weights from 1 (poor) to 5 (good)
 #' err <- sample(1:5, size = 10, replace = TRUE)
-#' 
+#'
 #' # Introduce 3 random NAs
 #' err[sample(length(err), 3)] <- NA
-#' 
-#' scale_weights(err, error_type = 'rank', scaling = 'inv_square', norm = TRUE)
-scale_weights <- function(e, error_type = c('rank', 'angle', 'rup'), scaling = c('lin', 'inv_lin', 'inv_square', 'exp'), replace_na = TRUE, norm = FALSE){
+#'
+#' scale_weights(err, error_type = "rank", scaling = "inv_square", norm = TRUE)
+scale_weights <- function(e, error_type = c("rank", "angle", "rup"), scaling = c("lin", "inv_lin", "inv_square", "exp"), replace_na = TRUE, norm = FALSE) {
   error_type <- match.arg(error_type)
   scaling <- match.arg(scaling)
-  
+
   emean <- mean(e, na.rm = TRUE)
-  if(replace_na){
+  if (replace_na) {
     e[is.na(e)] <- emean
   }
-  
-  scale_fun <- if(scaling == 'inv_square'){
+
+  scale_fun <- if (scaling == "inv_square") {
     function(x) 1 / x^2
-  } else if(scaling == 'exp'){
-    function(x) exp(-(x-1))
-  } else if(scaling == 'inv_lin') {
-    function(x) 1/x
+  } else if (scaling == "exp") {
+    function(x) exp(-(x - 1))
+  } else if (scaling == "inv_lin") {
+    function(x) 1 / x
   } else {
     function(x) x
   }
-  
-  
-  if(error_type == 'rank'){
+
+
+  if (error_type == "rank") {
     weights <- scale_fun(e)
-  } else if(error_type == 'angle'){
+  } else if (error_type == "angle") {
     e <- ifelse(e > 90, 180 - e, e)
     error_clamped <- pmin(pmax(e, 0.1), 90) # zero value for perfect measurement must be 0.1
     weights <- scale_fun(error_clamped)
-  } else if(error_type == 'rup'){
+  } else if (error_type == "rup") {
     #  from a previous inversion's RUP — downweight outliers
     weights <- 1 / (1 + (e / 50)^2)
   }
-  
-  if(norm) weights <- weights / mean(weights, na.rm = TRUE)
-  
+
+  if (norm) weights <- weights / mean(weights, na.rm = TRUE)
+
   return(weights)
 }
-
 
 
 # Color, shape, and size assignment helper for plotting --------------------------------------------
@@ -299,12 +294,12 @@ scale_weights <- function(e, error_type = c('rank', 'angle', 'rup'), scaling = c
 .scale <- function(x, from = range(x), to) {
   original_min <- from[1]
   original_max <- from[2]
-  
+
   to <- sort(to)
-  
+
   target_min <- to[1]
   target_max <- to[2]
-  
+
   target_min + (x - original_min) * (target_max - target_min) / (original_max - original_min)
 }
 
@@ -332,24 +327,24 @@ scales <- function(ys) {
 #' @param title character. Legend title
 #' @param pal color function; Default is [viridis::viridis()]
 #' @param fill color vector
-#' @param cex character expansion factor relative to current par("cex"). 
+#' @param cex character expansion factor relative to current par("cex").
 #' Used for text in legend.
 #' @param legend character vector. Names of discrete colors.
 #' Can be ignored when `cols` is a named vector.
 #' @param position Legend position. Either a two-column vector of the x and y coordinates, or a
-#' keyword from the list `"bottomright"`, `"bottom"`, `"bottomleft"`, `"left"`, 
+#' keyword from the list `"bottomright"`, `"bottom"`, `"bottomleft"`, `"left"`,
 #' `"topleft"`, `"top"`, `"topright"`, `"right"` and `"center"`.
-#' @param na.translate Unlike continuous scales, discrete scales can easily show 
-#' missing values, and do so by default. If you want to remove missing values 
+#' @param na.translate Unlike continuous scales, discrete scales can easily show
+#' missing values, and do so by default. If you want to remove missing values
 #' from a discrete scale, specify `na.translate = FALSE`.
-#' @param na.values If `na.translate = TRUE`, what color should the 
+#' @param na.values If `na.translate = TRUE`, what color should the
 #' missing values be displayed as?
 #' @param ... arguments passed to color function
 #'
 #' @return character vector of colors in hexadecimal code
 #' @import viridis
 #' @importFrom grDevices colorRamp
-#' @seealso [PlotTools::SpectrumLegend()] - an alternative tool to generate a 
+#' @seealso [PlotTools::SpectrumLegend()] - an alternative tool to generate a
 #' color-bar in base-R plots
 #' @family assign
 #' @name assign-color
@@ -374,32 +369,32 @@ NULL
 
 #' @rdname assign-color
 #' @export
-assign_col_d <- function(x, pal = colorblind_pal, na.translate = TRUE, na.values = 'grey', ...) {
-  if(!na.translate) na.values <- NA
-  
+assign_col_d <- function(x, pal = colorblind_pal, na.translate = TRUE, na.values = "grey", ...) {
+  if (!na.translate) na.values <- NA
+
   groups <- unique(na.omit(x))
   n <- length(groups)
   cols <- do.call(pal, args = list(n = n, ...))
   named_cols <- stats::setNames(cols, groups)
-  
+
   # Map values to colors
   mapped_colors <- named_cols[as.character(x)]
-  
+
   # Assign specified color to NA
   mapped_colors[is.na(x)] <- na.values
   names(mapped_colors)[is.na(x)] <- "NA"
-  
+
   return(mapped_colors)
 }
 
 #' @rdname assign-color
 #' @export
-assign_col <- function(x, n = length(x), pal = viridis::viridis, na.translate = TRUE, na.values = 'grey', ...) {
-  if(!na.translate) na.values <- NA
-  
+assign_col <- function(x, n = length(x), pal = viridis::viridis, na.translate = TRUE, na.values = "grey", ...) {
+  if (!na.translate) na.values <- NA
+
   normalized_data <- .normalize(x)
   colors <- rep(na.values, n)
-  
+
   n2 <- length(na.omit(x))
   colors[!is.na(x)] <- do.call(pal, args = list(n = n2, ...))
   # names(colors) <- colors[as.numeric(cut(normalized_data, breaks = n))]
@@ -448,14 +443,14 @@ legend_col <- function(breaks, title = NULL, pal = viridis::viridis, cex = 1, ..
 #' @rdname assign-color
 #' @export
 legend_col_d <- function(fill, legend = names(fill), position = "topright", ...) {
-  if(length(position)==1){
+  if (length(position) == 1) {
     xpos <- position
     ypos <- NULL
   } else {
     xpos <- position[1]
     ypos <- position[2]
   }
-  
+
   graphics::legend(position,
     legend = legend,
     fill = fill,
@@ -473,9 +468,9 @@ legend_col_d <- function(fill, legend = names(fill), position = "topright", ...)
 #'
 #' @examples
 #' colorblind_pal(3)
-colorblind_pal <- function(n){
+colorblind_pal <- function(n) {
   colblind <- c("#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7")
-  
+
   n_values <- length(colblind)
   if (n > n_values) {
     warning(paste("This manual palette can handle a maximum of", n_values, "values. You have supplied", n))
@@ -485,32 +480,32 @@ colorblind_pal <- function(n){
 
 
 #' Assign plotting size (cex values) to a vector
-#' 
-#' `assign_cex()` maps the character expansion (size). 
-#'  The cex is most commonly used for points and text, and humans perceive the 
-#'  area of points (not their radius), so this provides for optimal perception. 
-#'  The argument `area` ensures that a value of `0` is mapped to a size of `0`; 
-#' `assign_cex_binned()` is a binned version, and `assign_cex_d()` assigns 
+#'
+#' `assign_cex()` maps the character expansion (size).
+#'  The cex is most commonly used for points and text, and humans perceive the
+#'  area of points (not their radius), so this provides for optimal perception.
+#'  The argument `area` ensures that a value of `0` is mapped to a size of `0`;
+#' `assign_cex_binned()` is a binned version, and `assign_cex_d()` assigns
 #' cex values to discrete values.
-#' 
-#' @details The character expansion `cex` is a number indicating the amount by 
-#' which plotting text and symbols 
-#' should be scaled relative to the default. `1`=default, `1.5` is 50% larger, 
+#'
+#' @details The character expansion `cex` is a number indicating the amount by
+#' which plotting text and symbols
+#' should be scaled relative to the default. `1`=default, `1.5` is 50% larger,
 #' `0.5` is 50% smaller, etc.
 #'
 #' @param x vector
-#' @param range numeric 2-element vector. Output range of `cex` values. Minimum 
+#' @param range numeric 2-element vector. Output range of `cex` values. Minimum
 #' value must be greater than 0.
 #' @param pch plotting character to be used in legend.
-#' @param area logical. Whether `cex` should be proportional to the area (`TRUE`) 
+#' @param area logical. Whether `cex` should be proportional to the area (`TRUE`)
 #' or the radius (`FALSE`, the default) of the plotting character.
-#' @param values numeric. `cex` values to manually assign to `x`. Must be at least 
+#' @param values numeric. `cex` values to manually assign to `x`. Must be at least
 #' the number of unique values in `x`.
 #' @inheritParams assign_col
 #' @param ... arguments passed to [graphics::legend()]
-#' 
+#'
 #' @family assign
-#' @seealso [PlotTools::SizeLegend()] - alternative tool to generate nice 
+#' @seealso [PlotTools::SizeLegend()] - alternative tool to generate nice
 #' looking legends for cex values
 #'
 #' @returns numeric vector
@@ -523,38 +518,38 @@ colorblind_pal <- function(n){
 #' x <- rvmf(100, mu = Line(120, 50), k = 5)
 #' key <- runif(100)
 #' plot(x, cex = assign_cex(key), grid.params = list(guides = FALSE))
-#' legend_cex(key, position = 'topright', area = TRUE)
+#' legend_cex(key, position = "topright", area = TRUE)
 NULL
 
 #' @rdname assign-cex
 #' @export
-assign_cex <- function(x, range = c(0.25, 2), area = FALSE){
+assign_cex <- function(x, range = c(0.25, 2), area = FALSE) {
   stopifnot(is.numeric(x))
   stopifnot(min(range) > 0)
-  
-  if(isTRUE(area)) x <- .scale(sqrt(abs(x)), c(0, max(x)), c(0, 1))
+
+  if (isTRUE(area)) x <- .scale(sqrt(abs(x)), c(0, max(x)), c(0, 1))
   .scale(x, to = range)
 }
 
 #' @rdname assign-cex
 #' @export
-assign_cex_binned <- function(x, range = c(0.25, 2), breaks = 5, area = FALSE){
+assign_cex_binned <- function(x, range = c(0.25, 2), breaks = 5, area = FALSE) {
   x_breaks <- pretty(x, n = breaks)
   n2 <- length(breaks) - 1
   cexs <- assign_cex(seq_len(n2), range, area)
-  named_cexs <- cut(x, breaks = x_breaks, labels = cexs, include.lowest = TRUE) 
+  named_cexs <- cut(x, breaks = x_breaks, labels = cexs, include.lowest = TRUE)
   names(named_cexs) <- cut(x, breaks = x_breaks, include.lowest = TRUE)
   named_cexs
 }
 
 #' @rdname assign-cex
 #' @export
-assign_cex_d <- function(x, values = NULL, range = c(0.25, 2)){
+assign_cex_d <- function(x, values = NULL, range = c(0.25, 2)) {
   xf <- as.factor(x)
   n <- nlevels(xf)
-  
+
   range <- sort(range)
-  
+
   # If user provides custom values:
   if (!is.null(values)) {
     if (length(values) < n) {
@@ -566,7 +561,7 @@ assign_cex_d <- function(x, values = NULL, range = c(0.25, 2)){
     # Otherwise generate cex values across default_range
     cex_vals <- seq(range[1], range[2], length.out = n)
   }
-  
+
   # Assign to each element of x based on factor indexing
   assigned <- cex_vals[as.integer(xf)]
   names(assigned) <- values
@@ -575,47 +570,48 @@ assign_cex_d <- function(x, values = NULL, range = c(0.25, 2)){
 
 #' @rdname assign-cex
 #' @export
-legend_cex <- function(x, range = c(0.25, 2), breaks = 5, values = NULL, area = FALSE, position = "topright", pch = 16, ...){
-    if(!is.null(values)) {
-      cexs <- assign_cex_d(x, values, range)
-    } else {
-      x_breaks <- pretty(x, n = breaks)
-      n2 <- length(x_breaks) - 1
-      cexs <- assign_cex(seq_len(n2), range, area)
-      names(cexs) <- cut(x, breaks = x_breaks, include.lowest = TRUE, ordered_result = TRUE) |> 
-       levels()
-    }
-  
-  if(length(position)==1){
+legend_cex <- function(x, range = c(0.25, 2), breaks = 5, values = NULL, area = FALSE, position = "topright", pch = 16, ...) {
+  if (!is.null(values)) {
+    cexs <- assign_cex_d(x, values, range)
+  } else {
+    x_breaks <- pretty(x, n = breaks)
+    n2 <- length(x_breaks) - 1
+    cexs <- assign_cex(seq_len(n2), range, area)
+    names(cexs) <- cut(x, breaks = x_breaks, include.lowest = TRUE, ordered_result = TRUE) |>
+      levels()
+  }
+
+  if (length(position) == 1) {
     xpos <- position
     ypos <- NULL
   } else {
     xpos <- position[1]
     ypos <- position[2]
-    }
-  
-  graphics::legend(x = xpos, y = xpos,
-                   legend = unique(names(cexs)),
-                   pt.cex = unique(cexs),
-                   pch = pch,
-                   ...
+  }
+
+  graphics::legend(
+    x = xpos, y = xpos,
+    legend = unique(names(cexs)),
+    pt.cex = unique(cexs),
+    pch = pch,
+    ...
   )
 }
 
 
 #' Assigns plotting characters (pch values) to a vector
-#' 
-#' `assign_pch()` maps discrete variables to six easily discernible shapes. If you have more 
-#' than six levels, you will get a warning message, and the seventh and 
-#' subsequent levels will not appear on the plot. 
-#' You can not map a continuous variable to shape unless `assign_pch_binned()` is 
+#'
+#' `assign_pch()` maps discrete variables to six easily discernible shapes. If you have more
+#' than six levels, you will get a warning message, and the seventh and
+#' subsequent levels will not appear on the plot.
+#' You can not map a continuous variable to shape unless `assign_pch_binned()` is
 #' used.
 #'
 #' @param x vector.
 #' @param solid Should the plotting character be solid, `TRUE` (the default), or hollow, `FALSE`?
 #' @inheritParams assign_col
 #' @param ... arguments passed to `graphics::legend()`
-#' 
+#'
 #' @family assign
 #'
 #' @returns named integer vector
@@ -625,7 +621,7 @@ legend_cex <- function(x, range = c(0.25, 2), breaks = 5, values = NULL, area = 
 #' set.seed(20250411)
 #'
 #' # example for discrete colors
-#' x <- rvmf(5, mu = Line(120, 50), k = 5) 
+#' x <- rvmf(5, mu = Line(120, 50), k = 5)
 #' key <- sample(letters, 5, replace = TRUE)
 #' plot(x, pch = assign_pch(key), grid.params = list(guides = FALSE))
 #' legend_pch(key)
@@ -633,35 +629,38 @@ NULL
 
 #' @rdname assign-pch
 #' @export
-assign_pch <- function(x, solid = TRUE){
+assign_pch <- function(x, solid = TRUE) {
   x_unique <- unique(x) |> sort()
-  xn <- length(x_unique) 
-  if(isTRUE(solid)){
+  xn <- length(x_unique)
+  if (isTRUE(solid)) {
     shapes <- c(16, 17, 15, 3, 7, 8)
   } else {
     shapes <- c(1, 2, 0, 3, 7, 8)
   }
-  
-  if(length(x_unique) > length(shapes)) warning(
-    paste0(
-      "The shape palette can deal with a maximum of 6 discrete values because more than 6 becomes difficult to discriminate.\n You have requested ", xn, " values. Consider specifying shapes manually if you need that many of them.")
+
+  if (length(x_unique) > length(shapes)) {
+    warning(
+      paste0(
+        "The shape palette can deal with a maximum of 6 discrete values because more than 6 becomes difficult to discriminate.\n You have requested ", xn, " values. Consider specifying shapes manually if you need that many of them."
+      )
     )
-  
+  }
+
   xf <- as.factor(x)
   assigned <- shapes[(as.integer(xf) - 1) %% length(shapes) + 1]
   names(assigned) <- xf
-  
+
   return(assigned)
 }
 
 #' @rdname assign-pch
 #' @export
-assign_pch_binned <- function(x, solid = TRUE, breaks = 6){
+assign_pch_binned <- function(x, solid = TRUE, breaks = 6) {
   breaks <- pretty(x, n = breaks)
   n2 <- length(breaks) - 1
-  
+
   pchs <- assign_pch(seq_len(n2), solid)
-  
+
   named_pchs <- cut(x, breaks = breaks, labels = pchs, include.lowest = TRUE) |>
     as.character()
   names(named_pchs) <- cut(x, breaks = breaks, include.lowest = TRUE)
@@ -670,21 +669,21 @@ assign_pch_binned <- function(x, solid = TRUE, breaks = 6){
 
 #' @rdname assign-pch
 #' @export
-legend_pch <- function(x, solid = TRUE, breaks = NULL, position = "topright", ...){
-  pchs <- if(is.null(breaks)) assign_pch(x, solid) else assign_pch_binned(x, solid, breaks)
-  
-  if(length(position)==1){
+legend_pch <- function(x, solid = TRUE, breaks = NULL, position = "topright", ...) {
+  pchs <- if (is.null(breaks)) assign_pch(x, solid) else assign_pch_binned(x, solid, breaks)
+
+  if (length(position) == 1) {
     xpos <- position
     ypos <- NULL
   } else {
     xpos <- position[1]
     ypos <- position[2]
   }
-  
+
   graphics::legend(position,
-                   legend = unique(names(pchs)),
-                   pch = unique(pchs),
-                   ...
+    legend = unique(names(pchs)),
+    pch = unique(pchs),
+    ...
   )
 }
 
@@ -708,12 +707,13 @@ legend_pch <- function(x, solid = TRUE, breaks = NULL, position = "topright", ..
 #' plot(c(0, 1), c(0, 1), type = "n")
 #' ellipse(.5, .5, radius.x = 0.5, radius.y = .25, col = "darkgreen", border = "red")
 ellipse <- function(
-    x = 0, y = x,
-    radius.x = 1, radius.y = radius.x,
-    rot = 0, nv = 512,
-    border = par("fg"), col = par("bg"),
-    lty = par("lty"), lwd = par("lwd"),
-    plot = TRUE) {
+  x = 0, y = x,
+  radius.x = 1, radius.y = radius.x,
+  rot = 0, nv = 512,
+  border = par("fg"), col = par("bg"),
+  lty = par("lty"), lwd = par("lwd"),
+  plot = TRUE
+) {
   # normalize inputs to same length
   lgp <- list(
     x = x, y = y, radius.x = radius.x,
@@ -772,8 +772,6 @@ ellipse <- function(
 }
 
 
-
-
 # Modes from a kde distribution ------------------------------------------------
 #' @keywords internal
 #' @noRd
@@ -809,7 +807,6 @@ modes <- function(kde) {
   # combine
   as.data.frame(cbind(x, do.call(cbind, dots)), check.names = FALSE)
 }
-
 
 
 #' List of vectors
@@ -904,6 +901,199 @@ transpose_list <- function(x) {
 }
 
 # Fast implementation of outer(x, x, FUN = "*")
-nnmat <- function(n)  n %*% t(n)
+nnmat <- function(n) n %*% t(n)
 
 `%||%` <- function(a, b) if (is.null(a)) b else a
+
+
+# Functions from {Directional} -------------------------------------------------
+
+.euclid <- function(u) {
+  u <- as.matrix(u)
+  if (dim(u)[2] == 1) u <- t(u)
+  u <- pi * u / 180
+  clat <- cos(u[, 1])
+  U <- cbind(clat * cos(u[, 2]), clat * sin(u[, 2]), sin(u[, 1]))
+  colnames(U) <- c("x", "y", "z")
+  U
+}
+
+.rkent <- function(n, k, m, b) {
+  m0 <- rnorm(3)
+  m0 <- m0 / sqrt(sum(m0^2))
+  m <- m / sqrt(sum(m^2))
+  a <- .rotation(m0, m)
+  A <- diag(c(-b, 0, b))
+  x <- .rfb(n, k, m0, A)
+  tcrossprod(x, a)
+}
+
+.rotation <- function(a, b) {
+  p <- length(a)
+  ab <- sum(a * b)
+  ca <- a - b * ab
+  ca <- ca / sqrt(sum(ca^2))
+  A <- b %*% t(ca)
+  A <- A - t(A)
+  theta <- acos(ab)
+  diag(p) + sin(theta) * A + (cos(theta) - 1) * (b %*% t(b) + ca %*% t(ca))
+}
+
+#' @importFrom Rfast rowsums
+.rfb <- function(n, k, m, A) {
+  m <- m / sqrt(sum(m^2))
+  m0 <- c(0, 1, 0)
+  mu <- c(0, 0, 0)
+  B <- .rotation(m0, m)
+  q <- length(m0)
+  A1 <- A + k / 2 * (diag(q) - m0 %*% t(m0))
+  eig <- eigen(A1)
+  lam <- eig$values
+  V <- eig$vectors
+  lam <- lam - lam[q]
+  lam <- lam[-q]
+  x <- Rfast::rbing(n, lam)
+  x <- tcrossprod(x, V)
+  u <- log(stats::runif(n))
+  ffb <- k * x[, 2] - Rfast::rowsums(x %*% A * x)
+  fb <- k - Rfast::rowsums(x %*% A1 * x)
+  x1 <- x[u <= c(ffb - fb), ]
+  n1 <- dim(x1)[1]
+  while (n1 < n) {
+    x <- Rfast::rbing(n - n1, lam)
+    x <- tcrossprod(x, V)
+    u <- log(runif(n - n1))
+    ffb <- k * x[, 2] - Rfast::rowsums(x %*% A * x)
+    fb <- k - Rfast::rowsums(x %*% A1 * x)
+    x1 <- rbind(x1, x[u <= c(ffb - fb), ])
+    n1 <- dim(x1)[1]
+  }
+  tcrossprod(x1, B)
+}
+
+.fb.saddle <- function(gam, lam) {
+  lam <- sort(lam)
+  mina <- min(lam)
+  if (mina <= 0) {
+    aaa <- abs(mina) + 1
+    lam <- lam + aaa
+  }
+  p <- length(gam)
+  para <- c(gam, lam)
+  saddle.equat <- function(ta, para) {
+    p <- length(para) / 2
+    gam <- para[1:p]
+    lam <- para[-c(1:p)]
+    sum(0.5 / (lam - ta) + 0.25 * (gam^2 / (lam - ta)^2)) - 1
+  }
+  low <- lam[1] - 0.25 * p - 0.5 * sqrt(0.25 * p^2 + p * max(gam)^2)
+  up <- lam[1] - 0.25 - 0.5 * sqrt(0.25 + min(gam)^2)
+  ela <- uniroot(saddle.equat, c(low, up), para = para, tol = 1e-08)
+  tau <- ela$root
+  kfb <- function(j, gam, lam, ta) {
+    if (j == 1) {
+      kd <- sum(0.5 / (lam - ta) + 0.25 * (gam^2 / (lam - ta)^2))
+    } else if (j > 1) {
+      kd <- sum(0.5 * factorial(j - 1) / (lam - ta)^j + 0.25 *
+        factorial(j) * gam^2 / (lam - ta)^(j + 1))
+    }
+    kd
+  }
+  rho3 <- kfb(3, gam, lam, tau) / kfb(2, gam, lam, tau)^1.5
+  rho4 <- kfb(4, gam, lam, tau) / kfb(2, gam, lam, tau)^2
+  Ta <- rho4 / 8 - 5 / 24 * rho3^2
+  c1 <- 0.5 * log(2) + 0.5 * (p - 1) * log(pi) - 0.5 * log(kfb(
+    2,
+    gam, lam, tau
+  )) - 0.5 * sum(log(lam - tau)) - tau + 0.25 *
+    sum(gam^2 / (lam - tau))
+  c2 <- c1 + log1p(Ta)
+  c3 <- c1 + Ta
+  if (mina <= 0) {
+    c1 <- c1 + aaa
+    c2 <- c2 + aaa
+    c3 <- c3 + aaa
+  }
+  logcon <- c(c1, c2, c3)
+  names(logcon) <- c("first order", "second order", "third order")
+  logcon
+}
+
+#' @importFrom Rfast vmf.mle colmeans
+.kent.mle <- function(x) {
+  n <- dim(x)[1]
+  xbar <- Rfast::colmeans(x)
+  S <- crossprod(x) / n
+  xbar <- xbar / sqrt(sum(xbar^2))
+  u <- c(acos(xbar[1]), (atan(xbar[3] / xbar[2]) + pi * I(xbar[2] <
+    0)) %% (2 * pi))
+  theta <- u[1]
+  phi <- u[2]
+  costheta <- cos(theta)
+  sintheta <- sin(theta)
+  cosphi <- cos(phi)
+  sinphi <- sin(phi)
+  H <- matrix(c(
+    costheta, sintheta * cosphi, sintheta * sinphi,
+    -sintheta, costheta * cosphi, costheta * sinphi, 0, -sinphi,
+    cosphi
+  ), ncol = 3)
+  B <- crossprod(H, S) %*% H
+  psi <- 0.5 * atan(2 * B[2, 3] / (B[2, 2] - B[3, 3]))
+  K <- matrix(c(
+    1, 0, 0, 0, cos(psi), sin(psi), 0, -sin(psi),
+    cos(psi)
+  ), ncol = 3)
+  G <- H %*% K
+  lam <- eigen(B[-1, -1])$values
+  xg <- x %*% G
+  xg1 <- sum(xg[, 1])
+  a <- Rfast::colsums(xg[, 2:3]^2)
+  xg2 <- a[1]
+  xg3 <- a[2]
+  mle <- function(para) {
+    k <- para[1]
+    b <- para[2]
+    gam <- c(0, k, 0)
+    lam <- c(0, -b, b)
+    ckb <- .fb.saddle(gam, lam)[3]
+    g <- n * ckb - k * xg1 - b * (xg2 - xg3)
+    g
+  }
+  ini <- Rfast::vmf.mle(x)$kappa
+  ini <- c(ini, ini / 2.1)
+  qa <- optim(ini, mle, control = list(maxit = 5000))
+  para <- qa$par
+  k <- para[1]
+  b <- para[2]
+  gam <- c(0, k, 0)
+  lam <- c(0, -b, b)
+  ckb <- as.numeric(.fb.saddle(gam, lam)[3])
+  l <- -n * ckb + k * xg1 + b * (xg2 - xg3)
+  param <- c(k, b, psi)
+  names(param) <- c("kappa", "beta", "psi")
+  colnames(G) <- c("mean", "major", "minor")
+  list(G = G, param = param, logcon = ckb, loglik = l)
+}
+
+#' @importFrom Rfast vmf.mle
+.vmf.mle <- function(x, tol = NULL) Rfast::vmf.mle(x, tol = tol)
+
+#' @importFrom stats optimize
+.vmfkde.tune <- function(x, low = 0.1, up = 1) {
+  p <- dim(x)[2]
+  n <- dim(x)[1]
+  d <- tcrossprod(x)
+  diag(d) <- -Inf
+  con <- (2 * pi)^(p / 2)
+  funa <- function(h) {
+    A <- d / h^2
+    cpk <- (1 / h^2)^(p / 2 - 1) / besselI(1 / h^2, p / 2 - 1)
+    f <- colSums(exp(A))
+    n * log(cpk) + sum(log(f))
+  }
+  a <- stats::optimize(funa, c(low, up), maximum = TRUE)
+  res <- c(a$maximum, a$objective / n - log(con) - log(n - 1))
+  names(res) <- c("Optimal h", "cv")
+  res
+}

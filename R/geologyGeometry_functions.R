@@ -1548,10 +1548,9 @@ rayMahalanobisPercentiles <- function(us, center, alpha = 0.05, numPoints = 0, d
 
 # Returns C such that C exp(-u^T A u) integrates to 1 over the hemisphere? Accuracy is doubtful.
 #' @source `geologyGeometry` by Davis, J.R.
-#' @importFrom  Directional fb.saddle
 lineBinghamSaddlepointConstant <- function(a) {
   vals <- eigen(a, symmetric = TRUE, only.values = TRUE)$values
-  const <- Directional::fb.saddle(c(0, 0, 0), vals)
+  const <- .fb.saddle(c(0, 0, 0), vals)
   1 / const[[3]]
 }
 
@@ -1565,7 +1564,7 @@ lineBinghamIntegratedConstant <- function(a, numNonAdapt = 5) {
 
 #' Simulation from the Bingham distribution.
 #'
-#' Uses the function [Directional::rbingham()] in package `"Directional"`. In that convention, the
+#' Uses the function [Rfast::rbingham()] in package `"Rfast"`. In that convention, the
 #' Bingham probability density is proportional to \eqn{\exp{(-x^T A x)}}, not \eqn{\exp{(x^T A x)}}.
 #' The mean is the eigenvector of A with least eigenvalue. The main direction of
 #' the dispersion is toward the eigenvector of A with the intermediate eigenvalue.
@@ -1574,7 +1573,7 @@ lineBinghamIntegratedConstant <- function(a, numNonAdapt = 5) {
 #' @param a A symmetric real 3x3 matrix.
 #' @param n A real number (positive integer) or NULL.
 #' @return If `n` is `NULL`, then a single line. If `n` is a positive integer, then a list of `n` lines.
-#' @importFrom Directional rbingham
+#' @importFrom Rfast rbingham
 #' @noRd
 #' @source `geologyGeometry` by Davis, J.R.
 lineBingham <- function(a, n = NULL) {
