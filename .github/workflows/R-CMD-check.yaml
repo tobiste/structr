@@ -41,11 +41,5 @@ jobs:
         with:
           extra-packages: any::rcmdcheck
           needs: check
-          
-      - name: Diagnostic information
-        run: |
-          Rscript -e 'sessionInfo()'
-          Rscript -e 'cat("Rfast:", as.character(packageVersion("Rfast")), "\n")'
-          Rscript -e 'library(Rfast)'
 
       - uses: r-lib/actions/check-r-package@v2
