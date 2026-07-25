@@ -6,6 +6,10 @@ on:
   pull_request:
     branches: [main, master]
 
+- name: Test Rfast
+  run: |
+    Rscript -e 'library(Rfast); sessionInfo()'
+
 name: R-CMD-check
 
 jobs:
@@ -15,6 +19,7 @@ jobs:
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
       RGL_USE_NULL: true
       R_KEEP_PKG_SOURCE: yes
+      
     steps:
       - uses: actions/checkout@v3
 
@@ -26,5 +31,30 @@ jobs:
         with:
           extra-packages: any::rcmdcheck
           needs: check
+          
+      - name: Diagnostic information
+        run: |
+          Rscript -e 'sessionInfo()'
+          Rscript -e 'cat("Rfast:", as.character(packageVersion("Rfast")), "\n")'
+          Rscript -e 'library(Rfast)'
+
 
       - uses: r-lib/actions/check-r-package@v2
+
+
+name: test-rfast
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: r-lib/actions/setup-r@v2
+
+      - name: Install Rfast
+        run: |
+          Rscript -e 'install.packages("Rfast")'
+          Rscript -e 'library(Rfast)'
