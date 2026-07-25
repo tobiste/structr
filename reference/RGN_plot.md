@@ -20,6 +20,7 @@ RGN_plot(
   probs = 0.975,
   grid = 0.05,
   main = "Rigid-Grain-Net",
+  guides = NULL,
   ...
 )
 ```
@@ -56,6 +57,11 @@ RGN_plot(
 
   character. The main title (on top).
 
+- guides:
+
+  logical. Whether guides should be added to the plot. Defaults to
+  `getOption("structr.guides")`.
+
 - ...:
 
   plotting arguments passed to
@@ -87,8 +93,4 @@ Belt, Superior Province, Canada). Journal of Structural Geology, 201,
 data(shebandowan)
 set.seed(20250411)
 RGN_plot(shebandowan$r, shebandowan$phi, col = "darkred")
-#> Warning: NaNs produced
-#> Warning: NaNs produced
-#> Warning: NaNs produced
-#> Warning: NaNs produced
 ```

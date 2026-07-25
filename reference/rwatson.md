@@ -40,7 +40,7 @@ vector of class `mu` of length `n`
 ## See also
 
 Other random:
-[`rbing`](https://tobiste.github.io/structr/reference/rbing.md),
+[`rbing()`](https://tobiste.github.io/structr/reference/rbing.md),
 [`rfb()`](https://tobiste.github.io/structr/reference/rfb.md),
 [`rkent()`](https://tobiste.github.io/structr/reference/rkent.md),
 [`rrot()`](https://tobiste.github.io/structr/reference/rrot.md),

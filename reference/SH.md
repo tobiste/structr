@@ -8,7 +8,7 @@ This function implements equations 11 and 10 from Lund and Townend
 ## Usage
 
 ``` r
-SH(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 0.005)
+SH(S1, S2, S3, R, tol = NULL, ortho.tol = 0.005)
 ```
 
 ## Arguments
@@ -28,7 +28,7 @@ SH(S1, S2, S3, R, tol = .Machine$double.eps^0.5, ortho.tol = 0.005)
 
 - tol:
 
-  Tolerance of comparison.
+  Tolerance of comparison. Defaults to `getOption("structr.tol")`.
 
 - ortho.tol:
 

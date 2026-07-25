@@ -61,7 +61,7 @@ err <- sample(1:5, size = 10, replace = TRUE)
 # Introduce 3 random NAs
 err[sample(length(err), 3)] <- NA
 
-scale_weights(err, error_type = 'rank', scaling = 'inv_square', norm = TRUE)
+scale_weights(err, error_type = "rank", scaling = "inv_square", norm = TRUE)
 #>  [1] 0.8095728 0.8095728 0.8095728 0.4817784 3.0111151 0.7527788 0.7527788
 #>  [8] 0.4817784 1.3382734 0.7527788
 ```

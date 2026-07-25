@@ -9,7 +9,7 @@ assumed to lie on a mutual small or great circle circle using Ramsay 1967 algori
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9013</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9014</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -67,9 +67,7 @@ assumed to lie on a mutual small or great circle circle using Ramsay 1967 algori
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">regression_cone_ramsay</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu">regression_cone_ramsay2</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">regression_cone_ramsay2</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -113,7 +111,7 @@ assumed to lie on a mutual small or great circle circle using Ramsay 1967 algori
 <span class="r-in"><span>  <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">80</span>, <span class="fl">10</span>, <span class="fl">90</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">)</span> <span class="op">|&gt;</span> <span class="fu">acoscartesian_to_cartesian</span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">regression_cone_ramsay</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># expect: c(0.856, -0.157, -0.492, NA, 1.56207)</span></span></span>
-<span class="r-in"><span><span class="fu">regression_plane_ramsay</span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="co"># expect: c(0.852, -0.154, -0.502, 1-1.002)</span></span></span>
+<span class="r-in"><span><span class="co"># regression_plane_ramsay(x) # expect: c(0.852, -0.154, -0.502, 1-1.002)</span></span></span>
 <span class="r-in"><span><span class="op">}</span> <span class="co"># }</span></span></span>
 </code></pre></div>
     </div>

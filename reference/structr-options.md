@@ -76,6 +76,12 @@ explicitly overrides the global default for that call.
 
   Numeric. Radius of the projection circle. `1` by default.
 
+- `structr.tol`:
+
+  Numeric. Tolerance for calculations, i.e. smallest relative difference
+  between two numbers the computer can recognize. Default is
+  `sqrt(.Machine$double.eps)`
+
 ## See also
 
 [`stereoplot()`](https://tobiste.github.io/structr/reference/stereoplot.md)

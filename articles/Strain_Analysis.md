@@ -135,8 +135,7 @@ RGN_plot(shebandowan$r, shebandowan$phi, col = assign_col(log(shebandowan$area))
 
 [^4]: Elliott, D. (1970). Determination of Finite Strain and Initial
     Shape from Deformed Elliptical Objects. GSA Bulletin, 81(8),
-    2221–2236.
-    <https://doi.org/https://doi.org/10.1130/0016-7606(1970)81%5B2221:DOFSAI%5D2.0.CO;2>
+    2221–2236. <doi:10.1130/0016-7606(1970)81%5B2221:DOFSAI%5D2.0.CO;2>
 
 [^5]: Flinn, D. (1965). On the Symmetry Principle and the Deformation
     Ellipsoid. Geological Magazine, 102(1), 36–45.

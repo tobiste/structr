@@ -115,19 +115,23 @@ can be visualized, namely the Angelier and the Hoeppener plot.
   of the hanging wall. Useful in case of large or heterogeneous
   datasets.
 
+First we load some example data (here the data from Angelier, 1990)[^1]
+
 ``` r
 
-# simongomez is a example fault dataset:
+# angelier1990 is a example fault dataset:
+data("angelier1990")
+fault_data <- angelier1990$TYM
 
 # define some colors for each fault in the dataset (here the fault sense)
-fault_cols <- assign_col(simongomez[, 5], pal = viridis::magma, begin = .2, end = .8)
+fault_cols <- assign_col(fault_data[, 5], pal = viridis::magma, begin = .2, end = .8)
 
 par(mfrow = c(1, 2))
 stereoplot(title = "Angelier plot")
-angelier(simongomez, col = fault_cols)
+angelier(fault_data, col = fault_cols)
 
 stereoplot(title = "Hoeppener plot")
-hoeppener(simongomez, col = fault_cols, points = FALSE)
+hoeppener(fault_data, col = fault_cols, points = FALSE)
 ```
 
 ![Diagram showing some fault data in equa-area projection using the
@@ -148,66 +152,43 @@ This simple technique calculates PT-axes, kinematic plane (M), and
 dihedra separation plane (d).
 
 First we load some example data (here the first three faults from the
-TYM dataset by from Angelier, 1990)[^1]
+TYM dataset by from Angelier, 1990)[^2]
 
 ``` r
 
-data("angelier1990")
-my_fault2 <- angelier1990$TYM[1:3, ]
+fault_data_subset <- sample_spherical(fault_data, 3)
 
-print(my_fault2)
+print(fault_data_subset)
 ```
 
     ## Fault object (n = 3):
     ##      dip_direction dip  azimuth   plunge sense
-    ## [1,]           137  61 117.0135 59.46650     1
+    ## [1,]           141  53 108.4685 48.20984     1
     ## [2,]           128  59 146.8990 57.58045     1
-    ## [3,]             2  80 287.5304 56.63295     1
+    ## [3,]           346  78 280.0306 62.43703     1
 
 ``` r
 
-my_fault2_PT <- Fault_PT(my_fault2)
-print(my_fault2_PT)
+fault_data_subset_PT <- Fault_PT(fault_data_subset)
+print(fault_data_subset)
 ```
 
-    ## $p
-    ## Line object (n = 3):
-    ##       azimuth   plunge
-    ## [1,] 340.6153 72.15071
-    ## [2,] 281.6092 73.96385
-    ## [3,] 214.3217 45.50717
-    ## 
-    ## $t
-    ## Line object (n = 3):
-    ##       azimuth   plunge
-    ## [1,] 129.6815 15.44075
-    ## [2,] 135.2532 13.45689
-    ## [3,] 336.9158 27.88916
-    ## 
-    ## $m
-    ## Plane object (n = 3):
-    ##      dip_direction       dip
-    ## [1,]     222.11395  98.73567
-    ## [2,]     223.18909  81.43997
-    ## [3,]      85.80721 121.45768
-    ## 
-    ## $d
-    ## Plane object (n = 3):
-    ##      dip_direction      dip
-    ## [1,]      117.0135 149.4665
-    ## [2,]      146.8990 147.5804
-    ## [3,]      287.5304 146.6330
+    ## Fault object (n = 3):
+    ##      dip_direction dip  azimuth   plunge sense
+    ## [1,]           141  53 108.4685 48.20984     1
+    ## [2,]           128  59 146.8990 57.58045     1
+    ## [3,]           346  78 280.0306 62.43703     1
 
 Plot the results
 
 ``` r
 
 stereoplot(title = "PT results")
-fault_plot(my_fault2)
-points(my_fault2_PT$p, col = "#B63679FF", pch = 16)
-points(my_fault2_PT$t, col = "#FEC287FF", pch = 18)
-lines(my_fault2_PT$t, lty = 2, col = "grey40")
-lines(my_fault2_PT$d, lty = 3, col = "grey80")
+fault_plot(fault_data_subset)
+points(fault_data_subset_PT$p, col = "#B63679FF", pch = 16)
+points(fault_data_subset_PT$t, col = "#FEC287FF", pch = 18)
+lines(fault_data_subset_PT$t, lty = 2, col = "grey40")
+lines(fault_data_subset_PT$d, lty = 3, col = "grey80")
 
 legend("right",
   legend = c("P-axis", "T-axis", "M-plane", "Diheadra"),
@@ -237,24 +218,20 @@ best satisfies all of the faults is found.
 {structr} provides four numerical solutions to determine the orientation
 of the principal stresses from fault slip data.
 
-- *Michael (1984)*: Direct inversion method[^2] which uses bootstrapping
+- *Michael (1984)*: Direct inversion method[^3] which uses bootstrapping
   for confidence intervals of the stress estimates.
 
-- *Angelier (1990)*: Direct inversion method[^3] coupled with the
-  iterative optimization after Mostafa (2005)[^4] to find the best fit
+- *Angelier (1990)*: Direct inversion method[^4] coupled with the
+  iterative optimization after Mostafa (2005)[^5] to find the best fit
   reduced stress tensor.
 
 - *Yamaji & Sato (2006)*: Direct inversion method using the
-  5-dimensional parameter space[^5].
+  5-dimensional parameter space[^6].
 
 - *Hansen (2013)*: Direct inversion using a 9-dimensional parameter
-  space, useful when vorticity affects the fault-slip data[^6].
-
-First we load some example data (here the data from Angelier, 1990)[^7]
+  space, useful when vorticity affects the fault-slip data[^7].
 
 ``` r
-
-fault_data <- angelier1990$TYM
 
 stereoplot(title = "Test data")
 fault_plot(fault_data, col = "grey30")
@@ -341,7 +318,7 @@ inv_res$stress_shape$phi
 inv_res$phi_CI
 ```
 
-    ## [1] 0.08715034 0.15052106
+    ## [1] 0.05232139 0.13244959
 
 The angle α is the angle between the tangential traction predicted by
 the best stress tensor and the slip vector. This deviation can be
@@ -515,35 +492,35 @@ solutions. Geophysical Journal International, 167(2), 933–942.
     by analytical means. Geophys. J. Int, 103, 363–376.
     <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
 
-[^2]: Michael, A. J. (1984). Determination of stress from slip data:
-    Faults and folds. Journal of Geophysical Research: Solid Earth,
-    89(B13), 11517–11526. <https://doi.org/10.1029/JB089iB13p11517>
-
-[^3]: Angelier, J. (1990). Inversion of field data in fault tectonics to
+[^2]: Angelier, J. (1990). Inversion of field data in fault tectonics to
     obtain the regional stress—III. A new rapid direct inversion method
     by analytical means. Geophys. J. Int, 103, 363–376.
     <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
 
-[^4]: Mostafa, M. E. (2005). Iterative direct inversion: An exact
+[^3]: Michael, A. J. (1984). Determination of stress from slip data:
+    Faults and folds. Journal of Geophysical Research: Solid Earth,
+    89(B13), 11517–11526. <https://doi.org/10.1029/JB089iB13p11517>
+
+[^4]: Angelier, J. (1990). Inversion of field data in fault tectonics to
+    obtain the regional stress—III. A new rapid direct inversion method
+    by analytical means. Geophys. J. Int, 103, 363–376.
+    <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
+
+[^5]: Mostafa, M. E. (2005). Iterative direct inversion: An exact
     complementary solution for inverting fault-slip data to obtain
     palaeostresses. Computers & Geosciences, 31(8), 1059–1070.
     <https://doi.org/10.1016/j.cageo.2005.02.012>
 
-[^5]: Yamaji, A., & Sato, K. (2006). Distances for the solutions of
+[^6]: Yamaji, A., & Sato, K. (2006). Distances for the solutions of
     stress tensor inversion in relation to misfit angles that accompany
     the solutions. Geophysical Journal International, 167(2), 933–942.
     <https://doi.org/10.1111/j.1365-246X.2006.03188.x>
 
-[^6]: Hansen, J. A. (2013). Direct inversion of stress, strain or strain
+[^7]: Hansen, J. A. (2013). Direct inversion of stress, strain or strain
     rate including vorticity: A linear method of homogenous fault-slip
     data inversion independent of adopted hypothesis. Journal of
     Structural Geology, 51, 3–13.
     <https://doi.org/10.1016/j.jsg.2013.03.014>
-
-[^7]: Angelier, J. (1990). Inversion of field data in fault tectonics to
-    obtain the regional stress—III. A new rapid direct inversion method
-    by analytical means. Geophys. J. Int, 103, 363–376.
-    <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
 
 [^8]: Angelier, J. (1979). Determination of the mean principal
     directions of stresses for a given fault population. Tectonophysics,

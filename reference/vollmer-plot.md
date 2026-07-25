@@ -5,7 +5,7 @@ Creates a fabric plot using the eigenvalue method
 ## Usage
 
 ``` r
-vollmer_plot(x, labels, add, ngrid, main, ...)
+vollmer_plot(x, ...)
 
 # Default S3 method
 vollmer_plot(
@@ -14,6 +14,7 @@ vollmer_plot(
   add = FALSE,
   ngrid = c(5, 5, 5),
   main = "Vollmer diagram",
+  guides = NULL,
   ...
 )
 
@@ -25,6 +26,7 @@ vollmer_plot(
   ngrid = c(5, 5, 5),
   main = "Vollmer diagram",
   weights = NULL,
+  guides = NULL,
   ...
 )
 
@@ -35,6 +37,7 @@ vollmer_plot(
   add = FALSE,
   ngrid = c(5, 5, 5),
   main = "Vollmer diagram",
+  guides = NULL,
   ...
 )
 ```
@@ -45,6 +48,10 @@ vollmer_plot(
 
   spherical object or a three-column matrix, where the first column is
   P, the second is G, and the third one is R of the Vollmer parameters.
+
+- ...:
+
+  optional graphical parameters
 
 - labels:
 
@@ -64,9 +71,10 @@ vollmer_plot(
 
   character. The main title for the plot.
 
-- ...:
+- guides:
 
-  optional graphical parameters
+  logical. Whether guides should be added to the plot. Defaults to
+  `getOption("structr.guides")`.
 
 - weights:
 

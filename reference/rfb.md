@@ -11,8 +11,7 @@ rfb(n = 100, mu = Vec3(1, 0, 0), k = 5, A)
 
 ## Source
 
-Adapted from
-[`Directional::rfb()`](https://rdrr.io/pkg/Directional/man/rfb.html)
+Adapted from `Directional::rfb()`
 
 ## Arguments
 
@@ -38,7 +37,7 @@ Adapted from
 ## See also
 
 Other random:
-[`rbing`](https://tobiste.github.io/structr/reference/rbing.md),
+[`rbing()`](https://tobiste.github.io/structr/reference/rbing.md),
 [`rkent()`](https://tobiste.github.io/structr/reference/rkent.md),
 [`rrot()`](https://tobiste.github.io/structr/reference/rrot.md),
 [`runif.spherical()`](https://tobiste.github.io/structr/reference/runif.spherical.md),

@@ -12,6 +12,7 @@ woodcock_plot(
   max = 7,
   main = "Woodcock diagram",
   weights = NULL,
+  guides = NULL,
   ...
 )
 ```
@@ -45,6 +46,11 @@ woodcock_plot(
 
   numeric. Weightings
 
+- guides:
+
+  logical. Whether guides should be added to the plot. Defaults to
+  `getOption("structr.guides")`.
+
 - ...:
 
   optional graphical parameters
@@ -59,7 +65,6 @@ eigenvalues and eigenvectors as a list.
 Woodcock, N. H. (1977). Specification of fabric shapes using an
 eigenvalue method. Geological Society of America Bulletin88,
 1231\<U+2013\>1236.
-http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf
 
 ## See also
 

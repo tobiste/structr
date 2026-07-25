@@ -11,10 +11,10 @@ Data can be imported with already in R implemented functions such as
 [`read.table()`](https://rdrr.io/r/utils/read.table.html),
 [`read.csv()`](https://rdrr.io/r/utils/read.table.html) or from other
 packages functions (e.g. [{readr}](https://readr.tidyverse.org/) and
-[{data.table}](https://cran.r-project.org/web/packages/data.table/index.html)).
-Just make sure that the import produces a matrix or data.frame like
-object with each measurement stored in a row, and columns representing
-dip directions, dip angles, plunge, etc.
+[{data.table}](https://cran.r-project.org/package=data.table)). Just
+make sure that the import produces a matrix or data.frame like object
+with each measurement stored in a row, and columns representing dip
+directions, dip angles, plunge, etc.
 
 For example your `.txt` file is tab-separated and may look like this:
 

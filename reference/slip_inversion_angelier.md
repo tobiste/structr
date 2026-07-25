@@ -10,7 +10,7 @@ slip_inversion_angelier(
   x,
   weights = NULL,
   max_iter = 100L,
-  tol = 1e-06,
+  tol = NULL,
   n_psi = 361L,
   flip = FALSE
 )
@@ -35,7 +35,7 @@ slip_inversion_angelier(
 - tol:
 
   numeric. Convergence tolerance on max absolute change in TR elements
-  between iterations (default `1e-6`)
+  between iterations. Defaults to `getOption("structr.tol")`.
 
 - n_psi:
 
@@ -149,7 +149,7 @@ which scales the RUP values:
 Angelier, J. (1990). Inversion of field data in fault tectonics to
 obtain the regional stress—III. A new rapid direct inversion method by
 analytical means. Geophys. J. Int, 103, 363–376.
-<https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
+[doi:10.1111/j.1365-246X.1990.tb01777.x](https://doi.org/10.1111/j.1365-246X.1990.tb01777.x)
 
 Pascal, C. (2022). Paleostress Inversion Techniques. Chapter 4, Sections
 4.2.3 and 4.2.4.
@@ -157,7 +157,7 @@ Pascal, C. (2022). Paleostress Inversion Techniques. Chapter 4, Sections
 Mostafa, M. E. (2005). Iterative direct inversion: An exact
 complementary solution for inverting fault-slip data to obtain
 palaeostresses. Computers & Geosciences, 31(8), 1059–1070.
-<https://doi.org/10.1016/j.cageo.2005.02.012>
+[doi:10.1016/j.cageo.2005.02.012](https://doi.org/10.1016/j.cageo.2005.02.012)
 
 ## See also
 

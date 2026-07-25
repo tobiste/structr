@@ -20,7 +20,7 @@ schmidt_count(cos_dist, sigma = NULL)
 
 - cos_dist:
 
-  cosine distances
+  numeric. Cosine distances
 
 - sigma:
 
@@ -29,9 +29,9 @@ schmidt_count(cos_dist, sigma = NULL)
   uniform distribution of points would be expected to vary from being
   evenly distributed across the hemisphere. This controls the size of
   the counting circle, and therefore the degree of smoothing. Higher
-  sigmas will lead to more smoothing of the resulting density
+  `sigma`s will lead to more smoothing of the resulting density
   distribution. This parameter only applies to Kamb-based methods.
-  Defaults to 3.
+  Defaults to `3`.
 
 ## Value
 
@@ -40,19 +40,20 @@ list
 ## Details
 
 `exponential_kamb()`: Kamb with exponential smoothing A modified Kamb
-method using exponential smoothing (ref1). Units are in numbers of
-standard deviations by which the density estimate differs from uniform.
+method using exponential smoothing (Vollmer 1995). Units are in numbers
+of standard deviations by which the density estimate differs from
+uniform.
 
 `linear_inverse_kamb()`: Kamb with linear smoothing A modified Kamb
-method using linear smoothing (ref1). Units are in numbers of standard
-deviations by which the density estimate differs from uniform.
+method using linear smoothing (Vollmer 1995). Units are in numbers of
+standard deviations by which the density estimate differs from uniform.
 
 `square_inverse_kamb()`: Kamb with squared smoothing A modified Kamb
-method using squared smoothing (ref1). Units are in numbers of standard
-deviations by which the density estimate differs from uniform.
+method using squared smoothing (Vollmer 1995). Units are in numbers of
+standard deviations by which the density estimate differs from uniform.
 
-`kamb_count()`: Kamb with no smoothing Kamb's method (ref2) with no
-smoothing. Units are in numbers of standard deviations by which the
+`kamb_count()`: Kamb with no smoothing Kamb's method (Kamb, 1959) with
+no smoothing. Units are in numbers of standard deviations by which the
 density estimate differs from uniform.
 
 `schmidt_count()`: 1% counts. The traditional "Schmidt" (a.k.a. 1%)
@@ -69,3 +70,9 @@ Vol. 21, No. 1, pp. 31–49.
 Kamb, 1959. Ice Petrofabric Observations from Blue Glacier, Washington,
 in Relation to Theory and Experiment. Journal of Geophysical Research,
 Vol. 64, No. 11, pp. 1891–1909.
+
+## See also
+
+Other density:
+[`density`](https://tobiste.github.io/structr/reference/density.md),
+[`stereo_contour`](https://tobiste.github.io/structr/reference/stereo_contour.md)

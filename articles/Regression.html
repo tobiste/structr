@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9013</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9014</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,7 +86,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2026-07-22</h4>
+            <h4 data-toc-skip class="date">2026-07-25</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/Regression.Rmd" class="external-link"><code>vignettes/Regression.Rmd</code></a></small>
       <div class="d-none name"><code>Regression.Rmd</code></div>
@@ -235,6 +235,62 @@ bedding planes. Hence, the poles to the bedding planes seem to be
 aligned along a great-circle, while the cleavage planes better fit a
 small-circle arrangement.</p>
 </div>
+</div>
+<div class="section level3">
+<h3 id="alternative">Alternative<a class="anchor" aria-label="anchor" href="#alternative"></a>
+</h3>
+<p>The Gray et al. 1989 algorithm is an alternative method for small and
+great-circle fits using <code><a href="../reference/regression-gray.html">regression_smallcircle_gray()</a></code> or
+<code><a href="../reference/regression-gray.html">regression_greatcircle_gray()</a></code>:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cleavage_sc2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/regression-gray.html">regression_smallcircle_gray</a></span><span class="op">(</span><span class="va">cleavage</span><span class="op">)</span></span>
+<span><span class="va">bedding_sc2</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/regression-gray.html">regression_smallcircle_gray</a></span><span class="op">(</span><span class="va">bedding</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Half-apical angle of small-circle cone (in degrees)</span></span>
+<span><span class="va">cleavage_sc2</span><span class="op">$</span><span class="va">cone</span></span>
+<span><span class="co">#&gt; [1] 88.24055</span></span>
+<span><span class="va">bedding_sc2</span><span class="op">$</span><span class="va">cone</span></span>
+<span><span class="co">#&gt; [1] 87.7376</span></span></code></pre></div>
+<p><code>regression_gray(x, out)</code> is a convenience function where
+the <code>out</code> argument specifies the type of regression
+(<code>"small"</code> or <code>"great"</code> circle). If
+<code>out = "both"</code>, the two solutions are compared by testing
+whether the small-circle solution fits better than the great-circle
+solution:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cleavage_sc3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/regression-gray.html">regression_gray</a></span><span class="op">(</span><span class="va">cleavage</span>, out <span class="op">=</span> <span class="st">'both'</span><span class="op">)</span></span>
+<span><span class="va">bedding_sc3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/regression-gray.html">regression_gray</a></span><span class="op">(</span><span class="va">bedding</span>, out <span class="op">=</span> <span class="st">'both'</span><span class="op">)</span></span>
+<span></span>
+<span><span class="va">cleavage_sc3</span><span class="op">$</span><span class="va">comparison</span></span>
+<span><span class="co">#&gt; $Vr</span></span>
+<span><span class="co">#&gt; [1] 0.3612363</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $df1</span></span>
+<span><span class="co">#&gt; [1] 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $df2</span></span>
+<span><span class="co">#&gt; [1] 5</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $p_value</span></span>
+<span><span class="co">#&gt; [1] 0.5740261</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $interpretation</span></span>
+<span><span class="co">#&gt; [1] "no significant improvement over the great circle (p&gt;=0.05)"</span></span>
+<span><span class="va">bedding_sc3</span><span class="op">$</span><span class="va">comparison</span></span>
+<span><span class="co">#&gt; $Vr</span></span>
+<span><span class="co">#&gt; [1] 0.09670531</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $df1</span></span>
+<span><span class="co">#&gt; [1] 1</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $df2</span></span>
+<span><span class="co">#&gt; [1] 5</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $p_value</span></span>
+<span><span class="co">#&gt; [1] 0.7683665</span></span>
+<span><span class="co">#&gt; </span></span>
+<span><span class="co">#&gt; $interpretation</span></span>
+<span><span class="co">#&gt; [1] "no significant improvement over the great circle (p&gt;=0.05)"</span></span></code></pre></div>
 </div>
 <div class="section level2">
 <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a>

@@ -21,7 +21,7 @@ list of rotation matrices
 ## See also
 
 Other random:
-[`rbing`](https://tobiste.github.io/structr/reference/rbing.md),
+[`rbing()`](https://tobiste.github.io/structr/reference/rbing.md),
 [`rfb()`](https://tobiste.github.io/structr/reference/rfb.md),
 [`rkent()`](https://tobiste.github.io/structr/reference/rkent.md),
 [`runif.spherical()`](https://tobiste.github.io/structr/reference/runif.spherical.md),

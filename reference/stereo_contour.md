@@ -11,11 +11,13 @@ contours filled, and `image` creates a dense grid of colored rectangles.
 contour(
   x,
   add = FALSE,
-  density.params = list(),
   nlevels = 10L,
+  density.params = list(),
   col.palette = viridis::viridis,
   col = NULL,
   col.params = list(),
+  upper.hem = NULL,
+  radius = NULL,
   ...
 )
 
@@ -23,31 +25,38 @@ contour(
 contour(
   x,
   add = FALSE,
-  density.params = list(),
   nlevels = 10L,
+  density.params = list(),
   col.palette = viridis::viridis,
   col = NULL,
   col.params = list(),
+  upper.hem = NULL,
+  radius = NULL,
   ...
 )
 
 contourf(
   x,
   add = FALSE,
-  density.params = list(),
   nlevels = 10L,
+  density.params = list(),
   col.palette = viridis::viridis,
-  col.params = list()
+  col.params = list(),
+  upper.hem = NULL,
+  radius = NULL,
+  ...
 )
 
 # S3 method for class 'spherical'
 image(
   x,
   add = FALSE,
-  density.params = list(),
   nlevels = 10L,
+  density.params = list(),
   col.palette = viridis::viridis,
   col.params = list(),
+  upper.hem = NULL,
+  radius = NULL,
   ...
 )
 
@@ -55,10 +64,12 @@ image(
 image(
   x,
   add = FALSE,
-  density.params = list(),
   nlevels = 10L,
+  density.params = list(),
   col.palette = viridis::viridis,
   col.params = list(),
+  upper.hem = NULL,
+  radius = NULL,
   ...
 )
 ```
@@ -74,14 +85,15 @@ image(
 
   logical. Whether the contours should be added to an existing plot.
 
-- density.params:
-
-  list of parameters passed to
-  [density.spherical](https://tobiste.github.io/structr/reference/density.md)
-
 - nlevels:
 
   integer. Number of contour levels for plotting
+
+- density.params:
+
+  list. Optional arguments passed to
+  [`density.spherical()`](https://tobiste.github.io/structr/reference/density.md),
+  such as `FUN`, `n`, `sigma`, and `weights`
 
 - col.palette:
 
@@ -96,6 +108,16 @@ image(
 
   list. Arguments passed to `col.palette`
 
+- upper.hem:
+
+  logical. Whether the projection is shown for upper hemisphere (`TRUE`)
+  or lower hemisphere (`FALSE`). Defaults to
+  `getOption("structr.upper.hem")`.
+
+- radius:
+
+  numeric. Radius of circle. Defaults to `getOption("structr.radius")`.
+
 - ...:
 
   optional parameters passed to
@@ -107,10 +129,11 @@ image(
 list containing the stereographic coordinates of the grid, the counts,
 and the density.
 
-## See also
+## Note
 
-[`count_points()`](https://tobiste.github.io/structr/reference/count_points.md),
-[density](https://tobiste.github.io/structr/reference/density.md)
+Densities are plotted in the equal-area projection!
+
+## See also
 
 Other stereo-plot:
 [`arrows()`](https://tobiste.github.io/structr/reference/arrows.md),
@@ -127,6 +150,10 @@ Other stereo-plot:
 [`stereoplot_guides()`](https://tobiste.github.io/structr/reference/stereoplot_guides.md),
 [`stereoplot_ticks()`](https://tobiste.github.io/structr/reference/stereoplot_ticks.md),
 [`text.spherical()`](https://tobiste.github.io/structr/reference/text.spherical.md)
+
+Other density:
+[`density`](https://tobiste.github.io/structr/reference/density.md),
+[`density-funs`](https://tobiste.github.io/structr/reference/density-funs.md)
 
 ## Examples
 

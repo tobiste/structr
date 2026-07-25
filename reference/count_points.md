@@ -17,7 +17,7 @@ count_points(azi, inc, FUN, sigma, ngrid, weights, r)
 
 - azi, inc:
 
-  degrees.
+  numeric. Azimuth and inclination in degrees.
 
 - FUN:
 
@@ -48,7 +48,7 @@ count_points(azi, inc, FUN, sigma, ngrid, weights, r)
 
 - r:
 
-  numeric. radius of stereonet circle
+  numeric. Radius of stereonet circle
 
 ## Value
 

@@ -47,7 +47,7 @@ percentage: \$\$\text{RUP} = \upsilon_i / \lambda \times 100\$\$ where
 Angelier, J. (1990). Inversion of field data in fault tectonics to
 obtain the regional stress—III. A new rapid direct inversion method by
 analytical means. Geophys. J. Int, 103, 363–376.
-<https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
+[doi:10.1111/j.1365-246X.1990.tb01777.x](https://doi.org/10.1111/j.1365-246X.1990.tb01777.x)
 
 ## See also
 

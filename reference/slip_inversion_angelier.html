@@ -9,7 +9,7 @@ iterative refinement after Mostafa (2005)"><meta property="og:image" content="ht
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9013</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9014</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -71,7 +71,7 @@ iterative refinement after Mostafa (2005)</p>
 <span>  <span class="va">x</span>,</span>
 <span>  weights <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  max_iter <span class="op">=</span> <span class="fl">100L</span>,</span>
-<span>  tol <span class="op">=</span> <span class="fl">1e-06</span>,</span>
+<span>  tol <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  n_psi <span class="op">=</span> <span class="fl">361L</span>,</span>
 <span>  flip <span class="op">=</span> <span class="cn">FALSE</span></span>
 <span><span class="op">)</span></span></code></pre></div>
@@ -96,7 +96,7 @@ optimization. Set to <code>0</code> for no optimization.</p></dd>
 
 
 <dt id="arg-tol">tol<a class="anchor" aria-label="anchor" href="#arg-tol"></a></dt>
-<dd><p>numeric. Convergence tolerance on max absolute change in TR elements between iterations (default <code>1e-6</code>)</p></dd>
+<dd><p>numeric. Convergence tolerance on max absolute change in TR elements between iterations. Defaults to <code>getOption("structr.tol")</code>.</p></dd>
 
 
 <dt id="arg-n-psi">n_psi<a class="anchor" aria-label="anchor" href="#arg-n-psi"></a></dt>
@@ -179,11 +179,11 @@ This could be done using <code><a href="scale_weights.html">scale_weights()</a><
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Angelier, J. (1990). Inversion of field data in fault tectonics to obtain the
 regional stress—III. A new rapid direct inversion method by analytical means.
-Geophys. J. Int, 103, 363–376. <a href="https://doi.org/10.1111/j.1365-246X.1990.tb01777.x" class="external-link">https://doi.org/10.1111/j.1365-246X.1990.tb01777.x</a></p>
+Geophys. J. Int, 103, 363–376. <a href="https://doi.org/10.1111/j.1365-246X.1990.tb01777.x" class="external-link">doi:10.1111/j.1365-246X.1990.tb01777.x</a></p>
 <p>Pascal, C. (2022). Paleostress Inversion Techniques. Chapter 4, Sections 4.2.3 and 4.2.4.</p>
 <p>Mostafa, M. E. (2005). Iterative direct inversion: An exact complementary
 solution for inverting fault-slip data to obtain palaeostresses. Computers
-&amp; Geosciences, 31(8), 1059–1070. <a href="https://doi.org/10.1016/j.cageo.2005.02.012" class="external-link">https://doi.org/10.1016/j.cageo.2005.02.012</a></p>
+&amp; Geosciences, 31(8), 1059–1070. <a href="https://doi.org/10.1016/j.cageo.2005.02.012" class="external-link">doi:10.1016/j.cageo.2005.02.012</a></p>
     </div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>

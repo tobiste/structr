@@ -7,8 +7,6 @@ assumed to lie on a mutual small or great circle circle using Ramsay
 ## Usage
 
 ``` r
-regression_cone_ramsay(x)
-
 regression_cone_ramsay2(x)
 ```
 
@@ -57,6 +55,6 @@ x <- rbind(
   c(80, 10, 90)
 ) |> acoscartesian_to_cartesian()
 regression_cone_ramsay(x) # expect: c(0.856, -0.157, -0.492, NA, 1.56207)
-regression_plane_ramsay(x) # expect: c(0.852, -0.154, -0.502, 1-1.002)
+# regression_plane_ramsay(x) # expect: c(0.852, -0.154, -0.502, 1-1.002)
 } # }
 ```

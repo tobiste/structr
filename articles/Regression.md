@@ -176,6 +176,69 @@ Hence, the poles to the bedding planes seem to be aligned along a
 great-circle, while the cleavage planes better fit a small-circle
 arrangement.
 
+### Alternative
+
+The Gray et al. 1989 algorithm is an alternative method for small and
+great-circle fits using
+[`regression_smallcircle_gray()`](https://tobiste.github.io/structr/reference/regression-gray.md)
+or
+[`regression_greatcircle_gray()`](https://tobiste.github.io/structr/reference/regression-gray.md):
+
+``` r
+
+cleavage_sc2 <- regression_smallcircle_gray(cleavage)
+bedding_sc2 <- regression_smallcircle_gray(bedding)
+
+# Half-apical angle of small-circle cone (in degrees)
+cleavage_sc2$cone
+#> [1] 88.24055
+bedding_sc2$cone
+#> [1] 87.7376
+```
+
+`regression_gray(x, out)` is a convenience function where the `out`
+argument specifies the type of regression (`"small"` or `"great"`
+circle). If `out = "both"`, the two solutions are compared by testing
+whether the small-circle solution fits better than the great-circle
+solution:
+
+``` r
+
+cleavage_sc3 <- regression_gray(cleavage, out = 'both')
+bedding_sc3 <- regression_gray(bedding, out = 'both')
+
+cleavage_sc3$comparison
+#> $Vr
+#> [1] 0.3612363
+#> 
+#> $df1
+#> [1] 1
+#> 
+#> $df2
+#> [1] 5
+#> 
+#> $p_value
+#> [1] 0.5740261
+#> 
+#> $interpretation
+#> [1] "no significant improvement over the great circle (p>=0.05)"
+bedding_sc3$comparison
+#> $Vr
+#> [1] 0.09670531
+#> 
+#> $df1
+#> [1] 1
+#> 
+#> $df2
+#> [1] 5
+#> 
+#> $p_value
+#> [1] 0.7683665
+#> 
+#> $interpretation
+#> [1] "no significant improvement over the great circle (p>=0.05)"
+```
+
 ## References
 
 Bachmann, F., Jupp, P. E., & Schaeben, H. (2014). Estimating the number

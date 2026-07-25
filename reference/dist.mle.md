@@ -12,9 +12,7 @@ vmf_MLE(x)
 
 ## Source
 
-Adapted from
-[`Directional::kent.mle()`](https://rdrr.io/pkg/Directional/man/kent.mle.html)
-and `Directional::vmf.mle()`
+Adapted from `Directional::kent.mle()` and `Directional::vmf.mle()`
 
 ## Arguments
 
@@ -61,18 +59,18 @@ kent_MLE(x2)
 #> $G
 #> Ray object (n = 3):
 #>       azimuth    plunge
-#> [1,] 124.7744  53.20500
-#> [2,] 189.4131 -17.76390
-#> [3,] 268.3030  31.02583
+#> [1,] 122.8747 50.591038
+#> [2,] 210.0219 -2.341775
+#> [3,] 298.1030 39.311419
 #> 
 #> $param
-#>       kappa        beta         psi 
-#>  5.23981167 -1.45753282 -0.02700425 
+#>      kappa       beta        psi 
+#>  4.4706190 -0.6586224  0.3987251 
 #> 
 #> $logcon
-#> [1] 5.510305
+#> [1] 4.835128
 #> 
 #> $loglik
-#> [1] -121.3383
+#> [1] -134.7842
 #> 
 ```

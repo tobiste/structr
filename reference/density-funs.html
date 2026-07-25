@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9013</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9014</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -80,7 +80,7 @@
 
 
 <dl><dt id="arg-cos-dist">cos_dist<a class="anchor" aria-label="anchor" href="#arg-cos-dist"></a></dt>
-<dd><p>cosine distances</p></dd>
+<dd><p>numeric. Cosine distances</p></dd>
 
 
 <dt id="arg-sigma">sigma<a class="anchor" aria-label="anchor" href="#arg-sigma"></a></dt>
@@ -88,9 +88,9 @@
 standard deviations by which a random sample from a uniform
 distribution of points would be expected to vary from being evenly
 distributed across the hemisphere.  This controls the size of the
-counting circle, and therefore the degree of smoothing.  Higher sigmas
+counting circle, and therefore the degree of smoothing.  Higher <code>sigma</code>s
 will lead to more smoothing of the resulting density distribution. This
-parameter only applies to Kamb-based methods.  Defaults to 3.</p></dd>
+parameter only applies to Kamb-based methods.  Defaults to <code>3</code>.</p></dd>
 
 </dl></div>
     <div class="section level2">
@@ -100,17 +100,17 @@ parameter only applies to Kamb-based methods.  Defaults to 3.</p></dd>
     <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p><code>exponential_kamb()</code>: Kamb with exponential smoothing
-A modified Kamb method using exponential smoothing (ref1). Units are
+A modified Kamb method using exponential smoothing (Vollmer 1995). Units are
 in numbers of standard deviations by which the density estimate
 differs from uniform.</p>
 <p><code>linear_inverse_kamb()</code>: Kamb with linear smoothing
-A modified Kamb method using linear smoothing (ref1).  Units are in
+A modified Kamb method using linear smoothing (Vollmer 1995).  Units are in
 numbers of standard deviations by which the density estimate differs from uniform.</p>
 <p><code>square_inverse_kamb()</code>: Kamb with squared smoothing
-A modified Kamb method using squared smoothing (ref1).  Units are in
+A modified Kamb method using squared smoothing (Vollmer 1995).  Units are in
 numbers of standard deviations by which the density estimate differs from uniform.</p>
 <p><code>kamb_count()</code>: Kamb with no smoothing
-Kamb's method (ref2) with no smoothing. Units are in numbers of standard
+Kamb's method (Kamb, 1959) with no smoothing. Units are in numbers of standard
 deviations by which the density estimate differs from uniform.</p>
 <p><code>schmidt_count()</code>: 1% counts. The traditional "Schmidt" (a.k.a. 1%) method.
 Counts points within a counting circle comprising 1% of the total area of the
@@ -124,6 +124,12 @@ Geosciences, Vol. 21, No. 1, pp. 31–49.</p>
 <p>Kamb, 1959. Ice Petrofabric Observations from Blue Glacier,
 Washington, in Relation to Theory and Experiment. Journal of
 Geophysical Research, Vol. 64, No. 11, pp. 1891–1909.</p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other density:
+<code><a href="density.html">density</a></code>,
+<code><a href="stereo_contour.html">stereo_contour</a></code></p></div>
     </div>
 
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

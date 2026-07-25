@@ -468,7 +468,7 @@ two populations differ significantly.
 ``` r
 
 wellner_inference(lines, line_NULL, n_perm = 1000)
-#> [1] 0.009
+#> [1] 0.008
 ```
 
 ## Cluster Vectors

@@ -432,9 +432,7 @@ structural domain analysis. Geological Society of America Bulletin, 102,
 786–791.
 
 Woodcock, N. H. (1977). Specification of fabric shapes using an
-eigenvalue method. Geological Society of America Bulletin88, 1231–1236.
-Retrieved from
-<http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf>
+eigenvalue method. Geological Society of America Bulletin 88, 1231–1236.
 
 [^1]: Balé, P., & Brun, J.-P. (1989). Late Precambrian thrust and wrench
     zones in northern Brittany (France). Journal of Structural Geology,
@@ -446,8 +444,7 @@ Retrieved from
 
 [^3]: Woodcock, N. H. (1977). Specification of fabric shapes using an
     eigenvalue method. Geological Society of America Bulletin88,
-    1231–1236. Retrieved from
-    <http://pubs.geoscienceworld.org/gsa/gsabulletin/article-pdf/88/9/1231/3418366/i0016-7606-88-9-1231.pdf>
+    1231–1236.
 
 [^4]: Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial
     strain paths. Journal of Strain Analysis, 1(3), 216–222.

@@ -27,7 +27,15 @@ hsu_plot(x, weights = NULL, ...)
 hsu_plot(x, ...)
 
 # Default S3 method
-hsu_plot(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...)
+hsu_plot(
+  x,
+  labels = NULL,
+  add = FALSE,
+  es.max = 3,
+  main = "Hsu diagram",
+  guides = NULL,
+  ...
+)
 
 # S3 method for class 'list'
 hsu_plot(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...)
@@ -68,6 +76,11 @@ hsu_plot(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", ...)
 - weights:
 
   numeric. Weightings
+
+- guides:
+
+  logical. Whether guides should be added to the plot. Defaults to
+  `getOption("structr.guides")`.
 
 ## Value
 

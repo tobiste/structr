@@ -96,10 +96,10 @@
 
 - [`regression_greatcircle()`](https://tobiste.github.io/structr/reference/best_fit.md)
   [`regression_smallcircle()`](https://tobiste.github.io/structr/reference/best_fit.md)
-  : Least-Square Fit of Small and Great Circles to Spherical Data
+  : Least-Squares Geodesic Regression of Small and Great Circles for
+  Spherical Data
 
-- [`regression_cone_ramsay()`](https://tobiste.github.io/structr/reference/best_pole.md)
-  [`regression_cone_ramsay2()`](https://tobiste.github.io/structr/reference/best_pole.md)
+- [`regression_cone_ramsay2()`](https://tobiste.github.io/structr/reference/best_pole.md)
   : Cone or Plane Best Fit of Conically or Cylindrical Disposed Plane
   Poles
 
@@ -177,7 +177,7 @@
 
 - [`density(`*`<spherical>`*`)`](https://tobiste.github.io/structr/reference/density.md)
   [`density_calc()`](https://tobiste.github.io/structr/reference/density.md)
-  : Spherical density estimation
+  : Spherical Density Estimation
 
 - [`kent_MLE()`](https://tobiste.github.io/structr/reference/dist.mle.md)
   [`vmf_MLE()`](https://tobiste.github.io/structr/reference/dist.mle.md)
@@ -379,8 +379,10 @@
 - [`reduced_stress()`](https://tobiste.github.io/structr/reference/reduced_stress.md)
   : Reduced stress tensor
 
-- [`regression_gray()`](https://tobiste.github.io/structr/reference/regression_gray.md)
-  : Least-Square Fit of Small and Great Circles to Spherical Data
+- [`regression_gray()`](https://tobiste.github.io/structr/reference/regression-gray.md)
+  [`regression_smallcircle_gray()`](https://tobiste.github.io/structr/reference/regression-gray.md)
+  [`regression_greatcircle_gray()`](https://tobiste.github.io/structr/reference/regression-gray.md)
+  : Least-Squares Small and Great Circle Fit for Spherical Data
 
 - [`rfb()`](https://tobiste.github.io/structr/reference/rfb.md) :
   Spherical Fisher-Bingham Distribution
@@ -574,6 +576,8 @@
   : Strike-slip Kinematics
 
 - [`structr-options`](https://tobiste.github.io/structr/reference/structr-options.md)
+  [`structr.options`](https://tobiste.github.io/structr/reference/structr-options.md)
+  [`structr_options`](https://tobiste.github.io/structr/reference/structr-options.md)
   : Global projection options for structr
 
 - [`structr`](https://tobiste.github.io/structr/reference/structr.md)

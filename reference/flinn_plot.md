@@ -15,6 +15,7 @@ flinn_plot(
   R.max = NULL,
   log = FALSE,
   add = FALSE,
+  guides = NULL,
   ...
 )
 
@@ -62,6 +63,11 @@ flinn_plot(x, ...)
 - add:
 
   logical. Should data be plotted to an existing plot?
+
+- guides:
+
+  logical. Whether guides should be added to the plot. Defaults to
+  `getOption("structr.guides")`.
 
 - weights:
 

@@ -9,7 +9,7 @@ statistical summaries or fault-slip inversion."><meta property="og:image" conten
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9013</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9014</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -124,7 +124,7 @@ their mean? (<code>FALSE</code> by default)</p></dd>
 <span class="r-in"><span><span class="co"># Introduce 3 random NAs</span></span></span>
 <span class="r-in"><span><span class="va">err</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/length.html" class="external-link">length</a></span><span class="op">(</span><span class="va">err</span><span class="op">)</span>, <span class="fl">3</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">scale_weights</span><span class="op">(</span><span class="va">err</span>, error_type <span class="op">=</span> <span class="st">'rank'</span>, scaling <span class="op">=</span> <span class="st">'inv_square'</span>, norm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">scale_weights</span><span class="op">(</span><span class="va">err</span>, error_type <span class="op">=</span> <span class="st">"rank"</span>, scaling <span class="op">=</span> <span class="st">"inv_square"</span>, norm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 0.8095728 0.8095728 0.8095728 0.4817784 3.0111151 0.7527788 0.7527788</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [8] 0.4817784 1.3382734 0.7527788</span>
 </code></pre></div>

@@ -11,7 +11,7 @@ and image creates a dense grid of colored rectangles."><meta property="og:image"
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9013</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9014</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -74,11 +74,13 @@ and <code>image</code> creates a dense grid of colored rectangles.</p>
 <span><span class="fu">contour</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  add <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  density.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  nlevels <span class="op">=</span> <span class="fl">10L</span>,</span>
+<span>  density.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  col.palette <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="va"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">viridis</a></span>,</span>
 <span>  col <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  col.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  upper.hem <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  radius <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -86,31 +88,38 @@ and <code>image</code> creates a dense grid of colored rectangles.</p>
 <span><span class="fu">contour</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  add <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  density.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  nlevels <span class="op">=</span> <span class="fl">10L</span>,</span>
+<span>  density.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  col.palette <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="va"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">viridis</a></span>,</span>
 <span>  col <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  col.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  upper.hem <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  radius <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu">contourf</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  add <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  density.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  nlevels <span class="op">=</span> <span class="fl">10L</span>,</span>
+<span>  density.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  col.palette <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="va"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">viridis</a></span>,</span>
-<span>  col.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span></span>
+<span>  col.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  upper.hem <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  radius <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># S3 method for class 'spherical'</span></span>
 <span><span class="fu">image</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  add <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  density.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  nlevels <span class="op">=</span> <span class="fl">10L</span>,</span>
+<span>  density.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  col.palette <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="va"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">viridis</a></span>,</span>
 <span>  col.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  upper.hem <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  radius <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
@@ -118,10 +127,12 @@ and <code>image</code> creates a dense grid of colored rectangles.</p>
 <span><span class="fu">image</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
 <span>  add <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  density.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  nlevels <span class="op">=</span> <span class="fl">10L</span>,</span>
+<span>  density.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
 <span>  col.palette <span class="op">=</span> <span class="fu">viridis</span><span class="fu">::</span><span class="va"><a href="https://sjmgarnier.github.io/viridisLite/reference/viridis.html" class="external-link">viridis</a></span>,</span>
 <span>  col.params <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/list.html" class="external-link">list</a></span><span class="op">(</span><span class="op">)</span>,</span>
+<span>  upper.hem <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  radius <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -138,12 +149,13 @@ and <code>image</code> creates a dense grid of colored rectangles.</p>
 <dd><p>logical. Whether the contours should be added to an existing plot.</p></dd>
 
 
-<dt id="arg-density-params">density.params<a class="anchor" aria-label="anchor" href="#arg-density-params"></a></dt>
-<dd><p>list of parameters passed to <a href="density.html">density.spherical</a></p></dd>
-
-
 <dt id="arg-nlevels">nlevels<a class="anchor" aria-label="anchor" href="#arg-nlevels"></a></dt>
 <dd><p>integer. Number of contour levels for plotting</p></dd>
+
+
+<dt id="arg-density-params">density.params<a class="anchor" aria-label="anchor" href="#arg-density-params"></a></dt>
+<dd><p>list. Optional arguments passed to <code><a href="density.html">density.spherical()</a></code>,
+such as <code>FUN</code>, <code>n</code>, <code>sigma</code>, and <code>weights</code></p></dd>
 
 
 <dt id="arg-col-palette">col.palette<a class="anchor" aria-label="anchor" href="#arg-col-palette"></a></dt>
@@ -158,6 +170,16 @@ and <code>image</code> creates a dense grid of colored rectangles.</p>
 <dd><p>list. Arguments passed to <code>col.palette</code></p></dd>
 
 
+<dt id="arg-upper-hem">upper.hem<a class="anchor" aria-label="anchor" href="#arg-upper-hem"></a></dt>
+<dd><p>logical. Whether the projection is shown for upper
+hemisphere (<code>TRUE</code>) or lower hemisphere (<code>FALSE</code>). Defaults to
+<code>getOption("structr.upper.hem")</code>.</p></dd>
+
+
+<dt id="arg-radius">radius<a class="anchor" aria-label="anchor" href="#arg-radius"></a></dt>
+<dd><p>numeric. Radius of circle. Defaults to <code>getOption("structr.radius")</code>.</p></dd>
+
+
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>optional parameters passed to <code><a href="https://rdrr.io/r/graphics/image.html" class="external-link">graphics::image()</a></code> or <code><a href="https://rdrr.io/r/graphics/contour.html" class="external-link">graphics::contour()</a></code>.</p></dd>
 
@@ -168,9 +190,12 @@ and <code>image</code> creates a dense grid of colored rectangles.</p>
 the counts, and the density.</p>
     </div>
     <div class="section level2">
+    <h2 id="note">Note<a class="anchor" aria-label="anchor" href="#note"></a></h2>
+    <p>Densities are plotted in the equal-area projection!</p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
-    <div class="dont-index"><p><code><a href="count_points.html">count_points()</a></code>, <a href="density.html">density</a></p>
-<p>Other stereo-plot:
+    <div class="dont-index"><p>Other stereo-plot:
 <code><a href="arrows.html">arrows()</a></code>,
 <code><a href="fault-plot.html">fault-plot</a></code>,
 <code><a href="lines.html">lines()</a></code>,
@@ -184,7 +209,10 @@ the counts, and the density.</p>
 <code><a href="stereoplot.html">stereoplot()</a></code>,
 <code><a href="stereoplot_guides.html">stereoplot_guides()</a></code>,
 <code><a href="stereoplot_ticks.html">stereoplot_ticks()</a></code>,
-<code><a href="text.spherical.html">text.spherical()</a></code></p></div>
+<code><a href="text.spherical.html">text.spherical()</a></code></p>
+<p>Other density:
+<code><a href="density.html">density</a></code>,
+<code><a href="density-funs.html">density-funs</a></code></p></div>
     </div>
 
     <div class="section level2">
