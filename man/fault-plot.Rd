@@ -5,7 +5,7 @@
 \alias{fault_plot}
 \alias{hoeppener}
 \alias{angelier}
-\title{Add Fault Data to Existing Plot}
+\title{Plot Fault Data in a StereoPlot}
 \usage{
 fault_plot(x, type = c("angelier", "hoeppener"), ...)
 
@@ -29,21 +29,30 @@ columns the coordinates. Object must be complete, i.e. no \code{NA} values.
 For Michael's, Angelier's, and Yamaji-Sato's methods, at least 4 rows
 of fault measurements are required, while Hansen's method requires at least 7.}
 
-\item{type}{character. One of \code{"angelier"} (for "Angelier plot") or \code{"hoeppener"} (for "Hoeppener plot"). See details.}
+\item{type}{character. One of \code{"angelier"} (for "\emph{Angelier plot}") or
+\code{"hoeppener"} (for "\emph{Hoeppener plot}"). See details.}
 
 \item{...}{arguments passed to \code{\link[=stereo_arrows]{stereo_arrows()}}}
 
-\item{points}{logical. Whether the lineation points (Angelier plot) or poles (Hoeppener plot) should be added to the plot}
+\item{points}{logical. Whether the lineation points (\emph{Angelier plot}) or poles
+(\emph{Hoeppener plot}) should be added to the plot}
 
 \item{lty, lwd, cex, pch, col, bg}{plotting parameters}
 }
 \description{
-Add Fault Data to Existing Plot
+Adds fault plane normals and slip directions to an existing a stereographic/equal-area
+projection plot.
 }
 \details{
-\strong{Angelier plot} shows all planes as \emph{great circles} and lineations as points. Fault striae are plotted as vectors on top of the lineation pointing in the movement direction of the hangingwall. Easy to read in case of homogeneous or small datasets.
+\strong{Angelier plot} shows all planes as \emph{great circles} and lineations as points.
+Fault striae are plotted as vectors on top of the lineation pointing in the
+movement direction of the hangingwall. Easy to read in case of homogeneous or
+small datasets.
 
-\strong{Hoeppener plot} shows all planes as \emph{poles} while lineations are not shown. Fault striae are plotted as vectors on top of poles pointing in the movement direction of the hangingwall. Useful in case of large or heterogeneous datasets.
+\strong{Hoeppener plot} shows all planes as \emph{poles} while lineations are not shown.
+Fault striae are plotted as vectors on top of poles pointing in the movement
+direction of the hangingwall. Useful in case of large or heterogeneous datasets.
+Arrows point towards \eqn{\sigma_1}
 }
 \examples{
 f <- Fault(

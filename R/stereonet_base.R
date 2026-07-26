@@ -1031,12 +1031,17 @@ arrows.spherical <- function(x, sense, scale = .1, angle = 10, length = 0.1, upp
   stereo_arrows(x, sense, scale, angle, length, upper.hem, earea, ...)
 }
 
-#' Add Fault Data to Existing Plot
+#' Plot Fault Data in a StereoPlot
+#' 
+#' Adds fault plane normals and slip directions to an existing a stereographic/equal-area 
+#' projection plot.
 #'
 #' @inheritParams slip_inversion
-#' @param type character. One of `"angelier"` (for "Angelier plot") or `"hoeppener"` (for "Hoeppener plot"). See details.
+#' @param type character. One of `"angelier"` (for "*Angelier plot*") or 
+#' `"hoeppener"` (for "*Hoeppener plot*"). See details.
 #' @param lty,lwd,cex,pch,col,bg plotting parameters
-#' @param points logical. Whether the lineation points (Angelier plot) or poles (Hoeppener plot) should be added to the plot
+#' @param points logical. Whether the lineation points (*Angelier plot*) or poles 
+#' (*Hoeppener plot*) should be added to the plot
 #' @param ... arguments passed to [stereo_arrows()]
 #'
 #' @returns NULL
@@ -1045,9 +1050,15 @@ arrows.spherical <- function(x, sense, scale = .1, angle = 10, length = 0.1, upp
 #' @family stereo-plot
 #'
 #' @details
-#' **Angelier plot** shows all planes as *great circles* and lineations as points. Fault striae are plotted as vectors on top of the lineation pointing in the movement direction of the hangingwall. Easy to read in case of homogeneous or small datasets.
+#' **Angelier plot** shows all planes as *great circles* and lineations as points. 
+#' Fault striae are plotted as vectors on top of the lineation pointing in the 
+#' movement direction of the hangingwall. Easy to read in case of homogeneous or 
+#' small datasets.
 #'
-#' **Hoeppener plot** shows all planes as *poles* while lineations are not shown. Fault striae are plotted as vectors on top of poles pointing in the movement direction of the hangingwall. Useful in case of large or heterogeneous datasets.
+#' **Hoeppener plot** shows all planes as *poles* while lineations are not shown. 
+#' Fault striae are plotted as vectors on top of poles pointing in the movement 
+#' direction of the hangingwall. Useful in case of large or heterogeneous datasets. 
+#' Arrows point towards \eqn{\sigma_1}
 #'
 #' @references
 #' Angelier, J. Tectonic analysis of fault slip data sets, J. Geophys. Res. 89 (B7), 5835-5848 (1984)
@@ -1087,11 +1098,7 @@ hoeppener <- function(x, pch = 1, col = "black", cex = 1, bg = NULL, points = TR
   stopifnot(is.Fault(x))
 
   p <- Plane(x)
-  s <- x[, "sense"]
-
-  # stereo_arrows(p, sense = s, col = col, ...)
-  # if (isTRUE(points)) points(p, pch = pch, col = col, cex = cex, bg = bg)
-
+  s <- -x[, "sense"] # invert sense for hoeppener
   nx <- nrow(x)
 
   pch <- rep_len(pch, nx)
@@ -1123,10 +1130,6 @@ angelier <- function(x, pch = 1, lwd = 1, lty = 1, col = "black", cex = 1, point
   p <- Plane(x)
   l <- Fault_slip(x)
   s <- x[, "sense"]
-
-  # lines(p, lwd = lwd, lty = lty, col = col)
-  # stereo_arrows(l, sense = s, col = col, ...)
-  # if (isTRUE(points)) points(l, pch = pch, col = col, cex = cex, bg = bg)
 
   nx <- nrow(x)
 
