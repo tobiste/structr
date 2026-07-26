@@ -227,7 +227,7 @@
 - [`fault_plot()`](https://tobiste.github.io/structr/reference/fault-plot.md)
   [`hoeppener()`](https://tobiste.github.io/structr/reference/fault-plot.md)
   [`angelier()`](https://tobiste.github.io/structr/reference/fault-plot.md)
-  : Add Fault Data to Existing Plot
+  : Plot Fault Data in a StereoPlot
 
 - [`Fault_from_rake()`](https://tobiste.github.io/structr/reference/fault-rake.md)
   [`Pair_from_pitch()`](https://tobiste.github.io/structr/reference/fault-rake.md)

@@ -1,6 +1,7 @@
-# Add Fault Data to Existing Plot
+# Plot Fault Data in a StereoPlot
 
-Add Fault Data to Existing Plot
+Adds fault plane normals and slip directions to an existing a
+stereographic/equal-area projection plot.
 
 ## Usage
 
@@ -34,8 +35,8 @@ angelier(
 
 - type:
 
-  character. One of `"angelier"` (for "Angelier plot") or `"hoeppener"`
-  (for "Hoeppener plot"). See details.
+  character. One of `"angelier"` (for "*Angelier plot*") or
+  `"hoeppener"` (for "*Hoeppener plot*"). See details.
 
 - ...:
 
@@ -44,8 +45,8 @@ angelier(
 
 - points:
 
-  logical. Whether the lineation points (Angelier plot) or poles
-  (Hoeppener plot) should be added to the plot
+  logical. Whether the lineation points (*Angelier plot*) or poles
+  (*Hoeppener plot*) should be added to the plot
 
 - lty, lwd, cex, pch, col, bg:
 
@@ -61,7 +62,7 @@ case of homogeneous or small datasets.
 **Hoeppener plot** shows all planes as *poles* while lineations are not
 shown. Fault striae are plotted as vectors on top of poles pointing in
 the movement direction of the hangingwall. Useful in case of large or
-heterogeneous datasets.
+heterogeneous datasets. Arrows point towards \\\sigma_1\\
 
 ## References
 
