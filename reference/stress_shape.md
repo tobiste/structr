@@ -11,12 +11,12 @@ principal stresses larger than the vertical stress.
 ## Usage
 
 ``` r
-stress_shape(tau)
+stress_shape(sigma)
 ```
 
 ## Arguments
 
-- tau:
+- sigma:
 
   symmetric 3x3 matrix. The (reduced) stress tensor.
 
@@ -77,16 +77,16 @@ Geophysical Research: Solid Earth, 102(B8), 17909–17919.
 Other stress-tensor:
 [`fault_instability_criterion()`](https://tobiste.github.io/structr/reference/fault_instability_criterion.md),
 [`reduced_stress()`](https://tobiste.github.io/structr/reference/reduced_stress.md),
-[`tau-comp`](https://tobiste.github.io/structr/reference/tau-comp.md),
-[`tau2rup()`](https://tobiste.github.io/structr/reference/tau2rup.md),
-[`tau2stress()`](https://tobiste.github.io/structr/reference/tau2stress.md)
+[`sigma-comp`](https://tobiste.github.io/structr/reference/sigma-comp.md),
+[`sigma2rup()`](https://tobiste.github.io/structr/reference/sigma2rup.md),
+[`sigma2stress()`](https://tobiste.github.io/structr/reference/sigma2stress.md)
 
 ## Examples
 
 ``` r
 f <- angelier1990$TYM
-tau <- reduced_stress(f)
-stress_shape(tau)
+s <- reduced_stress(f)
+stress_shape(s)
 #> $R
 #> [1] 0.898753
 #> 

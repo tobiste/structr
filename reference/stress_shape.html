@@ -17,7 +17,7 @@ based on the number of principal stresses larger than the vertical stress."><met
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9014</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9015</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -79,14 +79,14 @@ based on the number of principal stresses larger than the vertical stress.</p>
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">stress_shape</span><span class="op">(</span><span class="va">tau</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">stress_shape</span><span class="op">(</span><span class="va">sigma</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
     <h2 id="arguments">Arguments<a class="anchor" aria-label="anchor" href="#arguments"></a></h2>
 
 
-<dl><dt id="arg-tau">tau<a class="anchor" aria-label="anchor" href="#arg-tau"></a></dt>
+<dl><dt id="arg-sigma">sigma<a class="anchor" aria-label="anchor" href="#arg-sigma"></a></dt>
 <dd><p>symmetric 3x3 matrix. The (reduced) stress tensor.</p></dd>
 
 </dl></div>
@@ -133,16 +133,16 @@ Geophysical Research: Solid Earth, 102(B8), 17909–17919. <a href="https://doi.
 <p>Other stress-tensor:
 <code><a href="fault_instability_criterion.html">fault_instability_criterion()</a></code>,
 <code><a href="reduced_stress.html">reduced_stress()</a></code>,
-<code><a href="tau-comp.html">tau-comp</a></code>,
-<code><a href="tau2rup.html">tau2rup()</a></code>,
-<code><a href="tau2stress.html">tau2stress()</a></code></p></div>
+<code><a href="sigma-comp.html">sigma-comp</a></code>,
+<code><a href="sigma2rup.html">sigma2rup()</a></code>,
+<code><a href="sigma2stress.html">sigma2stress()</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="va">angelier1990</span><span class="op">$</span><span class="va">TYM</span></span></span>
-<span class="r-in"><span><span class="va">tau</span> <span class="op">&lt;-</span> <span class="fu"><a href="reduced_stress.html">reduced_stress</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu">stress_shape</span><span class="op">(</span><span class="va">tau</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="reduced_stress.html">reduced_stress</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">stress_shape</span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> $R</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.898753</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> </span>

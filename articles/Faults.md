@@ -345,7 +345,8 @@ stereoplot](Faults_files/figure-html/slip_inversion_alpha-1.png)
 
 ``` r
 
-stress_components <- tau2shearnorm(inv_res$stress_tensor, fault_data, friction = 0.6) 
+stress_components <- sigma2shearnorm(inv_res$sigma, fault_data, friction = 0.6) 
+
 
 Mohr_plot(
   sigma1 = inv_res$principal_vals[1],

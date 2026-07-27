@@ -6,7 +6,7 @@ equal-area projection
 ## Usage
 
 ``` r
-stereo_coords(az, inc, upper.hem = NULL, earea = NULL, radius = 1)
+stereo_coords(az, inc, upper.hem = NULL, earea = NULL, radius = 1, fix = TRUE)
 ```
 
 ## Arguments
@@ -30,6 +30,10 @@ stereo_coords(az, inc, upper.hem = NULL, earea = NULL, radius = 1)
 - radius:
 
   numeric. Radius of circle. Defaults to `getOption("structr.radius")`.
+
+- fix:
+
+  logical. Whether coordinates should always plot in one hemisphere?
 
 ## Value
 

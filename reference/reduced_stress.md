@@ -35,10 +35,10 @@ reduced_stress(fault, method = c("michael", "angelier"))
 
 Other stress-tensor:
 [`fault_instability_criterion()`](https://tobiste.github.io/structr/reference/fault_instability_criterion.md),
-[`stress_shape()`](https://tobiste.github.io/structr/reference/stress_shape.md),
-[`tau-comp`](https://tobiste.github.io/structr/reference/tau-comp.md),
-[`tau2rup()`](https://tobiste.github.io/structr/reference/tau2rup.md),
-[`tau2stress()`](https://tobiste.github.io/structr/reference/tau2stress.md)
+[`sigma-comp`](https://tobiste.github.io/structr/reference/sigma-comp.md),
+[`sigma2rup()`](https://tobiste.github.io/structr/reference/sigma2rup.md),
+[`sigma2stress()`](https://tobiste.github.io/structr/reference/sigma2stress.md),
+[`stress_shape()`](https://tobiste.github.io/structr/reference/stress_shape.md)
 
 ## Examples
 

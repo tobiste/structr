@@ -91,4 +91,9 @@ title(
     ~omega ~ "(95%)" == "[" * .(w_val[1]) * "," ~ .(w_val[2]) * "]"
   ))
 )
+
+
+dev.off()
+#> null device 
+#>           1 
 ```

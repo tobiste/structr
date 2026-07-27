@@ -111,4 +111,8 @@ invisible(lapply(seq_len(nx), function(i) {
   ~ bar("RUP") ~ "(95% CI)" == "[" * .(rup_val[1]) * "," ~ .(rup_val[2]) * "] %")
   ))
 }))
+
+dev.off()
+#> null device 
+#>           1 
 ```

@@ -9,7 +9,7 @@ derive the reduced stress tensor."><meta property="og:image" content="https://to
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9014</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9015</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -101,7 +101,7 @@ for an iterative direct inversion after Angelier (1990) and Mostafa (2005),
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>a named list with the following components:</p><dl><dt><code>stress_tensor</code></dt>
+    <p>a named list with the following components:</p><dl><dt><code>sigma</code></dt>
 <dd><p><code>"ellipsoid"</code> object. Best-fit devitoric stress tensor in input coordinate frame</p></dd>
 
 <dt><code>principal_axes</code></dt>
@@ -126,7 +126,7 @@ for an iterative direct inversion after Angelier (1990) and Mostafa (2005),
 <dd><p>numeric. Average resolved shear stress on each plane. Should be close to 1.</p></dd>
 
 <dt><code>stress_components</code></dt>
-<dd><p>matrix. The resolved shear and normal stresses, the slip and dilation tendency on each plane. See <code><a href="tau-comp.html">tau2shearnorm()</a></code> and <code><a href="tau-comp.html">tau2tendency()</a></code>.</p></dd>
+<dd><p>matrix. The resolved shear and normal stresses, the slip and dilation tendency on each plane. See <code><a href="sigma-comp.html">sigma2shearnorm()</a></code> and <code><a href="sigma-comp.html">sigma2tendency()</a></code>.</p></dd>
 
 <dt><code>n_iter</code></dt>
 <dd><p>number of Mostafa iterations performed</p></dd>
@@ -210,6 +210,9 @@ Geophysical Journal International, 167(2), 933–942.
 <span class="r-in"><span>  <span class="op">)</span></span></span>
 <span class="r-in"><span><span class="op">}</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="slip_inversion-1.png" alt="" width="1094" height="676"></span>
+<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/grDevices/dev.html" class="external-link">dev.off</a></span><span class="op">(</span><span class="op">)</span></span></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> null device </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>           1 </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

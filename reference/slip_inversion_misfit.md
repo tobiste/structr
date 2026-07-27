@@ -5,12 +5,12 @@ Misfit parameters of slip inversion
 ## Usage
 
 ``` r
-slip_inversion_misfit(tau, fault)
+slip_inversion_misfit(sigma, fault, tol = NULL)
 ```
 
 ## Arguments
 
-- tau:
+- sigma:
 
   symmetric 3x3 matrix. The (reduced) stress tensor.
 
@@ -18,6 +18,11 @@ slip_inversion_misfit(tau, fault)
 
   `"Fault"` object where the rows are the observations, and the columns
   the coordinates.
+
+- tol:
+
+  numeric. Convergence tolerance on max absolute change in TR elements
+  between iterations. Defaults to `getOption("structr.tol")`.
 
 ## Value
 
@@ -30,19 +35,19 @@ list.
 
 - `alpha_mean`:
 
-  numeric. The mean of `alpha`, the ie. the mean deviation of predicted
+  numeric. The mean of `alpha`, the i.e. the mean deviation of predicted
   from observed slip.
 
 - `rup`:
 
   numeric. "Ratio Upsilon" (RUP) parameter after Angelier (1990),
   ranging frpm 0 (perfect fit) to 200% (misfit). See
-  [`tau2rup()`](https://tobiste.github.io/structr/reference/tau2rup.md).
+  [`sigma2rup()`](https://tobiste.github.io/structr/reference/sigma2rup.md).
 
 - `quality`:
 
   factor. Ranked misfit classification based on RUP values. See
-  [`tau2rup()`](https://tobiste.github.io/structr/reference/tau2rup.md).
+  [`sigma2rup()`](https://tobiste.github.io/structr/reference/sigma2rup.md).
 
 - `rup_mean`:
 
@@ -61,8 +66,8 @@ list.
 
 ``` r
 f <- angelier1990$TYM
-tau <- reduced_stress(f)
-slip_inversion_misfit(tau, f)
+s <- reduced_stress(f)
+slip_inversion_misfit(s, f)
 #> $alpha
 #>  [1] 19.0581833  0.4300616 17.6971171  8.5078919  9.3257870  5.9565593
 #>  [7] 15.0070188  1.1696222 12.2657156  6.2970707 12.1518725  7.3901878

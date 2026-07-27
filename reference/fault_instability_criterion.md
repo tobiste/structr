@@ -53,19 +53,19 @@ earthquakes in West Bohemia, Czech Republic, Tectonophysics, 590,
 
 Other stress-tensor:
 [`reduced_stress()`](https://tobiste.github.io/structr/reference/reduced_stress.md),
-[`stress_shape()`](https://tobiste.github.io/structr/reference/stress_shape.md),
-[`tau-comp`](https://tobiste.github.io/structr/reference/tau-comp.md),
-[`tau2rup()`](https://tobiste.github.io/structr/reference/tau2rup.md),
-[`tau2stress()`](https://tobiste.github.io/structr/reference/tau2stress.md)
+[`sigma-comp`](https://tobiste.github.io/structr/reference/sigma-comp.md),
+[`sigma2rup()`](https://tobiste.github.io/structr/reference/sigma2rup.md),
+[`sigma2stress()`](https://tobiste.github.io/structr/reference/sigma2stress.md),
+[`stress_shape()`](https://tobiste.github.io/structr/reference/stress_shape.md)
 
 ## Examples
 
 ``` r
 f <- angelier1990$TYM
-tau <- reduced_stress(f)
-s <- stress_shape(tau)
+s <- reduced_stress(f)
+r <- stress_shape(s)
 
-fault_instability_criterion(f, s$R)
+fault_instability_criterion(f, r$R)
 #>  [1] 0.80583583 0.96786690 0.05589429 0.57145143 0.76778700 0.15189430
 #>  [7] 0.13812261 0.81158280 0.45559237 0.66081621 0.58543179 1.13776326
 #> [13] 0.87881003 0.41970424 0.63313399 0.96055789 0.97720506 0.88549935

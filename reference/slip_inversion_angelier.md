@@ -50,7 +50,7 @@ slip_inversion_angelier(
 
 a named list with the following components:
 
-- `stress_tensor`:
+- `sigma`:
 
   `"ellipsoid"` object. Best-fit devitoric stress tensor in input
   coordinate frame
@@ -92,9 +92,9 @@ a named list with the following components:
 
   matrix. The resolved shear and normal stresses, the slip and dilation
   tendency on each plane. See
-  [`tau2shearnorm()`](https://tobiste.github.io/structr/reference/tau-comp.md)
+  [`sigma2shearnorm()`](https://tobiste.github.io/structr/reference/sigma-comp.md)
   and
-  [`tau2tendency()`](https://tobiste.github.io/structr/reference/tau-comp.md).
+  [`sigma2tendency()`](https://tobiste.github.io/structr/reference/sigma-comp.md).
 
 - `n_iter`:
 
@@ -200,4 +200,8 @@ invisible(lapply(seq_len(nx), function(i) {
   legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
   title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "%"))
 }))
+
+dev.off()
+#> null device 
+#>           1 
 ```

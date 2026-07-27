@@ -67,6 +67,7 @@
   : Apparent dip direction
 
 - [`stereo_arrows()`](https://tobiste.github.io/structr/reference/arrows.md)
+  [`stereo_hoeppener()`](https://tobiste.github.io/structr/reference/arrows.md)
   [`arrows(`*`<spherical>`*`)`](https://tobiste.github.io/structr/reference/arrows.md)
   : Add Arrows to a Stereoplot
 
@@ -421,8 +422,21 @@
 - [`shebandowan`](https://tobiste.github.io/structr/reference/shebandowan.md)
   : Vorticity from Rotated Porphyroclasts
 
+- [`sigma2shearnorm()`](https://tobiste.github.io/structr/reference/sigma-comp.md)
+  [`sigma2tendency()`](https://tobiste.github.io/structr/reference/sigma-comp.md)
+  : Resolved Shear and Normal Stress
+
 - [`sigma13()`](https://tobiste.github.io/structr/reference/sigma13.md)
   : Principle stresses
+
+- [`sigma2rup()`](https://tobiste.github.io/structr/reference/sigma2rup.md)
+  : Angelier's Ratio Upsilon (RUP)
+
+- [`sigma2slip()`](https://tobiste.github.io/structr/reference/sigma2slip.md)
+  : Predict Slip Direction for Given Faults and Stress Tensor
+
+- [`sigma2stress()`](https://tobiste.github.io/structr/reference/sigma2stress.md)
+  : Principal Stresses from Stress Tensor
 
 - [`simongomez`](https://tobiste.github.io/structr/reference/simongomez.md)
   : Example data set
@@ -528,6 +542,9 @@
 - [`stereo_shmax()`](https://tobiste.github.io/structr/reference/stereo_shmax.md)
   : Horizontal directions
 
+- [`stereo_stress_grid()`](https://tobiste.github.io/structr/reference/stereo_stress_grid.md)
+  : Stress Grid
+
 - [`stereoplot()`](https://tobiste.github.io/structr/reference/stereoplot.md)
   : Stereographic and Equal Area Projection
 
@@ -593,16 +610,6 @@
 - [`symmetry_group()`](https://tobiste.github.io/structr/reference/symmetry_group.md)
   : Symmetry groups
 
-- [`tau2shearnorm()`](https://tobiste.github.io/structr/reference/tau-comp.md)
-  [`tau2tendency()`](https://tobiste.github.io/structr/reference/tau-comp.md)
-  : Resolved Shear and Normal Stress
-
-- [`tau2rup()`](https://tobiste.github.io/structr/reference/tau2rup.md)
-  : Angelier's Ratio Upsilon (RUP)
-
-- [`tau2stress()`](https://tobiste.github.io/structr/reference/tau2stress.md)
-  : Principal Stresses from Stress Tensor
-
 - [`tau_max()`](https://tobiste.github.io/structr/reference/tau_max.md)
   : Maximum in-plane shear stress
 
@@ -615,19 +622,6 @@
 - [`vec_list()`](https://tobiste.github.io/structr/reference/vec-list.md)
   [`list_vec()`](https://tobiste.github.io/structr/reference/vec-list.md)
   : List of vectors
-
-- [`vector_length()`](https://tobiste.github.io/structr/reference/vecmath.md)
-  [`vector_norm()`](https://tobiste.github.io/structr/reference/vecmath.md)
-  [`crossprod(`*`<Vec3>`*`)`](https://tobiste.github.io/structr/reference/vecmath.md)
-  [`crossprod(`*`<Line>`*`)`](https://tobiste.github.io/structr/reference/vecmath.md)
-  [`crossprod(`*`<Ray>`*`)`](https://tobiste.github.io/structr/reference/vecmath.md)
-  [`crossprod(`*`<Plane>`*`)`](https://tobiste.github.io/structr/reference/vecmath.md)
-  [`dotprod()`](https://tobiste.github.io/structr/reference/vecmath.md)
-  [`angle()`](https://tobiste.github.io/structr/reference/vecmath.md)
-  [`project()`](https://tobiste.github.io/structr/reference/vecmath.md)
-  [`reject()`](https://tobiste.github.io/structr/reference/vecmath.md)
-  [`transform_linear()`](https://tobiste.github.io/structr/reference/vecmath.md)
-  : Vector Algebra
 
 - [`velgrad_rate()`](https://tobiste.github.io/structr/reference/vel_rate.md)
   [`velgrad_spin()`](https://tobiste.github.io/structr/reference/vel_rate.md)

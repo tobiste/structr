@@ -7,7 +7,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9014</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9015</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -75,6 +75,17 @@
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span>
 <span></span>
+<span><span class="fu">stereo_hoeppener</span><span class="op">(</span></span>
+<span>  <span class="va">pole</span>,</span>
+<span>  <span class="va">slip</span>,</span>
+<span>  scale <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  angle <span class="op">=</span> <span class="fl">10</span>,</span>
+<span>  length <span class="op">=</span> <span class="fl">0.1</span>,</span>
+<span>  upper.hem <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  earea <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  <span class="va">...</span></span>
+<span><span class="op">)</span></span>
+<span></span>
 <span><span class="co"># S3 method for class 'spherical'</span></span>
 <span><span class="fu">arrows</span><span class="op">(</span></span>
 <span>  <span class="va">x</span>,</span>
@@ -82,8 +93,8 @@
 <span>  scale <span class="op">=</span> <span class="fl">0.1</span>,</span>
 <span>  angle <span class="op">=</span> <span class="fl">10</span>,</span>
 <span>  length <span class="op">=</span> <span class="fl">0.1</span>,</span>
-<span>  upper.hem <span class="op">=</span> <span class="cn">FALSE</span>,</span>
-<span>  earea <span class="op">=</span> <span class="cn">TRUE</span>,</span>
+<span>  upper.hem <span class="op">=</span> <span class="cn">NULL</span>,</span>
+<span>  earea <span class="op">=</span> <span class="cn">NULL</span>,</span>
 <span>  <span class="va">...</span></span>
 <span><span class="op">)</span></span></code></pre></div>
     </div>
@@ -99,7 +110,7 @@ rows are the observations and the columns are the coordinates.</p></dd>
 
 <dt id="arg-sense">sense<a class="anchor" aria-label="anchor" href="#arg-sense"></a></dt>
 <dd><p>numeric. Sense of the line on a fault plane. Either
-<code>1</code>or <code>-1</code> for normal or thrust offset, respectively. The "sense" is the sign
+<code>1</code>or <code>-1</code> for normal or thrust offset, respectively. The <code>"sense"</code> is the sign
 of the fault's rake (see <code><a href="fault-rake.html">Fault_from_rake()</a></code> for details).</p></dd>
 
 
@@ -130,6 +141,10 @@ Defaults to <code>getOption("structr.earea")</code>.</p></dd>
 <dt id="arg--">...<a class="anchor" aria-label="anchor" href="#arg--"></a></dt>
 <dd><p>arguments passed to <code><a href="https://rdrr.io/r/graphics/arrows.html" class="external-link">graphics::arrows()</a></code></p></dd>
 
+
+<dt id="arg-pole-slip">pole, slip<a class="anchor" aria-label="anchor" href="#arg-pole-slip"></a></dt>
+<dd><p>spherical object. The plane normal and a slip vector</p></dd>
+
 </dl></div>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
@@ -156,7 +171,6 @@ Defaults to <code>getOption("structr.earea")</code>.</p></dd>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20250411</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="stereoplot.html">stereoplot</a></span><span class="op">(</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">p</span> <span class="op">&lt;-</span> <span class="fu"><a href="vonmises-fisher.html">rvmf</a></span><span class="op">(</span>n <span class="op">=</span> <span class="fl">100</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">p</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">stereo_arrows</span><span class="op">(</span><span class="va">p</span>, sense <span class="op">=</span> <span class="fl">1</span>, col <span class="op">=</span> <span class="st">"red"</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="arrows-1.png" alt="" width="1094" height="676"></span>
 </code></pre></div>

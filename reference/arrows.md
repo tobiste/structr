@@ -17,6 +17,17 @@ stereo_arrows(
   ...
 )
 
+stereo_hoeppener(
+  pole,
+  slip,
+  scale = 0.1,
+  angle = 10,
+  length = 0.1,
+  upper.hem = NULL,
+  earea = NULL,
+  ...
+)
+
 # S3 method for class 'spherical'
 arrows(
   x,
@@ -24,8 +35,8 @@ arrows(
   scale = 0.1,
   angle = 10,
   length = 0.1,
-  upper.hem = FALSE,
-  earea = TRUE,
+  upper.hem = NULL,
+  earea = NULL,
   ...
 )
 ```
@@ -40,8 +51,8 @@ arrows(
 - sense:
 
   numeric. Sense of the line on a fault plane. Either `1`or `-1` for
-  normal or thrust offset, respectively. The "sense" is the sign of the
-  fault's rake (see
+  normal or thrust offset, respectively. The `"sense"` is the sign of
+  the fault's rake (see
   [`Fault_from_rake()`](https://tobiste.github.io/structr/reference/fault-rake.md)
   for details).
 
@@ -75,6 +86,10 @@ arrows(
   arguments passed to
   [`graphics::arrows()`](https://rdrr.io/r/graphics/arrows.html)
 
+- pole, slip:
+
+  spherical object. The plane normal and a slip vector
+
 ## See also
 
 [`hoeppener()`](https://tobiste.github.io/structr/reference/fault-plot.md),
@@ -102,6 +117,5 @@ Other stereo-plot:
 set.seed(20250411)
 stereoplot()
 p <- rvmf(n = 100)
-points(p, pch = 16, cex = .5)
 stereo_arrows(p, sense = 1, col = "red")
 ```

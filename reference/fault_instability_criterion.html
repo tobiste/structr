@@ -11,7 +11,7 @@ The most unstable fault is the optimally oriented fault for shear faulting."><me
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9014</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9015</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -111,19 +111,19 @@ earthquakes in West Bohemia, Czech Republic, Tectonophysics, 590, 189–195.</p>
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other stress-tensor:
 <code><a href="reduced_stress.html">reduced_stress()</a></code>,
-<code><a href="stress_shape.html">stress_shape()</a></code>,
-<code><a href="tau-comp.html">tau-comp</a></code>,
-<code><a href="tau2rup.html">tau2rup()</a></code>,
-<code><a href="tau2stress.html">tau2stress()</a></code></p></div>
+<code><a href="sigma-comp.html">sigma-comp</a></code>,
+<code><a href="sigma2rup.html">sigma2rup()</a></code>,
+<code><a href="sigma2stress.html">sigma2stress()</a></code>,
+<code><a href="stress_shape.html">stress_shape()</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">f</span> <span class="op">&lt;-</span> <span class="va">angelier1990</span><span class="op">$</span><span class="va">TYM</span></span></span>
-<span class="r-in"><span><span class="va">tau</span> <span class="op">&lt;-</span> <span class="fu"><a href="reduced_stress.html">reduced_stress</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
-<span class="r-in"><span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="stress_shape.html">stress_shape</a></span><span class="op">(</span><span class="va">tau</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">s</span> <span class="op">&lt;-</span> <span class="fu"><a href="reduced_stress.html">reduced_stress</a></span><span class="op">(</span><span class="va">f</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="va">r</span> <span class="op">&lt;-</span> <span class="fu"><a href="stress_shape.html">stress_shape</a></span><span class="op">(</span><span class="va">s</span><span class="op">)</span></span></span>
 <span class="r-in"><span></span></span>
-<span class="r-in"><span><span class="fu">fault_instability_criterion</span><span class="op">(</span><span class="va">f</span>, <span class="va">s</span><span class="op">$</span><span class="va">R</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="fu">fault_instability_criterion</span><span class="op">(</span><span class="va">f</span>, <span class="va">r</span><span class="op">$</span><span class="va">R</span><span class="op">)</span></span></span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [1] 0.80583583 0.96786690 0.05589429 0.57145143 0.76778700 0.15189430</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span>  [7] 0.13812261 0.81158280 0.45559237 0.66081621 0.58543179 1.13776326</span>
 <span class="r-out co"><span class="r-pr">#&gt;</span> [13] 0.87881003 0.41970424 0.63313399 0.96055789 0.97720506 0.88549935</span>

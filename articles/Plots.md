@@ -155,7 +155,7 @@ distribution (after Vollmer, 1990).
 
 ``` r
 
-vollmer_plot(planes, col = "#000004", pch = 1, cex = 2)
+vollmer_plot(planes, col = "#000004", pch = 1, cex = 2, guides = TRUE)
 vollmer_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```
@@ -172,7 +172,7 @@ distribution (after Woodcock, 1977).
 
 ``` r
 
-woodcock_plot(planes, col = "#000004", pch = 1, cex = 2)
+woodcock_plot(planes, col = "#000004", pch = 1, cex = 2, guides = TRUE)
 woodcock_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```
@@ -189,7 +189,7 @@ showing the shape of the orientation distribution (after Hsu, 1965).
 
 ``` r
 
-hsu_plot(planes, col = "#000004", pch = 1, cex = 2)
+hsu_plot(planes, col = "#000004", pch = 1, cex = 2, guides = TRUE)
 hsu_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```

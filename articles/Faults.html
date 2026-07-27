@@ -25,7 +25,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9014</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9015</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -86,7 +86,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2026-07-26</h4>
+            <h4 data-toc-skip class="date">2026-07-27</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/Faults.Rmd" class="external-link"><code>vignettes/Faults.Rmd</code></a></small>
       <div class="d-none name"><code>Faults.Rmd</code></div>
@@ -376,7 +376,8 @@ visualized in the stereoplot:</p>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="Faults_files/figure-html/slip_inversion_alpha-1.png" class="r-plt" alt="Diagram showing deviation of the best-fit principal stress tensor in a stereoplot" width="1093.75"></p>
 <div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="va">stress_components</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/tau-comp.html">tau2shearnorm</a></span><span class="op">(</span><span class="va">inv_res</span><span class="op">$</span><span class="va">stress_tensor</span>, <span class="va">fault_data</span>, friction <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> </span>
+<code class="sourceCode R"><span><span class="va">stress_components</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sigma-comp.html">sigma2shearnorm</a></span><span class="op">(</span><span class="va">inv_res</span><span class="op">$</span><span class="va">sigma</span>, <span class="va">fault_data</span>, friction <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> </span>
+<span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/Mohr_plot.html">Mohr_plot</a></span><span class="op">(</span></span>
 <span>  sigma1 <span class="op">=</span> <span class="va">inv_res</span><span class="op">$</span><span class="va">principal_vals</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>,</span>
