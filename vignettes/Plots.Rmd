@@ -160,7 +160,7 @@ orientation distribution (after Vollmer, 1990).
 #| fig.alt: >
 #|   Diagram showing eigen-vector analysis of some example data plotted in an
 #|   triangular plot after Vollmer 1990
-vollmer_plot(planes, col = "#000004", pch = 1, cex = 2)
+vollmer_plot(planes, col = "#000004", pch = 1, cex = 2, guides = TRUE)
 vollmer_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```
@@ -174,7 +174,7 @@ orientation distribution (after Woodcock, 1977).
 #| fig.alt: >
 #|   Diagram showing eigen-vector analysis of some example data plotted in an
 #|   biplot plot after Woodcok 1977
-woodcock_plot(planes, col = "#000004", pch = 1, cex = 2)
+woodcock_plot(planes, col = "#000004", pch = 1, cex = 2, guides = TRUE)
 woodcock_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```
@@ -197,7 +197,7 @@ strain[^4] diagram showing the shape of the orientation distribution
 #| fig.alt: >
 #|   Diagram showing eigen-vector analysis of some example data plotted in a
 #|   Hsu plot
-hsu_plot(planes, col = "#000004", pch = 1, cex = 2)
+hsu_plot(planes, col = "#000004", pch = 1, cex = 2, guides = TRUE)
 hsu_plot(lines, add = TRUE, col = "#B63679", pch = 19, cex = 2)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```

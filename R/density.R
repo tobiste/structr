@@ -5,6 +5,8 @@ blank_grid_regular <- function(n, r = 1) {
   grid_schmidt <- as.matrix(expand.grid(x_grid, x_grid))
 
   grid_cart <- .schmidt2cart(grid_schmidt[, 1], grid_schmidt[, 2], r)
+  #cond <- grid_cart[, 3]>0 # remove the other hemisphere
+  
   values <- rep(0, times = n^2)
   list(grid = grid_cart, density = values)
 }
@@ -353,7 +355,7 @@ density_calc <- function(x,
   r <- radius %||% getOption("structr.radius")
   
   dg <- density_grid(x, weights = weights, upper.hem = upper.hem, kamb = TRUE, FUN = FUN, sigma = sigma, ngrid = n, r = r)
-  grid_pts <- seq(-1, 1, length.out = n)
+  grid_pts <- seq(-r, r, length.out = n)
   density_matrix <- matrix(dg$density, nrow = n, byrow = FALSE)
   
   r2 <- r^2

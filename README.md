@@ -358,7 +358,12 @@ Mohr_plot(
   sigma3 = faults_stress$principal_vals[3],
   unit = NULL, include.zero = FALSE
 )
-points(faults_stress$stress_component[, 'normal'], abs(faults_stress$stress_component[, 'shear']),
+
+# Calculate shear and normal components of the stress for each fault
+stress_components <- tau2shearnorm(faults_stress$stress_tensor, faults)
+
+# Add to Mohr circle:
+points(stress_components[, 'normal'], abs(stress_components[, 'shear']),
   col = assign_col(alpha), pch = 16
 )
 ```

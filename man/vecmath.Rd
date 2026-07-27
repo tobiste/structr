@@ -87,3 +87,4 @@ angle(vec1, vec2) # angle between vectors
 project(vec1, vec2) # projection of a vector
 transform_linear(vec1, matrix(runif(9), 3, 3)) # linear transformation
 }
+\keyword{internal}

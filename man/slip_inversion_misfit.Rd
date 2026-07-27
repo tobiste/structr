@@ -4,10 +4,10 @@
 \alias{slip_inversion_misfit}
 \title{Misfit parameters of slip inversion}
 \usage{
-slip_inversion_misfit(tau, fault)
+slip_inversion_misfit(sigma, fault, tol = NULL)
 }
 \arguments{
-\item{tau}{symmetric 3x3 matrix. The (reduced) stress tensor.}
+\item{sigma}{symmetric 3x3 matrix. The (reduced) stress tensor.}
 
 \item{fault}{\code{"Fault"} object where the rows are the observations, and the columns the coordinates.}
 }
@@ -15,11 +15,11 @@ slip_inversion_misfit(tau, fault)
 list. \describe{
 \item{\code{alpha}}{numeric. Deviation angle between slickenline and shear traction.
 Ranging from 0&degree; (perfect fit) to 90° (inconsistent fit).}
-\item{\code{alpha_mean}}{numeric. The mean of \code{alpha}, the ie. the mean deviation
+\item{\code{alpha_mean}}{numeric. The mean of \code{alpha}, the i.e. the mean deviation
 of predicted from observed slip.}
 \item{\code{rup}}{numeric. "Ratio Upsilon" (RUP) parameter after Angelier (1990),
-ranging frpm 0 (perfect fit) to 200\% (misfit). See \code{\link[=tau2rup]{tau2rup()}}.}
-\item{\code{quality}}{factor. Ranked misfit classification based on RUP values. See \code{\link[=tau2rup]{tau2rup()}}.}
+ranging frpm 0 (perfect fit) to 200\% (misfit). See \code{\link[=sigma2rup]{sigma2rup()}}.}
+\item{\code{quality}}{factor. Ranked misfit classification based on RUP values. See \code{\link[=sigma2rup]{sigma2rup()}}.}
 \item{\code{rup_mean}}{numeric. The mean RUP.}
 \item{\code{quality_summary}}{integer. Counts of faults in the RUP-based quality ranks.}
 \item{\code{flipped}}{logical. Are the signs of slip vectors flipped, i.e.,
@@ -31,6 +31,6 @@ Misfit parameters of slip inversion
 }
 \examples{
 f <- angelier1990$TYM
-tau <- reduced_stress(f)
-slip_inversion_misfit(tau, f)
+s <- reduced_stress(f)
+slip_inversion_misfit(s, f)
 }

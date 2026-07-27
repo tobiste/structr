@@ -58,6 +58,7 @@ rotz3 <- function(deg) {
 #' @param upper.hem logical. Whether the projection is shown for upper
 #' hemisphere (`TRUE`) or lower hemisphere (`FALSE`). Defaults to
 #'   `getOption("structr.upper.hem")`.
+#' @param fix logical. Whether coordinates should always plot in one hemisphere?
 #' @inheritParams stereoplot
 #'
 #' @returns two-column vector with the transformed coordinates
@@ -69,7 +70,7 @@ rotz3 <- function(deg) {
 #' @examples
 #' stereo_coords(90, 10)
 #' stereo_coords(90, 10, earea = TRUE, upper.hem = TRUE)
-stereo_coords <- function(az, inc, upper.hem = NULL, earea = NULL, radius = 1) {
+stereo_coords <- function(az, inc, upper.hem = NULL, earea = NULL, radius = 1, fix = TRUE) {
   earea <- earea %||% getOption("structr.earea")
   upper.hem <- upper.hem %||% getOption("structr.upper.hem")
   r <- radius %||% getOption("structr.radius")
@@ -78,10 +79,15 @@ stereo_coords <- function(az, inc, upper.hem = NULL, earea = NULL, radius = 1) {
     az <- az + 180
   }
 
-
-  B <- .fix_inc(az = az, inc = 90 - inc)
-  azi <- deg2rad(B[, 1])
-  inc <- deg2rad(B[, 2])
+  if(fix) {
+    B <- .fix_inc(az = az, inc = 90 - inc)
+    azi <- deg2rad(B[, 1])
+    inc <- deg2rad(B[, 2])
+  } else {
+    azi <- deg2rad(az)
+    inc <- deg2rad(90 - inc)
+  }
+  
 
   if (earea) {
     tq <- sqrt(2) * sin(inc / 2)
@@ -967,8 +973,9 @@ hypot <- function(x, y) {
 #' A quiver plot displays displacement vectors into pointing into the direction of movement.
 #'
 #' @inheritParams sph_mean
+#' @param pole,slip spherical object. The plane normal and a slip vector
 #' @param sense numeric. Sense of the line on a fault plane. Either
-#' `1`or `-1` for normal or thrust offset, respectively. The "sense" is the sign
+#' `1`or `-1` for normal or thrust offset, respectively. The `"sense"` is the sign
 #' of the fault's rake (see [Fault_from_rake()] for details).
 #' @param ... arguments passed to [graphics::arrows()]
 #' @inheritParams plot.Vec3
@@ -988,16 +995,12 @@ hypot <- function(x, y) {
 #' set.seed(20250411)
 #' stereoplot()
 #' p <- rvmf(n = 100)
-#' points(p, pch = 16, cex = .5)
 #' stereo_arrows(p, sense = 1, col = "red")
 NULL
 
 #' @rdname arrows
 #' @export
-stereo_arrows <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.hem = NULL, earea = NULL, ...) {
-  earea <- earea %||% getOption("structr.earea")
-  upper.hem <- upper.hem %||% getOption("structr.upper.hem")
-  
+stereo_arrows <- function(x, sense, scale = 0.1, angle = 10, length = 0.1, upper.hem = NULL, earea = NULL, ...) {
   stopifnot(is.Vec3(x) | is.Line(x) | is.Ray(x) | is.Plane(x))
 
   if (nrow(x) > 1 & length(sense) == 1) sense <- rep(sense, nrow(x))
@@ -1012,7 +1015,7 @@ stereo_arrows <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.
   crds <- stereo_coords(
     x[, 1],
     x[, 2],
-    upper.hem = upper.hem, earea
+    upper.hem = upper.hem, earea = earea
   )
 
   dx <- crds[, "x"]
@@ -1025,10 +1028,32 @@ stereo_arrows <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.
   graphics::arrows(dx, dy, dx + scale * u, dy + scale * v, angle = angle, length = length, ...)
 }
 
+
+#' @rdname arrows
+#' @export
+stereo_hoeppener <- function(pole, slip, scale = 0.1, angle = 10, length = 0.1, upper.hem = NULL, earea = NULL, ...){
+  p0 <- Vec3(pole)
+  p1 <- vnorm(p0 + scale * Vec3(slip))
+  
+  l0 <- Ray(p0)
+  l1 <- Ray(p1)
+  start <- stereo_coords(l0[, 1], l0[, 2], upper.hem = upper.hem, earea = earea, fix = FALSE)
+  end <- stereo_coords(l1[, 1], l1[, 2], upper.hem = upper.hem, earea = earea, fix= FALSE)
+  
+  lengths <- sqrt(rowSums((end - start)^2))
+  
+  graphics::arrows(
+    start[,1], start[,2],
+    end[,1], end[,2],
+    angle = angle, length = length,
+    ...
+  )
+}
+
 #' @rdname arrows
 #' @exportS3Method graphics::arrows
-arrows.spherical <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.hem = FALSE, earea = TRUE, ...) {
-  stereo_arrows(x, sense, scale, angle, length, upper.hem, earea, ...)
+arrows.spherical <- function(x, sense, scale = .1, angle = 10, length = 0.1, upper.hem = NULL, earea = NULL, ...) {
+  stereo_arrows(x, scale, angle, length, upper.hem, earea, ...)
 }
 
 #' Plot Fault Data in a StereoPlot
@@ -1098,18 +1123,16 @@ hoeppener <- function(x, pch = 1, col = "black", cex = 1, bg = NULL, points = TR
   stopifnot(is.Fault(x))
 
   p <- Plane(x)
-  s <- -x[, "sense"] # invert sense for hoeppener
+  s <- Ray(x)
   nx <- nrow(x)
-
+  
   pch <- rep_len(pch, nx)
   col <- rep_len(col, nx)
-  # lwd <- rep_len(lwd, nx)
-  # lty <- rep_len(lty, nx)
   cex <- rep_len(cex, nx)
-
+  
   invisible(
     lapply(seq_len(nx), function(i) {
-      stereo_arrows(p[i, ], sense = s[i], col = col[i], ...)
+      stereo_hoeppener(p[i, ], slip = s[i, ], col = col[i], ...)
     })
   )
 
@@ -1128,7 +1151,7 @@ angelier <- function(x, pch = 1, lwd = 1, lty = 1, col = "black", cex = 1, point
   stopifnot(is.Fault(x))
 
   p <- Plane(x)
-  l <- Fault_slip(x)
+  l <- Ray(x)
   s <- x[, "sense"]
 
   nx <- nrow(x)
@@ -1143,7 +1166,7 @@ angelier <- function(x, pch = 1, lwd = 1, lty = 1, col = "black", cex = 1, point
   invisible(
     lapply(seq_len(nx), function(i) {
       lines(p[i, ], lwd = lwd[i], lty = lty[i], col = col[i])
-      stereo_arrows(l[i, ], sense = s[i], col = col[i], ...)
+      stereo_arrows(l[i, ], s[i], col = col[i], ...)
     })
   )
   if (points) {

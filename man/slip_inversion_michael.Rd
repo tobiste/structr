@@ -80,6 +80,7 @@ invisible(lapply(seq_len(nx), function(i) {
   ~ bar("RUP") ~ "(95\% CI)" == "[" * .(rup_val[1]) * "," ~ .(rup_val[2]) * "] \%")
   ))
 }))
+dev.off()
 }
 \references{
 Michael, A. J. (1984). Determination of stress from slip data:

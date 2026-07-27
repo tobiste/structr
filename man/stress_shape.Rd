@@ -4,10 +4,10 @@
 \alias{stress_shape}
 \title{Shape parameters of the stress ellipsoid}
 \usage{
-stress_shape(tau)
+stress_shape(sigma)
 }
 \arguments{
-\item{tau}{symmetric 3x3 matrix. The (reduced) stress tensor.}
+\item{sigma}{symmetric 3x3 matrix. The (reduced) stress tensor.}
 }
 \value{
 list. Its components are the three stress shape parameters
@@ -47,8 +47,8 @@ Values range from 0 to 1 for normal, 1 to 2 for strike-slip, and 2 to 3 for reve
 }
 \examples{
 f <- angelier1990$TYM
-tau <- reduced_stress(f)
-stress_shape(tau)
+s <- reduced_stress(f)
+stress_shape(s)
 }
 \references{
 Angelier, J., 1979. Determination of the mean principal directions of stresses for a given fault population.
@@ -69,8 +69,8 @@ Geophysical Research: Solid Earth, 102(B8), 17909–17919. \doi{10.1029/97JB0127
 Other stress-tensor: 
 \code{\link{fault_instability_criterion}()},
 \code{\link{reduced_stress}()},
-\code{\link{tau-comp}},
-\code{\link{tau2rup}()},
-\code{\link{tau2stress}()}
+\code{\link{sigma-comp}},
+\code{\link{sigma2rup}()},
+\code{\link{sigma2stress}()}
 }
 \concept{stress-tensor}

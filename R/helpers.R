@@ -771,6 +771,13 @@ ellipse <- function(
   invisible(lst)
 }
 
+cyclic_viridis <- function(n = 256, option = "viridis") {
+  if( n%%2 != 0) n <- n + 1
+          
+  cols1 <- viridis(n/2, option = option)
+  cols2 <- rev(viridis(n/2, option = option))
+  c(cols1, cols2)
+ }
 
 # Modes from a kde distribution ------------------------------------------------
 #' @keywords internal
@@ -939,7 +946,8 @@ nnmat <- function(n) n %*% t(n)
   diag(p) + sin(theta) * A + (cos(theta) - 1) * (b %*% t(b) + ca %*% t(ca))
 }
 
-#' @importFrom Rfast rowsums
+#' @importFrom Rfast rbing
+#' @importFrom stats runif
 .rfb <- function(n, k, m, A) {
   m <- m / sqrt(sum(m^2))
   m0 <- c(0, 1, 0)
@@ -955,16 +963,16 @@ nnmat <- function(n) n %*% t(n)
   x <- Rfast::rbing(n, lam)
   x <- tcrossprod(x, V)
   u <- log(stats::runif(n))
-  ffb <- k * x[, 2] - Rfast::rowsums(x %*% A * x)
-  fb <- k - Rfast::rowsums(x %*% A1 * x)
+  ffb <- k * x[, 2] - rowSums(x %*% A * x)
+  fb <- k - rowSums(x %*% A1 * x)
   x1 <- x[u <= c(ffb - fb), ]
   n1 <- dim(x1)[1]
   while (n1 < n) {
     x <- Rfast::rbing(n - n1, lam)
     x <- tcrossprod(x, V)
     u <- log(runif(n - n1))
-    ffb <- k * x[, 2] - Rfast::rowsums(x %*% A * x)
-    fb <- k - Rfast::rowsums(x %*% A1 * x)
+    ffb <- k * x[, 2] - rowSums(x %*% A * x)
+    fb <- k - rowSums(x %*% A1 * x)
     x1 <- rbind(x1, x[u <= c(ffb - fb), ])
     n1 <- dim(x1)[1]
   }

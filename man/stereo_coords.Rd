@@ -4,7 +4,7 @@
 \alias{stereo_coords}
 \title{Stereographic and Equal-Area Projection}
 \usage{
-stereo_coords(az, inc, upper.hem = NULL, earea = NULL, radius = 1)
+stereo_coords(az, inc, upper.hem = NULL, earea = NULL, radius = 1, fix = TRUE)
 }
 \arguments{
 \item{az, inc}{numeric vectors. Azimuth and Inclination in degrees.}
@@ -18,6 +18,8 @@ projection, or \code{FALSE} for meridional stereographic projection.
 Defaults to \code{getOption("structr.earea")}.}
 
 \item{radius}{numeric. Radius of circle. Defaults to \code{getOption("structr.radius")}.}
+
+\item{fix}{logical. Whether coordinates should always plot in one hemisphere?}
 }
 \value{
 two-column vector with the transformed coordinates

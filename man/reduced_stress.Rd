@@ -31,9 +31,9 @@ reduced_stress(f)
 
 Other stress-tensor: 
 \code{\link{fault_instability_criterion}()},
-\code{\link{stress_shape}()},
-\code{\link{tau-comp}},
-\code{\link{tau2rup}()},
-\code{\link{tau2stress}()}
+\code{\link{sigma-comp}},
+\code{\link{sigma2rup}()},
+\code{\link{sigma2stress}()},
+\code{\link{stress_shape}()}
 }
 \concept{stress-tensor}

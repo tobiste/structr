@@ -168,6 +168,7 @@
 #'   legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
 #'   title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "%"))
 #' }))
+#' dev.off()
 slip_inversion_hansen <- function(x, flip = FALSE, type = c("9d", "6d")) {
   tsign <- if (flip) -1 else 1
   type <- match.arg(type)
@@ -313,10 +314,6 @@ slip_inversion_hansen <- function(x, flip = FALSE, type = c("9d", "6d")) {
 
   SHmax <- SH(principal_axes[1, ], principal_axes[2, ], principal_axes[3, ], R = stress_shape$R)
 
-  # shearnorm <- tau2shearnorm(Ts, x, friction = friction)
-  # tendency <- tau2tendency(Ts, x, friction = friction)
-  # pfaults <- principal_fault(principal_axes[1, ], principal_axes[3, ], friction)
-
 
   # 9 results
 
@@ -383,6 +380,8 @@ slip_inversion_hansen <- function(x, flip = FALSE, type = c("9d", "6d")) {
 #'     ~omega ~ "(95%)" == "[" * .(w_val[1]) * "," ~ .(w_val[2]) * "]"
 #'   ))
 #' )
+#' 
+#' dev.off()
 slip_inversion_hansen_boot <- function(
   x,
   # friction = 0.6,
@@ -411,29 +410,29 @@ slip_inversion_hansen_boot <- function(
       idx <- sample.int(nx, replace = TRUE)
       x_sample <- x[idx, ]
       res <- slip_inversion_hansen(x[idx, ],  flip = flip, type = type)
-      tau <- res$stress_tensor
+      sigma <- res$stress_tensor
       w <- res$vorticity_axis
-      list(tau = tau, w = w)
+      list(sigma = sigma, w = w)
     }, future.seed = TRUE)
 
-    tau_boot <- lapply(res_boot, function(x) x$tau)
+    tau_boot <- lapply(res_boot, function(x) x$sigma)
 
-    princ_boot <- lapply(tau_boot, tau2stress)
+    princ_boot <- lapply(tau_boot, sigma2stress)
 
 
     # calculate confidence intervals from bootstrap results
     sigma_vec1 <- do.call(rbind, lapply(princ_boot, function(x) {
-      x$principal_axes[1, ]
+      x$axes[1, ]
     })) |>
       confidence_ellipse(alpha = 1 - conf.level, ...)
 
     sigma_vec2 <- do.call(rbind, lapply(princ_boot, function(x) {
-      x$principal_axes[2, ]
+      x$axes[2, ]
     })) |>
       confidence_ellipse(alpha = 1 - conf.level, ...)
 
     sigma_vec3 <- do.call(rbind, lapply(princ_boot, function(x) {
-      x$principal_axes[3, ]
+      x$axes[3, ]
     })) |>
       confidence_ellipse(alpha = 1 - conf.level, ...)
 
@@ -466,7 +465,7 @@ slip_inversion_hansen_boot <- function(
       stats::t.test(conf.level = conf.level)
 
     sigma_boot0 <- vapply(princ_boot, function(x) {
-      x$sigma_vals
+      x$vals
     }, FUN.VALUE = numeric(3)) |>
       t()
     sigma_boot <- sapply(1:3, function(col) {
@@ -482,7 +481,7 @@ slip_inversion_hansen_boot <- function(
 
     SHmax_CI <- vapply(tau_boot, function(x) {
           phi <- stress_shape(x)$phi
-          principal_axes <- tau2stress(x)$principal_axes
+          principal_axes <- sigma2stress(x)$axes
           SH(principal_axes[1, ], principal_axes[2, ], principal_axes[3, ], R = phi)
     }, FUN.VALUE = numeric(1)) |>
       stats::t.test(conf.level = conf.level)

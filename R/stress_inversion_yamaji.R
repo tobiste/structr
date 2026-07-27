@@ -199,6 +199,7 @@ yamaji_sato <- function(normals, slips, wt) {
 #'   legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
 #'   title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "%"))
 #' }))
+#' dev.off()
 slip_inversion_yamaji_sato <- function(x, weights = NULL, flip = FALSE) {
   tsign <- if (flip) -1 else 1
 
@@ -229,7 +230,7 @@ slip_inversion_yamaji_sato <- function(x, weights = NULL, flip = FALSE) {
   # eigvec <- eig_s$vectors
   # Phi    <- (eigval[1] - eigval[2]) / (eigval[1] - eigval[3])
 
-  p <- tau2stress(TR)
+  p <- sigma2stress(TR)
   shape <- stress_shape(TR)
   misfit <- slip_inversion_misfit(TR, x)
 
@@ -247,38 +248,20 @@ slip_inversion_yamaji_sato <- function(x, weights = NULL, flip = FALSE) {
 
   # Angle between slip planes and sigma 1
   theta <- vapply(seq_len(N), function(i) {
-    angle(Plane(x[i, ]), p$principal_axes[1, ])
+    angle(Plane(x[i, ]), p$axes[1, ])
   }, numeric(1))
 
-
-  # Per-fault signed misfit (0-180 deg): values > 90 indicate probable
-  # slip sense recording error
-  # alpha_signed <- vapply(seq_len(N), function(i) {
-  #   tau <- sigma %*% normals[i, ]
-  #   tau <- tau - sum(tau * normals[i, ]) * normals[i, ]
-  #   tn  <- sqrt(sum(tau^2))
-  #   if (tn < 1e-12) return(NA_real_)
-  #   acos(pmax(-1, pmin(1, sum(tau / tn * slips[i, ])))) * 180 / pi
-  # }, numeric(1L))
-
-
   # Theoretically resolved shear stress on plane
-  sigma_s_mean <- mean(abs(shear_stress(p$sigma_vals[1], p$sigma_vals[3], theta)))
+  sigma_s_mean <- mean(abs(shear_stress(p$vals[1], p$vals[3], theta)))
  
+  SHmax <- SH(p$axes[1, ], p$axes[2, ], p$axes[3, ], R = shape$R)
 
-  # sigma_s_mean <- mean(abs(shearnorm))
-
-  SHmax <- SH(p$principal_axes[1, ], p$principal_axes[2, ], p$principal_axes[3, ], R = shape$R)
-
-  # shearnorm <- tau2shearnorm(TR, x, friction = friction)
-  # tendency <- tau2tendency(TR, x, friction = friction)
-  # pfaults <- principal_fault(p$principal_axes[1, ], p$principal_axes[3, ], friction)
 
   list(
     stress_tensor = TR,
     # tensor_params = tensor_params,
-    principal_axes = p$principal_axes,
-    principal_vals = p$sigma_vals,
+    principal_axes = p$axes,
+    principal_vals = p$vals,
     #principal_faults = pfaults,
     stress_shape = shape,
     tau_mean = sigma_s_mean,
@@ -377,6 +360,7 @@ michael_distance <- function(y1, y2) {
 #'   ~ bar("RUP") ~ "(95% CI)" == "[" * .(rup_val[1]) * "," ~ .(rup_val[2]) * "] %")
 #'   ))
 #' }))
+#' dev.off()
 slip_inversion_yamaji_sato_boot <- function(x, weights = NULL,
                                             n_iter = 100L, 
                                             conf.level = 0.95, flip = FALSE, ...) {
@@ -437,26 +421,26 @@ slip_inversion_yamaji_sato_boot <- function(x, weights = NULL,
 
 
   
-  princ_boot <- lapply(tau_boot, tau2stress)
+  princ_boot <- lapply(tau_boot, sigma2stress)
   
   # calculate confidence regions from bootstrap results ###
   sigma_vec1 <- do.call(rbind, lapply(princ_boot, function(x) {
-    x$principal_axes[1, ]
+    x$axes[1, ]
   })) |>
     confidence_ellipse(alpha = 1 - conf.level, ...)
   
   sigma_vec2 <- do.call(rbind, lapply(princ_boot, function(x) {
-    x$principal_axes[2, ]
+    x$axes[2, ]
   })) |>
     confidence_ellipse(alpha = 1 - conf.level, ...)
   
   sigma_vec3 <- do.call(rbind, lapply(princ_boot, function(x) {
-    x$principal_axes[3, ]
+    x$axes[3, ]
   })) |>
     confidence_ellipse(alpha = 1 - conf.level, ...)
   
   sigma_boot0 <- vapply(princ_boot, function(x) {
-    x$sigma_vals
+    x$vals
   }, FUN.VALUE = numeric(3)) |>
     t()
   sigma_boot <- sapply(1:3, function(col) {
@@ -494,7 +478,7 @@ slip_inversion_yamaji_sato_boot <- function(x, weights = NULL,
   # SHmax ###
   SHmax_CI <- vapply(tau_boot, function(x) {
         phi <- stress_shape(x)$phi
-        principal_axes <- tau2stress(x)$principal_axes
+        principal_axes <- sigma2stress(x)$axes
         SH(principal_axes[1, ], principal_axes[2, ], principal_axes[3, ], R = phi)
   }, FUN.VALUE = numeric(1)) |>
     # tectonicr::confidence_interval(conf.level = conf.level, axial = TRUE)

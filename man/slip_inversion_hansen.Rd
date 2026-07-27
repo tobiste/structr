@@ -183,6 +183,7 @@ invisible(lapply(seq_len(nx), function(i) {
   legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
   title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "\%"))
 }))
+dev.off()
 }
 \references{
 Hansen, J. A. (2013). Direct inversion of stress, strain or strain rate

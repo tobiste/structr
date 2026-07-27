@@ -3,6 +3,7 @@
 \name{arrows}
 \alias{arrows}
 \alias{stereo_arrows}
+\alias{stereo_hoeppener}
 \alias{arrows.spherical}
 \title{Add Arrows to a Stereoplot}
 \usage{
@@ -17,14 +18,25 @@ stereo_arrows(
   ...
 )
 
+stereo_hoeppener(
+  pole,
+  slip,
+  scale = 0.1,
+  angle = 10,
+  length = 0.1,
+  upper.hem = NULL,
+  earea = NULL,
+  ...
+)
+
 \method{arrows}{spherical}(
   x,
   sense,
   scale = 0.1,
   angle = 10,
   length = 0.1,
-  upper.hem = FALSE,
-  earea = TRUE,
+  upper.hem = NULL,
+  earea = NULL,
   ...
 )
 }
@@ -33,7 +45,7 @@ stereo_arrows(
 rows are the observations and the columns are the coordinates.}
 
 \item{sense}{numeric. Sense of the line on a fault plane. Either
-\code{1}or \code{-1} for normal or thrust offset, respectively. The "sense" is the sign
+\code{1}or \code{-1} for normal or thrust offset, respectively. The \code{"sense"} is the sign
 of the fault's rake (see \code{\link[=Fault_from_rake]{Fault_from_rake()}} for details).}
 
 \item{scale}{numeric. Scales the length of the vector. \code{0.1} by default}
@@ -51,6 +63,8 @@ projection, or \code{FALSE} for meridional stereographic projection.
 Defaults to \code{getOption("structr.earea")}.}
 
 \item{...}{arguments passed to \code{\link[graphics:arrows]{graphics::arrows()}}}
+
+\item{pole, slip}{spherical object. The plane normal and a slip vector}
 }
 \description{
 A quiver plot displays displacement vectors into pointing into the direction of movement.
@@ -59,7 +73,6 @@ A quiver plot displays displacement vectors into pointing into the direction of 
 set.seed(20250411)
 stereoplot()
 p <- rvmf(n = 100)
-points(p, pch = 16, cex = .5)
 stereo_arrows(p, sense = 1, col = "red")
 }
 \seealso{

@@ -31,7 +31,7 @@ optimization. Set to \code{0} for no optimization.}
 \value{
 a named list with the following components:
 \describe{
-\item{\code{stress_tensor}}{\code{"ellipsoid"} object. Best-fit devitoric stress tensor in input coordinate frame}
+\item{\code{sigma}}{\code{"ellipsoid"} object. Best-fit devitoric stress tensor in input coordinate frame}
 \item{\code{principal_axes}}{\code{"Line"} objects. Orientation of the principal stress axes as unit vectors (max to min)}
 \item{\code{tensor_params}}{the four tensor parameters (Eq. 4.87)}
 \item{\code{principal_vals}}{eigenvalues of the stress tensor (\eqn{\sigma_1 >= \sigma_2 >= \sigma_3})}
@@ -39,7 +39,7 @@ a named list with the following components:
 \item{\code{misfit}}{list. Misfit parameters. See \code{\link[=slip_inversion_misfit]{slip_inversion_misfit()}}.}
 \item{\code{SHmax}}{numeric. Direction of maximum horizontal stress (in degrees)}
 \item{\code{tau_mean}}{numeric. Average resolved shear stress on each plane. Should be close to 1.}
-\item{\code{stress_components}}{matrix. The resolved shear and normal stresses, the slip and dilation tendency on each plane. See \code{\link[=tau2shearnorm]{tau2shearnorm()}} and \code{\link[=tau2tendency]{tau2tendency()}}.}
+\item{\code{stress_components}}{matrix. The resolved shear and normal stresses, the slip and dilation tendency on each plane. See \code{\link[=sigma2shearnorm]{sigma2shearnorm()}} and \code{\link[=sigma2tendency]{sigma2tendency()}}.}
 \item{\code{n_iter}}{number of Mostafa iterations performed}
 \item{\code{method}}{character. The inversion method used, equal to \code{method} argument.}
 }
@@ -113,6 +113,7 @@ invisible(lapply(seq_len(nx), function(i) {
   legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
   title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "\%"))
 }))
+dev.off()
 }
 \references{
 Angelier, J. (1990). Inversion of field data in fault tectonics to obtain the

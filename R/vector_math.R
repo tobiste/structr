@@ -38,8 +38,10 @@
 NULL
 
 #' @keywords internal
+#' @importFrom Rfast rowsums
 vlength <- function(x) {
-  res <- sqrt(x[, 1]^2 + x[, 2]^2 + x[, 3]^2) # length of a vector
+  # res <- sqrt(x[, 1]^2 + x[, 2]^2 + x[, 3]^2) # length of a vector
+  res <- sqrt(rowSums(x^2))
   unname(res)
 }
 
@@ -96,14 +98,6 @@ vcross <- function(x, y) {
   )
 }
 
-# #' @rdname vecmath
-# #' @export
-# #' @keywords internal
-# crossprod <- function(x, y, ...) UseMethod("crossprod")
-
-# #' @export
-# crossprod.default <- function(x, y, ...) base::crossprod(x, y, ...)
-
 #' @rdname vecmath
 #' @exportS3Method base::crossprod
 crossprod.Vec3 <- function(x, y = NULL, ...) {
@@ -125,23 +119,17 @@ crossprod.Ray <- function(x, y = NULL, ...) crossprod.Vec3(Vec3(x), y, ...) |> R
 #' @exportS3Method base::crossprod
 crossprod.Plane <- function(x, y = NULL, ...) crossprod.Vec3(Vec3(x), y, ...) |> Plane()
 
-
-# `%x%.spherical` <- function(x, y) crossprod.spherical(x, y)
-
+#' @keywords internal
 vdot <- function(x, y) {
   # equivalent to: x %*% t(y)
   res <- x[, 1] * y[, 1] + x[, 2] * y[, 2] + x[, 3] * y[, 3]
   # res <- sum(t(x) * t(y))
   # res <- rowSums(x * y)
+  #res <- Rfast::rowsums(x * y)
   unname(res)
 }
 
-# #' @exportS3Method base::`%*%`
-# #' @rdname vecmath
-# `%*%.spherical` <- function(x, y) {
-#   dotprod(x, y)
-# }
-
+#' @keywords internal
 #' @export
 #' @rdname vecmath
 dotprod <- function(x, y) {
@@ -151,8 +139,6 @@ dotprod <- function(x, y) {
   vdot(e1, e2)
 }
 
-# `%*%` <- function(x, y) UseMethod("`%*%`")
-# `%*%.default` <- function(x, y) x %*% y
 
 #' @keywords internal
 vrotate <- function(x, rotaxis, rotangle) {
@@ -317,7 +303,9 @@ v_orthogonalize <- function(x, y) {
 vtransform <- function(x, A, norm = FALSE) {
   stopifnot(is.matrix(A) & dim(A) == c(3, 3))
 
-  xt <- t(A %*% t(x))
+  # xt <- x %*% t(A)     
+  xt <- tcrossprod(x, A)   
+  #xt <- t(A %*% t(x))
   # xt <- t(vdot(A, x))
   if (norm) xt <- vnorm(xt)
   return(xt)
@@ -497,7 +485,6 @@ antipode.Vec3 <- function(x, ...) v_antipode(x)
 #' @rdname antipode
 #' @export
 antipode.Line <- function(x, ...) {
-  # Line(x[, 1] + 180, -x[, 2])
   x
 }
 

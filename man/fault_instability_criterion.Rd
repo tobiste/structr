@@ -31,10 +31,10 @@ are the shear traction and effective normal traction along the analysed fault pl
 }
 \examples{
 f <- angelier1990$TYM
-tau <- reduced_stress(f)
-s <- stress_shape(tau)
+s <- reduced_stress(f)
+r <- stress_shape(s)
 
-fault_instability_criterion(f, s$R)
+fault_instability_criterion(f, r$R)
 }
 \references{
 Vavrycuk, V., Bouchaala, F. & Fischer, T., 2013. High-resolution
@@ -44,9 +44,9 @@ earthquakes in West Bohemia, Czech Republic, Tectonophysics, 590, 189–195.
 \seealso{
 Other stress-tensor: 
 \code{\link{reduced_stress}()},
-\code{\link{stress_shape}()},
-\code{\link{tau-comp}},
-\code{\link{tau2rup}()},
-\code{\link{tau2stress}()}
+\code{\link{sigma-comp}},
+\code{\link{sigma2rup}()},
+\code{\link{sigma2stress}()},
+\code{\link{stress_shape}()}
 }
 \concept{stress-tensor}
