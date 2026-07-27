@@ -75,6 +75,7 @@ invisible(lapply(seq_len(nx), function(i) {
   ~ bar("RUP") ~ "(95\% CI)" == "[" * .(rup_val[1]) * "," ~ .(rup_val[2]) * "] \%")
   ))
 }))
+dev.off()
 }
 \seealso{
 \code{\link[=slip_inversion_yamaji_sato]{slip_inversion_yamaji_sato()}}

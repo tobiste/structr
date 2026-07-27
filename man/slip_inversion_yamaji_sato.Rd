@@ -53,6 +53,7 @@ invisible(lapply(seq_len(nx), function(i) {
   legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
   title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "\%"))
 }))
+dev.off()
 }
 \references{
 Yamaji, A., & Sato, K. (2006). Distances for the solutions of stress tensor

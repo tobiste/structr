@@ -51,6 +51,8 @@ invisible(lapply(seq_len(nx), function(i) {
     col = viridis::rocket(3, end = 0.8), cex = 1, adj = c(-.25, -.25)
   )
 }))
+
+dev.off()
 }
 \seealso{
 Other stress-inversion: 

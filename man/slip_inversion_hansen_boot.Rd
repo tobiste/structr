@@ -59,6 +59,8 @@ title(
     ~omega ~ "(95\%)" == "[" * .(w_val[1]) * "," ~ .(w_val[2]) * "]"
   ))
 )
+
+dev.off()
 }
 \seealso{
 Other stress-inversion: 

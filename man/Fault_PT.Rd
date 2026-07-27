@@ -40,6 +40,8 @@ invisible(lapply(seq_len(nx), function(i) {
   stereo_confidence(xpt$p, pch = 16, cex = 1.5, col = 1, params = c(n_iter = 1e3))
   stereo_confidence(xpt$t, pch = 16, cex = 1.5, col = 2, params = c(n_iter = 1e3))
 }))
+
+dev.off()
 }
 \seealso{
 Other stress-inversion: 
