@@ -8,9 +8,11 @@ sigma2slip(sigma, normals, tol = NULL)
 }
 \arguments{
 \item{sigma}{matrix of object of class \code{"ellipsoid"}. 3x3 reduced stress tensor
-(as returned by \code{stress_tensor} from \code{\link[=slip_inversion]{slip_inversion()}})}
+(as returned by \code{sigma} from \code{\link[=slip_inversion]{slip_inversion()}})}
 
 \item{normals}{object of class \code{"Plane"} of \code{"Vec3"}}
+
+\item{tol}{numeric. Convergence tolerance on max absolute change in TR elements between iterations. Defaults to \code{getOption("structr.tol")}.}
 }
 \value{
 list. \describe{

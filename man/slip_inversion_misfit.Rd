@@ -10,6 +10,8 @@ slip_inversion_misfit(sigma, fault, tol = NULL)
 \item{sigma}{symmetric 3x3 matrix. The (reduced) stress tensor.}
 
 \item{fault}{\code{"Fault"} object where the rows are the observations, and the columns the coordinates.}
+
+\item{tol}{numeric. Convergence tolerance on max absolute change in TR elements between iterations. Defaults to \code{getOption("structr.tol")}.}
 }
 \value{
 list. \describe{

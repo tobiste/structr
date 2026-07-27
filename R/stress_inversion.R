@@ -1518,9 +1518,10 @@ slip_inversion_misfit <- function(sigma, fault, tol = NULL) {
 #' predict the slip direction(s) under the Wallace-Bott hypothesis.
 #'
 #' @param sigma matrix of object of class `"ellipsoid"`. 3x3 reduced stress tensor 
-#'  (as returned by `stress_tensor` from [slip_inversion()])
+#'  (as returned by `sigma` from [slip_inversion()])
 #' @param normals object of class `"Plane"` of `"Vec3"`
-#' @inheritParams slip_inversion_michael
+# #' @inheritParams slip_inversion_michael
+#' @inheritParams slip_inversion_angelier
 #'
 #' @returns list. \describe{
 #' \item{`slip_dirs`}{`Vec3` or `Ray` object of predicted slip direction vectors}
