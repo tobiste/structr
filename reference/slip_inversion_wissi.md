@@ -155,19 +155,6 @@ slip_inversion_wissi(
   the mean-based eigenvector initialisation. Has no effect when
   `robust = FALSE`. Default: `TRUE`.
 
-- normals:
-
-  `N x 3` numeric matrix of unit fault plane normals in a right-handed
-  Cartesian coordinate system (x = East, y = North, z = Up). Normals
-  should point toward the footwall (upward-pointing for sub-horizontal
-  faults).
-
-- slips:
-
-  `N x 3` numeric matrix of unit slip direction vectors, parallel to the
-  shear traction and pointing in the direction of hanging-wall motion.
-  Must be perpendicular to the corresponding row of `normals`.
-
 ## Value
 
 A named list with the following elements:

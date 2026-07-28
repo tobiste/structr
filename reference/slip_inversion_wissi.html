@@ -224,20 +224,6 @@ single-fault solution poles and is substantially more resistant to
 outliers than the mean-based eigenvector initialisation. Has no effect
 when <code>robust = FALSE</code>. Default: <code>TRUE</code>.</p></dd>
 
-
-<dt id="arg-normals">normals<a class="anchor" aria-label="anchor" href="#arg-normals"></a></dt>
-<dd><p><code>N x 3</code> numeric matrix of unit fault plane normals in
-a right-handed Cartesian coordinate system (x = East, y = North, z = Up).
-Normals should point toward the footwall (upward-pointing for
-sub-horizontal faults).</p></dd>
-
-
-<dt id="arg-slips">slips<a class="anchor" aria-label="anchor" href="#arg-slips"></a></dt>
-<dd><p><code>N x 3</code> numeric matrix of unit slip direction vectors,
-parallel to the shear traction and pointing in the direction of
-hanging-wall motion. Must be perpendicular to the corresponding row of
-<code>normals</code>.</p></dd>
-
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>

@@ -116,7 +116,8 @@ for(k in seq_len(res$k_opt)){
    res_k <- res$phase_results[[k]]
    points(res_k$principal_axes, col = cols[k], pch = 16:18, cex = 2) 
  }
-legend('topright', title = "Principal axes", pch = 16:18, col = 'black', legend = c('S1', 'S2', 'S3'))
+legend('topright', title = "Principal axes", pch = 16:18, col = 'black', 
+   legend = c('S1', 'S2', 'S3'))
 
  
  dev.off()

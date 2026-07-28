@@ -1,7 +1,7 @@
 # Bootstrap uncertainty for a WISSI result.
 
 Yields `n_iter` stress tensors from resampled datasets. The dispersion
-Theta-bar on S^5 approximates the data noise level (Eq. 37: Theta ~
+Theta-bar on \\S^5\\ approximates the data noise level (Eq. 37: Theta ~
 d-bar).
 
 ## Usage
@@ -39,7 +39,7 @@ A named list with:
 
 - `thetas`:
 
-  length-B vector of angular stress distances from optimal
+  length-`n_iter` vector of angular stress distances from optimal
 
 - `dispersion`:
 
@@ -67,16 +67,11 @@ Other wissi:
 
 ``` r
 res <- slip_inversion_wissi_boot(angelier1990$AVB, n_iter = 4)
-#> Error in slip_inversion_wissi_boot(angelier1990$AVB, n_iter = 4): could not find function "slip_inversion_wissi_boot"
 
 stereoplot()
 angelier(angelier1990$KAM, col = 'grey')
-
 lines(res$optimal$principal_axes, res$sd, col = 2:4)
-#> Error: object 'res' not found
 points(res$optimal$principal_axes, pch = 16:18, cex = 2, col= 2:4)
-#> Error: object 'res' not found
 text(res$optimal$principal_axes, 
- label = rownames(res$optimal$principal_axes), col= 2:4, adj = -.25)
-#> Error: object 'res' not found
+label = rownames(res$optimal$principal_axes), col= 2:4, adj = -.25)
 ```
