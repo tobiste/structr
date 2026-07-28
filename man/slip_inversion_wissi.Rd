@@ -112,16 +112,6 @@ The spatial median minimises the sum of angular stress distances to all
 single-fault solution poles and is substantially more resistant to
 outliers than the mean-based eigenvector initialisation. Has no effect
 when \code{robust = FALSE}. Default: \code{TRUE}.}
-
-\item{normals}{\code{N x 3} numeric matrix of unit fault plane normals in
-a right-handed Cartesian coordinate system (x = East, y = North, z = Up).
-Normals should point toward the footwall (upward-pointing for
-sub-horizontal faults).}
-
-\item{slips}{\code{N x 3} numeric matrix of unit slip direction vectors,
-parallel to the shear traction and pointing in the direction of
-hanging-wall motion. Must be perpendicular to the corresponding row of
-\code{normals}.}
 }
 \value{
 A named list with the following elements:

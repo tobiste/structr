@@ -19,7 +19,7 @@ slip_inversion_wissi_boot(x, n_iter = 500L, seed = NULL, ...)
 A named list with:
 \describe{
 \item{\code{optimal}}{slip_inversion_wissi() result for the full dataset}
-\item{\code{thetas}}{length-B vector of angular stress distances from optimal}
+\item{\code{thetas}}{length-\code{n_iter} vector of angular stress distances from optimal}
 \item{\code{dispersion}}{mean Theta (approximates noise level p of data)}
 \item{\code{sd}}{standard deviation of Theta values}
 \item{\code{D_bar}}{mean Orife-Lisle distance from optimal}
@@ -28,7 +28,7 @@ A named list with:
 }
 \description{
 Yields \code{n_iter} stress tensors from resampled datasets. The dispersion
-Theta-bar on S^5 approximates the data noise level (Eq. 37: Theta ~ d-bar).
+Theta-bar on \eqn{S^5} approximates the data noise level (Eq. 37: Theta ~ d-bar).
 }
 \examples{
 res <- slip_inversion_wissi_boot(angelier1990$AVB, n_iter = 4)
@@ -38,7 +38,7 @@ angelier(angelier1990$KAM, col = 'grey')
 lines(res$optimal$principal_axes, res$sd, col = 2:4)
 points(res$optimal$principal_axes, pch = 16:18, cex = 2, col= 2:4)
 text(res$optimal$principal_axes, 
- label = rownames(res$optimal$principal_axes), col= 2:4, adj = -.25)
+label = rownames(res$optimal$principal_axes), col= 2:4, adj = -.25)
 }
 \seealso{
 Other wissi: 

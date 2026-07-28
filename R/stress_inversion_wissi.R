@@ -28,11 +28,10 @@
 #   annealing (Stage 3) resolves this when slip senses are known. When all
 #   senses are unknown, both solutions are returned; the geologist selects
 #   based on independent evidence (fault kinematics, regional context).
-# =============================================================================
 
 
-# ===
-# INTERNAL HELPERS  (prefixed with . — not intended for direct use)
+# INTERNAL HELPERS --------------------------------------------------------------
+# (prefixed with . — not intended for direct use)
 # ===
 
 # Build normalised reduced stress tensor from Phi and principal axes
@@ -116,9 +115,8 @@
 
 
 
-# ===
-# WEIGHT UTILITIES
-# ===
+
+# WEIGHT UTILITIES--------------------------------------------------------------
 
 #' Convert a raw signal vector to weights with NA imputation.
 #'
@@ -226,9 +224,11 @@ NULL
 # }
 
 
-# ===
-# STAGE 1 — Weighted eigenvector initialisation
-# ===
+
+# STAGE 1-----------------------------------------------------------------------
+
+# Weighted eigenvector initialisation
+
 # Builds M5 = sum_i omega_i * ep5_i ep5_i^T and returns the
 # smallest-eigenvalue eigenvector as the initial stress estimate.
 # Equivalent to a weighted Yamaji-Sato inversion.
@@ -247,9 +247,9 @@ NULL
 }
 
 
-# ===
-# STAGE 2 — Magnitude reweighting (Angelier/Mostafa in sigma-space)
-# ===
+# STAGE 2-----------------------------------------------------------------------
+# Magnitude reweighting (Angelier/Mostafa in sigma-space)
+
 # Iteratively replaces global lambda with per-fault mu_i = |tau_i|/lambda_max,
 # downweighting mechanically degenerate fault planes. Convergence is measured
 # by the angular stress distance Theta between successive iterates — a
@@ -291,9 +291,9 @@ NULL
 }
 
 
-# ===
-# STAGE 3 — Sense annealing (robust slip sense handling)
-# ===
+# STAGE 3 ----------------------------------------------------------------------
+# Sense annealing (robust slip sense handling)
+
 # Replaces the binary majority-vote sense resolution with a continuous
 # tanh-weighted annealing schedule. At low gamma (early iterations) the method
 # is sense-agnostic (robust, like Hansen 2013). As gamma increases, it
@@ -374,9 +374,9 @@ NULL
 }
 
 
-# ===
-# STAGE 4 — Analytic uncertainty via eigenvalue perturbation theory
-# ===
+# STAGE 4 ----------------------------------------------------------------------
+# Analytic uncertainty via eigenvalue perturbation theory
+
 # Propagates slip direction measurement noise (sigma_alpha_deg) through the
 # eigenproblem to obtain Cov(x5) in 5D sigma-space, then maps to Cov(y6).
 #
@@ -464,9 +464,9 @@ NULL
 }
 
 
-# ===
-# STAGE 5 — Polyphase separation via spectral clustering on S^5
-# ===
+# STAGE 5 ----------------------------------------------------------------------
+# Polyphase separation via spectral clustering on S^5
+
 # Each fault is represented by the normalised pole of its solution great
 # hypercircle in 5D (the ep5 vector). Faults from the same stress phase
 # tend to have similar poles. The algorithm:
@@ -568,10 +568,9 @@ NULL
 }
 
 
-# ===
-# WISSI — Main user-facing function
-# ===
-#
+# WISSI ------------------------------------------------------------------------
+# Main user-facing function
+
 #' Weighted Iterative Sigma-Space Inversion (WISSI)
 #'
 #' @description
@@ -584,14 +583,6 @@ NULL
 #' of the 5-sphere.
 #'
 #' @inheritParams slip_inversion
-#' @param normals \code{N x 3} numeric matrix of unit fault plane normals in
-#'   a right-handed Cartesian coordinate system (x = East, y = North, z = Up).
-#'   Normals should point toward the footwall (upward-pointing for
-#'   sub-horizontal faults).
-#' @param slips \code{N x 3} numeric matrix of unit slip direction vectors,
-#'   parallel to the shear traction and pointing in the direction of
-#'   hanging-wall motion. Must be perpendicular to the corresponding row of
-#'   \code{normals}.
 #' @param weights Optional length-\code{N} numeric vector of non-negative data
 #'   quality weights. \code{NA} values are replaced with the observed mean
 #'   before scaling (neutral imputation). The vector is normalised internally
@@ -858,6 +849,14 @@ NULL
 NULL
 
 #' @rdname slip_inversion_wissi
+#' @param normals \code{N x 3} numeric matrix of unit fault plane normals in
+#'   a right-handed Cartesian coordinate system (x = East, y = North, z = Up).
+#'   Normals should point toward the footwall (upward-pointing for
+#'   sub-horizontal faults).
+#' @param slips \code{N x 3} numeric matrix of unit slip direction vectors,
+#'   parallel to the shear traction and pointing in the direction of
+#'   hanging-wall motion. Must be perpendicular to the corresponding row of
+#'   \code{normals}.
 #' @noRd
 wissi <- function(normals,
                   slips,
@@ -1062,7 +1061,8 @@ slip_inversion_wissi <- function(x, weights = NULL,
 }
 
 
-# WISSI_POLYPHASE — Polyphase separation wrapper
+# WISSI_POLYPHASE --------------------------------------------------------------
+# Polyphase separation wrapper
 wissi_polyphase <- function(normals, slips,
                             weights = NULL,
                             k_max = 4L,
@@ -1142,7 +1142,8 @@ wissi_polyphase <- function(normals, slips,
 #'    res_k <- res$phase_results[[k]]
 #'    points(res_k$principal_axes, col = cols[k], pch = 16:18, cex = 2) 
 #'  }
-#' legend('topright', title = "Principal axes", pch = 16:18, col = 'black', legend = c('S1', 'S2', 'S3'))
+#' legend('topright', title = "Principal axes", pch = 16:18, col = 'black', 
+#'    legend = c('S1', 'S2', 'S3'))
 #'  
 #'  dev.off()
 slip_inversion_wissi_polyphase <- function(x, 
@@ -1182,9 +1183,8 @@ slip_inversion_wissi_polyphase <- function(x,
 }
 
 
-# ===
-# BOOTSTRAP UNCERTAINTY  (Yamaji-Sato Section 6)
-# ===
+# BOOTSTRAP UNCERTAINTY   ------------------------------------------------------
+# (Yamaji-Sato Section 6)
 wissi_bootstrap <- function(normals, slips,
                             weights = NULL,
                             B = 500L,
@@ -1232,7 +1232,7 @@ wissi_bootstrap <- function(normals, slips,
 #' Bootstrap uncertainty for a WISSI result.
 #'
 #' Yields `n_iter` stress tensors from resampled datasets. The dispersion
-#' Theta-bar on S^5 approximates the data noise level (Eq. 37: Theta ~ d-bar).
+#' Theta-bar on \eqn{S^5} approximates the data noise level (Eq. 37: Theta ~ d-bar).
 #'
 #' @inheritParams slip_inversion_yamaji_sato_boot
 #' @param n_iter     Number of bootstrap replicates. Default `500`.
@@ -1240,11 +1240,12 @@ wissi_bootstrap <- function(normals, slips,
 #' @param ...   Additional arguments passed to [slip_inversion_wissi()].
 #' 
 #' @family wissi 
+#' @export
 #'
 #' @return A named list with:
 #' \describe{
 #'   \item{`optimal`}{slip_inversion_wissi() result for the full dataset}
-#'   \item{`thetas`}{length-B vector of angular stress distances from optimal}
+#'   \item{`thetas`}{length-`n_iter` vector of angular stress distances from optimal}
 #'   \item{`dispersion`}{mean Theta (approximates noise level p of data)}
 #'   \item{`sd`}{standard deviation of Theta values}
 #'   \item{`D_bar`}{mean Orife-Lisle distance from optimal}
@@ -1259,7 +1260,7 @@ wissi_bootstrap <- function(normals, slips,
 #' lines(res$optimal$principal_axes, res$sd, col = 2:4)
 #' points(res$optimal$principal_axes, pch = 16:18, cex = 2, col= 2:4)
 #' text(res$optimal$principal_axes, 
-#'  label = rownames(res$optimal$principal_axes), col= 2:4, adj = -.25)
+#' label = rownames(res$optimal$principal_axes), col= 2:4, adj = -.25)
 slip_inversion_wissi_boot <- function(x, n_iter = 500L, seed = NULL, ...){
   stopifnot(is.Pair(x))
   normals <- Vec3(Plane(x)) |> unclass()
