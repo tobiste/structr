@@ -18,7 +18,7 @@ slip_inversion_wissi_boot(x, n_iter = 500L, seed = NULL, ...)
 \value{
 A named list with:
 \describe{
-\item{\code{optimal}}{slip_inversion_wissi() result for the full dataset}
+\item{\code{optimal}}{\code{\link[=slip_inversion_wissi]{slip_inversion_wissi()}} result for the full dataset}
 \item{\code{thetas}}{length-\code{n_iter} vector of angular stress distances from optimal}
 \item{\code{dispersion}}{mean Theta (approximates noise level p of data)}
 \item{\code{sd}}{standard deviation of Theta values}

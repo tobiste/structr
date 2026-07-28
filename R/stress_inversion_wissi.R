@@ -1244,7 +1244,7 @@ wissi_bootstrap <- function(normals, slips,
 #'
 #' @return A named list with:
 #' \describe{
-#'   \item{`optimal`}{slip_inversion_wissi() result for the full dataset}
+#'   \item{`optimal`}{[slip_inversion_wissi()] result for the full dataset}
 #'   \item{`thetas`}{length-`n_iter` vector of angular stress distances from optimal}
 #'   \item{`dispersion`}{mean Theta (approximates noise level p of data)}
 #'   \item{`sd`}{standard deviation of Theta values}
