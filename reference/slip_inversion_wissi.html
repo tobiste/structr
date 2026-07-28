@@ -112,8 +112,7 @@ of the 5-sphere.</p>
 quality weights. <code>NA</code> values are replaced with the observed mean
 before scaling (neutral imputation). The vector is normalised internally
 so that <code>mean(weights) = 1</code>, meaning only the ratios between weights
-matter. Use <code>signal_to_weights</code> and
-<code>combine_weights</code> to construct weights from field quality
+matter. Use <code><a href="scale_weights.html">scale_weights()</a></code> to construct weights from field quality
 ranks, measurement errors, and prior RUP values. Default: uniform
 weights.</p></dd>
 
@@ -121,9 +120,9 @@ weights.</p></dd>
 <dt id="arg-sigma-alpha-deg">sigma_alpha_deg<a class="anchor" aria-label="anchor" href="#arg-sigma-alpha-deg"></a></dt>
 <dd><p>Estimated angular measurement error of slip
 directions in degrees. Used in Stage 4 (analytic uncertainty) to scale
-the perturbation covariance matrix. A value of 10 degrees is a
+the perturbation covariance matrix. A value of 10 ° is a
 conservative default for well-measured slickenlines; increase to 20-30
-degrees for less certain measurements. Default: <code>10</code>.</p></dd>
+° for less certain measurements. Default: <code>10</code>.</p></dd>
 
 
 <dt id="arg-gamma-max">gamma_max<a class="anchor" aria-label="anchor" href="#arg-gamma-max"></a></dt>
@@ -198,8 +197,8 @@ differentiable at the threshold. Slightly smoother rejection profile.</p></dd>
 Faults with angular misfit below this value receive full (or near-full)
 weight; faults above it are progressively downweighted or excluded
 depending on the chosen kernel. Should be set relative to the expected
-data noise level: <code>30</code> degrees is appropriate for typical
-slickenline data, <code>20</code> for high-quality datasets, and <code>45</code> when
+data noise level: <code>30</code>° is appropriate for typical
+slickenline data, <code>20</code> ° for high-quality datasets, and <code>45</code> ° when
 significant scatter is expected. Default: <code>30</code>.</p></dd>
 
 
@@ -275,6 +274,22 @@ when <code>robust = FALSE</code>. Default: <code>TRUE</code>.</p></dd>
 <code>cov_eigvals</code>: eigenvalues of <code>Cov5</code>;
 <code>sigma1_unc</code>: approx 1\(\sigma\) uncertainty on \(\sigma_1\) orientation
 <code>Phi_unc</code>: approx 1\(sigma\) uncertainty on \(\phi\)</p></dd>
+
+<dt><code>mu</code></dt>
+<dd><p>Per-fault magnitude weights \(\mu_i\) from Stage 2.</p></dd>
+
+<dt><code>phi_sense</code></dt>
+<dd><p>Per-fault \(\tanh\) sense confidence values
+from Stage 3. Positive values indicate consistent sense; negative
+values indicate corrected (flipped) senses.</p></dd>
+
+<dt><code>w_robust</code></dt>
+<dd><p>Per-fault robust kernel weights \(w_i^{\text{rob}}\)
+from the final iteration (only when <code>robust = TRUE</code>).</p></dd>
+
+<dt><code>wt_combined</code></dt>
+<dd><p>Per-fault combined weights
+\(\tilde{\omega}_i\) used in the final M5 matrix.</p></dd>
 
 <dt><code>n_iter_total</code></dt>
 <dd><p>total number of inner iterations</p></dd>

@@ -40,16 +40,17 @@ slip_inversion_wissi(
   weights. `NA` values are replaced with the observed mean before
   scaling (neutral imputation). The vector is normalised internally so
   that `mean(weights) = 1`, meaning only the ratios between weights
-  matter. Use `signal_to_weights` and `combine_weights` to construct
-  weights from field quality ranks, measurement errors, and prior RUP
-  values. Default: uniform weights.
+  matter. Use
+  [`scale_weights()`](https://tobiste.github.io/structr/reference/scale_weights.md)
+  to construct weights from field quality ranks, measurement errors, and
+  prior RUP values. Default: uniform weights.
 
 - sigma_alpha_deg:
 
   Estimated angular measurement error of slip directions in degrees.
   Used in Stage 4 (analytic uncertainty) to scale the perturbation
-  covariance matrix. A value of 10 degrees is a conservative default for
-  well-measured slickenlines; increase to 20-30 degrees for less certain
+  covariance matrix. A value of 10 ° is a conservative default for
+  well-measured slickenlines; increase to 20-30 ° for less certain
   measurements. Default: `10`.
 
 - gamma_max:
@@ -126,8 +127,8 @@ slip_inversion_wissi(
   misfit below this value receive full (or near-full) weight; faults
   above it are progressively downweighted or excluded depending on the
   chosen kernel. Should be set relative to the expected data noise
-  level: `30` degrees is appropriate for typical slickenline data, `20`
-  for high-quality datasets, and `45` when significant scatter is
+  level: `30`° is appropriate for typical slickenline data, `20` ° for
+  high-quality datasets, and `45` ° when significant scatter is
   expected. Default: `30`.
 
 - robust_mad_k:
@@ -218,6 +219,26 @@ A named list with:
   `cov_eigvals`: eigenvalues of `Cov5`; `sigma1_unc`: approx 1\\\sigma\\
   uncertainty on \\\sigma_1\\ orientation `Phi_unc`: approx 1\\sigma\\
   uncertainty on \\\phi\\
+
+- `mu`:
+
+  Per-fault magnitude weights \\\mu_i\\ from Stage 2.
+
+- `phi_sense`:
+
+  Per-fault \\\tanh\\ sense confidence values from Stage 3. Positive
+  values indicate consistent sense; negative values indicate corrected
+  (flipped) senses.
+
+- `w_robust`:
+
+  Per-fault robust kernel weights \\w_i^{\text{rob}}\\ from the final
+  iteration (only when `robust = TRUE`).
+
+- `wt_combined`:
+
+  Per-fault combined weights \\\tilde{\omega}\_i\\ used in the final M5
+  matrix.
 
 - `n_iter_total`:
 

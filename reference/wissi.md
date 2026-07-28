@@ -50,16 +50,17 @@ wissi(
   weights. `NA` values are replaced with the observed mean before
   scaling (neutral imputation). The vector is normalised internally so
   that `mean(weights) = 1`, meaning only the ratios between weights
-  matter. Use `signal_to_weights` and `combine_weights` to construct
-  weights from field quality ranks, measurement errors, and prior RUP
-  values. Default: uniform weights.
+  matter. Use
+  [`scale_weights()`](https://tobiste.github.io/structr/reference/scale_weights.md)
+  to construct weights from field quality ranks, measurement errors, and
+  prior RUP values. Default: uniform weights.
 
 - sigma_alpha_deg:
 
   Estimated angular measurement error of slip directions in degrees.
   Used in Stage 4 (analytic uncertainty) to scale the perturbation
-  covariance matrix. A value of 10 degrees is a conservative default for
-  well-measured slickenlines; increase to 20-30 degrees for less certain
+  covariance matrix. A value of 10 ° is a conservative default for
+  well-measured slickenlines; increase to 20-30 ° for less certain
   measurements. Default: `10`.
 
 - gamma_max:
@@ -136,8 +137,8 @@ wissi(
   misfit below this value receive full (or near-full) weight; faults
   above it are progressively downweighted or excluded depending on the
   chosen kernel. Should be set relative to the expected data noise
-  level: `30` degrees is appropriate for typical slickenline data, `20`
-  for high-quality datasets, and `45` when significant scatter is
+  level: `30`° is appropriate for typical slickenline data, `20` ° for
+  high-quality datasets, and `45` ° when significant scatter is
   expected. Default: `30`.
 
 - robust_mad_k:
