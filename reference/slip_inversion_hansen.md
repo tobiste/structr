@@ -128,11 +128,13 @@ Other stress-inversion:
 [`Fault_PT()`](https://tobiste.github.io/structr/reference/Fault_PT.md),
 [`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md),
 [`slip_inversion_angelier()`](https://tobiste.github.io/structr/reference/slip_inversion_angelier.md),
-[`slip_inversion_hansen_boot()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen_boot.md),
 [`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md),
 [`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md),
 [`slip_inversion_wissi()`](https://tobiste.github.io/structr/reference/slip_inversion_wissi.md),
 [`slip_inversion_yamaji_sato()`](https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato.md)
+
+Other hansen:
+[`slip_inversion_hansen_boot()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen_boot.md)
 
 ## Examples
 

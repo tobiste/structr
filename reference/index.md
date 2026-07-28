@@ -469,6 +469,13 @@
 - [`slip_inversion_wissi()`](https://tobiste.github.io/structr/reference/slip_inversion_wissi.md)
   : Weighted Iterative Sigma-Space Inversion (WISSI)
 
+- [`slip_inversion_wissi_boot()`](https://tobiste.github.io/structr/reference/slip_inversion_wissi_boot.md)
+  : Bootstrap uncertainty for a WISSI result.
+
+- [`slip_inversion_wissi_polyphase()`](https://tobiste.github.io/structr/reference/slip_inversion_wissi_polyphase.md)
+  : Polyphase stress inversion via spectral clustering on \\S^5\\ (Stage
+  5).
+
 - [`slip_inversion_yamaji_sato()`](https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato.md)
   : Stress tensor inversion via the Yamaji and Sato (2006) eigenvector
   method.
@@ -657,13 +664,6 @@
 - [`wellner_exact_inference_ray()`](https://tobiste.github.io/structr/reference/wellner_exact_inference_ray.md)
   : Two-sample test, based on permutations and Wellner's Rayleigh-style
   T-statistic (Wellner, 1979, Example 1a).
-
-- [`wissi()`](https://tobiste.github.io/structr/reference/wissi.md) :
-  Weighted Iterative Sigma-Space Inversion (WISSI)
-
-- [`wissi_polyphase()`](https://tobiste.github.io/structr/reference/wissi_polyphase.md)
-  : Polyphase stress inversion via spectral clustering on \\S^5\\ (Stage
-  5).
 
 - [`woodcock_plot()`](https://tobiste.github.io/structr/reference/woodcock_plot.md)
   : Fabric Plot of Woodcock (1977)

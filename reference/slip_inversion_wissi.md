@@ -32,7 +32,11 @@ slip_inversion_wissi(
 
 - x:
 
-  object of class `"Pair"` or `"Fault"` with at least 4 rows.
+  `"Fault"` object where the rows are the observations, and the columns
+  the coordinates. Object must be complete, i.e. no `NA` values. For
+  Michael's, Angelier's, and Yamaji-Sato's methods, at least 4 rows of
+  fault measurements are required, while Hansen's method requires at
+  least 7.
 
 - weights:
 
@@ -151,17 +155,39 @@ slip_inversion_wissi(
   the mean-based eigenvector initialisation. Has no effect when
   `robust = FALSE`. Default: `TRUE`.
 
+- normals:
+
+  `N x 3` numeric matrix of unit fault plane normals in a right-handed
+  Cartesian coordinate system (x = East, y = North, z = Up). Normals
+  should point toward the footwall (upward-pointing for sub-horizontal
+  faults).
+
+- slips:
+
+  `N x 3` numeric matrix of unit slip direction vectors, parallel to the
+  shear traction and pointing in the direction of hanging-wall motion.
+  Must be perpendicular to the corresponding row of `normals`.
+
 ## Value
 
-A named list with:
+A named list with the following elements:
 
-- `stress_tensor`:
+- `sigma`:
 
-  3x3 reduced stress tensor (Cartesian frame)
+  3x3 reduced stress tensor in the input Cartesian frame.
 
 - `y`:
 
-  6D unit y-vector on \\S^5\\
+  6D unit y-vector on \\S^5\\ representing the optimal stress tensor.
+
+- `sigma1`, `sigma2`, `sigma3`:
+
+  Unit vectors of the principal stress axes, from maximum (\\\sigma_1\\)
+  to minimum (\\\sigma_3\\) compressive stress.
+
+- `eigenvalues`:
+
+  Eigenvalues of `sigma` in decreasing order.
 
 - `principal_axes`:
 
@@ -171,54 +197,50 @@ A named list with:
 
   eigenvalues of `stress_tensor` (decreasing)
 
-- `alpha`:
+- `Phi`:
 
-  per-fault angular misfit (unsigned, 0-90°)
+  Shape ratio \\\Phi = (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3) \in
+  \[0, 1\]\\.
 
-- `alpha_signed`:
+- `alpha_deg`:
 
-  per-fault signed misfit (0-180°)
+  Per-fault unsigned angular misfit in degrees (0-90), the standard line
+  metric.
+
+- `alpha_signed_deg`:
+
+  Per-fault signed angular misfit in degrees (0-180). Values above 90
+  indicate that the recorded slip sense is opposite to the predicted
+  shear traction direction.
 
 - `mean_alpha`:
 
-  mean angular misfit across all faults (°)
+  Mean unsigned angular misfit across all faults (degrees).
+
+- `median_alpha`:
+
+  Median unsigned angular misfit (degrees). More robust than the mean in
+  the presence of outliers.
 
 - `suspected_flipped`:
 
-  row indices where `alpha_signed` \> 90°
+  Integer vector of row indices where `alpha_signed_deg > 90`, flagging
+  faults whose recorded slip sense may be incorrect.
+
+- `outliers_mad`:
+
+  Integer vector of row indices flagged as outliers by the MAD criterion
+  (only when `robust = TRUE`).
 
 - `n_flipped_sense`:
 
-  number of faults whose sense was corrected in Stage 3
+  Number of faults whose slip sense was corrected internally during
+  Stage 3.
 
 - `slips_corrected`:
 
-  sense-corrected slip matrix used in final inversion
-
-- `mu`:
-
-  per-fault magnitude weights from Stage 2/3
-
-- `phi_sense`:
-
-  per-fault tanh sense confidence from Stage 3
-
-- `eigenvalue_gap`:
-
-  \\\lambda_2 - \lambda_1\\ of \\M5\\ (condition number proxy)
-
-- `M5_eigvals`:
-
-  all 5 eigenvalues of final \\M5\\
-
-- `unc`:
-
-  Stage 4 uncertainty list (if `run_stage4 = TRUE`): `Cov5`: 5x5
-  covariance matrix in sigma-space; `Cov_y6`: 6x6 covariance matrix
-  (`y`-space); `eigval_gap`: eigenvalue gap (same as above);
-  `cov_eigvals`: eigenvalues of `Cov5`; `sigma1_unc`: approx 1\\\sigma\\
-  uncertainty on \\\sigma_1\\ orientation `Phi_unc`: approx 1\\sigma\\
-  uncertainty on \\\phi\\
+  N x 3 matrix of sense-corrected slip vectors used in the final
+  inversion.
 
 - `mu`:
 
@@ -240,9 +262,24 @@ A named list with:
   Per-fault combined weights \\\tilde{\omega}\_i\\ used in the final M5
   matrix.
 
+- `eigenvalue_gap`:
+
+  Difference \\\lambda_2 - \lambda_1\\ of the final \\M_5\\ matrix.
+  Larger values indicate a better-conditioned solution.
+
+- `M5_eigvals`:
+
+  All five eigenvalues of the final \\M_5\\ matrix in decreasing order.
+
+- `unc`:
+
+  List of analytic uncertainty estimates from Stage 4 (only when
+  `run_stage4 = TRUE`), containing `Cov5`, `Cov_y6`, `eigval_gap`,
+  `cov_eigvals`, `sigma1_unc_deg`, and `Phi_unc`.
+
 - `n_iter_total`:
 
-  total number of inner iterations
+  Total number of inner iterations performed across all annealing steps.
 
 ## Details
 
@@ -295,7 +332,7 @@ indicates that the solution is poorly separated from the next
 eigenvector and that uncertainty estimates may be unreliable.
 
 **Stage 5 (polyphase) — Spectral clustering.** Available via
-[`wissi_polyphase`](https://tobiste.github.io/structr/reference/wissi_polyphase.md).
+[`slip_inversion_wissi_polyphase`](https://tobiste.github.io/structr/reference/slip_inversion_wissi_polyphase.md).
 Represents each fault by the pole of its solution great hypercircle on
 \\S^5\\, builds a Gaussian affinity matrix using the angular stress
 distance \\\Theta\\, and applies normalised spectral clustering with
@@ -324,7 +361,26 @@ inversion result.
 
 ## References
 
-Stephan (in prep.)
+Angelier, J. (1990). Inversion of field data in fault tectonics to
+obtain the regional stress. III. A new rapid direct inversion method by
+analytical means. *Geophys. J. Int.*, 103, 363-376.
+
+Hansen, J.A. (2013). Direct inversion of stress from sets of fault slip
+data with unknown slip sense. *J. Struct. Geol.*, 51, 54-65.
+
+Michael, A.J. (1984). Determination of stress from slip data: faults and
+folds. *J. Geophys. Res.*, 89, 11517-11526.
+
+Mostafa, M.E. (2005). Iterative linear inversion of stress tensor from
+fault-slip data. *J. Struct. Geol.*, 27, 930-940.
+
+Pascal, C. (2022). *Paleostress Inversion Techniques*. Elsevier.
+
+Yamaji, A. & Sato, K. (2006). Distances for the solutions of stress
+tensor inversion in relation to misfit angles that accompany the
+solutions. *Geophys. J. Int.*, 167, 933-942.
+
+Stephan (in prep)
 
 ## See also
 
@@ -333,10 +389,13 @@ Other stress-inversion:
 [`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md),
 [`slip_inversion_angelier()`](https://tobiste.github.io/structr/reference/slip_inversion_angelier.md),
 [`slip_inversion_hansen()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen.md),
-[`slip_inversion_hansen_boot()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen_boot.md),
 [`slip_inversion_michael()`](https://tobiste.github.io/structr/reference/slip_inversion_michael.md),
 [`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md),
 [`slip_inversion_yamaji_sato()`](https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato.md)
+
+Other wissi:
+[`slip_inversion_wissi_boot()`](https://tobiste.github.io/structr/reference/slip_inversion_wissi_boot.md),
+[`slip_inversion_wissi_polyphase()`](https://tobiste.github.io/structr/reference/slip_inversion_wissi_polyphase.md)
 
 ## Examples
 

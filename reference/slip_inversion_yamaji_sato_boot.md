@@ -74,6 +74,7 @@ and additional list entries:
 
 ## See also
 
+Other yamaji:
 [`slip_inversion_yamaji_sato()`](https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato.md)
 
 ## Examples

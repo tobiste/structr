@@ -141,6 +141,8 @@
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion_misfit.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion_simple.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion_wissi.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/slip_inversion_wissi_boot.html</loc></url>
+<url><loc>https://tobiste.github.io/structr/reference/slip_inversion_wissi_polyphase.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato_boot.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/sort_by.strabo.html</loc></url>
@@ -191,8 +193,6 @@
 <url><loc>https://tobiste.github.io/structr/reference/watson-mle.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/wellner.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/wellner_exact_inference_ray.html</loc></url>
-<url><loc>https://tobiste.github.io/structr/reference/wissi.html</loc></url>
-<url><loc>https://tobiste.github.io/structr/reference/wissi_polyphase.html</loc></url>
 <url><loc>https://tobiste.github.io/structr/reference/woodcock_plot.html</loc></url>
 </urlset>
 

@@ -103,7 +103,6 @@ Other stress-inversion:
 [`slip_inversion()`](https://tobiste.github.io/structr/reference/slip_inversion.md),
 [`slip_inversion_angelier()`](https://tobiste.github.io/structr/reference/slip_inversion_angelier.md),
 [`slip_inversion_hansen()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen.md),
-[`slip_inversion_hansen_boot()`](https://tobiste.github.io/structr/reference/slip_inversion_hansen_boot.md),
 [`slip_inversion_simple()`](https://tobiste.github.io/structr/reference/slip_inversion_simple.md),
 [`slip_inversion_wissi()`](https://tobiste.github.io/structr/reference/slip_inversion_wissi.md),
 [`slip_inversion_yamaji_sato()`](https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato.md)
