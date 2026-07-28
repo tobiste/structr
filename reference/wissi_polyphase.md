@@ -24,7 +24,13 @@ wissi_polyphase(
 
 - weights:
 
-  numeric. Weightings for the faults. Must have the same length as `x`
+  Optional length-`N` numeric vector of non-negative data quality
+  weights. `NA` values are replaced with the observed mean before
+  scaling (neutral imputation). The vector is normalised internally so
+  that `mean(weights) = 1`, meaning only the ratios between weights
+  matter. Use `signal_to_weights` and `combine_weights` to construct
+  weights from field quality ranks, measurement errors, and prior RUP
+  values. Default: uniform weights.
 
 - k_max:
 

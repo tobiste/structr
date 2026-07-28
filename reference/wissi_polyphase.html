@@ -86,7 +86,14 @@ then runs wissi() on each phase subset.</p>
 
 
 <dt id="arg-weights">weights<a class="anchor" aria-label="anchor" href="#arg-weights"></a></dt>
-<dd><p>numeric. Weightings for the faults. Must have the same length as <code>x</code></p></dd>
+<dd><p>Optional length-<code>N</code> numeric vector of non-negative data
+quality weights. <code>NA</code> values are replaced with the observed mean
+before scaling (neutral imputation). The vector is normalised internally
+so that <code>mean(weights) = 1</code>, meaning only the ratios between weights
+matter. Use <code>signal_to_weights</code> and
+<code>combine_weights</code> to construct weights from field quality
+ranks, measurement errors, and prior RUP values. Default: uniform
+weights.</p></dd>
 
 
 <dt id="arg-k-max">k_max<a class="anchor" aria-label="anchor" href="#arg-k-max"></a></dt>
