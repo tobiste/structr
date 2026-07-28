@@ -148,6 +148,66 @@ NULL
 #   scale_fn(complete)
 # }
 
+# Huber kernel: linear penalty beyond threshold k (default k = 1.5 sigma_mad)
+.w_huber <- function(alpha_deg, k = 30) {
+  ifelse(alpha_deg <= k, 1, k / pmax(alpha_deg, 1e-6))
+}
+
+# Tukey bisquare: hard zeroes beyond threshold (most aggressive outlier rejection)
+.w_tukey <- function(alpha_deg, k = 45) {
+  ifelse(alpha_deg >= k, 0, (1 - (alpha_deg/k)^2)^2)
+}
+
+# Andrews sine: smooth zero beyond threshold
+.w_andrews <- function(alpha_deg, k = 60) {
+  ifelse(alpha_deg >= k, 0,
+         sin(pi * alpha_deg / k) / (pi * alpha_deg / k + 1e-15))
+}
+
+# Kernel weight function
+.w_robust <- function(robust_kernel, robust_k_deg){
+  switch(robust_kernel,
+                    huber    = function(a) .w_huber(a,   k = robust_k_deg),
+                    tukey    = function(a) .w_tukey(a,   k = robust_k_deg),
+                    andrews  = function(a) .w_andrews(a, k = robust_k_deg)
+  )
+  }
+
+# Spatial median on S5: more robust initial estimate than mean eigenvector
+.s5_median <- function(normals, slips, weights, max_iter = 50L) {
+  N   <- nrow(normals)
+  # Single-fault y-vectors (poles of solution great circles)
+  poles <- matrix(0, N, 5)
+  for (i in seq_len(N)) {
+    ep5 <- drop(crossprod(.B, .eps6_prime(slips[i,], normals[i,])))
+    poles[i,] <- ep5 / sqrt(sum(ep5^2))
+  }
+  # Weiszfeld algorithm on S5
+  y_cur <- colMeans(poles * weights)
+  y_cur <- y_cur / sqrt(sum(y_cur^2))
+  for (iter in seq_len(max_iter)) {
+    # Distances from current estimate
+    dots  <- pmax(1e-6, abs(poles %*% y_cur))
+    theta <- acos(pmin(1, dots))               # angular distances
+    # Weiszfeld weights: 1/theta (downweight distant points)
+    wz    <- weights / pmax(theta, 1e-4)
+    y_new <- colSums(poles * wz)
+    y_new <- y_new / sqrt(sum(y_new^2))
+    if (acos(pmax(-1,pmin(1,abs(sum(y_cur*y_new))))) * 180/pi < 1e-4) break
+    y_cur <- y_new
+  }
+  y_cur
+}
+
+# Flag outliers using MAD-based threshold
+.flag_outliers_mad <- function(alpha_deg, k = 2.5) {
+  med  <- median(alpha_deg, na.rm = TRUE)
+  mad  <- median(abs(alpha_deg - med), na.rm = TRUE)
+  # Scale factor 1.4826 makes MAD consistent with normal distribution sigma
+  sigma_mad <- 1.4826 * mad
+  alpha_deg > (med + k * sigma_mad)
+}
+
 # Combine multiple weight vectors multiplicatively and normalise.
 #
 # Each element of ... is a numeric vector of length N.
@@ -513,57 +573,279 @@ NULL
 #
 #' Weighted Iterative Sigma-Space Inversion (WISSI)
 #'
-#' Combines the four classic fault slip inversion algorithms into a single
+#' @description
+#' Combines four classic fault slip inversion algorithms into a single
 #' coherent framework operating in the Yamaji-Sato 5-sphere sigma-space.
+#' Integrates the linear eigenvector approach of Yamaji & Sato (2006),
+#' the magnitude-aware upsilon criterion of Angelier (1990) and Mostafa (2005),
+#' the sense annealing strategy inspired by Hansen (2013), and the analytic
+#' uncertainty framework of Michael (1984), extended to the curved geometry
+#' of the 5-sphere.
 #'
-#' @param normals         N x 3 matrix of unit fault plane normals.
-#' @param slips           N x 3 matrix of unit slip direction vectors
-#'                        (parallel to shear traction; direction of
-#'                        hanging-wall motion).
-#' @param weights         Optional length-N weight vector. NAs imputed with
-#'                        observed mean. Normalised internally (mean = 1).
-#'                        Use signal_to_weights() and combine_weights() to
-#'                        build from field ranks, measurement errors, and
-#'                        prior RUP values.
-#' @param sigma_alpha_deg Estimated slip direction measurement error in
-#'                        degrees. Used in Stage 4 analytic uncertainty.
-#'                        Default 10.
-#' @param gamma_max       Maximum sense annealing sharpness parameter.
-#'                        Higher values commit more strongly to the predicted
-#'                        slip sense. Default 10. Set to 0 to disable sense
-#'                        annealing (fully sense-agnostic, like Hansen 2013).
-#' @param n_anneal        Number of annealing steps (outer loop of Stage 3).
-#'                        Default 8.
-#' @param max_iter        Maximum inner iterations per annealing step. Default 50.
-#' @param tol_deg         Convergence tolerance in angular stress distance
-#'                        (degrees). Default 1e-4.
-#' @param run_stage4      Logical. Compute analytic uncertainty (Stage 4).
-#'                        Default TRUE.
+#' @param normals \code{N x 3} numeric matrix of unit fault plane normals in
+#'   a right-handed Cartesian coordinate system (x = East, y = North, z = Up).
+#'   Normals should point toward the footwall (upward-pointing for
+#'   sub-horizontal faults).
+#' @param slips \code{N x 3} numeric matrix of unit slip direction vectors,
+#'   parallel to the shear traction and pointing in the direction of
+#'   hanging-wall motion. Must be perpendicular to the corresponding row of
+#'   \code{normals}.
+#' @param weights Optional length-\code{N} numeric vector of non-negative data
+#'   quality weights. \code{NA} values are replaced with the observed mean
+#'   before scaling (neutral imputation). The vector is normalised internally
+#'   so that \code{mean(weights) = 1}, meaning only the ratios between weights
+#'   matter. Use \code{\link{signal_to_weights}} and
+#'   \code{\link{combine_weights}} to construct weights from field quality
+#'   ranks, measurement errors, and prior RUP values. Default: uniform
+#'   weights.
+#' @param sigma_alpha_deg Estimated angular measurement error of slip
+#'   directions in degrees. Used in Stage 4 (analytic uncertainty) to scale
+#'   the perturbation covariance matrix. A value of 10 degrees is a
+#'   conservative default for well-measured slickenlines; increase to 20-30
+#'   degrees for less certain measurements. Default: \code{10}.
+#' @param gamma_max Maximum sharpness parameter for the sense annealing
+#'   schedule (Stage 3). Controls how strongly the final solution commits to
+#'   the predicted slip sense. Higher values produce sharper sense
+#'   discrimination; set to \code{0} to disable sense annealing entirely,
+#'   making the inversion fully sense-agnostic in the style of Hansen (2013).
+#'   Default: \code{10}.
+#' @param n_anneal Number of annealing steps in the outer sense annealing loop
+#'   (Stage 3). The sharpness parameter \code{gamma} increases linearly from
+#'   \code{0} to \code{gamma_max} over \code{n_anneal} steps. More steps give
+#'   a smoother transition between sense-agnostic and sense-committed
+#'   behaviour. Default: \code{8}.
+#' @param max_iter Maximum number of inner iterations per annealing step.
+#'   Default: \code{50}.
+#' @param tol_deg Convergence tolerance in angular stress distance (degrees).
+#'   The inner loop terminates when the angular stress distance between
+#'   successive iterates falls below this value. Because angular stress
+#'   distance approximates the mean misfit angle (Yamaji & Sato 2006, Eq. 37),
+#'   this tolerance has a direct physical interpretation. Default: \code{1e-4}.
+#' @param run_stage4 Logical. If \code{TRUE}, compute the analytic uncertainty
+#'   estimates via eigenvalue perturbation theory (Stage 4) and return them in
+#'   the \code{unc} element of the result. Setting to \code{FALSE} skips this
+#'   step and is useful for bootstrap resampling where many inversions are
+#'   performed. Default: \code{TRUE}.
+#' @param robust Logical. If \code{TRUE}, apply iteratively reweighted robust
+#'   estimation using the kernel specified by \code{robust_kernel}. Faults
+#'   with large angular misfits are progressively downweighted at each
+#'   iteration, reducing the influence of outliers on the final tensor.
+#'   Default: \code{TRUE}.
+#' @param robust_kernel Character string specifying the robust weighting
+#'   kernel. One of:
+#'   \describe{
+#'     \item{\code{"huber"}}{Huber kernel: unit weight below the threshold
+#'       \code{robust_k_deg}, declining as \code{k/alpha} above it. Gradual
+#'       downweighting; the recommended default for most datasets.}
+#'     \item{\code{"tukey"}}{Tukey bisquare kernel: unit weight near zero
+#'       misfit, declining smoothly to exactly zero at \code{robust_k_deg}.
+#'       Faults beyond the threshold are completely excluded. Use when
+#'       genuinely bad measurements are known to be present.}
+#'     \item{\code{"andrews"}}{Andrews sine kernel: similar to Tukey but
+#'       differentiable at the threshold. Slightly smoother rejection profile.}
+#'   }
+#'   Default: \code{"huber"}.
+#' @param robust_k_deg Threshold angle in degrees for the robust kernel.
+#'   Faults with angular misfit below this value receive full (or near-full)
+#'   weight; faults above it are progressively downweighted or excluded
+#'   depending on the chosen kernel. Should be set relative to the expected
+#'   data noise level: \code{30} degrees is appropriate for typical
+#'   slickenline data, \code{20} for high-quality datasets, and \code{45} when
+#'   significant scatter is expected. Default: \code{30}.
+#' @param robust_mad_k Multiplier for the MAD-based outlier flagging applied
+#'   after convergence. Faults whose angular misfit exceeds
+#'   \code{median(alpha) + robust_mad_k * 1.4826 * MAD(alpha)} are reported
+#'   in \code{outliers_mad}. This is a diagnostic flag only and does not
+#'   affect the inversion result. Smaller values flag more faults; \code{2.5}
+#'   corresponds roughly to the 99th percentile under a normal distribution.
+#'   Default: \code{2.5}.
+#' @param init_median Logical. If \code{TRUE} and \code{robust = TRUE},
+#'   initialise the iteration from the spatial median on S\eqn{^5} computed
+#'   via the Weiszfeld algorithm, rather than the standard weighted eigenvector.
+#'   The spatial median minimises the sum of angular stress distances to all
+#'   single-fault solution poles and is substantially more resistant to
+#'   outliers than the mean-based eigenvector initialisation. Has no effect
+#'   when \code{robust = FALSE}. Default: \code{TRUE}.
 #'
-#' @return A named list with:
-#'   sigma             : 3x3 reduced stress tensor (Cartesian frame)
-#'   y                 : 6D unit y-vector on S^5
-#'   sigma1/2/3        : unit vectors of principal stress axes (max to min)
-#'   eigenvalues       : eigenvalues of sigma (decreasing)
-#'   Phi               : shape ratio (sigma1-sigma2)/(sigma1-sigma3) in \eqn{[0,1]}
-#'   alpha_deg         : per-fault angular misfit (unsigned, 0-90 deg)
-#'   alpha_signed_deg  : per-fault signed misfit (0-180 deg)
-#'   mean_alpha        : mean angular misfit across all faults (deg)
-#'   suspected_flipped : row indices where alpha_signed > 90 deg
-#'   n_flipped_sense   : number of faults whose sense was corrected in Stage 3
-#'   slips_corrected   : sense-corrected slip matrix used in final inversion
-#'   mu                : per-fault magnitude weights from Stage 2/3
-#'   phi_sense         : per-fault tanh sense confidence from Stage 3
-#'   eigenvalue_gap    : lambda_2 - lambda_1 of M5 (condition number proxy)
-#'   M5_eigvals        : all 5 eigenvalues of final M5
-#'   unc               : Stage 4 uncertainty list (if run_stage4 = TRUE):
-#'     Cov5            : 5x5 covariance matrix in sigma-space
-#'     Cov_y6          : 6x6 covariance matrix (y-space)
-#'     eigval_gap      : eigenvalue gap (same as above)
-#'     cov_eigvals     : eigenvalues of Cov5
-#'     sigma1_unc_deg  : approx 1-sigma uncertainty on sigma1 orientation
-#'     Phi_unc         : approx 1-sigma uncertainty on Phi
-#'   n_iter_total      : total number of inner iterations
+#' @details
+#' ## Algorithm stages
+#'
+#' *WISSI* proceeds through five sequential stages, each addressing a specific
+#' limitation of the classical inversion methods.
+#'
+#' **Stage 1 — Initialisation.** Constructs the weighted moment matrix
+#' \eqn{M_5 = \sum_i \omega_i \epsilon'_i \epsilon'^T_i} in the 5D deviator
+#' subspace of the Yamaji-Sato sigma-space and returns its
+#' smallest-eigenvalue eigenvector as the initial stress estimate. When
+#' \code{robust = TRUE} and \code{init_median = TRUE}, the Weiszfeld
+#' algorithm on \eqn{S^5} is used instead, providing a starting point
+#' that is resistant to leverage points from badly oriented or erroneous
+#' fault data.
+#'
+#' **Stage 2 — Magnitude reweighting.** Translates the Angelier (1990) and
+#' Mostafa (2005) upsilon (\eqn{\upsilon_i}) magnitude criterion into the
+#' sigma-space eigenproblem by replacing the global \eqn{\lambda = \sqrt{3}/2}
+#' with per-fault weights \eqn{\mu_i = |\tau_i| / \lambda_{\max}}.
+#' Mechanically degenerate fault planes (those containing a principal stress
+#' axis, which produce near-zero shear traction) are automatically
+#' downweighted without requiring any explicit degeneracy test.
+#' Convergence is measured by the angular stress distance \eqn{\Theta} between
+#' successive iterates, which approximates the mean misfit angle
+#' (Yamaji & Sato 2006, Eq. 37) and therefore has a direct physical
+#' interpretation.
+#'
+#' **Stage 3 — Sense annealing.** Replaces the binary majority-vote sense
+#' resolution of Yamaji & Sato (2006) with a continuous
+#' \eqn{\tanh(\gamma \cdot \hat{\tau}_i \cdot \hat{s}_i)} weighting schedule.
+#' At small \eqn{\gamma} (early annealing steps) the method is effectively
+#' sense-agnostic, as in Hansen (2013), providing robustness when slip senses
+#' are uncertain or partially incorrect. As \eqn{\gamma} increases toward
+#' \code{gamma_max}, the method commits progressively to the predicted slip
+#' sense, recovering the accuracy of Angelier (1990) for reliable data.
+#' Faults whose predicted and recorded senses are inconsistent have their
+#' slip vectors flipped internally; the number of such corrections is reported
+#' in \code{n_flipped_sense}.
+#'
+#' **Stage 4 — Analytic uncertainty.** Propagates slip direction measurement
+#' noise (\code{sigma_alpha_deg}) through the eigenproblem via first-order
+#' perturbation theory, yielding a \eqn{5 \times 5} covariance matrix in
+#' sigma-space and approximate \eqn{1\sigma} confidence bounds on the
+#' principal stress axis orientations and \eqn{\Phi}. This extends the
+#' analytic covariance framework of Michael (1984) to the geometrically
+#' correct curved space of the 5-sphere. The eigenvalue gap
+#' \eqn{\lambda_2 - \lambda_1} of \eqn{M_5} serves as a condition number:
+#' a small gap indicates that the solution is poorly separated from the next
+#' eigenvector and that uncertainty estimates may be unreliable.
+#'
+#' **Stage 5 (polyphase) — Spectral clustering.** Available via
+#' \code{\link{wissi_polyphase}}. Represents each fault by the pole of its
+#' solution great hypercircle on \eqn{S^5}, builds a Gaussian affinity matrix
+#' using the angular stress distance \eqn{\Theta}, and applies normalised
+#' spectral clustering with automatic phase count selection via the eigengap
+#' heuristic. WISSI is then run independently on each identified phase.
+#'
+#' ## Robust estimation
+#'
+#' When \code{robust = TRUE}, an additional misfit-based weight
+#' \eqn{w_i^{\text{rob}} = \kappa(\alpha_i)} is computed at each iteration
+#' and multiplied into the combined weight \eqn{\tilde{\omega}_i = \omega_i
+#' \cdot \mu_i \cdot |\phi_i| \cdot w_i^{\text{rob}}}, where \eqn{\alpha_i}
+#' is the unsigned angular misfit between the predicted shear traction and the
+#' observed slip direction, \eqn{\mu_i} is the magnitude weight from Stage 2,
+#' and \eqn{\phi_i} is the sense confidence from Stage 3. The three available
+#' kernels \eqn{\kappa} differ in tail behaviour: the Huber kernel applies a
+#' gradual \eqn{k/\alpha} decay beyond the threshold and is the recommended
+#' default; the Tukey bisquare kernel hard-zeros faults beyond the threshold
+#' for aggressive rejection of confirmed bad measurements; the Andrews sine
+#' kernel provides a smooth differentiable alternative to Tukey. After
+#' convergence, faults are additionally screened using a
+#' median-absolute-deviation (MAD) criterion that adapts automatically to the
+#' noise level of the specific dataset, reported in \code{outliers_mad}. This
+#' flag is purely diagnostic and does not alter the inversion result.
+#'
+#' @return A named list with the following elements:
+#' \describe{
+#'   \item{\code{sigma}}{3x3 reduced stress tensor in the input Cartesian
+#'     frame.}
+#'   \item{\code{y}}{6D unit y-vector on \eqn{S^5} representing the optimal
+#'     stress tensor.}
+#'   \item{\code{sigma1}, \code{sigma2}, \code{sigma3}}{Unit vectors of the
+#'     principal stress axes, from maximum (\eqn{\sigma_1}) to minimum
+#'     (\eqn{\sigma_3}) compressive stress.}
+#'   \item{\code{eigenvalues}}{Eigenvalues of \code{sigma} in decreasing
+#'     order.}
+# #'   \item{\code{Phi}}{Shape ratio
+# #'     \eqn{\Phi = (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3) \in [0, 1]}.}
+#'   \item{\code{alpha_deg}}{Per-fault unsigned angular misfit in degrees
+#'     (0-90), the standard line metric.}
+#'   \item{\code{alpha_signed_deg}}{Per-fault signed angular misfit in degrees
+#'     (0-180). Values above 90 indicate that the recorded slip sense is
+#'     opposite to the predicted shear traction direction.}
+#'   \item{\code{mean_alpha}}{Mean unsigned angular misfit across all faults
+#'     (degrees).}
+#'   \item{\code{median_alpha}}{Median unsigned angular misfit (degrees). More
+#'     robust than the mean in the presence of outliers.}
+#'   \item{\code{suspected_flipped}}{Integer vector of row indices where
+#'     \code{alpha_signed_deg > 90}, flagging faults whose recorded slip sense
+#'     may be incorrect.}
+#'   \item{\code{outliers_mad}}{Integer vector of row indices flagged as
+#'     outliers by the MAD criterion (only when \code{robust = TRUE}).}
+#'   \item{\code{n_flipped_sense}}{Number of faults whose slip sense was
+#'     corrected internally during Stage 3.}
+#'   \item{\code{slips_corrected}}{N x 3 matrix of sense-corrected slip
+#'     vectors used in the final inversion.}
+#'   \item{\code{mu}}{Per-fault magnitude weights \eqn{\mu_i} from Stage 2.}
+#'   \item{\code{phi_sense}}{Per-fault \eqn{\tanh} sense confidence values
+#'     from Stage 3. Positive values indicate consistent sense; negative
+#'     values indicate corrected (flipped) senses.}
+#'   \item{\code{w_robust}}{Per-fault robust kernel weights \eqn{w_i^{\text{rob}}}
+#'     from the final iteration (only when \code{robust = TRUE}).}
+#'   \item{\code{wt_combined}}{Per-fault combined weights
+#'     \eqn{\tilde{\omega}_i} used in the final M5 matrix.}
+#'   \item{\code{eigenvalue_gap}}{Difference \eqn{\lambda_2 - \lambda_1} of
+#'     the final \eqn{M_5} matrix. Larger values indicate a better-conditioned
+#'     solution.}
+#'   \item{\code{M5_eigvals}}{All five eigenvalues of the final \eqn{M_5}
+#'     matrix in decreasing order.}
+#'   \item{\code{unc}}{List of analytic uncertainty estimates from Stage 4
+#'     (only when \code{run_stage4 = TRUE}), containing \code{Cov5},
+#'     \code{Cov_y6}, \code{eigval_gap}, \code{cov_eigvals},
+#'     \code{sigma1_unc_deg}, and \code{Phi_unc}.}
+#'   \item{\code{n_iter_total}}{Total number of inner iterations performed
+#'     across all annealing steps.}
+#' }
+#'
+#'
+#' @references
+#'   Angelier, J. (1990). Inversion of field data in fault tectonics to obtain
+#'   the regional stress. III. A new rapid direct inversion method by
+#'   analytical means. \emph{Geophys. J. Int.}, 103, 363-376.
+#'
+#'   Hansen, J.A. (2013). Direct inversion of stress from sets of fault slip
+#'   data with unknown slip sense. \emph{J. Struct. Geol.}, 51, 54-65.
+#'
+#'   Michael, A.J. (1984). Determination of stress from slip data: faults and
+#'   folds. \emph{J. Geophys. Res.}, 89, 11517-11526.
+#'
+#'   Mostafa, M.E. (2005). Iterative linear inversion of stress tensor from
+#'   fault-slip data. \emph{J. Struct. Geol.}, 27, 930-940.
+#'
+#'   Pascal, C. (2022). \emph{Paleostress Inversion Techniques}. Elsevier.
+#'
+#'   Yamaji, A. & Sato, K. (2006). Distances for the solutions of stress
+#'   tensor inversion in relation to misfit angles that accompany the
+#'   solutions. \emph{Geophys. J. Int.}, 167, 933-942.
+#'
+#' @examples
+#' \dontrun{
+#' # Basic usage with uniform weights
+#' res <- wissi(normals, slips)
+#'
+#' # With field quality ranks and measurement errors
+#' ranks     <- c(1, 2, 1, 4, 3, 2, 5, 1, 3, 2)
+#' error_deg <- c(5, 10, 3, 20, 15, 8, NA, 4, 12, 7)
+#' w <- combine_weights(
+#'   signal_to_weights(ranks,     function(x) 1/x^2),
+#'   signal_to_weights(error_deg, function(x) 1/pmin(pmax(x,0.1),90)^2)
+#' )
+#' res <- wissi(normals, slips, weights = w,
+#'              sigma_alpha_deg = 15,
+#'              robust = TRUE, robust_kernel = "tukey", robust_k_deg = 35)
+#'
+#' # Sense-agnostic mode (all senses unknown, like Hansen 2013)
+#' res <- wissi(normals, slips, gamma_max = 0)
+#'
+#' # Inspect results
+#' cat("Phi:", round(res$Phi, 3), "\n")
+#' cat("Mean misfit:", round(res$mean_alpha, 2), "deg\n")
+#' cat("Outliers:", res$outliers_mad, "\n")
+#' cat("Sense-corrected:", res$n_flipped_sense, "faults\n")
+#'
+#' # Bootstrap uncertainty
+#' boot <- wissi_bootstrap(normals, slips, weights = w, B = 500L,
+#'                         robust = TRUE, run_stage4 = FALSE)
+#' cat("Bootstrap dispersion:", round(boot$dispersion_deg, 2), "deg\n")
+#' }
 wissi <- function(normals,
                   slips,
                   weights = NULL,
@@ -572,7 +854,14 @@ wissi <- function(normals,
                   n_anneal = 8L,
                   max_iter = 50L,
                   tol_deg = 1e-4,
-                  run_stage4 = TRUE) {
+                  run_stage4 = TRUE,
+                  # --- new robust options ---
+                  robust          = TRUE,
+                  robust_kernel   = c("huber", "tukey", "andrews"),
+                  robust_k_deg    = 30,
+                  robust_mad_k    = 2.5,
+                  init_median     = TRUE
+                  ) {
   # --- Input validation ---
   if (!is.matrix(normals) || !is.matrix(slips)) {
     stop("'normals' and 'slips' must be matrices.")
@@ -587,6 +876,14 @@ wissi <- function(normals,
     stop("At least 4 fault slip measurements are required.")
   }
 
+  robust_kernel <- match.arg(robust_kernel)
+  # Kernel weight function
+  .w_robust <- switch(robust_kernel,
+                      huber    = function(a) .w_huber(a,   k = robust_k_deg),
+                      tukey    = function(a) .w_tukey(a,   k = robust_k_deg),
+                      andrews  = function(a) .w_andrews(a, k = robust_k_deg)
+  )
+  
   N <- nrow(normals)
 
   # --- Weights ---
@@ -601,88 +898,118 @@ wissi <- function(normals,
     wt <- weights / mean(weights)
   }
 
-  # --- Stage 1: Weighted eigenvector initialisation ---
-  s1 <- .wissi_stage1(normals, slips, wt)
-
-  # --- Stage 2: Magnitude reweighting (Mostafa in sigma-space) ---
-  s2 <- .wissi_stage2(normals, slips, wt, s1$y,
-    max_iter = max_iter, tol_deg = tol_deg
-  )
-
-  # --- Stage 3: Sense annealing ---
-  s3 <- .wissi_stage3(normals, slips, wt, s2$y,
-    gamma_max = gamma_max,
-    n_anneal  = n_anneal,
-    max_iter  = max_iter,
-    tol_deg   = tol_deg
-  )
-
-  y_opt <- s3$y
-  slips_corr <- s3$slips_corrected
-  wt_final <- s3$wt_final
-
-  # --- Stage 4: Analytic uncertainty ---
-  unc <- if (run_stage4) {
-    .wissi_stage4(normals, slips_corr, wt_final, y_opt,
-      sigma_alpha_deg = sigma_alpha_deg
-    )
+  # --- Stage 1: initialisation ---
+  # Robust: spatial median on S5; otherwise: standard weighted eigenvector
+  if (robust && init_median) {
+    x5_init <- .s5_median(normals, slips, wt)
+    y_init  <- drop(.B %*% x5_init)
+    y_init  <- .resolve_sense(y_init / sqrt(sum(y_init^2)), normals, slips)
   } else {
-    NULL
+    s1     <- .wissi_stage1(normals, slips, wt)
+    y_init <- s1$y
   }
-
-  # --- Post-processing ---
-  dec <- .decompose_y(y_opt)
-  sigma <- dec$sigma
-
-  principal_axes <- rbind(dec$sigma1, dec$sigma2, dec$sigma3)
-  principal_vals <- dec$eigenvalues
-  rownames(principal_axes) <- names(principal_vals) <- c("sigma1", "sigma2", "sigma3")
   
-  a_deg <- .alpha_deg(sigma, normals, slips_corr)
-  a_signed <- .alpha_signed_deg(sigma, normals, slips_corr)
-
+  # --- Stages 2 + 3 combined: magnitude + sense + robust reweighting ---
+  lambda_max <- sqrt(3) / 2
+  y_cur      <- y_init
+  phi_i      <- rep(1, N)
+  mu_i       <- rep(1, N)
+  w_rob      <- rep(1, N)
+  slips_adj  <- slips
+  n_iter_tot <- 0L
+  
+  for (ann in seq_len(n_anneal)) {
+    gamma <- gamma_max * (ann / n_anneal)
+    
+    for (iter in seq_len(max_iter)) {
+      sigma <- .y6_to_sigma(y_cur)
+      
+      # --- Magnitude weights (Stage 2 / Mostafa) ---
+      mu_i <- vapply(seq_len(N), function(i)
+        max(1e-4, .tau_mag(sigma, normals[i,]) / lambda_max), numeric(1L))
+      
+      # --- Sense annealing (Stage 3) ---
+      tau_dot_s <- vapply(seq_len(N), function(i)
+        sum(.shear_tau(sigma, normals[i,]) * slips[i,]), numeric(1L))
+      phi_i     <- tanh(gamma * tau_dot_s)
+      slips_adj <- slips
+      slips_adj[phi_i < 0, ] <- -slips[phi_i < 0, ]
+      
+      # --- Robust misfit weights (new) ---
+      if (robust) {
+        alpha_i <- vapply(seq_len(N), function(i) {
+          tau <- .shear_tau(sigma, normals[i,])
+          tn  <- sqrt(sum(tau^2))
+          if (tn < 1e-12) return(90)
+          acos(pmax(-1, pmin(1, abs(sum(tau/tn * slips_adj[i,]))))) * 180/pi
+        }, numeric(1L))
+        w_rob <- .w_robust(alpha_i)
+      }
+      
+      # Combined weight: quality * magnitude * |sense| * robust
+      wt_i <- wt * mu_i * pmax(abs(phi_i), 0.01) * w_rob
+      
+      M5_new <- .build_M5(normals, slips_adj, wt_i)
+      res    <- .solve_M5(M5_new)
+      y_new  <- .resolve_sense(res$y, normals, slips_adj)
+      
+      delta      <- angular_stress_distance(y_cur, y_new)
+      n_iter_tot <- n_iter_tot + 1L
+      y_cur      <- y_new
+      if (delta < tol_deg) break
+    }
+  }
+  
+  # --- Stage 4: analytic uncertainty ---
+  unc <- if (run_stage4){
+    .wissi_stage4(normals, slips_adj, wt_i, y_cur,
+                  sigma_alpha_deg = sigma_alpha_deg)
+  } else NULL
+  
+  # --- Post-processing ---
+  dec      <- .decompose_y(y_cur)
+  sigma    <- dec$sigma
+  a_deg    <- .alpha_deg(sigma, normals, slips_adj)
+  a_signed <- .alpha_signed_deg(sigma, normals, slips_adj)
+  
+  # MAD-based outlier flags
+  outlier_mad <- if (robust){
+    .flag_outliers_mad(a_deg, k = robust_mad_k)
+  }  else rep(FALSE, N)
+  
   list(
-    stress_tensor             = sigma,
-    y                 = y_opt,
-    principal_axes    = principal_axes,
-    principal_vals    = principal_vals,
-    #Phi               = dec$Phi,
-    alpha             = a_deg,
-    alpha_signed      = a_signed,
+    sigma             = sigma,
+    y                 = y_cur,
+    sigma1            = dec$sigma1,
+    sigma2            = dec$sigma2,
+    sigma3            = dec$sigma3,
+    eigenvalues       = dec$eigenvalues,
+    Phi               = dec$Phi,
+    alpha_deg         = a_deg,
+    alpha_signed_deg  = a_signed,
     mean_alpha        = mean(a_deg, na.rm = TRUE),
+    median_alpha      = median(a_deg, na.rm = TRUE),
     suspected_flipped = which(a_signed > 90),
-    n_flipped_sense   = s3$n_flipped,
-    slips_corrected   = slips_corr,
-    mu                = s3$mu,
-    phi_sense         = s3$phi,
-    eigenvalue_gap    = s3$eigenvalue_gap,
-    M5_eigvals        = s3$eigvals,
+    outliers_mad      = which(outlier_mad),       # MAD-flagged outliers
+    n_flipped_sense   = sum(phi_i < 0),
+    slips_corrected   = slips_adj,
+    mu                = mu_i,
+    phi_sense         = phi_i,
+    w_robust          = w_rob,                    # final robust weights
+    wt_combined       = wt_i,                     # all weights combined
+    eigenvalue_gap    = res$eigvals[4L] - res$eigvals[5L],
+    M5_eigvals        = res$eigvals,
     unc               = unc,
-    n_iter_total      = s3$n_iter_total
+    n_iter_total      = n_iter_tot
   )
 }
 
 #' @title Weighted Iterative Sigma-Space Inversion (WISSI)
 #'
-#' @description Combines the four classic fault slip inversion algorithms 
-#' (Michael, 1983; Angelier, 1990; Yamaji and Sato, 2006; and Hansen, 2013) into a single
-#' coherent framework operating in the Yamaji-Sato 5-sphere sigma-space.
+#' @inherit wissi description
 #'
 #' @inheritParams slip_inversion_yamaji_sato
-#' @param sigma_alpha_deg Estimated slip direction measurement error in
-#'                        degrees. Used in Stage 4 analytic uncertainty.
-#'                        Default `10.`
-#' @param gamma_max       Maximum sense annealing sharpness parameter.
-#'                        Higher values commit more strongly to the predicted
-#'                        slip sense. Default `10.` Set to `0` to disable sense
-#'                        annealing (fully sense-agnostic, like Hansen 2013).
-#' @param n_anneal        Number of annealing steps (outer loop of Stage 3).
-#'                        Default `8`.
-#' @param max_iter        Maximum inner iterations per annealing step. Default `50.`
-#' @param tol_deg         Convergence tolerance in angular stress distance
-#'                        (degrees). Default `1e-4`.
-#' @param run_stage4      Logical. Compute analytic uncertainty (Stage 4).
-#'                        Default `TRUE.`
+#' @inheritParams wissi
 #'
 #' @returns A named list with: \describe{
 #'   \item{`stress_tensor`}{3x3 reduced stress tensor (Cartesian frame)}
@@ -708,9 +1035,12 @@ wissi <- function(normals,
 #'     `Phi_unc`: approx 1\eqn{sigma} uncertainty on \eqn{\phi}}
 #'   \item{`n_iter_total`}{total number of inner iterations}
 #' }
+#' 
+#' @inherit wissi details
 #'   
 #' @family stress-inversion
 #' 
+#' @inherit wissi references
 #' @references Stephan (in prep.)
 #'   
 #' @export
@@ -750,23 +1080,38 @@ slip_inversion_wissi <- function(x, weights = NULL,
                                  n_anneal = 8L,
                                  max_iter = 50L,
                                  tol_deg = 1e-4,
-                                 run_stage4 = TRUE) {
+                                 run_stage4 = TRUE,
+                                 # --- new robust options ---
+                                 robust          = TRUE,
+                                 robust_kernel   = c("huber", "tukey", "andrews"),
+                                 robust_k_deg    = 30,
+                                 robust_mad_k    = 2.5,
+                                 init_median     = TRUE) {
   stopifnot(is.Pair(x))
   normals <- Vec3(Plane(x)) |> unclass()
   slips <- if (is.Fault(x)) Ray(x) else Line(x)
   slips <- Vec3(slips) |> unclass()
   res <- wissi(normals, slips, weights = weights, sigma_alpha_deg = sigma_alpha_deg,
                gamma_max = gamma_max, n_anneal = n_anneal, max_iter = max_iter,
-               tol_deg = tol_deg, run_stage4 = run_stage4)
+               tol_deg = tol_deg, run_stage4 = run_stage4, 
+               robust = robust, robust_kernel = robust_kernel, robust_k_deg = robust_k_deg,
+               robust_mad_k = robust_mad_k, init_median = init_median)
   
-  res$principal_axes <- as.Vec3(res$principal_axes) |> Line()
-  res$stress_shape <- stress_shape(res$stress_tensor)
+  #res$principal_axes <- as.Vec3(rbind(res$sigma1, res$sigma2, res$sigma3)) |> Line()
+  #res$principal_vals <- res$eigenvalues
+  
+  s <- sigma2stress(res$sigma)
+  res$principal_axes <- s$axes
+  res$principal_vals <- s$vals
+  res$sigma1 <- res$sigma2 <- res$sigma3 <- res$eigenvalues <- res$Phi <- NULL
+  
+  res$stress_shape <- stress_shape(res$sigma)
   
   res$SHmax <- SH(res$principal_axes[1, ], res$principal_axes[2, ], res$principal_axes[3, ], R = res$stress_shape$R)
   
   res$slips_corrected <- as.Vec3(res$slips_corrected)
   
-  res$misfit <- slip_inversion_misfit(res$stress_tensor, x)
+  res$misfit <- slip_inversion_misfit(res$sigma, x)
   
   return(res)
 }

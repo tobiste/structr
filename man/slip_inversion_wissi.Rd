@@ -12,33 +12,104 @@ slip_inversion_wissi(
   n_anneal = 8L,
   max_iter = 50L,
   tol_deg = 1e-04,
-  run_stage4 = TRUE
+  run_stage4 = TRUE,
+  robust = TRUE,
+  robust_kernel = c("huber", "tukey", "andrews"),
+  robust_k_deg = 30,
+  robust_mad_k = 2.5,
+  init_median = TRUE
 )
 }
 \arguments{
 \item{x}{object of class \code{"Pair"} or \code{"Fault"} with at least 4 rows.}
 
-\item{weights}{numeric. Weightings for the faults. Must have the same length as \code{x}}
+\item{weights}{Optional length-\code{N} numeric vector of non-negative data
+quality weights. \code{NA} values are replaced with the observed mean
+before scaling (neutral imputation). The vector is normalised internally
+so that \code{mean(weights) = 1}, meaning only the ratios between weights
+matter. Use \code{\link{signal_to_weights}} and
+\code{\link{combine_weights}} to construct weights from field quality
+ranks, measurement errors, and prior RUP values. Default: uniform
+weights.}
 
-\item{sigma_alpha_deg}{Estimated slip direction measurement error in
-degrees. Used in Stage 4 analytic uncertainty.
-Default \code{10.}}
+\item{sigma_alpha_deg}{Estimated angular measurement error of slip
+directions in degrees. Used in Stage 4 (analytic uncertainty) to scale
+the perturbation covariance matrix. A value of 10 degrees is a
+conservative default for well-measured slickenlines; increase to 20-30
+degrees for less certain measurements. Default: \code{10}.}
 
-\item{gamma_max}{Maximum sense annealing sharpness parameter.
-Higher values commit more strongly to the predicted
-slip sense. Default \code{10.} Set to \code{0} to disable sense
-annealing (fully sense-agnostic, like Hansen 2013).}
+\item{gamma_max}{Maximum sharpness parameter for the sense annealing
+schedule (Stage 3). Controls how strongly the final solution commits to
+the predicted slip sense. Higher values produce sharper sense
+discrimination; set to \code{0} to disable sense annealing entirely,
+making the inversion fully sense-agnostic in the style of Hansen (2013).
+Default: \code{10}.}
 
-\item{n_anneal}{Number of annealing steps (outer loop of Stage 3).
-Default \code{8}.}
+\item{n_anneal}{Number of annealing steps in the outer sense annealing loop
+(Stage 3). The sharpness parameter \code{gamma} increases linearly from
+\code{0} to \code{gamma_max} over \code{n_anneal} steps. More steps give
+a smoother transition between sense-agnostic and sense-committed
+behaviour. Default: \code{8}.}
 
-\item{max_iter}{Maximum inner iterations per annealing step. Default \code{50.}}
+\item{max_iter}{Maximum number of inner iterations per annealing step.
+Default: \code{50}.}
 
-\item{tol_deg}{Convergence tolerance in angular stress distance
-(degrees). Default \code{1e-4}.}
+\item{tol_deg}{Convergence tolerance in angular stress distance (degrees).
+The inner loop terminates when the angular stress distance between
+successive iterates falls below this value. Because angular stress
+distance approximates the mean misfit angle (Yamaji & Sato 2006, Eq. 37),
+this tolerance has a direct physical interpretation. Default: \code{1e-4}.}
 
-\item{run_stage4}{Logical. Compute analytic uncertainty (Stage 4).
-Default \code{TRUE.}}
+\item{run_stage4}{Logical. If \code{TRUE}, compute the analytic uncertainty
+estimates via eigenvalue perturbation theory (Stage 4) and return them in
+the \code{unc} element of the result. Setting to \code{FALSE} skips this
+step and is useful for bootstrap resampling where many inversions are
+performed. Default: \code{TRUE}.}
+
+\item{robust}{Logical. If \code{TRUE}, apply iteratively reweighted robust
+estimation using the kernel specified by \code{robust_kernel}. Faults
+with large angular misfits are progressively downweighted at each
+iteration, reducing the influence of outliers on the final tensor.
+Default: \code{TRUE}.}
+
+\item{robust_kernel}{Character string specifying the robust weighting
+kernel. One of:
+\describe{
+\item{\code{"huber"}}{Huber kernel: unit weight below the threshold
+\code{robust_k_deg}, declining as \code{k/alpha} above it. Gradual
+downweighting; the recommended default for most datasets.}
+\item{\code{"tukey"}}{Tukey bisquare kernel: unit weight near zero
+misfit, declining smoothly to exactly zero at \code{robust_k_deg}.
+Faults beyond the threshold are completely excluded. Use when
+genuinely bad measurements are known to be present.}
+\item{\code{"andrews"}}{Andrews sine kernel: similar to Tukey but
+differentiable at the threshold. Slightly smoother rejection profile.}
+}
+Default: \code{"huber"}.}
+
+\item{robust_k_deg}{Threshold angle in degrees for the robust kernel.
+Faults with angular misfit below this value receive full (or near-full)
+weight; faults above it are progressively downweighted or excluded
+depending on the chosen kernel. Should be set relative to the expected
+data noise level: \code{30} degrees is appropriate for typical
+slickenline data, \code{20} for high-quality datasets, and \code{45} when
+significant scatter is expected. Default: \code{30}.}
+
+\item{robust_mad_k}{Multiplier for the MAD-based outlier flagging applied
+after convergence. Faults whose angular misfit exceeds
+\code{median(alpha) + robust_mad_k * 1.4826 * MAD(alpha)} are reported
+in \code{outliers_mad}. This is a diagnostic flag only and does not
+affect the inversion result. Smaller values flag more faults; \code{2.5}
+corresponds roughly to the 99th percentile under a normal distribution.
+Default: \code{2.5}.}
+
+\item{init_median}{Logical. If \code{TRUE} and \code{robust = TRUE},
+initialise the iteration from the spatial median on S\eqn{^5} computed
+via the Weiszfeld algorithm, rather than the standard weighted eigenvector.
+The spatial median minimises the sum of angular stress distances to all
+single-fault solution poles and is substantially more resistant to
+outliers than the mean-based eigenvector initialisation. Has no effect
+when \code{robust = FALSE}. Default: \code{TRUE}.}
 }
 \value{
 A named list with: \describe{
@@ -67,9 +138,91 @@ A named list with: \describe{
 }
 }
 \description{
-Combines the four classic fault slip inversion algorithms
-(Michael, 1983; Angelier, 1990; Yamaji and Sato, 2006; and Hansen, 2013) into a single
+Combines four classic fault slip inversion algorithms into a single
 coherent framework operating in the Yamaji-Sato 5-sphere sigma-space.
+Integrates the linear eigenvector approach of Yamaji & Sato (2006),
+the magnitude-aware upsilon criterion of Angelier (1990) and Mostafa (2005),
+the sense annealing strategy inspired by Hansen (2013), and the analytic
+uncertainty framework of Michael (1984), extended to the curved geometry
+of the 5-sphere.
+}
+\details{
+\subsection{Algorithm stages}{
+
+\emph{WISSI} proceeds through five sequential stages, each addressing a specific
+limitation of the classical inversion methods.
+
+\strong{Stage 1 — Initialisation.} Constructs the weighted moment matrix
+\eqn{M_5 = \sum_i \omega_i \epsilon'_i \epsilon'^T_i} in the 5D deviator
+subspace of the Yamaji-Sato sigma-space and returns its
+smallest-eigenvalue eigenvector as the initial stress estimate. When
+\code{robust = TRUE} and \code{init_median = TRUE}, the Weiszfeld
+algorithm on \eqn{S^5} is used instead, providing a starting point
+that is resistant to leverage points from badly oriented or erroneous
+fault data.
+
+\strong{Stage 2 — Magnitude reweighting.} Translates the Angelier (1990) and
+Mostafa (2005) upsilon (\eqn{\upsilon_i}) magnitude criterion into the
+sigma-space eigenproblem by replacing the global \eqn{\lambda = \sqrt{3}/2}
+with per-fault weights \eqn{\mu_i = |\tau_i| / \lambda_{\max}}.
+Mechanically degenerate fault planes (those containing a principal stress
+axis, which produce near-zero shear traction) are automatically
+downweighted without requiring any explicit degeneracy test.
+Convergence is measured by the angular stress distance \eqn{\Theta} between
+successive iterates, which approximates the mean misfit angle
+(Yamaji & Sato 2006, Eq. 37) and therefore has a direct physical
+interpretation.
+
+\strong{Stage 3 — Sense annealing.} Replaces the binary majority-vote sense
+resolution of Yamaji & Sato (2006) with a continuous
+\eqn{\tanh(\gamma \cdot \hat{\tau}_i \cdot \hat{s}_i)} weighting schedule.
+At small \eqn{\gamma} (early annealing steps) the method is effectively
+sense-agnostic, as in Hansen (2013), providing robustness when slip senses
+are uncertain or partially incorrect. As \eqn{\gamma} increases toward
+\code{gamma_max}, the method commits progressively to the predicted slip
+sense, recovering the accuracy of Angelier (1990) for reliable data.
+Faults whose predicted and recorded senses are inconsistent have their
+slip vectors flipped internally; the number of such corrections is reported
+in \code{n_flipped_sense}.
+
+\strong{Stage 4 — Analytic uncertainty.} Propagates slip direction measurement
+noise (\code{sigma_alpha_deg}) through the eigenproblem via first-order
+perturbation theory, yielding a \eqn{5 \times 5} covariance matrix in
+sigma-space and approximate \eqn{1\sigma} confidence bounds on the
+principal stress axis orientations and \eqn{\Phi}. This extends the
+analytic covariance framework of Michael (1984) to the geometrically
+correct curved space of the 5-sphere. The eigenvalue gap
+\eqn{\lambda_2 - \lambda_1} of \eqn{M_5} serves as a condition number:
+a small gap indicates that the solution is poorly separated from the next
+eigenvector and that uncertainty estimates may be unreliable.
+
+\strong{Stage 5 (polyphase) — Spectral clustering.} Available via
+\code{\link{wissi_polyphase}}. Represents each fault by the pole of its
+solution great hypercircle on \eqn{S^5}, builds a Gaussian affinity matrix
+using the angular stress distance \eqn{\Theta}, and applies normalised
+spectral clustering with automatic phase count selection via the eigengap
+heuristic. WISSI is then run independently on each identified phase.
+}
+
+\subsection{Robust estimation}{
+
+When \code{robust = TRUE}, an additional misfit-based weight
+\eqn{w_i^{\text{rob}} = \kappa(\alpha_i)} is computed at each iteration
+and multiplied into the combined weight \eqn{\tilde{\omega}_i = \omega_i
+\cdot \mu_i \cdot |\phi_i| \cdot w_i^{\text{rob}}}, where \eqn{\alpha_i}
+is the unsigned angular misfit between the predicted shear traction and the
+observed slip direction, \eqn{\mu_i} is the magnitude weight from Stage 2,
+and \eqn{\phi_i} is the sense confidence from Stage 3. The three available
+kernels \eqn{\kappa} differ in tail behaviour: the Huber kernel applies a
+gradual \eqn{k/\alpha} decay beyond the threshold and is the recommended
+default; the Tukey bisquare kernel hard-zeros faults beyond the threshold
+for aggressive rejection of confirmed bad measurements; the Andrews sine
+kernel provides a smooth differentiable alternative to Tukey. After
+convergence, faults are additionally screened using a
+median-absolute-deviation (MAD) criterion that adapts automatically to the
+noise level of the specific dataset, reported in \code{outliers_mad}. This
+flag is purely diagnostic and does not alter the inversion result.
+}
 }
 \examples{
 set.seed(20250411)
