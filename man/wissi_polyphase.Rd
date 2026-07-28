@@ -20,8 +20,7 @@ wissi_polyphase(
 quality weights. \code{NA} values are replaced with the observed mean
 before scaling (neutral imputation). The vector is normalised internally
 so that \code{mean(weights) = 1}, meaning only the ratios between weights
-matter. Use \code{\link{signal_to_weights}} and
-\code{\link{combine_weights}} to construct weights from field quality
+matter. Use \code{\link[=scale_weights]{scale_weights()}} to construct weights from field quality
 ranks, measurement errors, and prior RUP values. Default: uniform
 weights.}
 

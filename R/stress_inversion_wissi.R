@@ -594,15 +594,14 @@ NULL
 #'   quality weights. \code{NA} values are replaced with the observed mean
 #'   before scaling (neutral imputation). The vector is normalised internally
 #'   so that \code{mean(weights) = 1}, meaning only the ratios between weights
-#'   matter. Use \code{\link{signal_to_weights}} and
-#'   \code{\link{combine_weights}} to construct weights from field quality
+#'   matter. Use [scale_weights()] to construct weights from field quality
 #'   ranks, measurement errors, and prior RUP values. Default: uniform
 #'   weights.
 #' @param sigma_alpha_deg Estimated angular measurement error of slip
 #'   directions in degrees. Used in Stage 4 (analytic uncertainty) to scale
-#'   the perturbation covariance matrix. A value of 10 degrees is a
+#'   the perturbation covariance matrix. A value of 10 &deg; is a
 #'   conservative default for well-measured slickenlines; increase to 20-30
-#'   degrees for less certain measurements. Default: \code{10}.
+#'   &deg; for less certain measurements. Default: \code{10}.
 #' @param gamma_max Maximum sharpness parameter for the sense annealing
 #'   schedule (Stage 3). Controls how strongly the final solution commits to
 #'   the predicted slip sense. Higher values produce sharper sense
@@ -649,8 +648,8 @@ NULL
 #'   Faults with angular misfit below this value receive full (or near-full)
 #'   weight; faults above it are progressively downweighted or excluded
 #'   depending on the chosen kernel. Should be set relative to the expected
-#'   data noise level: \code{30} degrees is appropriate for typical
-#'   slickenline data, \code{20} for high-quality datasets, and \code{45} when
+#'   data noise level: \code{30}&deg; is appropriate for typical
+#'   slickenline data, \code{20} &deg; for high-quality datasets, and \code{45} &deg; when
 #'   significant scatter is expected. Default: \code{30}.
 #' @param robust_mad_k Multiplier for the MAD-based outlier flagging applied
 #'   after convergence. Faults whose angular misfit exceeds
@@ -1032,7 +1031,15 @@ wissi <- function(normals,
 #'     `eigval_gap`: eigenvalue gap (same as above);
 #'     `cov_eigvals`: eigenvalues of `Cov5`;
 #'     `sigma1_unc`: approx 1\eqn{\sigma} uncertainty on \eqn{\sigma_1} orientation
-#'     `Phi_unc`: approx 1\eqn{sigma} uncertainty on \eqn{\phi}}
+#'     `Phi_unc`: approx 1\eqn{\sigma} uncertainty on \eqn{\phi}}
+#'  \item{\code{mu}}{Per-fault magnitude weights \eqn{\mu_i} from Stage 2.}
+#'   \item{\code{phi_sense}}{Per-fault \eqn{\tanh} sense confidence values
+#'     from Stage 3. Positive values indicate consistent sense; negative
+#'     values indicate corrected (flipped) senses.}
+#'   \item{\code{w_robust}}{Per-fault robust kernel weights \eqn{w_i^{\text{rob}}}
+#'     from the final iteration (only when \code{robust = TRUE}).}
+#'   \item{\code{wt_combined}}{Per-fault combined weights
+#'     \eqn{\tilde{\omega}_i} used in the final M5 matrix.}
 #'   \item{`n_iter_total`}{total number of inner iterations}
 #' }
 #' 
