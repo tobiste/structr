@@ -21,7 +21,10 @@ slip_inversion_wissi(
 )
 }
 \arguments{
-\item{x}{object of class \code{"Pair"} or \code{"Fault"} with at least 4 rows.}
+\item{x}{\code{"Fault"} object where the rows are the observations, and the
+columns the coordinates. Object must be complete, i.e. no \code{NA} values.
+For Michael's, Angelier's, and Yamaji-Sato's methods, at least 4 rows
+of fault measurements are required, while Hansen's method requires at least 7.}
 
 \item{weights}{Optional length-\code{N} numeric vector of non-negative data
 quality weights. \code{NA} values are replaced with the observed mean
@@ -109,30 +112,51 @@ The spatial median minimises the sum of angular stress distances to all
 single-fault solution poles and is substantially more resistant to
 outliers than the mean-based eigenvector initialisation. Has no effect
 when \code{robust = FALSE}. Default: \code{TRUE}.}
+
+\item{normals}{\code{N x 3} numeric matrix of unit fault plane normals in
+a right-handed Cartesian coordinate system (x = East, y = North, z = Up).
+Normals should point toward the footwall (upward-pointing for
+sub-horizontal faults).}
+
+\item{slips}{\code{N x 3} numeric matrix of unit slip direction vectors,
+parallel to the shear traction and pointing in the direction of
+hanging-wall motion. Must be perpendicular to the corresponding row of
+\code{normals}.}
 }
 \value{
-A named list with: \describe{
-\item{\code{stress_tensor}}{3x3 reduced stress tensor (Cartesian frame)}
-\item{\code{y}}{6D unit y-vector on \eqn{S^5}}
+A named list with the following elements:
+\describe{
+\item{\code{sigma}}{3x3 reduced stress tensor in the input Cartesian
+frame.}
+\item{\code{y}}{6D unit y-vector on \eqn{S^5} representing the optimal
+stress tensor.}
+\item{\code{sigma1}, \code{sigma2}, \code{sigma3}}{Unit vectors of the
+principal stress axes, from maximum (\eqn{\sigma_1}) to minimum
+(\eqn{\sigma_3}) compressive stress.}
+\item{\code{eigenvalues}}{Eigenvalues of \code{sigma} in decreasing
+order.}
 \item{\code{principal_axes}}{unit vectors of principal stress axes (max to min)}
 \item{\code{principal_vals}}{eigenvalues of \code{stress_tensor} (decreasing)}
-\item{\code{alpha}}{per-fault angular misfit (unsigned, 0-90°)}
-\item{\code{alpha_signed}}{per-fault signed misfit (0-180°)}
-\item{\code{mean_alpha}}{mean angular misfit across all faults (°)}
-\item{\code{suspected_flipped}}{row indices where \code{alpha_signed} > 90°}
-\item{\code{n_flipped_sense}}{number of faults whose sense was corrected in Stage 3}
-\item{\code{slips_corrected}}{sense-corrected slip matrix used in final inversion}
-\item{\code{mu}}{per-fault magnitude weights from Stage 2/3}
-\item{\code{phi_sense}}{per-fault tanh sense confidence from Stage 3}
-\item{\code{eigenvalue_gap}}{\eqn{\lambda_2 - \lambda_1} of \eqn{M5} (condition number proxy)}
-\item{\code{M5_eigvals}}{all 5 eigenvalues of final \eqn{M5}}
-\item{\code{unc}}{Stage 4 uncertainty list (if \code{run_stage4 = TRUE}):
-\code{Cov5}: 5x5 covariance matrix in sigma-space;
-\code{Cov_y6}: 6x6 covariance matrix (\code{y}-space);
-\code{eigval_gap}: eigenvalue gap (same as above);
-\code{cov_eigvals}: eigenvalues of \code{Cov5};
-\code{sigma1_unc}: approx 1\eqn{\sigma} uncertainty on \eqn{\sigma_1} orientation
-\code{Phi_unc}: approx 1\eqn{sigma} uncertainty on \eqn{\phi}}
+\item{\code{Phi}}{Shape ratio
+\eqn{\Phi = (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3) \in [0, 1]}.}
+\item{\code{alpha_deg}}{Per-fault unsigned angular misfit in degrees
+(0-90), the standard line metric.}
+\item{\code{alpha_signed_deg}}{Per-fault signed angular misfit in degrees
+(0-180). Values above 90 indicate that the recorded slip sense is
+opposite to the predicted shear traction direction.}
+\item{\code{mean_alpha}}{Mean unsigned angular misfit across all faults
+(degrees).}
+\item{\code{median_alpha}}{Median unsigned angular misfit (degrees). More
+robust than the mean in the presence of outliers.}
+\item{\code{suspected_flipped}}{Integer vector of row indices where
+\code{alpha_signed_deg > 90}, flagging faults whose recorded slip sense
+may be incorrect.}
+\item{\code{outliers_mad}}{Integer vector of row indices flagged as
+outliers by the MAD criterion (only when \code{robust = TRUE}).}
+\item{\code{n_flipped_sense}}{Number of faults whose slip sense was
+corrected internally during Stage 3.}
+\item{\code{slips_corrected}}{N x 3 matrix of sense-corrected slip
+vectors used in the final inversion.}
 \item{\code{mu}}{Per-fault magnitude weights \eqn{\mu_i} from Stage 2.}
 \item{\code{phi_sense}}{Per-fault \eqn{\tanh} sense confidence values
 from Stage 3. Positive values indicate consistent sense; negative
@@ -141,7 +165,17 @@ values indicate corrected (flipped) senses.}
 from the final iteration (only when \code{robust = TRUE}).}
 \item{\code{wt_combined}}{Per-fault combined weights
 \eqn{\tilde{\omega}_i} used in the final M5 matrix.}
-\item{\code{n_iter_total}}{total number of inner iterations}
+\item{\code{eigenvalue_gap}}{Difference \eqn{\lambda_2 - \lambda_1} of
+the final \eqn{M_5} matrix. Larger values indicate a better-conditioned
+solution.}
+\item{\code{M5_eigvals}}{All five eigenvalues of the final \eqn{M_5}
+matrix in decreasing order.}
+\item{\code{unc}}{List of analytic uncertainty estimates from Stage 4
+(only when \code{run_stage4 = TRUE}), containing \code{Cov5},
+\code{Cov_y6}, \code{eigval_gap}, \code{cov_eigvals},
+\code{sigma1_unc_deg}, and \code{Phi_unc}.}
+\item{\code{n_iter_total}}{Total number of inner iterations performed
+across all annealing steps.}
 }
 }
 \description{
@@ -204,7 +238,7 @@ a small gap indicates that the solution is poorly separated from the next
 eigenvector and that uncertainty estimates may be unreliable.
 
 \strong{Stage 5 (polyphase) — Spectral clustering.} Available via
-\code{\link{wissi_polyphase}}. Represents each fault by the pole of its
+\code{\link{slip_inversion_wissi_polyphase}}. Represents each fault by the pole of its
 solution great hypercircle on \eqn{S^5}, builds a Gaussian affinity matrix
 using the angular stress distance \eqn{\Theta}, and applies normalised
 spectral clustering with automatic phase count selection via the eigengap
@@ -262,7 +296,26 @@ invisible(lapply(seq_len(nx), function(i) {
 }))
 }
 \references{
-Stephan (in prep.)
+Angelier, J. (1990). Inversion of field data in fault tectonics to obtain
+the regional stress. III. A new rapid direct inversion method by
+analytical means. \emph{Geophys. J. Int.}, 103, 363-376.
+
+Hansen, J.A. (2013). Direct inversion of stress from sets of fault slip
+data with unknown slip sense. \emph{J. Struct. Geol.}, 51, 54-65.
+
+Michael, A.J. (1984). Determination of stress from slip data: faults and
+folds. \emph{J. Geophys. Res.}, 89, 11517-11526.
+
+Mostafa, M.E. (2005). Iterative linear inversion of stress tensor from
+fault-slip data. \emph{J. Struct. Geol.}, 27, 930-940.
+
+Pascal, C. (2022). \emph{Paleostress Inversion Techniques}. Elsevier.
+
+Yamaji, A. & Sato, K. (2006). Distances for the solutions of stress
+tensor inversion in relation to misfit angles that accompany the
+solutions. \emph{Geophys. J. Int.}, 167, 933-942.
+
+Stephan (in prep)
 }
 \seealso{
 Other stress-inversion: 
@@ -270,9 +323,13 @@ Other stress-inversion:
 \code{\link{slip_inversion}()},
 \code{\link{slip_inversion_angelier}()},
 \code{\link{slip_inversion_hansen}()},
-\code{\link{slip_inversion_hansen_boot}()},
 \code{\link{slip_inversion_michael}()},
 \code{\link{slip_inversion_simple}()},
 \code{\link{slip_inversion_yamaji_sato}()}
+
+Other wissi: 
+\code{\link{slip_inversion_wissi_boot}()},
+\code{\link{slip_inversion_wissi_polyphase}()}
 }
 \concept{stress-inversion}
+\concept{wissi}

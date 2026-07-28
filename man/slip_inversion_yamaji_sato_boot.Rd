@@ -78,5 +78,7 @@ invisible(lapply(seq_len(nx), function(i) {
 dev.off()
 }
 \seealso{
-\code{\link[=slip_inversion_yamaji_sato]{slip_inversion_yamaji_sato()}}
+Other yamaji: 
+\code{\link{slip_inversion_yamaji_sato}()}
 }
+\concept{yamaji}

@@ -168,7 +168,7 @@ yamaji_sato <- function(normals, slips, wt) {
 #' @export
 #'
 #' @family stress-inversion
-#' @seealso [slip_inversion_yamaji_sato_boot()]
+#' @family yamaji
 #'
 #' @examples
 #' set.seed(20250411)
@@ -325,7 +325,7 @@ michael_distance <- function(y1, y2) {
 #' 
 #' @export
 #'
-#' @seealso [slip_inversion_yamaji_sato()]
+#' @family yamaji
 #'
 #' @examples
 #' set.seed(20250411)

@@ -472,7 +472,7 @@ NULL
 # tend to have similar poles. The algorithm:
 #
 #   1. Compute pairwise angular distances between fault poles.
-#   2. Build the Gaussian affinity matrix K_ij = exp(-D_ij^2 / 2*sigma_K^2).
+#   2. Build the Gaussian affinity matrix \eqn{K_ij = \exp(-D_{ij}^2 / 2*\sigma_K^2)}.
 #   3. Compute the normalised graph Laplacian L_sym.
 #   4. Select k via the eigengap heuristic on the k_max smallest eigenvalues.
 #   5. k-means cluster the row-normalised spectral embedding.
@@ -489,6 +489,7 @@ NULL
 #   phase_results : list of k wissi() results, one per phase
 #   D_mat         : N x N pairwise ASD matrix between fault poles
 # ===
+#' @importFrom stats kmeans
 .wissi_stage5 <- function(normals, slips, weights,
                           k_max = 4L,
                           sigma_K_deg = 30,
@@ -533,7 +534,7 @@ NULL
   U_norm <- U / r_norm
 
   # k-means clustering in the spectral embedding
-  km <- kmeans(U_norm, centers = k_opt, nstart = 25L, iter.max = 200L)
+  km <- stats::kmeans(U_norm, centers = k_opt, nstart = 25L, iter.max = 200L)
   assignment <- km$cluster
 
   # Run wissi() on each cluster
@@ -582,6 +583,7 @@ NULL
 #' uncertainty framework of Michael (1984), extended to the curved geometry
 #' of the 5-sphere.
 #'
+#' @inheritParams slip_inversion
 #' @param normals \code{N x 3} numeric matrix of unit fault plane normals in
 #'   a right-handed Cartesian coordinate system (x = East, y = North, z = Up).
 #'   Normals should point toward the footwall (upward-pointing for
@@ -717,7 +719,7 @@ NULL
 #' eigenvector and that uncertainty estimates may be unreliable.
 #'
 #' **Stage 5 (polyphase) — Spectral clustering.** Available via
-#' \code{\link{wissi_polyphase}}. Represents each fault by the pole of its
+#' \code{\link{slip_inversion_wissi_polyphase}}. Represents each fault by the pole of its
 #' solution great hypercircle on \eqn{S^5}, builds a Gaussian affinity matrix
 #' using the angular stress distance \eqn{\Theta}, and applies normalised
 #' spectral clustering with automatic phase count selection via the eigengap
@@ -753,8 +755,10 @@ NULL
 #'     (\eqn{\sigma_3}) compressive stress.}
 #'   \item{\code{eigenvalues}}{Eigenvalues of \code{sigma} in decreasing
 #'     order.}
-# #'   \item{\code{Phi}}{Shape ratio
-# #'     \eqn{\Phi = (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3) \in [0, 1]}.}
+#'   \item{`principal_axes`}{unit vectors of principal stress axes (max to min)}
+#'   \item{`principal_vals`}{eigenvalues of `stress_tensor` (decreasing)}
+#'   \item{\code{Phi}}{Shape ratio
+#'     \eqn{\Phi = (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3) \in [0, 1]}.}
 #'   \item{\code{alpha_deg}}{Per-fault unsigned angular misfit in degrees
 #'     (0-90), the standard line metric.}
 #'   \item{\code{alpha_signed_deg}}{Per-fault signed angular misfit in degrees
@@ -814,37 +818,47 @@ NULL
 #'   Yamaji, A. & Sato, K. (2006). Distances for the solutions of stress
 #'   tensor inversion in relation to misfit angles that accompany the
 #'   solutions. \emph{Geophys. J. Int.}, 167, 933-942.
+#'   
+#'   Stephan (in prep)
+#'   
+#' @name slip_inversion_wissi
+#' 
+#' @family stress-inversion
+#' @family wissi
 #'
 #' @examples
-#' \dontrun{
-#' # Basic usage with uniform weights
-#' res <- wissi(normals, slips)
+#' set.seed(20250411)
+#' 
+#' nx <- length(angelier1990)
+#' par(mfrow = c(2, nx/2))
 #'
-#' # With field quality ranks and measurement errors
-#' ranks     <- c(1, 2, 1, 4, 3, 2, 5, 1, 3, 2)
-#' error_deg <- c(5, 10, 3, 20, 15, 8, NA, 4, 12, 7)
-#' w <- combine_weights(
-#'   signal_to_weights(ranks,     function(x) 1/x^2),
-#'   signal_to_weights(error_deg, function(x) 1/pmin(pmax(x,0.1),90)^2)
-#' )
-#' res <- wissi(normals, slips, weights = w,
-#'              sigma_alpha_deg = 15,
-#'              robust = TRUE, robust_kernel = "tukey", robust_k_deg = 35)
+#' invisible(lapply(seq_len(nx), function(i) {
+#'   # inversion
+#'   x <- angelier1990[[i]]
+#'   res <- slip_inversion_wissi(x)
 #'
-#' # Sense-agnostic mode (all senses unknown, like Hansen 2013)
-#' res <- wissi(normals, slips, gamma_max = 0)
+#'   # some stress shape
+#'   phi_val <- round(res$stress_shape$phi, 2)
 #'
-#' # Inspect results
-#' cat("Phi:", round(res$Phi, 3), "\n")
-#' cat("Mean misfit:", round(res$mean_alpha, 2), "deg\n")
-#' cat("Outliers:", res$outliers_mad, "\n")
-#' cat("Sense-corrected:", res$n_flipped_sense, "faults\n")
+#'   # misfit
+#'   rup_val <- round(res$misfit$rup_mean, 2)
 #'
-#' # Bootstrap uncertainty
-#' boot <- wissi_bootstrap(normals, slips, weights = w, B = 500L,
-#'                         robust = TRUE, run_stage4 = FALSE)
-#' cat("Bootstrap dispersion:", round(boot$dispersion_deg, 2), "deg\n")
-#' }
+#'   # Plot the faults (color-coded by RUP%) and show the principal stress axes
+#'   stereoplot(title = names(angelier1990)[i], guides = FALSE)
+#'   stereo_shmax(res$SHmax)
+#'   fault_plot(x, col = assign_col(res$misfit$rup))
+#'   points(res$principal_axes, col = 1:3, pch = 16, cex = 1.5)
+#'   text(res$principal_axes,
+#'     label = rownames(res$principal_axes),
+#'     col = 1:3, adj = -.25
+#'   )
+#'   legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
+#'   title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "%"))
+#' }))
+NULL
+
+#' @rdname slip_inversion_wissi
+#' @noRd
 wissi <- function(normals,
                   slips,
                   weights = NULL,
@@ -1003,84 +1017,8 @@ wissi <- function(normals,
   )
 }
 
-#' @title Weighted Iterative Sigma-Space Inversion (WISSI)
-#'
-#' @inherit wissi description
-#'
-#' @inheritParams slip_inversion_yamaji_sato
-#' @inheritParams wissi
-#'
-#' @returns A named list with: \describe{
-#'   \item{`stress_tensor`}{3x3 reduced stress tensor (Cartesian frame)}
-#'   \item{`y`}{6D unit y-vector on \eqn{S^5}}
-#'   \item{`principal_axes`}{unit vectors of principal stress axes (max to min)}
-#'   \item{`principal_vals`}{eigenvalues of `stress_tensor` (decreasing)}
-#'   \item{`alpha`}{per-fault angular misfit (unsigned, 0-90&deg;)}
-#'   \item{`alpha_signed`}{per-fault signed misfit (0-180&deg;)}
-#'   \item{`mean_alpha`}{mean angular misfit across all faults (&deg;)}
-#'   \item{`suspected_flipped`}{row indices where `alpha_signed` > 90&deg;}
-#'   \item{`n_flipped_sense`}{number of faults whose sense was corrected in Stage 3}
-#'   \item{`slips_corrected`}{sense-corrected slip matrix used in final inversion}
-#'   \item{`mu`}{per-fault magnitude weights from Stage 2/3}
-#'   \item{`phi_sense`}{per-fault tanh sense confidence from Stage 3}
-#'   \item{`eigenvalue_gap`}{\eqn{\lambda_2 - \lambda_1} of \eqn{M5} (condition number proxy)}
-#'   \item{`M5_eigvals`}{all 5 eigenvalues of final \eqn{M5}}
-#'   \item{`unc`}{Stage 4 uncertainty list (if `run_stage4 = TRUE`): 
-#'     `Cov5`: 5x5 covariance matrix in sigma-space;
-#'     `Cov_y6`: 6x6 covariance matrix (`y`-space);
-#'     `eigval_gap`: eigenvalue gap (same as above);
-#'     `cov_eigvals`: eigenvalues of `Cov5`;
-#'     `sigma1_unc`: approx 1\eqn{\sigma} uncertainty on \eqn{\sigma_1} orientation
-#'     `Phi_unc`: approx 1\eqn{\sigma} uncertainty on \eqn{\phi}}
-#'  \item{\code{mu}}{Per-fault magnitude weights \eqn{\mu_i} from Stage 2.}
-#'   \item{\code{phi_sense}}{Per-fault \eqn{\tanh} sense confidence values
-#'     from Stage 3. Positive values indicate consistent sense; negative
-#'     values indicate corrected (flipped) senses.}
-#'   \item{\code{w_robust}}{Per-fault robust kernel weights \eqn{w_i^{\text{rob}}}
-#'     from the final iteration (only when \code{robust = TRUE}).}
-#'   \item{\code{wt_combined}}{Per-fault combined weights
-#'     \eqn{\tilde{\omega}_i} used in the final M5 matrix.}
-#'   \item{`n_iter_total`}{total number of inner iterations}
-#' }
-#' 
-#' @inherit wissi details
-#'   
-#' @family stress-inversion
-#' 
-#' @inherit wissi references
-#' @references Stephan (in prep.)
-#'   
+#' @rdname slip_inversion_wissi
 #' @export
-#'
-#' @examples
-#' set.seed(20250411)
-#' 
-#' nx <- length(angelier1990)
-#' par(mfrow = c(2, nx/2))
-#'
-#' invisible(lapply(seq_len(nx), function(i) {
-#'   # inversion
-#'   x <- angelier1990[[i]]
-#'   res <- slip_inversion_wissi(x)
-#'
-#'   # some stress shape
-#'   phi_val <- round(res$stress_shape$phi, 2)
-#'
-#'   # misfit
-#'   rup_val <- round(res$misfit$rup_mean, 2)
-#'
-#'   # Plot the faults (color-coded by RUP%) and show the principal stress axes
-#'   stereoplot(title = names(angelier1990)[i], guides = FALSE)
-#'   stereo_shmax(res$SHmax)
-#'   fault_plot(x, col = assign_col(res$misfit$rup))
-#'   points(res$principal_axes, col = 1:3, pch = 16, cex = 1.5)
-#'   text(res$principal_axes,
-#'     label = rownames(res$principal_axes),
-#'     col = 1:3, adj = -.25
-#'   )
-#'   legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
-#'   title(sub = bquote(Phi == .(phi_val) ~ "|" ~ bar("RUP") == .(rup_val) * "%"))
-#' }))
 slip_inversion_wissi <- function(x, weights = NULL,
                                  sigma_alpha_deg = 10,
                                  gamma_max = 10,
@@ -1125,50 +1063,20 @@ slip_inversion_wissi <- function(x, weights = NULL,
 
 
 # WISSI_POLYPHASE — Polyphase separation wrapper
-
-#' Polyphase stress inversion via spectral clustering on \eqn{S^5} (Stage 5).
-#'
-#' Identifies k stress phases automatically using the eigengap heuristic,
-#' then runs wissi() on each phase subset.
-#'
-#' @inheritParams slip_inversion_wissi
-#' @param k_max       Maximum number of phases to consider. Default `4`.
-#' @param sigma_K_deg Affinity bandwidth in degrees of angular stress
-#'                    distance. Faults within this distance are considered
-#'                    similar. Default `30.` Increase to merge nearby phases,
-#'                    decrease to split them.
-#' @param seed        Optional RNG seed for k-means reproducibility.
-#' @param ...         Additional arguments passed to wissi() for each phase.
-#'
-#' @return A named list with:
-#'   assignment    : integer vector of length N (phase label 1..k per fault)
-#'   k_opt         : number of phases identified
-#'   gaps          : Laplacian eigenvalue gaps (eigengap criterion)
-#'   phase_results : list of k wissi() results, one per phase
-#'   D_mat         : N x N pairwise ASD matrix between fault poles (degrees)
-#' @export
-#' @examples
-#' res <- wissi_polyphase(angelier1990$TYM)
-#' res$k_opt
-wissi_polyphase <- function(x,
+wissi_polyphase <- function(normals, slips,
                             weights = NULL,
                             k_max = 4L,
                             sigma_K_deg = 30,
                             seed = NULL,
                             ...) {
   
-  stopifnot(is.Pair(x))
-  normals <- Vec3(Plane(x)) |> unclass()
-  slips <- if (is.Fault(x)) Ray(x) else Line(x)
-  slips <- Vec3(slips) |> unclass()
-  
-  # if (!is.matrix(normals) || !is.matrix(slips)) {
-  #   stop("'normals' and 'slips' must be matrices.")
-  # }
+  if (!is.matrix(normals) || !is.matrix(slips)) {
+   stop("'normals' and 'slips' must be matrices.")
+  }
   if (nrow(normals) < 4L) {
     stop("At least 4 fault slip measurements are required.")
   }
-
+  
   N <- nrow(normals)
   wt <- if (is.null(weights)) {
     rep(1, N)
@@ -1177,39 +1085,106 @@ wissi_polyphase <- function(x,
     w[is.na(w)] <- mean(w, na.rm = TRUE)
     w / mean(w)
   }
-
+  
   .wissi_stage5(normals, slips, wt,
-    k_max       = k_max,
-    sigma_K_deg = sigma_K_deg,
-    wissi_args  = list(...),
-    seed        = seed
+                k_max       = k_max,
+                sigma_K_deg = sigma_K_deg,
+                wissi_args  = list(...),
+                seed        = seed
   )
+}
+
+#' Polyphase stress inversion via spectral clustering on \eqn{S^5} (Stage 5).
+#'
+#' Identifies `k` stress phases automatically using the *eigengap heuristic*,
+#' then runs `slip_inversion_wissi()` on each phase subset.
+#'
+#' @inheritParams slip_inversion_wissi
+#' @param k_max       Maximum number of phases to consider. Default `4`.
+#' @param sigma_K_deg Affinity bandwidth in degrees of angular stress
+#'                    distance. Faults within this distance are considered
+#'                    similar. Default `30.` Increase to merge nearby phases,
+#'                    decrease to split them.
+#' @param seed        Optional RNG seed for k-means reproducibility.
+#' @param ...         Additional arguments passed to `slip_inversion_wissi()` for each phase.
+#'
+#' @return A named list with: \describe{
+#'   \item{`assignment`}{integer vector of length N (phase label 1..k per fault)}
+#'   \item{`k_opt`}{number of phases identified}
+#'   \item{`gaps`}{Laplacian eigenvalue gaps (*eigengap* criterion)}
+#'   \item{`phase_results`}{list of `k` `slip_inversion_wissi()` results, one per phase}
+#'   \item{`D_mat`}{N x N pairwise ASD matrix between fault poles (degrees)}
+#'   }
+#'  
+#' @family wissi 
+#' 
+#' @export
+#' 
+#' @examples
+#' res <- slip_inversion_wissi_polyphase(angelier1990$KAM, sigma_K_deg = 15)
+#' 
+#' # check amount of clusters detected
+#' res$k_opt
+#' 
+#' 
+#' # plot the results in lambert projection:
+#' cols <- assign_col_d(seq_len(res$k_opt))#' 
+#' par(mfrow = c(1, 2))
+#' 
+#' stereoplot()
+#' angelier(angelier1990$KAM, col = assign_col_d(res$assignment))
+#' legend('topleft', title = 'Phases', fill = cols, legend = 1:3)
+#' 
+#' 
+#' stereoplot()
+#' angelier(angelier1990$KAM, col = 'grey')
+#' for(k in seq_len(res$k_opt)){
+#'    res_k <- res$phase_results[[k]]
+#'    points(res_k$principal_axes, col = cols[k], pch = 16:18, cex = 2) 
+#'  }
+#' legend('topright', title = "Principal axes", pch = 16:18, col = 'black', legend = c('S1', 'S2', 'S3'))
+#'  
+#'  dev.off()
+slip_inversion_wissi_polyphase <- function(x, 
+                                           weights = NULL,
+                                           k_max = 4L,
+                                           sigma_K_deg = 30,
+                                           seed = NULL, ...){
+  stopifnot(is.Pair(x))
+  normals <- Vec3(Plane(x)) |> unclass()
+  slips <- if (is.Fault(x)) Ray(x) else Line(x)
+  slips <- Vec3(slips) |> unclass()
+  
+  res <- wissi_polyphase(normals, slips, 
+                  weights = weights,
+                  k_max = k_max,
+                  sigma_K_deg = sigma_K_deg,
+                  seed = seed, ...)
+  
+  res$phase_results <- lapply(res$phase_results, function(i){
+    s <- sigma2stress(i$sigma)
+    i$principal_axes <- s$axes
+    i$principal_vals <- s$vals
+    i$sigma1 <- i$sigma2 <- i$sigma3 <- i$eigenvalues <- i$Phi <- NULL
+    
+    i$stress_shape <- stress_shape(i$sigma)
+    
+    i$SHmax <- SH(i$principal_axes[1, ], i$principal_axes[2, ], i$principal_axes[3, ], R = i$stress_shape$R)
+    
+    i$slips_corrected <- as.Vec3(i$slips_corrected)
+    
+    i$misfit <- slip_inversion_misfit(i$sigma, x)
+    
+    return(i)
+  })
+  
+  return(res)
 }
 
 
 # ===
 # BOOTSTRAP UNCERTAINTY  (Yamaji-Sato Section 6)
 # ===
-#
-#' Bootstrap uncertainty for a wissi() result.
-#'
-#' Yields B stress tensors from resampled datasets. The dispersion
-#' Theta-bar on S^5 approximates the data noise level (Eq. 37: Theta ~ d-bar).
-#'
-#' @param normals,slips,weights As for wissi().
-#' @param B     Number of bootstrap replicates. Default 500.
-#' @param seed  Optional RNG seed.
-#' @param ...   Additional arguments passed to wissi().
-#' 
-#' @noRd                
-#'
-#' @return A named list with:
-#'   optimal        : wissi() result for the full dataset
-#'   thetas         : length-B vector of angular stress distances from optimal
-#'   dispersion : mean Theta (approximates noise level p of data)
-#'   sd         : standard deviation of Theta values
-#'   D_bar          : mean Orife-Lisle distance from optimal
-#'   DM_bar         : mean Michael distance from optimal
 wissi_bootstrap <- function(normals, slips,
                             weights = NULL,
                             B = 500L,
@@ -1219,7 +1194,7 @@ wissi_bootstrap <- function(normals, slips,
   N <- nrow(normals)
   res0 <- wissi(normals, slips, weights, ...)
   y0 <- res0$y
-
+  
   resample_one <- function(b) {
     idx <- sample(N, N, replace = TRUE)
     w_b <- if (!is.null(weights)) weights[idx] else NULL
@@ -1240,9 +1215,9 @@ wissi_bootstrap <- function(normals, slips,
       michael_distance(y0, rb$y)
     )
   }
-
+  
   boot_mat <- vapply(seq_len(B), resample_one, numeric(3L))
-
+  
   list(
     optimal        = res0,
     thetas         = boot_mat[1, ],
@@ -1251,4 +1226,59 @@ wissi_bootstrap <- function(normals, slips,
     D_bar          = mean(boot_mat[2, ], na.rm = TRUE),
     DM_bar         = mean(boot_mat[3, ], na.rm = TRUE)
   )
+}
+
+
+#' Bootstrap uncertainty for a WISSI result.
+#'
+#' Yields `n_iter` stress tensors from resampled datasets. The dispersion
+#' Theta-bar on S^5 approximates the data noise level (Eq. 37: Theta ~ d-bar).
+#'
+#' @inheritParams slip_inversion_yamaji_sato_boot
+#' @param n_iter     Number of bootstrap replicates. Default `500`.
+#' @param seed  Optional RNG seed.
+#' @param ...   Additional arguments passed to [slip_inversion_wissi()].
+#' 
+#' @family wissi 
+#'
+#' @return A named list with:
+#' \describe{
+#'   \item{`optimal`}{slip_inversion_wissi() result for the full dataset}
+#'   \item{`thetas`}{length-B vector of angular stress distances from optimal}
+#'   \item{`dispersion`}{mean Theta (approximates noise level p of data)}
+#'   \item{`sd`}{standard deviation of Theta values}
+#'   \item{`D_bar`}{mean Orife-Lisle distance from optimal}
+#'   \item{`DM_bar`}{mean Michael distance from optimal}
+#'   }
+#'   
+#' @examples
+#' res <- slip_inversion_wissi_boot(angelier1990$AVB, n_iter = 4)
+#' 
+#' stereoplot()
+#' angelier(angelier1990$KAM, col = 'grey')
+#' lines(res$optimal$principal_axes, res$sd, col = 2:4)
+#' points(res$optimal$principal_axes, pch = 16:18, cex = 2, col= 2:4)
+#' text(res$optimal$principal_axes, 
+#'  label = rownames(res$optimal$principal_axes), col= 2:4, adj = -.25)
+slip_inversion_wissi_boot <- function(x, n_iter = 500L, seed = NULL, ...){
+  stopifnot(is.Pair(x))
+  normals <- Vec3(Plane(x)) |> unclass()
+  slips <- if (is.Fault(x)) Ray(x) else Line(x)
+  slips <- Vec3(slips) |> unclass()
+  res <- wissi_bootstrap(normals, slips, B = n_iter, seed = seed, ...)
+  
+  s <- sigma2stress(res$optimal$sigma)
+  res$optimal$principal_axes <- s$axes
+  res$optimal$principal_vals <- s$vals
+  res$optimal$sigma1 <- res$optimal$sigma2 <- res$optimal$sigma3 <- res$optimal$eigenvalues <- res$optimal$Phi <- NULL
+  
+  res$optimal$stress_shape <- stress_shape(res$optimal$sigma)
+  
+  res$optimal$SHmax <- SH(res$optimal$principal_axes[1, ], res$optimal$principal_axes[2, ], res$optimal$principal_axes[3, ], R = res$optimal$stress_shape$R)
+  
+  res$optimal$slips_corrected <- as.Vec3(res$optimal$slips_corrected)
+  
+  res$optimal$misfit <- slip_inversion_misfit(res$optimal$sigma, x)
+  
+  return(res)
 }

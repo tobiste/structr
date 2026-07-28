@@ -62,16 +62,17 @@ Geophysical Journal International, 167(2), 933–942.
 \doi{10.1111/j.1365-246X.2006.03188.x}
 }
 \seealso{
-\code{\link[=slip_inversion_yamaji_sato_boot]{slip_inversion_yamaji_sato_boot()}}
-
 Other stress-inversion: 
 \code{\link{Fault_PT}()},
 \code{\link{slip_inversion}()},
 \code{\link{slip_inversion_angelier}()},
 \code{\link{slip_inversion_hansen}()},
-\code{\link{slip_inversion_hansen_boot}()},
 \code{\link{slip_inversion_michael}()},
 \code{\link{slip_inversion_simple}()},
 \code{\link{slip_inversion_wissi}()}
+
+Other yamaji: 
+\code{\link{slip_inversion_yamaji_sato_boot}()}
 }
 \concept{stress-inversion}
+\concept{yamaji}

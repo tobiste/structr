@@ -104,6 +104,7 @@
 #' @export
 #'
 #' @family stress-inversion
+#' @family hansen
 #'
 #' @examples
 #' # Osmundsen et al. 2010 dataset
@@ -353,7 +354,7 @@ slip_inversion_hansen <- function(x, flip = FALSE, type = c("9d", "6d")) {
 #'
 #' @returns See [slip_inversion_hansen()] and [slip_inversion_michael()]
 #' @export
-#' @family stress-inversion
+#' @family hansen
 #'
 #' @examples
 #' set.seed(20250411)
