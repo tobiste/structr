@@ -4,17 +4,19 @@
 \alias{stereo_cones}
 \alias{stereo_smallcircle}
 \alias{stereo_greatcircle}
-\title{Stereographic Projection of Cones}
+\title{Spherical Projection of Cones}
 \usage{
 stereo_smallcircle(
   x,
   d = 90,
-  col = 1,
+  col = par("col"),
   N = 1000,
   upper.hem = NULL,
   earea = NULL,
-  lty = 1,
-  lwd = 1,
+  lty = par("lty"),
+  lwd = par("lwd"),
+  fill = FALSE,
+  border = NA,
   radius = NULL,
   ...
 )
@@ -39,12 +41,16 @@ hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}). Defaults to
 projection, or \code{FALSE} for meridional stereographic projection.
 Defaults to \code{getOption("structr.earea")}.}
 
+\item{fill}{logical. Whether to fill the inner part of the small-circle? \code{FALSE} by default.}
+
+\item{border}{Color of the filled small-circle's outline (ignored if \code{fill=FALSE})}
+
 \item{radius}{numeric. Radius of circle. Defaults to \code{getOption("structr.radius")}.}
 
-\item{...}{optional graphical parameters passed to \code{\link[graphics:lines]{graphics::lines()}}}
+\item{...}{optional graphical parameters passed to \code{\link[graphics:lines]{graphics::lines()}} and (if \code{fill=TRUE}) \code{\link[graphics:polygon]{graphics::polygon()}}}
 }
 \description{
-Visualization of smallcircles and greatcircles in a stereographic projection.
+Visualization of small-circles and great-circles in a stereographic or equal-area projection.
 }
 \examples{
 stereoplot()
@@ -56,6 +62,11 @@ stereo_greatcircle(Plane(120, 30), col = "red")
 stereoplot()
 stereo_point(Line(c(129, 90), c(30, 5)), lab = c("L1", "L2"))
 stereo_smallcircle(Line(c(129, 90), c(30, 5)), d = c(10, 5), col = 1:2, lty = 1:2, lwd = 1:2)
+
+# Filled cones:
+stereoplot()
+stereo_smallcircle(Line(c(90, 120), c(5, 5)), d = c(5, 20), col = c('grey60', 'grey40'), border = c('red', 'blue'), fill = TRUE)
+stereo_point(Line(c(90, 120), c(5, 5)), col = c('red', 'blue'))
 }
 \seealso{
 \code{\link[=lines.spherical]{lines.spherical()}}, \code{\link[=stereo_segment]{stereo_segment()}}, \code{\link[=stereo_lines]{stereo_lines()}}

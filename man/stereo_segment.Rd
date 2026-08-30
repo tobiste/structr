@@ -29,7 +29,7 @@ Defaults to \code{getOption("structr.earea")}.}
 
 \item{radius}{numeric. Radius of circle. Defaults to \code{getOption("structr.radius")}.}
 
-\item{...}{optional graphical parameters passed to \code{\link[graphics:lines]{graphics::lines()}}}
+\item{...}{optional graphical parameters passed to \code{\link[graphics:lines]{graphics::lines()}} and (if \code{fill=TRUE}) \code{\link[graphics:polygon]{graphics::polygon()}}}
 }
 \description{
 Plots the great-circle segment between two vectors

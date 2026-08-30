@@ -240,18 +240,20 @@ stereo_pair <- function(x, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex 
 }
 
 
-#' Stereographic Projection of Cones
+#' Spherical Projection of Cones
 #'
-#' Visualization of smallcircles and greatcircles in a stereographic projection.
+#' Visualization of small-circles and great-circles in a stereographic or equal-area projection.
 #'
 #' @inheritParams stereo_point
 #' @inheritParams stereoplot
 #' @param d numeric. conical angle in degrees.
 #' @param col,lty,lwd color, line type, and line width parameters
 #' @param N integer. number of points to calculate
-#' @param ... optional graphical parameters passed to [graphics::lines()]
+#' @param fill logical. Whether to fill the inner part of the small-circle? `FALSE` by default.
+#' @param border Color of the filled small-circle's outline (ignored if `fill=FALSE`)
+#' @param ... optional graphical parameters passed to [graphics::lines()] and (if `fill=TRUE`) [graphics::polygon()] 
 #' 
-#' @importFrom graphics lines
+#' @importFrom graphics lines polygon
 #' @name stereo_cones
 #'
 #' @seealso [lines.spherical()], [stereo_segment()], [stereo_lines()]
@@ -267,21 +269,33 @@ stereo_pair <- function(x, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex 
 #' stereoplot()
 #' stereo_point(Line(c(129, 90), c(30, 5)), lab = c("L1", "L2"))
 #' stereo_smallcircle(Line(c(129, 90), c(30, 5)), d = c(10, 5), col = 1:2, lty = 1:2, lwd = 1:2)
+#' 
+#' # Filled cones:
+#' stereoplot()
+#' stereo_smallcircle(Line(c(90, 120), c(5, 5)), d = c(5, 20), col = c('grey60', 'grey40'), border = c('red', 'blue'), fill = TRUE)
+#' stereo_point(Line(c(90, 120), c(5, 5)), col = c('red', 'blue'))
 NULL
 
 #' @rdname stereo_cones
 #' @export
-stereo_smallcircle <- function(x, d = 90, col = 1, N = 1000, upper.hem = NULL, earea = NULL, lty = 1, lwd = 1, radius = NULL, ...) {
+stereo_smallcircle <- function(x, d = 90, col = par("col"), N = 1000, upper.hem = NULL, earea = NULL, lty = par('lty'), lwd = par('lwd'), fill = FALSE, border = NA, radius = NULL, ...) {
   earea <- earea %||% getOption("structr.earea")
   upper.hem <- upper.hem %||% getOption("structr.upper.hem")
   radius <- radius %||% getOption("structr.radius")
   
+  nx <- nrow(x)
+  nd <- length(d)
   
-  if (length(d) == 1) {
-    stereo_smallcircle0(x, d, col, N, upper.hem, earea, lty, lwd, radius, ...)
-  } else {
-    nx <- nrow(x)
-    stopifnot(length(d) == nx)
+  if(nx != nd & nd == 1) {
+    d <- rep_len(d, nx)
+    nd <- length(d)
+  }
+  
+  if (nd == 1 & isFALSE(fill)) {
+      stereo_smallcircle0(x, d = d, col = col, N = N, upper.hem = upper.hem, 
+                          earea = earea, lty = lty, lwd = lwd, radius = radius, ...)
+  } else if(nd>1 & isFALSE(fill)) {
+    # stopifnot(nd == nx)
 
     # for (par in list(pch, lwd, lty)) {
     #   if (length(par) > 1 && length(par) != nx) {
@@ -293,15 +307,22 @@ stereo_smallcircle <- function(x, d = 90, col = 1, N = 1000, upper.hem = NULL, e
     col <- rep_len(col, nx)
     lwd <- rep_len(lwd, nx)
     lty <- rep_len(lty, nx)
+    border <- rep_len(border, nx)
 
-    invisible(
       lapply(seq_len(nx), function(i) {
-        stereo_smallcircle0(Line(x[i, ]), d[i], col[i], N, upper.hem, earea, lty[i], lwd[i], radius, ...)
+        stereo_smallcircle0(Line(x[i, ]), d = d[i], col = col[i], N = N, 
+                            upper.hem = upper.hem, earea = earea, 
+                            lty = lty[i], lwd = lwd[i], radius = radius, ...)
       })
-    )
+  } else {
+    stereo_smallcircle0_filled(x, d, col = col, n = N, 
+                               upper.hem = upper.hem, earea = earea, r = radius,
+                               lty = lty, lwd = lwd, border = border, ...
+                               )
   }
 }
 
+#' @keywords internal
 stereo_smallcircle0 <- function(x, d = 90, col = 1, N = 1000, upper.hem = NULL, earea = NULL, lty = 1, lwd = 1, radius = NULL, ...) {
   earea <- earea %||% getOption("structr.earea")
   upper.hem <- upper.hem %||% getOption("structr.upper.hem")
@@ -356,6 +377,120 @@ stereo_greatcircle <- function(x, ...) {
   stereo_smallcircle(x, d = 90, ...) # add circle
 }
 
+stereo_smallcircle0_filled <- function(x, d = 90, col = 1, n = 1000,
+                                       upper.hem = NULL, earea = NULL,
+                                       lty = 1, lwd = 1, r = NULL,
+                                       border = NA, ...) {
+  earea <- earea %||% getOption("structr.earea")
+  upper.hem <- upper.hem %||% getOption("structr.upper.hem")
+  BALL.radius <- r %||% getOption("structr.radius")
+  
+  stopifnot(is.spherical(x))
+  if (is.Vec3(x)) x <- Line(x)
+  nx <- nrow(x)
+  col <- rep_len(col, nx); lwd <- rep_len(lwd, nx); lty <- rep_len(lty, nx)
+  border <- rep_len(border, nx); d <- rep_len(d, nx)
+  
+  az  <- x[, 1]
+  inc <- 90 - x[, 2]   # colatitude of the axis from the world +z ("down") pole
+  phi <- seq(0, 2 * pi, length.out = n)
+  
+  for (i in seq_len(nx)) {
+    th <- deg2rad(d[i])
+    Rmat <- roty3(inc[i]) %*% rotz3(az[i])
+    
+    # exact phi where the rotated cone crosses the equator (world gz = 0):
+    # gz = BALL.radius * ( cos(th)*c1 - sin(th)*s1*cos(phi) )
+    c1 <- cos(deg2rad(inc[i])); s1 <- sin(deg2rad(inc[i]))
+    rhs <- if (sin(th) != 0 && s1 != 0) (cos(th) * c1) / (sin(th) * s1) else Inf
+    
+    project_run <- function(pp) {
+      D <- cbind(BALL.radius * sin(th) * cos(pp),
+                 BALL.radius * sin(th) * sin(pp),
+                 rep(BALL.radius * cos(th), length(pp)))
+      g  <- D %*% Rmat
+      r2 <- sqrt(rowSums(g^2))
+      az2  <- atan2d(g[, 2], g[, 1])
+      inc2 <- 90 - acosd(g[, 3] / r2)
+      stereo_coords(az2, inc2, upper.hem = upper.hem, earea = earea,
+                    radius = BALL.radius, fix = TRUE)
+    }
+    
+    if (!is.finite(rhs) || abs(rhs) >= 1 - 1e-10) {
+      # never crosses the primitive circle -> a single closed loop
+      Sc <- project_run(phi)
+      graphics::polygon(Sc[, "x"], Sc[, "y"], col = col[i], border = border[i],
+                        lty = lty[i], lwd = lwd[i], ...)
+      next
+    }
+    
+    dphi <- acos(pmin(pmax(rhs, -1), 1))
+    lo <- dphi; hi <- 2 * pi - dphi
+    
+    build_phi <- function(pstart, pend) {
+      npts <- max(4, round(n * (pend - pstart) / (2 * pi)))
+      # Stay strictly inside (lo, hi): AT phi = lo/hi the point sits exactly on
+      # the equator, where stereo_coords()'s fold rule (co >= 0 -> no flip)
+      # breaks the tie in a way that doesn't necessarily match the fold used
+      # one step into the arc's interior -- sampling the exact crossing angle
+      # itself creates a spurious jump. Insetting by 1e-6 rad keeps every
+      # sample on the same, consistent side of the fold; the resulting
+      # endpoint is still indistinguishable from the true crossing point.
+      eps <- 1e-6 * (pend - pstart)
+      seq(pstart + eps, pend - eps, length.out = npts)
+    }
+    
+    for (run_phi in list(build_phi(lo, hi), build_phi(hi, lo + 2 * pi))) {
+      Sc <- project_run(run_phi)
+      arc <- close_primitive_arc(Sc[nrow(Sc), "x"], Sc[nrow(Sc), "y"],
+                                 Sc[1, "x"], Sc[1, "y"], r = BALL.radius)
+      graphics::polygon(c(Sc[, "x"], arc$x), c(Sc[, "y"], arc$y),
+                        col = col[i], border = border[i],
+                        lty = lty[i], lwd = lwd[i], ...)
+    }
+  }
+  invisible(NULL)
+}
+
+# still needed: closes an open arc's two primitive-circle endpoints the short way
+#' @keywords internal
+close_primitive_arc <- function(X1, Y1, X2, Y2, r = 1, n = 64) {
+  a1 <- atan2(Y1, X1) 
+  a2 <- atan2(Y2, X2)
+  
+  delta <- ((a2 - a1 + pi) %% (2 * pi)) - pi
+  a <- seq(a1, a1 + delta, length.out = n)
+  list(x = r * cos(a), y = r * sin(a))
+}
+  
+# stereo_smallcircle_filled <- function(x, d, 
+#                                        n = 512, 
+#                                        col = "grey70", border = NA,
+#                                        ..., 
+#                                        r = 1, upper.hem = NULL, earea = NULL){
+#   stopifnot(is.spherical(x))
+#   
+#   earea <- earea %||% getOption("structr.earea")
+#   upper.hem <- upper.hem %||% getOption("structr.upper.hem")
+#   r <- r %||% getOption("structr.radius")
+#   
+#   if (is.Vec3(x)) x <- Line(x)
+#   az <- x[, 1]
+#   
+#   # invert here as the stereo_fill_cone_schmidt and stereo_fill_cone_wulff use upper.hem by default
+#   if (upper.hem) {
+#     az <- az + 180
+#   }
+#   xv2 <- Line(az, xv1[, 2]) |> 
+#     Vec3() |> 
+#     unclass()
+#   
+#   if(earea) {
+#     stereo_fill_cone_schmidt(xv2, d, n = n, r = r, col = col, border = border, ...)
+#   } else {
+#   stereo_fill_cone_wulff(xv2, d, n = n, r = r, col = col, border = border, ...)
+#   }
+# }
 
 #' Great-circle Segment Between Two Vectors
 #'
@@ -428,6 +563,7 @@ stereo_segment <- function(x, y, upper.hem = NULL, earea = NULL, n = 100L, radiu
   }
 }
 
+#' @keywords internal
 .draw_lines <- function(x, y, n = 100L, upper.hem, earea, radius = 1, ...) {
   t <- seq(0, 1, length.out = n)
   D <- slerp(x, y, t) #|>
@@ -568,8 +704,6 @@ stereoplot <- function(earea = NULL, guides = NULL, d = NULL, col = NULL,
   ticks <- ticks %||% getOption("structr.ticks")
   radius <- radius %||% getOption("structr.radius")
   
-  
-  
   graphics::par(xpd = NA)
   graphics::plot(radius * c(-1, 1), radius * c(-1, 1),
     type = "n", xlab = NULL, ylab = NULL, asp = 1,
@@ -638,6 +772,7 @@ stereoplot_ticks <- function(length = 0.02, angle = 10, labels = FALSE, ladj = 2
 }
 
 
+#' @keywords internal
 stereo_guides_schmidt <- function(d = 10, n = 512, r = 1, rotation = 0,
                                   lwd = 1, equator = TRUE, equator_lwd = lwd * 1.5, ...) {
   rot <- deg2rad(rotation)
@@ -680,6 +815,7 @@ stereo_guides_schmidt <- function(d = 10, n = 512, r = 1, rotation = 0,
   }
 }
 
+#' @keywords internal
 stereo_guides_wulff <- function(d = 9, n = 512, r = 1, rotation = 0,
                                 lwd = 1, equator = TRUE, equator_lwd = lwd * 1.5, ...) {
   rot <- deg2rad(rotation)
@@ -896,7 +1032,7 @@ points.spherical <- function(x, upper.hem = NULL, earea = NULL, ...) {
 #' @inheritParams plot.Vec3
 #' @inheritParams graphics::text
 #' @param ang numeric. Conical angle in degrees.
-#' @param ... arguments passed to [graphics::lines()]
+#' @param ... arguments passed to [stereo_smallcircle()]
 #' @importFrom graphics lines
 #'
 #' @name lines
@@ -961,6 +1097,7 @@ text.spherical <- function(x, labels = seq_along(x[, 1]), upper.hem = NULL, eare
 }
 
 
+#' @keywords internal
 hypot <- function(x, y) {
   sqrt(x^2 + y^2)
 }
@@ -1300,6 +1437,60 @@ variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "proj
   invisible(list(angles = ang, var = var_frechet))
 }
 
+#' @keywords internal
+stereo_confidence_fill0 <- function(D, col = 1, border = NA, upper.hem = NULL,
+                                    earea = NULL, r = NULL, ...) {
+  az <- D[, 1]; pl <- D[, 2]; n <- length(pl)
+  
+  project <- function(az_v, pl_v) {
+    stereo_coords(az_v, pl_v, upper.hem = upper.hem, earea = earea, radius = r, fix = TRUE)
+  }
+  
+  if (all(pl >= 0) || all(pl <= 0)) {
+    # never crosses the primitive circle -> a single closed loop
+    Sc <- project(az, pl)
+    graphics::polygon(Sc[, "x"], Sc[, "y"], col = col, border = border, ...)
+    return(invisible(NULL))
+  }
+  
+  # shortest-path azimuth interpolation (handles the 0/360 wrap)
+  interp_az <- function(a1, a2, t) {
+    delta <- ((a2 - a1 + 180) %% 360) - 180
+    (a1 + t * delta) %% 360
+  }
+  
+  nxt <- c(2:n, 1)                                    # cyclic "next index"
+  s1 <- pl; s2 <- pl[nxt]
+  cross <- which(sign(s1) != sign(s2) & s1 != 0)      # edges where plunge changes sign
+  t <- s1[cross] / (s1[cross] - s2[cross])            # exact (az, plunge=0) crossing,
+  cross_az <- interp_az(az[cross], az[nxt[cross]], t) # by linear interpolation
+  
+  m <- length(cross)
+  eps <- 1e-6   # degrees of plunge inset -- see stereo_smallcircle0_filled note
+  
+  for (k in seq_len(m)) {
+    i0 <- cross[k]
+    i1 <- cross[(k %% m) + 1]
+    idx <- if (i0 < i1) (i0 + 1):i1 else c(seq_len(n)[-seq_len(i0)], seq_len(i1))
+    run_az <- c(cross_az[k], az[idx], cross_az[(k %% m) + 1])
+    run_pl <- c(0, pl[idx], 0)
+    # nudge the two exact-zero endpoints onto the same side as their
+    # neighbouring interior sample, for the same reason as in
+    # stereo_smallcircle0_filled(): stereo_coords()'s fold tie-break at
+    # plunge = 0 doesn't necessarily match the fold used one step inside.
+    run_pl[1] <- sign(run_pl[2]) * eps
+    run_pl[length(run_pl)] <- sign(run_pl[length(run_pl) - 1]) * eps
+    
+    Sc <- project(run_az, run_pl)
+    arc <- close_primitive_arc(Sc[nrow(Sc), "x"], Sc[nrow(Sc), "y"],
+                               Sc[1, "x"], Sc[1, "y"], r = r)
+    graphics::polygon(c(Sc[, "x"], arc$x), c(Sc[, "y"], arc$y),
+                      col = col, border = border, ...)
+  }
+  invisible(NULL)
+}
+
+
 
 #' Plot Bootstrapped Confidence Ellipse
 #'
@@ -1309,7 +1500,8 @@ variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "proj
 #' @param .center logical. Whether the ellipse's center should be plotted?
 #' @param col Color of the ellipse and its center
 #' @param pch,cex Plotting symbol and size of the ellipse center. Ignored if `.center` is `FALSE`.
-#' @param ... graphical parameters passed to [graphics::lines()]
+#' @param fill logical. Whether to fill the inner part of the ellipse? `FALSE` by default.
+#' @param border Color of the filled ellipse's outline (ignored if `fill=FALSE`)
 #' @param params list. Parameters passed to [confidence_ellipse()]
 #' @inheritParams stereo_smallcircle
 #'
@@ -1322,7 +1514,7 @@ variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "proj
 #' set.seed(20250411)
 #' plot(example_lines, col = "grey")
 #' stereo_confidence(example_lines, params = list(n = 100, res = 100), col = "red")
-stereo_confidence <- function(x, params = list(), .center = TRUE, col = par("col"), cex = par("cex"), pch = 16, upper.hem = NULL, earea = NULL, radius = NULL, ...) {
+stereo_confidence <- function(x, params = list(), .center = TRUE, col = par("col"), cex = par("cex"), pch = 16, fill = FALSE, border = NA, upper.hem = NULL, earea = NULL, radius = NULL, ...) {
   earea <- earea %||% getOption("structr.earea")
   upper.hem <- upper.hem %||% getOption("structr.upper.hem")
   BALL.radius <- radius %||% getOption("structr.radius")
@@ -1333,12 +1525,13 @@ stereo_confidence <- function(x, params = list(), .center = TRUE, col = par("col
     ce <- x
   }
 
-  if (.center) {
-    e.center <- ce$center
-    points(e.center, pch = 16, col = col, cex = cex, upper.hem = upper.hem, earea = earea)
-  }
-
   D <- Line(ce$ellipse)
+  
+  
+  if (isTRUE(fill)) {
+    stereo_confidence_fill0(D, col = col, border = border, upper.hem = upper.hem,
+                            earea = earea, r = BALL.radius, ...)
+  } else {
   Sc <- stereo_coords(D[, 1], D[, 2], upper.hem = upper.hem, earea = earea)
 
   n <- nrow(D)
@@ -1350,11 +1543,19 @@ stereo_confidence <- function(x, params = list(), .center = TRUE, col = par("col
     Sc[ww, "y"] <- NA
   }
   graphics::lines(Sc[, "x"], Sc[, "y"], col = col, ...)
+  }
 
+  
+  if (.center) {
+    e.center <- ce$center
+    points(e.center, pch = 16, col = col, cex = cex, upper.hem = upper.hem, earea = earea)
+  }
+  
   invisible(ce)
 }
 
 
+#' @keywords internal
 slerp_matrix <- function(M, FUN = slerp, ...) {
   stopifnot(is.matrix(M), ncol(M) == 3, nrow(M) >= 2)
 
@@ -1462,4 +1663,32 @@ rotate_stereogrid <- function(x, d = 10, col = "gray90", lwd = 0.5, equator = TR
     stereo_greatcircle(gc, col = col, lwd = lwd, lty = lty, ...)
   }))
   if(isTRUE(equator)) stereo_greatcircle(Plane(x), col = col, lwd = equator_lwd, lty = lty, ...)
+}
+
+#' Plot Focal Mechanism Solution in a Spherical Plot
+#'
+#' @inheritParams sigma2shearnorm 
+#' @param ...  optional plotting parameters passed to [stereo_greatcircle()]
+#' @inheritParams stereo_greatcircle 
+#'
+#' @returns `"Fault"` object
+#' 
+#' @seealso [stereo_fms()] and [principal_fault()]
+#' 
+#' @export
+#'
+#' @examples
+#' f <- angelier1990$TYM
+#' sig <- reduced_stress(f)
+#' 
+#' stereoplot()
+#' stereo_fms(sig)
+stereo_fms <- function(sigma, friction = 0.6, fill = TRUE, col = "#BEBEBE80", border = 'black', ...){
+  pv <- c(sigma)
+  s1 <- pv$axes[1, ]
+  s3 <- pv$axes[3, ]
+  pf <- principal_fault(s1, s3, friction = friction)
+  
+  stereo_greatcircle(Plane(pf), fill = fill, col = col, border = border, ...)
+  invisible(pf)
 }

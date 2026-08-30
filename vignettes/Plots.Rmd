@@ -102,8 +102,8 @@ To plot a small circle with, e.g., a 10° radius, you need to specify the
 #| fig.alt: >
 #|   Diagram showing smallcircles
 stereoplot()
+lines(lines[1:5, ], ang = 10, col = '#B6367980', border = "#B63679", fill = TRUE)
 points(lines[1:5, ], col = "#B63679", pch = 19, cex = .5)
-lines(lines[1:5, ], ang = 10, col = "#B63679")
 ```
 
 ## Pair Objects (Linear Element on a Plane)

@@ -1154,6 +1154,9 @@ fault_instability_criterion <- function(fault, R, friction = 0.6) {
 #' @inheritParams fault_instability_criterion
 #'
 #' @returns `"Fault"` object
+#' 
+#' @seealso [stereo_fms()] to plot the focal mechanism solution
+#' 
 #' @export
 #'
 #' @examples
@@ -1165,6 +1168,12 @@ fault_instability_criterion <- function(fault, R, friction = 0.6) {
 #' fault_plot(angelier1990$TYM, col = "grey")
 #' fault_plot(pr_TYM, col = "red")
 #' points(stress$axes, pch = 16)
+#' 
+#' # Focal mechanism plot
+#' stereoplot()
+#' stereo_fms(s)
+#' fault_plot(angelier1990$TYM, col = "grey30", type = "hoeppener")
+#' points(stress$axes, col = 2:4, pch = 16)
 principal_fault <- function(s1, s3, friction = 0.6) {
   mu <- 0.5 * atan(1 / friction)
 

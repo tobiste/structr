@@ -167,10 +167,10 @@ lines_delta <- delta(example_lines)
 lines_confangle <- confidence_ellipse(example_lines)
 
 stereoplot(title = "Lines", guides = FALSE)
+lines(lines_mean, ang = lines_delta, col = "#FB88614C", border = "#FB8861FF", fill = TRUE)
 points(example_lines, col = "lightgrey", pch = 1, cex = .5)
 points(lines_mean, col = "#B63679", pch = 19, cex = 1)
-stereo_confidence(lines_confangle, col = "#E65164FF")
-lines(lines_mean, ang = lines_delta, col = "#FB8861FF")
+stereo_confidence(lines_confangle, col = "#E651644C", border = "#E65164FF", fill = TRUE)
 legend(
   0, -1.1,
   xjust = .5,

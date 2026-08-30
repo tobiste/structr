@@ -16,7 +16,7 @@ where the rows are the observations and the columns are the coordinates.}
 
 \item{ang}{numeric. Conical angle in degrees.}
 
-\item{...}{arguments passed to \code{\link[graphics:lines]{graphics::lines()}}}
+\item{...}{arguments passed to \code{\link[=stereo_smallcircle]{stereo_smallcircle()}}}
 }
 \description{
 Add Lines to a Plot

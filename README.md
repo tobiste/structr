@@ -171,6 +171,14 @@ par(mfrow = c(1, 2), xpd = NA)
 stereoplot(title = "Planes", guides = FALSE)
 points(example_planes, col = "lightgrey", pch = 1, cex = .5)
 lines(planes_eig, col = c("#FB8861FF", "#FEC287FF", "#FCFDBFFF"), lty = 1:3)
+#> [[1]]
+#> NULL
+#> 
+#> [[2]]
+#> NULL
+#> 
+#> [[3]]
+#> NULL
 points(planes_mean, col = "#B63679", pch = 19, cex = 1)
 points(planes_geomean, col = "#E65164FF", pch = 19, cex = 1)
 points(planes_eig, col = c("#FB8861FF", "#FEC287FF", "#FCFDBFFF"), pch = 19, cex = 1)
@@ -188,10 +196,10 @@ lines_delta <- delta(example_lines)
 lines_confangle <- confidence_ellipse(example_lines)
 
 stereoplot(title = "Lines", guides = FALSE)
+lines(lines_mean, ang = lines_delta, col = "#FB88614C", border = "#FB8861FF", fill = TRUE)
 points(example_lines, col = "lightgrey", pch = 1, cex = .5)
 points(lines_mean, col = "#B63679", pch = 19, cex = 1)
-stereo_confidence(lines_confangle, col = "#E65164FF")
-lines(lines_mean, ang = lines_delta, col = "#FB8861FF")
+stereo_confidence(lines_confangle, col = "#E651644C", border = "#E65164FF", fill = TRUE)
 legend(
   0, -1.1,
   xjust = .5,
@@ -483,6 +491,11 @@ stereo_path(xl_steps, type = "l")
 stereo_path(xl_steps, type = "p", col = assign_col(increments), pch = 16, cex = .4)
 
 lines(flow_apophyses, col = c("grey30", "grey70"), lty = c(1, 2))
+#> [[1]]
+#> NULL
+#> 
+#> [[2]]
+#> NULL
 points(axes_ISA, pch = 15, col = "#B63679FF")
 text(axes_ISA, labels = c("ISA-1", "ISA-2", "ISA-3"), col = "#B63679FF", pos = 3, font = 2)
 

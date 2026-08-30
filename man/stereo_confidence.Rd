@@ -11,6 +11,8 @@ stereo_confidence(
   col = par("col"),
   cex = par("cex"),
   pch = 16,
+  fill = FALSE,
+  border = NA,
   upper.hem = NULL,
   earea = NULL,
   radius = NULL,
@@ -28,6 +30,10 @@ stereo_confidence(
 
 \item{pch, cex}{Plotting symbol and size of the ellipse center. Ignored if \code{.center} is \code{FALSE}.}
 
+\item{fill}{logical. Whether to fill the inner part of the ellipse? \code{FALSE} by default.}
+
+\item{border}{Color of the filled ellipse's outline (ignored if \code{fill=FALSE})}
+
 \item{upper.hem}{logical. Whether the projection is shown for upper
 hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}). Defaults to
 \code{getOption("structr.upper.hem")}.}
@@ -38,7 +44,7 @@ Defaults to \code{getOption("structr.earea")}.}
 
 \item{radius}{numeric. Radius of circle. Defaults to \code{getOption("structr.radius")}.}
 
-\item{...}{graphical parameters passed to \code{\link[graphics:lines]{graphics::lines()}}}
+\item{...}{optional graphical parameters passed to \code{\link[graphics:lines]{graphics::lines()}} and (if \code{fill=TRUE}) \code{\link[graphics:polygon]{graphics::polygon()}}}
 }
 \value{
 output of \code{\link[=confidence_ellipse]{confidence_ellipse()}}

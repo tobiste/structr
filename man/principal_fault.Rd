@@ -26,4 +26,13 @@ stereoplot()
 fault_plot(angelier1990$TYM, col = "grey")
 fault_plot(pr_TYM, col = "red")
 points(stress$axes, pch = 16)
+
+# Focal mechanism plot
+stereoplot()
+stereo_fms(s)
+fault_plot(angelier1990$TYM, col = "grey30", type = "hoeppener")
+points(stress$axes, col = 2:4, pch = 16)
+}
+\seealso{
+\code{\link[=stereo_fms]{stereo_fms()}} to plot the focal mechanism solution
 }
