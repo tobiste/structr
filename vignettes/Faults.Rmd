@@ -349,7 +349,7 @@ points(stress_components[, 'normal'], abs(stress_components[, 'shear']),
 ```{r fms}
 stereoplot(title = "Focal Mechanism Solution")
 stereo_fms(inv_res$sigma, friction = 0.6)
-hoeppener(fault_data, color = 'grey30')
+hoeppener(fault_data, col = 'grey30')
 stereo_confidence(inv_res$principal_axes_CI$sigma1, col = cols[1])
 stereo_confidence(inv_res$principal_axes_CI$sigma2, col = cols[2])
 stereo_confidence(inv_res$principal_axes_CI$sigma3, col = cols[3])
