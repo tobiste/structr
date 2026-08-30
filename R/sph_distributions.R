@@ -13,7 +13,7 @@
 #' Either `"geologyGeometry"` (the default) to pick the `rayFisher()` algorithm  from the *geologyGeometry* code compilation, or
 #' `"rotasym"` to pick the [rotasym::r_vMF()] algorithm from the *rotasym* package.
 #'
-#' @source Adapted fom [rotasym::r_vMF()] and [rotasym::d_vMF()], and 
+#' @source Adapted from [rotasym::r_vMF()] and [rotasym::d_vMF()], and 
 #' `geologyGeometry` by Davis, J.R.
 #' @importFrom rotasym r_vMF d_vMF
 #
@@ -92,7 +92,7 @@ dvmf <- function(x, mu, k = 5) {
 #'
 #' @importFrom rotasym r_unif_sphere
 #' 
-#' @source Adapted fom [rotasym::r_unif_sphere()] and `rayUniform()` from 
+#' @source Adapted from [rotasym::r_unif_sphere()] and `rayUniform()` from 
 #' `geologyGeometry` by Davis, J.R.
 #'
 #' @family random

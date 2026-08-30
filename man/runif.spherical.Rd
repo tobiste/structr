@@ -4,7 +4,7 @@
 \alias{runif.spherical}
 \title{Uniformly Distributed Vectors on the Sphere}
 \source{
-Adapted fom \code{\link[rotasym:unif]{rotasym::r_unif_sphere()}} and \code{rayUniform()} from
+Adapted from \code{\link[rotasym:unif]{rotasym::r_unif_sphere()}} and \code{rayUniform()} from
 \code{geologyGeometry} by Davis, J.R.
 }
 \usage{

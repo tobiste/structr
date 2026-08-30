@@ -258,7 +258,7 @@ inv_res$tau_mean
 
 To check the accuracy of the solution, you can evaluate
 
--   the average angle β between the tangential traction predicted by the
+-   the average angle &beta; between the tangential traction predicted by the
     best stress tensor and the slip vector on each plane (ideally close
     to 0), and
 -   the average resolved shear stress on each plane (should be close to
@@ -305,7 +305,7 @@ inv_res$stress_shape$phi
 inv_res$phi_CI
 ```
 
-The angle α is the angle between the tangential traction predicted by
+The angle &alpha; is the angle between the tangential traction predicted by
 the best stress tensor and the slip vector. This deviation can be
 visualized in the stereoplot:
 

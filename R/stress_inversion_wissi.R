@@ -1094,7 +1094,7 @@ wissi_polyphase <- function(normals, slips,
   )
 }
 
-#' Polyphase stress inversion via spectral clustering on \eqn{S^5} (Stage 5).
+#' Polyphase Stress Inversion via Spectral Clustering on \eqn{S^5} (Stage 5).
 #'
 #' Identifies `k` stress phases automatically using the *eigengap heuristic*,
 #' then runs `slip_inversion_wissi()` on each phase subset.
@@ -1229,7 +1229,7 @@ wissi_bootstrap <- function(normals, slips,
 }
 
 
-#' Bootstrap uncertainty for a WISSI result.
+#' Bootstrap Uncertainty for a WISSI Result.
 #'
 #' Yields `n_iter` stress tensors from resampled datasets. The dispersion
 #' Theta-bar on \eqn{S^5} approximates the data noise level (Eq. 37: Theta ~ d-bar).

@@ -30,7 +30,7 @@ knitr::opts_chunk$set(
 
 -   Statistical analysis: spherical mean and variance, confidence regions, hypothesis tests, **cluster analysis** of orientation data (`sph_cluster()`, and geodesic regression to find the **best-fitting great circle or small circle** through orientation data (`regression_greatcircle()` and `regression_smallcircle()`),
 
--   Reconstruction of fabric orientations in **oriented drillcores** by transforming the α, β, and γ angles (`drillcore_transformation()`,
+-   Reconstruction of fabric orientations in **oriented drillcores** by transforming the &alpha;, &beta;, and &gamma; angles (`drillcore_transformation()`,
 
 - Deform orientation data using deformation and velocity gradient tensors: `defgrad()` and `velgrad()`
 
@@ -38,7 +38,7 @@ knitr::opts_chunk$set(
 
 -   Calculation fault displacement components,
 
--   Strain analysis (**R**<sub>f</sub>/ϕ), contouring on the unit hyperboloid, **Fry plots** and **Hsu plots**
+-   Strain analysis (**R**<sub>f</sub>/&phi;), contouring on the unit hyperboloid, **Fry plots** and **Hsu plots**
 
 -   Vorticity analysis using the **Rigid Grain Net** method (`RGN_plot()`), and
 
@@ -89,6 +89,24 @@ points(example_planes, col = "#000004", pch = 1, cex = .5)
 
 # add a legend
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
+```
+
+### Manipulate projection and grid
+
+The default projection is the equal-area projection into the lower hemisphere. Grid lines are disabled by default. You can change these settings either directly in the `stereoplot()` function using the parameters `upper.hem`, `earea`, and `guides`or set global definitions. 
+
+The grid can also be rotated to a specified orientation by setting the parameter `center`. In the example below, we fix the grid in the mean of the example line data:
+
+```{r stereo_grid}
+ml <- sph_mean(example_lines)
+
+stereoplot(
+  title = "Lambert equal-area projection",
+  sub = paste0("Lower hemisphere\nGrid center: ", round(ml[1,1]), '/', round(ml[1, 2])),
+  center = ml
+)
+points(example_lines, col = "#B63679", pch = 19, cex = .5)
+points(example_planes, col = "#000004", pch = 1, cex = .5)
 ```
 
 ### Density on a Sphere
@@ -338,7 +356,7 @@ points(stress_components[, 'normal'], abs(stress_components[, 'shear']),
 
 #### 2D Strain
 
-Aspect ratio of finite strain ellipses vs orientation of long-axis (Rf/ϕ)
+Aspect ratio of finite strain ellipses vs orientation of long-axis (\eqn{R_f/\phi}{Rf/&phi;})
 
 ```{r strain, warning=FALSE,message=FALSE}
 data(ramsay)

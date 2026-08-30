@@ -47,7 +47,8 @@ Tensor objects can also be lists of such objects (\code{"ortensor"} and \code{"e
 
 \item{add}{logical. Should data be plotted to an existing plot?}
 
-\item{guides}{logical. Whether guides should be added to the plot. Defaults to \code{getOption("structr.guides")}.}
+\item{guides}{logical. Whether guides of the projection grid should be added
+to the plot. Defaults to \code{getOption("structr.guides")}.}
 
 \item{weights}{numeric. Weightings}
 }

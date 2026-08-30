@@ -4,10 +4,19 @@
 \alias{stereoplot_guides}
 \title{Stereoplot Gridlines}
 \usage{
-stereoplot_guides(d = 10, earea = NULL, radius = NULL, center = NULL, ...)
+stereoplot_guides(
+  d = 10,
+  earea = NULL,
+  radius = NULL,
+  center = NULL,
+  equator = TRUE,
+  lwd = 0.5,
+  equator_lwd = lwd * 1.5,
+  ...
+)
 }
 \arguments{
-\item{d}{angle between grid lines}
+\item{d}{angle spacing between grid lines of the projection}
 
 \item{earea}{logical. Projection, either \code{TRUE} for Lambert equal-area
 projection, or \code{FALSE} for meridional stereographic projection.
@@ -15,12 +24,20 @@ Defaults to \code{getOption("structr.earea")}.}
 
 \item{radius}{numeric. Radius of circle. Defaults to \code{getOption("structr.radius")}.}
 
-\item{center}{Center position of gridlines. If \code{NULL} (the default), gridlines are centered on the origin of the stereoplot. Otherwise, this should is an spherical object.}
+\item{center}{Center position of grid lines. If \code{NULL} (the default),
+grid lines are centered on the origin of the stereoplot. Otherwise, this
+should be a spherical object.}
+
+\item{equator}{logical. Whether the grid equator should be shown no matter how the grid is constructed via \code{d}. \code{TRUE} by default.}
+
+\item{lwd}{Width of guide lines. Defaults to \code{getOption("structr.lwd")}.}
+
+\item{equator_lwd}{numeric. The line width of the drawn equator grid line. By default, the equator is \code{1.5} times thicker then \code{lwd}.}
 
 \item{...}{optional arguments passed to \code{\link[graphics:lines]{graphics::lines()}}}
 }
 \description{
-Adds equal-area or equal-angle projection gridlines to an existing stereoplot.
+Adds equal-area or equal-angle projection grid to an existing stereoplot
 }
 \examples{
 plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)

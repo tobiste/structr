@@ -37,7 +37,7 @@ list.
 \item{\code{pvalue.ray}}{For rays: p-value for each ray in \code{x}, i.e. the fraction of \code{x} that are farther from \code{center} than the given ray.}
 \item{\code{pvalue.line}}{For lines: p-value for each line in \code{x}, i.e. the fraction of \code{x} that are farther from \code{center} than the given line}
 \item{\code{pvalue.line.FUN},\code{pvalue.ray.FUN}}{The function to calculate the p-value for a given vector}
-\item{\code{angles}}{Angles of the semi-axis of the confidence ellipse (in radians if \code{x} is an \code{"Vec3"} object, in degrees if otherwise.)}
+\item{\code{angles}}{Angles of the semi-axis of the confidence ellipse (in radians if \code{x} is a \code{"Vec3"} object, in degrees if otherwise.)}
 \item{\code{ellipse}}{Confidence ellipse given as \code{"Vec3"} object with \code{res} vectors}
 }
 }

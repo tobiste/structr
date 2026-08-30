@@ -33,7 +33,8 @@ of critical hyperbole.}
 
 \item{main}{character. The main title (on top).}
 
-\item{guides}{logical. Whether guides should be added to the plot. Defaults to \code{getOption("structr.guides")}.}
+\item{guides}{logical. Whether guides of the projection grid should be added
+to the plot. Defaults to \code{getOption("structr.guides")}.}
 
 \item{...}{plotting arguments passed to \code{\link[graphics:points]{graphics::points()}}}
 }

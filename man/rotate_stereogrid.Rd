@@ -2,25 +2,38 @@
 % Please edit documentation in R/stereonet_base.R
 \name{rotate_stereogrid}
 \alias{rotate_stereogrid}
-\title{Center gridlines on a given point}
+\title{Center grid lines on a given vector}
 \usage{
-rotate_stereogrid(x, d = 10, col = "gray90", lwd = 0.5, lty = 1, ...)
+rotate_stereogrid(
+  x,
+  d = 10,
+  col = "gray90",
+  lwd = 0.5,
+  equator = TRUE,
+  equator_lwd = 1.5 * lwd,
+  lty = 1,
+  ...
+)
 }
 \arguments{
 \item{x}{center position of grid lines.}
 
-\item{d}{integer. Angle distance between guides. Defaults to \code{getOption("structr.d")}.}
+\item{d}{angle spacing between grid lines of the projection}
 
 \item{col}{Color of guide lines. Defaults to \code{getOption("structr.col")}.}
 
 \item{lwd}{Width of guide lines. Defaults to \code{getOption("structr.lwd")}.}
+
+\item{equator}{logical. Whether the grid equator should be shown no matter how the grid is constructed via \code{d}. \code{TRUE} by default.}
+
+\item{equator_lwd}{numeric. The line width of the drawn equator grid line. By default, the equator is \code{1.5} times thicker then \code{lwd}.}
 
 \item{lty}{Type of guide lines. Defaults to \code{getOption("structr.lty")}.}
 
 \item{...}{arguments passed to \code{\link[graphics:lines]{graphics::lines()}}}
 }
 \description{
-Center gridlines on a given point
+Center grid lines on a given vector
 }
 \examples{
 stereoplot(guide = FALSE)

@@ -57,7 +57,8 @@ for the P, G, and G axes. Constant grid spacing when only one integer is given.
 
 \item{main}{character. The main title for the plot.}
 
-\item{guides}{logical. Whether guides should be added to the plot. Defaults to \code{getOption("structr.guides")}.}
+\item{guides}{logical. Whether guides of the projection grid should be added
+to the plot. Defaults to \code{getOption("structr.guides")}.}
 
 \item{weights}{numeric. Weightings}
 }

@@ -28,7 +28,7 @@ knitr::opts_chunk$set(
 library(structr)
 ```
 
-Orientations in drill-cores are usually given by α and β angles (lineations on a plane additionally have a γ angle) which describe orientations with respect to the drill orientation. To convert these angles from the "drillcore coordinate reference system" to our geographical reference system, you can use the function `drillcore_transformation()`.
+Orientations in drill-cores are usually given by &alpha; and &beta; angles (lineations on a plane additionally have a &gamma; angle) which describe orientations with respect to the drill orientation. To convert these angles from the "drillcore coordinate reference system" to our geographical reference system, you can use the function `drillcore_transformation()`.
 
 This function calculates the orientation of a plane or line from internal core angles (**&alpha;**, **&beta;**, and **&gamma;**) of oriented drill cores, using the the azimuth of drill core axis orientation (`azi` given in degrees, measured clockwise from North), and the inclination of drill core axis (`inc` in degrees, measured anticlockwise from the horizontal plane). 
 

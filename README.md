@@ -37,7 +37,7 @@ for structural geology. The toolset includes
 
 - Calculation fault displacement components,
 
-- Strain analysis (**R**<sub>f</sub>/ϕ), contouring on the unit
+- Strain analysis (**R**<sub>f</sub>/φ), contouring on the unit
   hyperboloid, **Fry plots** and **Hsu plots**
 
 - Vorticity analysis using the **Rigid Grain Net** method
@@ -99,6 +99,31 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 ```
 
 <img src="man/figures/README-stereo-1.png" width="100%" />
+
+### Manipulate projection and grid
+
+The default projection is the equal-area projection into the lower
+hemisphere. Grid lines are disabled by default. You can change these
+settings either directly in the `stereoplot()` function using the
+parameters `upper.hem`, `earea`, and `guides`or set global definitions.
+
+The grid can also be rotated to a specified orientation by setting the
+parameter `center`. In the example below, we fix the grid in the mean of
+the example line data:
+
+``` r
+ml <- sph_mean(example_lines)
+
+stereoplot(
+  title = "Lambert equal-area projection",
+  sub = paste0("Lower hemisphere\nGrid center: ", round(ml[1,1]), '/', round(ml[1, 2])),
+  center = ml
+)
+points(example_lines, col = "#B63679", pch = 19, cex = .5)
+points(example_planes, col = "#000004", pch = 1, cex = .5)
+```
+
+<img src="man/figures/README-stereo_grid-1.png" width="100%" />
 
 ### Density on a Sphere
 
@@ -374,8 +399,7 @@ points(stress_components[, 'normal'], abs(stress_components[, 'shear']),
 
 #### 2D Strain
 
-Aspect ratio of finite strain ellipses vs orientation of long-axis
-(Rf/ϕ)
+Aspect ratio of finite strain ellipses vs orientation of long-axis ()
 
 ``` r
 data(ramsay)

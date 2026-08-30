@@ -2,7 +2,7 @@
 % Please edit documentation in R/stress_inversion_wissi.R
 \name{slip_inversion_wissi_polyphase}
 \alias{slip_inversion_wissi_polyphase}
-\title{Polyphase stress inversion via spectral clustering on \eqn{S^5} (Stage 5).}
+\title{Polyphase Stress Inversion via Spectral Clustering on \eqn{S^5} (Stage 5).}
 \usage{
 slip_inversion_wissi_polyphase(
   x,

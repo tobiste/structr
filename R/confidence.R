@@ -22,7 +22,7 @@
 #' \item{`pvalue.ray`}{For rays: p-value for each ray in `x`, i.e. the fraction of `x` that are farther from `center` than the given ray.}
 #' \item{`pvalue.line`}{For lines: p-value for each line in `x`, i.e. the fraction of `x` that are farther from `center` than the given line}
 #' \item{`pvalue.line.FUN`,`pvalue.ray.FUN`}{The function to calculate the p-value for a given vector}
-#' \item{`angles`}{Angles of the semi-axis of the confidence ellipse (in radians if `x` is an `"Vec3"` object, in degrees if otherwise.)}
+#' \item{`angles`}{Angles of the semi-axis of the confidence ellipse (in radians if `x` is a `"Vec3"` object, in degrees if otherwise.)}
 #' \item{`ellipse`}{Confidence ellipse given as `"Vec3"` object with `res` vectors}
 #' }
 #' @export
@@ -66,7 +66,7 @@ confidence_ellipse <- function(x, n_iter = 10000L, alpha = 0.05, res = 512L, iso
   } else {
     rad2deg(ce$angles)
   }
-  ellipse <- if (res > 0) as.Vec3(do.call(rbind, ce$points)) else NULL
+  ellipse <- if (res > 0) list_vec(ce$points) else NULL
 
   list(
     center = as.Vec3(ce$center) |> Spherical(class(x)[1]),

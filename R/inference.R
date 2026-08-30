@@ -509,7 +509,7 @@ bingham_inference.Plane <- function(x, n_points = 0) bingham_inference.Line(Line
 #'  \item{`shape`}{is either 'bipolar' or 'girdle'. If 'bipolar', then the confidence region consists of 
 #' all lines u such that `u^T %*% $tBar %*% u > $rhs`. If 'girdle', then the 
 #' confidence region consists of all lines u such that `u^T %*% $tBar %*% u < $rhs`.}
-#' \item{`tBar`}{orientation tesor}
+#' \item{`tBar`}{orientation tensor}
 #' \item{`rhs`}{}
 #' \item{`pvalue`}{is an R function that takes as input a line u0 and produces as output 
 #' a real number in `[0, 1]` --- the p-value for the null hypothesis that the 

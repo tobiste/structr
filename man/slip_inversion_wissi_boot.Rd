@@ -2,7 +2,7 @@
 % Please edit documentation in R/stress_inversion_wissi.R
 \name{slip_inversion_wissi_boot}
 \alias{slip_inversion_wissi_boot}
-\title{Bootstrap uncertainty for a WISSI result.}
+\title{Bootstrap Uncertainty for a WISSI Result.}
 \usage{
 slip_inversion_wissi_boot(x, n_iter = 500L, seed = NULL, ...)
 }

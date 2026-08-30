@@ -11,7 +11,7 @@ An object of class \code{strabo}
 data('strabo_prj')
 }
 \description{
-Strabospot poject containing 347 foliation and stretching lineation
+Strabospot project containing 347 foliation and stretching lineation
 measurements from the Shebandowan Greenstone Belt and
 Quetico Subprovince (Stephan et al., 2025)
 }

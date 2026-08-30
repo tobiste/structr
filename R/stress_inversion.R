@@ -1429,7 +1429,7 @@ sigma2rup <- function(sigma, fault, lambda = sqrt(3) / 2) {
 # #' traction predicted by the best stress tensor and the slip vector on each plane, ranging from 0 to 90&deg;.}
 # #' \item{`"theta"`}{numeric. Angle between slip planes and \eqn{\sigma_1} ranging from 0 to 180&deg;.}
 #' \item{`rup`}{numeric. "Ratio Upsilon" (RUP) parameter after Angelier (1990), 
-#' ranging frpm 0 (perfect fit) to 200% (misfit). See [sigma2rup()].}
+#' ranging from 0 (perfect fit) to 200% (misfit). See [sigma2rup()].}
 #' \item{`quality`}{factor. Ranked misfit classification based on RUP values. See [sigma2rup()].}
 #' \item{`rup_mean`}{numeric. The mean RUP.}
 #' \item{`quality_summary`}{integer. Counts of faults in the RUP-based quality ranks.}

@@ -207,9 +207,9 @@ flow_apophyses <- rbind(
 
 > short cut: `flow_apophyses(L)`
 
-The angle α between the apophyses is directly related to how close to
-simple shear or pure shear the deformation is. α is zero for simple
-shear and 90° for pure shear. The **kinematic vorticity number** $W_k$
+The angle &alpha; between the apophyses is directly related to how close to
+simple shear or pure shear the deformation is. &alpha; is zero for simple
+shear and 90&deg; for pure shear. The **kinematic vorticity number** $W_k$
 is given by $W_k = \cos\alpha$:
 
 ```{r vorticity}

@@ -31,7 +31,7 @@ library(structr)
 
 ## Strain analysis
 
-Import some Rf/ϕ data from elliptical strain markers
+Import some \eqn{R_f/\phi}{Rf/&phi;} data from elliptical strain markers
 
 ```{r data}
 data(ramsay)
@@ -56,7 +56,7 @@ The {structr} algorithm also calculates bootstrapped 95% confidence
 interval.
 
 To visualize the distribution of the strain values, we can calculate
-densities in Rf/ϕ space[^2] and plot them in a **Rf/ϕ** diagram[^3]:
+densities in \eqn{R_f/\phi}{Rf/&phi;} space[^2] and plot them in a **\eqn{R_f/\phi}{Rf/&phi;}** diagram[^3]:
 
 [^2]: Vollmer, F. W. (2018). Computers and Geosciences Automatic
     contouring of geologic fabric and finite strain data on the unit

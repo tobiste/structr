@@ -6,7 +6,7 @@
 \alias{dvmf}
 \title{von Mises-Fisher Distribution}
 \source{
-Adapted fom \code{\link[rotasym:vMF]{rotasym::r_vMF()}} and \code{\link[rotasym:vMF]{rotasym::d_vMF()}}, and
+Adapted from \code{\link[rotasym:vMF]{rotasym::r_vMF()}} and \code{\link[rotasym:vMF]{rotasym::d_vMF()}}, and
 \code{geologyGeometry} by Davis, J.R.
 }
 \usage{

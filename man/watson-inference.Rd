@@ -30,7 +30,7 @@ A list with members \verb{$shape}, \verb{$tBar}, \verb{$rhs}, \verb{$pvalue}.
 \item{\code{shape}}{is either 'bipolar' or 'girdle'. If 'bipolar', then the confidence region consists of
 all lines u such that \verb{u^T \%*\% $tBar \%*\% u > $rhs}. If 'girdle', then the
 confidence region consists of all lines u such that \verb{u^T \%*\% $tBar \%*\% u < $rhs}.}
-\item{\code{tBar}}{orientation tesor}
+\item{\code{tBar}}{orientation tensor}
 \item{\code{rhs}}{}
 \item{\code{pvalue}}{is an R function that takes as input a line u0 and produces as output
 a real number in \verb{[0, 1]} --- the p-value for the null hypothesis that the

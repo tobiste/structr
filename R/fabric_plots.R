@@ -5,7 +5,7 @@
 #' Fabric intensity and shape parameters of the orientation tensor based on Vollmer (1990)
 #'
 #' @inheritParams geodesic_mean
-#' @param ... paramters passed to [ortensor()]
+#' @param ... parameters passed to [ortensor()]
 #' @returns numeric vector containing the fabric shape and intensity indices:
 #' \describe{
 #' \item{`P`}{Point (Vollmer 1990). Range: (0, 1)}

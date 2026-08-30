@@ -48,7 +48,7 @@ setting.
 ```{r stereo_earea}
 #| fig.alt: >
 #|   Diagram showing the equal-area Lambert projection of some example data
-stereoplot()
+stereoplot(guides = TRUE)
 points(lines, col = "#B63679", pch = 19, cex = .5)
 points(planes, col = "#000004", pch = 1, cex = .5)
 
@@ -67,7 +67,7 @@ to `TRUE`:
 ```{r stereo_eangle}
 #| fig.alt: >
 #|   Diagram showing the equal-angle stereographic projection of some example data
-stereoplot(earea = FALSE)
+stereoplot(earea = FALSE, guides = TRUE)
 points(lines, col = "#B63679", pch = 19, cex = .5, earea = FALSE, upper.hem = TRUE)
 points(planes, col = "#000004", pch = 1, cex = .5, earea = FALSE, upper.hem = TRUE)
 

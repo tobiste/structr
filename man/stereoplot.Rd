@@ -3,9 +3,6 @@
 \name{stereoplot}
 \alias{stereoplot}
 \title{Stereographic and Equal Area Projection}
-\source{
-Adapted from the \code{RFOC} package
-}
 \usage{
 stereoplot(
   earea = NULL,
@@ -31,7 +28,8 @@ stereoplot(
 projection, or \code{FALSE} for meridional stereographic projection.
 Defaults to \code{getOption("structr.earea")}.}
 
-\item{guides}{logical. Whether guides should be added to the plot. Defaults to \code{getOption("structr.guides")}.}
+\item{guides}{logical. Whether guides of the projection grid should be added
+to the plot. Defaults to \code{getOption("structr.guides")}.}
 
 \item{d}{integer. Angle distance between guides. Defaults to \code{getOption("structr.d")}.}
 
@@ -63,16 +61,16 @@ Defaults to \code{getOption("structr.ticks")}.}
 
 \item{radius}{numeric. Radius of circle. Defaults to \code{getOption("structr.radius")}.}
 
-\item{center}{An object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}
-specifying the center of the projection If \code{NULL} (the default), the center
-is at the origin of the plot.}
+\item{grid.center}{An object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}
+specifying the center of the projection grid. If \code{NULL} (the default), the center
+is at the origin of the plot. Overwrites \code{guides}.}
 }
 \description{
 Initialize the plot for equal-angle stereographic projections (Wulff) or Lambert
 equal-area projections (Schmidt).
 }
 \examples{
-stereoplot()
+stereoplot(grid = TRUE)
 
 stereoplot(ticks = 30, title = "title", sub = "subtitle", border.col = "purple", labels = TRUE)
 

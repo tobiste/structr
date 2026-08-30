@@ -232,7 +232,7 @@
 #' @seealso [regression_smallcircle()], [regression_greatcircle()]
 #'
 #' @returns list. \describe{
-#' \item{`vec`}{`Line` of `Vec3` object, sthe axis of the circle solution}
+#' \item{`vec`}{`Line` of `Vec3` object, the axis of the circle solution}
 #' \item{`cone`}{Half-apical angle of the small-circle in degrees. Alway 90&deg; for a great-circle solution.}
 #' \item{`r_squared`}{Residual sum of squares}
 #' \item{`residuals`}{Per-point residuals}
