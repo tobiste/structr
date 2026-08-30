@@ -638,72 +638,66 @@ stereoplot_ticks <- function(length = 0.02, angle = 10, labels = FALSE, ladj = 2
 }
 
 
-stereo_guides_schmidt <- function(d = 10, n = 512, r = 1, rotation = 0, ...) {
+stereo_guides_schmidt <- function(d = 10, n = 512, r = 1, rotation = 0,
+                                  lwd = 1, equator = TRUE, equator_lwd = lwd * 1.5, ...) {
   rot <- deg2rad(rotation)
   lam_seq <- deg2rad(seq(0, 180, length.out = n))
   lam0 <- pi / 2
   R <- sqrt(2) / 2
-
   # Precompute sin and cos of lam - lam0
   cos_lam <- cos(lam_seq - lam0)
   sin_lam <- sin(lam_seq - lam0)
-
   # Latitude lines (constant phi)
   phi_vals <- deg2rad(seq(-90 + d, 90 - d, 10))
   cos_phi <- cos(phi_vals)
   sin_phi <- sin(phi_vals)
-
   for (i in seq_along(phi_vals)) {
-    phi <- phi_vals[i]
     kp <- sqrt(2 / (1 + cos_phi[i] * cos_lam))
     x <- R * kp * cos_phi[i] * sin_lam
     y <- R * kp * sin_phi[i]
-    graphics::lines(x, y, ...)
+    graphics::lines(x, y, lwd = lwd, ...)
   }
-
+  # Equator (phi = 0), drawn explicitly and independently of the d-spacing above
+  if (isTRUE(equator)) {
+    kp0 <- sqrt(2 / (1 + cos_lam))
+    x0 <- R * kp0 * sin_lam
+    y0 <- rep(0, length(lam_seq))
+    graphics::lines(x0, y0, lwd = equator_lwd, ...)
+  }
   # Longitude lines (constant lambda)
   phi_seq <- deg2rad(seq(-90, 90, 5))
   cos_phi_seq <- cos(phi_seq)
   sin_phi_seq <- sin(phi_seq)
-
   lam_vals <- deg2rad(seq(d, 180 - d, d))
-
   lam_vals_rot <- (lam_vals - lam0)
   cos_lam_vals <- cos(lam_vals_rot)
   sin_lam_vals <- sin(lam_vals_rot)
-
   for (j in seq_along(lam_vals)) {
-    lam <- lam_vals[j]
     kp <- sqrt(2 / (1 + cos_phi_seq * cos_lam_vals[j]))
     x <- R * kp * cos_phi_seq * sin_lam_vals[j] * r
     y <- R * kp * sin_phi_seq * r
-    graphics::lines(x, y, ...)
+    graphics::lines(x, y, lwd = lwd, ...)
   }
 }
 
-stereo_guides_wulff <- function(d = 9, n = 512, r = 1, rotation = 0, ...) {
+stereo_guides_wulff <- function(d = 9, n = 512, r = 1, rotation = 0,
+                                lwd = 1, equator = TRUE, equator_lwd = lwd * 1.5, ...) {
   rot <- deg2rad(rotation)
   if (n %% 2 != 0) n <- n + 1
   beta0 <- deg2rad(seq(0, 360, length.out = n))
   beta <- c(beta0[(n / 2):n], beta0[1:(n / 2 - 1)])
-
   cos_beta <- cos(beta)
   sin_beta <- sin(beta)
-
   # great circles
   phi <- deg2rad(seq(0, 180, by = d))
   rcos_phi <- r / cos(phi)
   rtan_phi <- r * tan(phi)
-
-
   for (i in seq_along(phi)) {
     xg <- -rtan_phi[i] + (rcos_phi[i]) * cos_beta
     yg <- rcos_phi[i] * sin_beta
     condg <- sqrt(xg^2 + yg^2) <= r
-    graphics::lines(xg[condg], yg[condg], ...)
+    graphics::lines(xg[condg], yg[condg], lwd = lwd, ...)
   }
-
-
   # small circles
   gamma <- phi
   rtan_gamma <- r * tan(gamma)
@@ -713,16 +707,15 @@ stereo_guides_wulff <- function(d = 9, n = 512, r = 1, rotation = 0, ...) {
     xs <- rtan_gamma[j] * cos_beta
     ys1 <- rcos_gamma[j] + rtan_gamma[j] * sin_beta
     ys2 <- -rcos_gamma[j] + rtan_gamma[j] * sin_beta
-
     conds1 <- sqrt(xs^2 + ys1^2) <= r
     conds2 <- sqrt(xs^2 + ys2^2) <= r
-
-    graphics::lines(xs[conds1], ys1[conds1], ...)
-    graphics::lines(xs[conds2], ys2[conds2], ...)
+    graphics::lines(xs[conds1], ys1[conds1], lwd = lwd, ...)
+    graphics::lines(xs[conds2], ys2[conds2], lwd = lwd, ...)
   }
-
-  graphics::lines(c(0, 0), c(1, -1), ...)
-  graphics::lines(c(-1, 1), c(0, 0), ...)
+  graphics::lines(c(0, 0), c(1, -1), lwd = lwd, ...)  # N-S line
+  if (isTRUE(equator)) {
+    graphics::lines(c(-1, 1), c(0, 0), lwd = equator_lwd, ...)  # equator (E-W line)
+  }
 }
 
 #' Stereoplot Gridlines
@@ -734,6 +727,8 @@ stereo_guides_wulff <- function(d = 9, n = 512, r = 1, rotation = 0, ...) {
 #' @param center Center position of grid lines. If `NULL` (the default), 
 #' grid lines are centered on the origin of the stereoplot. Otherwise, this 
 #' should be a spherical object.
+#' @param equator logical. Whether the grid equator should be shown no matter how the grid is constructed via `d`. `TRUE` by default.
+#' @param equator_lwd numeric. The line width of the drawn equator grid line. By default, the equator is `1.5` times thicker then `lwd`.
 #' @param ... optional arguments passed to [graphics::lines()]
 #'
 #' @importFrom graphics lines
@@ -749,18 +744,18 @@ stereo_guides_wulff <- function(d = 9, n = 512, r = 1, rotation = 0, ...) {
 #'
 #' plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
 #' stereoplot_guides(d = 15, earea = FALSE, center = Line(120, 50), col = 'red')
-stereoplot_guides <- function(d = 10, earea = NULL, radius = NULL, center = NULL, ...) {
+stereoplot_guides <- function(d = 10, earea = NULL, radius = NULL, center = NULL, equator = TRUE, lwd = 0.5, equator_lwd = lwd * 1.5, ...) {
   earea <- earea %||% getOption("structr.earea")
   radius <- radius %||% getOption("structr.radius")
   
   if (is.null(center)) {
     if (earea) {
-      stereo_guides_schmidt(d = d, r = radius, ...)
+      stereo_guides_schmidt(d = d, r = radius, equator = equator, lwd = lwd, equator_lwd = equator_lwd, ...)
     } else {
-      stereo_guides_wulff(d = d, r = radius, ...)
+      stereo_guides_wulff(d = d, r = radius, equator = equator, lwd = lwd, equator_lwd = equator_lwd, ...)
     }
   } else {
-    rotate_stereogrid(center, d = d, earea = earea, ...)
+    rotate_stereogrid(center, d = d, earea = earea, equator = equator, lwd = lwd, equator_lwd = equator_lwd, ...)
   }
 }
 
@@ -1438,9 +1433,10 @@ stereo_path <- function(x, type = c("l", "p", "b"), add = TRUE, n = 5L, upper.he
 }
 
 
-#' Center gridlines on a given point
+#' Center grid lines on a given vector
 #'
 #' @param x center position of grid lines.
+#' @inheritParams stereoplot_guides
 #' @inheritParams stereoplot
 #' @param ... arguments passed to [graphics::lines()]
 #'
@@ -1450,7 +1446,7 @@ stereo_path <- function(x, type = c("l", "p", "b"), add = TRUE, n = 5L, upper.he
 #' @examples
 #' stereoplot(guide = FALSE)
 #' rotate_stereogrid(Plane(120, 50), earea = FALSE)
-rotate_stereogrid <- function(x, d = 10, col = "gray90", lwd = 0.5, lty = 1, ...) {
+rotate_stereogrid <- function(x, d = 10, col = "gray90", lwd = 0.5, equator = TRUE, equator_lwd = 1.5 * lwd, lty = 1, ...) {
   xv <- Line(x)
   # small circles
   ds <- seq(-90 + d, 90, d)
@@ -1465,4 +1461,5 @@ rotate_stereogrid <- function(x, d = 10, col = "gray90", lwd = 0.5, lty = 1, ...
     gc <- rotate(gc0, xv, d)
     stereo_greatcircle(gc, col = col, lwd = lwd, lty = lty, ...)
   }))
+  if(isTRUE(equator)) stereo_greatcircle(Plane(x), col = col, lwd = equator_lwd, lty = lty, ...)
 }
