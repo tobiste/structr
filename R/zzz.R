@@ -36,7 +36,7 @@ if (requireNamespace("rgl", quietly = TRUE)) {
   op.structr <- list(
     structr.upper.hem = FALSE,
     structr.earea = TRUE,
-    structr.guides = TRUE,
+    structr.guides = FALSE,
     structr.d = 10, 
     structr.col = "gray90",
     structr.lwd = 0.5, 

@@ -515,7 +515,8 @@ stereoplot_frame <- function(n = 512L, radius = NULL, ...) {
 #' @param earea logical. Projection, either `TRUE` for Lambert equal-area
 #' projection, or `FALSE` for meridional stereographic projection.
 #'  Defaults to `getOption("structr.earea")`.
-#' @param guides logical. Whether guides should be added to the plot. Defaults to `getOption("structr.guides")`.
+#' @param guides logical. Whether guides of the projection grid should be added 
+#' to the plot. Defaults to `getOption("structr.guides")`.
 #' @param d integer. Angle distance between guides. Defaults to `getOption("structr.d")`.
 #' @param col Color of guide lines. Defaults to `getOption("structr.col")`.
 #' @param lwd Width of guide lines. Defaults to `getOption("structr.lwd")`.
@@ -534,11 +535,9 @@ stereoplot_frame <- function(n = 512L, radius = NULL, ...) {
 #' @param ladj adjustment for all labels away from origin of projection circle.
 #' This essentially an amount that is added to `radius` and the length of the ticks. Defaults to `getOption("structr.ladj")`.
 #' @param radius numeric. Radius of circle. Defaults to `getOption("structr.radius")`.
-#' @param center An object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`
-#' specifying the center of the projection If `NULL` (the default), the center
-#' is at the origin of the plot.
-#'
-#' @source Adapted from the `RFOC` package
+#' @param grid.center An object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`
+#' specifying the center of the projection grid. If `NULL` (the default), the center
+#' is at the origin of the plot. Overwrites `guides`.
 #'
 #' @family stereo-plot
 #' @seealso [structr-options]
@@ -546,7 +545,7 @@ stereoplot_frame <- function(n = 512L, radius = NULL, ...) {
 #' @importFrom graphics plot points title mtext par
 #' @export
 #' @examples
-#' stereoplot()
+#' stereoplot(grid = TRUE)
 #'
 #' stereoplot(ticks = 30, title = "title", sub = "subtitle", border.col = "purple", labels = TRUE)
 #'
@@ -570,6 +569,7 @@ stereoplot <- function(earea = NULL, guides = NULL, d = NULL, col = NULL,
   radius <- radius %||% getOption("structr.radius")
   
   
+  
   graphics::par(xpd = NA)
   graphics::plot(radius * c(-1, 1), radius * c(-1, 1),
     type = "n", xlab = NULL, ylab = NULL, asp = 1,
@@ -581,7 +581,7 @@ stereoplot <- function(earea = NULL, guides = NULL, d = NULL, col = NULL,
   
   graphics::text(0, (3*ladj) + radius, label = "N", col = border.col, font = 2)
 
-  if (guides) stereoplot_guides(d = d, earea = earea, col = col, lwd = lwd, lty = lty, radius = radius, center = center)
+  if (guides | !is.null(center)) stereoplot_guides(d = d, earea = earea, col = col, lwd = lwd, lty = lty, radius = radius, center = center)
 
   if (!is.null(ticks)) stereoplot_ticks(angle = ticks, col = border.col, radius = radius, labels = labels, ladj = ladj)
 
@@ -727,11 +727,13 @@ stereo_guides_wulff <- function(d = 9, n = 512, r = 1, rotation = 0, ...) {
 
 #' Stereoplot Gridlines
 #'
-#' Adds equal-area or equal-angle projection gridlines to an existing stereoplot.
+#' Adds equal-area or equal-angle projection grid to an existing stereoplot
 #'
-#' @param d angle between grid lines
+#' @param d angle spacing between grid lines of the projection
 #' @inheritParams stereoplot
-#' @param center Center position of gridlines. If `NULL` (the default), gridlines are centered on the origin of the stereoplot. Otherwise, this should is an spherical object.
+#' @param center Center position of grid lines. If `NULL` (the default), 
+#' grid lines are centered on the origin of the stereoplot. Otherwise, this 
+#' should be a spherical object.
 #' @param ... optional arguments passed to [graphics::lines()]
 #'
 #' @importFrom graphics lines
@@ -1371,7 +1373,7 @@ slerp_matrix <- function(M, FUN = slerp, ...) {
 }
 
 
-#' Deformation Paths in Steroplot
+#' Deformation Paths in Stereoplot
 #'
 #' Plot the paths of deformed vectors in a equal-area or stereographic projection
 #'
