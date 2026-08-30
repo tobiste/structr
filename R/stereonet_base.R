@@ -1666,10 +1666,14 @@ rotate_stereogrid <- function(x, d = 10, col = "gray90", lwd = 0.5, equator = TR
 }
 
 #' Plot Focal Mechanism Solution in a Spherical Plot
+#' 
+#' Shows the principal faults associated with a stress tensor and a given 
+#' friction coefficient using the focal mechanism / beach ball style.
 #'
 #' @inheritParams sigma2shearnorm 
 #' @param ...  optional plotting parameters passed to [stereo_greatcircle()]
-#' @inheritParams stereo_greatcircle 
+#' @param col fill color of quadrant
+#' @inheritParams stereo_smallcircle 
 #'
 #' @returns `"Fault"` object
 #' 

@@ -20,6 +20,8 @@ stereo_fms(
 
 \item{fill}{logical. Whether to fill the inner part of the small-circle? \code{FALSE} by default.}
 
+\item{col}{fill color of quadrant}
+
 \item{border}{Color of the filled small-circle's outline (ignored if \code{fill=FALSE})}
 
 \item{...}{optional plotting parameters passed to \code{\link[=stereo_greatcircle]{stereo_greatcircle()}}}
@@ -28,7 +30,8 @@ stereo_fms(
 \code{"Fault"} object
 }
 \description{
-Plot Focal Mechanism Solution in a Spherical Plot
+Shows the principal faults associated with a stress tensor and a given
+friction coefficient using the focal mechanism / beach ball style.
 }
 \examples{
 f <- angelier1990$TYM
