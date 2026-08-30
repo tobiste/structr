@@ -45,7 +45,9 @@ stereo_segment(
 - ...:
 
   optional graphical parameters passed to
-  [`graphics::lines()`](https://rdrr.io/r/graphics/lines.html)
+  [`graphics::lines()`](https://rdrr.io/r/graphics/lines.html) and (if
+  `fill=TRUE`)
+  [`graphics::polygon()`](https://rdrr.io/r/graphics/polygon.html)
 
 ## See also
 

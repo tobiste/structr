@@ -1,11 +1,20 @@
-# Center gridlines on a given point
+# Center grid lines on a given vector
 
-Center gridlines on a given point
+Center grid lines on a given vector
 
 ## Usage
 
 ``` r
-rotate_stereogrid(x, d = 10, col = "gray90", lwd = 0.5, lty = 1, ...)
+rotate_stereogrid(
+  x,
+  d = 10,
+  col = "gray90",
+  lwd = 0.5,
+  equator = TRUE,
+  equator_lwd = 1.5 * lwd,
+  lty = 1,
+  ...
+)
 ```
 
 ## Arguments
@@ -16,8 +25,7 @@ rotate_stereogrid(x, d = 10, col = "gray90", lwd = 0.5, lty = 1, ...)
 
 - d:
 
-  integer. Angle distance between guides. Defaults to
-  `getOption("structr.d")`.
+  angle spacing between grid lines of the projection
 
 - col:
 
@@ -26,6 +34,16 @@ rotate_stereogrid(x, d = 10, col = "gray90", lwd = 0.5, lty = 1, ...)
 - lwd:
 
   Width of guide lines. Defaults to `getOption("structr.lwd")`.
+
+- equator:
+
+  logical. Whether the grid equator should be shown no matter how the
+  grid is constructed via `d`. `TRUE` by default.
+
+- equator_lwd:
+
+  numeric. The line width of the drawn equator grid line. By default,
+  the equator is `1.5` times thicker then `lwd`.
 
 - lty:
 

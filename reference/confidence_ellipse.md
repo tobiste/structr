@@ -82,7 +82,7 @@ list.
 - `angles`:
 
   Angles of the semi-axis of the confidence ellipse (in radians if `x`
-  is an `"Vec3"` object, in degrees if otherwise.)
+  is a `"Vec3"` object, in degrees if otherwise.)
 
 - `ellipse`:
 

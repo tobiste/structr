@@ -39,7 +39,7 @@ includes
 
 - Calculation fault displacement components,
 
-- Strain analysis (**R**_(f)/ϕ), contouring on the unit hyperboloid,
+- Strain analysis (**R**_(f)/φ), contouring on the unit hyperboloid,
   **Fry plots** and **Hsu plots**
 
 - Vorticity analysis using the **Rigid Grain Net** method
@@ -107,6 +107,34 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 
 ![](reference/figures/README-stereo-1.png)
 
+### Manipulate projection and grid
+
+The default projection is the equal-area projection into the lower
+hemisphere. Grid lines are disabled by default. You can change these
+settings either directly in the
+[`stereoplot()`](https://tobiste.github.io/structr/reference/stereoplot.md)
+function using the parameters `upper.hem`, `earea`, and `guides`or set
+global definitions.
+
+The grid can also be rotated to a specified orientation by setting the
+parameter `center`. In the example below, we fix the grid in the mean of
+the example line data:
+
+``` r
+
+ml <- sph_mean(example_lines)
+
+stereoplot(
+  title = "Lambert equal-area projection",
+  sub = paste0("Lower hemisphere\nGrid center: ", round(ml[1,1]), '/', round(ml[1, 2])),
+  center = ml
+)
+points(example_lines, col = "#B63679", pch = 19, cex = .5)
+points(example_planes, col = "#000004", pch = 1, cex = .5)
+```
+
+![](reference/figures/README-stereo_grid-1.png)
+
 ### Density on a Sphere
 
 Density shown by contour lines…
@@ -156,6 +184,14 @@ par(mfrow = c(1, 2), xpd = NA)
 stereoplot(title = "Planes", guides = FALSE)
 points(example_planes, col = "lightgrey", pch = 1, cex = .5)
 lines(planes_eig, col = c("#FB8861FF", "#FEC287FF", "#FCFDBFFF"), lty = 1:3)
+#> [[1]]
+#> NULL
+#> 
+#> [[2]]
+#> NULL
+#> 
+#> [[3]]
+#> NULL
 points(planes_mean, col = "#B63679", pch = 19, cex = 1)
 points(planes_geomean, col = "#E65164FF", pch = 19, cex = 1)
 points(planes_eig, col = c("#FB8861FF", "#FEC287FF", "#FCFDBFFF"), pch = 19, cex = 1)
@@ -173,10 +209,10 @@ lines_delta <- delta(example_lines)
 lines_confangle <- confidence_ellipse(example_lines)
 
 stereoplot(title = "Lines", guides = FALSE)
+lines(lines_mean, ang = lines_delta, col = "#FB88614C", border = "#FB8861FF", fill = TRUE)
 points(example_lines, col = "lightgrey", pch = 1, cex = .5)
 points(lines_mean, col = "#B63679", pch = 19, cex = 1)
-stereo_confidence(lines_confangle, col = "#E65164FF")
-lines(lines_mean, ang = lines_delta, col = "#FB8861FF")
+stereo_confidence(lines_confangle, col = "#E651644C", border = "#E65164FF", fill = TRUE)
 legend(
   0, -1.1,
   xjust = .5,
@@ -392,8 +428,7 @@ points(stress_components[, 'normal'], abs(stress_components[, 'shear']),
 
 #### 2D Strain
 
-Aspect ratio of finite strain ellipses vs orientation of long-axis
-(Rf/ϕ)
+Aspect ratio of finite strain ellipses vs orientation of long-axis ()
 
 ``` r
 
@@ -481,6 +516,11 @@ stereo_path(xl_steps, type = "l")
 stereo_path(xl_steps, type = "p", col = assign_col(increments), pch = 16, cex = .4)
 
 lines(flow_apophyses, col = c("grey30", "grey70"), lty = c(1, 2))
+#> [[1]]
+#> NULL
+#> 
+#> [[2]]
+#> NULL
 points(axes_ISA, pch = 15, col = "#B63679FF")
 text(axes_ISA, labels = c("ISA-1", "ISA-2", "ISA-3"), col = "#B63679FF", pos = 3, font = 2)
 

@@ -59,8 +59,8 @@ RGN_plot(
 
 - guides:
 
-  logical. Whether guides should be added to the plot. Defaults to
-  `getOption("structr.guides")`.
+  logical. Whether guides of the projection grid should be added to the
+  plot. Defaults to `getOption("structr.guides")`.
 
 - ...:
 

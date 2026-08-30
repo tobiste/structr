@@ -41,7 +41,7 @@ list.
 - `rup`:
 
   numeric. "Ratio Upsilon" (RUP) parameter after Angelier (1990),
-  ranging frpm 0 (perfect fit) to 200% (misfit). See
+  ranging from 0 (perfect fit) to 200% (misfit). See
   [`sigma2rup()`](https://tobiste.github.io/structr/reference/sigma2rup.md).
 
 - `quality`:

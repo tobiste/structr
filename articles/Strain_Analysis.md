@@ -10,7 +10,7 @@ library(structr)
 
 ## Strain analysis
 
-Import some Rf/ϕ data from elliptical strain markers
+Import some data from elliptical strain markers
 
 ``` r
 
@@ -50,7 +50,7 @@ The {structr} algorithm also calculates bootstrapped 95% confidence
 interval.
 
 To visualize the distribution of the strain values, we can calculate
-densities in Rf/ϕ space[^2] and plot them in a **Rf/ϕ** diagram[^3]:
+densities in space[^2] and plot them in a diagram[^3]:
 
 ``` r
 

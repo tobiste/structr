@@ -27,7 +27,7 @@ setting.
 
 ``` r
 
-stereoplot()
+stereoplot(guides = TRUE)
 points(lines, col = "#B63679", pch = 19, cex = .5)
 points(planes, col = "#000004", pch = 1, cex = .5)
 
@@ -49,7 +49,7 @@ to `TRUE`:
 
 ``` r
 
-stereoplot(earea = FALSE)
+stereoplot(earea = FALSE, guides = TRUE)
 points(lines, col = "#B63679", pch = 19, cex = .5, earea = FALSE, upper.hem = TRUE)
 points(planes, col = "#000004", pch = 1, cex = .5, earea = FALSE, upper.hem = TRUE)
 
@@ -80,6 +80,35 @@ Adding great circles for the first 10 vectors in planes:
 
 stereoplot()
 lines(planes[1:10, ], col = "lightgrey", lty = 1)
+#> [[1]]
+#> NULL
+#> 
+#> [[2]]
+#> NULL
+#> 
+#> [[3]]
+#> NULL
+#> 
+#> [[4]]
+#> NULL
+#> 
+#> [[5]]
+#> NULL
+#> 
+#> [[6]]
+#> NULL
+#> 
+#> [[7]]
+#> NULL
+#> 
+#> [[8]]
+#> NULL
+#> 
+#> [[9]]
+#> NULL
+#> 
+#> [[10]]
+#> NULL
 points(planes[1:10, ], col = "#000004", pch = 1, cex = .5)
 ```
 
@@ -93,8 +122,8 @@ To plot a small circle with, e.g., a 10° radius, you need to specify the
 ``` r
 
 stereoplot()
+lines(lines[1:5, ], ang = 10, col = '#B6367980', border = "#B63679", fill = TRUE)
 points(lines[1:5, ], col = "#B63679", pch = 19, cex = .5)
-lines(lines[1:5, ], ang = 10, col = "#B63679")
 ```
 
 ![Diagram showing

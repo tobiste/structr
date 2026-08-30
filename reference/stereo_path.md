@@ -1,4 +1,4 @@
-# Deformation Paths in Steroplot
+# Deformation Paths in Stereoplot
 
 Plot the paths of deformed vectors in a equal-area or stereographic
 projection

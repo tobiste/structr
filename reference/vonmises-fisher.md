@@ -18,7 +18,7 @@ dvmf(x, mu, k = 5)
 
 ## Source
 
-Adapted fom
+Adapted from
 [`rotasym::r_vMF()`](https://rdrr.io/pkg/rotasym/man/vMF.html) and
 [`rotasym::d_vMF()`](https://rdrr.io/pkg/rotasym/man/vMF.html), and
 `geologyGeometry` by Davis, J.R.

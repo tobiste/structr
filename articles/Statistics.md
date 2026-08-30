@@ -269,6 +269,14 @@ points(example_planes, col = "grey", pch = 16, cex = .7)
 lines(planes_eigen$vectors, 
        col = c("#000004", "#B63679FF", "#FEC287FF"), 
        lwd = rev(assign_cex(planes_eigen$values, range = c(.5, 2))))
+#> [[1]]
+#> NULL
+#> 
+#> [[2]]
+#> NULL
+#> 
+#> [[3]]
+#> NULL
 points(planes_eigen$vectors, 
        col = c("#000004", "#B63679FF", "#FEC287FF"), 
        cex = assign_cex(planes_eigen$values, range = c(.5, 2)), 

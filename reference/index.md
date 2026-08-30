@@ -399,7 +399,7 @@
   Vector Rotation
 
 - [`rotate_stereogrid()`](https://tobiste.github.io/structr/reference/rotate_stereogrid.md)
-  : Center gridlines on a given point
+  : Center grid lines on a given vector
 
 - [`rrot()`](https://tobiste.github.io/structr/reference/rrot.md) :
   Random Rotation Matrices
@@ -470,10 +470,10 @@
   : Weighted Iterative Sigma-Space Inversion (WISSI)
 
 - [`slip_inversion_wissi_boot()`](https://tobiste.github.io/structr/reference/slip_inversion_wissi_boot.md)
-  : Bootstrap uncertainty for a WISSI result.
+  : Bootstrap Uncertainty for a WISSI Result.
 
 - [`slip_inversion_wissi_polyphase()`](https://tobiste.github.io/structr/reference/slip_inversion_wissi_polyphase.md)
-  : Polyphase stress inversion via spectral clustering on \\S^5\\ (Stage
+  : Polyphase Stress Inversion via Spectral Clustering on \\S^5\\ (Stage
   5).
 
 - [`slip_inversion_yamaji_sato()`](https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato.md)
@@ -519,7 +519,7 @@
 
 - [`stereo_smallcircle()`](https://tobiste.github.io/structr/reference/stereo_cones.md)
   [`stereo_greatcircle()`](https://tobiste.github.io/structr/reference/stereo_cones.md)
-  : Stereographic Projection of Cones
+  : Spherical Projection of Cones
 
 - [`stereo_confidence()`](https://tobiste.github.io/structr/reference/stereo_confidence.md)
   : Plot Bootstrapped Confidence Ellipse
@@ -534,11 +534,14 @@
 - [`stereo_coords()`](https://tobiste.github.io/structr/reference/stereo_coords.md)
   : Stereographic and Equal-Area Projection
 
+- [`stereo_fms()`](https://tobiste.github.io/structr/reference/stereo_fms.md)
+  : Plot Focal Mechanism Solution in a Spherical Plot
+
 - [`stereo_lines()`](https://tobiste.github.io/structr/reference/stereo_lines.md)
   : Lines in a Stereoplot
 
 - [`stereo_path()`](https://tobiste.github.io/structr/reference/stereo_path.md)
-  : Deformation Paths in Steroplot
+  : Deformation Paths in Stereoplot
 
 - [`stereo_point()`](https://tobiste.github.io/structr/reference/stereo_point.md)
   : Stereographic Projection of Lines and Planes

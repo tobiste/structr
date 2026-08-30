@@ -1,4 +1,4 @@
-# Polyphase stress inversion via spectral clustering on \\S^5\\ (Stage 5).
+# Polyphase Stress Inversion via Spectral Clustering on \\S^5\\ (Stage 5).
 
 Identifies `k` stress phases automatically using the *eigengap
 heuristic*, then runs

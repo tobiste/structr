@@ -69,7 +69,7 @@ list.
 
 - `vec`:
 
-  `Line` of `Vec3` object, sthe axis of the circle solution
+  `Line` of `Vec3` object, the axis of the circle solution
 
 - `cone`:
 

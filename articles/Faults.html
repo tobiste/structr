@@ -30,7 +30,7 @@
 
     <a class="navbar-brand me-2" href="../index.html">structr</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9016</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.2.2.9017</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -91,7 +91,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2026-07-28</h4>
+            <h4 data-toc-skip class="date">2026-08-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/Faults.Rmd" class="external-link"><code>vignettes/Faults.Rmd</code></a></small>
       <div class="d-none name"><code>Faults.Rmd</code></div>
@@ -250,10 +250,27 @@ inversion method by analytical means. Geophys. J. Int, 103, 363–376. &lt;a hre
 <span><span class="fu"><a href="../reference/fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">fault_data_subset</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">fault_data_subset_PT</span><span class="op">$</span><span class="va">p</span>, col <span class="op">=</span> <span class="st">"#B63679FF"</span>, pch <span class="op">=</span> <span class="fl">16</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">fault_data_subset_PT</span><span class="op">$</span><span class="va">t</span>, col <span class="op">=</span> <span class="st">"#FEC287FF"</span>, pch <span class="op">=</span> <span class="fl">18</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/lines.html">lines</a></span><span class="op">(</span><span class="va">fault_data_subset_PT</span><span class="op">$</span><span class="va">t</span>, lty <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"grey40"</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/lines.html">lines</a></span><span class="op">(</span><span class="va">fault_data_subset_PT</span><span class="op">$</span><span class="va">d</span>, lty <span class="op">=</span> <span class="fl">3</span>, col <span class="op">=</span> <span class="st">"grey80"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"right"</span>,</span>
+<span><span class="fu"><a href="../reference/lines.html">lines</a></span><span class="op">(</span><span class="va">fault_data_subset_PT</span><span class="op">$</span><span class="va">t</span>, lty <span class="op">=</span> <span class="fl">2</span>, col <span class="op">=</span> <span class="st">"grey40"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [[1]]</span></span>
+<span><span class="co">## NULL</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## [[2]]</span></span>
+<span><span class="co">## NULL</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## [[3]]</span></span>
+<span><span class="co">## NULL</span></span></code></pre>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/lines.html">lines</a></span><span class="op">(</span><span class="va">fault_data_subset_PT</span><span class="op">$</span><span class="va">d</span>, lty <span class="op">=</span> <span class="fl">3</span>, col <span class="op">=</span> <span class="st">"grey80"</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## [[1]]</span></span>
+<span><span class="co">## NULL</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## [[2]]</span></span>
+<span><span class="co">## NULL</span></span>
+<span><span class="co">## </span></span>
+<span><span class="co">## [[3]]</span></span>
+<span><span class="co">## NULL</span></span></code></pre>
+<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/legend.html" class="external-link">legend</a></span><span class="op">(</span><span class="st">"right"</span>,</span>
 <span>  legend <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"P-axis"</span>, <span class="st">"T-axis"</span>, <span class="st">"M-plane"</span>, <span class="st">"Diheadra"</span><span class="op">)</span>,</span>
 <span>  col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#B63679FF"</span>, <span class="st">"#FEC287FF"</span>, <span class="st">"grey40"</span>, <span class="st">"grey80"</span><span class="op">)</span>,</span>
 <span>  pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">16</span>, <span class="fl">18</span>, <span class="cn">NA</span>, <span class="cn">NA</span><span class="op">)</span>, lty <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="cn">NA</span>, <span class="cn">NA</span>, <span class="fl">2</span>, <span class="fl">3</span><span class="op">)</span></span>
@@ -301,12 +318,12 @@ or strain rate including vorticity: A linear method of homogenous
 fault-slip data inversion independent of adopted hypothesis. Journal of
 Structural Geology, 51, 3–13. &lt;a href="https://doi.org/10.1016/j.jsg.2013.03.014" class="external-link uri"&gt;https://doi.org/10.1016/j.jsg.2013.03.014&lt;/a&gt;&lt;/p&gt;'><sup>7</sup></a>.</p></li>
 </ul>
-<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Test data"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">fault_data</span>, col <span class="op">=</span> <span class="st">"grey30"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Faults_files/figure-html/slip_inversion1-1.png" class="r-plt" alt="Diagram showing some fault-slip data in a stereoplot" width="1093.75"></p>
 <p>The stress inversion using the Michael method with 10 bootstraps:</p>
-<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">inv_res</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/slip_inversion.html">slip_inversion</a></span><span class="op">(</span><span class="va">fault_data</span>, method <span class="op">=</span> <span class="st">"michael"</span>, n_iter <span class="op">=</span> <span class="fl">10</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Average alpha angle</span></span>
@@ -318,7 +335,7 @@ Structural Geology, 51, 3–13. &lt;a href="https://doi.org/10.1016/j.jsg.2013.0
 <span><span class="co">## [25]  5.0514715 25.5265174 21.6148031 23.1509507  3.9315776 20.8077306</span></span>
 <span><span class="co">## [31] 17.5255311  3.9282757 15.8194428 12.8556026  5.1748022  6.1157113</span></span>
 <span><span class="co">## [37]  7.4467402 11.3905892</span></span></code></pre>
-<div class="sourceCode" id="cb21"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb25"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Average resolved shear stress</span></span>
 <span><span class="va">inv_res</span><span class="op">$</span><span class="va">tau_mean</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0.9289024</span></span></code></pre>
@@ -335,7 +352,7 @@ ranging from 0 (perfect fit) to 200% (misfit)</li>
 <p>To visualizing the orientation of the principal stresses and the
 confidence region of the axes, you may use the [stereoplot()] functions
 from {structr}</p>
-<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">cols</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#000004FF"</span>, <span class="st">"#B63679FF"</span>, <span class="st">"#FEC287FF"</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Stress inversion"</span><span class="op">)</span></span>
@@ -356,17 +373,17 @@ from {structr}</p>
 directions of stresses for a given fault population. Tectonophysics,
 56(3–4), T17–T26. &lt;a href="https://doi.org/10.1016/0040-1951(79)90081-7" class="external-link uri"&gt;https://doi.org/10.1016/0040-1951(79)90081-7&lt;/a&gt;&lt;/p&gt;'><sup>8</sup></a>:
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi mathvariant="normal">Φ</mi><mo>=</mo><mo stretchy="false" form="prefix">(</mo><msub><mi>σ</mi><mn>2</mn></msub><mo>−</mo><msub><mi>σ</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">)</mo><mi>/</mi><mo stretchy="false" form="prefix">(</mo><msub><mi>σ</mi><mn>1</mn></msub><mo>−</mo><msub><mi>σ</mi><mn>3</mn></msub><mo stretchy="false" form="postfix">)</mo></mrow><annotation encoding="application/x-tex">\Phi  = (\sigma_2 - \sigma_3)/(\sigma_1 - \sigma_3)</annotation></semantics></math></p>
-<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">inv_res</span><span class="op">$</span><span class="va">stress_shape</span><span class="op">$</span><span class="va">phi</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0.101247</span></span></code></pre>
-<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># 95% confidence interval</span></span>
 <span><span class="va">inv_res</span><span class="op">$</span><span class="va">phi_CI</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 0.05232139 0.13244959</span></span></code></pre>
 <p>The angle α is the angle between the tangential traction predicted by
 the best stress tensor and the slip vector. This deviation can be
 visualized in the stereoplot:</p>
-<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">alpha</span> <span class="op">&lt;-</span> <span class="va">inv_res</span><span class="op">$</span><span class="va">misfit</span><span class="op">$</span><span class="va">alpha</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span></span>
@@ -380,7 +397,7 @@ visualized in the stereoplot:</p>
 <span>  title <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/bquote.html" class="external-link">bquote</a></span><span class="op">(</span><span class="st">"Deviation angle"</span> <span class="op">~</span> <span class="va">alpha</span> <span class="op">~</span> <span class="st">"("</span> <span class="op">*</span> <span class="va">degree</span> <span class="op">*</span> <span class="st">")"</span><span class="op">)</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="Faults_files/figure-html/slip_inversion_alpha-1.png" class="r-plt" alt="Diagram showing deviation of the best-fit principal stress tensor in a stereoplot" width="1093.75"></p>
-<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb33"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">stress_components</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/sigma-comp.html">sigma2shearnorm</a></span><span class="op">(</span><span class="va">inv_res</span><span class="op">$</span><span class="va">sigma</span>, <span class="va">fault_data</span>, friction <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> </span>
 <span></span>
 <span></span>
@@ -394,6 +411,95 @@ visualized in the stereoplot:</p>
 <span>  col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col</a></span><span class="op">(</span><span class="va">alpha</span><span class="op">)</span>, pch <span class="op">=</span> <span class="fl">16</span></span>
 <span><span class="op">)</span></span></code></pre></div>
 <p><img src="Faults_files/figure-html/slip_inversion_mohr-1.png" class="r-plt" alt="Diagram showing the Mohr circle, and the normal and shear stresses for the slip inversion result" width="1093.75"></p>
+</div>
+<div class="section level3">
+<h3 id="focal-mechanism-plot">Focal mechanism plot<a class="anchor" aria-label="anchor" href="#focal-mechanism-plot"></a>
+</h3>
+<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Focal Mechanism Solution"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/stereo_fms.html">stereo_fms</a></span><span class="op">(</span><span class="va">inv_res</span><span class="op">$</span><span class="va">sigma</span>, friction <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/fault-plot.html">hoeppener</a></span><span class="op">(</span><span class="va">fault_data</span>, color <span class="op">=</span> <span class="st">'grey30'</span><span class="op">)</span></span></code></pre></div>
+<pre><code><span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span>
+<span><span class="co">## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :</span></span>
+<span><span class="co">## "color" is not a graphical parameter</span></span></code></pre>
+<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">inv_res</span><span class="op">$</span><span class="va">principal_axes_CI</span><span class="op">$</span><span class="va">sigma1</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">inv_res</span><span class="op">$</span><span class="va">principal_axes_CI</span><span class="op">$</span><span class="va">sigma2</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">inv_res</span><span class="op">$</span><span class="va">principal_axes_CI</span><span class="op">$</span><span class="va">sigma3</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<p><img src="Faults_files/figure-html/fms-1.png" class="r-plt" alt="" width="1093.75"></p>
 </div>
 <div class="section level3">
 <h3 id="maximum-horizontal-stress">Maximum horizontal stress<a class="anchor" aria-label="anchor" href="#maximum-horizontal-stress"></a>
@@ -412,7 +518,7 @@ orientations with full or partial knowledge of the tectonic stress
 tensor. &lt;em&gt;Geophys. J. Int.&lt;/em&gt;, 170, 1328—1335. doi:
 10.1111/j.1365-246X.2007.03468.x&lt;/p&gt;"><sup>9</sup></a>.</p>
 <p>First, we define the orientation of the principle stress axes:</p>
-<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb37"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">S1</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">250.89</span>, <span class="fl">70.07</span><span class="op">)</span></span>
 <span><span class="va">S3</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="fl">103.01</span>, <span class="fl">17.07</span><span class="op">)</span></span></code></pre></div>
 <p>To get
@@ -422,16 +528,16 @@ which is perpendicular to
 and
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mn>3</mn></msub><annotation encoding="application/x-tex">\sigma_3</annotation></semantics></math>,
 we calculate the cross-product of the two vectors:</p>
-<div class="sourceCode" id="cb31"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">S2</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/crossprod.html" class="external-link">crossprod</a></span><span class="op">(</span><span class="va">S3</span>, <span class="va">S1</span><span class="op">)</span></span></code></pre></div>
 <p>The azimuth of
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mtext mathvariant="normal">Hmax</mtext></msub><annotation encoding="application/x-tex">\sigma_\text{Hmax}</annotation></semantics></math>
 for a given stress ratio <code>R = 1</code>:</p>
-<div class="sourceCode" id="cb32"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb39"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/SH.html">SH</a></span><span class="op">(</span><span class="va">S1</span>, <span class="va">S2</span>, <span class="va">S3</span>, R <span class="op">=</span> <span class="fl">1</span><span class="op">)</span> <span class="co"># in degrees</span></span></code></pre></div>
 <pre><code><span><span class="co">## [1] 70.89</span></span></code></pre>
 <p>For a several stress ratios:</p>
-<div class="sourceCode" id="cb34"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb41"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">R</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/seq.html" class="external-link">seq</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">1</span>, <span class="fl">.1</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/cbind.html" class="external-link">cbind</a></span><span class="op">(</span><span class="va">R</span>, SH <span class="op">=</span> <span class="fu"><a href="../reference/SH.html">SH</a></span><span class="op">(</span><span class="va">S1</span>, <span class="va">S2</span>, <span class="va">S3</span>, R <span class="op">=</span> <span class="va">R</span><span class="op">)</span><span class="op">)</span></span></code></pre></div>
 <pre><code><span><span class="co">##         R       SH</span></span>
@@ -449,7 +555,7 @@ for a given stress ratio <code>R = 1</code>:</p>
 <p>The
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><msub><mi>σ</mi><mtext mathvariant="normal">Hmax</mtext></msub><annotation encoding="application/x-tex">\sigma_\text{Hmax}</annotation></semantics></math>
 direction for our slip inversion result from above:</p>
-<div class="sourceCode" id="cb36"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb43"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">inv_shmax</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/SH.html">SH</a></span><span class="op">(</span></span>
 <span>  S1 <span class="op">=</span> <span class="va">inv_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">1</span>, <span class="op">]</span>,</span>
 <span>  S2 <span class="op">=</span> <span class="va">inv_res</span><span class="op">$</span><span class="va">principal_axes</span><span class="op">[</span><span class="fl">2</span>, <span class="op">]</span>,</span>
@@ -460,7 +566,7 @@ direction for our slip inversion result from above:</p>
 <pre><code><span><span class="co">## [1] 60.80844</span></span></code></pre>
 <p>This (or any) direction can be added as compression arrows to a
 stereoplot using [stereo_shmax()]:</p>
-<div class="sourceCode" id="cb38"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb45"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Stress inversion"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/fault-plot.html">fault_plot</a></span><span class="op">(</span><span class="va">fault_data</span>, col <span class="op">=</span> <span class="st">"grey75"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/stereo_confidence.html">stereo_confidence</a></span><span class="op">(</span><span class="va">inv_res</span><span class="op">$</span><span class="va">principal_axes_CI</span><span class="op">$</span><span class="va">sigma1</span>, col <span class="op">=</span> <span class="va">cols</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>

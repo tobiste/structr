@@ -93,6 +93,12 @@ res <- drillcore_transformation(azi, inc, alpha = my_alphas, beta = my_betas)
 plot(Line(azi, inc), lab = "core-axis")
 points(res, col = 2:3)
 lines(res, col = 2:3)
+#> [[1]]
+#> NULL
+#> 
+#> [[2]]
+#> NULL
+#> 
 text(res, labels = c("A", "B"), col = 2:3, pos = 4)
 
 

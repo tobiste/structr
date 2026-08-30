@@ -295,6 +295,11 @@ stereo_path(xl_steps, type = "p", col = cols, pch = 16, cex = .4)
 
 # flow apophyses
 lines(flow_apophyses, col = c("grey30", "grey70"), lty = c(1, 2))
+#> [[1]]
+#> NULL
+#> 
+#> [[2]]
+#> NULL
 
 # instantaneous stretching axes
 points(axes_ISA, pch = 15, col = "#B63679FF")

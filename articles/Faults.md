@@ -188,7 +188,32 @@ fault_plot(fault_data_subset)
 points(fault_data_subset_PT$p, col = "#B63679FF", pch = 16)
 points(fault_data_subset_PT$t, col = "#FEC287FF", pch = 18)
 lines(fault_data_subset_PT$t, lty = 2, col = "grey40")
+```
+
+    ## [[1]]
+    ## NULL
+    ## 
+    ## [[2]]
+    ## NULL
+    ## 
+    ## [[3]]
+    ## NULL
+
+``` r
+
 lines(fault_data_subset_PT$d, lty = 3, col = "grey80")
+```
+
+    ## [[1]]
+    ## NULL
+    ## 
+    ## [[2]]
+    ## NULL
+    ## 
+    ## [[3]]
+    ## NULL
+
+``` r
 
 legend("right",
   legend = c("P-axis", "T-axis", "M-plane", "Diheadra"),
@@ -362,6 +387,101 @@ points(stress_components[, 'normal'], abs(stress_components[, 'shear']),
 ![Diagram showing the Mohr circle, and the normal and shear stresses for
 the slip inversion
 result](Faults_files/figure-html/slip_inversion_mohr-1.png)
+
+### Focal mechanism plot
+
+``` r
+
+stereoplot(title = "Focal Mechanism Solution")
+stereo_fms(inv_res$sigma, friction = 0.6)
+hoeppener(fault_data, color = 'grey30')
+```
+
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+    ## Warning in graphics::arrows(start[, 1], start[, 2], end[, 1], end[, 2], :
+    ## "color" is not a graphical parameter
+
+``` r
+
+stereo_confidence(inv_res$principal_axes_CI$sigma1, col = cols[1])
+stereo_confidence(inv_res$principal_axes_CI$sigma2, col = cols[2])
+stereo_confidence(inv_res$principal_axes_CI$sigma3, col = cols[3])
+```
+
+![](Faults_files/figure-html/fms-1.png)
 
 ### Maximum horizontal stress
 

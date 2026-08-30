@@ -193,6 +193,14 @@ plot(example_lines, col = "grey30")
 
 # greatcircles associated with the eigenvectors
 lines(lines_eigen$vectors, col = c("#000004FF", "#B63679FF", "#FE9F6DFF"))
+#> [[1]]
+#> NULL
+#> 
+#> [[2]]
+#> NULL
+#> 
+#> [[3]]
+#> NULL
 
 # spherical mean and standard deviation cone
 points(lines_mean, pch = 16, cex = 1.5, col = "#35B779FF")

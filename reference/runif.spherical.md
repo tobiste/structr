@@ -14,7 +14,7 @@ runif.spherical(
 
 ## Source
 
-Adapted fom
+Adapted from
 [`rotasym::r_unif_sphere()`](https://rdrr.io/pkg/rotasym/man/unif.html)
 and `rayUniform()` from `geologyGeometry` by Davis, J.R.
 

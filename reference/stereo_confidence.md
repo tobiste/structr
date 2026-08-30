@@ -13,6 +13,8 @@ stereo_confidence(
   col = par("col"),
   cex = par("cex"),
   pch = 16,
+  fill = FALSE,
+  border = NA,
   upper.hem = NULL,
   earea = NULL,
   radius = NULL,
@@ -45,6 +47,15 @@ stereo_confidence(
   Plotting symbol and size of the ellipse center. Ignored if `.center`
   is `FALSE`.
 
+- fill:
+
+  logical. Whether to fill the inner part of the ellipse? `FALSE` by
+  default.
+
+- border:
+
+  Color of the filled ellipse's outline (ignored if `fill=FALSE`)
+
 - upper.hem:
 
   logical. Whether the projection is shown for upper hemisphere (`TRUE`)
@@ -63,8 +74,10 @@ stereo_confidence(
 
 - ...:
 
-  graphical parameters passed to
-  [`graphics::lines()`](https://rdrr.io/r/graphics/lines.html)
+  optional graphical parameters passed to
+  [`graphics::lines()`](https://rdrr.io/r/graphics/lines.html) and (if
+  `fill=TRUE`)
+  [`graphics::polygon()`](https://rdrr.io/r/graphics/polygon.html)
 
 ## Value
 

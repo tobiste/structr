@@ -26,10 +26,6 @@ stereoplot(
 )
 ```
 
-## Source
-
-Adapted from the `RFOC` package
-
 ## Arguments
 
 - earea:
@@ -40,8 +36,8 @@ Adapted from the `RFOC` package
 
 - guides:
 
-  logical. Whether guides should be added to the plot. Defaults to
-  `getOption("structr.guides")`.
+  logical. Whether guides of the projection grid should be added to the
+  plot. Defaults to `getOption("structr.guides")`.
 
 - d:
 
@@ -101,11 +97,11 @@ Adapted from the `RFOC` package
 
   numeric. Radius of circle. Defaults to `getOption("structr.radius")`.
 
-- center:
+- grid.center:
 
   An object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`
-  specifying the center of the projection If `NULL` (the default), the
-  center is at the origin of the plot.
+  specifying the center of the projection grid. If `NULL` (the default),
+  the center is at the origin of the plot. Overwrites `guides`.
 
 ## See also
 
@@ -130,8 +126,8 @@ Other stereo-plot:
 ## Examples
 
 ``` r
-stereoplot()
-
+stereoplot(grid = TRUE)
+#> Error in stereoplot(grid = TRUE): unused argument (grid = TRUE)
 
 stereoplot(ticks = 30, title = "title", sub = "subtitle", border.col = "purple", labels = TRUE)
 

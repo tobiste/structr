@@ -197,7 +197,7 @@ Line(120, 30) |> as.Plane()
 > [`as.Pair()`](https://tobiste.github.io/structr/reference/classes.md),
 > and
 > [`as.Fault()`](https://tobiste.github.io/structr/reference/classes.md)
-> force a spherical object yo bve coerced into another data type without
+> force a spherical object to be coerced into another data type without
 > transformation.
 
 ## Example

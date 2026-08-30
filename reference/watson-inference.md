@@ -48,7 +48,7 @@ A list with members `$shape`, `$tBar`, `$rhs`, `$pvalue`.
 
 - `tBar`:
 
-  orientation tesor
+  orientation tensor
 
 - `rhs`:
 
@@ -95,8 +95,8 @@ print(r)
 #>         t1))
 #>     1 - stats::pf(f, 2, 2 * n - 2)
 #> }
-#> <bytecode: 0x55f2d75a4a20>
-#> <environment: 0x55f2d75a6780>
+#> <bytecode: 0x561e1f1ee918>
+#> <environment: 0x561e1f1eb360>
 #> 
 
 r$pvalue(Line(60, 10))

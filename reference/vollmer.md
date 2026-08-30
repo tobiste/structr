@@ -19,7 +19,7 @@ vollmer(x, ...)
 
 - ...:
 
-  paramters passed to
+  parameters passed to
   [`ortensor()`](https://tobiste.github.io/structr/reference/ortensor.md)
 
 ## Value

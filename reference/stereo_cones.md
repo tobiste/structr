@@ -1,7 +1,7 @@
-# Stereographic Projection of Cones
+# Spherical Projection of Cones
 
-Visualization of smallcircles and greatcircles in a stereographic
-projection.
+Visualization of small-circles and great-circles in a stereographic or
+equal-area projection.
 
 ## Usage
 
@@ -9,12 +9,14 @@ projection.
 stereo_smallcircle(
   x,
   d = 90,
-  col = 1,
+  col = par("col"),
   N = 1000,
   upper.hem = NULL,
   earea = NULL,
-  lty = 1,
-  lwd = 1,
+  lty = par("lty"),
+  lwd = par("lwd"),
+  fill = FALSE,
+  border = NA,
   radius = NULL,
   ...
 )
@@ -54,6 +56,15 @@ stereo_greatcircle(x, ...)
   or `FALSE` for meridional stereographic projection. Defaults to
   `getOption("structr.earea")`.
 
+- fill:
+
+  logical. Whether to fill the inner part of the small-circle? `FALSE`
+  by default.
+
+- border:
+
+  Color of the filled small-circle's outline (ignored if `fill=FALSE`)
+
 - radius:
 
   numeric. Radius of circle. Defaults to `getOption("structr.radius")`.
@@ -61,7 +72,9 @@ stereo_greatcircle(x, ...)
 - ...:
 
   optional graphical parameters passed to
-  [`graphics::lines()`](https://rdrr.io/r/graphics/lines.html)
+  [`graphics::lines()`](https://rdrr.io/r/graphics/lines.html) and (if
+  `fill=TRUE`)
+  [`graphics::polygon()`](https://rdrr.io/r/graphics/polygon.html)
 
 ## See also
 
@@ -98,4 +111,16 @@ stereo_greatcircle(Plane(120, 30), col = "red")
 stereoplot()
 stereo_point(Line(c(129, 90), c(30, 5)), lab = c("L1", "L2"))
 stereo_smallcircle(Line(c(129, 90), c(30, 5)), d = c(10, 5), col = 1:2, lty = 1:2, lwd = 1:2)
+
+#> [[1]]
+#> NULL
+#> 
+#> [[2]]
+#> NULL
+#> 
+
+# Filled cones:
+stereoplot()
+stereo_smallcircle(Line(c(90, 120), c(5, 5)), d = c(5, 20), col = c('grey60', 'grey40'), border = c('red', 'blue'), fill = TRUE)
+stereo_point(Line(c(90, 120), c(5, 5)), col = c('red', 'blue'))
 ```
