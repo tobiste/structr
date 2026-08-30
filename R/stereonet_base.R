@@ -1688,7 +1688,7 @@ rotate_stereogrid <- function(x, d = 10, col = "gray90", lwd = 0.5, equator = TR
 #' stereoplot()
 #' stereo_fms(sig)
 stereo_fms <- function(sigma, friction = 0.6, fill = TRUE, col = "#BEBEBE80", border = 'black', ...){
-  pv <- c(sigma)
+  pv <- sigma2stress(sigma)
   s1 <- pv$axes[1, ]
   s3 <- pv$axes[3, ]
   pf <- principal_fault(s1, s3, friction = friction)
