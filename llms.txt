@@ -470,7 +470,7 @@ data(shebandowan)
 set.seed(20250411)
 
 # Color code porphyroclasts by size of clast (area in log-scale):
-RGN_plot(shebandowan$r, shebandowan$phi, col = assign_col(log(shebandowan$area)), pch = 16)
+RGN_plot(shebandowan$r, shebandowan$phi, col = assign_col(log(shebandowan$area)), pch = 16, guides = TRUE)
 ```
 
 ![](reference/figures/README-rgn-1.png)
