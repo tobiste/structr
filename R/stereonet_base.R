@@ -681,7 +681,7 @@ stereoplot_frame <- function(n = 512L, radius = NULL, ...) {
 #' @importFrom graphics plot points title mtext par
 #' @export
 #' @examples
-#' stereoplot(grid = TRUE)
+#' stereoplot(guides = TRUE)
 #'
 #' stereoplot(ticks = 30, title = "title", sub = "subtitle", border.col = "purple", labels = TRUE)
 #'
