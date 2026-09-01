@@ -61,7 +61,7 @@ Defaults to \code{getOption("structr.ticks")}.}
 
 \item{radius}{numeric. Radius of circle. Defaults to \code{getOption("structr.radius")}.}
 
-\item{grid.center}{An object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}
+\item{center}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}
 specifying the center of the projection grid. If \code{NULL} (the default), the center
 is at the origin of the plot. Overwrites \code{guides}.}
 }
@@ -70,7 +70,7 @@ Initialize the plot for equal-angle stereographic projections (Wulff) or Lambert
 equal-area projections (Schmidt).
 }
 \examples{
-stereoplot(grid = TRUE)
+stereoplot(guides = TRUE)
 
 stereoplot(ticks = 30, title = "title", sub = "subtitle", border.col = "purple", labels = TRUE)
 

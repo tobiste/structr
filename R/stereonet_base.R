@@ -268,11 +268,13 @@ stereo_pair <- function(x, pch = 16, col = 1, lwd = 1, lty = 1, lab = NULL, cex 
 #'
 #' stereoplot()
 #' stereo_point(Line(c(129, 90), c(30, 5)), lab = c("L1", "L2"))
-#' stereo_smallcircle(Line(c(129, 90), c(30, 5)), d = c(10, 5), col = 1:2, lty = 1:2, lwd = 1:2)
+#' stereo_smallcircle(Line(c(129, 90), c(30, 5)), d = c(10, 5), 
+#'   col = 1:2, lty = 1:2, lwd = 1:2)
 #' 
 #' # Filled cones:
 #' stereoplot()
-#' stereo_smallcircle(Line(c(90, 120), c(5, 5)), d = c(5, 20), col = c('grey60', 'grey40'), border = c('red', 'blue'), fill = TRUE)
+#' stereo_smallcircle(Line(c(90, 120), c(5, 5)), d = c(5, 20), 
+#'   col = c('grey60', 'grey40'), border = c('red', 'blue'), fill = TRUE)
 #' stereo_point(Line(c(90, 120), c(5, 5)), col = c('red', 'blue'))
 NULL
 
@@ -671,7 +673,7 @@ stereoplot_frame <- function(n = 512L, radius = NULL, ...) {
 #' @param ladj adjustment for all labels away from origin of projection circle.
 #' This essentially an amount that is added to `radius` and the length of the ticks. Defaults to `getOption("structr.ladj")`.
 #' @param radius numeric. Radius of circle. Defaults to `getOption("structr.radius")`.
-#' @param grid.center An object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`
+#' @param center object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`
 #' specifying the center of the projection grid. If `NULL` (the default), the center
 #' is at the origin of the plot. Overwrites `guides`.
 #'
