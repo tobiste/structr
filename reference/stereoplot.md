@@ -97,11 +97,11 @@ stereoplot(
 
   numeric. Radius of circle. Defaults to `getOption("structr.radius")`.
 
-- grid.center:
+- center:
 
-  An object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`
-  specifying the center of the projection grid. If `NULL` (the default),
-  the center is at the origin of the plot. Overwrites `guides`.
+  object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"` specifying
+  the center of the projection grid. If `NULL` (the default), the center
+  is at the origin of the plot. Overwrites `guides`.
 
 ## See also
 
@@ -126,8 +126,8 @@ Other stereo-plot:
 ## Examples
 
 ``` r
-stereoplot(grid = TRUE)
-#> Error in stereoplot(grid = TRUE): unused argument (grid = TRUE)
+stereoplot(guides = TRUE)
+
 
 stereoplot(ticks = 30, title = "title", sub = "subtitle", border.col = "purple", labels = TRUE)
 
