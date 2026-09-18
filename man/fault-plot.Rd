@@ -79,20 +79,20 @@ Angelier, J. Tectonic analysis of fault slip data sets, J. Geophys. Res. 89 (B7)
 Hoeppener, R. Tektonik im Schiefergebirge. Geol Rundsch 44, 26-58 (1955). https://doi.org/10.1007/BF01802903
 }
 \seealso{
-Other stereo-plot: 
-\code{\link{arrows}()},
-\code{\link{lines}()},
+Other stereo-plot:
+\code{\link{arrows}},
+\code{\link{lines}},
 \code{\link{plot-spherical}},
-\code{\link{points.spherical}()},
+\code{\link[=points.spherical]{points.spherical()}},
 \code{\link{stereo_cones}},
-\code{\link{stereo_confidence}()},
+\code{\link[=stereo_confidence]{stereo_confidence()}},
 \code{\link{stereo_contour}},
-\code{\link{stereo_lines}()},
-\code{\link{stereo_point}()},
-\code{\link{stereo_segment}()},
-\code{\link{stereoplot}()},
-\code{\link{stereoplot_guides}()},
-\code{\link{stereoplot_ticks}()},
-\code{\link{text.spherical}()}
+\code{\link[=stereo_lines]{stereo_lines()}},
+\code{\link[=stereo_point]{stereo_point()}},
+\code{\link[=stereo_segment]{stereo_segment()}},
+\code{\link[=stereoplot]{stereoplot()}},
+\code{\link[=stereoplot_guides]{stereoplot_guides()}},
+\code{\link[=stereoplot_ticks]{stereoplot_ticks()}},
+\code{\link[=text.spherical]{text.spherical()}}
 }
 \concept{stereo-plot}

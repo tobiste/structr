@@ -27,20 +27,20 @@ stereoplot()
 lines(rvmf(n = 5), ang = runif(5, 0, 90), col = 1:5)
 }
 \seealso{
-Other stereo-plot: 
-\code{\link{arrows}()},
+Other stereo-plot:
+\code{\link{arrows}},
 \code{\link{fault-plot}},
 \code{\link{plot-spherical}},
-\code{\link{points.spherical}()},
+\code{\link[=points.spherical]{points.spherical()}},
 \code{\link{stereo_cones}},
-\code{\link{stereo_confidence}()},
+\code{\link[=stereo_confidence]{stereo_confidence()}},
 \code{\link{stereo_contour}},
-\code{\link{stereo_lines}()},
-\code{\link{stereo_point}()},
-\code{\link{stereo_segment}()},
-\code{\link{stereoplot}()},
-\code{\link{stereoplot_guides}()},
-\code{\link{stereoplot_ticks}()},
-\code{\link{text.spherical}()}
+\code{\link[=stereo_lines]{stereo_lines()}},
+\code{\link[=stereo_point]{stereo_point()}},
+\code{\link[=stereo_segment]{stereo_segment()}},
+\code{\link[=stereoplot]{stereoplot()}},
+\code{\link[=stereoplot_guides]{stereoplot_guides()}},
+\code{\link[=stereoplot_ticks]{stereoplot_ticks()}},
+\code{\link[=text.spherical]{text.spherical()}}
 }
 \concept{stereo-plot}

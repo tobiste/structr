@@ -192,17 +192,17 @@ independent of adopted hypothesis. Journal of Structural Geology, 51, 3–13.
 \doi{10.1016/j.jsg.2013.03.014}
 }
 \seealso{
-Other stress-inversion: 
-\code{\link{Fault_PT}()},
-\code{\link{slip_inversion}()},
-\code{\link{slip_inversion_angelier}()},
-\code{\link{slip_inversion_michael}()},
-\code{\link{slip_inversion_simple}()},
-\code{\link{slip_inversion_wissi}()},
-\code{\link{slip_inversion_yamaji_sato}()}
+Other stress-inversion:
+\code{\link[=Fault_PT]{Fault_PT()}},
+\code{\link[=slip_inversion]{slip_inversion()}},
+\code{\link[=slip_inversion_angelier]{slip_inversion_angelier()}},
+\code{\link[=slip_inversion_michael]{slip_inversion_michael()}},
+\code{\link[=slip_inversion_simple]{slip_inversion_simple()}},
+\code{\link[=slip_inversion_wissi]{slip_inversion_wissi()}},
+\code{\link[=slip_inversion_yamaji_sato]{slip_inversion_yamaji_sato()}}
 
-Other hansen: 
-\code{\link{slip_inversion_hansen_boot}()}
+Other hansen:
+\code{\link[=slip_inversion_hansen_boot]{slip_inversion_hansen_boot()}}
 }
 \concept{hansen}
 \concept{stress-inversion}

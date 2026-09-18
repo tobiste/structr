@@ -29,11 +29,11 @@ sense_from_strikeslip(Pair(120, 89, 30, 5), left = FALSE) # -1: reverse offset
 \seealso{
 \code{\link[=strikeslip_kinematics]{strikeslip_kinematics()}}
 
-Other parse-orientations: 
-\code{\link{Fault_from_rake_quadrant}()},
-\code{\link{azimuth_to_cardinal}()},
-\code{\link{quadrant2dd}()},
-\code{\link{split}()},
-\code{\link{strikeslip_kinematics}()}
+Other parse-orientations:
+\code{\link[=Fault_from_rake_quadrant]{Fault_from_rake_quadrant()}},
+\code{\link[=azimuth_to_cardinal]{azimuth_to_cardinal()}},
+\code{\link[=quadrant2dd]{quadrant2dd()}},
+\code{\link{split}},
+\code{\link[=strikeslip_kinematics]{strikeslip_kinematics()}}
 }
 \concept{parse-orientations}

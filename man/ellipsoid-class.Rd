@@ -51,8 +51,8 @@ ellipsoid(R)
 \seealso{
 \code{\link[=ortensor]{ortensor()}}
 
-Other ellipsoid: 
+Other ellipsoid:
 \code{\link{ellipsoid-params}},
-\code{\link{ellipsoid_from_stretch}()}
+\code{\link[=ellipsoid_from_stretch]{ellipsoid_from_stretch()}}
 }
 \concept{ellipsoid}

@@ -35,7 +35,7 @@ legend_col_d(fill, legend = names(fill), position = "topright", ...)
 \arguments{
 \item{x}{vector to colorize}
 
-\item{pal}{color function; Default is \code{\link[viridis:reexports]{viridis::viridis()}}}
+\item{pal}{color function; Default is \code{\link[viridis:viridis]{viridis::viridis()}}}
 
 \item{na.translate}{Unlike continuous scales, discrete scales can easily show
 missing values, and do so by default. If you want to remove missing values
@@ -91,7 +91,7 @@ legend_col(seq(0, 1, .1), title = "test")
 \code{\link[PlotTools:SpectrumLegend]{PlotTools::SpectrumLegend()}} - an alternative tool to generate a
 color-bar in base-R plots
 
-Other assign: 
+Other assign:
 \code{\link{assign-cex}},
 \code{\link{assign-pch}}
 }

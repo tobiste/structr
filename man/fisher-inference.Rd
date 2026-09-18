@@ -61,7 +61,7 @@ L. Tauxe 2010. Essentials of Paleomagnetism. xvi + 489 pp. Berkeley: University 
 \code{\link[=rvmf]{rvmf()}} for simulating a von Mises-Fisher distribution, and \code{\link[=fisher_MLE]{fisher_MLE()}} to
 estimate distribution parameters.
 
-Other distribution-inference: 
+Other distribution-inference:
 \code{\link{bingham-inference}},
 \code{\link{watson-inference}}
 }

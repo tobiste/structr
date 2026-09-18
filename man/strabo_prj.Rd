@@ -27,7 +27,7 @@ vorticity control gold enrichment in Archean shear zones
 Journal of Structural Geology, 201, 105542. \doi{10.1016/j.jsg.2025.105542}
 }
 \seealso{
-Other datasets: 
+Other datasets:
 \code{\link{angelier1990}},
 \code{\link{example_lines}},
 \code{\link{example_lines_df}},

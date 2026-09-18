@@ -29,11 +29,11 @@ reduced_stress(f)
 \seealso{
 \code{\link[=slip_inversion]{slip_inversion()}}
 
-Other stress-tensor: 
-\code{\link{fault_instability_criterion}()},
+Other stress-tensor:
+\code{\link[=fault_instability_criterion]{fault_instability_criterion()}},
 \code{\link{sigma-comp}},
-\code{\link{sigma2rup}()},
-\code{\link{sigma2stress}()},
-\code{\link{stress_shape}()}
+\code{\link[=sigma2rup]{sigma2rup()}},
+\code{\link[=sigma2stress]{sigma2stress()}},
+\code{\link[=stress_shape]{stress_shape()}}
 }
 \concept{stress-tensor}

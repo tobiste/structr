@@ -195,6 +195,7 @@ export(Fault_slip)
 export(Line)
 export(Mohr_calc)
 export(Mohr_plot)
+export(Mohr_strain)
 export(PR_stress)
 export(Pair)
 export(Pair_from_pitch)
@@ -212,6 +213,7 @@ export(Spherical)
 export(Vec3)
 export(angelier)
 export(angle)
+export(angular_strain)
 export(antipode)
 export(apparent_dip_direction)
 export(arrows)
@@ -328,6 +330,7 @@ export(legend_col_d)
 export(legend_pch)
 export(list_vec)
 export(lode)
+export(longitudinal_strain)
 export(mean_strain_ellipse)
 export(mean_strain_ellipse_ramsay)
 export(mean_stress)
@@ -345,6 +348,7 @@ export(principal_stretch)
 export(project)
 export(projected_mean)
 export(quadrant2dd)
+export(quadratic_elongation)
 export(rbingham)
 export(rbingham_eig)
 export(rdegree)
@@ -427,6 +431,7 @@ export(stereoplot_ticks)
 export(strain_invariant)
 export(stress_shape)
 export(stress_transformation)
+export(stretch)
 export(strikeslip_kinematics)
 export(symmetry_group)
 export(tau_max)
@@ -453,95 +458,117 @@ import(data.table)
 import(ggplot2)
 import(viridis)
 importFrom(MASS,ginv)
-importFrom(Rfast,colmeans)
-importFrom(Rfast,rbing)
-importFrom(Rfast,rbingham)
-importFrom(Rfast,rowsums)
-importFrom(Rfast,vmf.mle)
-importFrom(cluster,agnes)
-importFrom(cluster,clara)
-importFrom(cluster,diana)
-importFrom(cluster,fanny)
-importFrom(cluster,pam)
-importFrom(dplyr,bind_cols)
-importFrom(dplyr,bind_rows)
-importFrom(dplyr,mutate)
-importFrom(dplyr,select)
-importFrom(dplyr,summarise)
-importFrom(expm,expm)
-importFrom(expm,logm)
+importFrom(Rfast,
+  colmeans,
+  rbing,
+  rbingham,
+  rowsums,
+  vmf.mle
+)
+importFrom(cluster,
+  agnes,
+  clara,
+  diana,
+  fanny,
+  pam
+)
+importFrom(dplyr,
+  bind_cols,
+  bind_rows,
+  mutate,
+  select,
+  summarise
+)
+importFrom(expm,
+  expm,
+  logm
+)
 importFrom(fields,interp.surface)
-importFrom(future.apply,future_lapply)
-importFrom(future.apply,future_vapply)
+importFrom(future.apply,
+  future_lapply,
+  future_vapply
+)
 importFrom(ggforce,geom_circle)
-importFrom(ggplot2,aes)
-importFrom(ggplot2,coord_fixed)
-importFrom(ggplot2,geom_abline)
-importFrom(ggplot2,geom_contour)
-importFrom(ggplot2,geom_contour_filled)
-importFrom(ggplot2,geom_hline)
-importFrom(ggplot2,geom_line)
-importFrom(ggplot2,geom_path)
-importFrom(ggplot2,geom_point)
-importFrom(ggplot2,geom_polygon)
-importFrom(ggplot2,geom_text)
-importFrom(ggplot2,geom_tile)
-importFrom(ggplot2,geom_vline)
-importFrom(ggplot2,ggplot)
-importFrom(ggplot2,labs)
+importFrom(ggplot2,
+  aes,
+  coord_fixed,
+  geom_abline,
+  geom_contour,
+  geom_contour_filled,
+  geom_hline,
+  geom_line,
+  geom_path,
+  geom_point,
+  geom_polygon,
+  geom_text,
+  geom_tile,
+  geom_vline,
+  ggplot,
+  labs
+)
 importFrom(grDevices,colorRamp)
-importFrom(graphics,.filled.contour)
-importFrom(graphics,arrows)
-importFrom(graphics,contour)
-importFrom(graphics,image.default)
-importFrom(graphics,lines)
-importFrom(graphics,mtext)
-importFrom(graphics,par)
-importFrom(graphics,plot)
-importFrom(graphics,points)
-importFrom(graphics,polygon)
-importFrom(graphics,segments)
-importFrom(graphics,text)
-importFrom(graphics,title)
-importFrom(pracma,acosd)
-importFrom(pracma,asind)
-importFrom(pracma,atan2d)
-importFrom(pracma,atand)
-importFrom(pracma,combs)
-importFrom(pracma,cosd)
-importFrom(pracma,deg2rad)
-importFrom(pracma,erfi)
-importFrom(pracma,rad2deg)
-importFrom(pracma,sind)
-importFrom(pracma,tand)
+importFrom(graphics,
+  .filled.contour,
+  arrows,
+  contour,
+  image.default,
+  lines,
+  mtext,
+  par,
+  plot,
+  points,
+  polygon,
+  segments,
+  text,
+  title
+)
+importFrom(pracma,
+  acosd,
+  asind,
+  atan2d,
+  atand,
+  combs,
+  cosd,
+  deg2rad,
+  erfi,
+  rad2deg,
+  sind,
+  tand
+)
 importFrom(readxl,read_xlsx)
 importFrom(rjson,fromJSON)
-importFrom(rotasym,d_vMF)
-importFrom(rotasym,r_unif_sphere)
-importFrom(rotasym,r_vMF)
-importFrom(sf,st_as_sf)
-importFrom(sf,st_bbox)
-importFrom(sf,st_coordinates)
-importFrom(sf,st_crs)
-importFrom(sf,st_is)
-importFrom(sf,st_make_grid)
-importFrom(sf,st_transform)
-importFrom(stats,aggregate)
-importFrom(stats,as.dist)
-importFrom(stats,complete.cases)
-importFrom(stats,hclust)
-importFrom(stats,kmeans)
-importFrom(stats,optim)
-importFrom(stats,optimise)
-importFrom(stats,optimize)
-importFrom(stats,pchisq)
-importFrom(stats,pf)
-importFrom(stats,qf)
-importFrom(stats,quantile)
-importFrom(stats,runif)
-importFrom(stats,sd)
-importFrom(stats,setNames)
-importFrom(stats,t.test)
-importFrom(stats,var)
+importFrom(rotasym,
+  d_vMF,
+  r_unif_sphere,
+  r_vMF
+)
+importFrom(sf,
+  st_as_sf,
+  st_bbox,
+  st_coordinates,
+  st_crs,
+  st_is,
+  st_make_grid,
+  st_transform
+)
+importFrom(stats,
+  aggregate,
+  as.dist,
+  complete.cases,
+  hclust,
+  kmeans,
+  optim,
+  optimise,
+  optimize,
+  pchisq,
+  pf,
+  qf,
+  quantile,
+  runif,
+  sd,
+  setNames,
+  t.test,
+  var
+)
 importFrom(tectonicr,dist_greatcircle)
 importFrom(viridis,viridis)

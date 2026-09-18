@@ -127,13 +127,13 @@ solution for inverting fault-slip data to obtain palaeostresses. Computers
 & Geosciences, 31(8), 1059–1070. \doi{10.1016/j.cageo.2005.02.012}
 }
 \seealso{
-Other stress-inversion: 
-\code{\link{Fault_PT}()},
-\code{\link{slip_inversion}()},
-\code{\link{slip_inversion_hansen}()},
-\code{\link{slip_inversion_michael}()},
-\code{\link{slip_inversion_simple}()},
-\code{\link{slip_inversion_wissi}()},
-\code{\link{slip_inversion_yamaji_sato}()}
+Other stress-inversion:
+\code{\link[=Fault_PT]{Fault_PT()}},
+\code{\link[=slip_inversion]{slip_inversion()}},
+\code{\link[=slip_inversion_hansen]{slip_inversion_hansen()}},
+\code{\link[=slip_inversion_michael]{slip_inversion_michael()}},
+\code{\link[=slip_inversion_simple]{slip_inversion_simple()}},
+\code{\link[=slip_inversion_wissi]{slip_inversion_wissi()}},
+\code{\link[=slip_inversion_yamaji_sato]{slip_inversion_yamaji_sato()}}
 }
 \concept{stress-inversion}

@@ -211,9 +211,9 @@ Mohr_calc <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
 }
 
 
-#' Mohr Circle plot
+#' Mohr Circle Diagram for Stress
 #'
-#' plots the Mohr Circle
+#' Plots the Mohr Circle for Stress
 #'
 #' @inheritParams Mohr_calc
 #' @param sigma2 numeric. (optional) Magnitude of intermediate principal stress.

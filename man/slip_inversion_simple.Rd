@@ -55,13 +55,13 @@ invisible(lapply(seq_len(nx), function(i) {
 dev.off()
 }
 \seealso{
-Other stress-inversion: 
-\code{\link{Fault_PT}()},
-\code{\link{slip_inversion}()},
-\code{\link{slip_inversion_angelier}()},
-\code{\link{slip_inversion_hansen}()},
-\code{\link{slip_inversion_michael}()},
-\code{\link{slip_inversion_wissi}()},
-\code{\link{slip_inversion_yamaji_sato}()}
+Other stress-inversion:
+\code{\link[=Fault_PT]{Fault_PT()}},
+\code{\link[=slip_inversion]{slip_inversion()}},
+\code{\link[=slip_inversion_angelier]{slip_inversion_angelier()}},
+\code{\link[=slip_inversion_hansen]{slip_inversion_hansen()}},
+\code{\link[=slip_inversion_michael]{slip_inversion_michael()}},
+\code{\link[=slip_inversion_wissi]{slip_inversion_wissi()}},
+\code{\link[=slip_inversion_yamaji_sato]{slip_inversion_yamaji_sato()}}
 }
 \concept{stress-inversion}

@@ -24,11 +24,11 @@ test <- c("45NW", "4SE")
 split_strike(test)
 }
 \seealso{
-Other parse-orientations: 
-\code{\link{Fault_from_rake_quadrant}()},
-\code{\link{azimuth_to_cardinal}()},
-\code{\link{quadrant2dd}()},
-\code{\link{sense_from_strikeslip}()},
-\code{\link{strikeslip_kinematics}()}
+Other parse-orientations:
+\code{\link[=Fault_from_rake_quadrant]{Fault_from_rake_quadrant()}},
+\code{\link[=azimuth_to_cardinal]{azimuth_to_cardinal()}},
+\code{\link[=quadrant2dd]{quadrant2dd()}},
+\code{\link[=sense_from_strikeslip]{sense_from_strikeslip()}},
+\code{\link[=strikeslip_kinematics]{strikeslip_kinematics()}}
 }
 \concept{parse-orientations}

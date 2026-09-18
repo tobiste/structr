@@ -27,7 +27,7 @@ regional stress-III. A new rapid direct inversion method by analytical means.
 Geophysical Journal International, 103(2), 363–376. \doi{10.1111/j.1365-246X.1990.tb01777.x}
 }
 \seealso{
-Other datasets: 
+Other datasets:
 \code{\link{example_lines}},
 \code{\link{example_lines_df}},
 \code{\link{example_planes}},

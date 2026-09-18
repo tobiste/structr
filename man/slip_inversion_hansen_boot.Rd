@@ -63,7 +63,7 @@ title(
 dev.off()
 }
 \seealso{
-Other hansen: 
-\code{\link{slip_inversion_hansen}()}
+Other hansen:
+\code{\link[=slip_inversion_hansen]{slip_inversion_hansen()}}
 }
 \concept{hansen}

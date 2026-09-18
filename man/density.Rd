@@ -68,7 +68,7 @@ test <- rfb(100, mu = Line(120, 10), k = 5, A = diag(c(-1, 0, 1)))
 density(x = test, n = 100, sigma = 3, weights = runif(100))
 }
 \seealso{
-Other density: 
+Other density:
 \code{\link{density-funs}},
 \code{\link{stereo_contour}}
 }

@@ -50,20 +50,20 @@ plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
 stereoplot_guides(d = 15, earea = FALSE, center = Line(120, 50), col = 'red')
 }
 \seealso{
-Other stereo-plot: 
-\code{\link{arrows}()},
+Other stereo-plot:
+\code{\link{arrows}},
 \code{\link{fault-plot}},
-\code{\link{lines}()},
+\code{\link{lines}},
 \code{\link{plot-spherical}},
-\code{\link{points.spherical}()},
+\code{\link[=points.spherical]{points.spherical()}},
 \code{\link{stereo_cones}},
-\code{\link{stereo_confidence}()},
+\code{\link[=stereo_confidence]{stereo_confidence()}},
 \code{\link{stereo_contour}},
-\code{\link{stereo_lines}()},
-\code{\link{stereo_point}()},
-\code{\link{stereo_segment}()},
-\code{\link{stereoplot}()},
-\code{\link{stereoplot_ticks}()},
-\code{\link{text.spherical}()}
+\code{\link[=stereo_lines]{stereo_lines()}},
+\code{\link[=stereo_point]{stereo_point()}},
+\code{\link[=stereo_segment]{stereo_segment()}},
+\code{\link[=stereoplot]{stereoplot()}},
+\code{\link[=stereoplot_ticks]{stereoplot_ticks()}},
+\code{\link[=text.spherical]{text.spherical()}}
 }
 \concept{stereo-plot}

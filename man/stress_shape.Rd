@@ -66,11 +66,11 @@ Geophysical Research: Solid Earth, 102(B8), 17909–17919. \doi{10.1029/97JB0127
 \seealso{
 \code{\link[=slip_inversion]{slip_inversion()}}
 
-Other stress-tensor: 
-\code{\link{fault_instability_criterion}()},
-\code{\link{reduced_stress}()},
+Other stress-tensor:
+\code{\link[=fault_instability_criterion]{fault_instability_criterion()}},
+\code{\link[=reduced_stress]{reduced_stress()}},
 \code{\link{sigma-comp}},
-\code{\link{sigma2rup}()},
-\code{\link{sigma2stress}()}
+\code{\link[=sigma2rup]{sigma2rup()}},
+\code{\link[=sigma2stress]{sigma2stress()}}
 }
 \concept{stress-tensor}

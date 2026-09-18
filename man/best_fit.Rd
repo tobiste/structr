@@ -79,7 +79,7 @@ for three-dimensional orientational data. Journal of Structural Geology, 96,
 65–89. \doi{10.1016/j.jsg.2017.01.002}
 }
 \seealso{
-Other geodesic-regression: 
+Other geodesic-regression:
 \code{\link{perm-rsq}}
 }
 \concept{geodesic-regression}

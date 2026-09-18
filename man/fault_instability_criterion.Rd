@@ -42,11 +42,11 @@ fault image from accurate locations and focal mechanisms of the 2008 swarm
 earthquakes in West Bohemia, Czech Republic, Tectonophysics, 590, 189–195.
 }
 \seealso{
-Other stress-tensor: 
-\code{\link{reduced_stress}()},
+Other stress-tensor:
+\code{\link[=reduced_stress]{reduced_stress()}},
 \code{\link{sigma-comp}},
-\code{\link{sigma2rup}()},
-\code{\link{sigma2stress}()},
-\code{\link{stress_shape}()}
+\code{\link[=sigma2rup]{sigma2rup()}},
+\code{\link[=sigma2stress]{sigma2stress()}},
+\code{\link[=stress_shape]{stress_shape()}}
 }
 \concept{stress-tensor}

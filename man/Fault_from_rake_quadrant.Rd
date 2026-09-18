@@ -55,11 +55,11 @@ rake_quadrant <- c("E", "S", "S", "E", "E", "W", "N", "S", "W")
 Fault_from_rake_quadrant(Plane(dip_dir, dip), rake2, rake_quadrant, type = "rake")
 }
 \seealso{
-Other parse-orientations: 
-\code{\link{azimuth_to_cardinal}()},
-\code{\link{quadrant2dd}()},
-\code{\link{sense_from_strikeslip}()},
-\code{\link{split}()},
-\code{\link{strikeslip_kinematics}()}
+Other parse-orientations:
+\code{\link[=azimuth_to_cardinal]{azimuth_to_cardinal()}},
+\code{\link[=quadrant2dd]{quadrant2dd()}},
+\code{\link[=sense_from_strikeslip]{sense_from_strikeslip()}},
+\code{\link{split}},
+\code{\link[=strikeslip_kinematics]{strikeslip_kinematics()}}
 }
 \concept{parse-orientations}

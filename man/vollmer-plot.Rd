@@ -91,9 +91,9 @@ structural domain analysis. Geological Society of America Bulletin, 102, 786<U+2
 \seealso{
 \code{\link[=vollmer]{vollmer()}}, \code{\link[=ortensor]{ortensor()}}
 
-Other fabric-plot: 
-\code{\link{flinn_plot}()},
-\code{\link{hsu_plot}()},
-\code{\link{woodcock_plot}()}
+Other fabric-plot:
+\code{\link[=flinn_plot]{flinn_plot()}},
+\code{\link[=hsu_plot]{hsu_plot()}},
+\code{\link[=woodcock_plot]{woodcock_plot()}}
 }
 \concept{fabric-plot}

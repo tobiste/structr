@@ -74,10 +74,10 @@ plot(x, cex = assign_cex(key), grid.params = list(guides = FALSE))
 legend_cex(key, position = "topright", area = TRUE)
 }
 \seealso{
-\code{\link[PlotTools:SpectrumLegend]{PlotTools::SizeLegend()}} - alternative tool to generate nice
+\code{\link[PlotTools:SizeLegend]{PlotTools::SizeLegend()}} - alternative tool to generate nice
 looking legends for cex values
 
-Other assign: 
+Other assign:
 \code{\link{assign-color}},
 \code{\link{assign-pch}}
 }

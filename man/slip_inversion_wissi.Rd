@@ -308,18 +308,18 @@ solutions. \emph{Geophys. J. Int.}, 167, 933-942.
 Stephan (in prep)
 }
 \seealso{
-Other stress-inversion: 
-\code{\link{Fault_PT}()},
-\code{\link{slip_inversion}()},
-\code{\link{slip_inversion_angelier}()},
-\code{\link{slip_inversion_hansen}()},
-\code{\link{slip_inversion_michael}()},
-\code{\link{slip_inversion_simple}()},
-\code{\link{slip_inversion_yamaji_sato}()}
+Other stress-inversion:
+\code{\link[=Fault_PT]{Fault_PT()}},
+\code{\link[=slip_inversion]{slip_inversion()}},
+\code{\link[=slip_inversion_angelier]{slip_inversion_angelier()}},
+\code{\link[=slip_inversion_hansen]{slip_inversion_hansen()}},
+\code{\link[=slip_inversion_michael]{slip_inversion_michael()}},
+\code{\link[=slip_inversion_simple]{slip_inversion_simple()}},
+\code{\link[=slip_inversion_yamaji_sato]{slip_inversion_yamaji_sato()}}
 
-Other wissi: 
-\code{\link{slip_inversion_wissi_boot}()},
-\code{\link{slip_inversion_wissi_polyphase}()}
+Other wissi:
+\code{\link[=slip_inversion_wissi_boot]{slip_inversion_wissi_boot()}},
+\code{\link[=slip_inversion_wissi_polyphase]{slip_inversion_wissi_polyphase()}}
 }
 \concept{stress-inversion}
 \concept{wissi}

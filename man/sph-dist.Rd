@@ -29,7 +29,7 @@ sph_dist(x, ...)
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, \code{"Plane"}, \code{"Pair"}, or \code{"Fault"},
 where the rows are the observations and the columns are the coordinates.}
 
-\item{...}{optional parameters passed to \code{\link[stats:dist]{stats::as.dist()}}}
+\item{...}{optional parameters passed to \code{\link[stats:as.dist]{stats::as.dist()}}}
 }
 \value{
 \code{dist} returns an object of class \code{"dist"}.
@@ -51,7 +51,7 @@ where the rows are the observations and the columns are the coordinates.}
   \item{call}{optionally, the \code{\link{call}} used to create the
     object.}
   \item{method}{optionally, the distance method used; resulting from
-    \code{dist()}, the (\code{\link{match.arg}()}ed) \code{method}
+    \code{\link[stats]{dist}()}, the (\code{\link{match.arg}()}ed) \code{method}
     argument.}
 }
 \description{

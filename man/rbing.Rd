@@ -39,12 +39,12 @@ points(re)
 Fallaize C. J. and Kypraios T. (2016). Exact bayesian inference for the Bingham distribution. Statistics and Computing, 26(1): 349–360. \url{http://arxiv.org/pdf/1401.2894v1.pdf}
 }
 \seealso{
-Other random: 
-\code{\link{rfb}()},
-\code{\link{rkent}()},
-\code{\link{rrot}()},
-\code{\link{runif.spherical}()},
-\code{\link{rwatson}()},
+Other random:
+\code{\link[=rfb]{rfb()}},
+\code{\link[=rkent]{rkent()}},
+\code{\link[=rrot]{rrot()}},
+\code{\link[=runif.spherical]{runif.spherical()}},
+\code{\link[=rwatson]{rwatson()}},
 \code{\link{vonmises-fisher}}
 }
 \concept{random}

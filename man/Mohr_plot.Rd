@@ -2,7 +2,7 @@
 % Please edit documentation in R/mohR.R
 \name{Mohr_plot}
 \alias{Mohr_plot}
-\title{Mohr Circle plot}
+\title{Mohr Circle Diagram for Stress}
 \usage{
 Mohr_plot(
   sigma_x = NA,
@@ -52,7 +52,7 @@ the upper (positive shear stress) part of the circle?}
 \item{...}{optional graphical parameters.}
 }
 \description{
-plots the Mohr Circle
+Plots the Mohr Circle for Stress
 }
 \note{
 One of the following two sets of data must be entered

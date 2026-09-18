@@ -33,7 +33,7 @@ kent_MLE(x2)
 simulate a distribution. \code{\link[=fisher_MLE]{fisher_MLE()}} is an alternative MLE function for
 the Fisher distribution.
 
-Other distribution-MLE: 
+Other distribution-MLE:
 \code{\link{bingham-mle}},
 \code{\link{fisher-mle}},
 \code{\link{watson-mle}}

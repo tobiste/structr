@@ -209,8 +209,8 @@ Tectonophysics 79.3-4 (1981): T63-T67.
 \seealso{
 \code{\link[=shape_params]{shape_params()}}, \code{\link[=ot_eigen]{ot_eigen()}}, \code{\link[=hsu_plot]{hsu_plot()}}, \code{\link[=flinn_plot]{flinn_plot()}}
 
-Other ellipsoid: 
+Other ellipsoid:
 \code{\link{ellipsoid-class}},
-\code{\link{ellipsoid_from_stretch}()}
+\code{\link[=ellipsoid_from_stretch]{ellipsoid_from_stretch()}}
 }
 \concept{ellipsoid}

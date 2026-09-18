@@ -54,7 +54,7 @@ pr <- perm_rsq(100, FUN = regression_greatcircle, x = gray_example[1:8, ])
 perm_rsq_pvalue(pr, bestgc_clea)
 }
 \seealso{
-Other geodesic-regression: 
+Other geodesic-regression:
 \code{\link{best_fit}}
 }
 \concept{geodesic-regression}

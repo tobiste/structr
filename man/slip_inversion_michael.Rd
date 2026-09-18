@@ -92,13 +92,13 @@ Faults and folds. Journal of Geophysical Research: Solid Earth, 89(B13), 11517â€
 \code{\link[=SH]{SH()}} and \code{\link[=SH_from_tensor]{SH_from_tensor()}} to calculate the azimuth of the maximum horizontal stress;
 \code{\link[=Mohr_plot]{Mohr_plot()}} for graphical representation of the deviatoric stress tensor.
 
-Other stress-inversion: 
-\code{\link{Fault_PT}()},
-\code{\link{slip_inversion}()},
-\code{\link{slip_inversion_angelier}()},
-\code{\link{slip_inversion_hansen}()},
-\code{\link{slip_inversion_simple}()},
-\code{\link{slip_inversion_wissi}()},
-\code{\link{slip_inversion_yamaji_sato}()}
+Other stress-inversion:
+\code{\link[=Fault_PT]{Fault_PT()}},
+\code{\link[=slip_inversion]{slip_inversion()}},
+\code{\link[=slip_inversion_angelier]{slip_inversion_angelier()}},
+\code{\link[=slip_inversion_hansen]{slip_inversion_hansen()}},
+\code{\link[=slip_inversion_simple]{slip_inversion_simple()}},
+\code{\link[=slip_inversion_wissi]{slip_inversion_wissi()}},
+\code{\link[=slip_inversion_yamaji_sato]{slip_inversion_yamaji_sato()}}
 }
 \concept{stress-inversion}

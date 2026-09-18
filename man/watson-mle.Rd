@@ -50,7 +50,7 @@ points(r$muHat, col = 'red', pch = 16, cex = 1.5)
 \code{\link[=watson_inference]{watson_inference()}} for confidence regions, and \code{\link[=rwatson]{rwatson()}} to
 simulate a distribution.
 
-Other distribution-MLE: 
+Other distribution-MLE:
 \code{\link{bingham-mle}},
 \code{\link{dist.mle}},
 \code{\link{fisher-mle}}

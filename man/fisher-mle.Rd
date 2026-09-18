@@ -41,7 +41,7 @@ fisher_MLE(x)
 \code{\link[=fisher_inference]{fisher_inference()}} for confidence regions, and \code{\link[=rvmf]{rvmf()}} to
 simulate a distribution. \code{\link[=vmf_MLE]{vmf_MLE()}} is an alternative MLE function.
 
-Other distribution-MLE: 
+Other distribution-MLE:
 \code{\link{bingham-mle}},
 \code{\link{dist.mle}},
 \code{\link{watson-mle}}
