@@ -25,8 +25,8 @@ text(x, labels = seq_along(x[, 1]), upper.hem = NULL, earea = NULL, ...)
   objects (names and calls) to expressions, and vectors and other
   classed objects to character vectors by
   [`as.character`](https://rdrr.io/r/base/character.html). If `labels`
-  is longer than `x` and `y`, the coordinates are recycled to the length
-  of `labels`.
+  is longer than `x` and `y`, `labels` is truncated to
+  `max(length(x), length(y))`.
 
 - upper.hem:
 
@@ -48,9 +48,9 @@ text(x, labels = seq_along(x[, 1]), upper.hem = NULL, earea = NULL, ...)
 ## See also
 
 Other stereo-plot:
-[`arrows()`](https://tobiste.github.io/structr/reference/arrows.md),
+[`arrows`](https://tobiste.github.io/structr/reference/arrows.md),
 [`fault-plot`](https://tobiste.github.io/structr/reference/fault-plot.md),
-[`lines()`](https://tobiste.github.io/structr/reference/lines.md),
+[`lines`](https://tobiste.github.io/structr/reference/lines.md),
 [`plot-spherical`](https://tobiste.github.io/structr/reference/plot-spherical.md),
 [`points.spherical()`](https://tobiste.github.io/structr/reference/points.spherical.md),
 [`stereo_cones`](https://tobiste.github.io/structr/reference/stereo_cones.md),

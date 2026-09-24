@@ -70,9 +70,9 @@ hemisphere.
 ## See also
 
 Other stereo-plot:
-[`arrows()`](https://tobiste.github.io/structr/reference/arrows.md),
+[`arrows`](https://tobiste.github.io/structr/reference/arrows.md),
 [`fault-plot`](https://tobiste.github.io/structr/reference/fault-plot.md),
-[`lines()`](https://tobiste.github.io/structr/reference/lines.md),
+[`lines`](https://tobiste.github.io/structr/reference/lines.md),
 [`points.spherical()`](https://tobiste.github.io/structr/reference/points.spherical.md),
 [`stereo_cones`](https://tobiste.github.io/structr/reference/stereo_cones.md),
 [`stereo_confidence()`](https://tobiste.github.io/structr/reference/stereo_confidence.md),

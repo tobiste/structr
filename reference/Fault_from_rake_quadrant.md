@@ -66,7 +66,7 @@ Other parse-orientations:
 [`azimuth_to_cardinal()`](https://tobiste.github.io/structr/reference/azimuth_to_cardinal.md),
 [`quadrant2dd()`](https://tobiste.github.io/structr/reference/quadrant2dd.md),
 [`sense_from_strikeslip()`](https://tobiste.github.io/structr/reference/sense_from_strikeslip.md),
-[`split()`](https://tobiste.github.io/structr/reference/split.md),
+[`split`](https://tobiste.github.io/structr/reference/split.md),
 [`strikeslip_kinematics()`](https://tobiste.github.io/structr/reference/strikeslip_kinematics.md)
 
 ## Examples

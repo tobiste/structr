@@ -18,7 +18,10 @@
   : Mohr circle parameters
 
 - [`Mohr_plot()`](https://tobiste.github.io/structr/reference/Mohr_plot.md)
-  : Mohr Circle plot
+  : Mohr Circle Diagram for Stress
+
+- [`Mohr_strain()`](https://tobiste.github.io/structr/reference/Mohr_strain.md)
+  : Mohr Circle Diagram for Strain
 
 - [`PR_stress()`](https://tobiste.github.io/structr/reference/PR_stress.md)
   : Principal stresses from 2D stress components
@@ -577,6 +580,12 @@
 
 - [`strabo_prj`](https://tobiste.github.io/structr/reference/strabo_prj.md)
   : Example of StraboSpot Project
+
+- [`longitudinal_strain()`](https://tobiste.github.io/structr/reference/strain.md)
+  [`angular_strain()`](https://tobiste.github.io/structr/reference/strain.md)
+  [`quadratic_elongation()`](https://tobiste.github.io/structr/reference/strain.md)
+  [`stretch()`](https://tobiste.github.io/structr/reference/strain.md) :
+  Strain quantities
 
 - [`principal_stretch()`](https://tobiste.github.io/structr/reference/strain_shape.md)
   [`principal_strain()`](https://tobiste.github.io/structr/reference/strain_shape.md)

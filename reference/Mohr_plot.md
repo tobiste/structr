@@ -1,6 +1,6 @@
-# Mohr Circle plot
+# Mohr Circle Diagram for Stress
 
-plots the Mohr Circle
+Plots the Mohr Circle for Stress
 
 ## Usage
 
