@@ -9,21 +9,21 @@
 #' @param col color for the stress state for a given `phi`.
 #' @param fg,fg12,fg23 border color for the Mohr Circles spanning lambda1-lambda3, lambda1-lambda2, and lambda2-lambda3, respectively
 #' @param bg,bg12,bg23 fill color for the Mohr Circles spanning lambda1-lambda3, lambda1-lambda2, and lambda2-lambda3, respectively
-#' @param n integer. Resolution given amount of points along the generated path
-#' representing the full Mohr circle (`512` by default).
 #' @param full.circle logical. Should the complete Mohr circle be shown, or only
 #' the upper (positive shear stress) part of the circle?
 #' @param include.zero logical. the plot range be extended to include `lambda = 0`?
 #' @param xlim,ylim range of plot
 #' @param round integer indicating the number of decimal places to be used for rounding.  
-#' @param axes logical. Show axis?
+#' @param axes logical. Show axes of plot? 
 #' @param ... optional graphical parameters.
+#' 
+#' @returns matrix with the lambda and gamma values for given `phi`
 #' 
 #' @seealso [Mohr_plot()] for Stress. [strain] for converting strain quantities
 #' @export
 #' @examples
 #' Mohr_strain(lambda1 = 4, lambda3 = 0.25, phi = 25, col = 'red')
-#' Mohr_strain(lambda1 = 4, lambda2 = 1, lambda3 = 0.25, phi = 25, col = 'red', full.circle = TRUE, axes = FALSE)
+#' (Mohr_strain(lambda1 = 4, lambda2 = 1, lambda3 = 0.25, phi = c(0, 25, 50, 45), col = 'red', full.circle = TRUE, axes = FALSE))
 Mohr_strain <- function(lambda1, lambda2 = NA, lambda3,
                         #lambda_x = NA, lambda_z = NA, gamma_xz = NA,
                         phi = NULL,
@@ -31,12 +31,12 @@ Mohr_strain <- function(lambda1, lambda2 = NA, lambda3,
                         fg23 = par("col"), bg23 = 'white',
                         fg12 = par("col"), bg12 = 'white',
                         axes = TRUE,
-                        col = "black", n = 512, full.circle = FALSE, include.zero = TRUE, xlim = NULL, ylim = NULL, 
+                        col = "black", full.circle = FALSE, include.zero = TRUE, xlim = NULL, ylim = NULL, 
                       round = 1,
                       ...) {
   lambda_x = NA; lambda_z = NA; gamma_xz = NA
   
-  phis <- seq(0, 180, length.out = n)
+  phis <- seq(0, 180, length.out = 512)
   
   stress_vec <- sapply(
     X = phis, FUN = stress_transformation, sigma_x = lambda_x, sigma_z = lambda_z,
@@ -121,6 +121,8 @@ Mohr_strain <- function(lambda1, lambda2 = NA, lambda3,
     graphics::points(lambda_i, gamma_i, col = col)
     
     title(sub = bquote(gamma*"'"==.(round(gamma_i, round))~"|"~lambda*"'"==.(round(lambda_i, round))))
+    
+    return(invisible(cbind(lambda_i, gamma_i)))
   }
   
   

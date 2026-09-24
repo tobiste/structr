@@ -134,19 +134,18 @@ stress_transformation <- function(theta, sigma_x = NA, sigma_z = NA, tau_xz = NA
   theta <- deg2rad(theta)
 
   ##  Calculate normal and shear stresses from sigma_x, sigma_z, tau_xz
-  if (is.na(sigma_x) == FALSE && is.na(sigma_z) == FALSE && is.na(tau_xz) == FALSE) {
-    sigma <- (sigma_z + sigma_x) / 2 + (sigma_z - sigma_x) / 2 * cos(2 * theta) + tau_xz * sin(2 * theta)
-    tau <- (sigma_z - sigma_x) / 2 * sin(2 * theta) - tau_xz * cos(2 * theta)
-
-    ##  Calculate normal and shear stresses from principal stresses
+  if (!anyNA(c(sigma_x, sigma_z, tau_xz))) {
+    sigma <- (sigma_z + sigma_x) / 2 + (sigma_z - sigma_x) / 2 * cos(theta2) + tau_xz * sin(theta2)
+    tau   <- (sigma_z - sigma_x) / 2 * sin(theta2) - tau_xz * cos(theta2)
+  } else if (!anyNA(c(sigma1, sigma3))) {
+    if (any(sigma1 < sigma3)) warning("sigma1 < sigma3 for some inputs")
+    sigma <- (sigma1 + sigma3) / 2 + (sigma1 - sigma3) / 2 * cos(theta2)
+    tau   <- (sigma1 - sigma3) / 2 * sin(theta2)
   } else {
-    if (is.na(sigma1) == FALSE && is.na(sigma3) == FALSE) {
-      sigma <- (sigma1 + sigma3) / 2 + (sigma1 - sigma3) / 2 * cos(2 * theta)
-      tau <- (sigma1 - sigma3) / 2 * sin(2 * theta)
-    }
+    stop("Supply either (sigma_x, sigma_z[, tau_xz]) or (sigma1, sigma3).")
   }
-
-  return(list(normal = sigma, shear = tau))
+  
+  list(normal = sigma, shear = tau)
 }
 
 
