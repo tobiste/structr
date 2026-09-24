@@ -51,7 +51,7 @@ where the rows are the observations and the columns are the coordinates.}
   \item{call}{optionally, the \code{\link{call}} used to create the
     object.}
   \item{method}{optionally, the distance method used; resulting from
-    \code{\link[stats]{dist}()}, the (\code{\link{match.arg}()}ed) \code{method}
+    \code{dist()}, the (\code{\link{match.arg}()}ed) \code{method}
     argument.}
 }
 \description{

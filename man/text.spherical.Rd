@@ -15,7 +15,7 @@ where the rows are the observations and the columns are the coordinates.}
     language objects (names and calls) to expressions, and vectors and
     other classed objects to character vectors by \code{\link{as.character}}.
     If \code{labels} is longer than \code{x} and
-    \code{y}, the coordinates are recycled to the length of \code{labels}.}
+    \code{y}, \code{labels} is truncated to \code{max(length(x), length(y))}.}
 
 \item{upper.hem}{logical. Whether the projection is shown for upper
 hemisphere (\code{TRUE}) or lower hemisphere (\code{FALSE}). Defaults to
