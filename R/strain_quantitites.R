@@ -6,7 +6,9 @@
 #'
 #' @param lambda1,lambda2,lambda3 numeric. Magnitude of quadratic elongation \eqn{\lambda}
 #' @param phi numeric. (optional) Angle (in degrees) for a specific strain
-#' @param col color for Mohr circle.
+#' @param col color for the stress state for a given `phi`.
+#' @param fg,fg12,fg23 border color for the Mohr Circles spanning lambda1-lambda3, lambda1-lambda2, and lambda2-lambda3, respectively
+#' @param bg,bg12,bg23 fill color for the Mohr Circles spanning lambda1-lambda3, lambda1-lambda2, and lambda2-lambda3, respectively
 #' @param n integer. Resolution given amount of points along the generated path
 #' representing the full Mohr circle (`512` by default).
 #' @param full.circle logical. Should the complete Mohr circle be shown, or only
@@ -14,16 +16,22 @@
 #' @param include.zero logical. the plot range be extended to include `lambda = 0`?
 #' @param xlim,ylim range of plot
 #' @param round integer indicating the number of decimal places to be used for rounding.  
+#' @param axes logical. Show axis?
 #' @param ... optional graphical parameters.
 #' 
 #' @seealso [Mohr_plot()] for Stress. [strain] for converting strain quantities
 #' @export
 #' @examples
-#' Mohr_strain(lambda1 = 4, lambda3 = 0.25, phi = 25)
+#' Mohr_strain(lambda1 = 4, lambda3 = 0.25, phi = 25, col = 'red')
+#' Mohr_strain(lambda1 = 4, lambda2 = 1, lambda3 = 0.25, phi = 25, col = 'red', full.circle = TRUE, axes = FALSE)
 Mohr_strain <- function(lambda1, lambda2 = NA, lambda3,
                         #lambda_x = NA, lambda_z = NA, gamma_xz = NA,
                         phi = NULL,
-                      col = "black", n = 512, full.circle = FALSE, include.zero = TRUE, xlim = NULL, ylim = NULL, 
+                        fg = par("col"), bg = 'lightgray',
+                        fg23 = par("col"), bg23 = 'white',
+                        fg12 = par("col"), bg12 = 'white',
+                        axes = TRUE,
+                        col = "black", n = 512, full.circle = FALSE, include.zero = TRUE, xlim = NULL, ylim = NULL, 
                       round = 1,
                       ...) {
   lambda_x = NA; lambda_z = NA; gamma_xz = NA
@@ -61,34 +69,43 @@ Mohr_strain <- function(lambda1, lambda2 = NA, lambda3,
     yLab <- bquote("Shear strain," ~ gamma*"'")
     xLab <- bquote("Quadratic elongation," ~ lambda*"'")
   
-  xlim <- if (include.zero) c(min(0, min(lambda, na.rm = TRUE)), max(lambda, na.rm = TRUE) * 1.05) else xlim
-  ylim <- if (!full.circle) c(0, max(gamma, na.rm = TRUE)) else ylim
+    mean_lambda <- mean(range(lambda), na.rm = TRUE)
+    sigma_dev <- abs(lambda1-mean_lambda)
+    
+  xlim <- if (isTRUE(include.zero)) c(min(0, lambda3), lambda1) * 1.05 else xlim
+  if (isFALSE(full.circle)) {
+     range_f <- c(0, 1)
+     } else {
+       range_f <- c(-1, 1)
+     }
+  if(is.null(ylim)) ylim <- sigma_dev * range_f
   
   plot(
-    range(lambda), range(gamma),
+    xlim, ylim,
     type = "n",
     xlab = xLab, ylab = yLab,
     xaxs = "i",
     xlim = xlim,
     ylim = ylim,
     asp = 1,
-    axes = TRUE
+    axes = axes
   )
   
-  all_principals <- !is.na(lambda2)
   
+  # graphics::lines(lambda, gamma, col = col, ...)
+  graphics::symbols(mean_lambda, y = 0, circles = sigma_dev, inches = FALSE, fg = fg, bg = bg, add = TRUE)
+  
+  all_principals <- !is.na(lambda2)
   if (all_principals) {
-    graphics::lines(lambda23, gamma23, col = col, ...)
-    graphics::lines(lambda12, gamma12, col = col, ...)
+    mean_l23 <- mean(range(lambda23))
+    graphics::symbols(mean_l23, y = 0, circles = lambda2 - mean_l23, inches = FALSE, fg = fg23, bg = bg23, add = TRUE)
+    # graphics::lines(lambda23, gamma23, col = col, ...)
+    # graphics::lines(lambda12, gamma12, col = col, ...)
+    mean_l12 <- mean(range(lambda12))
+    graphics::symbols(mean_l12, y = 0, circles = lambda1 - mean_l12, inches = FALSE, fg = fg12, bg = bg12, add = TRUE)
   }
   
- 
-  
-  mean_lambda <- mean(range(lambda))
-  
-  graphics::lines(lambda, gamma, col = col, ...)
   graphics::abline(h = 0)
-  
   
   if(!is.null(phi)){
     stress_veci <- sapply(
@@ -100,8 +117,8 @@ Mohr_strain <- function(lambda1, lambda2 = NA, lambda3,
     
     graphics::segments(x0 = mean_lambda, y0 = 0, 
                        x1 = lambda_i, y1 = gamma_i, 
-                       lty = 2)
-    graphics::points(lambda_i, gamma_i)
+                       lty = 2, col = col)
+    graphics::points(lambda_i, gamma_i, col = col)
     
     title(sub = bquote(gamma*"'"==.(round(gamma_i, round))~"|"~lambda*"'"==.(round(lambda_i, round))))
   }

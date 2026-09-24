@@ -9,6 +9,13 @@ Mohr_strain(
   lambda2 = NA,
   lambda3,
   phi = NULL,
+  fg = par("col"),
+  bg = "lightgray",
+  fg23 = par("col"),
+  bg23 = "white",
+  fg12 = par("col"),
+  bg12 = "white",
+  axes = TRUE,
   col = "black",
   n = 512,
   full.circle = FALSE,
@@ -24,7 +31,13 @@ Mohr_strain(
 
 \item{phi}{numeric. (optional) Angle (in degrees) for a specific strain}
 
-\item{col}{color for Mohr circle.}
+\item{fg, fg12, fg23}{border color for the Mohr Circles spanning lambda1-lambda3, lambda1-lambda2, and lambda2-lambda3, respectively}
+
+\item{bg, bg12, bg23}{fill color for the Mohr Circles spanning lambda1-lambda3, lambda1-lambda2, and lambda2-lambda3, respectively}
+
+\item{axes}{logical. Show axis?}
+
+\item{col}{color for the stress state for a given \code{phi}.}
 
 \item{n}{integer. Resolution given amount of points along the generated path
 representing the full Mohr circle (\code{512} by default).}
@@ -44,7 +57,8 @@ the upper (positive shear stress) part of the circle?}
 Plots the Mohr Circle for Strain
 }
 \examples{
-Mohr_strain(lambda1 = 4, lambda3 = 0.25, phi = 25)
+Mohr_strain(lambda1 = 4, lambda3 = 0.25, phi = 25, col = 'red')
+Mohr_strain(lambda1 = 4, lambda2 = 1, lambda3 = 0.25, phi = 25, col = 'red', full.circle = TRUE, axes = FALSE)
 }
 \seealso{
 \code{\link[=Mohr_plot]{Mohr_plot()}} for Stress. \link{strain} for converting strain quantities
