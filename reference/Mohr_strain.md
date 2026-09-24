@@ -10,6 +10,13 @@ Mohr_strain(
   lambda2 = NA,
   lambda3,
   phi = NULL,
+  fg = par("col"),
+  bg = "lightgray",
+  fg23 = par("col"),
+  bg23 = "white",
+  fg12 = par("col"),
+  bg12 = "white",
+  axes = TRUE,
   col = "black",
   n = 512,
   full.circle = FALSE,
@@ -31,9 +38,23 @@ Mohr_strain(
 
   numeric. (optional) Angle (in degrees) for a specific strain
 
+- fg, fg12, fg23:
+
+  border color for the Mohr Circles spanning lambda1-lambda3,
+  lambda1-lambda2, and lambda2-lambda3, respectively
+
+- bg, bg12, bg23:
+
+  fill color for the Mohr Circles spanning lambda1-lambda3,
+  lambda1-lambda2, and lambda2-lambda3, respectively
+
+- axes:
+
+  logical. Show axis?
+
 - col:
 
-  color for Mohr circle.
+  color for the stress state for a given `phi`.
 
 - n:
 
@@ -72,5 +93,7 @@ converting strain quantities
 ## Examples
 
 ``` r
-Mohr_strain(lambda1 = 4, lambda3 = 0.25, phi = 25)
+Mohr_strain(lambda1 = 4, lambda3 = 0.25, phi = 25, col = 'red')
+
+Mohr_strain(lambda1 = 4, lambda2 = 1, lambda3 = 0.25, phi = 25, col = 'red', full.circle = TRUE, axes = FALSE)
 ```
