@@ -15,7 +15,7 @@ Mohr_strain(
   include.zero = TRUE,
   xlim = NULL,
   ylim = NULL,
-  digits = 1,
+  round = 1,
   ...
 )
 }
@@ -35,6 +35,8 @@ the upper (positive shear stress) part of the circle?}
 \item{include.zero}{logical. the plot range be extended to include \code{lambda = 0}?}
 
 \item{xlim, ylim}{range of plot}
+
+\item{round}{integer indicating the number of decimal places to be used for rounding.}
 
 \item{...}{optional graphical parameters.}
 }

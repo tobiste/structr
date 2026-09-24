@@ -198,9 +198,10 @@ NULL
 }
 
 # Flag outliers using MAD-based threshold
+#' @importFrom stats median
 .flag_outliers_mad <- function(alpha_deg, k = 2.5) {
-  med  <- median(alpha_deg, na.rm = TRUE)
-  mad  <- median(abs(alpha_deg - med), na.rm = TRUE)
+  med  <- stats::median(alpha_deg, na.rm = TRUE)
+  mad  <- stats::median(abs(alpha_deg - med), na.rm = TRUE)
   # Scale factor 1.4826 makes MAD consistent with normal distribution sigma
   sigma_mad <- 1.4826 * mad
   alpha_deg > (med + k * sigma_mad)

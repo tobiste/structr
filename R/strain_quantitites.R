@@ -13,6 +13,7 @@
 #' the upper (positive shear stress) part of the circle?
 #' @param include.zero logical. the plot range be extended to include `lambda = 0`?
 #' @param xlim,ylim range of plot
+#' @param round integer indicating the number of decimal places to be used for rounding.  
 #' @param ... optional graphical parameters.
 #' 
 #' @seealso [Mohr_plot()] for Stress. [strain] for converting strain quantities
@@ -23,7 +24,7 @@ Mohr_strain <- function(lambda1, lambda2 = NA, lambda3,
                         #lambda_x = NA, lambda_z = NA, gamma_xz = NA,
                         phi = NULL,
                       col = "black", n = 512, full.circle = FALSE, include.zero = TRUE, xlim = NULL, ylim = NULL, 
-                      digits = 1,
+                      round = 1,
                       ...) {
   lambda_x = NA; lambda_z = NA; gamma_xz = NA
   
@@ -42,14 +43,14 @@ Mohr_strain <- function(lambda1, lambda2 = NA, lambda3,
   if(!is.na(lambda2)){
     stress_vec12 <- sapply(
       X = phis, FUN = stress_transformation,
-      sigma1 = lambda1, sigma3 = lamda2
+      sigma1 = lambda1, sigma3 = lambda2
     )
     lambda12 <- as.numeric(stress_vec12[1, ])
     gamma12 <- as.numeric(stress_vec12[2, ])
     
     stress_vec23 <- sapply(
       X = phis, FUN = stress_transformation, 
-      sigma1 = lambda2, sigma3 = lamda3
+      sigma1 = lambda2, sigma3 = lambda3
     )
     lambda23 <- as.numeric(stress_vec23[1, ])
     gamma23 <- as.numeric(stress_vec23[2, ])
@@ -102,7 +103,7 @@ Mohr_strain <- function(lambda1, lambda2 = NA, lambda3,
                        lty = 2)
     graphics::points(lambda_i, gamma_i)
     
-    title(sub = bquote(gamma*"'"==.(round(gamma_i, digits))~"|"~lambda*"'"==.(round(lambda_i, digits))))
+    title(sub = bquote(gamma*"'"==.(round(gamma_i, round))~"|"~lambda*"'"==.(round(lambda_i, round))))
   }
   
   

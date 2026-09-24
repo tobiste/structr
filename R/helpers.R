@@ -389,13 +389,14 @@ assign_col_d <- function(x, pal = colorblind_pal, na.translate = TRUE, na.values
 
 #' @rdname assign-color
 #' @export
+#' @importFrom stats na.omit
 assign_col <- function(x, n = length(x), pal = viridis::viridis, na.translate = TRUE, na.values = "grey", ...) {
   if (!na.translate) na.values <- NA
 
   normalized_data <- .normalize(x)
   colors <- rep(na.values, n)
 
-  n2 <- length(na.omit(x))
+  n2 <- length(stats::na.omit(x))
   colors[!is.na(x)] <- do.call(pal, args = list(n = n2, ...))
   # names(colors) <- colors[as.numeric(cut(normalized_data, breaks = n))]
   return(colors)
@@ -925,8 +926,9 @@ nnmat <- function(n) n %*% t(n)
   U
 }
 
+#' @importFrom stats rnorm
 .rkent <- function(n, k, m, b) {
-  m0 <- rnorm(3)
+  m0 <- stats::rnorm(3)
   m0 <- m0 / sqrt(sum(m0^2))
   m <- m / sqrt(sum(m^2))
   a <- .rotation(m0, m)
@@ -947,7 +949,7 @@ nnmat <- function(n) n %*% t(n)
 }
 
 #' @importFrom Rfast rbing
-#' @importFrom stats runif
+#' @importFrom stats runif uniroot
 .rfb <- function(n, k, m, A) {
   m <- m / sqrt(sum(m^2))
   m0 <- c(0, 1, 0)
@@ -996,7 +998,7 @@ nnmat <- function(n) n %*% t(n)
   }
   low <- lam[1] - 0.25 * p - 0.5 * sqrt(0.25 * p^2 + p * max(gam)^2)
   up <- lam[1] - 0.25 - 0.5 * sqrt(0.25 + min(gam)^2)
-  ela <- uniroot(saddle.equat, c(low, up), para = para, tol = getOption("structr.tol"))
+  ela <- stats::uniroot(saddle.equat, c(low, up), para = para, tol = getOption("structr.tol"))
   tau <- ela$root
   kfb <- function(j, gam, lam, ta) {
     if (j == 1) {
