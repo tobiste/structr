@@ -16,7 +16,7 @@ Mohr_strain(
   include.zero = TRUE,
   xlim = NULL,
   ylim = NULL,
-  digits = 1,
+  round = 1,
   ...
 )
 ```
@@ -52,6 +52,11 @@ Mohr_strain(
 - xlim, ylim:
 
   range of plot
+
+- round:
+
+  integer indicating the number of decimal places to be used for
+  rounding.
 
 - ...:
 
