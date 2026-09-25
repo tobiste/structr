@@ -131,7 +131,7 @@ PR_stress <- function(sigma_x, sigma_y, tau_xy) {
 #' stress_transformation(sigma_x = 80, sigma_z = 120, tau_xz = 20, theta = 78)
 stress_transformation <- function(theta, sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigma3 = NA) {
   ##  Convert angle to radians
-  theta <- deg2rad(theta)
+  theta2 <- deg2rad(theta)
 
   ##  Calculate normal and shear stresses from sigma_x, sigma_z, tau_xz
   if (!anyNA(c(sigma_x, sigma_z, tau_xz))) {
