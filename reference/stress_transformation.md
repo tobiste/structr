@@ -78,9 +78,9 @@ Kyle Elmy and Jim Kaklamanos
 ``` r
 stress_transformation(sigma_x = 80, sigma_z = 120, tau_xz = 20, theta = 78)
 #> $normal
-#> [1] 89.86382
+#> [1] 123.7212
 #> 
 #> $shear
-#> [1] 26.40564
+#> [1] 15.40472
 #> 
 ```

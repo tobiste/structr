@@ -77,7 +77,6 @@
 <span>  bg12 <span class="op">=</span> <span class="st">"white"</span>,</span>
 <span>  axes <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  col <span class="op">=</span> <span class="st">"black"</span>,</span>
-<span>  n <span class="op">=</span> <span class="fl">512</span>,</span>
 <span>  full.circle <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  include.zero <span class="op">=</span> <span class="cn">TRUE</span>,</span>
 <span>  xlim <span class="op">=</span> <span class="cn">NULL</span>,</span>
@@ -108,16 +107,11 @@
 
 
 <dt id="arg-axes">axes<a class="anchor" aria-label="anchor" href="#arg-axes"></a></dt>
-<dd><p>logical. Show axis?</p></dd>
+<dd><p>logical. Show axes of plot?</p></dd>
 
 
 <dt id="arg-col">col<a class="anchor" aria-label="anchor" href="#arg-col"></a></dt>
 <dd><p>color for the stress state for a given <code>phi</code>.</p></dd>
-
-
-<dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
-<dd><p>integer. Resolution given amount of points along the generated path
-representing the full Mohr circle (<code>512</code> by default).</p></dd>
 
 
 <dt id="arg-full-circle">full.circle<a class="anchor" aria-label="anchor" href="#arg-full-circle"></a></dt>
@@ -142,6 +136,10 @@ the upper (positive shear stress) part of the circle?</p></dd>
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>matrix with the lambda and gamma values for given <code>phi</code></p>
+    </div>
+    <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p><code><a href="Mohr_plot.html">Mohr_plot()</a></code> for Stress. <a href="strain.html">strain</a> for converting strain quantities</p></div>
     </div>
@@ -150,8 +148,13 @@ the upper (positive shear stress) part of the circle?</p></dd>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">Mohr_strain</span><span class="op">(</span>lambda1 <span class="op">=</span> <span class="fl">4</span>, lambda3 <span class="op">=</span> <span class="fl">0.25</span>, phi <span class="op">=</span> <span class="fl">25</span>, col <span class="op">=</span> <span class="st">'red'</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="Mohr_strain-1.png" alt="" width="1094" height="676"></span>
-<span class="r-in"><span><span class="fu">Mohr_strain</span><span class="op">(</span>lambda1 <span class="op">=</span> <span class="fl">4</span>, lambda2 <span class="op">=</span> <span class="fl">1</span>, lambda3 <span class="op">=</span> <span class="fl">0.25</span>, phi <span class="op">=</span> <span class="fl">25</span>, col <span class="op">=</span> <span class="st">'red'</span>, full.circle <span class="op">=</span> <span class="cn">TRUE</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></span>
+<span class="r-in"><span><span class="op">(</span><span class="fu">Mohr_strain</span><span class="op">(</span>lambda1 <span class="op">=</span> <span class="fl">4</span>, lambda2 <span class="op">=</span> <span class="fl">1</span>, lambda3 <span class="op">=</span> <span class="fl">0.25</span>, phi <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fl">25</span>, <span class="fl">50</span>, <span class="fl">45</span><span class="op">)</span>, col <span class="op">=</span> <span class="st">'red'</span>, full.circle <span class="op">=</span> <span class="cn">TRUE</span>, axes <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="Mohr_strain-2.png" alt="" width="1094" height="676"></span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      lambda_i  gamma_i</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 2.125000 1.875000</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 2.917409 1.699327</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 3.561333 1.205227</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 3.450825 1.325825</span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

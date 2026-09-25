@@ -18,7 +18,6 @@ Mohr_strain(
   bg12 = "white",
   axes = TRUE,
   col = "black",
-  n = 512,
   full.circle = FALSE,
   include.zero = TRUE,
   xlim = NULL,
@@ -50,16 +49,11 @@ Mohr_strain(
 
 - axes:
 
-  logical. Show axis?
+  logical. Show axes of plot?
 
 - col:
 
   color for the stress state for a given `phi`.
-
-- n:
-
-  integer. Resolution given amount of points along the generated path
-  representing the full Mohr circle (`512` by default).
 
 - full.circle:
 
@@ -83,6 +77,10 @@ Mohr_strain(
 
   optional graphical parameters.
 
+## Value
+
+matrix with the lambda and gamma values for given `phi`
+
 ## See also
 
 [`Mohr_plot()`](https://tobiste.github.io/structr/reference/Mohr_plot.md)
@@ -95,5 +93,11 @@ converting strain quantities
 ``` r
 Mohr_strain(lambda1 = 4, lambda3 = 0.25, phi = 25, col = 'red')
 
-Mohr_strain(lambda1 = 4, lambda2 = 1, lambda3 = 0.25, phi = 25, col = 'red', full.circle = TRUE, axes = FALSE)
+(Mohr_strain(lambda1 = 4, lambda2 = 1, lambda3 = 0.25, phi = c(0, 25, 50, 45), col = 'red', full.circle = TRUE, axes = FALSE))
+
+#>      lambda_i  gamma_i
+#> [1,] 2.125000 1.875000
+#> [2,] 2.917409 1.699327
+#> [3,] 3.561333 1.205227
+#> [4,] 3.450825 1.325825
 ```
