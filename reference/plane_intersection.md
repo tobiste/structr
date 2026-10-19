@@ -34,12 +34,6 @@ print(int)
 #> 245.00000 -39.32269 
 
 stereoplot()
-stereo_greatcircle(rbind(p1, p2))
-#> [[1]]
-#> NULL
-#> 
-#> [[2]]
-#> NULL
-#> 
+lines(rbind(p1, p2))
 points(int, col = 'red', pch = 16)
 ```

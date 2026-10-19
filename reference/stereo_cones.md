@@ -83,9 +83,9 @@ stereo_greatcircle(x, ...)
 [`stereo_lines()`](https://tobiste.github.io/structr/reference/stereo_lines.md)
 
 Other stereo-plot:
-[`arrows()`](https://tobiste.github.io/structr/reference/arrows.md),
+[`arrows`](https://tobiste.github.io/structr/reference/arrows.md),
 [`fault-plot`](https://tobiste.github.io/structr/reference/fault-plot.md),
-[`lines()`](https://tobiste.github.io/structr/reference/lines.md),
+[`lines`](https://tobiste.github.io/structr/reference/lines.md),
 [`plot-spherical`](https://tobiste.github.io/structr/reference/plot-spherical.md),
 [`points.spherical()`](https://tobiste.github.io/structr/reference/points.spherical.md),
 [`stereo_confidence()`](https://tobiste.github.io/structr/reference/stereo_confidence.md),
@@ -113,12 +113,6 @@ stereo_point(Line(c(129, 90), c(30, 5)), lab = c("L1", "L2"))
 stereo_smallcircle(Line(c(129, 90), c(30, 5)), d = c(10, 5), 
   col = 1:2, lty = 1:2, lwd = 1:2)
 
-#> [[1]]
-#> NULL
-#> 
-#> [[2]]
-#> NULL
-#> 
 
 # Filled cones:
 stereoplot()

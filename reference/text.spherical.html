@@ -83,7 +83,7 @@ where the rows are the observations and the columns are the coordinates.</p></dd
     language objects (names and calls) to expressions, and vectors and
     other classed objects to character vectors by <code><a href="https://rdrr.io/r/base/character.html" class="external-link">as.character</a></code>.
     If <code>labels</code> is longer than <code>x</code> and
-    <code>y</code>, the coordinates are recycled to the length of <code>labels</code>.</p></dd>
+    <code>y</code>, <code>labels</code> is truncated to <code>max(length(x), length(y))</code>.</p></dd>
 
 
 <dt id="arg-upper-hem">upper.hem<a class="anchor" aria-label="anchor" href="#arg-upper-hem"></a></dt>
@@ -105,9 +105,9 @@ Defaults to <code>getOption("structr.earea")</code>.</p></dd>
     <div class="section level2">
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other stereo-plot:
-<code><a href="arrows.html">arrows()</a></code>,
+<code><a href="arrows.html">arrows</a></code>,
 <code><a href="fault-plot.html">fault-plot</a></code>,
-<code><a href="lines.html">lines()</a></code>,
+<code><a href="lines.html">lines</a></code>,
 <code><a href="plot-spherical.html">plot-spherical</a></code>,
 <code><a href="points.spherical.html">points.spherical()</a></code>,
 <code><a href="stereo_cones.html">stereo_cones</a></code>,

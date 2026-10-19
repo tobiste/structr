@@ -32,7 +32,7 @@ lines(x, ...)
 ## See also
 
 Other stereo-plot:
-[`arrows()`](https://tobiste.github.io/structr/reference/arrows.md),
+[`arrows`](https://tobiste.github.io/structr/reference/arrows.md),
 [`fault-plot`](https://tobiste.github.io/structr/reference/fault-plot.md),
 [`plot-spherical`](https://tobiste.github.io/structr/reference/plot-spherical.md),
 [`points.spherical()`](https://tobiste.github.io/structr/reference/points.spherical.md),
@@ -53,20 +53,4 @@ Other stereo-plot:
 set.seed(20250411)
 stereoplot()
 lines(rvmf(n = 5), ang = runif(5, 0, 90), col = 1:5)
-
-#> [[1]]
-#> NULL
-#> 
-#> [[2]]
-#> NULL
-#> 
-#> [[3]]
-#> NULL
-#> 
-#> [[4]]
-#> NULL
-#> 
-#> [[5]]
-#> NULL
-#> 
 ```

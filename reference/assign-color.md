@@ -38,7 +38,7 @@ legend_col_d(fill, legend = names(fill), position = "topright", ...)
 - pal:
 
   color function; Default is
-  [`viridis::viridis()`](https://sjmgarnier.github.io/viridis/reference/reexports.html)
+  [`viridis::viridis()`](https://sjmgarnier.github.io/viridisLite/reference/viridis.html)
 
 - na.translate:
 

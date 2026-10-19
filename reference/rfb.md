@@ -37,7 +37,7 @@ Adapted from `Directional::rfb()`
 ## See also
 
 Other random:
-[`rbing()`](https://tobiste.github.io/structr/reference/rbing.md),
+[`rbing`](https://tobiste.github.io/structr/reference/rbing.md),
 [`rkent()`](https://tobiste.github.io/structr/reference/rkent.md),
 [`rrot()`](https://tobiste.github.io/structr/reference/rrot.md),
 [`runif.spherical()`](https://tobiste.github.io/structr/reference/runif.spherical.md),

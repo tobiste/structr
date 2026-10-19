@@ -77,12 +77,6 @@ lines(planes_AB, col = c("#B63679FF", "#FB8861FF"))
 ![Diagram showing the orientation of the drillcore in a equal-area
 projection](Oriented_Drill_Cores_files/figure-html/stereonet-1.png)
 
-    #> [[1]]
-    #> NULL
-    #> 
-    #> [[2]]
-    #> NULL
-
 ## References
 
 Stigsson, M., & Munier, R. (2013). Orientation uncertainty goes bananas:

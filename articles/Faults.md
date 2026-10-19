@@ -188,32 +188,7 @@ fault_plot(fault_data_subset)
 points(fault_data_subset_PT$p, col = "#B63679FF", pch = 16)
 points(fault_data_subset_PT$t, col = "#FEC287FF", pch = 18)
 lines(fault_data_subset_PT$t, lty = 2, col = "grey40")
-```
-
-    ## [[1]]
-    ## NULL
-    ## 
-    ## [[2]]
-    ## NULL
-    ## 
-    ## [[3]]
-    ## NULL
-
-``` r
-
 lines(fault_data_subset_PT$d, lty = 3, col = "grey80")
-```
-
-    ## [[1]]
-    ## NULL
-    ## 
-    ## [[2]]
-    ## NULL
-    ## 
-    ## [[3]]
-    ## NULL
-
-``` r
 
 legend("right",
   legend = c("P-axis", "T-axis", "M-plane", "Diheadra"),

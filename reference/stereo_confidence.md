@@ -89,9 +89,9 @@ output of
 [`confidence_ellipse()`](https://tobiste.github.io/structr/reference/confidence_ellipse.md)
 
 Other stereo-plot:
-[`arrows()`](https://tobiste.github.io/structr/reference/arrows.md),
+[`arrows`](https://tobiste.github.io/structr/reference/arrows.md),
 [`fault-plot`](https://tobiste.github.io/structr/reference/fault-plot.md),
-[`lines()`](https://tobiste.github.io/structr/reference/lines.md),
+[`lines`](https://tobiste.github.io/structr/reference/lines.md),
 [`plot-spherical`](https://tobiste.github.io/structr/reference/plot-spherical.md),
 [`points.spherical()`](https://tobiste.github.io/structr/reference/points.spherical.md),
 [`stereo_cones`](https://tobiste.github.io/structr/reference/stereo_cones.md),

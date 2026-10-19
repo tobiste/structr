@@ -80,35 +80,6 @@ Adding great circles for the first 10 vectors in planes:
 
 stereoplot()
 lines(planes[1:10, ], col = "lightgrey", lty = 1)
-#> [[1]]
-#> NULL
-#> 
-#> [[2]]
-#> NULL
-#> 
-#> [[3]]
-#> NULL
-#> 
-#> [[4]]
-#> NULL
-#> 
-#> [[5]]
-#> NULL
-#> 
-#> [[6]]
-#> NULL
-#> 
-#> [[7]]
-#> NULL
-#> 
-#> [[8]]
-#> NULL
-#> 
-#> [[9]]
-#> NULL
-#> 
-#> [[10]]
-#> NULL
 points(planes[1:10, ], col = "#000004", pch = 1, cex = .5)
 ```
 
