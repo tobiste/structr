@@ -25,6 +25,29 @@ rhr2dd <- function(strike) (strike + 90) %% 360
 #' @export
 dd2rhr <- function(dipdirection) (dipdirection - 90) %% 360
 
+#' Intersection of two planes
+#'
+#' @param x,y Plane objects
+#'
+#' @returns Ray object representing the intersection of the two planes
+#' @export
+#' 
+#' @seealso [crossprod.Plane()]
+#'
+#' @examples
+#' p1 <- Plane(120, 55)
+#' p2 <- Plane(30, 45)
+#' int <- plane_intersection(p1, p2)
+#' print(int)
+#' 
+#' stereoplot()
+#' stereo_greatcircle(rbind(p1, p2))
+#' points(int, col = 'red', pch = 16)
+plane_intersection <- function(x, y){
+  crossprod(Vec3(x), Vec3(y)) |> Ray()
+}
+
+
 #' @keywords internal
 #' @noRd
 parse_strike_dip <- function(strike, dip) {

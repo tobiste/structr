@@ -330,7 +330,7 @@ stereo_smallcircle0 <- function(x, d = 90, col = 1, N = 1000, upper.hem = NULL, 
   upper.hem <- upper.hem %||% getOption("structr.upper.hem")
   BALL.radius <- radius %||% getOption("structr.radius")
   
-  stopifnot(is.spherical(x))
+  stopifnot(is.Vec3(x) | is.Line(x) | is.Ray(x))
 
   nx <- nrow(x)
 
@@ -374,9 +374,10 @@ stereo_smallcircle0 <- function(x, d = 90, col = 1, N = 1000, upper.hem = NULL, 
 #' @rdname stereo_cones
 #' @export
 stereo_greatcircle <- function(x, ...) {
-  stopifnot(is.spherical(x))
-  x[, 2] <- 90 + x[, 2]
-  stereo_smallcircle(x, d = 90, ...) # add circle
+  stopifnot(is.Plane(x))
+  x2 <- x
+  x2[, 2] <- 90 + x[, 2]
+  stereo_smallcircle(as.Ray(x2), d = 90, ...) # add circle
 }
 
 stereo_smallcircle0_filled <- function(x, d = 90, col = 1, n = 1000,
