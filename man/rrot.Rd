@@ -29,12 +29,12 @@ rp <- do.call(rbind, args = rp) |>
 plot(rp)
 }
 \seealso{
-Other random: 
-\code{\link{rbing}()},
-\code{\link{rfb}()},
-\code{\link{rkent}()},
-\code{\link{runif.spherical}()},
-\code{\link{rwatson}()},
+Other random:
+\code{\link{rbing}},
+\code{\link[=rfb]{rfb()}},
+\code{\link[=rkent]{rkent()}},
+\code{\link[=runif.spherical]{runif.spherical()}},
+\code{\link[=rwatson]{rwatson()}},
 \code{\link{vonmises-fisher}}
 }
 \concept{random}

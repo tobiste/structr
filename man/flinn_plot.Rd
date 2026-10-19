@@ -99,9 +99,9 @@ Ellipsoid. Geological Magazine, 102(1), 36–45. \doi{10.1017/S0016756800053851}
 \code{\link[=ellipsoid]{ellipsoid()}} class, \code{\link[=ortensor]{ortensor()}} class, \code{\link[=flinn]{flinn()}} for Flinn's
 strain parameters.
 
-Other fabric-plot: 
-\code{\link{hsu_plot}()},
+Other fabric-plot:
+\code{\link[=hsu_plot]{hsu_plot()}},
 \code{\link{vollmer-plot}},
-\code{\link{woodcock_plot}()}
+\code{\link[=woodcock_plot]{woodcock_plot()}}
 }
 \concept{fabric-plot}

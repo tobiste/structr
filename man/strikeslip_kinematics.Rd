@@ -21,11 +21,11 @@ strikeslip_kinematics(Fault(120, 50, 104, 49, sense = -1))
 \seealso{
 \code{\link[=sense_from_strikeslip]{sense_from_strikeslip()}}
 
-Other parse-orientations: 
-\code{\link{Fault_from_rake_quadrant}()},
-\code{\link{azimuth_to_cardinal}()},
-\code{\link{quadrant2dd}()},
-\code{\link{sense_from_strikeslip}()},
-\code{\link{split}()}
+Other parse-orientations:
+\code{\link[=Fault_from_rake_quadrant]{Fault_from_rake_quadrant()}},
+\code{\link[=azimuth_to_cardinal]{azimuth_to_cardinal()}},
+\code{\link[=quadrant2dd]{quadrant2dd()}},
+\code{\link[=sense_from_strikeslip]{sense_from_strikeslip()}},
+\code{\link{split}}
 }
 \concept{parse-orientations}

@@ -55,20 +55,20 @@ stereo_point(Line(c(90, 80), c(10, 75)), lab = c("L1", "L2"))
 stereo_point(Plane(120, 30), lab = "P", col = "red")
 }
 \seealso{
-Other stereo-plot: 
-\code{\link{arrows}()},
+Other stereo-plot:
+\code{\link{arrows}},
 \code{\link{fault-plot}},
-\code{\link{lines}()},
+\code{\link{lines}},
 \code{\link{plot-spherical}},
-\code{\link{points.spherical}()},
+\code{\link[=points.spherical]{points.spherical()}},
 \code{\link{stereo_cones}},
-\code{\link{stereo_confidence}()},
+\code{\link[=stereo_confidence]{stereo_confidence()}},
 \code{\link{stereo_contour}},
-\code{\link{stereo_lines}()},
-\code{\link{stereo_segment}()},
-\code{\link{stereoplot}()},
-\code{\link{stereoplot_guides}()},
-\code{\link{stereoplot_ticks}()},
-\code{\link{text.spherical}()}
+\code{\link[=stereo_lines]{stereo_lines()}},
+\code{\link[=stereo_segment]{stereo_segment()}},
+\code{\link[=stereoplot]{stereoplot()}},
+\code{\link[=stereoplot_guides]{stereoplot_guides()}},
+\code{\link[=stereoplot_ticks]{stereoplot_ticks()}},
+\code{\link[=text.spherical]{text.spherical()}}
 }
 \concept{stereo-plot}

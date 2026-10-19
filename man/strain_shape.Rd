@@ -117,8 +117,8 @@ More details on shape parameters: \code{\link[=lode]{lode()}}, \code{\link[=nada
 \code{\link[=jelinek]{jelinek()}}, \code{\link[=flinn]{flinn()}}. Details on eigenvectors from orientation
 tensors: \code{\link[=ot_eigen]{ot_eigen()}}.
 
-Other ortensor: 
-\code{\link{ortensor}()},
-\code{\link{ot_eigen}()}
+Other ortensor:
+\code{\link[=ortensor]{ortensor()}},
+\code{\link[=ot_eigen]{ot_eigen()}}
 }
 \concept{ortensor}

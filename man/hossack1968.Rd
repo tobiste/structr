@@ -21,7 +21,7 @@ data("hossack1968")
 head(hossack1968)
 }
 \seealso{
-Other datasets: 
+Other datasets:
 \code{\link{angelier1990}},
 \code{\link{example_lines}},
 \code{\link{example_lines_df}},

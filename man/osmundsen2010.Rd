@@ -25,7 +25,7 @@ B., 2010. Fault-controlled Alpine topography in Norway. Journal of the
 Geological Society 167, 83-98.
 }
 \seealso{
-Other datasets: 
+Other datasets:
 \code{\link{angelier1990}},
 \code{\link{example_lines}},
 \code{\link{example_lines_df}},

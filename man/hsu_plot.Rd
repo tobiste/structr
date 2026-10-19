@@ -128,9 +128,9 @@ Hossack, J. R. (1968). Pebble deformation and thrusting in the Bygdin area
 \code{\link[=lode]{lode()}} for Lode parameter, and \link{nadai} for natural octahedral strain.
 \code{\link[=ellipsoid]{ellipsoid()}} class, \code{\link[=ortensor]{ortensor()}} class
 
-Other fabric-plot: 
-\code{\link{flinn_plot}()},
+Other fabric-plot:
+\code{\link[=flinn_plot]{flinn_plot()}},
 \code{\link{vollmer-plot}},
-\code{\link{woodcock_plot}()}
+\code{\link[=woodcock_plot]{woodcock_plot()}}
 }
 \concept{fabric-plot}

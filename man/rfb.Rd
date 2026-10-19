@@ -31,12 +31,12 @@ contour(x)
 points(x)
 }
 \seealso{
-Other random: 
-\code{\link{rbing}()},
-\code{\link{rkent}()},
-\code{\link{rrot}()},
-\code{\link{runif.spherical}()},
-\code{\link{rwatson}()},
+Other random:
+\code{\link{rbing}},
+\code{\link[=rkent]{rkent()}},
+\code{\link[=rrot]{rrot()}},
+\code{\link[=runif.spherical]{runif.spherical()}},
+\code{\link[=rwatson]{rwatson()}},
 \code{\link{vonmises-fisher}}
 }
 \concept{random}

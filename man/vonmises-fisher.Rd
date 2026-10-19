@@ -6,7 +6,7 @@
 \alias{dvmf}
 \title{von Mises-Fisher Distribution}
 \source{
-Adapted from \code{\link[rotasym:vMF]{rotasym::r_vMF()}} and \code{\link[rotasym:vMF]{rotasym::d_vMF()}}, and
+Adapted from \code{\link[rotasym:r_vMF]{rotasym::r_vMF()}} and \code{\link[rotasym:d_vMF]{rotasym::d_vMF()}}, and
 \code{geologyGeometry} by Davis, J.R.
 }
 \usage{
@@ -30,7 +30,7 @@ Mises-Fisher distribution}
 
 \item{method}{character. Algorithm to generate random vectors from a Fisher distribution.
 Either \code{"geologyGeometry"} (the default) to pick the \code{rayFisher()} algorithm  from the \emph{geologyGeometry} code compilation, or
-\code{"rotasym"} to pick the \code{\link[rotasym:vMF]{rotasym::r_vMF()}} algorithm from the \emph{rotasym} package.}
+\code{"rotasym"} to pick the \code{\link[rotasym:r_vMF]{rotasym::r_vMF()}} algorithm from the \emph{rotasym} package.}
 
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
 rows are the observations and the columns are the coordinates.}
@@ -51,12 +51,12 @@ head(dx)
 plot(x, col = assign_col(dx))
 }
 \seealso{
-Other random: 
-\code{\link{rbing}()},
-\code{\link{rfb}()},
-\code{\link{rkent}()},
-\code{\link{rrot}()},
-\code{\link{runif.spherical}()},
-\code{\link{rwatson}()}
+Other random:
+\code{\link{rbing}},
+\code{\link[=rfb]{rfb()}},
+\code{\link[=rkent]{rkent()}},
+\code{\link[=rrot]{rrot()}},
+\code{\link[=runif.spherical]{runif.spherical()}},
+\code{\link[=rwatson]{rwatson()}}
 }
 \concept{random}

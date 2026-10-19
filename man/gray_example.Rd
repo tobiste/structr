@@ -18,7 +18,7 @@ data("gray_example")
 head(gray_example)
 }
 \seealso{
-Other datasets: 
+Other datasets:
 \code{\link{angelier1990}},
 \code{\link{example_lines}},
 \code{\link{example_lines_df}},

@@ -68,7 +68,7 @@ Washington, in Relation to Theory and Experiment. Journal of
 Geophysical Research, Vol. 64, No. 11, pp. 1891--1909.
 }
 \seealso{
-Other density: 
+Other density:
 \code{\link{density}},
 \code{\link{stereo_contour}}
 }

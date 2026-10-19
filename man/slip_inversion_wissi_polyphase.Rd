@@ -79,8 +79,8 @@ legend('topright', title = "Principal axes", pch = 16:18, col = 'black',
  dev.off()
 }
 \seealso{
-Other wissi: 
-\code{\link{slip_inversion_wissi}()},
-\code{\link{slip_inversion_wissi_boot}()}
+Other wissi:
+\code{\link[=slip_inversion_wissi]{slip_inversion_wissi()}},
+\code{\link[=slip_inversion_wissi_boot]{slip_inversion_wissi_boot()}}
 }
 \concept{wissi}

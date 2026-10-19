@@ -22,7 +22,7 @@ int <- plane_intersection(p1, p2)
 print(int)
 
 stereoplot()
-stereo_greatcircle(rbind(p1, p2))
+lines(rbind(p1, p2))
 points(int, col = 'red', pch = 16)
 }
 \seealso{

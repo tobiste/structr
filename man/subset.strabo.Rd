@@ -27,7 +27,7 @@ subset(strabo_prj, strabo_prj$data$quality > 3)
 \seealso{
 \code{\link[=subset]{subset()}}
 
-Other strabo: 
+Other strabo:
 \code{\link{strabo}}
 }
 \concept{strabo}

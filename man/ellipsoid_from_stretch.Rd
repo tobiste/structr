@@ -28,7 +28,7 @@ lapply(seq.int(nrow(hossack1968)), function(i) {
 })
 }
 \seealso{
-Other ellipsoid: 
+Other ellipsoid:
 \code{\link{ellipsoid-class}},
 \code{\link{ellipsoid-params}}
 }

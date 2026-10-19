@@ -41,7 +41,7 @@ dd2rhr <- function(dipdirection) (dipdirection - 90) %% 360
 #' print(int)
 #' 
 #' stereoplot()
-#' stereo_greatcircle(rbind(p1, p2))
+#' lines(rbind(p1, p2))
 #' points(int, col = 'red', pch = 16)
 plane_intersection <- function(x, y){
   crossprod(Vec3(x), Vec3(y)) |> Ray()

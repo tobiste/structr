@@ -311,11 +311,11 @@ stereo_smallcircle <- function(x, d = 90, col = par("col"), N = 1000, upper.hem 
     lty <- rep_len(lty, nx)
     border <- rep_len(border, nx)
 
-      lapply(seq_len(nx), function(i) {
+      invisible(lapply(seq_len(nx), function(i) {
         stereo_smallcircle0(Line(x[i, ]), d = d[i], col = col[i], N = N, 
                             upper.hem = upper.hem, earea = earea, 
                             lty = lty[i], lwd = lwd[i], radius = radius, ...)
-      })
+      }))
   } else {
     stereo_smallcircle0_filled(x, d, col = col, n = N, 
                                upper.hem = upper.hem, earea = earea, r = radius,
