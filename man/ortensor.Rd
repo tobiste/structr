@@ -81,8 +81,8 @@ The Journal of Geology, 97(3), 360-364.
 \seealso{
 \code{\link[=inertia_tensor]{inertia_tensor()}}
 
-Other ortensor: 
-\code{\link{ot_eigen}()},
+Other ortensor:
+\code{\link[=ot_eigen]{ot_eigen()}},
 \code{\link{strain_shape}}
 }
 \concept{ortensor}

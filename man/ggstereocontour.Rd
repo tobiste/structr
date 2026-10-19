@@ -44,7 +44,7 @@ suggested by Garcia-Portugues (2013). Ignored when \code{hw} is specified.}
 
 \item{threshold}{numeric. Cut-off for low densities.}
 
-\item{...}{arguments passed to \code{\link[ggplot2:geom_contour]{ggplot2::geom_contour()}}, \code{\link[ggplot2:geom_contour]{ggplot2::geom_contour_filled()}}, or \code{\link[ggplot2:geom_tile]{ggplot2::geom_tile()}}}
+\item{...}{arguments passed to \code{\link[ggplot2:geom_contour]{ggplot2::geom_contour()}}, \code{\link[ggplot2:geom_contour_filled]{ggplot2::geom_contour_filled()}}, or \code{\link[ggplot2:geom_tile]{ggplot2::geom_tile()}}}
 
 \item{smooth}{logical. Whether \code{\link[ggplot2:geom_tile]{ggplot2::geom_tile()}} should be used for plotting.}
 }

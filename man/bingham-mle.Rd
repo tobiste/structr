@@ -63,7 +63,7 @@ points(rnd, col = 'grey', cex = 0.7, pch = 16)
 \code{\link[=bingham_inference]{bingham_inference()}} for confidence regions, and \code{\link[=rbingham]{rbingham()}} to
 simulate a distribution.
 
-Other distribution-MLE: 
+Other distribution-MLE:
 \code{\link{dist.mle}},
 \code{\link{fisher-mle}},
 \code{\link{watson-mle}}

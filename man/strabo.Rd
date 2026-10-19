@@ -55,7 +55,7 @@ read_strabo_JSON("path/to/my/file.json")
 \seealso{
 \code{\link[=drillcore_transformation]{drillcore_transformation()}}
 
-Other strabo: 
-\code{\link{subset.strabo}()}
+Other strabo:
+\code{\link[=subset.strabo]{subset.strabo()}}
 }
 \concept{strabo}

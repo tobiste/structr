@@ -45,11 +45,11 @@ Geophys. J. Int, 103, 363–376. \doi{10.1111/j.1365-246X.1990.tb01777.x}
 \seealso{
 \code{\link[=slip_inversion]{slip_inversion()}}
 
-Other stress-tensor: 
-\code{\link{fault_instability_criterion}()},
-\code{\link{reduced_stress}()},
+Other stress-tensor:
+\code{\link[=fault_instability_criterion]{fault_instability_criterion()}},
+\code{\link[=reduced_stress]{reduced_stress()}},
 \code{\link{sigma-comp}},
-\code{\link{sigma2stress}()},
-\code{\link{stress_shape}()}
+\code{\link[=sigma2stress]{sigma2stress()}},
+\code{\link[=stress_shape]{stress_shape()}}
 }
 \concept{stress-tensor}

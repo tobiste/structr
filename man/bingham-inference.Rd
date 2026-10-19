@@ -51,7 +51,7 @@ stereo_lines(r$points, col = 'red')
 \code{\link[=rbingham]{rbingham()}} for simulating a Bingham distribution, and \code{\link[=bingham_MLE]{bingham_MLE()}} to
 estimate distribution parameters.
 
-Other distribution-inference: 
+Other distribution-inference:
 \code{\link{fisher-inference}},
 \code{\link{watson-inference}}
 }

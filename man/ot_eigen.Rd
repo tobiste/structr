@@ -45,8 +45,8 @@ points(x_eigen$vectors, col = c(1, 2, 3))
 text(x_eigen$vectors, col = c(1, 2, 3), labels = c("E1", "E2", "E3"), pos = 4)
 }
 \seealso{
-Other ortensor: 
-\code{\link{ortensor}()},
+Other ortensor:
+\code{\link[=ortensor]{ortensor()}},
 \code{\link{strain_shape}}
 }
 \concept{ortensor}

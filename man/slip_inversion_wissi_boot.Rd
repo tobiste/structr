@@ -41,8 +41,8 @@ text(res$optimal$principal_axes,
 label = rownames(res$optimal$principal_axes), col= 2:4, adj = -.25)
 }
 \seealso{
-Other wissi: 
-\code{\link{slip_inversion_wissi}()},
-\code{\link{slip_inversion_wissi_polyphase}()}
+Other wissi:
+\code{\link[=slip_inversion_wissi]{slip_inversion_wissi()}},
+\code{\link[=slip_inversion_wissi_polyphase]{slip_inversion_wissi_polyphase()}}
 }
 \concept{wissi}

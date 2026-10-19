@@ -4,7 +4,7 @@
 \alias{runif.spherical}
 \title{Uniformly Distributed Vectors on the Sphere}
 \source{
-Adapted from \code{\link[rotasym:unif]{rotasym::r_unif_sphere()}} and \code{rayUniform()} from
+Adapted from \code{\link[rotasym:r_unif_sphere]{rotasym::r_unif_sphere()}} and \code{rayUniform()} from
 \code{geologyGeometry} by Davis, J.R.
 }
 \usage{
@@ -24,7 +24,7 @@ vectors. Either \code{"geologyGeometry"} (the default) for generating random poi
 (as in the \code{geologyGeometry} code compilation),
 \code{"sfs"} for the "Spherical Fibonacci Spiral points on a sphere",
 \code{"gss"} for "Golden Section Spiral points on a sphere", or the algorithm
-\code{\link[rotasym:unif]{rotasym::r_unif_sphere()}} from the rotasym package.}
+\code{\link[rotasym:r_unif_sphere]{rotasym::r_unif_sphere()}} from the rotasym package.}
 }
 \value{
 object of class specified by \code{"class"} argument
@@ -51,12 +51,12 @@ x4 <- runif.spherical(n = 100, "Ray", method = "geologyGeometry")
 contour(x4)
 }
 \seealso{
-Other random: 
-\code{\link{rbing}()},
-\code{\link{rfb}()},
-\code{\link{rkent}()},
-\code{\link{rrot}()},
-\code{\link{rwatson}()},
+Other random:
+\code{\link{rbing}},
+\code{\link[=rfb]{rfb()}},
+\code{\link[=rkent]{rkent()}},
+\code{\link[=rrot]{rrot()}},
+\code{\link[=rwatson]{rwatson()}},
 \code{\link{vonmises-fisher}}
 }
 \concept{random}

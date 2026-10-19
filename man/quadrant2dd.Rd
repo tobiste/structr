@@ -25,11 +25,11 @@ q <- c("N", "E", "E", "S", "S", "W", "W", "N", "N") # dip quadrant
 quadrant2dd(s, q)
 }
 \seealso{
-Other parse-orientations: 
-\code{\link{Fault_from_rake_quadrant}()},
-\code{\link{azimuth_to_cardinal}()},
-\code{\link{sense_from_strikeslip}()},
-\code{\link{split}()},
-\code{\link{strikeslip_kinematics}()}
+Other parse-orientations:
+\code{\link[=Fault_from_rake_quadrant]{Fault_from_rake_quadrant()}},
+\code{\link[=azimuth_to_cardinal]{azimuth_to_cardinal()}},
+\code{\link[=sense_from_strikeslip]{sense_from_strikeslip()}},
+\code{\link{split}},
+\code{\link[=strikeslip_kinematics]{strikeslip_kinematics()}}
 }
 \concept{parse-orientations}

@@ -46,7 +46,7 @@ plot(x, pch = assign_pch(key), grid.params = list(guides = FALSE))
 legend_pch(key)
 }
 \seealso{
-Other assign: 
+Other assign:
 \code{\link{assign-cex}},
 \code{\link{assign-color}}
 }

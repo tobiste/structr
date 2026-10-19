@@ -233,7 +233,7 @@ read_strabo_mobile <- function(file, sf = TRUE) {
 #' @rdname strabo
 #' @export
 read_strabo_JSON <- function(file, sf = TRUE) {
-  tag_name <- spot_id <- tag_col <- tag_id <- time <- id <- NULL
+  dip <- plunge <- tag_name <- spot_id <- tag_col <- tag_id <- time <- id <- NULL
   associated <- type <- associated_type <- unix_timestamp <- NULL
 
   # --- Load JSON ---
