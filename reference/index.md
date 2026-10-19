@@ -349,6 +349,9 @@
   [`perm_rsq_pvalue()`](https://tobiste.github.io/structr/reference/perm-rsq.md)
   : Permutation Tests of Regressions
 
+- [`plane_intersection()`](https://tobiste.github.io/structr/reference/plane_intersection.md)
+  : Intersection of two planes
+
 - [`plot(`*`<Line>`*`)`](https://tobiste.github.io/structr/reference/plot-spherical.md)
   [`plot(`*`<Vec3>`*`)`](https://tobiste.github.io/structr/reference/plot-spherical.md)
   [`plot(`*`<Ray>`*`)`](https://tobiste.github.io/structr/reference/plot-spherical.md)
