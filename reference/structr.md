@@ -20,8 +20,3 @@ Useful links:
 
 **Maintainer**: Tobias Stephan <tobias.stephan1@yahoo.com>
 ([ORCID](https://orcid.org/0000-0002-9290-014X))
-
-Authors:
-
-- Tobias Stephan <tobias.stephan1@yahoo.com>
-  ([ORCID](https://orcid.org/0000-0002-9290-014X))

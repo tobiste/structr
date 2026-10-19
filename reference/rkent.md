@@ -32,7 +32,7 @@ rkent(n, mu = Vec3(1, 0, 0), k = 5, b)
 ## See also
 
 Other random:
-[`rbing`](https://tobiste.github.io/structr/reference/rbing.md),
+[`rbing()`](https://tobiste.github.io/structr/reference/rbing.md),
 [`rfb()`](https://tobiste.github.io/structr/reference/rfb.md),
 [`rrot()`](https://tobiste.github.io/structr/reference/rrot.md),
 [`runif.spherical()`](https://tobiste.github.io/structr/reference/runif.spherical.md),
