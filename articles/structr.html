@@ -121,13 +121,21 @@ great alternatives. You are also allowed to use R’s native GUI or use R
 in your terminal only.</p></li>
 <li><p>Open your IDE and first install the {devtools} package to later
 install {structr} from my github repository:</p></li>
-<li><p>Now you can install the {structr} package by typing into the
-commando console the following code. This will install the package and
-every required library as well.</p></li>
-<li><p>Next you must “load” the library to use the functions of
-{structr}:</p></li>
 </ol>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span></code></pre></div>
+<ol start="4" style="list-style-type: decimal">
+<li>Now you can install the {structr} package by typing into the
+commando console the following code. This will install the package and
+every required library as well.</li>
+</ol>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"tobiste/structr"</span><span class="op">)</span></span></code></pre></div>
+<ol start="5" style="list-style-type: decimal">
+<li>Finally, you must “load” the library to use the functions of
+{structr}:</li>
+</ol>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tobiste.github.io/structr/">structr</a></span><span class="op">)</span></span></code></pre></div>
 </div>
 <div class="section level2">
@@ -163,7 +171,7 @@ statistical “treatments”. To learn more about it, follow this <a href="https
 <code><a href="../reference/classes.html">Ray()</a></code>, <code><a href="../reference/classes.html">Pair()</a></code>, and <code><a href="../reference/classes.html">Fault()</a></code>. These
 functions create spherical object, and {structr} will identify the
 symmetry nature of the data in further function calls.</p>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plunge_direction</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">54</span>, <span class="fl">61</span>, <span class="fl">74</span>, <span class="fl">80</span>, <span class="fl">63</span><span class="op">)</span></span>
 <span><span class="va">plunge</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">13</span>, <span class="fl">15</span>, <span class="fl">14</span>, <span class="fl">19</span>, <span class="fl">17</span><span class="op">)</span></span>
 <span></span>
@@ -183,7 +191,7 @@ symmetry nature of the data in further function calls.</p>
 <p>The spherical objects can be plotted in equal-area projections using
 R’s primitive plotting functions, e.g. <code>plot</code>,
 <code><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points()</a></code>, and <code><a href="../reference/lines.html">lines()</a></code>, ….</p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#  import some example lines</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span>
 <span></span>
@@ -198,7 +206,7 @@ R’s primitive plotting functions, e.g. <code>plot</code>,
 <p>There are plenty of different statistical parameters, which
 meaningfulness depend on the underlying distribution of the orientation
 data (and hence also on the symmetry of the data).</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Spherical arithmetic mean</span></span>
 <span><span class="va">lines_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stats.html">sph_mean</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">lines_mean</span><span class="op">)</span></span>
@@ -229,7 +237,7 @@ tutorial</a>.</p>
 </h2>
 <p>The orientation tensor describes the distribution of all vectors in
 your dataset.</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ortensor.html">ortensor</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Orientation tensor</span></span>
 <span><span class="co">#&gt;            [,1]      [,2]       [,3]</span></span>
@@ -238,7 +246,7 @@ your dataset.</p>
 <span><span class="co">#&gt; [3,] 0.08096582 0.1930654 0.09967054</span></span></code></pre></div>
 <p>Eigenvalues and eigenvectors of this tensor describe the
 distribution.</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lines_eigen</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ot_eigen.html">ot_eigen</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">lines_eigen</span><span class="op">)</span></span>
 <span><span class="co">#&gt; eigen() decomposition</span></span>
@@ -252,7 +260,7 @@ distribution.</p>
 <span><span class="co">#&gt; [2,] 334.66510 16.28283</span></span>
 <span><span class="co">#&gt; [3,] 199.26521 67.69500</span></span></code></pre></div>
 <p>Summarize the statistical parameters in a equal-area projection:</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot the data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">example_lines</span>, col <span class="op">=</span> <span class="st">"grey30"</span><span class="op">)</span></span>
 <span></span>
