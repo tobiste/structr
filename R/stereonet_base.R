@@ -375,9 +375,9 @@ stereo_smallcircle0 <- function(x, d = 90, col = 1, N = 1000, upper.hem = NULL, 
 #' @export
 stereo_greatcircle <- function(x, ...) {
   stopifnot(is.Plane(x))
-  x2 <- x
+  x2 <- as.Ray(x)
   x2[, 2] <- 90 + x[, 2]
-  stereo_smallcircle(as.Ray(x2), d = 90, ...) # add circle
+  stereo_smallcircle(x2, d = 90, ...) # add circle
 }
 
 stereo_smallcircle0_filled <- function(x, d = 90, col = 1, n = 1000,

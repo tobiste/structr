@@ -24,9 +24,4 @@ Useful links:
 \author{
 \strong{Maintainer}: Tobias Stephan \email{tobias.stephan1@yahoo.com} (\href{https://orcid.org/0000-0002-9290-014X}{ORCID})
 
-Authors:
-\itemize{
-  \item Tobias Stephan \email{tobias.stephan1@yahoo.com} (\href{https://orcid.org/0000-0002-9290-014X}{ORCID})
-}
-
 }
