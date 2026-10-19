@@ -47,7 +47,7 @@ on your computer:
 3.  Open your IDE and first install the {devtools} package to later
     install {structr} from my github repository:
 
-```{r install1, echo=FALSE, eval=FALSE}
+```{r install1, eval=FALSE, include=TRUE}
 install.packages("devtools")
 ```
 
@@ -55,11 +55,11 @@ install.packages("devtools")
     commando console the following code. This will install the package
     and every required library as well.
 
-```{r install2, echo=FALSE, eval=FALSE}
+```{r install2,  eval=FALSE, include=TRUE}
 devtools::install_github("tobiste/structr")
 ```
 
-5.  Next you must "load" the library to use the functions of {structr}:
+5.  Finally, you must "load" the library to use the functions of {structr}:
 
 ```{r setup, warning=FALSE, message=FALSE}
 library(structr)
