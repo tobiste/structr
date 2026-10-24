@@ -14,11 +14,13 @@ Mohr_plot(
   sigma3 = NA,
   unit = "MPa",
   col = "black",
+  pch = par("pch"),
   n = 512,
   full.circle = FALSE,
   include.zero = TRUE,
   xlim = NULL,
   ylim = NULL,
+  add = FALSE,
   ...
 )
 ```
@@ -60,6 +62,10 @@ Mohr_plot(
 
   color for Mohr circle.
 
+- pch:
+
+  integer. Plotting character for the center of the Mohr circle.
+
 - n:
 
   integer. Resolution given amount of points along the generated path
@@ -77,6 +83,11 @@ Mohr_plot(
 - xlim, ylim:
 
   range of plot
+
+- add:
+
+  logical. Whether data should be added to a existing plot or a new one
+  should be created?
 
 - ...:
 
