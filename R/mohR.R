@@ -220,6 +220,7 @@ Mohr_calc <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
 #' @param unit character. The unit used for magnitude of stress (`"MPa"` by default). `NULL` if unitless.
 #' @param col color for Mohr circle.
 #' @param pch integer. Plotting character for the center of the Mohr circle. 
+#' @param cex numeric. Character expansion (size) of character for the center of the Mohr circle
 #' @param n integer. Resolution given amount of points along the generated path
 #' representing the full Mohr circle (`512` by default).
 #' @param full.circle logical. Should the complete Mohr circle be shown, or only
@@ -237,9 +238,12 @@ Mohr_calc <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
 #' @seealso [failure_criterion()] to add the failure criterion;
 #' [Mohr_calc()] to calculate the parameters;
 #' [ggMohr()] for ggplot2 functionality;
+#' 
+#' @return NULL
+#' 
 #' @export
 #' @examples
-#' Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = "#B63679", lwd = 2)
+#' a <- Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = "#B63679", lwd = 2)
 #'
 #' Mohr_plot(sigma1 = 66, sigma2 = 30, sigma3 = 20, xlim = c(-50, 125), full.circle = TRUE)
 #' failure_criterion(col = "#B63679") # adds failure criterion
@@ -256,7 +260,7 @@ Mohr_calc <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
 #'   col = "#B63679", lwd = 2, unit = NULL, include.zero = FALSE
 #' )
 Mohr_plot <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigma2 = NA, sigma3 = NA,
-                      unit = "MPa", col = "black", pch = par("pch"), n = 512, full.circle = FALSE, include.zero = TRUE, xlim = NULL, ylim = NULL, add = FALSE, ...) {
+                      unit = "MPa", col = "black", pch = par("pch"), cex = par('cex'), n = 512, full.circle = FALSE, include.zero = TRUE, xlim = NULL, ylim = NULL, add = FALSE, ...) {
   ##  Calculate normal and shear stresses
   theta <- seq(from = 0, to = 180, length.out = n)
   stress_vec <- sapply(
@@ -339,8 +343,11 @@ Mohr_plot <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
 
   graphics::lines(sigma, tau, col = col, ...)
   graphics::abline(h = 0)
-  graphics::points(mean(range(sigma)), 0, col = col, pch = pch)
-}
+  graphics::points(mean(range(sigma)), 0, col = col, pch = pch, cex = cex)
+  
+  invisible(cbind(sigma= sigma, tau = tau))
+  
+  }
 
 #' Principle stresses
 #'
