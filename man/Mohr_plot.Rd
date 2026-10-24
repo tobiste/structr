@@ -13,11 +13,13 @@ Mohr_plot(
   sigma3 = NA,
   unit = "MPa",
   col = "black",
+  pch = par("pch"),
   n = 512,
   full.circle = FALSE,
   include.zero = TRUE,
   xlim = NULL,
   ylim = NULL,
+  add = FALSE,
   ...
 )
 }
@@ -39,6 +41,8 @@ This will add the additional Mohr circles between the principal stresses.}
 
 \item{col}{color for Mohr circle.}
 
+\item{pch}{integer. Plotting character for the center of the Mohr circle.}
+
 \item{n}{integer. Resolution given amount of points along the generated path
 representing the full Mohr circle (\code{512} by default).}
 
@@ -48,6 +52,9 @@ the upper (positive shear stress) part of the circle?}
 \item{include.zero}{logical. the plot range be extended to include normal_stress = 0?}
 
 \item{xlim, ylim}{range of plot}
+
+\item{add}{logical. Whether data should be added to a existing plot or a
+new one should be created?}
 
 \item{...}{optional graphical parameters.}
 }
