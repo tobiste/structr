@@ -74,6 +74,7 @@
 <span>  unit <span class="op">=</span> <span class="st">"MPa"</span>,</span>
 <span>  col <span class="op">=</span> <span class="st">"black"</span>,</span>
 <span>  pch <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"pch"</span><span class="op">)</span>,</span>
+<span>  cex <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/graphics/par.html" class="external-link">par</a></span><span class="op">(</span><span class="st">"cex"</span><span class="op">)</span>,</span>
 <span>  n <span class="op">=</span> <span class="fl">512</span>,</span>
 <span>  full.circle <span class="op">=</span> <span class="cn">FALSE</span>,</span>
 <span>  include.zero <span class="op">=</span> <span class="cn">TRUE</span>,</span>
@@ -125,6 +126,10 @@ This will add the additional Mohr circles between the principal stresses.</p></d
 <dd><p>integer. Plotting character for the center of the Mohr circle.</p></dd>
 
 
+<dt id="arg-cex">cex<a class="anchor" aria-label="anchor" href="#arg-cex"></a></dt>
+<dd><p>numeric. Character expansion (size) of character for the center of the Mohr circle</p></dd>
+
+
 <dt id="arg-n">n<a class="anchor" aria-label="anchor" href="#arg-n"></a></dt>
 <dd><p>integer. Resolution given amount of points along the generated path
 representing the full Mohr circle (<code>512</code> by default).</p></dd>
@@ -166,7 +171,7 @@ new one should be created?</p></dd>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">Mohr_plot</span><span class="op">(</span>sigma_x <span class="op">=</span> <span class="fl">80</span>, sigma_z <span class="op">=</span> <span class="fl">120</span>, unit <span class="op">=</span> <span class="st">"kPa"</span>, tau_xz <span class="op">=</span> <span class="fl">20</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">a</span> <span class="op">&lt;-</span> <span class="fu">Mohr_plot</span><span class="op">(</span>sigma_x <span class="op">=</span> <span class="fl">80</span>, sigma_z <span class="op">=</span> <span class="fl">120</span>, unit <span class="op">=</span> <span class="st">"kPa"</span>, tau_xz <span class="op">=</span> <span class="fl">20</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, lwd <span class="op">=</span> <span class="fl">2</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="Mohr_plot-1.png" alt="" width="1094" height="676"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">Mohr_plot</span><span class="op">(</span>sigma1 <span class="op">=</span> <span class="fl">66</span>, sigma2 <span class="op">=</span> <span class="fl">30</span>, sigma3 <span class="op">=</span> <span class="fl">20</span>, xlim <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">50</span>, <span class="fl">125</span><span class="op">)</span>, full.circle <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></span>

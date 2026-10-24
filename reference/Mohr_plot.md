@@ -15,6 +15,7 @@ Mohr_plot(
   unit = "MPa",
   col = "black",
   pch = par("pch"),
+  cex = par("cex"),
   n = 512,
   full.circle = FALSE,
   include.zero = TRUE,
@@ -66,6 +67,11 @@ Mohr_plot(
 
   integer. Plotting character for the center of the Mohr circle.
 
+- cex:
+
+  numeric. Character expansion (size) of character for the center of the
+  Mohr circle
+
 - n:
 
   integer. Resolution given amount of points along the generated path
@@ -113,7 +119,7 @@ ggplot2 functionality;
 ## Examples
 
 ``` r
-Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = "#B63679", lwd = 2)
+a <- Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = "#B63679", lwd = 2)
 
 
 Mohr_plot(sigma1 = 66, sigma2 = 30, sigma3 = 20, xlim = c(-50, 125), full.circle = TRUE)
