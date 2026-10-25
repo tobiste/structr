@@ -93,11 +93,5 @@ converting strain quantities
 ``` r
 Mohr_strain(lambda1 = 4, lambda3 = 0.25, phi = 25, col = 'red')
 
-(Mohr_strain(lambda1 = 4, lambda2 = 1, lambda3 = 0.25, phi = c(0, 25, 50, 45), col = 'red', full.circle = TRUE, axes = FALSE))
-
-#>      lambda_i  gamma_i
-#> [1,] 2.125000 1.875000
-#> [2,] 2.917409 1.699327
-#> [3,] 3.561333 1.205227
-#> [4,] 3.450825 1.325825
+Mohr_strain(lambda1 = 4, lambda2 = 1, lambda3 = 0.25, phi = c(0, 25, 50, 45), col = 'red', full.circle = TRUE, axes = FALSE)
 ```
