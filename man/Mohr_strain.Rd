@@ -57,7 +57,7 @@ Plots the Mohr Circle for Strain
 }
 \examples{
 Mohr_strain(lambda1 = 4, lambda3 = 0.25, phi = 25, col = 'red')
-(Mohr_strain(lambda1 = 4, lambda2 = 1, lambda3 = 0.25, phi = c(0, 25, 50, 45), col = 'red', full.circle = TRUE, axes = FALSE))
+Mohr_strain(lambda1 = 4, lambda2 = 1, lambda3 = 0.25, phi = c(0, 25, 50, 45), col = 'red', full.circle = TRUE, axes = FALSE)
 }
 \seealso{
 \code{\link[=Mohr_plot]{Mohr_plot()}} for Stress. \link{strain} for converting strain quantities
