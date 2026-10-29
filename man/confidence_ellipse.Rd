@@ -28,7 +28,7 @@ rows are the observations and the columns are the coordinates.}
 \item{isotropic}{logical. If \code{TRUE}, forces the inverse covariance to the identity matrix and hence the region to be circular.}
 }
 \value{
-list.
+object of class \code{"confidence_region"}, here with additional arguments:
 \describe{
 \item{\code{center}}{Projected mean of \code{x}}
 \item{\code{cov}}{Inverse covariance matrix in the tangent space, which is the identity if \code{isotropic} is \code{TRUE}}
@@ -70,6 +70,7 @@ for three-dimensional orientational data. Journal of Structural Geology,
 Other confidence:
 \code{\link[=bingham_confidence]{bingham_confidence()}},
 \code{\link[=bingham_ellipse]{bingham_ellipse()}},
-\code{\link[=fisher_confidence]{fisher_confidence()}}
+\code{\link[=fisher_confidence]{fisher_confidence()}},
+\code{\link[=stereo_confidence]{stereo_confidence()}}
 }
 \concept{confidence}

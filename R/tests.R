@@ -119,9 +119,9 @@ rayleigh_test3 <- function(x, level = 0.95){
   Test(
       name      = "Rayleigh Test",
       statistic = S,
-      p_value   = pchisq(S_mod, df = p, lower.tail = FALSE),
+      p_value   = stats::pchisq(S_mod, df = p, lower.tail = FALSE),
       df        = p,
-      critical  = qchisq(level, df = p),
+      critical  = stats::qchisq(level, df = p),
       level     = level,
       source    = "Mardia & Jupp (2000), eq. 10.4.4-10.4.6",
       extra     = list(R = R, Rbar = R / n, modified = S_mod)
@@ -170,9 +170,9 @@ bingham_test <- function(D, n, level = 0.95) {
   Test(
       name      = "Bingham Test",
       statistic = S,
-      p_value   = pchisq(S, df = 5, lower.tail = FALSE),
+      p_value   = stats::pchisq(S, df = 5, lower.tail = FALSE),
       df        = 5L,
-      critical  = qchisq(level, df = 5),
+      critical  = stats::qchisq(level, df = 5),
       level     = level,
       source    = "Mardia & Jupp (2000), eq. 10.7.1-10.7.3",
       extra     = list(modified = S_mod)
@@ -413,9 +413,9 @@ fisher_kent_test <- function(x, level = 0.95) {
   Test(
     name      = "Fisher vs Kent",
     statistic = T,
-    p_value   = pchisq(T, df = 2, lower.tail = FALSE),
+    p_value   = stats::pchisq(T, df = 2, lower.tail = FALSE),
     df        = 2L,
-    critical  = qchisq(level, df = 2),
+    critical  = stats::qchisq(level, df = 2),
     level     = level,
     source    = "Kent (1982), eq. 5.5",
     extra     = list(kappa = kappa, r2 = r2)
@@ -457,9 +457,9 @@ watson_symmetry_test <- function(lambda, k, n, level = 0.95) {
     Test(
       name      = sprintf("Watson %s symmetry", nm),
       statistic = w,
-      p_value   = pchisq(w, df = 2, lower.tail = FALSE),
+      p_value   = stats::pchisq(w, df = 2, lower.tail = FALSE),
       df        = 2L,
-      critical  = qchisq(level, df = 2),
+      critical  = stats::qchisq(level, df = 2),
       level     = level,
       source    = "Mardia & Jupp (2000), eq. 10.7.8-10.7.18"
     )

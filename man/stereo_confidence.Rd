@@ -20,7 +20,7 @@ stereo_confidence(
 )
 }
 \arguments{
-\item{x}{Spherical object or a list containing the output of an earlier call of \code{\link[=confidence_ellipse]{confidence_ellipse()}}}
+\item{x}{Spherical object or an object of class \code{"confidence_region"}}
 
 \item{params}{list. Parameters passed to \code{\link[=confidence_ellipse]{confidence_ellipse()}}}
 
@@ -58,8 +58,6 @@ plot(example_lines, col = "grey")
 stereo_confidence(example_lines, params = list(n = 100, res = 100), col = "red")
 }
 \seealso{
-\code{\link[=confidence_ellipse]{confidence_ellipse()}}
-
 Other stereo-plot:
 \code{\link{arrows}},
 \code{\link{fault-plot}},
@@ -75,5 +73,12 @@ Other stereo-plot:
 \code{\link[=stereoplot_guides]{stereoplot_guides()}},
 \code{\link[=stereoplot_ticks]{stereoplot_ticks()}},
 \code{\link[=text.spherical]{text.spherical()}}
+
+Other confidence:
+\code{\link[=bingham_confidence]{bingham_confidence()}},
+\code{\link[=bingham_ellipse]{bingham_ellipse()}},
+\code{\link[=confidence_ellipse]{confidence_ellipse()}},
+\code{\link[=fisher_confidence]{fisher_confidence()}}
 }
+\concept{confidence}
 \concept{stereo-plot}

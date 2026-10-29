@@ -13,7 +13,7 @@
 #' @param res integer. The resolution with which to sample the boundary curve of the (1 - `alpha`) * 100% percentile region.
 #' @param isotropic logical. If `TRUE`, forces the inverse covariance to the identity matrix and hence the region to be circular.
 #'
-#' @returns list.
+#' @returns object of class `"confidence_region"`, here with additional arguments:
 #' \describe{
 #' \item{`center`}{Projected mean of `x`}
 #' \item{`cov`}{Inverse covariance matrix in the tangent space, which is the identity if `isotropic` is `TRUE`}
@@ -95,7 +95,7 @@ confidence_ellipse <- function(x, n_iter = 10000L, alpha = 0.05, res = 512L, iso
 #' @param alpha numeric. Angle in degrees.
 #' @param n integer. Resolution of the cone (number of points for the cone line)
 #'
-#' @return `Vec3` object
+#' @returns object of class `"confidence_region"`
 #'
 #' @family confidence
 #'
@@ -118,6 +118,14 @@ fisher_confidence <- function(mu, alpha, n = 512L) {
     rotate(secant, mu, a)
   })
   do.call(rbind, la) |> Vec3()
+  
+  structure(
+    list(
+      center = mu,
+      ellipse = la
+    ),
+    class = "confidence_region"
+  )
 }
 
 #' Confidence region for Bingham statistics
@@ -131,7 +139,7 @@ fisher_confidence <- function(mu, alpha, n = 512L) {
 #' 
 #' @export
 #'
-#' @return `Vec3` object
+#' @returns object of class `"confidence_region"`
 #'
 #' @examples
 #' set.seed(20250411)
@@ -139,17 +147,14 @@ fisher_confidence <- function(mu, alpha, n = 512L) {
 #' x <- rbingham(100, a, "Line")
 #' r <- bingham_statistics(x)
 #' r2 <- bingham_confidence(r)
-#'
 #' plot(x, col = "grey")
 #' points(r$mu, col = "red", pch = 16, cex = 1.5)
-#' stereo_lines(r2, col = "red")
+#' stereo_lines(r2$ellipse, col = "red")
 #'
 #' r3 <- bingham_statistics(example_planes)
-#'
 #' stereoplot()
 #' points(example_planes, col = "grey", pch = 16)
-#' points(r3$mu, pch = 16, col = "red")
-#' stereo_lines(bingham_confidence(r3), col = "red")
+#' stereo_confidence(bingham_confidence(r3), col = "red")
 bingham_confidence <- function(stats, n = 512) {
   g <- names(stats) %in% c("a95", "gamma")
   gamma <- deg2rad(stats[[names(stats)[g]]])
@@ -171,7 +176,16 @@ bingham_confidence <- function(stats, n = 512) {
 
   res <- outer(cos(rho), mu) + sin(rho) * (outer(ct, u) + outer(st, v))
 
-  as.Vec3(res[, 1L, ])
+  
+  # as.Vec3(res[, 1L, ])
+  
+  structure(
+    list(
+      center = mu,
+      ellipse = as.Vec3(res[, 1L, ])
+    ),
+    class = "confidence_region"
+  )
 }
 
 #' Axial Cross Moments
@@ -230,6 +244,8 @@ axial_cross_moments <- function(x, nu) {
 #' @family confidence
 #'
 #' @source modified after the python package `apsg` (v.2.0.6) by O. Lexa
+#' 
+#' @export
 #'
 #' @returns list
 #'
@@ -242,8 +258,7 @@ axial_cross_moments <- function(x, nu) {
 #'
 #' stereoplot()
 #' points(x, col = "grey", pch = 16)
-#' points(r4$mu, col = "red", pch = 16)
-#' stereo_lines(bingham_confidence(r4), col = "red")
+#' stereo_confidence(bingham_confidence(r4), col = "red")
 bingham_ellipse <- function(lambda, nu, cross_moments, n, level = 0.95,
                             which = 1L) {
   # Confidence ellipse of an eigenvector of the orientation tensor
@@ -274,13 +289,10 @@ bingham_ellipse <- function(lambda, nu, cross_moments, n, level = 0.95,
   arg[d == 0] <- Inf # equal eigenvalues
   gamma <- ifelse(arg >= 1, 90, asin(pmin(arg, 1)) * 180 / pi)
 
-  structure(
     list(
       mu    = Vec3(V[which, ]),
       level = level,
       axes  = Vec3(V[other, ]),
       gamma = gamma
-    ),
-    class = "confidence_region"
-  )
+    )
 }

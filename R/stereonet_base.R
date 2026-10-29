@@ -1527,7 +1527,7 @@ stereo_confidence_fill0 <- function(D, col = 1, border = NA, upper.hem = NULL,
 #'
 #' Adds an ellipse marking the bootstrapped confidence interval of the arithmetic mean to an existing plot
 #'
-#' @param x Spherical object or a list containing the output of an earlier call of [confidence_ellipse()]
+#' @param x Spherical object or an object of class `"confidence_region"`
 #' @param .center logical. Whether the ellipse's center should be plotted?
 #' @param col Color of the ellipse and its center
 #' @param pch,cex Plotting symbol and size of the ellipse center. Ignored if `.center` is `FALSE`.
@@ -1538,7 +1538,7 @@ stereo_confidence_fill0 <- function(D, col = 1, border = NA, upper.hem = NULL,
 #'
 #' @returns output of [confidence_ellipse()]
 #' @family stereo-plot
-#' @seealso [confidence_ellipse()]
+#' @family confidence
 #' @export
 #'
 #' @examples
@@ -1552,7 +1552,7 @@ stereo_confidence <- function(x, params = list(), .center = TRUE, col = par("col
 
   if (is.spherical(x)) {
     ce <- do.call(confidence_ellipse, append(list(x = x), params))
-  } else if (is.list(x)) {
+  } else if (inherits(x, 'confidence_region')) {
     ce <- x
   }
 

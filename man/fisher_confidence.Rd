@@ -14,7 +14,7 @@ fisher_confidence(mu, alpha, n = 512L)
 \item{n}{integer. Resolution of the cone (number of points for the cone line)}
 }
 \value{
-\code{Vec3} object
+object of class \code{"confidence_region"}
 }
 \description{
 Circle of angular radius \eqn{\alpha} (degrees) around the mean vector \eqn{\mu}.
@@ -35,6 +35,7 @@ stereo_lines(r1, col = "red")
 Other confidence:
 \code{\link[=bingham_confidence]{bingham_confidence()}},
 \code{\link[=bingham_ellipse]{bingham_ellipse()}},
-\code{\link[=confidence_ellipse]{confidence_ellipse()}}
+\code{\link[=confidence_ellipse]{confidence_ellipse()}},
+\code{\link[=stereo_confidence]{stereo_confidence()}}
 }
 \concept{confidence}

@@ -53,13 +53,13 @@ print(r4)
 
 stereoplot()
 points(x, col = "grey", pch = 16)
-points(r4$mu, col = "red", pch = 16)
-stereo_lines(bingham_confidence(r4), col = "red")
+stereo_confidence(bingham_confidence(r4), col = "red")
 }
 \seealso{
 Other confidence:
 \code{\link[=bingham_confidence]{bingham_confidence()}},
 \code{\link[=confidence_ellipse]{confidence_ellipse()}},
-\code{\link[=fisher_confidence]{fisher_confidence()}}
+\code{\link[=fisher_confidence]{fisher_confidence()}},
+\code{\link[=stereo_confidence]{stereo_confidence()}}
 }
 \concept{confidence}
