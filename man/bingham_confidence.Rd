@@ -7,9 +7,9 @@
 bingham_confidence(stats, n = 512)
 }
 \arguments{
-\item{stats}{Return of \code{\link[=bingham_statistics]{bingham_statistics()}}}
+\item{stats}{Output of \code{\link[=bingham_statistics]{bingham_statistics()}}}
 
-\item{n}{integer. Resolution of the conve (number of points for the conve line)}
+\item{n}{integer. Resolution of the cone (number of points for the cone line)}
 }
 \value{
 \code{Vec3} object

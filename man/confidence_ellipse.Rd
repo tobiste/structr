@@ -21,7 +21,7 @@ rows are the observations and the columns are the coordinates.}
 
 \item{n_iter}{integer. Number of bootstrap iterations (\code{10000} by default).}
 
-\item{alpha}{numeric. Level of significance (\code{0.05} by default).}
+\item{alpha}{numeric. Level of significance \eqn{\alpha} (\code{0.05} by default).}
 
 \item{res}{integer. The resolution with which to sample the boundary curve of the (1 - \code{alpha}) * 100\% percentile region.}
 

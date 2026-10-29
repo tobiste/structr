@@ -9,15 +9,15 @@ fisher_confidence(mu, alpha, n = 512L)
 \arguments{
 \item{mu}{Object of class \code{spherical}}
 
-\item{alpha}{numeric. angle in degrees.}
+\item{alpha}{numeric. Angle in degrees.}
 
-\item{n}{integer. Resolution of the conve (number of points for the conve line)}
+\item{n}{integer. Resolution of the cone (number of points for the cone line)}
 }
 \value{
 \code{Vec3} object
 }
 \description{
-Circle of angular radius \code{alpha} (degrees) around the mean vector \code{mu}.
+Circle of angular radius \eqn{\alpha} (degrees) around the mean vector \eqn{\mu}.
 }
 \examples{
 set.seed(20250411)

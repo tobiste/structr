@@ -9,7 +9,7 @@
 #'
 #' @inheritParams geodesic_meanvariance_line
 #' @param n_iter integer. Number of bootstrap iterations (`10000` by default).
-#' @param alpha numeric. Level of significance (`0.05` by default).
+#' @param alpha numeric. Level of significance \eqn{\alpha} (`0.05` by default).
 #' @param res integer. The resolution with which to sample the boundary curve of the (1 - `alpha`) * 100% percentile region.
 #' @param isotropic logical. If `TRUE`, forces the inverse covariance to the identity matrix and hence the region to be circular.
 #'
@@ -89,11 +89,11 @@ confidence_ellipse <- function(x, n_iter = 10000L, alpha = 0.05, res = 512L, iso
 
 #' Confidence region for Fisher statistics
 #'
-#' Circle of angular radius `alpha` (degrees) around the mean vector `mu`.
+#' Circle of angular radius \eqn{\alpha} (degrees) around the mean vector \eqn{\mu}.
 #'
 #' @param mu Object of class `spherical`
-#' @param alpha numeric. angle in degrees.
-#' @param n integer. Resolution of the conve (number of points for the conve line)
+#' @param alpha numeric. Angle in degrees.
+#' @param n integer. Resolution of the cone (number of points for the cone line)
 #'
 #' @return `Vec3` object
 #'
@@ -124,10 +124,12 @@ fisher_confidence <- function(mu, alpha, n = 512L) {
 #'
 #' Bingham confidence ellipse
 #'
-#' @param stats Return of [bingham_statistics()]
+#' @param stats Output of [bingham_statistics()]
 #' @inheritParams fisher_confidence
 #'
 #' @family confidence
+#' 
+#' @export
 #'
 #' @return `Vec3` object
 #'
@@ -175,15 +177,15 @@ bingham_confidence <- function(stats, n = 512) {
 #' Axial Cross Moments
 #'
 #' @details Matrix of unit vectors `x`
-#' for axes `v` is \deqn{
+#' for Eigenvectors `\nu` is \deqn{
 #'
 #' m_{ij} = \frac{1}{n} \sum_{k=1}^{n}
-#' \left( \mathbf{x}_k \cdot \mathbf{v}_i \right)^2
-#' \left( \mathbf{x}_k \cdot \mathbf{v}_j \right)^2 , \qquad i, j = 1, 2, 3
+#' \left( \mathbf{x}_k \cdot \mathbf{\nu}_i \right)^2
+#' \left( \mathbf{x}_k \cdot \mathbf{\nu}_j \right)^2 , \qquad i, j = 1, 2, 3
 #' }
 #'
 #' @inheritParams sph_mean
-#' @param v Three Eigenvectors (object of class `Spherical`)
+#' @param nu Three Eigenvectors \eqn{\nu} (object of class `Spherical`). See [ot_eigen()] for details
 #'
 #' @returns 3 x 3 matrix
 #' @export
@@ -191,12 +193,12 @@ bingham_confidence <- function(stats, n = 512) {
 #' @examples
 #' x <- example_planes
 #' axial_cross_moments(x, ot_eigen(x)$vectors)
-axial_cross_moments <- function(x, v) {
+axial_cross_moments <- function(x, nu) {
   # m_ij = mean((x . v_i)^2 (x . v_j)^2)
   # x:    n x 3 matrix of unit vectors
   # v: 3 x 3 matrix of orthogonal unit vectors, one per ROW
   X <- Vec3(x)
-  vecs <- Vec3(v)
+  vecs <- Vec3(nu)
   P2 <- tcrossprod(X, vecs)^2 # X %*% t(vecs), squared: n x 3
   crossprod(P2) / nrow(P2) # t(P2) %*% P2 / n: 3 x 3
 }
@@ -204,25 +206,26 @@ axial_cross_moments <- function(x, v) {
 #' Confidence ellipse of an Eigenvector of the orientation tensor
 #'
 #' @details Large-sample (central limit theorem) approximation: the angle of the
-#' sample eigenvector \eqn{v_i} toward \eqn{v_j} is approximately normal with
-#' variance \eqn{m_{ij} / (n (\tau_i - \tau_j)^2)}, with
-#' \eqn{m_{ij} = \text{mean}((x.v_i)^2 (x.v_j)^2)}.
+#' sample eigenvector \eqn{\nu_i} toward \eqn{\nu_j} is approximately normal with
+#' variance \eqn{m_{ij} / (n (\lambda_i - \lambda_j)^2)}, with
+#' \eqn{m_{ij} = \text{mean}((x \cdot \nu_i)^2 (x \cdot \nu_j)^2)}.
 #' The semi-angles of the region are
-#' \deqn{\arcsin(\sqrt(\chi^2_2(\text{level}) \times m_{ij} / (n (\tau_i - \tau_j)^2)))},
+#' \deqn{\arcsin(\sqrt(\chi^2_2(\text{level}) \times m_{ij} / (n (\lambda_i - \lambda_j)^2)))},
 #' 90&deg; for equal eigenvalues.
 #'
 #' The moments make it valid for any distribution of axes; for rotationally
 #' symmetric data it is the cone of FLE eq. 6.11-6.13. Under the Bingham model
-#' \eqn{m_{ij} / (\tau_i - \tau_j)^2} tends to \eqn{1 / (2 \Delta_{ij})}, the
+#' \eqn{m_{ij} / (\lambda_i - \lambda_j)^2} tends to \eqn{1 / (2 \Delta_{ij})}, the
 #' semi-axes \eqn{ \sqrt{\big(\chi^2_2(\text{level}) / (2 n \Delta_{ij})\big)}}
 #' of Bingham (1974, eq. 7.24).
 #'
-#' @param tau numeric. Eigenvalues of the orientation tensor, descending.
-#' @param vecs Corresponding Eigenvectors. Object of class `spherical`
+#' @param lambda numeric. Eigenvalues of the orientation tensor, descending. See [ot_eigen()] for details
+#' @param nu Corresponding Eigenvectors. Object of class `Spherical`. See [ot_eigen()] for details
 #' @param cross_moments 3x3 matrix (see [axial_cross_moments()])
 #' @param n integer. Sample size
-#' @param level numeric. Confidence level. Default is `0.95`
-#' @param which index of the eigenvector of the ellipse is centered on., Default is `0`.
+#' @param level numeric. Confidence level (\eqn{1-\alpha}). Default is `0.95`
+#' @param which integer. Index of the Eigenvector of the ellipse is centered on. 
+#' One of `1` (the default), `2` or `3`.
 #'
 #' @family confidence
 #'
@@ -233,29 +236,29 @@ axial_cross_moments <- function(x, v) {
 #' @examples
 #' x <- example_planes
 #' t <- ot_eigen(x)
-#' cm <- axial_cross_moments(x, ot_eigen(x)$vectors)
-#' r4 <- bingham_ellipse(taus = t$values, vecs = t$vectors, cross_moments = cm, n = nrow(x), which = 1)
+#' m <- axial_cross_moments(x, ot_eigen(x)$vectors)
+#' r4 <- bingham_ellipse(lambda = t$values, nu = t$vectors, cross_moments = m, n = nrow(x), which = 1)
 #' print(r4)
 #'
 #' stereoplot()
 #' points(x, col = "grey", pch = 16)
 #' points(r4$mu, col = "red", pch = 16)
 #' stereo_lines(bingham_confidence(r4), col = "red")
-bingham_ellipse <- function(taus, vecs, cross_moments, n, level = 0.95,
+bingham_ellipse <- function(lambda, nu, cross_moments, n, level = 0.95,
                             which = 1L) {
   # Confidence ellipse of an eigenvector of the orientation tensor
   # (large-sample CLT approximation; see the Python docstring).
   #
-  # taus:          length-3 vector, eigenvalues of the orientation tensor
-  # vecs:          3 x 3 matrix, corresponding eigenvectors as ROWS
+  # lambdas:          length-3 vector, eigenvalues of the orientation tensor
+  # nu:          3 x 3 matrix, corresponding eigenvectors as ROWS
   # cross_moments: 3 x 3 matrix m_ij, see axial_cross_moments()
   # n:             sample size
   # which:         1, 2 or 3 (1-based)
-  V <- Vec3(vecs)
+  V <- Vec3(nu)
   stopifnot(nrow(V) == 3L)
 
-  taus <- as.numeric(taus)
-  stopifnot(length(taus) == 3L)
+  lambdas <- as.numeric(lambda)
+  stopifnot(length(lambda) == 3L)
 
   M <- cross_moments
   stopifnot(nrow(M) == 3 & ncol(M) == 3)
@@ -266,7 +269,7 @@ bingham_ellipse <- function(taus, vecs, cross_moments, n, level = 0.95,
 
   other <- setdiff(1:3, which)
   chi2 <- stats::qchisq(level, df = 2)
-  d <- taus[which] - taus[other]
+  d <- lambda[which] - lambda[other]
   arg <- sqrt(chi2 * M[which, other] / (n * d^2))
   arg[d == 0] <- Inf # equal eigenvalues
   gamma <- ifelse(arg >= 1, 90, asin(pmin(arg, 1)) * 180 / pi)

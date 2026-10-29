@@ -345,7 +345,7 @@ estimate_k <- function(x, w = NULL, na.rm = FALSE, p = 3L) {
 #'
 #' @returns list, with
 #' \describe{
-#' \item[`"mu"`]{Mean vector}
+#' \item{`"mu"`}{Mean vector}
 #' \item{`"k"`}{estimated concentration parameter \eqn{\kappa} for the von Mises-Fisher
 #' distribution}
 #' \item{`"csd"`}{estimated angular standard deviation enclosing 63% of the orientation data. Angle is in degrees if `x` is a spherical object, and radians if otherwise.}

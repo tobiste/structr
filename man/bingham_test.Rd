@@ -7,14 +7,14 @@
 modified after the python package \code{apsg} (v.2.0.6) by O. Lexa
 }
 \usage{
-bingham_test(tau, n, level = 0.95)
+bingham_test(D, n, level = 0.95)
 }
 \arguments{
+\item{D}{3x3 orientation tensor (see \code{\link[=ortensor]{ortensor()}})}
+
 \item{n}{integer. Number of vectors}
 
-\item{level}{numeric. Level of confidence}
-
-\item{x}{3x3 orientation tensor}
+\item{level}{numeric. Confidence level (\eqn{1-\alpha}). Default is \code{0.95}}
 }
 \description{
 Bingham test of uniformity of axes on the sphere
@@ -30,7 +30,7 @@ near the critical values, is given in \code{"extra"}.
 
 \eqn{S} equals Bingham's (1974, eq. 5.9)
 \eqn{X_U^2} and \eqn{n I} with Lisle's (1985) intensity
-\deqn{I = 15/2 \sum((\tau_i - 1/3)^2)}.
+\deqn{I = 15/2 \sum((\lambda_i - 1/3)^2)}.
 
 Large \eqn{S} indicates a preferred orientation
 (cluster or girdle); a very small \eqn{S} (lower tail) indicates data more regular than random.

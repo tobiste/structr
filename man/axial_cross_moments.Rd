@@ -4,13 +4,13 @@
 \alias{axial_cross_moments}
 \title{Axial Cross Moments}
 \usage{
-axial_cross_moments(x, v)
+axial_cross_moments(x, nu)
 }
 \arguments{
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
 rows are the observations and the columns are the coordinates.}
 
-\item{v}{Three Eigenvectors (object of class \code{Spherical})}
+\item{nu}{Three Eigenvectors \eqn{\nu} (object of class \code{Spherical}). See \code{\link[=ot_eigen]{ot_eigen()}} for details}
 }
 \value{
 3 x 3 matrix
@@ -20,11 +20,11 @@ Axial Cross Moments
 }
 \details{
 Matrix of unit vectors \code{x}
-for axes \code{v} is \deqn{
+for Eigenvectors \verb{\\nu} is \deqn{
 
 m_{ij} = \frac{1}{n} \sum_{k=1}^{n}
-\left( \mathbf{x}_k \cdot \mathbf{v}_i \right)^2
-\left( \mathbf{x}_k \cdot \mathbf{v}_j \right)^2 , \qquad i, j = 1, 2, 3
+\left( \mathbf{x}_k \cdot \mathbf{\nu}_i \right)^2
+\left( \mathbf{x}_k \cdot \mathbf{\nu}_j \right)^2 , \qquad i, j = 1, 2, 3
 }
 }
 \examples{

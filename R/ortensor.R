@@ -195,7 +195,7 @@ inertia_tensor.default <- function(x, w = NULL) {
 
 #' Eigenvalues and Eigenvectors of a Set of Vectors
 #'
-#' Decomposition of Orientation Tensor Eigenvectors and Eigenvalues
+#' Decomposition of Orientation Tensor Eigenvectors \eqn{\nu} and Eigenvalues \eqn{\lambda}
 #'
 #' @param x either an object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`,
 #' `"Pair"`, or `"Fault"` where the

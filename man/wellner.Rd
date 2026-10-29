@@ -27,7 +27,7 @@ rows are the observations and the columns are the coordinates.}
 
 \item{n_perm}{integer. Number of permutations.}
 
-\item{level}{numeric. Level of confidence}
+\item{level}{numeric. Confidence level (\eqn{1-\alpha}). Default is \code{0.95}}
 }
 \value{
 \code{wellner()} computes Wellner's T-statistic, a non-negative measure of

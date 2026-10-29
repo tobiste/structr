@@ -91,14 +91,14 @@ print.Test <- function(x, digits = getOption("digits"), ...) {
 
 #' Rayleigh test of uniformity against a unimodal alternative
 #' 
-#' \details The statistic is \eqgn{S = p n \bar{R}^2} for \eqn{n} unit vectors in \eqn{p} dimensions,
-#' asymptotically chi-square with p degrees of freedom; the p-value is that of
+#' @details The statistic is \eqn{S = p n \bar{R}^2} for \eqn{n} unit vectors in \eqn{p} dimensions,
+#' asymptotically chi-square with \eqn{p} degrees of freedom; the p-value is that of
 #' the modified statistic \eqn{S^* = (1 - 1/(2n)) S + S^2 / (2n(p + 2))}, which
 #' has error \eqn{O(1/n^2)} (MJ eq. 10.4.4-10.4.6, eq. 6.3.3 for the circle; FLE
 #' sec. 5.3.1(i)). The test is not consistent against axial alternatives.
 #'                     
 #' @param x Object of class `spherical`
-#' @param level numeric. Level of confidence
+#' @inheritParams bingham_ellipse
 #' 
 #' @source modified after the python package `apsg` (v.2.0.6) by O. Lexa
 #' 
@@ -140,12 +140,12 @@ rayleigh_test3 <- function(x, level = 0.95){
 #' 
 #' \eqn{S} equals Bingham's (1974, eq. 5.9) 
 #' \eqn{X_U^2} and \eqn{n I} with Lisle's (1985) intensity 
-#' \deqn{I = 15/2 \sum((\tau_i - 1/3)^2)}. 
+#' \deqn{I = 15/2 \sum((\lambda_i - 1/3)^2)}. 
 #' 
 #' Large \eqn{S} indicates a preferred orientation 
 #' (cluster or girdle); a very small \eqn{S} (lower tail) indicates data more regular than random.
 #'                     
-#' @param x 3x3 orientation tensor
+#' @param D 3x3 orientation tensor (see [ortensor()])
 #' @param n integer. Number of vectors
 #' @inheritParams rayleigh_test3
 #' 
@@ -156,10 +156,10 @@ rayleigh_test3 <- function(x, level = 0.95){
 #' @examples
 #' t <- example_lines
 #' bingham_test(ortensor(t), n = nrow(t))
-bingham_test <- function(tau, n, level = 0.95) {
+bingham_test <- function(D, n, level = 0.95) {
   # Bingham test of uniformity of axes on the sphere
   # (Mardia & Jupp 2000, eq. 10.7.1-10.7.3; see the Python docstring).
-  S <- 7.5 * n * (sum(tau^2) - 1 / 3)
+  S <- 7.5 * n * (sum(D^2) - 1 / 3)
   
   # MJ eq. 10.7.3 for p = 3
   b0 <- 31 / 42
@@ -428,16 +428,16 @@ fisher_kent_test <- function(x, level = 0.95) {
 #' Tests of rotational symmetry of a Bingham distribution
 #' 
 #' @details Whether a Bingham distribution is a Watson distribution: 
-#' \deqn{w_b = n \sum((k_i - \text{mean}(k)) (\tau_i - \text{mean}(\tau)))} 
+#' \deqn{w_b = n \sum((k_i - \text{mean}(k)) (\lambda_i - \text{mean}(\lambda)))} 
 #' over the two smallest eigenvalues tests the bipolar form, \eqn{w_g} over the 
 #' two largest the girdle form, each asymptotically chi-square with 2 degrees of 
 #' freedom (MJ eq. 10.7.8-10.7.18). \eqn{k_i} are the maximum-likelihood 
 #' Bingham concentrations \eqn{(0, \kappa_\text{major}, \kappa_\text{minor})} and
-#' \eqn{\tau_i} the eigenvalues of the orientation tensor, both in descending order. 
+#' \eqn{\lambda_i} the eigenvalues of the orientation tensor, both in descending order. 
 #' Mardia & Jupp's calcite example gives \eqn{w_g = 1.33} (girdle accepted) and \eqn{w_b = 9.97}.
 #'  
-#' @param eigenvalues numeric.
-#' @param kappas Bingham concentrations \eqn{(0, \kappa_\text{major}, \kappa_\text{minor})} 
+#' @param lambda numeric.
+#' @param k Bingham concentrations \eqn{(0, \kappa_\text{major}, \kappa_\text{minor})} 
 #' @inheritParams bingham_test
 #' 
 #' @return object of class `"Test"`
@@ -447,9 +447,9 @@ fisher_kent_test <- function(x, level = 0.95) {
 #' e <- ot_eigen(r)$values
 #' k <- c(0, bingham_statistics(r)$k)
 #' watson_symmetry_test(e, k, n = nrow(r))
-watson_symmetry_test <- function(eigenvalues, kappas, n, level = 0.95) {
-  t <- as.numeric(eigenvalues)
-  k <- as.numeric(kappas)
+watson_symmetry_test <- function(lambda, k, n, level = 0.95) {
+  t <- as.numeric(lambda)
+  k <- as.numeric(k)
   idx <- list(bipolar = 2:3, girdle = 1:2)      # 1-based
   lapply(setNames(names(idx), names(idx)), function(nm) {
     j <- idx[[nm]]

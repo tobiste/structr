@@ -12,7 +12,7 @@ fisher_kent_test(x, level = 0.95)
 \arguments{
 \item{x}{object of class \code{"Spherical"}}
 
-\item{level}{numeric. Level of confidence}
+\item{level}{numeric. Confidence level (\eqn{1-\alpha}). Default is \code{0.95}}
 }
 \value{
 object of class \code{"Test"}

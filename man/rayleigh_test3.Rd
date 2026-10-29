@@ -12,11 +12,14 @@ rayleigh_test3(x, level = 0.95)
 \arguments{
 \item{x}{Object of class \code{spherical}}
 
-\item{level}{numeric. Level of confidence}
+\item{level}{numeric. Confidence level (\eqn{1-\alpha}). Default is \code{0.95}}
 }
 \description{
-\details The statistic is \eqgn{S = p n \bar{R}^2} for \eqn{n} unit vectors in \eqn{p} dimensions,
-asymptotically chi-square with p degrees of freedom; the p-value is that of
+Rayleigh test of uniformity against a unimodal alternative
+}
+\details{
+The statistic is \eqn{S = p n \bar{R}^2} for \eqn{n} unit vectors in \eqn{p} dimensions,
+asymptotically chi-square with \eqn{p} degrees of freedom; the p-value is that of
 the modified statistic \eqn{S^* = (1 - 1/(2n)) S + S^2 / (2n(p + 2))}, which
 has error \eqn{O(1/n^2)} (MJ eq. 10.4.4-10.4.6, eq. 6.3.3 for the circle; FLE
 sec. 5.3.1(i)). The test is not consistent against axial alternatives.

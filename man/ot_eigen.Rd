@@ -30,7 +30,7 @@ list containing
 }
 }
 \description{
-Decomposition of Orientation Tensor Eigenvectors and Eigenvalues
+Decomposition of Orientation Tensor Eigenvectors \eqn{\nu} and Eigenvalues \eqn{\lambda}
 }
 \examples{
 set.seed(20250411)

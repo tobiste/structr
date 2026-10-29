@@ -4,16 +4,16 @@
 \alias{watson_symmetry_test}
 \title{Tests of rotational symmetry of a Bingham distribution}
 \usage{
-watson_symmetry_test(eigenvalues, kappas, n, level = 0.95)
+watson_symmetry_test(lambda, k, n, level = 0.95)
 }
 \arguments{
-\item{eigenvalues}{numeric.}
+\item{lambda}{numeric.}
 
-\item{kappas}{Bingham concentrations \eqn{(0, \kappa_\text{major}, \kappa_\text{minor})}}
+\item{k}{Bingham concentrations \eqn{(0, \kappa_\text{major}, \kappa_\text{minor})}}
 
 \item{n}{integer. Number of vectors}
 
-\item{level}{numeric. Level of confidence}
+\item{level}{numeric. Confidence level (\eqn{1-\alpha}). Default is \code{0.95}}
 }
 \value{
 object of class \code{"Test"}
@@ -23,12 +23,12 @@ Tests of rotational symmetry of a Bingham distribution
 }
 \details{
 Whether a Bingham distribution is a Watson distribution:
-\deqn{w_b = n \sum((k_i - \text{mean}(k)) (\tau_i - \text{mean}(\tau)))}
+\deqn{w_b = n \sum((k_i - \text{mean}(k)) (\lambda_i - \text{mean}(\lambda)))}
 over the two smallest eigenvalues tests the bipolar form, \eqn{w_g} over the
 two largest the girdle form, each asymptotically chi-square with 2 degrees of
 freedom (MJ eq. 10.7.8-10.7.18). \eqn{k_i} are the maximum-likelihood
 Bingham concentrations \eqn{(0, \kappa_\text{major}, \kappa_\text{minor})} and
-\eqn{\tau_i} the eigenvalues of the orientation tensor, both in descending order.
+\eqn{\lambda_i} the eigenvalues of the orientation tensor, both in descending order.
 Mardia & Jupp's calcite example gives \eqn{w_g = 1.33} (girdle accepted) and \eqn{w_b = 9.97}.
 }
 \examples{

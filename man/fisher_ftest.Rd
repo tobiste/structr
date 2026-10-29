@@ -10,7 +10,7 @@ fisher_ftest(x, y, level = 0.95, na.rm = TRUE)
 \item{x, y}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
 rows are the observations and the columns are the coordinates.}
 
-\item{level}{numeric. Level of confidence}
+\item{level}{numeric. Confidence level (\eqn{1-\alpha}). Default is \code{0.95}}
 
 \item{na.rm}{logical. Whether \code{NA} values should be removed before the computation proceeds.}
 }
