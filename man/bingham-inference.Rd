@@ -45,7 +45,7 @@ r$directions
 stereoplot()
 points(example_planes, cex = 0.7)
 points(r$directions, col = 1:3, pch = 16, cex = 1.5)
-stereo_lines(r$points, col = 'red')
+stereo_lines(r$points, col = "red")
 }
 \seealso{
 \code{\link[=rbingham]{rbingham()}} for simulating a Bingham distribution, and \code{\link[=bingham_MLE]{bingham_MLE()}} to

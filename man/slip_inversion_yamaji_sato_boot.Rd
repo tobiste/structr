@@ -47,7 +47,7 @@ set.seed(20250411)
 
 # Use Angelier examples:
 nx <- length(angelier1990)
-par(mfrow = c(2, length(angelier1990)/2))
+par(mfrow = c(2, length(angelier1990) / 2))
 
 invisible(lapply(seq_len(nx), function(i) {
   # inversion
@@ -70,10 +70,12 @@ invisible(lapply(seq_len(nx), function(i) {
   text(res$principal_axes, label = rownames(res$principal_axes), col = 2:4, adj = -.25)
   legend("topleft", col = 2:4, legend = rownames(res$principal_axes), pch = 16)
   title(
-  main = names(angelier1990)[i],
-  sub = bquote(atop(varphi ~ "(95\% CI)" == "[" * .(phi_val[1]) * "," ~ .(phi_val[2]) * "]",
-  ~ bar("RUP") ~ "(95\% CI)" == "[" * .(rup_val[1]) * "," ~ .(rup_val[2]) * "] \%")
-  ))
+    main = names(angelier1990)[i],
+    sub = bquote(atop(
+      varphi ~ "(95\% CI)" == "[" * .(phi_val[1]) * "," ~ .(phi_val[2]) * "]",
+      ~ bar("RUP") ~ "(95\% CI)" == "[" * .(rup_val[1]) * "," ~ .(rup_val[2]) * "] \%"
+    ))
+  )
 }))
 dev.off()
 }

@@ -120,8 +120,6 @@ Fault_slip <- Fault_line <- Pair_line <- function(x) {
 }
 
 
-
-
 #' @rdname Fault_components
 #' @export
 Fault_plane <- Pair_plane <- function(x) {
@@ -165,7 +163,6 @@ Fault_sense <- function(x, steps = 8) {
 }
 
 
-
 #' Fault from plane and rake
 #'
 #' @param p object of class `"Plane"`
@@ -186,7 +183,7 @@ Fault_sense <- function(x, steps = 8) {
 #' - reverse/thrust: rake near -90&deg; (270&deg;)
 #'
 #' @returns `"Fault"` or `"Pair"` object
-#' 
+#'
 #' @name fault-rake
 #'
 #' @examples
@@ -224,14 +221,13 @@ Fault_from_rake <- function(p, rake, sense = NULL, ...) {
 
 #' @rdname fault-rake
 #' @export
-Pair_from_pitch <- function(p, pitch){
+Pair_from_pitch <- function(p, pitch) {
   stopifnot(is.Plane(p))
   strike <- Ray(dd2rhr(p[, 1]), rep(0, nrow(p)))
   l <- rotate(strike, p, pitch)
-  
+
   Pair(p[, 1], p[, 2], l[, 1], l[, 2])
 }
-
 
 
 #' Fault from rake and quadrant notation
@@ -325,14 +321,14 @@ Plane_pitch <- function(p, l) {
 
 #' Pitch of a pair
 #'
-#' @param x object of class "`Pair`" 
+#' @param x object of class "`Pair`"
 #'
 #' @returns numeric. Angle in degrees
 #' @export
 #'
 #' @examples
 #' Pair_pitch(Fault_from_rake(Plane(120, 50), 80))
-Pair_pitch <- function(x){
+Pair_pitch <- function(x) {
   stopifnot(is.Pair(x))
   strike <- Line(dd2rhr(x[, 1]), rep(0, nrow(x)))
   slip <- Line(x)
@@ -375,7 +371,6 @@ Plane_from_apparent_dips <- function(a1, a2) {
   res <- crossprod(a1, a2)
   Plane(res)
 }
-
 
 
 #' Dip-slip Kinematics from Strike-Slip Faults
@@ -446,11 +441,10 @@ strikeslip_kinematics <- function(x) {
 }
 
 
-plunge_from_pitchdip <- function(pitch, dip){
+plunge_from_pitchdip <- function(pitch, dip) {
   asind(sind(dip) * sind(pitch))
 }
 
 dip_from_pitchplunge <- function(pitch, plunge) {
   asind(sind(plunge) / sind(pitch))
 }
-

@@ -136,15 +136,15 @@ stress_transformation <- function(theta, sigma_x = NA, sigma_z = NA, tau_xz = NA
   ##  Calculate normal and shear stresses from sigma_x, sigma_z, tau_xz
   if (!anyNA(c(sigma_x, sigma_z, tau_xz))) {
     sigma <- (sigma_z + sigma_x) / 2 + (sigma_z - sigma_x) / 2 * cos(theta2) + tau_xz * sin(theta2)
-    tau   <- (sigma_z - sigma_x) / 2 * sin(theta2) - tau_xz * cos(theta2)
+    tau <- (sigma_z - sigma_x) / 2 * sin(theta2) - tau_xz * cos(theta2)
   } else if (!anyNA(c(sigma1, sigma3))) {
     if (any(sigma1 < sigma3)) warning("sigma1 < sigma3 for some inputs")
     sigma <- (sigma1 + sigma3) / 2 + (sigma1 - sigma3) / 2 * cos(theta2)
-    tau   <- (sigma1 - sigma3) / 2 * sin(theta2)
+    tau <- (sigma1 - sigma3) / 2 * sin(theta2)
   } else {
     stop("Supply either (sigma_x, sigma_z[, tau_xz]) or (sigma1, sigma3).")
   }
-  
+
   list(normal = sigma, shear = tau)
 }
 
@@ -297,8 +297,6 @@ Mohr_plot <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
   }
 
 
-
-
   ##  Expression for axes
   if (is.null(unit)) {
     xLab <- bquote("Normal stress," ~ sigma[n])
@@ -363,7 +361,6 @@ sigma13 <- function(sigma_x, sigma_z, tau_xz) {
   ##  Return values
   return(list(sigma1 = sigma1, sigma3 = sigma3, theta1 = theta1, theta3 = theta3))
 }
-
 
 
 #' Maximum in-plane shear stress
@@ -527,9 +524,6 @@ ggMohr <- function(sigma1, sigma2, sigma3 = NULL, units = "MPa", coulomb = c(1, 
     } +
     labs(x = xlab, y = ylab)
 }
-
-
-
 
 
 griffith_criterion <- function(sigma_n, tensile) {

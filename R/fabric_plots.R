@@ -135,7 +135,7 @@ vollmer_plot.spherical <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5
 
 #' @rdname vollmer-plot
 #' @export
-vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), main = "Vollmer diagram",  guides = NULL, ...) {
+vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5), main = "Vollmer diagram", guides = NULL, ...) {
   x_vollmer <- do.call(rbind, lapply(x, vollmer))
 
   vollmer_plot.default(
@@ -183,12 +183,12 @@ vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5),
                           left_vertex_label = NULL, right_vertex_label = NULL, top_vertex_label = NULL,
                           bottom_edge_label = NULL, left_edge_label = NULL, right_edge_label = NULL,
                           ticks = TRUE, invert_ticks = FALSE, tick_range = c(0, 1),
-                          invert = c(FALSE, FALSE, FALSE), 
+                          invert = c(FALSE, FALSE, FALSE),
                           guides = NULL,
                           ...) {
   guides <- guides %||% getOption("structr.guides")
-  if(isFALSE(guides)) ngrid <- NULL
-  
+  if (isFALSE(guides)) ngrid <- NULL
+
   A <- c(0, 0) # left
   B <- c(1, 0) # right
   C <- c(1 / 2, sqrt(3) / 2) # top
@@ -201,7 +201,7 @@ vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5),
     ...
   )
 
-  
+
   if (!is.null(ngrid)) {
     ngrid <- round(ngrid) + 1
     if (length(ngrid) == 1) ngrid <- rep(ngrid, 3)
@@ -329,7 +329,7 @@ vollmer_plot.list <- function(x, labels = NULL, add = FALSE, ngrid = c(5, 5, 5),
 #' https://doi.org/10.1016/0191-8141(89)90017-5
 #'
 #' @examples
-#' balebrun_plot(simongomez, col = assign_col(simongomez[, 'azimuth']), pch = 16)
+#' balebrun_plot(simongomez, col = assign_col(simongomez[, "azimuth"]), pch = 16)
 #'
 #' balebrun_plot(Pair_from_pitch(Plane(0, 80), 80), "vertical flow", col = 1, add = FALSE)
 #' balebrun_plot(Pair_from_pitch(Plane(0, 80), 10), "strike-slip", col = 2, add = TRUE)
@@ -338,10 +338,10 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
   # plunge <- x[, "plunge"]
   # pitch <- Pair_pitch(x)
   # dip <- x[, "dip"]
-  # 
+  #
   # crds <- .ternary_from_pitchdip(pitch, dip)
   crds <- .balebrun_coords(x)
-  
+
 
   if (isFALSE(add)) {
     .ternary_plot(
@@ -385,13 +385,13 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
   invisible(crds)
 }
 
-.balebrun_coords <- function(x){
+.balebrun_coords <- function(x) {
   stopifnot(is.Pair(x))
   pitch <- Pair_pitch(x)
   dip <- x[, "dip"]
   .ternary_from_pitchdip(pitch, dip)
 }
-  
+
 
 .ternary_from_pitchdip <- function(pitch, dip) {
   plunge <- plunge_from_pitchdip(pitch = pitch, dip = dip)
@@ -406,15 +406,15 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
     .ternary_coords()
 }
 
-.ternary_from_pitchplunge <- function(pitch, plunge){
+.ternary_from_pitchplunge <- function(pitch, plunge) {
   dip <- dip_from_pitchplunge(pitch, plunge)
-  
+
   b_comp <- 90 - dip
-  
+
   remaining <- dip
   c_comp <- plunge
   a_comp <- remaining - plunge # = dip - plunge
-  
+
   cbind(a = a_comp, b = b_comp, c = c_comp) |>
     .ternary_coords()
 }
@@ -423,14 +423,14 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
                                    pitch_seq = dip_seq,
                                    plunge_seq = seq(0, 90, length.out = n_interp),
                                    n_interp = 100,
-                                   col = "lightgray", 
-                                   lty = 3, 
-                                   ticks = TRUE, 
+                                   col = "lightgray",
+                                   lty = 3,
+                                   ticks = TRUE,
                                    ...) {
   # --- Constant dip lines (dip fixed, pitch varies) ---
   dip_seq_s <- sort(dip_seq)
-  dip_seq_sr <- dip_seq_s[-c(1L, length(dip_seq_s))] # remove first and last line 
-  
+  dip_seq_sr <- dip_seq_s[-c(1L, length(dip_seq_s))] # remove first and last line
+
   for (d in dip_seq_sr) {
     plunge_lines_sr <- .ternary_from_pitchdip(pitch_seq, dip = d)
     graphics::lines(plunge_lines_sr[, 1], plunge_lines_sr[, 2], col = col, lty = lty, ...)
@@ -439,45 +439,41 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
   # --- Constant pitch lines (pitch fixed, dip varies) ---
   # dip_corner <- cbind(1, 0)
   # pitch_seq_s <- sort(pitch_seq)
-  # pitch_seq_sr <- pitch_seq_s[-c(1L, length(pitch_seq_s))] # remove first and last line 
-  # 
+  # pitch_seq_sr <- pitch_seq_s[-c(1L, length(pitch_seq_s))] # remove first and last line
+  #
   # pitch_lines_sr <- .ternary_from_pitchdip(pitch_seq_sr, dip = 90)
   # graphics::segments(x0 = dip_corner[, 1], y0 = dip_corner[, 2], x1 = pitch_lines_sr[, 1], y1 = pitch_lines_sr[, 2], col = col, lty = lty, ...)
 
   pitch_seq_s <- sort(pitch_seq)
-  pitch_seq_sr <- pitch_seq_s[-c(1L, length(pitch_seq_s))] # remove first and last line 
-  
+  pitch_seq_sr <- pitch_seq_s[-c(1L, length(pitch_seq_s))] # remove first and last line
+
   dip_seq2 <- seq(min(dip_seq), max(dip_seq), length.out = n_interp)
-  dip_seq2 <- dip_seq2[-c(1L, length(dip_seq2))] # remove first and last line 
-  
-  invisible(lapply(pitch_seq_sr, function(p){
-    pitch_lines_sr <- t(vapply(dip_seq2, function(d){
+  dip_seq2 <- dip_seq2[-c(1L, length(dip_seq2))] # remove first and last line
+
+  invisible(lapply(pitch_seq_sr, function(p) {
+    pitch_lines_sr <- t(vapply(dip_seq2, function(d) {
       pitch_lines_sr <- .ternary_from_pitchdip(p, dip = d)
     }, numeric(2)))
     graphics::lines(pitch_lines_sr[, 1], pitch_lines_sr[, 2], col = col, lty = lty)
-    
-  })
-  )
-  
-  plunge_seq_s <- sort(plunge_seq)
-  plunge_seq_sr <- plunge_seq_s[-c(1L, length(plunge_seq_s))] # remove first and last line 
+  }))
 
- 
-  invisible(lapply(pitch_seq, function(pl){
-    crds <- t(vapply(pitch_seq, function(pi){
+  plunge_seq_s <- sort(plunge_seq)
+  plunge_seq_sr <- plunge_seq_s[-c(1L, length(plunge_seq_s))] # remove first and last line
+
+
+  invisible(lapply(pitch_seq, function(pl) {
+    crds <- t(vapply(pitch_seq, function(pi) {
       di <- dip_from_pitchplunge(pi, pl)
       .ternary_from_pitchdip(pi, di)
-    }, numeric(2))
-    )
+    }, numeric(2)))
     lines(crds[, 1], crds[, 2], col = col, lty = lty)
   }))
-  
-  
-  
+
+
   # --- Constant plunge lines ---
   # plunge_seq_s <- sort(plunge_seq)
-  # plunge_seq_sr <- plunge_seq_s[-c(1L, length(plunge_seq_s))] # remove first and last line 
-  # 
+  # plunge_seq_sr <- plunge_seq_s[-c(1L, length(plunge_seq_s))] # remove first and last line
+  #
   # for(pl in plunge_seq_sr){
   #   dip_range <- seq(pl, 90, length.out = n_interp)
   #   pitch_range <- dip_from_pitchplunge(   # invert: get valid pitch range
@@ -486,22 +482,21 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
   #   coords <- .ternary_from_pitchdip(pitch = pitch_range, dip = dip_range)
   #   graphics::lines(coords[, 1], coords[, 2], col = col, lty = lty, ...)
   # }
-  
+
   # --- Tick labels ---
   if (ticks) {
     plunge_lines <- .ternary_from_pitchdip(pitch_seq, dip = 90)
-    graphics::text(plunge_lines[, 1], plunge_lines[, 2], pitch_seq, pos = 2, cex = 0.8) # pitch 
-    
+    graphics::text(plunge_lines[, 1], plunge_lines[, 2], pitch_seq, pos = 2, cex = 0.8) # pitch
+
     pitch_lines <- .ternary_from_pitchdip(pitch_seq, dip = 90)
-    for(i in pitch_seq/90){
-      plunge_label_pts <- .ternary_coords(0, i, 1-i)
-      graphics::text(plunge_label_pts[, 1], plunge_label_pts[, 2], (1-i)*90, pos = 4, cex = 0.8) # dip
-      
+    for (i in pitch_seq / 90) {
+      plunge_label_pts <- .ternary_coords(0, i, 1 - i)
+      graphics::text(plunge_label_pts[, 1], plunge_label_pts[, 2], (1 - i) * 90, pos = 4, cex = 0.8) # dip
     }
-    
-    graphics::text(dip_seq/90, 0, rev(dip_seq), pos = 1, cex = 0.8) # dip 
+
+    graphics::text(dip_seq / 90, 0, rev(dip_seq), pos = 1, cex = 0.8) # dip
   }
-  
+
   A <- c(0, 0) # left
   B <- c(1, 0) # right
   C <- c(1 / 2, sqrt(3) / 2) # top
@@ -541,7 +536,7 @@ balebrun_plot <- function(x, labels = NULL, main = "Dip-Pitch-Plunge Diagram", e
 #' woodcock_plot(y, lab = "y", add = TRUE, col = "red")
 woodcock_plot <- function(x, labels = NULL, add = FALSE, max = 7, main = "Woodcock diagram", weights = NULL, guides = NULL, ...) {
   guides <- guides %||% getOption("structr.guides")
-  
+
   x_eigen <- ot_eigen(x, w = weights, scaled = TRUE)
 
   max_val <- if (is.null(max)) {
@@ -567,18 +562,18 @@ woodcock_plot <- function(x, labels = NULL, add = FALSE, max = 7, main = "Woodco
     #   graphics::abline(a = j, b = -1, col = "grey", lty = 3)
     # }
 
-    if(isTRUE(guides)){
-    for (i in c(.2, .5, 2, 5)) {
-      graphics::abline(a = 0, b = i, col = "grey80", lty = 2)
-    }
+    if (isTRUE(guides)) {
+      for (i in c(.2, .5, 2, 5)) {
+        graphics::abline(a = 0, b = i, col = "grey80", lty = 2)
+      }
 
-    rr_breaks <- pretty(c(0, max_val))
-    arc_theta <- seq(0, pi / 2, length.out = 200)
-    for (rr in rr_breaks) {
-      graphics::lines(rr * cos(arc_theta), rr * sin(arc_theta), col = "grey80", lty = 3)
-    }
+      rr_breaks <- pretty(c(0, max_val))
+      arc_theta <- seq(0, pi / 2, length.out = 200)
+      for (rr in rr_breaks) {
+        graphics::lines(rr * cos(arc_theta), rr * sin(arc_theta), col = "grey80", lty = 3)
+      }
 
-    graphics::abline(a = 0, b = 1, col = "grey", lty = 1, lwd = 1.5)
+      graphics::abline(a = 0, b = 1, col = "grey", lty = 1, lwd = 1.5)
     }
   }
   if (!is.null(labels)) {
@@ -741,7 +736,7 @@ hsu_plot.ellispoid <- function(x, ...) {
 #' @export
 hsu_plot.default <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "Hsu diagram", guides = NULL, ...) {
   guides <- guides %||% getOption("structr.guides")
-  
+
   R_XY <- x[, 1]
   R_YZ <- x[, 2]
 
@@ -773,17 +768,17 @@ hsu_plot.default <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "
       lty = 1, col = "black"
     )
 
-    if(isTRUE(guides)){
-    graphics::segments(0, 0, rmax2 * cos(pi / 2 - pi / 6 / 2), rmax2 * sin(pi / 2 - pi / 6 / 2),
-      lty = 1, col = "lightgray"
-    )
+    if (isTRUE(guides)) {
+      graphics::segments(0, 0, rmax2 * cos(pi / 2 - pi / 6 / 2), rmax2 * sin(pi / 2 - pi / 6 / 2),
+        lty = 1, col = "lightgray"
+      )
 
-    graphics::segments(0, 0, rmax2 * cos(pi / 2 + pi / 6 / 2), rmax2 * sin(pi / 2 + pi / 6 / 2),
-      lty = 1, col = "lightgray"
-    )
+      graphics::segments(0, 0, rmax2 * cos(pi / 2 + pi / 6 / 2), rmax2 * sin(pi / 2 + pi / 6 / 2),
+        lty = 1, col = "lightgray"
+      )
 
-    # Draw vertical plane strain line
-    graphics::segments(0, 0, 0, rmax2, lty = 1, col = "lightgray")
+      # Draw vertical plane strain line
+      graphics::segments(0, 0, 0, rmax2, lty = 1, col = "lightgray")
     }
 
     # Draw cropped concentric arcs (strain magnitude ticks)
@@ -795,7 +790,7 @@ hsu_plot.default <- function(x, labels = NULL, add = FALSE, es.max = 3, main = "
       graphics::lines(rr * cos(arc_theta), rr * sin(arc_theta), col = col_grd, lwd = lwd_grd)
       # text(rr, 0, labels = format(rr, digits = 2), pos = 4, col = "grey40", cex = 0.8)
     }
-    
+
 
     # Lode parameters labels
     for (rr in rseq[-1]) {
@@ -924,7 +919,7 @@ flinn_plot <- function(x, ...) UseMethod("flinn_plot")
 #' @export
 flinn_plot.default <- function(x, main = "Flinn diagram", R.max = NULL, log = FALSE, add = FALSE, guides = NULL, ...) {
   guides <- guides %||% getOption("structr.guides")
-  
+
   R_XY <- x[, 1]
   R_YZ <- x[, 2]
 
@@ -960,32 +955,32 @@ flinn_plot.default <- function(x, main = "Flinn diagram", R.max = NULL, log = FA
 
     rbreaks <- pretty(c(R.min, R.max))
 
-    if(isTRUE(guides)){    
-    graphics::abline(0, b = 1, col = "grey30", lwd = .75)
+    if (isTRUE(guides)) {
+      graphics::abline(0, b = 1, col = "grey30", lwd = .75)
 
 
-    for (i in c(.2, .5, 2, 5)) {
-      graphics::abline(a = 0, b = i, col = "lightgray", lwd = .5, lty = 2)
-    }
-
-
-    if (log) {
-      arc_theta <- seq(0, pi / 2, length.out = 200)
-      for (rr in rbreaks) {
-        graphics::lines(rr * cos(arc_theta), rr * sin(arc_theta), col = "lightgray", lwd = .5, lty = 2)
+      for (i in c(.2, .5, 2, 5)) {
+        graphics::abline(a = 0, b = i, col = "lightgray", lwd = .5, lty = 2)
       }
-    } else {
-      for (rr in rbreaks) {
-        # graphics::abline(a = rr, b = -1, col = "grey80", lwd = .5, lty = 2)
-        graphics::lines(c(rr, R.min), c(R.min, rr), col = "lightgray", lwd = .5, lty = 2)
+
+
+      if (log) {
+        arc_theta <- seq(0, pi / 2, length.out = 200)
+        for (rr in rbreaks) {
+          graphics::lines(rr * cos(arc_theta), rr * sin(arc_theta), col = "lightgray", lwd = .5, lty = 2)
+        }
+      } else {
+        for (rr in rbreaks) {
+          # graphics::abline(a = rr, b = -1, col = "grey80", lwd = .5, lty = 2)
+          graphics::lines(c(rr, R.min), c(R.min, rr), col = "lightgray", lwd = .5, lty = 2)
+        }
       }
+
+      graphics::text(R.max / 2, R.max / 2, "Plane strain", adj = 0.5, col = "grey70", srt = 45)
+      graphics::text(R.max * .75, R.max * .25, "Flattening", adj = 0.5, col = "grey70")
+      graphics::text(R.max * .25, R.max * .75, "Constriction", adj = 0.5, col = "grey70")
     }
 
-    graphics::text(R.max / 2, R.max / 2, "Plane strain", adj = 0.5, col = "grey70", srt = 45)
-    graphics::text(R.max * .75, R.max * .25, "Flattening", adj = 0.5, col = "grey70")
-    graphics::text(R.max * .25, R.max * .75, "Constriction", adj = 0.5, col = "grey70")
-    }
-    
     graphics::axis(side = 1, at = rbreaks, labels = rbreaks)
     graphics::axis(side = 2, at = rbreaks, labels = rbreaks)
   }

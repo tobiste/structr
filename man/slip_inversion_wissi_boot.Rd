@@ -34,11 +34,12 @@ Theta-bar on \eqn{S^5} approximates the data noise level (Eq. 37: Theta ~ d-bar)
 res <- slip_inversion_wissi_boot(angelier1990$AVB, n_iter = 4)
 
 stereoplot()
-angelier(angelier1990$KAM, col = 'grey')
+angelier(angelier1990$KAM, col = "grey")
 lines(res$optimal$principal_axes, res$sd, col = 2:4)
-points(res$optimal$principal_axes, pch = 16:18, cex = 2, col= 2:4)
-text(res$optimal$principal_axes, 
-label = rownames(res$optimal$principal_axes), col= 2:4, adj = -.25)
+points(res$optimal$principal_axes, pch = 16:18, cex = 2, col = 2:4)
+text(res$optimal$principal_axes,
+  label = rownames(res$optimal$principal_axes), col = 2:4, adj = -.25
+)
 }
 \seealso{
 Other wissi:

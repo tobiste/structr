@@ -24,7 +24,7 @@ MLE parameters of a von Mises-Fisher or Kent distribution.
 set.seed(20250411)
 x <- rvmf(100, mu = Ray(120, 50), k = 5)
 vmf_MLE(x)
- 
+
 x2 <- rkent(100, mu = Line(120, 50), k = 5, b = 1)
 kent_MLE(x2)
 }

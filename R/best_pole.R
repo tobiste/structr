@@ -251,7 +251,7 @@
 #'
 #' @examples
 #' data("gray_example")
-#' 
+#'
 #' # regression:
 #' best_clea <- regression_gray(gray_example[1:8, ], out = "both")
 #' best_bedd <- regression_gray(gray_example[9:16, ], out = "both")
@@ -306,9 +306,8 @@ regression_gray <- function(x, out = c("great", "small", "both"), sigma2 = 10, t
     }
     names(s1) <- c("vec", "cone", "r_squared", "residuals", "iterations", "converged", "p", "type")
     s1 <- append(unclass(s1), sgof)
-    
   }
-  
+
   if (out %in% c("great", "both")) {
     g <- .gray_fit_great_circle(A, tol, max_iter, verbose)
     ggof <- gray_goodness_of_fit(g, sigma2_rad)
@@ -337,32 +336,32 @@ regression_gray <- function(x, out = c("great", "small", "both"), sigma2 = 10, t
 
 #' @rdname regression-gray
 #' @export
-regression_smallcircle_gray <- function(x, sigma2 = 10, tol = NULL, max_iter = 100, verbose = FALSE){
+regression_smallcircle_gray <- function(x, sigma2 = 10, tol = NULL, max_iter = 100, verbose = FALSE) {
   tol <- tol %||% getOption("structr.tol")
-  
+
   A <- Vec3(x) |> unclass()
   sigma2_rad <- rad2deg(sigma2)
-  
-    s <- .gray_fit_small_circle(A, tol, max_iter, verbose)
-    sgof <- gray_goodness_of_fit(s, sigma2_rad)
 
-    s$x <- as.Vec3(s$x)
-    if (!is.Vec3(x)) {
-      s$x4 <- rad2deg(s$x4)
-      s$x <- Line(s$x)
-    }
-    names(s) <- c("vec", "cone", "r_squared", "residuals", "iterations", "converged", "p", "type")
-    append(unclass(s), sgof)
+  s <- .gray_fit_small_circle(A, tol, max_iter, verbose)
+  sgof <- gray_goodness_of_fit(s, sigma2_rad)
+
+  s$x <- as.Vec3(s$x)
+  if (!is.Vec3(x)) {
+    s$x4 <- rad2deg(s$x4)
+    s$x <- Line(s$x)
+  }
+  names(s) <- c("vec", "cone", "r_squared", "residuals", "iterations", "converged", "p", "type")
+  append(unclass(s), sgof)
 }
 
 #' @rdname regression-gray
 #' @export
-regression_greatcircle_gray <- function(x, sigma2 = 10, tol = NULL, max_iter = 100, verbose = FALSE){
+regression_greatcircle_gray <- function(x, sigma2 = 10, tol = NULL, max_iter = 100, verbose = FALSE) {
   tol <- tol %||% getOption("structr.tol")
-  
+
   A <- Vec3(x) |> unclass()
   sigma2_rad <- rad2deg(sigma2)
-  
+
   g <- .gray_fit_great_circle(A, tol, max_iter, verbose)
   ggof <- gray_goodness_of_fit(g, sigma2_rad)
 
@@ -371,7 +370,7 @@ regression_greatcircle_gray <- function(x, sigma2 = 10, tol = NULL, max_iter = 1
     g$x4 <- rad2deg(g$x4)
     g$x <- Line(g$x)
   }
-  
+
   names(g) <- c("vec", "cone", "r_squared", "residuals", "iterations", "converged", "p", "type")
   append(unclass(g), ggof)
 }

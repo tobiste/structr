@@ -4,64 +4,64 @@
 #' 9D parameter space using the method by Hansen (2013). It can be applied
 #' regardless whether the dynamic or the kinematic hypothesis is adopted;
 #' it can handle datasets representing two to seven degrees of freedom; and it
-#' is not dependent on the correct assessment of slip sense.  
-#' If no vorticity is involved, the inversion can be done by using a 6-dimensional 
+#' is not dependent on the correct assessment of slip sense.
+#' If no vorticity is involved, the inversion can be done by using a 6-dimensional
 #' parameter space only (`type = '6d'`).
 #'
 #' @param x object of class `"Pair"` or `"Fault"` with at least 7 rows.
 #' @param flip logical. Flip if you want to have the negative stress tensor, i.e.
 #' sigma 1 and 3 will be flipped.
-#' @param type character. Inversion method, either `"9d"` (the default) for using the 
+#' @param type character. Inversion method, either `"9d"` (the default) for using the
 #' 9-dimensional or `"6d"` for the 6-dimensional parameter space.
 # #' @inheritParams slip_inversion_michael
 #'
-#' @returns list. See [slip_inversion_michael()] for output description. 
+#' @returns list. See [slip_inversion_michael()] for output description.
 #' If `type == '9d`, additional outputs are
 #' the second moment tensor `M`, the inverted slip tensor `Ti`, and its antisymmetrial part `Ta`,
 #' the vorticity axis (`"vorticity_axis"`, a `Vec3` object) and the magnitude of
 #' vorticity (`"vorticity_mag"`, a numeric).
-#' 
+#'
 #' @details
 #' ## Pole to the M-plane
 #' \deqn{\mathbf{b} = \mathbf{n} \times \mathbf{v}}
 #' where \eqn{\mathbf{n}} is the upward unit normal to the fault plane and \eqn{\mathbf{v}}
 #'  is the unit slip vector.
-#' 
+#'
 #' ## 9D f-poles
 #' \deqn{\mathbf{f}_{nr} = \left[ b_1 n_1, b_1 n_2, b_1 n_3, b_2 n_1, b_2 n_2, b_2 n_3, b_3 n_1, b_3 n_2, b_3 n_3\right]}
 #' \deqn{\hat{\mathbf{f}} = \frac{\mathbf{f}_{nr}}{|\mathbf{f}_{nr}|}}
-#' 
+#'
 #' ## Second moment tensor
 #' \deqn{\hat{M} = \sum_{r = 1}^{N} \hat{\mathbf{f}}  \otimes \hat{\mathbf{f}} }
-#' 
+#'
 #' ## Inverted slip tensor
-#' The 9D stress vector \eqn{\hat{s}} is the eigenvector of \eqn{\hat{M}} 
-#' corresponding to the second-lowest eigenvalue, reshaped into the asymmetric 
+#' The 9D stress vector \eqn{\hat{s}} is the eigenvector of \eqn{\hat{M}}
+#' corresponding to the second-lowest eigenvalue, reshaped into the asymmetric
 #' inverted slip tensor:
-#' 
+#'
 #' \deqn{\hat{\dot{T}} = \begin{pmatrix}
 #'    \hat{s}_1 & \hat{s}_2 & \hat{s}_3 \\
 #'    \hat{s}_4 & \hat{s}_5 & \hat{s}_6 \\
 #'    \hat{s}_7 & \hat{s}_8 & \hat{s}_9 \\
 #' \end{pmatrix}
 #'  }
-#' 
+#'
 #' ## Symmetric and antisymmetric decomposition
 #' \deqn{\hat{\dot{T}}_S = \frac{\hat{\dot{T}} + \hat{\dot{T}}^{\top}}{2} }
-#' 
+#'
 #' \deqn{\hat{\dot{T}}_A = \frac{\hat{\dot{T}} - \hat{\dot{T}}^{\top}}{2} }
-#' 
+#'
 #' ## Principal axes and shape ratio
-#' 
-#' Eigen-decompose \eqn{\hat{\dot{T}}_S}, sort eigenvalues descending \eqn{\lambda_1 \geq \lambda_2 \geq \lambda_3}. 
-#' The eigenvectors give the principal stress axes \eqn{\mathbf{s}_1}, \eqn{\mathbf{s}_2}, \eqn{\mathbf{s}_3}. 
+#'
+#' Eigen-decompose \eqn{\hat{\dot{T}}_S}, sort eigenvalues descending \eqn{\lambda_1 \geq \lambda_2 \geq \lambda_3}.
+#' The eigenvectors give the principal stress axes \eqn{\mathbf{s}_1}, \eqn{\mathbf{s}_2}, \eqn{\mathbf{s}_3}.
 #' The shape ratio is:
-#' 
+#'
 #' \deqn{\phi = \frac{\lambda_2 - \lambda_3}{\lambda_1 - \lambda_3}}
-#' 
-#' ## Reduced symmetric tensor 
-#' 
-#' \deqn{\mathbf{T}_2 = \mathbf{V} 
+#'
+#' ## Reduced symmetric tensor
+#'
+#' \deqn{\mathbf{T}_2 = \mathbf{V}
 #' \begin{pmatrix}
 #'    1 & 0 & 0 \\
 #'    0 & \phi & 0 \\
@@ -69,17 +69,17 @@
 #' \end{pmatrix}
 #' \mathbf{V}^{\top}
 #' }
-#'  where \eqn{\mathbf{V} = \left[\mathbf{s}_1\ \mathbf{s}_2\ \mathbf{s}_3\right]} has the 
+#'  where \eqn{\mathbf{V} = \left[\mathbf{s}_1\ \mathbf{s}_2\ \mathbf{s}_3\right]} has the
 #'  eigenvectors as columns.
-#'  
+#'
 #'  ## Normalise the antisymmetric part
-#'  
+#'
 #'  \deqn{\hat{T}_A = \hat{\dot{T}}_A \odot \frac{\mathbf{T}_S}{\hat{\dot{T}}_S} }
-#'  
+#'
 #'  where \eqn{\odot} denotes element-wise multiplication and division.
-#'  
-#'  ## Vorticity axis and magnitude 
-#'  
+#'
+#'  ## Vorticity axis and magnitude
+#'
 #'  The axial vector \eqn{\hat{T}_A} is
 #'  \deqn{\overrightarrow{\omega} = \begin{pmatrix}
 #'    \hat{T}_{A,32} \\
@@ -87,10 +87,10 @@
 #'    \hat{T}_{A,21}
 #'  \end{pmatrix}
 #'  }
-#'  
+#'
 #'  The unit vorticity axis in geographic coordinates:
 #'  \deqn{\mathbf{u}_{xyz} = \frac{\overrightarrow{\omega}}{| \overrightarrow{\omega} |}}
-#'  
+#'
 #'  The vorticity magnitude:
 #'  \deqn{|\omega| = 2 | \overrightarrow{\omega} |}
 #'
@@ -144,7 +144,7 @@
 #'
 #' # Angelier 1990 dataset
 #' nx <- length(angelier1990)
-#' par(mfrow = c(nx/2, nx/2))
+#' par(mfrow = c(nx / 2, nx / 2))
 #'
 #' invisible(lapply(seq_len(nx), function(i) {
 #'   # inversion
@@ -322,10 +322,10 @@ slip_inversion_hansen <- function(x, flip = FALSE, type = c("9d", "6d")) {
     stress_tensor = as.ellipsoid(Ts),
     principal_axes = Line(principal_axes),
     principal_vals = val_Ts,
-    #principal_faults = pfaults,
+    # principal_faults = pfaults,
     stress_shape = stress_shape,
     tau_mean = sigma_s_mean,
-    #stress_components = cbind(shearnorm, tendency),
+    # stress_components = cbind(shearnorm, tendency),
     misfit = misfit,
     SHmax = SHmax
   )
@@ -336,7 +336,7 @@ slip_inversion_hansen <- function(x, flip = FALSE, type = c("9d", "6d")) {
       vorticity_axis = w,
       M = M,
       Ti = T_mat,
-      #Ts = Ts,
+      # Ts = Ts,
       Ta = Ta,
       method = "hansen (9d)"
     ))
@@ -381,7 +381,7 @@ slip_inversion_hansen <- function(x, flip = FALSE, type = c("9d", "6d")) {
 #'     ~omega ~ "(95%)" == "[" * .(w_val[1]) * "," ~ .(w_val[2]) * "]"
 #'   ))
 #' )
-#' 
+#'
 #' dev.off()
 slip_inversion_hansen_boot <- function(
   x,
@@ -410,7 +410,7 @@ slip_inversion_hansen_boot <- function(
     res_boot <- future.apply::future_lapply(seq_len(n_iter), function(i) {
       idx <- sample.int(nx, replace = TRUE)
       x_sample <- x[idx, ]
-      res <- slip_inversion_hansen(x[idx, ],  flip = flip, type = type)
+      res <- slip_inversion_hansen(x[idx, ], flip = flip, type = type)
       sigma <- res$stress_tensor
       w <- res$vorticity_axis
       list(sigma = sigma, w = w)
@@ -481,9 +481,9 @@ slip_inversion_hansen_boot <- function(
     rup_CI <- stats::t.test(best.fit$misfit$rup, conf.level = conf.level)
 
     SHmax_CI <- vapply(tau_boot, function(x) {
-          phi <- stress_shape(x)$phi
-          principal_axes <- sigma2stress(x)$axes
-          SH(principal_axes[1, ], principal_axes[2, ], principal_axes[3, ], R = phi)
+      phi <- stress_shape(x)$phi
+      principal_axes <- sigma2stress(x)$axes
+      SH(principal_axes[1, ], principal_axes[2, ], principal_axes[3, ], R = phi)
     }, FUN.VALUE = numeric(1)) |>
       stats::t.test(conf.level = conf.level)
 

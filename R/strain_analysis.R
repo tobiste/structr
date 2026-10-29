@@ -174,8 +174,6 @@ mean_strain_ellipse0 <- function(r, phi) {
 }
 
 
-
-
 #' Calculates densities for fabric and strain data
 #'
 #' Densities in hyperboloidal projections of geological fabric and
@@ -396,7 +394,6 @@ hypercontour <- function(r, phi,
 }
 
 
-
 # gridHyper - calculate a grid for contouring.
 #   Input:
 #     rphi           = array (R, phi) ellipse axial ratios
@@ -457,7 +454,6 @@ gridHyper <- function(rphi, rmax, kappa, nnodes, normalize = TRUE, proj = "eqd")
     data.frame(x = cos(t), y = sin(t))
   }
 }
-
 
 
 #' R<sub>f</sub>/&varphi; plot
@@ -709,13 +705,13 @@ mean_vorticity <- function(R) {
 
 crit_angle <- function(w, b = w) {
   suppressWarnings(
-  (1 / 2) * asind(w / b) * (sqrt(1 - w^2) - sqrt(b^2 - w^2))
+    (1 / 2) * asind(w / b) * (sqrt(1 - w^2) - sqrt(b^2 - w^2))
   )
 }
 
 .b2r <- function(b) {
   suppressWarnings(
-  sqrt((-b - 1) / (b - 1))
+    sqrt((-b - 1) / (b - 1))
   )
 }
 
@@ -813,7 +809,7 @@ vorticity_boot <- function(B, R = 100L, probs = 0.975) {
 #' RGN_plot(shebandowan$r, shebandowan$phi, col = "darkred")
 RGN_plot <- function(r, theta, angle_error = 3, n_iter = 100L, probs = 0.975, grid = 0.05, main = "Rigid-Grain-Net", guides = NULL, ...) {
   guides <- guides %||% getOption("structr.guides")
-  
+
   R_val <- r
   theta <- theta %% 180
   theta <- ifelse(theta > 90, theta - 180, theta)
@@ -858,17 +854,17 @@ RGN_plot <- function(r, theta, angle_error = 3, n_iter = 100L, probs = 0.975, gr
   graphics::axis(2, at = seq(-90, 90, 30), gap.axis = 0)
   graphics::axis(1, at = seq(0, max(hyp$crit$b), .1), gap.axis = 0)
 
-  if(isTRUE(guides)){
-  # add hyperbola net
-  lapply(hyperbola, function(h) {
-    graphics::lines(h$b, h$theta, col = "lightgray")
-    graphics::lines(h$b, -h$theta, col = "lightgray")
-  })
+  if (isTRUE(guides)) {
+    # add hyperbola net
+    lapply(hyperbola, function(h) {
+      graphics::lines(h$b, h$theta, col = "lightgray")
+      graphics::lines(h$b, -h$theta, col = "lightgray")
+    })
   }
   graphics::lines(hyp$crit$b, hyp$crit$theta, col = "grey30")
   graphics::lines(hyp$crit$b, -hyp$crit$theta, col = "grey30")
 
-  if(isTRUE(guides)) graphics::abline(v = cosd(45), col = "grey10", lty = 3, lwd = .1) # pure-shear simple shear separation
+  if (isTRUE(guides)) graphics::abline(v = cosd(45), col = "grey10", lty = 3, lwd = .1) # pure-shear simple shear separation
   graphics::abline(v = c(geo.lowerCI, geo.upperCI), col = "black", lty = 2, lwd = .5) # CI interval of bootstrapped B
 
   graphics::points(B_val, theta, ...)

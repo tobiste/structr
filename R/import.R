@@ -11,13 +11,13 @@
 #' single column (may lead to duplicate rows).
 #' @param sf logical. Whether the output should be a spatial `"sf"` object
 #' using the Longitude and Latitude columns.
-#' 
+#'
 #' @importFrom readxl read_xlsx
 #' @importFrom rjson fromJSON
 # #' @importFrom data.table rbindlist dcast fread setDT fifelse melt data.table as.data.table setnames setorder setcolorder patterns .SD .( :=
 #' @import data.table
 #' @importFrom sf st_as_sf
-#' 
+#'
 #' @returns `list` containing the following objects:
 #' \describe{
 #' \item{`data`}{`"tbl_df"` object. Metadata.}
@@ -468,14 +468,14 @@ read_strabo_JSON <- function(file, sf = TRUE) {
 
 
   orient_dt2 <- rbindlist(list(only_planes, only_lines, only_associated_lines), fill = TRUE)
-  
-  
-  if("strike" %in% names(orient_dt2)){
+
+
+  if ("strike" %in% names(orient_dt2)) {
     orient_dt2$dip_direction <- rhr2dd(orient_dt2$strike)
-  } else if("dip_direction" %in% names(orient_dt2)){
+  } else if ("dip_direction" %in% names(orient_dt2)) {
     orient_dt2$strike <- dd2rhr(orient_dt2$dip_direction)
   }
-  
+
   setcolorder(orient_dt2, c("id", "dip_direction", "dip", "strike", "trend", "plunge", "associated"))
 
   # drop all empty columns
@@ -489,8 +489,8 @@ read_strabo_JSON <- function(file, sf = TRUE) {
   orient_dt2 <- orient_dt2[!(id %in% dup_ids) | (!is.na(dip) & !is.na(plunge))]
   orient_dt2 <- unique(orient_dt2, by = c("id", "dip", "dip_direction"))
   orient_dt2 <- unique(orient_dt2, by = c("id", "plunge", "trend"))
-  
-  
+
+
   if (nrow(orient_dt2) > 0) {
     planes <- Plane(rhr2dd(orient_dt2$strike), orient_dt2$dip)
     lines <- Line(orient_dt2$trend, orient_dt2$plunge)
@@ -545,28 +545,28 @@ as.strabo <- function(x) {
 
 
 #' Subsetting StraboSpot Projects
-#' 
+#'
 #' Returns a subset from `"strabo"` objects which meet conditions.
-#' 
+#'
 #' @param x object of class `"strabo"`
-#' @param ds character. Dataset that should be the base for subsetting. 
+#' @param ds character. Dataset that should be the base for subsetting.
 #'  One of `"data"` (the default), `"spots"`, or `"tags"`.
 #' @param ... arguments to be passed to [subset()]
-#' 
-#' @returns An object of class `"strabo"` containing just the selected rows and 
+#'
+#' @returns An object of class `"strabo"` containing just the selected rows and
 #' columns of `"x"`.
-#' 
+#'
 #' @exportS3Method base::subset
-#' 
+#'
 #' @family strabo
-#' 
+#'
 #' @seealso [subset()]
-#' 
+#'
 #' @examples
 #' subset(strabo_prj, strabo_prj$data$quality > 3)
 subset.strabo <- function(x, ..., ds = c("data", "spots", "tags")) {
   newrowid <- spot_id <- NULL
-  
+
   if (inherits(x, "strabo.json")) {
     ds <- match.arg(ds)
     if (ds == "spots") {
@@ -630,39 +630,39 @@ subset.strabo <- function(x, ..., ds = c("data", "spots", "tags")) {
 }
 
 #' Sorting StraboSpot Projects
-#' 
+#'
 #' Sorts `strabo` objects in the order determined by one or more other objects, typically columns in the
 #' `data` data.frame. This will also sort the `planar` and `linear` objects.
-#' 
+#'
 #' @param x object of class `"strabo"`
 #' @param y Variables to sort by. Typically a column in `x$data` data.frame. To
 #' sort by more than one column, take the form `list(g1, g2, ...)`.
 #' @param ... Additional arguments, typically passed on to [order()].
-#'  
-#' @returns A sorted version of `x`. 
+#'
+#' @returns A sorted version of `x`.
 #'
 #' @exportS3Method base::sort_by
-#' 
+#'
 #' @examples
 #' sort_by(strabo_prj, strabo_prj$data$dip_direction)
-sort_by.strabo <- function(x, y, ...){
+sort_by.strabo <- function(x, y, ...) {
   # spot_id <- NULL
   newrowid <- NULL
-  
-  
+
+
   x$data$newrowid <- seq_len(nrow(x$data))
   x_sort <- sort_by(x$data, y, ...)
   selected_rows <- x_sort$newrowid
   x_sort$newrowid <- NULL
-  
+
   if (inherits(x, "strabo.json")) {
-  ls <- list(
-    data = x_sort,
-    spots = x$spots,
-    tags = x$tags,
-    planar = x$planar[selected_rows, ],
-    linear = x$linear[selected_rows, ]
-  )
+    ls <- list(
+      data = x_sort,
+      spots = x$spots,
+      tags = x$tags,
+      planar = x$planar[selected_rows, ],
+      linear = x$linear[selected_rows, ]
+    )
   } else {
     ls <- list(
       data = x_sort,
@@ -670,6 +670,6 @@ sort_by.strabo <- function(x, y, ...){
       linear = x$linear[selected_rows, ]
     )
   }
-  
+
   as.strabo(ls)
 }

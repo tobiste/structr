@@ -52,7 +52,7 @@ set.seed(20250411)
 # Use Angelier 1990 examples
 nx <- length(angelier1990)
 
-par(mfrow = c(nx/2, nx/2), mar = c(4, 1, 4, 1))
+par(mfrow = c(nx / 2, nx / 2), mar = c(4, 1, 4, 1))
 invisible(lapply(seq_len(nx), function(i) {
   x <- angelier1990[[i]]
 
@@ -61,12 +61,12 @@ invisible(lapply(seq_len(nx), function(i) {
 
   # Inversion after Angelier (1990)
   res_angelier <- slip_inversion(x, method = "angelier")
-  
+
   res_yamaji <- slip_inversion(x, method = "yamaji")
 
   res_hansen <- slip_inversion(x, method = "hansen", type = "6d")
-  
-  res_wissi <- slip_inversion(x, method = 'wissi')
+
+  res_wissi <- slip_inversion(x, method = "wissi")
 
   stereoplot(title = names(angelier1990)[i], guides = FALSE)
   fault_plot(x, col = "gray80")
@@ -77,8 +77,10 @@ invisible(lapply(seq_len(nx), function(i) {
   points(res_wissi$principal_axes, pch = 1:3, col = 6)
   legend("topleft",
     pch = 1,
-    legend = c("Michael (1984)", "Angelier (1990)", "Yamaji & Sato (2006)", 
-      "Hansen (2013)", "WISSI"),
+    legend = c(
+      "Michael (1984)", "Angelier (1990)", "Yamaji & Sato (2006)",
+      "Hansen (2013)", "WISSI"
+    ),
     col = 2:6, cex = 0.8
   )
   legend("bottom",

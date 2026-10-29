@@ -28,7 +28,7 @@ Stress tensor inversion via the Yamaji and Sato (2006) eigenvector method.
 set.seed(20250411)
 
 nx <- length(angelier1990)
-par(mfrow = c(2, nx/2))
+par(mfrow = c(2, nx / 2))
 
 invisible(lapply(seq_len(nx), function(i) {
   # inversion

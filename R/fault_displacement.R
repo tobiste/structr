@@ -23,9 +23,10 @@
 #' fault_displacements(strikeslip = 2, verticalthrow = -5, heave = 3)
 #' }
 fault_displacements <- function(
-    dip = NULL, delta = NULL, rake = NULL,
-    verticalthrow = NULL, dipslip = NULL, heave = NULL,
-    netslip = NULL, horizontalthrow = NULL, strikeslip = NULL) {
+  dip = NULL, delta = NULL, rake = NULL,
+  verticalthrow = NULL, dipslip = NULL, heave = NULL,
+  netslip = NULL, horizontalthrow = NULL, strikeslip = NULL
+) {
   # Calculate based on available parameters
   if (!is.null(dip) && !is.null(verticalthrow) && !is.null(delta)) {
     # Slip components in the vertical plane perpendicular to strike
@@ -89,7 +90,6 @@ fault_displacements <- function(
     "netslip" = netslip
   )
 }
-
 
 
 #' Fault displacement tensor

@@ -50,8 +50,8 @@ r <- fisher_inference(x)
 print(r)
 
 plot(x)
-points(r$muHat, col = 'red')
-lines(r$muHat, ang = r$angle, col = 'red')
+points(r$muHat, col = "red")
+lines(r$muHat, ang = r$angle, col = "red")
 }
 \references{
 Tauxe (2010, p. 214).

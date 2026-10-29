@@ -27,7 +27,7 @@ sigma <- reduced_stress(angelier1990$AVB)
 
 dev.off()
 stereoplot(guides = FALSE)
-stereo_stress_grid(sigma, type = 'hoeppener')
+stereo_stress_grid(sigma, type = "hoeppener")
 
 pr <- sigma2stress(sigma)
 points(pr$axes, col = 2:4, pch = 16)

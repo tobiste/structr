@@ -1,4 +1,4 @@
-#' Confidence ellipse
+#' Bootstrapped confidence ellipse
 #'
 #' Bootstrapped projected mean with percentile confidence region and hypothesis tests
 #'
@@ -8,8 +8,8 @@
 #' region seriously.
 #'
 #' @inheritParams geodesic_meanvariance_line
-#' @param n_iter integer (10000 by default).
-#' @param alpha numeric (0.05 by default).
+#' @param n_iter integer. Number of bootstrap iterations (`10000` by default).
+#' @param alpha numeric. Level of significance (`0.05` by default).
 #' @param res integer. The resolution with which to sample the boundary curve of the (1 - `alpha`) * 100% percentile region.
 #' @param isotropic logical. If `TRUE`, forces the inverse covariance to the identity matrix and hence the region to be circular.
 #'
@@ -26,6 +26,8 @@
 #' \item{`ellipse`}{Confidence ellipse given as `"Vec3"` object with `res` vectors}
 #' }
 #' @export
+#'
+#' @family confidence
 #'
 #' @references Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis
 #' for three-dimensional orientational data. Journal of Structural Geology,
@@ -68,15 +70,214 @@ confidence_ellipse <- function(x, n_iter = 10000L, alpha = 0.05, res = 512L, iso
   }
   ellipse <- if (res > 0) list_vec(ce$points) else NULL
 
-  list(
-    center = as.Vec3(ce$center) |> Spherical(class(x)[1]),
-    cov = ce$covarInv,
-    rotation = as.Rotation(ce$rotation),
-    quantiles = t(do.call(rbind, ce[res_quantiles])),
-    pvalue.FUN = ce$pvalue,
-    pvalue = pvalues,
-    pvalue.FUN = pvalue.FUN,
-    angles = angles,
-    ellipse = ellipse
+  structure(
+    list(
+      center = as.Vec3(ce$center) |> Spherical(class(x)[1]),
+      cov = ce$covarInv,
+      rotation = as.Rotation(ce$rotation),
+      quantiles = t(do.call(rbind, ce[res_quantiles])),
+      pvalue.FUN = ce$pvalue,
+      pvalue = pvalues,
+      pvalue.FUN = pvalue.FUN,
+      angles = angles,
+      ellipse = ellipse
+    ),
+    class = "confidence_region"
+  )
+}
+
+
+#' Confidence region for Fisher statistics
+#'
+#' Circle of angular radius `alpha` (degrees) around the mean vector `mu`.
+#'
+#' @param mu Object of class `spherical`
+#' @param alpha numeric. angle in degrees.
+#' @param n integer. Resolution of the conve (number of points for the conve line)
+#'
+#' @return `Vec3` object
+#'
+#' @family confidence
+#'
+#' @examples
+#' set.seed(20250411)
+#' x <- rvmf(n = 100, Line(120, 55), k = 10)
+#' mu <- sph_mean(x)
+#' alpha <- sph_confidence_angle(x)
+#'
+#' r1 <- fisher_confidence(mu, alpha = alpha)
+#'
+#' plot(x, col = "grey")
+#' points(mu, col = "red", pch = 16, cex = 1.5)
+#' stereo_lines(r1, col = "red")
+fisher_confidence <- function(mu, alpha, n = 512L) {
+  azi <- Line(mu)[, "azimuth"]
+  secant <- rotate(mu, Line(azi + 90, 0), -alpha)
+  angles <- c(seq(0, 360, length.out = n))
+  la <- lapply(angles, function(a) {
+    rotate(secant, mu, a)
+  })
+  do.call(rbind, la) |> Vec3()
+}
+
+#' Confidence region for Bingham statistics
+#'
+#' Bingham confidence ellipse
+#'
+#' @param stats Return of [bingham_statistics()]
+#' @inheritParams fisher_confidence
+#'
+#' @family confidence
+#'
+#' @return `Vec3` object
+#'
+#' @examples
+#' set.seed(20250411)
+#' a <- cov(iris[, 1:3])
+#' x <- rbingham(100, a, "Line")
+#' r <- bingham_statistics(x)
+#' r2 <- bingham_confidence(r)
+#'
+#' plot(x, col = "grey")
+#' points(r$mu, col = "red", pch = 16, cex = 1.5)
+#' stereo_lines(r2, col = "red")
+#'
+#' r3 <- bingham_statistics(example_planes)
+#'
+#' stereoplot()
+#' points(example_planes, col = "grey", pch = 16)
+#' points(r3$mu, pch = 16, col = "red")
+#' stereo_lines(bingham_confidence(r3), col = "red")
+bingham_confidence <- function(stats, n = 512) {
+  g <- names(stats) %in% c("a95", "gamma")
+  gamma <- deg2rad(stats[[names(stats)[g]]])
+  mu <- stats$mu[1, ] |> Vec3()
+
+  u <- stats$axes[1, ] |> Vec3()
+  v <- stats$axes[2, ] |> Vec3()
+
+  theta <- seq(0, 2 * pi, length.out = 512)
+  ct <- cos(theta)
+  st <- sin(theta)
+
+  g <- gamma
+  # polar equation of an ellipse with semi-axes g[1], g[2]
+  denom <- sqrt((g[2L] * ct)^2 + (g[1L] * st)^2)
+  rho <- numeric(length(theta))
+  pos <- denom > 0
+  rho[pos] <- g[1L] * g[2L] / denom[pos]
+
+  res <- outer(cos(rho), mu) + sin(rho) * (outer(ct, u) + outer(st, v))
+
+  as.Vec3(res[, 1L, ])
+}
+
+#' Axial Cross Moments
+#'
+#' @details Matrix of unit vectors `x`
+#' for axes `v` is \deqn{
+#'
+#' m_{ij} = \frac{1}{n} \sum_{k=1}^{n}
+#' \left( \mathbf{x}_k \cdot \mathbf{v}_i \right)^2
+#' \left( \mathbf{x}_k \cdot \mathbf{v}_j \right)^2 , \qquad i, j = 1, 2, 3
+#' }
+#'
+#' @inheritParams sph_mean
+#' @param v Three Eigenvectors (object of class `Spherical`)
+#'
+#' @returns 3 x 3 matrix
+#' @export
+#'
+#' @examples
+#' x <- example_planes
+#' axial_cross_moments(x, ot_eigen(x)$vectors)
+axial_cross_moments <- function(x, v) {
+  # m_ij = mean((x . v_i)^2 (x . v_j)^2)
+  # x:    n x 3 matrix of unit vectors
+  # v: 3 x 3 matrix of orthogonal unit vectors, one per ROW
+  X <- Vec3(x)
+  vecs <- Vec3(v)
+  P2 <- tcrossprod(X, vecs)^2 # X %*% t(vecs), squared: n x 3
+  crossprod(P2) / nrow(P2) # t(P2) %*% P2 / n: 3 x 3
+}
+
+#' Confidence ellipse of an Eigenvector of the orientation tensor
+#'
+#' @details Large-sample (central limit theorem) approximation: the angle of the
+#' sample eigenvector \eqn{v_i} toward \eqn{v_j} is approximately normal with
+#' variance \eqn{m_{ij} / (n (\tau_i - \tau_j)^2)}, with
+#' \eqn{m_{ij} = \text{mean}((x.v_i)^2 (x.v_j)^2)}.
+#' The semi-angles of the region are
+#' \deqn{\arcsin(\sqrt(\chi^2_2(\text{level}) \times m_{ij} / (n (\tau_i - \tau_j)^2)))},
+#' 90&deg; for equal eigenvalues.
+#'
+#' The moments make it valid for any distribution of axes; for rotationally
+#' symmetric data it is the cone of FLE eq. 6.11-6.13. Under the Bingham model
+#' \eqn{m_{ij} / (\tau_i - \tau_j)^2} tends to \eqn{1 / (2 \Delta_{ij})}, the
+#' semi-axes \eqn{ \sqrt{\big(\chi^2_2(\text{level}) / (2 n \Delta_{ij})\big)}}
+#' of Bingham (1974, eq. 7.24).
+#'
+#' @param tau numeric. Eigenvalues of the orientation tensor, descending.
+#' @param vecs Corresponding Eigenvectors. Object of class `spherical`
+#' @param cross_moments 3x3 matrix (see [axial_cross_moments()])
+#' @param n integer. Sample size
+#' @param level numeric. Confidence level. Default is `0.95`
+#' @param which index of the eigenvector of the ellipse is centered on., Default is `0`.
+#'
+#' @family confidence
+#'
+#' @source modified after the python package `apsg` (v.2.0.6) by O. Lexa
+#'
+#' @returns list
+#'
+#' @examples
+#' x <- example_planes
+#' t <- ot_eigen(x)
+#' cm <- axial_cross_moments(x, ot_eigen(x)$vectors)
+#' r4 <- bingham_ellipse(taus = t$values, vecs = t$vectors, cross_moments = cm, n = nrow(x), which = 1)
+#' print(r4)
+#'
+#' stereoplot()
+#' points(x, col = "grey", pch = 16)
+#' points(r4$mu, col = "red", pch = 16)
+#' stereo_lines(bingham_confidence(r4), col = "red")
+bingham_ellipse <- function(taus, vecs, cross_moments, n, level = 0.95,
+                            which = 1L) {
+  # Confidence ellipse of an eigenvector of the orientation tensor
+  # (large-sample CLT approximation; see the Python docstring).
+  #
+  # taus:          length-3 vector, eigenvalues of the orientation tensor
+  # vecs:          3 x 3 matrix, corresponding eigenvectors as ROWS
+  # cross_moments: 3 x 3 matrix m_ij, see axial_cross_moments()
+  # n:             sample size
+  # which:         1, 2 or 3 (1-based)
+  V <- Vec3(vecs)
+  stopifnot(nrow(V) == 3L)
+
+  taus <- as.numeric(taus)
+  stopifnot(length(taus) == 3L)
+
+  M <- cross_moments
+  stopifnot(nrow(M) == 3 & ncol(M) == 3)
+
+  if (length(which) != 1L || !which %in% 1:3) {
+    stop("`which` must be 1, 2 or 3")
+  }
+
+  other <- setdiff(1:3, which)
+  chi2 <- stats::qchisq(level, df = 2)
+  d <- taus[which] - taus[other]
+  arg <- sqrt(chi2 * M[which, other] / (n * d^2))
+  arg[d == 0] <- Inf # equal eigenvalues
+  gamma <- ifelse(arg >= 1, 90, asin(pmin(arg, 1)) * 180 / pi)
+
+  structure(
+    list(
+      mu    = Vec3(V[which, ]),
+      level = level,
+      axes  = Vec3(V[other, ]),
+      gamma = gamma
+    ),
+    class = "confidence_region"
   )
 }

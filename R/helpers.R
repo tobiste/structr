@@ -31,7 +31,7 @@ dd2rhr <- function(dipdirection) (dipdirection - 90) %% 360
 #'
 #' @returns Ray object representing the intersection of the two planes
 #' @export
-#' 
+#'
 #' @seealso [crossprod.Plane()]
 #'
 #' @examples
@@ -39,11 +39,11 @@ dd2rhr <- function(dipdirection) (dipdirection - 90) %% 360
 #' p2 <- Plane(30, 45)
 #' int <- plane_intersection(p1, p2)
 #' print(int)
-#' 
+#'
 #' stereoplot()
 #' lines(rbind(p1, p2))
-#' points(int, col = 'red', pch = 16)
-plane_intersection <- function(x, y){
+#' points(int, col = "red", pch = 16)
+plane_intersection <- function(x, y) {
   crossprod(Vec3(x), Vec3(y)) |> Ray()
 }
 
@@ -796,12 +796,12 @@ ellipse <- function(
 }
 
 cyclic_viridis <- function(n = 256, option = "viridis") {
-  if( n%%2 != 0) n <- n + 1
-          
-  cols1 <- viridis(n/2, option = option)
-  cols2 <- rev(viridis(n/2, option = option))
+  if (n %% 2 != 0) n <- n + 1
+
+  cols1 <- viridis(n / 2, option = option)
+  cols2 <- rev(viridis(n / 2, option = option))
   c(cols1, cols2)
- }
+}
 
 # Modes from a kde distribution ------------------------------------------------
 #' @keywords internal

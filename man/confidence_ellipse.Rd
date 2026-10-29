@@ -2,7 +2,7 @@
 % Please edit documentation in R/confidence.R
 \name{confidence_ellipse}
 \alias{confidence_ellipse}
-\title{Confidence ellipse}
+\title{Bootstrapped confidence ellipse}
 \source{
 \code{geologyGeometry} (J.R. Davis): http://www.joshuadavis.us/software/
 }
@@ -19,9 +19,9 @@ confidence_ellipse(
 \item{x}{object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
 rows are the observations and the columns are the coordinates.}
 
-\item{n_iter}{integer (10000 by default).}
+\item{n_iter}{integer. Number of bootstrap iterations (\code{10000} by default).}
 
-\item{alpha}{numeric (0.05 by default).}
+\item{alpha}{numeric. Level of significance (\code{0.05} by default).}
 
 \item{res}{integer. The resolution with which to sample the boundary curve of the (1 - \code{alpha}) * 100\% percentile region.}
 
@@ -66,3 +66,10 @@ Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis
 for three-dimensional orientational data. Journal of Structural Geology,
 96, 65–89. \doi{10.1016/j.jsg.2017.01.002}
 }
+\seealso{
+Other confidence:
+\code{\link[=bingham_confidence]{bingham_confidence()}},
+\code{\link[=bingham_ellipse]{bingham_ellipse()}},
+\code{\link[=fisher_confidence]{fisher_confidence()}}
+}
+\concept{confidence}

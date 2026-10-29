@@ -31,21 +31,21 @@ if (requireNamespace("rgl", quietly = TRUE)) {
 .onLoad <- function(libname, pkgname) {
   # if (!interactive())
   options(rgl.useNULL = TRUE)
-  
+
   op <- options()
   op.structr <- list(
     structr.upper.hem = FALSE,
     structr.earea = TRUE,
     structr.guides = FALSE,
-    structr.d = 10, 
+    structr.d = 10,
     structr.col = "gray90",
-    structr.lwd = 0.5, 
-    structr.lty = 1, 
-    structr.border.col = "black", 
-    structr.origin.text = "N", 
-    structr.labels = FALSE, 
+    structr.lwd = 0.5,
+    structr.lty = 1,
+    structr.border.col = "black",
+    structr.origin.text = "N",
+    structr.labels = FALSE,
     structr.ladj = 0.05,
-    structr.centercross = TRUE, 
+    structr.centercross = TRUE,
     structr.ticks = 90,
     structr.radius = 1,
     structr.tol = sqrt(.Machine$double.eps)

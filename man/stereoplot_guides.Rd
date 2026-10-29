@@ -47,7 +47,7 @@ plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
 stereoplot_guides(d = 15, earea = TRUE, col = "orange", rotation = 90)
 
 plot(c(-1, 1), c(-1, 1), type = "n", asp = 1)
-stereoplot_guides(d = 15, earea = FALSE, center = Line(120, 50), col = 'red')
+stereoplot_guides(d = 15, earea = FALSE, center = Line(120, 50), col = "red")
 }
 \seealso{
 Other stereo-plot:

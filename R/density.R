@@ -5,8 +5,8 @@ blank_grid_regular <- function(n, r = 1) {
   grid_schmidt <- as.matrix(expand.grid(x_grid, x_grid))
 
   grid_cart <- .schmidt2cart(grid_schmidt[, 1], grid_schmidt[, 2], r)
-  #cond <- grid_cart[, 3]>0 # remove the other hemisphere
-  
+  # cond <- grid_cart[, 3]>0 # remove the other hemisphere
+
   values <- rep(0, times = n^2)
   list(grid = grid_cart, density = values)
 }
@@ -28,7 +28,7 @@ blank_grid_regular <- function(n, r = 1) {
 #' @keywords internal
 .schmidt2cart <- function(x, y, r = 1) {
   res <- rad2deg(.schmdit2spherical(x, y, r))
-  unclass(Vec3(Line(res[, 1], res[, 2]))) 
+  unclass(Vec3(Line(res[, 1], res[, 2])))
 }
 
 
@@ -64,8 +64,8 @@ count_points <- function(azi, inc, FUN, sigma, ngrid, weights, r) {
   grid_coords <- grid$grid
 
   # Stereonet math transformations to Cartesian coordinates
-  xyz_points  <- unclass(Vec3(Line(azi, inc)))      # n × 3
-  
+  xyz_points <- unclass(Vec3(Line(azi, inc))) # n × 3
+
   n_cells <- nrow(grid_coords)
 
   # for (i in seq_len(n_cells)) {
@@ -78,10 +78,10 @@ count_points <- function(azi, inc, FUN, sigma, ngrid, weights, r) {
   # grid$density[grid$density < 0] <- 0
 
   raw <- vapply(seq_len(n_cells), function(i) {
-    ds  <- FUN(abs(grid_coords[i, ] %*% t(xyz_points)), sigma)
+    ds <- FUN(abs(grid_coords[i, ] %*% t(xyz_points)), sigma)
     (sum(ds$count * weights) - 0.5) / ds$units
   }, FUN.VALUE = numeric(1L))
-  
+
   grid$density <- pmax(raw, 0)
   return(grid)
 }
@@ -116,19 +116,19 @@ count_points <- function(azi, inc, FUN, sigma, ngrid, weights, r) {
 #' lapply(res2, head)
 density_grid <- function(x, weights = NULL, upper.hem = NULL, kamb = TRUE, ...) {
   upper.hem <- upper.hem %||% getOption("structr.upper.hem")
-  
+
   if (!is.Line(x)) x <- Line(x)
 
   # remove NA values
   noNA <- which(complete.cases(x))
   noNA
-  
+
   azi <- x[noNA, 1]
   if (upper.hem) {
     azi <- azi + 180
   }
   inc <- x[noNA, 2]
-  
+
   if (is.null(weights)) {
     weights <- rep(1, length(azi))
   } else {
@@ -278,22 +278,22 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
   cpk <- 1 / (sqrt(hw^2) * (2 * pi)^1.5 * besselI(kappa_val, 0.5, expon.scaled = TRUE) * exp(kappa_val))
   log_cpk <- log(cpk)
   log_n <- log(ngrid)
-  
+
   # --- grid of unit vectors: (ngrid^2) × 3 ---
   lat_grid <- seq(0, 180, length.out = ngrid)
   long_grid <- seq(0, 360, length.out = ngrid)
-  
+
   # Build all (lat, long) combinations at once and convert to Cartesian
-  grid_expand <- expand.grid(lat = lat_grid, long = long_grid)  # ngrid^2 rows
-  y_mat       <- .euclid(as.matrix(grid_expand))    # ngrid^2 × 3
-  
+  grid_expand <- expand.grid(lat = lat_grid, long = long_grid) # ngrid^2 rows
+  y_mat <- .euclid(as.matrix(grid_expand)) # ngrid^2 × 3
+
   # --- vectorised KDE ---
-  dots     <- tcrossprod(x, y_mat)                         # n × ngrid^2
-  log_dots <- kappa_val * dots                             # scale by kappa
-  den_vec  <- exp(log_cpk) * colSums(exp(log_dots)) / ngrid
-  
+  dots <- tcrossprod(x, y_mat) # n × ngrid^2
+  log_dots <- kappa_val * dots # scale by kappa
+  den_vec <- exp(log_cpk) * colSums(exp(log_dots)) / ngrid
+
   # Reshape: expand.grid fills lat-major (lat varies fastest)
-  den_mat  <- matrix(den_vec, nrow = ngrid, ncol = ngrid)
+  den_mat <- matrix(den_vec, nrow = ngrid, ncol = ngrid)
 
   list(
     lat = lat_grid,
@@ -305,16 +305,16 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 
 
 #' Spherical Density Estimation
-#' 
+#'
 #' @inherit count_points description
 #'
 #' @inheritParams sph_mean
 # #' @param kamb logical. Whether to use the von Mises-Fisher kernel density estimation (`FALSE`) or Kamb's method (`TRUE`, the default).
-#' @param FUN Density estimation function: one of [exponential_kamb()] (the default), 
+#' @param FUN Density estimation function: one of [exponential_kamb()] (the default),
 #' [linear_inverse_kamb()], [square_inverse_kamb()],
 #'  [kamb_count], and [schmidt_count()].
 #' @param n integer. The size of the grid in which the density is estimated on. `128` by default.
-#' @inheritParams count_points 
+#' @inheritParams count_points
 # #' @param vmf_hw numeric. Kernel bandwidth in degree.
 # #' @param vmf_optimal character. Calculates an optimal kernel bandwidth
 # #' using the cross-validation algorithm (`'cross'`) or the rule-of-thumb (`'rot'`)
@@ -330,8 +330,8 @@ vmf_kerncontour <- function(u, hw = NULL, kernel_method = c("cross", "rot"), ngr
 #' @name density
 #' @aliases density.spherical density_spherical
 #' @family density
-#' 
-#' @returns Object of class `"sph_density"` which contains the a grid of spherical 
+#'
+#' @returns Object of class `"sph_density"` which contains the a grid of spherical
 #' coordinates (`x` and `y`, equal-area projection) and the density estimates for each grid point (`density`).
 #'
 #' @examples
@@ -353,17 +353,17 @@ density_calc <- function(x,
                          # vmf_hw = NULL, vmf_optimal = c("cross", "rot"),
                          weights = NULL, upper.hem = NULL, radius = NULL) {
   r <- radius %||% getOption("structr.radius")
-  
+
   dg <- density_grid(x, weights = weights, upper.hem = upper.hem, kamb = TRUE, FUN = FUN, sigma = sigma, ngrid = n, r = r)
   grid_pts <- seq(-r, r, length.out = n)
   density_matrix <- matrix(dg$density, nrow = n, byrow = FALSE)
-  
+
   r2 <- r^2
-  outside <- outer(grid_pts^2, grid_pts^2, `+`) > r2   # n×n logical, same layout as density_matrix
+  outside <- outer(grid_pts^2, grid_pts^2, `+`) > r2 # n×n logical, same layout as density_matrix
   density_matrix[outside] <- NA
-  
+
   structure(
     list(x = grid_pts, y = grid_pts, density = density_matrix),
-    class = c(class(dg), "sph_density")           
+    class = c(class(dg), "sph_density")
   )
 }

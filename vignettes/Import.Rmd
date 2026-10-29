@@ -214,8 +214,8 @@ names(strabo_data)
 ```
 
 ```{r strabi_plot1}
-plot(strabo_data$linear, col = assign_col_d(strabo_data$data$spot_id)) 
-title(main = 'All linear elements')
+plot(strabo_data$linear, col = assign_col_d(strabo_data$data$spot_id))
+title(main = "All linear elements")
 ```
 
 The `"strabo"` objects are list objects containing orientation data as planar and linear objects as well as several slots containing your metadata (`data`) and geospatial information (`spots`).
@@ -225,9 +225,9 @@ share the same row indices. Thus, planes and lines with identical row
 indices have been measured simultaneously (e.g. as a fault).
 
 ```{r strabi_plot_pair}
-Pair(strabo_data$planar, strabo_data$linear) |> 
+Pair(strabo_data$planar, strabo_data$linear) |>
   plot(col = assign_col_d(strabo_data$data$spot_id))
-title(main = 'Planar+Linear')
+title(main = "Planar+Linear")
 ```
 
 > This import allows that the connection of simultaneously measured
@@ -254,7 +254,7 @@ You can subset (or filter) the objects based on columns in any of these list ele
 ```{r subset}
 strabo_prj_subset <- subset(strabo_prj, strabo_prj$data$quality > 3)
 plot(strabo_prj_subset$linear, col = assign_col_d(strabo_prj_subset$data$spot_id))
-title(main = 'Subset of linear elements')
+title(main = "Subset of linear elements")
 ```
 
 ### Sort Strabo objects

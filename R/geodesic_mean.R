@@ -31,7 +31,7 @@
 #' set.seed(20250411)
 #' geodesic_var(example_planes, example_planes[1, ])
 #' geodesic_var(example_planes)
-#' 
+#'
 #' # Pair data
 #' p <- Pair(strabo_prj$planar, strabo_prj$linear)
 #' geodesic_var(p)
@@ -125,13 +125,13 @@ geodesic_var.Pair <- function(x, y = NULL, group = NULL, ...) {
 #' @examples
 #' set.seed(20250411)
 #' geodesic_mean(example_planes)
-#' 
+#'
 #' # Pair data
 #' p <- Pair(strabo_prj$planar, strabo_prj$linear)
 #' p_mean <- geodesic_mean(p)
-#' 
-#' plot(p, col = 'grey')
-#' points(p_mean, col = 'red')
+#'
+#' plot(p, col = "grey")
+#' points(p_mean, col = "red")
 NULL
 
 #' @rdname geodesic-mean
@@ -157,14 +157,6 @@ geodesic_mean.Plane <- function(x, ...) geodesic_mean_line(x, ...)
 #' @rdname geodesic-mean
 #' @export
 geodesic_mean.Pair <- function(x, ...) geodesic_mean_pair(x, ...)
-
-
-
-
-
-
-
-
 
 
 #' The Fr&#233;chet (geodesic \eqn{L^2}) mean of a set of lines or rays
@@ -245,11 +237,6 @@ geodesic_meanvariance_ray <- function(x, seeds = 5L, steps = 100L) {
 }
 
 
-
-
-
-
-
 #' Mean orientation of a set of pairs or faults
 #'
 #' The Frechet (geodesic \eqn{L^2}) mean and variance of a pair of foliations
@@ -281,7 +268,7 @@ geodesic_meanvariance_ray <- function(x, seeds = 5L, steps = 100L) {
 #' )
 #' geodesic_mean_pair(my_fault)
 #' geodesic_var_pair(my_fault)
-#' 
+#'
 #' # Pair data
 #' p <- Pair(strabo_prj$planar, strabo_prj$linear)
 #' geodesic_mean_pair(p)
@@ -393,7 +380,6 @@ rot_projected_matrix <- function(x) {
 }
 
 
-
 #' The Frechet (geodesic L^2) mean of a set of orientations as points in SO(3) / G.
 #'
 #' An iterative algorithm for computing the geodesic mean --- the orientation that minimizes the geodesic variance. The iterations continue until change-squared of epsilon is achieved or numSteps iterations have been used.
@@ -423,13 +409,13 @@ rot_projected_matrix <- function(x) {
 #' rot2pair(res2$mean, fault = TRUE)
 ori_mean_variance <- function(rs, group, numSeeds = 5L, numSteps = 1000L, eps = NULL) {
   eps <- eps %||% getOption("structr.tol")
-  
+
   n <- length(rs)
   g_len <- length(group)
 
   # random seeds
   seeds <- sample(rs, numSeeds, replace = (n < numSeeds))
-  
+
   # upper bound for variance
   best_var <- 5
   best <- vector("list", 4)
@@ -438,10 +424,10 @@ ori_mean_variance <- function(rs, group, numSeeds = 5L, numSteps = 1000L, eps = 
   #   rBar <- seed
   #   changeSquared <- eps + 1.0
   #   k <- 0L
-  # 
+  #
   #   while (changeSquared >= eps && k < numSteps) {
   #     w <- matrix(0, 3L, 3L)
-  # 
+  #
   #     for (r in rs) {
   #       # compute all crossproducts in one pass
   #       scores <- numeric(g_len)
@@ -454,7 +440,7 @@ ori_mean_variance <- function(rs, group, numSeeds = 5L, numSteps = 1000L, eps = 
   #       i <- which.max(scores)
   #       w <- w + rotLog(mats[[i]])
   #     }
-  # 
+  #
   #     w <- w / n
   #     rBar <- rBar %*% rotExp(w)
   #     # changeSquared <- tr(crossprod(w, w))
@@ -462,34 +448,34 @@ ori_mean_variance <- function(rs, group, numSeeds = 5L, numSteps = 1000L, eps = 
   #     k <- k + 1L
   #   }
   for (seed in seeds) {
-    rBar          <- seed
+    rBar <- seed
     changeSquared <- eps + 1.0
-    k             <- 0L
-    
+    k <- 0L
+
     while (changeSquared >= eps && k < numSteps) {
       w <- matrix(0, 3L, 3L)
-      
+
       for (r in rs) {
         # Precompute group[[j]] %*% r for all j once, then dot with rBar
         # crossprod(rBar, M) == t(rBar) %*% M; tr(crossprod(A,B)) == sum(A*B)
         best_score <- -Inf
-        best_mat   <- NULL
-        
+        best_mat <- NULL
+
         for (j in seq_len(g_len)) {
-          M     <- group[[j]] %*% r
-          score <- sum(rBar * M)            # tr(crossprod(rBar, M)) without allocation
+          M <- group[[j]] %*% r
+          score <- sum(rBar * M) # tr(crossprod(rBar, M)) without allocation
           if (score > best_score) {
             best_score <- score
-            best_mat   <- M
+            best_mat <- M
           }
         }
         w <- w + rotLog(crossprod(rBar, best_mat))
       }
-      
-      w             <- w / n
-      rBar          <- rBar %*% rotExp(w)
-      changeSquared <- sum(w * w)           # tr(crossprod(w,w)) without allocation
-      k             <- k + 1L
+
+      w <- w / n
+      rBar <- rBar %*% rotExp(w)
+      changeSquared <- sum(w * w) # tr(crossprod(w,w)) without allocation
+      k <- k + 1L
     }
 
     var <- oriVariance(rs, rBar, group)
@@ -509,9 +495,6 @@ ori_mean_variance <- function(rs, group, numSeeds = 5L, numSteps = 1000L, eps = 
     numSteps = best$k
   )
 }
-
-
-
 
 
 ### SYMMETRY GROUPS ###

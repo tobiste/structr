@@ -733,7 +733,7 @@ rayProjectedMean <- function(us) rayNormalized(arithmeticMean(us))
 
 #' @source `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
 lineMeanScatter <- function(us) {
-  tMatrices <- lapply(us, function(u) nnmat(u)) #.fouter(u, u))
+  tMatrices <- lapply(us, function(u) nnmat(u)) # .fouter(u, u))
   tMatrix <- arithmeticMean(tMatrices)
   eig <- eigen(tMatrix, symmetric = TRUE)
   eig
@@ -783,30 +783,32 @@ rayMeanVariance <- function(us, numSeeds = 5, numSteps = 100) {
   #   }
   # }
   # best
-  
-  seeds    <- sample(us, numSeeds)
-  best_var <- pi^2                  # scalar, not wrapped in a list yet
-  best     <- NULL
-  
+
+  seeds <- sample(us, numSeeds)
+  best_var <- pi^2 # scalar, not wrapped in a list yet
+  best <- NULL
+
   for (seed in seeds) {
     sol <- stats::optim(
       sphericalFromCartesian(seed), f,
       hessian = TRUE,
       control = list(maxit = numSteps)
     )
-    
+
     if (sol$value < best_var) {
       best_var <- sol$value
       best <- list(
-        variance     = sol$value,
-        mean         = cartesianFromSpherical(c(1.0, sol$par)),
-        error        = sol$convergence,
-        minEigenvalue = min(eigen(sol$hessian, symmetric = TRUE,
-                                  only.values = TRUE)$values)
+        variance = sol$value,
+        mean = cartesianFromSpherical(c(1.0, sol$par)),
+        error = sol$convergence,
+        minEigenvalue = min(eigen(sol$hessian,
+          symmetric = TRUE,
+          only.values = TRUE
+        )$values)
       )
     }
   }
-  
+
   return(best)
 }
 
@@ -817,7 +819,7 @@ lineMeanVariance <- function(us, numSeeds = 5L, numSteps = 100L) {
   }
   # seeds <- sample(us, numSeeds)
   # best <- list(variance = (pi^2))
-  # 
+  #
   # for (seed in seeds) {
   #   sol <- stats::optim(sphericalFromCartesian(seed), f,
   #     hessian = TRUE,
@@ -834,10 +836,10 @@ lineMeanVariance <- function(us, numSeeds = 5L, numSteps = 100L) {
   #     )), error = sol$convergence, minEigenvalue = min(eigvals))
   #   }
   # }
-  
-  seeds    <- sample(us, numSeeds)
-  best_var <- pi^2                  # scalar, not wrapped in a list yet
-  best     <- NULL
+
+  seeds <- sample(us, numSeeds)
+  best_var <- pi^2 # scalar, not wrapped in a list yet
+  best <- NULL
 
   for (seed in seeds) {
     sol <- stats::optim(
@@ -849,15 +851,17 @@ lineMeanVariance <- function(us, numSeeds = 5L, numSteps = 100L) {
     if (sol$value < best_var) {
       best_var <- sol$value
       best <- list(
-        variance     = sol$value,
-        mean         = cartesianFromSpherical(c(1.0, sol$par)),
-        error        = sol$convergence,
-        minEigenvalue = min(eigen(sol$hessian, symmetric = TRUE,
-                                  only.values = TRUE)$values)
+        variance = sol$value,
+        mean = cartesianFromSpherical(c(1.0, sol$par)),
+        error = sol$convergence,
+        minEigenvalue = min(eigen(sol$hessian,
+          symmetric = TRUE,
+          only.values = TRUE
+        )$values)
       )
     }
   }
-  
+
   return(best)
 }
 
@@ -1043,7 +1047,7 @@ rotVariance <- function(rs, center) {
 #' @source `geologyGeometry` by Davis, J.R.
 rotMeanVariance <- function(rs, numSeeds = 1, numSteps = 100) {
   epsilon <- getOption("structr.tol")
-  
+
   seeds <- sample(rs, numSeeds)
   # No variance is ever as large as 5.
   best <- c(5)
@@ -1112,7 +1116,7 @@ rayPrincipalComponentAnalysis <- function(us, center, numPoints = 0) {
   vs <- lapply(us, rayTangentVectorFromPoint, rot)
   # Compute the usual covariance stuff.
   covar <- arithmeticMean(lapply(vs, function(v) {
-    nnmat(v) #.fouter(v, v)
+    nnmat(v) # .fouter(v, v)
   }))
   eig <- eigen(covar, symmetric = TRUE)
   mags <- sqrt(eig$values)
@@ -1270,7 +1274,7 @@ rayPointFromTangentVector <- function(w, rotation) {
 rotLeftCovariance <- function(rs, center) {
   vs <- lapply(rs, rotLeftTangentFromMatrix, center)
   ms <- lapply(vs, function(v) {
-    nnmat(v)#outer(v, v)
+    nnmat(v) # outer(v, v)
   })
   arithmeticMean(ms)
 }
@@ -1398,16 +1402,17 @@ rotMatrixFromLeftTangent <- function(v, center) {
 #' @importFrom future.apply future_lapply
 rayBootstrapInference <- function(ls, numBoots, ...) {
   n <- length(ls)
-  # boots <- future.apply::future_replicate(numBoots, 
+  # boots <- future.apply::future_replicate(numBoots,
   #                                         rayProjectedMean(sample(ls, n, replace = TRUE)
   #                                                          ), simplify = FALSE, future.seed = TRUE)
   boots <- future.apply::future_lapply(
     seq_len(numBoots),
-    function(i)
-      rayProjectedMean(sample(ls, n, replace = TRUE)),
+    function(i) {
+      rayProjectedMean(sample(ls, n, replace = TRUE))
+    },
     future.seed = TRUE
   )
-  
+
   bootMean <- rayProjectedMean(boots)
   rayMahalanobisPercentiles(boots, bootMean, ...)
 }
@@ -1415,21 +1420,22 @@ rayBootstrapInference <- function(ls, numBoots, ...) {
 #' @source `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
 lineBootstrapInference <- function(ls, numBoots, ...) {
   n <- length(ls)
-  # boots <- future.apply::future_replicate(numBoots, 
+  # boots <- future.apply::future_replicate(numBoots,
   #                                         lineProjectedMean(
   #                                           sample(ls, n, replace = TRUE)
   #                                           ), simplify = FALSE, future.seed = TRUE)
-  
+
   boots <- future.apply::future_lapply(
     seq_len(numBoots),
-    function(i)
-      lineProjectedMean(sample(ls, n, replace = TRUE)),
+    function(i) {
+      lineProjectedMean(sample(ls, n, replace = TRUE))
+    },
     future.seed = TRUE
   )
-                                         
+
   bootMean <- lineProjectedMean(boots)
 
-    # boots <- lapply(boots, function(u) {
+  # boots <- lapply(boots, function(u) {
   #   if (dot(u, bootMean) >= 0) {
   #     u
   #   } else {
@@ -1437,13 +1443,14 @@ lineBootstrapInference <- function(ls, numBoots, ...) {
   #   }
   # })
   for (i in seq_along(boots)) {
-    if (dot(boots[[i]], bootMean) < 0)
+    if (dot(boots[[i]], bootMean) < 0) {
       boots[[i]] <- -boots[[i]]
+    }
   }
-  
-  
+
+
   inf <- rayMahalanobisPercentiles(boots, center = bootMean, ...)
-  
+
   inf$pvalueLine <- function(l) {
     if (is.spherical(l)) l <- unclass(Vec3(l))
     if (dot(l, inf$center) < 0) {
@@ -1454,7 +1461,6 @@ lineBootstrapInference <- function(ls, numBoots, ...) {
   }
   inf
 }
-
 
 
 #' Elliptical region based on percentiles of Mahalanobis distance in the tangent
@@ -1494,7 +1500,7 @@ rayMahalanobisPercentiles <- function(us, center, alpha = 0.05, numPoints = 0, d
     covarInv <- diag(c(1, 1))
   } else {
     covar <- arithmeticMean(lapply(vs, function(v) {
-      nnmat(v) #outer(v, v)
+      nnmat(v) # outer(v, v)
     }))
     covarInv <- solve(covar)
   }
@@ -1624,7 +1630,7 @@ lineBinghamMLE <- function(us, weights = replicate(length(us), 1), numNonAdapt =
 
   # In eigen, the eigenvectors are descending and the eigenvectors are unit.
   ts <- lapply(seq_len(n), function(i) {
-    ws[[i]] * nnmat(us[[i]])#.fouter(us[[i]], us[[i]])
+    ws[[i]] * nnmat(us[[i]]) # .fouter(us[[i]], us[[i]])
   })
   tBar <- Reduce("+", ts)
   eig <- eigen(tBar, symmetric = TRUE)
@@ -2046,9 +2052,9 @@ rayFisherMLEInterpolation <- function() {
 
 #' @source `geologyGeometry` by Davis, J.R.
 rayRegressionSmallCircle <- function(xs, us, numSeeds = 5, numSteps = 1000, numPoints = 0, angleBound = Inf) {
-  n     <- length(us)
+  n <- length(us)
   lower <- c(-Inf, -Inf, -angleBound, -Inf, -Inf)
-  upper <- c( Inf,  Inf,  angleBound,  Inf,  Inf)
+  upper <- c(Inf, Inf, angleBound, Inf, Inf)
 
   f <- function(phiThetaAlphaTauSigma) {
     pole <- cartesianFromSpherical(c(1, phiThetaAlphaTauSigma[1:2]))
@@ -2135,8 +2141,8 @@ rayRegressionSmallCircle <- function(xs, us, numSeeds = 5, numSteps = 1000, numP
 #' @source `geologyGeometry` by Davis, J.R.
 lineRegressionSmallCircle <- function(xs, us, numSeeds = 5, numSteps = 1000, numPoints = 0, angleBound = Inf) {
   n <- length(us)
-  lower = c(-Inf, -Inf, -angleBound, -Inf, -Inf)
-  upper = c(Inf, Inf, angleBound, Inf, Inf)
+  lower <- c(-Inf, -Inf, -angleBound, -Inf, -Inf)
+  upper <- c(Inf, Inf, angleBound, Inf, Inf)
 
   f <- function(phiThetaAlphaTauSigma) {
     pole <- cartesianFromSpherical(c(1, phiThetaAlphaTauSigma[1:2]))
@@ -2156,11 +2162,11 @@ lineRegressionSmallCircle <- function(xs, us, numSeeds = 5, numSteps = 1000, num
   # Find the minimum, starting from a few seeds.
   best <- list(value = (2 * pi^2))
 
-  make_seed <- function(){
+  make_seed <- function() {
     c(
-    sphericalFromCartesian(lineUniform())[2:3],
-    stats::runif(1, -pi, pi),
-    sphericalFromCartesian(lineUniform())[2:3]
+      sphericalFromCartesian(lineUniform())[2:3],
+      stats::runif(1, -pi, pi),
+      sphericalFromCartesian(lineUniform())[2:3]
     )
   }
 
@@ -2214,7 +2220,6 @@ lineRegressionSmallCircle <- function(xs, us, numSeeds = 5, numSteps = 1000, num
   }
   results
 }
-
 
 
 # Warning: Not well tested. angleBound > 0 is a bound on the amount of rotation (either positive or negative) per unit of x.

@@ -56,10 +56,9 @@ usethis::use_data(example_lines_df, overwrite = TRUE)
 example_lines <- Line(example_lines_df$trend, example_lines_df$plunge)
 usethis::use_data(example_lines, overwrite = TRUE)
 
-strabo_prj<- structr::read_strabo_JSON("G:/My Drive/Moss_Lake/data.json") |> 
-  subset(feature_type %in% c('foliation', 'shear_zone', "plane_of_boudinage", 'bedding') &
-           linear_feature_type %in% c("stretching", "mineral_align")
-  )
+strabo_prj <- structr::read_strabo_JSON("G:/My Drive/Moss_Lake/data.json") |>
+  subset(feature_type %in% c("foliation", "shear_zone", "plane_of_boudinage", "bedding") &
+    linear_feature_type %in% c("stretching", "mineral_align"))
 usethis::use_data(strabo_prj, overwrite = TRUE)
 
 # strabo_prj_pair <- Pair(strabo_prj$planar, strabo_prj$linear)
@@ -68,14 +67,10 @@ usethis::use_data(strabo_prj, overwrite = TRUE)
 # balebrun_plot(strabo_prj_pair, col = assign_col_d(strabo_prj$data$spot_id), pch = 16)
 
 
-
 ramsay <- read.csv("inst/RamsayHuber1983.csv", header = FALSE)
 colnames(ramsay) <- c("R", "phi")
 ramsay <- as.matrix(ramsay)
 usethis::use_data(ramsay, overwrite = TRUE)
-
-
-
 
 
 holst <- tibble::tribble(
@@ -148,7 +143,6 @@ rownames(gray_example) <- gr$type
 usethis::use_data(gray_example, overwrite = TRUE)
 
 
-
 # Angelier 1990 fault slip data
 angelier1990_df <- readxl::read_xlsx("inst/angelier_data.xlsx", sheet = 1) |>
   # dplyr::filter(site %in% c("TYM", "AVB")) |>
@@ -179,10 +173,7 @@ usethis::use_data(shebandowan, overwrite = TRUE)
 
 
 # Osmundsen et al. 2010 / Hansen (2013) fault data
-osmundsen2010 <- read.delim("C:/Users/tstephan/Downloads/hanson_ds6.txt", sep = '\t', header = F) |> 
-    mutate(V1 = rhr2dd(V1)) |>
-    as.Pair()
+osmundsen2010 <- read.delim("C:/Users/tstephan/Downloads/hanson_ds6.txt", sep = "\t", header = F) |>
+  mutate(V1 = rhr2dd(V1)) |>
+  as.Pair()
 usethis::use_data(osmundsen2010, overwrite = TRUE)
-
-
-

@@ -84,7 +84,7 @@ The shape ratio is:
 
 \subsection{Reduced symmetric tensor}{
 
-\deqn{\mathbf{T}_2 = \mathbf{V} 
+\deqn{\mathbf{T}_2 = \mathbf{V}
 \begin{pmatrix}
    1 & 0 & 0 \\
    0 & \phi & 0 \\
@@ -158,7 +158,7 @@ title(sub = bquote(Phi == .(phi6_val) ~ "|" ~ bar("RUP") == .(rup6_val) * "\%"))
 
 # Angelier 1990 dataset
 nx <- length(angelier1990)
-par(mfrow = c(nx/2, nx/2))
+par(mfrow = c(nx / 2, nx / 2))
 
 invisible(lapply(seq_len(nx), function(i) {
   # inversion

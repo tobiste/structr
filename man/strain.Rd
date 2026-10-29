@@ -44,8 +44,8 @@ Converts different quantifications of strain.
 \deqn{\lambda = s^2 = (l/l_o)^2 = (1+e)^2}
 }
 \examples{
-longitudinal_strain(l=10,l0=5) 
+longitudinal_strain(l = 10, l0 = 5)
 angular_strain(25)
-quadratic_elongation(l=10,l0=5)
-stretch(l=10,l0=5)
+quadratic_elongation(l = 10, l0 = 5)
+stretch(l = 10, l0 = 5)
 }

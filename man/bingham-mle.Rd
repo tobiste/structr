@@ -54,10 +54,10 @@ print(r)
 
 stereoplot()
 points(example_planes, cex = 0.7)
-points(r$vectors, col = 'red', pch = 16, cex = 1.5)
+points(r$vectors, col = "red", pch = 16, cex = 1.5)
 
 rnd <- rbingham(100, r$A, "Plane")
-points(rnd, col = 'grey', cex = 0.7, pch = 16)
+points(rnd, col = "grey", cex = 0.7, pch = 16)
 }
 \seealso{
 \code{\link[=bingham_inference]{bingham_inference()}} for confidence regions, and \code{\link[=rbingham]{rbingham()}} to

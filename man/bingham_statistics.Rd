@@ -2,7 +2,7 @@
 % Please edit documentation in R/vector_stats.R
 \name{bingham_statistics}
 \alias{bingham_statistics}
-\title{Elliptical Concentration and Confidence Cone Estimation}
+\title{Statistics of a Bingham Distribution}
 \source{
 Borradaile, G. (2003). Spherical-Orientation Data. In: Statistics of
 Earth Science Data. Springer, Berlin, Heidelberg. https://doi.org/10.1007/978-3-662-05223-5_10
@@ -21,13 +21,15 @@ rows are the observations and the columns are the coordinates.}
 \value{
 list
 \describe{
-\item{\code{k}}{two-column vector containing the estimates for the minimum (\eqn{k_\text{min}}) and maximum concentration (\eqn{k_\text{max}}).}
-\item{\code{a95}}{two-column vector containing the estimates for the minimum and maximum 95\% confidence cone.}
-\item{\code{beta}}{The shape factor of the distribution given by the ratio \eqn{\frac{k_\text{min}}{k_\text{max}}}.}
+\item{\code{"mu"}}{Maximum concentration vector}
+\item{\code{"axes"}}{Axes of Bingham ellipse}
+\item{\code{"k"}}{two-column vector containing the estimates for the maximum (\eqn{k_\text{min}}) and minimum concentration (\eqn{k_\text{max}}).}
+\item{\code{"a95"}}{two-column vector containing the estimates for the maximum and minimum 95\% confidence cone. In radians when \code{x} is an object of class \code{"Vec3"},otherwise in degrees.}
+\item{\code{"beta"}}{The shape factor of the distribution given by the ratio \eqn{\frac{k_\text{min}}{k_\text{max}}}.}
 }
 }
 \description{
-Elliptical Concentration and Confidence Cone Estimation
+Statistics of a Bingham Distribution
 }
 \examples{
 set.seed(1234)

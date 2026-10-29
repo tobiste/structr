@@ -35,7 +35,7 @@
 #' cbind(R, SH = SH(S1, S2, S3, R = R))
 SH <- function(S1, S2, S3, R, tol = NULL, ortho.tol = 0.005) {
   tol <- tol %||% getOption("structr.tol")
-  
+
   # Convert to unit vectors
   all_rad <- all(is.Vec3(S1), is.Vec3(S2), is.Vec3(S3))
 

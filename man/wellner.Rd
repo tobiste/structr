@@ -6,48 +6,35 @@
 \alias{wellner.Line}
 \alias{wellner.Vec3}
 \alias{wellner.Plane}
-\alias{wellner_inference}
-\alias{wellner_inference.Vec3}
-\alias{wellner_inference.Line}
-\alias{wellner_inference.Ray}
-\alias{wellner_inference.Plane}
 \title{Wellner's Two-Sample Test}
 \source{
 modified after \code{geologyGeometry} (J.R. Davis): http://www.joshuadavis.us/software/
 }
 \usage{
-wellner(x, y)
+wellner(x, y, n_perm, level)
 
-\method{wellner}{Ray}(x, y)
+\method{wellner}{Ray}(x, y, n_perm = 1000L, level = 0.95)
 
-\method{wellner}{Line}(x, y)
+\method{wellner}{Line}(x, y, n_perm = 1000L, level = 0.95)
 
-\method{wellner}{Vec3}(x, y)
+\method{wellner}{Vec3}(x, y, n_perm = 1000L, level = 0.95)
 
-\method{wellner}{Plane}(x, y)
-
-wellner_inference(x, y, n_perm)
-
-\method{wellner_inference}{Vec3}(x, y, n_perm = 1000)
-
-\method{wellner_inference}{Line}(x, y, n_perm = 1000)
-
-\method{wellner_inference}{Ray}(x, y, n_perm = 1000)
-
-\method{wellner_inference}{Plane}(x, y, n_perm = 1000)
+\method{wellner}{Plane}(x, y, n_perm = 1000L, level = 0.95)
 }
 \arguments{
 \item{x, y}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
 rows are the observations and the columns are the coordinates.}
 
 \item{n_perm}{integer. Number of permutations.}
+
+\item{level}{numeric. Level of confidence}
 }
 \value{
 \code{wellner()} computes Wellner's T-statistic, a non-negative measure of
 dissimilarity between two datasets. The value is zero when the datasets
 are identical.
 
-\code{wellner_inference()} estimates the fraction of permutation tests in which
+Inference estimates the fraction of permutation tests in which
 the computed T-statistic exceeds the observed T for the original data
 (a number between 0 and 1). This value can be interpreted as a p-value
 for the null hypothesis that the two populations are identical
@@ -61,16 +48,23 @@ quantifies the dissimilarity between two sets of vectors. The statistic
 increases with the degree of difference between the datasets.
 }
 \details{
-\code{wellner_inference()} performs a permutation-based inference using
-Wellner's T-statistic to assess whether the two datasets are drawn from
+P-values are estimated using permutation-based inference to assess whether
+the two datasets are drawn from
 the same population.
 }
 \examples{
+set.seed(20250411)
 test <- rvmf(100)
 wellner(test, Line(120, 50))
-wellner_inference(test, Line(120, 50))
 }
 \references{
 Jon A. Wellner. "Permutation Tests for Directional Data."
 Ann. Statist. 7(5) 929-943, September, 1979. \doi{10.1214/aos/1176344779}
 }
+\seealso{
+Other tests:
+\code{\link[=bingham_test]{bingham_test()}},
+\code{\link[=fisher_ftest]{fisher_ftest()}},
+\code{\link[=rayleigh_test3]{rayleigh_test3()}}
+}
+\concept{tests}

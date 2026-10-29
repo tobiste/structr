@@ -143,7 +143,6 @@ defgrad_from_shearstrain <- function(Rxy = 1, Ryz = 1) {
 }
 
 
-
 #' @rdname defgrad
 #' @export
 defgrad.Pair <- function(x, ...) {
@@ -290,7 +289,6 @@ defgrad.velgrad <- function(x, time, steps, ...) {
 }
 
 
-
 #' Velocity gradient gradient tensors
 #'
 #' The velocity gradient tensor describes the velocity of particles at any
@@ -379,7 +377,6 @@ velgrad.defgrad <- function(x, time = 1L, ...) {
 }
 
 
-
 #' Rate and spin of velocity gradient tensor
 #'
 #' The velocity gradient tensor **L** can be decomposed into a symmetric matrix **S**
@@ -429,7 +426,6 @@ kinematic_vorticity <- function(kx, ky, gamma) {
   denom <- sqrt(2 * (log(kx)^2 + log(ky^2)) + gamma^2)
   gamma / denom
 }
-
 
 
 #' Flow Apophyses, Vorticity, and Instantaneous Stretching Axes

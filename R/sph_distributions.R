@@ -9,11 +9,11 @@
 #'  rows are the observations and the columns are the coordinates.
 #' @param k numeric. The concentration parameter (\eqn{\kappa}) of the von
 #' Mises-Fisher distribution
-#' @param method character. Algorithm to generate random vectors from a Fisher distribution. 
+#' @param method character. Algorithm to generate random vectors from a Fisher distribution.
 #' Either `"geologyGeometry"` (the default) to pick the `rayFisher()` algorithm  from the *geologyGeometry* code compilation, or
 #' `"rotasym"` to pick the [rotasym::r_vMF()] algorithm from the *rotasym* package.
 #'
-#' @source Adapted from [rotasym::r_vMF()] and [rotasym::d_vMF()], and 
+#' @source Adapted from [rotasym::r_vMF()] and [rotasym::d_vMF()], and
 #' `geologyGeometry` by Davis, J.R.
 #' @importFrom rotasym r_vMF d_vMF
 #
@@ -34,21 +34,21 @@ NULL
 
 #' @rdname vonmises-fisher
 #' @export
-rvmf <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, method = c('geologyGeometry', 'rotasym')) {
+rvmf <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, method = c("geologyGeometry", "rotasym")) {
   stopifnot(nrow(mu) == 1)
   method <- match.arg(method)
-  
-  if(method == 'rotasym'){
-  muv <- Vec3(mu) |>
-    unclass() |>
-    c()
-  res <- rotasym::r_vMF(n, muv, k)
-  colnames(res) <- c("x", "y", "z")
-  res <- Vec3(res)
+
+  if (method == "rotasym") {
+    muv <- Vec3(mu) |>
+      unclass() |>
+      c()
+    res <- rotasym::r_vMF(n, muv, k)
+    colnames(res) <- c("x", "y", "z")
+    res <- Vec3(res)
   } else {
-  r <- rayFisher(n = n, mu = as.vector(Vec3(mu)), kappa = k)
-  res <- do.call(rbind, r) |> 
-    Vec3()
+    r <- rayFisher(n = n, mu = as.vector(Vec3(mu)), kappa = k)
+    res <- do.call(rbind, r) |>
+      Vec3()
   }
 
   if (is.Line(mu) | is.Ray(mu)) {
@@ -68,7 +68,7 @@ dvmf <- function(x, mu, k = 5) {
   muv <- Vec3(mu) |>
     unclass() |>
     c()
-  
+
   rotasym::d_vMF(xv, muv, k)
 }
 
@@ -80,8 +80,8 @@ dvmf <- function(x, mu, k = 5) {
 #' @param class character. Coordinate class of the output vectors.
 #' @param n integer. number of random samples to be generated
 #' @param method character. The algorithm for generating uniformly distributed
-#' vectors. Either `"geologyGeometry"` (the default) for generating random points in Cartesian coordinates 
-#' (as in the `geologyGeometry` code compilation), 
+#' vectors. Either `"geologyGeometry"` (the default) for generating random points in Cartesian coordinates
+#' (as in the `geologyGeometry` code compilation),
 #' `"sfs"` for the "Spherical Fibonacci Spiral points on a sphere",
 #' `"gss"` for "Golden Section Spiral points on a sphere", or the algorithm
 #' [rotasym::r_unif_sphere()] from the rotasym package.
@@ -91,8 +91,8 @@ dvmf <- function(x, mu, k = 5) {
 #'  `"gss` is from  http://www.softimageblog.com/archives/115
 #'
 #' @importFrom rotasym r_unif_sphere
-#' 
-#' @source Adapted from [rotasym::r_unif_sphere()] and `rayUniform()` from 
+#'
+#' @source Adapted from [rotasym::r_unif_sphere()] and `rayUniform()` from
 #' `geologyGeometry` by Davis, J.R.
 #'
 #' @family random
@@ -108,7 +108,7 @@ dvmf <- function(x, mu, k = 5) {
 #'
 #' x3 <- runif.spherical(n = 100, "Ray", method = "rotasym")
 #' contour(x3)
-#' 
+#'
 #' x4 <- runif.spherical(n = 100, "Ray", method = "geologyGeometry")
 #' contour(x4)
 runif.spherical <- function(n = 100, class = c("Vec3", "Ray", "Line", "Plane"), method = c("geologyGeometry", "gss", "sfs", "rotasym")) {
@@ -132,7 +132,7 @@ runif.spherical <- function(n = 100, class = c("Vec3", "Ray", "Line", "Plane"), 
     r <- sqrt(1 - y * y)
     phi <- k * inc
     dc <- cbind(x = cos(phi) * r, y = y, z = sin(phi) * r)
-  } else if(method == "rotasym") {
+  } else if (method == "rotasym") {
     dc <- rotasym::r_unif_sphere(n, p = 3)
   } else {
     dc <- do.call(rbind, rayUniform(n))
@@ -143,7 +143,7 @@ runif.spherical <- function(n = 100, class = c("Vec3", "Ray", "Line", "Plane"), 
     Line(dc)
   } else if (class == "Plane") {
     Plane(dc)
-  } else if(class == "Ray") {
+  } else if (class == "Ray") {
     Ray(dc)
   } else {
     dc
@@ -163,7 +163,7 @@ runif.spherical <- function(n = 100, class = c("Vec3", "Ray", "Line", "Plane"), 
 #' @examples
 #' set.seed(20250411)
 #' x <- rfb(100, mu = Line(120, 50), k = 5, A = diag(c(-1, 0, 1)))
-#' 
+#'
 #' contour(x)
 #' points(x)
 rfb <- function(n = 100, mu = Vec3(1, 0, 0), k = 5, A) {
@@ -252,7 +252,7 @@ rbingham_eig <- function(n, eigenvalues, .class = c("Vec3", "Line", "Ray", "Plan
 #' @examples
 #' set.seed(20250411)
 #' r <- rkent(100, mu = Ray(120, 50), k = 5, b = 1)
-#' 
+#'
 #' contour(r)
 #' points(r)
 rkent <- function(n, mu = Vec3(1, 0, 0), k = 5, b) {
@@ -272,10 +272,10 @@ rkent <- function(n, mu = Vec3(1, 0, 0), k = 5, b) {
 
 
 #' Watson Distribution
-#' 
-#' A naive acceptance-rejection sampling algorithm, based on bounding the 
-#' density (with respect to the distance from `mu`) with a constant. For large 
-#' `kappa`, this method grows inefficient. For `kappa` == 100, about 13 tries 
+#'
+#' A naive acceptance-rejection sampling algorithm, based on bounding the
+#' density (with respect to the distance from `mu`) with a constant. For large
+#' `kappa`, this method grows inefficient. For `kappa` == 100, about 13 tries
 #' are needed per success. For `kappa` == -100, about 18 tries are needed.
 #'
 #' @inheritParams rvmf
@@ -283,23 +283,23 @@ rkent <- function(n, mu = Vec3(1, 0, 0), k = 5, b) {
 #' @returns vector of class `mu` of length `n`
 #' @family random
 #' @export
-#' 
+#'
 #' @source `geologyGeometry` by Davis, J.R.
 #'
 #' @examples
 #' set.seed(20250411)
 #' r <- rwatson(100, mu = Ray(120, 50), k = 10)
-#' 
+#'
 #' contour(r)
 #' points(r)
-rwatson <- function(n, mu, k){
-  muv <- Vec3(mu) |> 
+rwatson <- function(n, mu, k) {
+  muv <- Vec3(mu) |>
     as.vector()
-  
+
   r <- lineWatson(n = n, mu = muv, kappa = k)
-  res <- do.call(rbind, r) |> 
-    as.Vec3() 
-  
+  res <- do.call(rbind, r) |>
+    as.Vec3()
+
   if (is.Line(mu) | is.Ray(mu)) {
     Line(res)
   } else if (is.Plane(mu)) {
@@ -330,7 +330,7 @@ rwatson <- function(n, mu, k){
 #' rp <- lapply(r, rot2pair) |> lapply(unclass)
 #' rp <- do.call(rbind, args = rp) |>
 #'   as.Pair()
-#'   
+#'
 #' # plot pairs
 #' plot(rp)
 rrot <- function(n) {

@@ -75,7 +75,6 @@
 }
 
 
-
 # Per-fault angular misfit alpha (unsigned 0-90 deg, line metric)
 .alpha_deg <- function(sigma, normals, slips) {
   vapply(seq_len(nrow(normals)), function(i) {
@@ -114,8 +113,6 @@
 }
 
 
-
-
 # WEIGHT UTILITIES--------------------------------------------------------------
 
 #' Convert a raw signal vector to weights with NA imputation.
@@ -130,7 +127,7 @@
 #'                  Default: 1/x^2 (inverse variance).
 #' @param pessimistic If TRUE, impute NAs with the 75th percentile of the
 #'                  observed signal (use when missingness is informative).
-#' @noRd 
+#' @noRd
 NULL
 
 # signal_to_weights <- function(signal,
@@ -153,45 +150,46 @@ NULL
 
 # Tukey bisquare: hard zeroes beyond threshold (most aggressive outlier rejection)
 .w_tukey <- function(alpha_deg, k = 45) {
-  ifelse(alpha_deg >= k, 0, (1 - (alpha_deg/k)^2)^2)
+  ifelse(alpha_deg >= k, 0, (1 - (alpha_deg / k)^2)^2)
 }
 
 # Andrews sine: smooth zero beyond threshold
 .w_andrews <- function(alpha_deg, k = 60) {
   ifelse(alpha_deg >= k, 0,
-         sin(pi * alpha_deg / k) / (pi * alpha_deg / k + 1e-15))
+    sin(pi * alpha_deg / k) / (pi * alpha_deg / k + 1e-15)
+  )
 }
 
 # Kernel weight function
-.w_robust <- function(robust_kernel, robust_k_deg){
+.w_robust <- function(robust_kernel, robust_k_deg) {
   switch(robust_kernel,
-                    huber    = function(a) .w_huber(a,   k = robust_k_deg),
-                    tukey    = function(a) .w_tukey(a,   k = robust_k_deg),
-                    andrews  = function(a) .w_andrews(a, k = robust_k_deg)
+    huber    = function(a) .w_huber(a, k = robust_k_deg),
+    tukey    = function(a) .w_tukey(a, k = robust_k_deg),
+    andrews  = function(a) .w_andrews(a, k = robust_k_deg)
   )
-  }
+}
 
 # Spatial median on S5: more robust initial estimate than mean eigenvector
 .s5_median <- function(normals, slips, weights, max_iter = 50L) {
-  N   <- nrow(normals)
+  N <- nrow(normals)
   # Single-fault y-vectors (poles of solution great circles)
   poles <- matrix(0, N, 5)
   for (i in seq_len(N)) {
-    ep5 <- drop(crossprod(.B, .eps6_prime(slips[i,], normals[i,])))
-    poles[i,] <- ep5 / sqrt(sum(ep5^2))
+    ep5 <- drop(crossprod(.B, .eps6_prime(slips[i, ], normals[i, ])))
+    poles[i, ] <- ep5 / sqrt(sum(ep5^2))
   }
   # Weiszfeld algorithm on S5
   y_cur <- colMeans(poles * weights)
   y_cur <- y_cur / sqrt(sum(y_cur^2))
   for (iter in seq_len(max_iter)) {
     # Distances from current estimate
-    dots  <- pmax(1e-6, abs(poles %*% y_cur))
-    theta <- acos(pmin(1, dots))               # angular distances
+    dots <- pmax(1e-6, abs(poles %*% y_cur))
+    theta <- acos(pmin(1, dots)) # angular distances
     # Weiszfeld weights: 1/theta (downweight distant points)
-    wz    <- weights / pmax(theta, 1e-4)
+    wz <- weights / pmax(theta, 1e-4)
     y_new <- colSums(poles * wz)
     y_new <- y_new / sqrt(sum(y_new^2))
-    if (acos(pmax(-1,pmin(1,abs(sum(y_cur*y_new))))) * 180/pi < 1e-4) break
+    if (acos(pmax(-1, pmin(1, abs(sum(y_cur * y_new))))) * 180 / pi < 1e-4) break
     y_cur <- y_new
   }
   y_cur
@@ -200,8 +198,8 @@ NULL
 # Flag outliers using MAD-based threshold
 #' @importFrom stats median
 .flag_outliers_mad <- function(alpha_deg, k = 2.5) {
-  med  <- stats::median(alpha_deg, na.rm = TRUE)
-  mad  <- stats::median(abs(alpha_deg - med), na.rm = TRUE)
+  med <- stats::median(alpha_deg, na.rm = TRUE)
+  mad <- stats::median(abs(alpha_deg - med), na.rm = TRUE)
   # Scale factor 1.4826 makes MAD consistent with normal distribution sigma
   sigma_mad <- 1.4826 * mad
   alpha_deg > (med + k * sigma_mad)
@@ -223,7 +221,6 @@ NULL
 #   if (!any(w > 0)) stop("At least one weight must be positive.")
 #   w / mean(w)
 # }
-
 
 
 # STAGE 1-----------------------------------------------------------------------
@@ -810,19 +807,19 @@ NULL
 #'   Yamaji, A. & Sato, K. (2006). Distances for the solutions of stress
 #'   tensor inversion in relation to misfit angles that accompany the
 #'   solutions. \emph{Geophys. J. Int.}, 167, 933-942.
-#'   
+#'
 #'   Stephan (in prep)
-#'   
+#'
 #' @name slip_inversion_wissi
-#' 
+#'
 #' @family stress-inversion
 #' @family wissi
 #'
 #' @examples
 #' set.seed(20250411)
-#' 
+#'
 #' nx <- length(angelier1990)
-#' par(mfrow = c(2, nx/2))
+#' par(mfrow = c(2, nx / 2))
 #'
 #' invisible(lapply(seq_len(nx), function(i) {
 #'   # inversion
@@ -869,12 +866,11 @@ wissi <- function(normals,
                   tol_deg = 1e-4,
                   run_stage4 = TRUE,
                   # --- new robust options ---
-                  robust          = TRUE,
-                  robust_kernel   = c("huber", "tukey", "andrews"),
-                  robust_k_deg    = 30,
-                  robust_mad_k    = 2.5,
-                  init_median     = TRUE
-                  ) {
+                  robust = TRUE,
+                  robust_kernel = c("huber", "tukey", "andrews"),
+                  robust_k_deg = 30,
+                  robust_mad_k = 2.5,
+                  init_median = TRUE) {
   # --- Input validation ---
   if (!is.matrix(normals) || !is.matrix(slips)) {
     stop("'normals' and 'slips' must be matrices.")
@@ -892,11 +888,11 @@ wissi <- function(normals,
   robust_kernel <- match.arg(robust_kernel)
   # Kernel weight function
   .w_robust <- switch(robust_kernel,
-                      huber    = function(a) .w_huber(a,   k = robust_k_deg),
-                      tukey    = function(a) .w_tukey(a,   k = robust_k_deg),
-                      andrews  = function(a) .w_andrews(a, k = robust_k_deg)
+    huber    = function(a) .w_huber(a, k = robust_k_deg),
+    tukey    = function(a) .w_tukey(a, k = robust_k_deg),
+    andrews  = function(a) .w_andrews(a, k = robust_k_deg)
   )
-  
+
   N <- nrow(normals)
 
   # --- Weights ---
@@ -915,81 +911,90 @@ wissi <- function(normals,
   # Robust: spatial median on S5; otherwise: standard weighted eigenvector
   if (robust && init_median) {
     x5_init <- .s5_median(normals, slips, wt)
-    y_init  <- drop(.B %*% x5_init)
-    y_init  <- .resolve_sense(y_init / sqrt(sum(y_init^2)), normals, slips)
+    y_init <- drop(.B %*% x5_init)
+    y_init <- .resolve_sense(y_init / sqrt(sum(y_init^2)), normals, slips)
   } else {
-    s1     <- .wissi_stage1(normals, slips, wt)
+    s1 <- .wissi_stage1(normals, slips, wt)
     y_init <- s1$y
   }
-  
+
   # --- Stages 2 + 3 combined: magnitude + sense + robust reweighting ---
   lambda_max <- sqrt(3) / 2
-  y_cur      <- y_init
-  phi_i      <- rep(1, N)
-  mu_i       <- rep(1, N)
-  w_rob      <- rep(1, N)
-  slips_adj  <- slips
+  y_cur <- y_init
+  phi_i <- rep(1, N)
+  mu_i <- rep(1, N)
+  w_rob <- rep(1, N)
+  slips_adj <- slips
   n_iter_tot <- 0L
-  
+
   for (ann in seq_len(n_anneal)) {
     gamma <- gamma_max * (ann / n_anneal)
-    
+
     for (iter in seq_len(max_iter)) {
       sigma <- .y6_to_sigma(y_cur)
-      
+
       # --- Magnitude weights (Stage 2 / Mostafa) ---
-      mu_i <- vapply(seq_len(N), function(i)
-        max(1e-4, .tau_mag(sigma, normals[i,]) / lambda_max), numeric(1L))
-      
+      mu_i <- vapply(seq_len(N), function(i) {
+        max(1e-4, .tau_mag(sigma, normals[i, ]) / lambda_max)
+      }, numeric(1L))
+
       # --- Sense annealing (Stage 3) ---
-      tau_dot_s <- vapply(seq_len(N), function(i)
-        sum(.shear_tau(sigma, normals[i,]) * slips[i,]), numeric(1L))
-      phi_i     <- tanh(gamma * tau_dot_s)
+      tau_dot_s <- vapply(seq_len(N), function(i) {
+        sum(.shear_tau(sigma, normals[i, ]) * slips[i, ])
+      }, numeric(1L))
+      phi_i <- tanh(gamma * tau_dot_s)
       slips_adj <- slips
       slips_adj[phi_i < 0, ] <- -slips[phi_i < 0, ]
-      
+
       # --- Robust misfit weights (new) ---
       if (robust) {
         alpha_i <- vapply(seq_len(N), function(i) {
-          tau <- .shear_tau(sigma, normals[i,])
-          tn  <- sqrt(sum(tau^2))
-          if (tn < 1e-12) return(90)
-          acos(pmax(-1, pmin(1, abs(sum(tau/tn * slips_adj[i,]))))) * 180/pi
+          tau <- .shear_tau(sigma, normals[i, ])
+          tn <- sqrt(sum(tau^2))
+          if (tn < 1e-12) {
+            return(90)
+          }
+          acos(pmax(-1, pmin(1, abs(sum(tau / tn * slips_adj[i, ]))))) * 180 / pi
         }, numeric(1L))
         w_rob <- .w_robust(alpha_i)
       }
-      
+
       # Combined weight: quality * magnitude * |sense| * robust
       wt_i <- wt * mu_i * pmax(abs(phi_i), 0.01) * w_rob
-      
+
       M5_new <- .build_M5(normals, slips_adj, wt_i)
-      res    <- .solve_M5(M5_new)
-      y_new  <- .resolve_sense(res$y, normals, slips_adj)
-      
-      delta      <- angular_stress_distance(y_cur, y_new)
+      res <- .solve_M5(M5_new)
+      y_new <- .resolve_sense(res$y, normals, slips_adj)
+
+      delta <- angular_stress_distance(y_cur, y_new)
       n_iter_tot <- n_iter_tot + 1L
-      y_cur      <- y_new
+      y_cur <- y_new
       if (delta < tol_deg) break
     }
   }
-  
+
   # --- Stage 4: analytic uncertainty ---
-  unc <- if (run_stage4){
+  unc <- if (run_stage4) {
     .wissi_stage4(normals, slips_adj, wt_i, y_cur,
-                  sigma_alpha_deg = sigma_alpha_deg)
-  } else NULL
-  
+      sigma_alpha_deg = sigma_alpha_deg
+    )
+  } else {
+    NULL
+  }
+
   # --- Post-processing ---
-  dec      <- .decompose_y(y_cur)
-  sigma    <- dec$sigma
-  a_deg    <- .alpha_deg(sigma, normals, slips_adj)
+  dec <- .decompose_y(y_cur)
+  sigma <- dec$sigma
+  a_deg <- .alpha_deg(sigma, normals, slips_adj)
   a_signed <- .alpha_signed_deg(sigma, normals, slips_adj)
-  
+
   # MAD-based outlier flags
-  outlier_mad <- if (robust){
+  outlier_mad <- if (robust) {
     .flag_outliers_mad(a_deg, k = robust_mad_k)
-  }  else rep(FALSE, N)
-  
+  } else {
+    rep(FALSE, N)
+  }
+
   list(
     sigma             = sigma,
     y                 = y_cur,
@@ -1003,13 +1008,13 @@ wissi <- function(normals,
     mean_alpha        = mean(a_deg, na.rm = TRUE),
     median_alpha      = median(a_deg, na.rm = TRUE),
     suspected_flipped = which(a_signed > 90),
-    outliers_mad      = which(outlier_mad),       # MAD-flagged outliers
+    outliers_mad      = which(outlier_mad), # MAD-flagged outliers
     n_flipped_sense   = sum(phi_i < 0),
     slips_corrected   = slips_adj,
     mu                = mu_i,
     phi_sense         = phi_i,
-    w_robust          = w_rob,                    # final robust weights
-    wt_combined       = wt_i,                     # all weights combined
+    w_robust          = w_rob, # final robust weights
+    wt_combined       = wt_i, # all weights combined
     eigenvalue_gap    = res$eigvals[4L] - res$eigvals[5L],
     M5_eigvals        = res$eigvals,
     unc               = unc,
@@ -1027,37 +1032,39 @@ slip_inversion_wissi <- function(x, weights = NULL,
                                  tol_deg = 1e-4,
                                  run_stage4 = TRUE,
                                  # --- new robust options ---
-                                 robust          = TRUE,
-                                 robust_kernel   = c("huber", "tukey", "andrews"),
-                                 robust_k_deg    = 30,
-                                 robust_mad_k    = 2.5,
-                                 init_median     = TRUE) {
+                                 robust = TRUE,
+                                 robust_kernel = c("huber", "tukey", "andrews"),
+                                 robust_k_deg = 30,
+                                 robust_mad_k = 2.5,
+                                 init_median = TRUE) {
   stopifnot(is.Pair(x))
   normals <- Vec3(Plane(x)) |> unclass()
   slips <- if (is.Fault(x)) Ray(x) else Line(x)
   slips <- Vec3(slips) |> unclass()
-  res <- wissi(normals, slips, weights = weights, sigma_alpha_deg = sigma_alpha_deg,
-               gamma_max = gamma_max, n_anneal = n_anneal, max_iter = max_iter,
-               tol_deg = tol_deg, run_stage4 = run_stage4, 
-               robust = robust, robust_kernel = robust_kernel, robust_k_deg = robust_k_deg,
-               robust_mad_k = robust_mad_k, init_median = init_median)
-  
-  #res$principal_axes <- as.Vec3(rbind(res$sigma1, res$sigma2, res$sigma3)) |> Line()
-  #res$principal_vals <- res$eigenvalues
-  
+  res <- wissi(normals, slips,
+    weights = weights, sigma_alpha_deg = sigma_alpha_deg,
+    gamma_max = gamma_max, n_anneal = n_anneal, max_iter = max_iter,
+    tol_deg = tol_deg, run_stage4 = run_stage4,
+    robust = robust, robust_kernel = robust_kernel, robust_k_deg = robust_k_deg,
+    robust_mad_k = robust_mad_k, init_median = init_median
+  )
+
+  # res$principal_axes <- as.Vec3(rbind(res$sigma1, res$sigma2, res$sigma3)) |> Line()
+  # res$principal_vals <- res$eigenvalues
+
   s <- sigma2stress(res$sigma)
   res$principal_axes <- s$axes
   res$principal_vals <- s$vals
   res$sigma1 <- res$sigma2 <- res$sigma3 <- res$eigenvalues <- res$Phi <- NULL
-  
+
   res$stress_shape <- stress_shape(res$sigma)
-  
+
   res$SHmax <- SH(res$principal_axes[1, ], res$principal_axes[2, ], res$principal_axes[3, ], R = res$stress_shape$R)
-  
+
   res$slips_corrected <- as.Vec3(res$slips_corrected)
-  
+
   res$misfit <- slip_inversion_misfit(res$sigma, x)
-  
+
   return(res)
 }
 
@@ -1070,14 +1077,13 @@ wissi_polyphase <- function(normals, slips,
                             sigma_K_deg = 30,
                             seed = NULL,
                             ...) {
-  
   if (!is.matrix(normals) || !is.matrix(slips)) {
-   stop("'normals' and 'slips' must be matrices.")
+    stop("'normals' and 'slips' must be matrices.")
   }
   if (nrow(normals) < 4L) {
     stop("At least 4 fault slip measurements are required.")
   }
-  
+
   N <- nrow(normals)
   wt <- if (is.null(weights)) {
     rep(1, N)
@@ -1086,12 +1092,12 @@ wissi_polyphase <- function(normals, slips,
     w[is.na(w)] <- mean(w, na.rm = TRUE)
     w / mean(w)
   }
-  
+
   .wissi_stage5(normals, slips, wt,
-                k_max       = k_max,
-                sigma_K_deg = sigma_K_deg,
-                wissi_args  = list(...),
-                seed        = seed
+    k_max       = k_max,
+    sigma_K_deg = sigma_K_deg,
+    wissi_args  = list(...),
+    seed        = seed
   )
 }
 
@@ -1116,70 +1122,73 @@ wissi_polyphase <- function(normals, slips,
 #'   \item{`phase_results`}{list of `k` `slip_inversion_wissi()` results, one per phase}
 #'   \item{`D_mat`}{N x N pairwise ASD matrix between fault poles (degrees)}
 #'   }
-#'  
-#' @family wissi 
-#' 
+#'
+#' @family wissi
+#'
 #' @export
-#' 
+#'
 #' @examples
 #' res <- slip_inversion_wissi_polyphase(angelier1990$KAM, sigma_K_deg = 15)
-#' 
+#'
 #' # check amount of clusters detected
 #' res$k_opt
-#' 
-#' 
+#'
+#'
 #' # plot the results in lambert projection:
-#' cols <- assign_col_d(seq_len(res$k_opt))#' 
+#' cols <- assign_col_d(seq_len(res$k_opt)) #'
 #' par(mfrow = c(1, 2))
-#' 
+#'
 #' stereoplot()
 #' angelier(angelier1990$KAM, col = assign_col_d(res$assignment))
-#' legend('topleft', title = 'Phases', fill = cols, legend = 1:3)
-#' 
-#' 
+#' legend("topleft", title = "Phases", fill = cols, legend = 1:3)
+#'
+#'
 #' stereoplot()
-#' angelier(angelier1990$KAM, col = 'grey')
-#' for(k in seq_len(res$k_opt)){
-#'    res_k <- res$phase_results[[k]]
-#'    points(res_k$principal_axes, col = cols[k], pch = 16:18, cex = 2) 
-#'  }
-#' legend('topright', title = "Principal axes", pch = 16:18, col = 'black', 
-#'    legend = c('S1', 'S2', 'S3'))
-#'  
-#'  dev.off()
-slip_inversion_wissi_polyphase <- function(x, 
+#' angelier(angelier1990$KAM, col = "grey")
+#' for (k in seq_len(res$k_opt)) {
+#'   res_k <- res$phase_results[[k]]
+#'   points(res_k$principal_axes, col = cols[k], pch = 16:18, cex = 2)
+#' }
+#' legend("topright",
+#'   title = "Principal axes", pch = 16:18, col = "black",
+#'   legend = c("S1", "S2", "S3")
+#' )
+#'
+#' dev.off()
+slip_inversion_wissi_polyphase <- function(x,
                                            weights = NULL,
                                            k_max = 4L,
                                            sigma_K_deg = 30,
-                                           seed = NULL, ...){
+                                           seed = NULL, ...) {
   stopifnot(is.Pair(x))
   normals <- Vec3(Plane(x)) |> unclass()
   slips <- if (is.Fault(x)) Ray(x) else Line(x)
   slips <- Vec3(slips) |> unclass()
-  
-  res <- wissi_polyphase(normals, slips, 
-                  weights = weights,
-                  k_max = k_max,
-                  sigma_K_deg = sigma_K_deg,
-                  seed = seed, ...)
-  
-  res$phase_results <- lapply(res$phase_results, function(i){
+
+  res <- wissi_polyphase(normals, slips,
+    weights = weights,
+    k_max = k_max,
+    sigma_K_deg = sigma_K_deg,
+    seed = seed, ...
+  )
+
+  res$phase_results <- lapply(res$phase_results, function(i) {
     s <- sigma2stress(i$sigma)
     i$principal_axes <- s$axes
     i$principal_vals <- s$vals
     i$sigma1 <- i$sigma2 <- i$sigma3 <- i$eigenvalues <- i$Phi <- NULL
-    
+
     i$stress_shape <- stress_shape(i$sigma)
-    
+
     i$SHmax <- SH(i$principal_axes[1, ], i$principal_axes[2, ], i$principal_axes[3, ], R = i$stress_shape$R)
-    
+
     i$slips_corrected <- as.Vec3(i$slips_corrected)
-    
+
     i$misfit <- slip_inversion_misfit(i$sigma, x)
-    
+
     return(i)
   })
-  
+
   return(res)
 }
 
@@ -1195,7 +1204,7 @@ wissi_bootstrap <- function(normals, slips,
   N <- nrow(normals)
   res0 <- wissi(normals, slips, weights, ...)
   y0 <- res0$y
-  
+
   resample_one <- function(b) {
     idx <- sample(N, N, replace = TRUE)
     w_b <- if (!is.null(weights)) weights[idx] else NULL
@@ -1216,16 +1225,16 @@ wissi_bootstrap <- function(normals, slips,
       michael_distance(y0, rb$y)
     )
   }
-  
+
   boot_mat <- vapply(seq_len(B), resample_one, numeric(3L))
-  
+
   list(
-    optimal        = res0,
-    thetas         = boot_mat[1, ],
+    optimal = res0,
+    thetas = boot_mat[1, ],
     dispersion = mean(boot_mat[1, ], na.rm = TRUE),
-    sd         = sd(boot_mat[1, ], na.rm = TRUE),
-    D_bar          = mean(boot_mat[2, ], na.rm = TRUE),
-    DM_bar         = mean(boot_mat[3, ], na.rm = TRUE)
+    sd = sd(boot_mat[1, ], na.rm = TRUE),
+    D_bar = mean(boot_mat[2, ], na.rm = TRUE),
+    DM_bar = mean(boot_mat[3, ], na.rm = TRUE)
   )
 }
 
@@ -1239,8 +1248,8 @@ wissi_bootstrap <- function(normals, slips,
 #' @param n_iter     Number of bootstrap replicates. Default `500`.
 #' @param seed  Optional RNG seed.
 #' @param ...   Additional arguments passed to [slip_inversion_wissi()].
-#' 
-#' @family wissi 
+#'
+#' @family wissi
 #' @export
 #'
 #' @return A named list with:
@@ -1252,35 +1261,36 @@ wissi_bootstrap <- function(normals, slips,
 #'   \item{`D_bar`}{mean Orife-Lisle distance from optimal}
 #'   \item{`DM_bar`}{mean Michael distance from optimal}
 #'   }
-#'   
+#'
 #' @examples
 #' res <- slip_inversion_wissi_boot(angelier1990$AVB, n_iter = 4)
-#' 
+#'
 #' stereoplot()
-#' angelier(angelier1990$KAM, col = 'grey')
+#' angelier(angelier1990$KAM, col = "grey")
 #' lines(res$optimal$principal_axes, res$sd, col = 2:4)
-#' points(res$optimal$principal_axes, pch = 16:18, cex = 2, col= 2:4)
-#' text(res$optimal$principal_axes, 
-#' label = rownames(res$optimal$principal_axes), col= 2:4, adj = -.25)
-slip_inversion_wissi_boot <- function(x, n_iter = 500L, seed = NULL, ...){
+#' points(res$optimal$principal_axes, pch = 16:18, cex = 2, col = 2:4)
+#' text(res$optimal$principal_axes,
+#'   label = rownames(res$optimal$principal_axes), col = 2:4, adj = -.25
+#' )
+slip_inversion_wissi_boot <- function(x, n_iter = 500L, seed = NULL, ...) {
   stopifnot(is.Pair(x))
   normals <- Vec3(Plane(x)) |> unclass()
   slips <- if (is.Fault(x)) Ray(x) else Line(x)
   slips <- Vec3(slips) |> unclass()
   res <- wissi_bootstrap(normals, slips, B = n_iter, seed = seed, ...)
-  
+
   s <- sigma2stress(res$optimal$sigma)
   res$optimal$principal_axes <- s$axes
   res$optimal$principal_vals <- s$vals
   res$optimal$sigma1 <- res$optimal$sigma2 <- res$optimal$sigma3 <- res$optimal$eigenvalues <- res$optimal$Phi <- NULL
-  
+
   res$optimal$stress_shape <- stress_shape(res$optimal$sigma)
-  
+
   res$optimal$SHmax <- SH(res$optimal$principal_axes[1, ], res$optimal$principal_axes[2, ], res$optimal$principal_axes[3, ], R = res$optimal$stress_shape$R)
-  
+
   res$optimal$slips_corrected <- as.Vec3(res$optimal$slips_corrected)
-  
+
   res$optimal$misfit <- slip_inversion_misfit(res$optimal$sigma, x)
-  
+
   return(res)
 }

@@ -39,7 +39,7 @@ This essentially an amount that is added to \code{radius} and the length of the 
 \examples{
 old <- options(structr.upper.hem = TRUE)
 # ... plotting calls now default to upper hemisphere
-options(old)  # restore
+options(old) # restore
 }
 \seealso{
 \code{\link[=stereoplot]{stereoplot()}}

@@ -189,35 +189,31 @@ as.Fault <- function(x) {
 #     y <- as.double(y)
 #     z <- as.double(z)
 #   }
-# 
+#
 #   res <- cbind(x, y, z)
 #   rownames(res) <- rn
 #   as.Vec3(res)
 # }
 Vec3 <- function(x, y, z) {
   if (is.Vec3(x)) {
-    return(x)                                     # nothing to do
-    
+    return(x) # nothing to do
   } else if (is.Line(x) || is.Ray(x)) {
-    v  <- unclass(x)
+    v <- unclass(x)
     res <- lin2vec(v[, "azimuth"], v[, "plunge"])
     rownames(res) <- rownames(v)
     return(as.Vec3(res))
-    
   } else if (is.Plane(x)) {
-    v  <- unclass(x)
+    v <- unclass(x)
     res <- fol2vec(v[, "dip_direction"], v[, "dip"])
     rownames(res) <- rownames(v)
     return(as.Vec3(res))
-    
   } else if (inherits(x, "matrix") && missing(y) && missing(z)) {
     rn <- rownames(x)
     storage.mode(x) <- "double"
-    rownames(x) <- rn                             # storage.mode<- may drop names
+    rownames(x) <- rn # storage.mode<- may drop names
     return(as.Vec3(x))
-    
   } else {
-    rn  <- rownames(x)
+    rn <- rownames(x)
     res <- cbind(as.double(x), as.double(y), as.double(z))
     rownames(res) <- rn
     return(as.Vec3(res))
@@ -228,46 +224,42 @@ Vec3 <- function(x, y, z) {
 #' @export
 Line <- function(x, plunge) {
   if (is.Line(x)) {
-    return(x)                                      # already correct, no-op
+    return(x) # already correct, no-op
   }
-  
+
   if (is.Vec3(x)) {
     rn <- rownames(unclass(x))
-    v  <- vec2lin(x[, 1L], x[, 2L], x[, 3L])
+    v <- vec2lin(x[, 1L], x[, 2L], x[, 3L])
     azimuth <- v[, "azimuth"]
-    plunge  <- v[, "plunge"]
-    
+    plunge <- v[, "plunge"]
   } else if (is.Plane(x)) {
-    rn      <- rownames(unclass(x))
+    rn <- rownames(unclass(x))
     azimuth <- x[, "dip_direction"] + 180
-    plunge  <- 90 - x[, "dip"]
-    
+    plunge <- 90 - x[, "dip"]
   } else if (is.Pair(x)) {
-    rn      <- rownames(unclass(x))
+    rn <- rownames(unclass(x))
     azimuth <- x[, "azimuth"]
-    plunge  <- x[, "plunge"]
-    
+    plunge <- x[, "plunge"]
   } else if (is.Ray(x)) {
-    rn      <- rownames(unclass(x))
+    rn <- rownames(unclass(x))
     azimuth <- x[, "azimuth"]
-    plunge  <- x[, "plunge"]
-    neg     <- plunge < 0                          # logical index, no ifelse allocation
+    plunge <- x[, "plunge"]
+    neg <- plunge < 0 # logical index, no ifelse allocation
     azimuth[neg] <- azimuth[neg] + 180
-    plunge  <- abs(plunge)
-    
+    plunge <- abs(plunge)
   } else {
     if (missing(plunge)) {
-      xm     <- vec2mat(x)
-      rn     <- rownames(xm)
+      xm <- vec2mat(x)
+      rn <- rownames(xm)
       plunge <- xm[, 2L]
-      x      <- xm[, 1L]
+      x <- xm[, 1L]
     } else {
       rn <- rownames(x)
     }
     azimuth <- as.double(x)
-    plunge  <- as.double(plunge)
+    plunge <- as.double(plunge)
   }
-  
+
   res <- cbind(azimuth %% 360, plunge)
   rownames(res) <- rn
   as.Line(res)
@@ -282,42 +274,36 @@ Ray <- function(x, plunge, sense = NULL) {
   } else {
     stopifnot(abs(sense) == 1)
   }
-  
+
   if (is.Ray(x)) {
-    return(x)                                      # already correct, no-op
-    
+    return(x) # already correct, no-op
   } else if (is.Vec3(x)) {
-    l       <- Line(x)
-    sense   <- sign(x[, 3L])
+    l <- Line(x)
+    sense <- sign(x[, 3L])
     azimuth <- l[, 1L]
-    plunge  <- l[, 2L]
-    
-  } else if (is.Fault(x)) {                       # before is.Pair — Fault is a Pair subtype
+    plunge <- l[, 2L]
+  } else if (is.Fault(x)) { # before is.Pair — Fault is a Pair subtype
     azimuth <- x[, "azimuth"]
-    plunge  <- x[, "plunge"]
-    sense   <- x[, "sense"]
-    
+    plunge <- x[, "plunge"]
+    sense <- x[, "sense"]
   } else if (is.Line(x)) {
     azimuth <- x[, 1L]
-    plunge  <- x[, 2L]
-    
+    plunge <- x[, 2L]
   } else if (is.Plane(x)) {
-    l       <- Line(x)
+    l <- Line(x)
     azimuth <- l[, 1L]
-    plunge  <- l[, 2L]
-    
-  } else if (is.Pair(x)) {                        # now safe: Fault already handled
+    plunge <- l[, 2L]
+  } else if (is.Pair(x)) { # now safe: Fault already handled
     azimuth <- x[, "azimuth"]
-    plunge  <- x[, "plunge"]
-    
+    plunge <- x[, "plunge"]
   } else {
-    azimuth <- x                                   # raw numeric fallback
+    azimuth <- x # raw numeric fallback
   }
-  
+
   # logical index instead of ifelse — no three-vector allocation
-  azi_corr          <- integer(length(sense))      # all zeros
+  azi_corr <- integer(length(sense)) # all zeros
   azi_corr[sense != 1L] <- 180L
-  
+
   cbind(azimuth + azi_corr, sense * plunge) |>
     as.Ray()
 }
@@ -340,37 +326,36 @@ to_lower <- function(x) {
 #' @rdname classes
 #' @export
 Plane <- function(x, dip) {
-  if (is.Plane(x)) return(x)
-  
+  if (is.Plane(x)) {
+    return(x)
+  }
+
   if (is.Vec3(x)) {
     rn <- rownames(unclass(x))
-    v  <- vec2fol(x[, 1L], x[, 2L], x[, 3L])
+    v <- vec2fol(x[, 1L], x[, 2L], x[, 3L])
     dip_direction <- v[, "dip_direction"]
-    dip           <- v[, "dip"]
-    
+    dip <- v[, "dip"]
   } else if (is.Line(x) || is.Ray(x)) {
-    rn            <- rownames(unclass(x))
+    rn <- rownames(unclass(x))
     dip_direction <- x[, "azimuth"] + 180
-    dip           <- 90 - x[, "plunge"]
-    
-  } else if (is.Pair(x)) {                        # Plane already caught above
-    rn            <- rownames(unclass(x))
+    dip <- 90 - x[, "plunge"]
+  } else if (is.Pair(x)) { # Plane already caught above
+    rn <- rownames(unclass(x))
     dip_direction <- x[, "dip_direction"]
-    dip           <- x[, "dip"]
-    
+    dip <- x[, "dip"]
   } else {
     if (missing(dip)) {
-      xm  <- vec2mat(x)
-      rn  <- rownames(xm)
+      xm <- vec2mat(x)
+      rn <- rownames(xm)
       dip <- xm[, 2L]
-      x   <- xm[, 1L]
+      x <- xm[, 1L]
     } else {
-      rn  <- names(x)
+      rn <- names(x)
     }
     dip_direction <- as.double(x)
-    dip           <- as.double(dip)
+    dip <- as.double(dip)
   }
-  
+
   res <- cbind(dip_direction %% 360, dip)
   rownames(res) <- rn
   as.Plane(res)
@@ -379,24 +364,25 @@ Plane <- function(x, dip) {
 #' @rdname classes
 #' @export
 Pair <- function(x, y, azimuth, plunge, correction = FALSE) {
-  if (is.Pair(x) && !is.Fault(x)) return(x)      # Fault needs its own constructor
-  
+  if (is.Pair(x) && !is.Fault(x)) {
+    return(x)
+  } # Fault needs its own constructor
+
   if (is.Plane(x) && (is.Line(y) || is.Ray(y))) {
-    rn            <- rownames(unclass(x))
+    rn <- rownames(unclass(x))
     dip_direction <- x[, "dip_direction"]
-    dip           <- x[, "dip"]
-    if (is.Ray(y)) y <- to_lower(y)               # was incorrectly using x
-    azimuth       <- y[, "azimuth"]
-    plunge        <- y[, "plunge"]
-    
+    dip <- x[, "dip"]
+    if (is.Ray(y)) y <- to_lower(y) # was incorrectly using x
+    azimuth <- y[, "azimuth"]
+    plunge <- y[, "plunge"]
   } else {
-    rn            <- names(x)
+    rn <- names(x)
     dip_direction <- as.double(x)
-    dip           <- as.double(y)
-    azimuth       <- as.double(azimuth)
-    plunge        <- as.double(plunge)
+    dip <- as.double(y)
+    azimuth <- as.double(azimuth)
+    plunge <- as.double(plunge)
   }
-  
+
   res <- cbind(dip_direction %% 360, dip, azimuth %% 360, plunge)
   rownames(res) <- rn
   p <- as.Pair(res)
@@ -407,47 +393,46 @@ Pair <- function(x, y, azimuth, plunge, correction = FALSE) {
 #' @export
 Fault <- function(x, y, azimuth, plunge, sense, correction = FALSE) {
   stopifnot(is.logical(correction))
-  
-  if (is.Fault(x)) return(x)
-  
+
+  if (is.Fault(x)) {
+    return(x)
+  }
+
   # Normalise sense to numeric once, upfront
   if (!missing(sense) && is.character(sense)) {
     sense <- ifelse(tolower(sense) == "n", 1.0, -1.0)
   }
-  
+
   if (is.Pair(x)) {
-    rn            <- rownames(unclass(x))
+    rn <- rownames(unclass(x))
     dip_direction <- x[, "dip_direction"]
-    dip           <- x[, "dip"]
-    azimuth       <- x[, "azimuth"]
-    plunge        <- x[, "plunge"]
+    dip <- x[, "dip"]
+    azimuth <- x[, "azimuth"]
+    plunge <- x[, "plunge"]
     # sense carried from argument (Pair has no sense column)
-    
-  } else if (is.Plane(x) && is.Ray(y)) {          # Ray before Line — more specific
-    rn            <- rownames(unclass(x))
-    sense         <- sign(y[, "plunge"])
+  } else if (is.Plane(x) && is.Ray(y)) { # Ray before Line — more specific
+    rn <- rownames(unclass(x))
+    sense <- sign(y[, "plunge"])
     dip_direction <- x[, "dip_direction"]
-    dip           <- x[, "dip"]
-    y2            <- to_lower(y)                   # avoid overwriting y for debugging
-    azimuth       <- y2[, "azimuth"]
-    plunge        <- y2[, "plunge"]
-    
+    dip <- x[, "dip"]
+    y2 <- to_lower(y) # avoid overwriting y for debugging
+    azimuth <- y2[, "azimuth"]
+    plunge <- y2[, "plunge"]
   } else if (is.Plane(x) && is.Line(y)) {
-    rn            <- rownames(unclass(x))
+    rn <- rownames(unclass(x))
     if (missing(sense)) sense <- 1.0
     dip_direction <- x[, "dip_direction"]
-    dip           <- x[, "dip"]
-    azimuth       <- y[, "azimuth"]
-    plunge        <- y[, "plunge"]
-    
+    dip <- x[, "dip"]
+    azimuth <- y[, "azimuth"]
+    plunge <- y[, "plunge"]
   } else {
-    rn            <- names(x)
+    rn <- names(x)
     dip_direction <- as.double(x)
-    dip           <- as.double(y)
-    azimuth       <- as.double(azimuth)
-    plunge        <- as.double(plunge)
+    dip <- as.double(y)
+    azimuth <- as.double(azimuth)
+    plunge <- as.double(plunge)
   }
-  
+
   res <- cbind(dip_direction %% 360, dip, azimuth %% 360, plunge, as.double(sense))
   rownames(res) <- rn
   f <- as.Fault(res)
@@ -467,7 +452,6 @@ Spherical <- function(x, .class) {
     Fault = Fault(x)
   )
 }
-
 
 
 #' @exportS3Method base::print
@@ -520,8 +504,7 @@ print.Fault <- function(x, ...) {
 }
 
 
-
-# Indexing 
+# Indexing
 
 #' @export
 `[.Vec3` <- function(x, i, j) {
@@ -555,7 +538,7 @@ print.Fault <- function(x, ...) {
   if (missing(j)) {
     j <- TRUE
   }
-  
+
   res <- NextMethod("`[`")
   if (isTRUE(j)) as.Plane(res) else as.numeric(res)
 }
@@ -565,7 +548,7 @@ print.Fault <- function(x, ...) {
   if (missing(j)) {
     j <- TRUE
   }
-  
+
   res <- NextMethod("`[`")
   if (isTRUE(j)) {
     if (is.Fault(x)) as.Fault(res) else as.Pair(res)
@@ -573,7 +556,6 @@ print.Fault <- function(x, ...) {
     as.numeric(res)
   }
 }
-
 
 
 #' Combine Spherical Objects by Rows or Columns
@@ -646,13 +628,13 @@ tail.spherical <- function(x, n = 6L, ...) {
 
 
 #' Random Samples and Permutations of Spherical Objects
-#' 
-#' `sample_spherical` takes a sample of the specified size from the elements of 
+#'
+#' `sample_spherical` takes a sample of the specified size from the elements of
 #' the spherical object `x` using either with or without replacement.
 #'
 #' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`.
 #' @inheritParams base::sample
-#' 
+#'
 #' @returns A spherical object of length `size` with elements drawn from `x`
 #'
 #' @export
@@ -667,17 +649,17 @@ sample_spherical <- function(x, size, replace = FALSE, prob = NULL) {
 }
 
 #' Handle Missing Values in Spherical Objects
-#' 
+#'
 #' @param object object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"`, `"Pair"`, or `"Fault"`.
 #' @param ... further arguments special methods could require.
-#' 
+#'
 #' @keywords internal
-#' 
+#'
 #' @method na.omit spherical
 #' @exportS3Method stats::na.omit
 #' @examples
 #' x <- Line(c(120, NA, 100), c(50, 60, 70))
 #' na.omit(x)
-na.omit.spherical <- function(object, ...){
+na.omit.spherical <- function(object, ...) {
   object[stats::complete.cases(object), ]
 }

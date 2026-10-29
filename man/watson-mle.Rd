@@ -44,7 +44,7 @@ r <- watson_MLE(example_lines)
 print(r)
 
 plot(example_lines)
-points(r$muHat, col = 'red', pch = 16, cex = 1.5)
+points(r$muHat, col = "red", pch = 16, cex = 1.5)
 }
 \seealso{
 \code{\link[=watson_inference]{watson_inference()}} for confidence regions, and \code{\link[=rwatson]{rwatson()}} to

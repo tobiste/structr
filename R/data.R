@@ -113,8 +113,8 @@
 
 #' Example of StraboSpot Project
 #'
-#' Strabospot project containing 347 foliation and stretching lineation 
-#' measurements from the Shebandowan Greenstone Belt and 
+#' Strabospot project containing 347 foliation and stretching lineation
+#' measurements from the Shebandowan Greenstone Belt and
 #' Quetico Subprovince (Stephan et al., 2025)
 #'
 #' @docType data
@@ -157,8 +157,8 @@
 #' Fault-Slip Data
 #'
 #' List of four different fault-slip data from Angelier (1990):
-#' 
-#'  `"AVB"` (Agia Varvara, Crete, Greece), `"KAM"` (Kamogawa, Boso Peninsula, Central Japan), 
+#'
+#'  `"AVB"` (Agia Varvara, Crete, Greece), `"KAM"` (Kamogawa, Boso Peninsula, Central Japan),
 #'  `"MD1"` (Arroyo Montado, Baja California, Mexico), and `"TYM"` (Tymbaki, Crete, Greece).
 #'
 #' @docType data
@@ -261,7 +261,7 @@
 
 #' Fault-Slip Data from Northern Norway
 #'
-#' 198 measurements fault-slip measurements from a quarry in Røsand on the 
+#' 198 measurements fault-slip measurements from a quarry in Røsand on the
 #' Lofoten-Vesterålen archipelago in Northern Norway
 #'
 #' @docType data
@@ -269,9 +269,9 @@
 #' @usage data('osmundsen2010')
 #'
 #' @references
-#' Osmundsen, P.T., Redfield, T.F., Hendriks, B.H.W., Bergh, S.G., Hansen, J.-A., 
-#' Henderson, I.H.C., Dehls, J., Lauknes, T.R., Larsen, Y., Anda, E., Davidsen, 
-#' B., 2010. Fault-controlled Alpine topography in Norway. Journal of the 
+#' Osmundsen, P.T., Redfield, T.F., Hendriks, B.H.W., Bergh, S.G., Hansen, J.-A.,
+#' Henderson, I.H.C., Dehls, J., Lauknes, T.R., Larsen, Y., Anda, E., Davidsen,
+#' B., 2010. Fault-controlled Alpine topography in Norway. Journal of the
 #' Geological Society 167, 83-98.
 #'
 #' @format An object of class `Pair`

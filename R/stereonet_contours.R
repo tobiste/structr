@@ -6,7 +6,7 @@
 #'
 #' @param x object of class `"Vec3"`, `"Line"`, `"Ray"`, `"Plane"` or `'sph_density'` (for plotting only).
 #' @inheritParams density.spherical
-#' @param density.params list. Optional arguments passed to [density.spherical()], 
+#' @param density.params list. Optional arguments passed to [density.spherical()],
 #' such as `FUN`, `n`, `sigma`, and `weights`
 #' @param nlevels integer. Number of contour levels for plotting
 #' @param add logical. Whether the contours should be added to an existing plot.
@@ -17,12 +17,12 @@
 #'
 #' @name stereo_contour
 #' @aliases contour image density-plot density_plot
-#' 
+#'
 #' @note Densities are plotted in the equal-area projection!
 #'
 #' @family stereo-plot
 #' @family density
-#' 
+#'
 #' @importFrom graphics image.default .filled.contour contour
 #'
 #' @returns list containing the stereographic coordinates of the grid,
@@ -92,7 +92,7 @@ stereo_density <- function(x,
                            # weights = NULL, upper.hem = FALSE, r = 1,
                            type = c("contour", "contour_filled", "image"), nlevels = 10L,
                            density.params = list(),
-                           upper.hem = NULL, radius = NULL, 
+                           upper.hem = NULL, radius = NULL,
                            col.palette = viridis::viridis, col = NULL, add = FALSE, col.params = list(),
                            ...) {
   type <- match.arg(type)
@@ -101,7 +101,7 @@ stereo_density <- function(x,
     d <- x
   } else {
     d <- do.call(density.spherical, append(list(x = x), density.params))
-    }
+  }
   densities <- d$density
 
   if (isFALSE(add)) stereoplot(guides = FALSE, border.col = NA)
@@ -150,7 +150,7 @@ stereo_density <- function(x,
       col = col
     )
   }
-  
+
   if (isFALSE(add)) stereoplot_frame()
 
   invisible(densities)
@@ -158,11 +158,11 @@ stereo_density <- function(x,
 
 #' @rdname stereo_contour
 #' @exportS3Method stats::contour
-contour.spherical <- function(x, add = FALSE, 
-                              nlevels = 10L, 
+contour.spherical <- function(x, add = FALSE,
+                              nlevels = 10L,
                               density.params = list(),
                               col.palette = viridis::viridis, col = NULL,
-                              col.params = list(), 
+                              col.params = list(),
                               upper.hem = NULL, radius = NULL,
                               ...) {
   stereo_density(x,
@@ -172,20 +172,19 @@ contour.spherical <- function(x, add = FALSE,
     nlevels = nlevels,
     col = col,
     col.palette = col.palette,
-    col.params = col.params, 
+    col.params = col.params,
     upper.hem = upper.hem, radius = radius,
-    
     ...
   )
 }
 
 #' @rdname stereo_contour
 #' @exportS3Method stats::contour
-contour.sph_density <- function(x, add = FALSE, 
-                                nlevels = 10L, 
+contour.sph_density <- function(x, add = FALSE,
+                                nlevels = 10L,
                                 density.params = list(),
                                 col.palette = viridis::viridis, col = NULL,
-                                col.params = list(), 
+                                col.params = list(),
                                 upper.hem = NULL, radius = NULL,
                                 ...) {
   stereo_density(x,
@@ -195,7 +194,7 @@ contour.sph_density <- function(x, add = FALSE,
     density.params = density.params,
     col = col,
     col.palette = col.palette,
-    col.params = col.params, 
+    col.params = col.params,
     upper.hem = upper.hem, radius = radius,
     ...
   )
@@ -204,11 +203,11 @@ contour.sph_density <- function(x, add = FALSE,
 
 #' @rdname stereo_contour
 #' @export
-contourf <- function(x, add = FALSE, 
-                     nlevels = 10L, 
+contourf <- function(x, add = FALSE,
+                     nlevels = 10L,
                      density.params = list(),
                      col.palette = viridis::viridis,
-                     col.params = list(), 
+                     col.params = list(),
                      upper.hem = NULL, radius = NULL,
                      ...) {
   stereo_density(x,
@@ -217,19 +216,19 @@ contourf <- function(x, add = FALSE,
     nlevels = nlevels,
     density.params = density.params,
     col.palette = col.palette,
-    col.params = col.params, 
-    upper.hem = upper.hem, radius = radius, 
+    col.params = col.params,
+    upper.hem = upper.hem, radius = radius,
     ...
   )
 }
 
 #' @rdname stereo_contour
 #' @exportS3Method stats::image
-image.spherical <- function(x, add = FALSE, 
-                            nlevels = 10L, 
+image.spherical <- function(x, add = FALSE,
+                            nlevels = 10L,
                             density.params = list(),
                             col.palette = viridis::viridis,
-                            col.params = list(), 
+                            col.params = list(),
                             upper.hem = NULL, radius = NULL,
                             ...) {
   stereo_density(x,
@@ -238,7 +237,7 @@ image.spherical <- function(x, add = FALSE,
     nlevels = nlevels,
     density.params = density.params,
     col.palette = col.palette,
-    col.params = col.params, 
+    col.params = col.params,
     upper.hem = upper.hem, radius = radius,
     ...
   )
@@ -246,11 +245,11 @@ image.spherical <- function(x, add = FALSE,
 
 #' @rdname stereo_contour
 #' @exportS3Method stats::image
-image.sph_density <- function(x, add = FALSE, 
-                              nlevels = 10L, 
+image.sph_density <- function(x, add = FALSE,
+                              nlevels = 10L,
                               density.params = list(),
                               col.palette = viridis::viridis,
-                              col.params = list(), 
+                              col.params = list(),
                               upper.hem = NULL, radius = NULL,
                               ...) {
   stereo_density(x,
@@ -259,7 +258,7 @@ image.sph_density <- function(x, add = FALSE,
     nlevels = nlevels,
     density.params = density.params,
     col.palette = col.palette,
-    col.params = col.params, 
+    col.params = col.params,
     upper.hem = upper.hem, radius = radius,
     ...
   )

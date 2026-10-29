@@ -23,13 +23,13 @@ vresultant <- function(x, w = NULL, mean = FALSE, na.rm = TRUE) {
 
   if (is.null(w)) {
     R <- vsum(x)
-    if (mean) R <- R / nrow(x) 
+    if (mean) R <- R / nrow(x)
   } else {
     w <- as.numeric(w)
     R <- vsum(x * w)
     if (mean) R <- R / sum(w)
   }
-  
+
   R
 }
 
@@ -47,7 +47,7 @@ v_mean <- function(x, w = NULL, na.rm = TRUE) {
     x <- x[idx, ]
     w <- w[idx]
   }
-  
+
   w <- if (is.null(w)) {
     1
   } else {
@@ -59,7 +59,6 @@ v_mean <- function(x, w = NULL, na.rm = TRUE) {
   Rbar <- vlength(xbar)
   xbar / Rbar
 }
-
 
 
 #' @keywords internal
@@ -90,7 +89,7 @@ v_rdegree <- function(x, w = NULL, na.rm = FALSE) {
     x <- x[idx, ]
     w <- w[idx]
   }
-  
+
   w <- if (is.null(w)) rep(1, times = nrow(x)) else as.numeric(w)
 
   N <- sum(w)
@@ -106,7 +105,7 @@ v_sde <- function(x, w = NULL, na.rm = FALSE) {
     x <- x[idx, ]
     w <- w[idx]
   }
-  
+
   w <- if (is.null(w)) {
     rep(1, times = nrow(x))
   } else {
@@ -247,7 +246,7 @@ sph_sd <- function(x, ...) {
   x_sd <- Vec3(x) |>
     unclass() |>
     v_sd(...)
-  
+
   if (is.Line(x) | is.Plane(x) | is.Ray(x)) {
     x_sd * 180 / pi
   } else {
@@ -336,7 +335,6 @@ estimate_k <- function(x, w = NULL, na.rm = FALSE, p = 3L) {
 # }
 
 
-
 #' Fisher's Statistics
 #'
 #' Estimates concentration parameter, angular standard deviation, and
@@ -347,6 +345,7 @@ estimate_k <- function(x, w = NULL, na.rm = FALSE, p = 3L) {
 #'
 #' @returns list, with
 #' \describe{
+#' \item[`"mu"`]{Mean vector}
 #' \item{`"k"`}{estimated concentration parameter \eqn{\kappa} for the von Mises-Fisher
 #' distribution}
 #' \item{`"csd"`}{estimated angular standard deviation enclosing 63% of the orientation data. Angle is in degrees if `x` is a spherical object, and radians if otherwise.}
@@ -388,7 +387,7 @@ fisher_statistics <- function(x, w = NULL, conf.level = 0.95, na.rm = TRUE) {
 
     # a95 <- acos(1 - ((N - R) / R) * (20**(1 / (N - 1)) - 1)) # apsg version
 
-    if (is.Line(x) | is.Plane(x)) {
+    if (is.Line(x) | is.Plane(x) | is.Ray(x)) {
       alpha <- rad2deg(alpha)
       # a95 <- rad2deg(a95)
       # alpha_kn63 <- rad2deg(alpha_kn63)
@@ -398,19 +397,21 @@ fisher_statistics <- function(x, w = NULL, conf.level = 0.95, na.rm = TRUE) {
       csd_95 <- deg2rad(csd_95)
     }
 
-    list(k = k, csd = csd, csd_2s = csd_95, alpha = alpha)
+    list(mu = sph_mean(x), k = k, csd = csd, csd_2s = csd_95, alpha = alpha)
   }
 }
 
-#' Elliptical Concentration and Confidence Cone Estimation
+#' Statistics of a Bingham Distribution
 #'
 #' @inheritParams sph_mean
 #'
 #' @return list
 #' \describe{
-#'  \item{`k`}{two-column vector containing the estimates for the minimum (\eqn{k_\text{min}}) and maximum concentration (\eqn{k_\text{max}}).}
-#'  \item{`a95`}{two-column vector containing the estimates for the minimum and maximum 95% confidence cone.}
-#'  \item{`beta`}{The shape factor of the distribution given by the ratio \eqn{\frac{k_\text{min}}{k_\text{max}}}.}
+#'  \item{`"mu"`}{Maximum concentration vector}
+#'  \item{`"axes"`}{Axes of Bingham ellipse}
+#'  \item{`"k"`}{two-column vector containing the estimates for the maximum (\eqn{k_\text{min}}) and minimum concentration (\eqn{k_\text{max}}).}
+#'  \item{`"a95"`}{two-column vector containing the estimates for the maximum and minimum 95% confidence cone. In radians when `x` is an object of class `"Vec3"`,otherwise in degrees.}
+#'  \item{`"beta"`}{The shape factor of the distribution given by the ratio \eqn{\frac{k_\text{min}}{k_\text{max}}}.}
 #'  }
 #'
 #' @export
@@ -450,70 +451,18 @@ bingham_statistics <- function(x, w = NULL, na.rm = TRUE) {
 
   a95 <- deg2rad(140) / sqrt(k_ellipse * n)
 
+  x_eig <- ot_eigen(v)$vectors
+  mu <- x_eig[1, ]
+  axes <- x_eig[c(2:3), ]
+
   if (is.Line(x) | is.Plane(x) | is.Ray(x)) {
     a95 <- rad2deg(a95)
+    mu <- Line(mu)
+    axes <- Line(axes)
   }
 
-  list(k = k_ellipse, a95 = a95, beta = k_ellipse[1] / k_ellipse[2])
+  list(mu = mu, axes = axes, k = rev(k_ellipse), a95 = rev(a95), beta = k_ellipse[1] / k_ellipse[2])
 }
-
-#' Test of Mean Orientations
-#'
-#' Test against the null-hypothesis that the samples are drawn from the same Fisher population.
-#'
-#' @param x,y  objects of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, where the
-#'  rows are the observations and the columns are the coordinates.
-#' @inheritParams sph_mean
-#'
-#' @returns list indicating the F-statistic and the p-value.
-#'
-#' @export
-#'
-#' @importFrom stats qf
-#'
-#' @examples
-#' set.seed(20250411)
-#' x <- rvmf(100, mu = Line(120, 50), k = 20)
-#' y <- rvmf(100, mu = Line(180, 45), k = 20)
-#'
-#' stereoplot()
-#' stereo_point(x, col = 1)
-#' stereo_point(y, col = 2)
-#'
-#' fisher_ftest(x, y)
-fisher_ftest <- function(x, y, alpha = 0.05, na.rm = TRUE) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x) | is.Ray(x))
-  if (isTRUE(na.rm)) {
-    x <- x[!rowSums(!is.finite(x)), ]
-    y <- y[!rowSums(!is.finite(y)), ]
-  }
-
-  vx <- Vec3(x)
-  vy <- Vec3(y)
-
-  nx <- nrow(vx)
-  ny <- nrow(vy)
-
-  Rx <- vresultant(vx) |> vlength()
-  Ry <- vresultant(vy) |> vlength()
-
-  R <- vresultant(rbind(vx, vy)) |> vlength()
-
-  stat <- (nx + ny - 2) * ((Rx + Ry - R) / (nx + ny - Rx - Ry))
-
-  df1 <- 2
-  df2 <- 2 * (nx + ny - 2)
-
-  crit <- stats::qf(p = alpha, df1 = df1, df2 = df2, lower.tail = FALSE)
-  if (stat > crit) {
-    message("Reject null-hypothesis")
-  } else {
-    message("Do not reject null-hypothesis")
-  }
-  c("F stat" = stat, "p-value" = crit)
-}
-
-
 
 
 #' Cluster Spherical Data
@@ -607,11 +556,11 @@ rot_dist <- function(x, ...) .dist.helper(x, ...)
 #'
 #' @inheritParams geodesic_mean
 #' @param ... optional parameters passed to [stats::as.dist()]
-#' 
+#'
 #' @inherit stats::dist return
-#' 
+#'
 #' @name sph-dist
-#' 
+#'
 #' @importFrom stats as.dist
 #'
 #' @examples
@@ -664,7 +613,6 @@ sph_dist.Pair <- function(x, ...) {
 
   stats::as.dist(d, ...)
 }
-
 
 
 #' Summary Statistics

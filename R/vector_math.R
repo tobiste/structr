@@ -125,7 +125,7 @@ vdot <- function(x, y) {
   res <- x[, 1] * y[, 1] + x[, 2] * y[, 2] + x[, 3] * y[, 3]
   # res <- sum(t(x) * t(y))
   # res <- rowSums(x * y)
-  #res <- Rfast::rowsums(x * y)
+  # res <- Rfast::rowsums(x * y)
   unname(res)
 }
 
@@ -146,7 +146,6 @@ vrotate <- function(x, rotaxis, rotangle) {
   vax <- vcross(rotaxis, x)
   x + vax * sin(rotangle) + vcross(rotaxis, vax) * 2 * (sin(rotangle / 2))^2 # Helmut
 }
-
 
 
 #' @keywords internal
@@ -182,7 +181,7 @@ angle.spherical <- function(x, y) {
 }
 
 
-angle_smallcircle <- function(x, y, axis){
+angle_smallcircle <- function(x, y, axis) {
   x <- Vec3(x)
   y <- Vec3(y)
   axis <- Vec3(axis)
@@ -231,7 +230,6 @@ project.spherical <- function(x, y) {
 }
 
 
-
 #' @keywords internal
 vreject <- function(x, y) {
   x - vproject(x, y)
@@ -259,7 +257,7 @@ reject.spherical <- function(x, y) {
     Line(rej)
   } else if (is.Plane(x)) {
     Plane(rej)
-  } else if(is.Ray(x)) {
+  } else if (is.Ray(x)) {
     Ray(rej)
   } else {
     rej
@@ -298,14 +296,13 @@ v_orthogonalize <- function(x, y) {
 }
 
 
-
 #' @keywords internal
 vtransform <- function(x, A, norm = FALSE) {
   stopifnot(is.matrix(A) & dim(A) == c(3, 3))
 
-  # xt <- x %*% t(A)     
-  xt <- tcrossprod(x, A)   
-  #xt <- t(A %*% t(x))
+  # xt <- x %*% t(A)
+  xt <- tcrossprod(x, A)
+  # xt <- t(A %*% t(x))
   # xt <- t(vdot(A, x))
   if (norm) xt <- vnorm(xt)
   return(xt)
@@ -322,7 +319,7 @@ transform_linear <- function(x, A, norm = FALSE) {
     Line(xt)
   } else if (is.Plane(x)) {
     Plane(xt)
-  } else if(is.Ray(x)){
+  } else if (is.Ray(x)) {
     Ray(xt)
   } else {
     xt
@@ -433,9 +430,9 @@ rotate.Pair <- function(x, rotaxis, rotangle) {
 }
 
 #' Rotate Vector From One Orientation To Onother
-#' 
-#' Helper function to rotate a vector from one orientation to an target 
-#' orientation by finding the rotation axis and angle. 
+#'
+#' Helper function to rotate a vector from one orientation to an target
+#' orientation by finding the rotation axis and angle.
 #'
 #' @inheritParams geodesic-mean
 #' @param a Origin vector orientation, object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`
@@ -450,7 +447,7 @@ rotate.Pair <- function(x, rotaxis, rotangle) {
 #' veca <- Vec3(1, 0, 0)
 #' vecb <- Vec3(0, 0, 1)
 #' rotate_ab(example_planes[1, ], veca, vecb)
-rotate_ab <- function(x, a = x, b){
+rotate_ab <- function(x, a = x, b) {
   rotaxis <- crossprod(a, b)
   rotangle <- angle(a, b)
   rotate(x, rotaxis, rotangle)

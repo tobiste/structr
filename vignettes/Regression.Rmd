@@ -146,8 +146,8 @@ bedding_sc2$cone
 `regression_gray(x, out)` is a convenience function where the `out` argument specifies the type of regression (`"small"` or `"great"` circle). If `out = "both"`, the two solutions are compared by testing whether the small-circle solution fits better than the great-circle solution:
 
 ```{r gray2}
-cleavage_sc3 <- regression_gray(cleavage, out = 'both')
-bedding_sc3 <- regression_gray(bedding, out = 'both')
+cleavage_sc3 <- regression_gray(cleavage, out = "both")
+bedding_sc3 <- regression_gray(bedding, out = "both")
 
 cleavage_sc3$comparison
 bedding_sc3$comparison

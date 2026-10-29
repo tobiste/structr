@@ -278,7 +278,6 @@ ignore_unused_imports <- function() {
 }
 
 
-
 #' @keywords internal
 .full_hem <- function(azi, inc) {
   inc <- inc + 90

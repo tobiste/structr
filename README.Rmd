@@ -102,7 +102,7 @@ ml <- sph_mean(example_lines)
 
 stereoplot(
   title = "Lambert equal-area projection",
-  sub = paste0("Lower hemisphere\nGrid center: ", round(ml[1,1]), '/', round(ml[1, 2])),
+  sub = paste0("Lower hemisphere\nGrid center: ", round(ml[1, 1]), "/", round(ml[1, 2])),
   center = ml
 )
 points(example_lines, col = "#B63679", pch = 19, cex = .5)
@@ -271,7 +271,7 @@ Michael (1984) and calculate 95% confidence intervals using bootstrap replicates
 
 ```{r stereo_inversion1, warning=FALSE,message=FALSE}
 set.seed(20250411)
-faults_stress <- slip_inversion(faults, n_iter = 10, method = 'michael')
+faults_stress <- slip_inversion(faults, n_iter = 10, method = "michael")
 ```
 
 Now we can visualize the slip inversion results, that are the orientation of principal stresses:
@@ -347,7 +347,7 @@ Mohr_plot(
 stress_components <- sigma2shearnorm(faults_stress$sigma, faults)
 
 # Add to Mohr circle:
-points(stress_components[, 'normal'], abs(stress_components[, 'shear']),
+points(stress_components[, "normal"], abs(stress_components[, "shear"]),
   col = assign_col(alpha), pch = 16
 )
 ```

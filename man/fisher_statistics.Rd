@@ -19,6 +19,7 @@ rows are the observations and the columns are the coordinates.}
 \value{
 list, with
 \describe{
+\item[\code{"mu"}]{Mean vector}
 \item{\code{"k"}}{estimated concentration parameter \eqn{\kappa} for the von Mises-Fisher
 distribution}
 \item{\code{"csd"}}{estimated angular standard deviation enclosing 63\% of the orientation data. Angle is in degrees if \code{x} is a spherical object, and radians if otherwise.}

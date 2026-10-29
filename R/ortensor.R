@@ -84,7 +84,7 @@ ortensor.default <- function(x, norm = TRUE, w = NULL, shift = NULL) {
   noNA <- which(complete.cases(x))
   noNA
   x <- x[noNA, ]
-  
+
   w <- if (is.null(w)) {
     rep(1, times = nrow(x))
   } else {
@@ -99,7 +99,7 @@ ortensor.default <- function(x, norm = TRUE, w = NULL, shift = NULL) {
   xw <- w * x
 
   or <- (1 / n) * (t(xw) %*% xw)
-  
+
   rownames(or) <- colnames(or) <- NULL
   as.ortensor(or)
 }
@@ -146,9 +146,6 @@ ortensor.Pair <- function(x, norm = TRUE, w = NULL, shift = FALSE) {
 }
 
 
-
-
-
 #' Inertia Tensor
 #'
 #' @inheritParams ortensor
@@ -182,7 +179,7 @@ inertia_tensor.default <- function(x, w = NULL) {
   # remove NA values
   noNA <- stats::complete.cases(x)
   x <- x[noNA, ]
-  
+
   w <- if (is.null(w)) {
     rep(1, times = nrow(x))
   } else {
@@ -288,7 +285,6 @@ ot_eigen.ortensor <- function(x, scaled = FALSE, ...) {
 projected_mean <- function(x, ...) {
   ot_eigen(x, ...)$vectors[1, ]
 }
-
 
 
 #' Principal Stretches, Strain and Shape Parameters based on the Orientation Tensor.
@@ -413,7 +409,6 @@ principal_stretch.ortensor <- function(x, ...) {
 principal_stretch.ellipsoid <- function(x, ...) {
   principal_stretch.default(x)
 }
-
 
 
 #' @rdname strain_shape
@@ -544,7 +539,6 @@ shape_params.ortensor <- function(x, ...) {
 shape_params.ellipsoid <- function(x, ...) {
   as.ortensor(x) |> shape_params()
 }
-
 
 
 #' Centering Vectors
