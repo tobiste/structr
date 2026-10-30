@@ -37,3 +37,13 @@ e <- ot_eigen(r)$values
 k <- c(0, bingham_statistics(r)$k)
 watson_symmetry_test(e, k, n = nrow(r))
 }
+\seealso{
+Other tests:
+\code{\link[=bingham_test]{bingham_test()}},
+\code{\link[=fisher_ftest]{fisher_ftest()}},
+\code{\link[=fisher_goodness_of_fit]{fisher_goodness_of_fit()}},
+\code{\link[=fisher_kent_test]{fisher_kent_test()}},
+\code{\link[=rayleigh_test3]{rayleigh_test3()}},
+\code{\link[=wellner]{wellner()}}
+}
+\concept{tests}

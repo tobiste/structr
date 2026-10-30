@@ -14,8 +14,11 @@
 #' @param n_perm integer. Number of permutations.
 #' @inheritParams bingham_test
 #'
-#' @return
-#' `wellner()` computes Wellner's T-statistic, a non-negative measure of
+
+#' @return object of class `"Test"`
+#' @family tests
+#' 
+#' @details #' `wellner()` computes Wellner's T-statistic, a non-negative measure of
 #' dissimilarity between two datasets. The value is zero when the datasets
 #' are identical.
 #'
@@ -31,7 +34,6 @@
 #' Ann. Statist. 7(5) 929-943, September, 1979. \doi{10.1214/aos/1176344779}
 #'
 #' @name wellner
-#' @family tests
 #'
 #' @source modified after `geologyGeometry` (J.R. Davis): http://www.joshuadavis.us/software/
 #'

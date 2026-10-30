@@ -102,6 +102,8 @@ print.Test <- function(x, digits = getOption("digits"), ...) {
 #' 
 #' @source modified after the python package `apsg` (v.2.0.6) by O. Lexa
 #' 
+#' @export
+#' @return object of class `"Test"`
 #' @family tests
 #' 
 #' @examples
@@ -149,9 +151,11 @@ rayleigh_test3 <- function(x, level = 0.95){
 #' @param n integer. Number of vectors
 #' @inheritParams rayleigh_test3
 #' 
-#' @source modified after the python package `apsg` (v.2.0.6) by O. Lexa
-#' 
+#' @export
+#' @return object of class `"Test"`
 #' @family tests
+#' 
+#' @source modified after the python package `apsg` (v.2.0.6) by O. Lexa
 #' 
 #' @examples
 #' t <- example_lines
@@ -188,13 +192,11 @@ bingham_test <- function(D, n, level = 0.95) {
 #' @inheritParams rayleigh_test3
 #' @inheritParams sph_mean
 #'
-#' @return object of class `"Test"`
-#'
 #' @export
+#' @return object of class `"Test"`
+#' @family tests
 #'
 #' @importFrom stats qf
-#' 
-#' @family tests
 #'
 #' @examples
 #' set.seed(20250411)
@@ -318,7 +320,9 @@ fisher_ftest <- function(x, y, level = 0.95, na.rm = TRUE) {
 #'  
 #' @source modified after the python package `apsg` (v.2.0.6) by O. Lexa
 #' 
+#' @export
 #' @return object of class `"Test"`
+#' @family tests
 #' 
 #' @examples
 #' set.seed(20250411)
@@ -387,7 +391,10 @@ fisher_goodness_of_fit <- function(x, level = 0.95) {
 #' @source modified after the python package `apsg` (v.2.0.6) by O. Lexa
 #' 
 #' @inherit fisher_goodness_of_fit 
+#' 
+#' @export
 #' @return object of class `"Test"`
+#' @family tests
 #' 
 #' @examples
 #' #' set.seed(20250411)
@@ -440,7 +447,9 @@ fisher_kent_test <- function(x, level = 0.95) {
 #' @param k Bingham concentrations \eqn{(0, \kappa_\text{major}, \kappa_\text{minor})} 
 #' @inheritParams bingham_test
 #' 
+#' @export
 #' @return object of class `"Test"`
+#' @family tests
 #' 
 #' @examples
 #' r <- rbingham_eig(100, c(100, 1, 0), "Line")

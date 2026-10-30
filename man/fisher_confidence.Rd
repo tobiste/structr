@@ -29,7 +29,7 @@ r1 <- fisher_confidence(mu, alpha = alpha)
 
 plot(x, col = "grey")
 points(mu, col = "red", pch = 16, cex = 1.5)
-stereo_lines(r1, col = "red")
+stereo_confidence(r1, col = "red")
 }
 \seealso{
 Other confidence:

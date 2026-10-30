@@ -96,6 +96,7 @@ confidence_ellipse <- function(x, n_iter = 10000L, alpha = 0.05, res = 512L, iso
 #' @param n integer. Resolution of the cone (number of points for the cone line)
 #'
 #' @returns object of class `"confidence_region"`
+#' @export
 #'
 #' @family confidence
 #'
@@ -109,7 +110,7 @@ confidence_ellipse <- function(x, n_iter = 10000L, alpha = 0.05, res = 512L, iso
 #'
 #' plot(x, col = "grey")
 #' points(mu, col = "red", pch = 16, cex = 1.5)
-#' stereo_lines(r1, col = "red")
+#' stereo_confidence(r1, col = "red")
 fisher_confidence <- function(mu, alpha, n = 512L) {
   azi <- Line(mu)[, "azimuth"]
   secant <- rotate(mu, Line(azi + 90, 0), -alpha)
@@ -117,12 +118,13 @@ fisher_confidence <- function(mu, alpha, n = 512L) {
   la <- lapply(angles, function(a) {
     rotate(secant, mu, a)
   })
-  do.call(rbind, la) |> Vec3()
+  la2 <- do.call(rbind, la) |> 
+    Vec3()
   
   structure(
     list(
       center = mu,
-      ellipse = la
+      ellipse = la2
     ),
     class = "confidence_region"
   )

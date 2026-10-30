@@ -23,7 +23,8 @@
 #' @export
 #' @examples
 #' Mohr_strain(lambda1 = 4, lambda3 = 0.25, phi = 25, col = 'red')
-#' Mohr_strain(lambda1 = 4, lambda2 = 1, lambda3 = 0.25, phi = c(0, 25, 50, 45), col = 'red', full.circle = TRUE, axes = FALSE)
+#' Mohr_strain(lambda1 = 4, lambda2 = 1, lambda3 = 0.25, phi = c(0, 25, 50, 45), 
+#'   col = 'red', full.circle = TRUE, axes = FALSE)
 Mohr_strain <- function(lambda1, lambda2 = NA, lambda3,
                         # lambda_x = NA, lambda_z = NA, gamma_xz = NA,
                         phi = NULL,

@@ -16,6 +16,9 @@ bingham_test(D, n, level = 0.95)
 
 \item{level}{numeric. Confidence level (\eqn{1-\alpha}). Default is \code{0.95}}
 }
+\value{
+object of class \code{"Test"}
+}
 \description{
 Bingham test of uniformity of axes on the sphere
 }
@@ -42,7 +45,10 @@ bingham_test(ortensor(t), n = nrow(t))
 \seealso{
 Other tests:
 \code{\link[=fisher_ftest]{fisher_ftest()}},
+\code{\link[=fisher_goodness_of_fit]{fisher_goodness_of_fit()}},
+\code{\link[=fisher_kent_test]{fisher_kent_test()}},
 \code{\link[=rayleigh_test3]{rayleigh_test3()}},
+\code{\link[=watson_symmetry_test]{watson_symmetry_test()}},
 \code{\link[=wellner]{wellner()}}
 }
 \concept{tests}

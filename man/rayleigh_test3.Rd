@@ -14,6 +14,9 @@ rayleigh_test3(x, level = 0.95)
 
 \item{level}{numeric. Confidence level (\eqn{1-\alpha}). Default is \code{0.95}}
 }
+\value{
+object of class \code{"Test"}
+}
 \description{
 Rayleigh test of uniformity against a unimodal alternative
 }
@@ -31,6 +34,9 @@ rayleigh_test3(example_lines)
 Other tests:
 \code{\link[=bingham_test]{bingham_test()}},
 \code{\link[=fisher_ftest]{fisher_ftest()}},
+\code{\link[=fisher_goodness_of_fit]{fisher_goodness_of_fit()}},
+\code{\link[=fisher_kent_test]{fisher_kent_test()}},
+\code{\link[=watson_symmetry_test]{watson_symmetry_test()}},
 \code{\link[=wellner]{wellner()}}
 }
 \concept{tests}

@@ -43,3 +43,13 @@ fisher_kent_test(x)
 \references{
 Kent, J.T. (1982). The Fisher-Bingham distribution on the sphere. Journal of the Royal Statistical Society B 44, 71-80.
 }
+\seealso{
+Other tests:
+\code{\link[=bingham_test]{bingham_test()}},
+\code{\link[=fisher_ftest]{fisher_ftest()}},
+\code{\link[=fisher_goodness_of_fit]{fisher_goodness_of_fit()}},
+\code{\link[=rayleigh_test3]{rayleigh_test3()}},
+\code{\link[=watson_symmetry_test]{watson_symmetry_test()}},
+\code{\link[=wellner]{wellner()}}
+}
+\concept{tests}
