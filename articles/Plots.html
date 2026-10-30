@@ -125,7 +125,8 @@ plotting setting.</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Example data"</span>, sub <span class="op">=</span> <span class="st">"Lambert equal area, lower hemisphere projection"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Plots_files/figure-html/stereo_earea-1.png" class="r-plt" alt="Diagram showing the equal-area Lambert projection of some example data" width="1093.75"></p>
 <blockquote>
-<p>Points can be added using the <code><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points()</a></code> function.</p>
+<p>[!TIP] Points can be added using the <code><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points()</a></code>
+function.</p>
 </blockquote>
 </div>
 <div class="section level2">
@@ -143,8 +144,10 @@ just set the <code>earea</code> argument to <code>FALSE</code>, and the
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Example data"</span>, sub <span class="op">=</span> <span class="st">"Equal angle stereographic, upper hemisphere projection"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Plots_files/figure-html/stereo_eangle-1.png" class="r-plt" alt="Diagram showing the equal-angle stereographic projection of some example data" width="1093.75"></p>
 <blockquote>
-<p>Global plotting settings can be defined using <code>option()</code>.
-For example to turn off guides:</p>
+<p>[!TIP] Global plotting settings can be defined using
+<code>option()</code>. This is useful when you wan tti create several
+plot using the same plotting parameters. For example, to turn off
+guides:</p>
 </blockquote>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/options.html" class="external-link">options</a></span><span class="op">(</span>structr.guides <span class="op">=</span> <span class="cn">FALSE</span><span class="op">)</span></span></code></pre></div>

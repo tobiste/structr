@@ -49,9 +49,9 @@ includes
 - Direct import of your field data from **StraboSpot** projects
   ([`read_strabo_JSON()`](https://tobiste.github.io/structr/reference/strabo.md)).
 
-> The {structr} package is all about structures in 3D. For analyzing
-> orientations in 2D (statistics, rose diagrams, etc.), check out the
-> [tectonicr](https://github.com/tobiste/tectonicr) package!
+> \[!CAUTION\] The {structr} package is all about structures in 3D. For
+> analyzing orientations in 2D (statistics, rose diagrams, etc.), check
+> out the [tectonicr](https://github.com/tobiste/tectonicr) package!
 
 ## Installation
 
@@ -116,9 +116,9 @@ settings either directly in the
 function using the parameters `upper.hem`, `earea`, and `guides`or set
 global definitions.
 
-The grid can also be rotated to a specified orientation by setting the
-parameter `center`. In the example below, we fix the grid in the mean of
-the example line data:
+> \[!TIP\] The grid can also be rotated to a specified orientation by
+> setting the parameter `center`. In the example below, we fix the grid
+> in the mean of the example line data:
 
 ``` r
 
@@ -126,7 +126,7 @@ ml <- sph_mean(example_lines)
 
 stereoplot(
   title = "Lambert equal-area projection",
-  sub = paste0("Lower hemisphere\nGrid center: ", round(ml[1,1]), '/', round(ml[1, 2])),
+  sub = paste0("Lower hemisphere\nGrid center: ", round(ml[1, 1]), "/", round(ml[1, 2])),
   center = ml
 )
 points(example_lines, col = "#B63679", pch = 19, cex = .5)
@@ -137,7 +137,7 @@ points(example_planes, col = "#000004", pch = 1, cex = .5)
 
 ### Density on a Sphere
 
-Density shown by contour lines…
+Density shown by contour lines:
 
 ``` r
 
@@ -184,14 +184,6 @@ par(mfrow = c(1, 2), xpd = NA)
 stereoplot(title = "Planes", guides = FALSE)
 points(example_planes, col = "lightgrey", pch = 1, cex = .5)
 lines(planes_eig, col = c("#FB8861FF", "#FEC287FF", "#FCFDBFFF"), lty = 1:3)
-#> [[1]]
-#> NULL
-#> 
-#> [[2]]
-#> NULL
-#> 
-#> [[3]]
-#> NULL
 points(planes_mean, col = "#B63679", pch = 19, cex = 1)
 points(planes_geomean, col = "#E65164FF", pch = 19, cex = 1)
 points(planes_eig, col = c("#FB8861FF", "#FEC287FF", "#FCFDBFFF"), pch = 19, cex = 1)
@@ -329,7 +321,7 @@ using bootstrap replicates:
 ``` r
 
 set.seed(20250411)
-faults_stress <- slip_inversion(faults, n_iter = 10, method = 'michael')
+faults_stress <- slip_inversion(faults, n_iter = 10, method = "michael")
 ```
 
 Now we can visualize the slip inversion results, that are the
@@ -417,7 +409,7 @@ Mohr_plot(
 stress_components <- sigma2shearnorm(faults_stress$sigma, faults)
 
 # Add to Mohr circle:
-points(stress_components[, 'normal'], abs(stress_components[, 'shear']),
+points(stress_components[, "normal"], abs(stress_components[, "shear"]),
   col = assign_col(alpha), pch = 16
 )
 ```
@@ -516,11 +508,6 @@ stereo_path(xl_steps, type = "l")
 stereo_path(xl_steps, type = "p", col = assign_col(increments), pch = 16, cex = .4)
 
 lines(flow_apophyses, col = c("grey30", "grey70"), lty = c(1, 2))
-#> [[1]]
-#> NULL
-#> 
-#> [[2]]
-#> NULL
 points(axes_ISA, pch = 15, col = "#B63679FF")
 text(axes_ISA, labels = c("ISA-1", "ISA-2", "ISA-3"), col = "#B63679FF", pos = 3, font = 2)
 

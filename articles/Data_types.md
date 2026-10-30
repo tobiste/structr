@@ -189,7 +189,7 @@ Line(120, 30) |> as.Plane()
 #>           120            30
 ```
 
-> The functions
+> \[!TIP\] The functions
 > [`as.Vec3()`](https://tobiste.github.io/structr/reference/classes.md),
 > [`as.Ray()`](https://tobiste.github.io/structr/reference/classes.md),
 > [`as.Line()`](https://tobiste.github.io/structr/reference/classes.md),
@@ -251,7 +251,7 @@ planes <- Plane(example_planes_df$dipdir, example_planes_df$dip)
 lines <- Line(example_lines_df$trend, example_lines_df$plunge)
 ```
 
-> If the raw data was imported using
+> \[!TIP\] If the raw data was imported using
 > [`read_strabo_JSON()`](https://tobiste.github.io/structr/reference/strabo.md)
 > this step is not necessary as the data will come already in the
 > correct format.

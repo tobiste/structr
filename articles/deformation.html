@@ -206,7 +206,8 @@ deformation (D1) superimposed by our rotation (D2) is</p>
 <span></span>
 <span><span class="va">D12</span> <span class="op">&lt;-</span> <span class="va">D2</span> <span class="op"><a href="https://rdrr.io/r/base/matmult.html" class="external-link">%*%</a></span> <span class="va">D1</span> <span class="co"># D1 is applied first</span></span></code></pre></div>
 <blockquote>
-<p>Matrix multiplication is <strong>not commutative</strong>, i.e.
+<p>[!CAUTION] Matrix multiplication is <strong>not commutative</strong>,
+i.e.
 <math display="inline" xmlns="http://www.w3.org/1998/Math/MathML"><semantics><mrow><mi>D</mi><mn>1</mn><mo>⋅</mo><mi>D</mi><mn>2</mn><mo>≠</mo><mi>D</mi><mn>2</mn><mo>⋅</mo><mi>D</mi><mn>1</mn></mrow><annotation encoding="application/x-tex">D1 \cdot D2 \neq D2 \cdot D1</annotation></semantics></math></p>
 </blockquote>
 </div>

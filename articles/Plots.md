@@ -38,7 +38,7 @@ title(main = "Example data", sub = "Lambert equal area, lower hemisphere project
 ![Diagram showing the equal-area Lambert projection of some example
 data](Plots_files/figure-html/stereo_earea-1.png)
 
-> Points can be added using the
+> \[!TIP\] Points can be added using the
 > [`points()`](https://rdrr.io/r/graphics/points.html) function.
 
 ## Stereographic projection
@@ -60,8 +60,9 @@ title(main = "Example data", sub = "Equal angle stereographic, upper hemisphere 
 ![Diagram showing the equal-angle stereographic projection of some
 example data](Plots_files/figure-html/stereo_eangle-1.png)
 
-> Global plotting settings can be defined using `option()`. For example
-> to turn off guides:
+> \[!TIP\] Global plotting settings can be defined using `option()`.
+> This is useful when you wan tti create several plot using the same
+> plotting parameters. For example, to turn off guides:
 
 ``` r
 

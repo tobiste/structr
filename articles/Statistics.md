@@ -477,6 +477,29 @@ that the two populations are identical (not merely that their means
 coincide). Thus, smaller p-values indicate stronger evidence that the
 two populations differ significantly.
 
+### Other tests
+
+Additionally, the following tests are currently implemented in
+{structr}:
+
+- Rayleigh test of uniformity against a unimodal alternative:
+  [`rayleigh_test3()`](https://tobiste.github.io/structr/reference/rayleigh_test3.md)
+
+- Bingham test of uniformity of axes on the sphere:
+  [`bingham_test()`](https://tobiste.github.io/structr/reference/bingham_test.md)
+
+- Fisher’s F-Test for Mean Orientations:
+  [`fisher_ftest()`](https://tobiste.github.io/structr/reference/fisher_ftest.md)
+
+- Goodness-of-fit tests of the Fisher distribution:
+  [`fisher_goodness_of_fit()`](https://tobiste.github.io/structr/reference/fisher_goodness_of_fit.md)
+
+- Score test of the Fisher against the Kent distribution:
+  [`fisher_kent_test()`](https://tobiste.github.io/structr/reference/fisher_kent_test.md)
+
+- Watson’s Test of rotational symmetry of a Bingham distribution:
+  [`watson_symmetry_test()`](https://tobiste.github.io/structr/reference/watson_symmetry_test.md)
+
 ## Cluster Vectors
 
 To find *k* clusters of orientational data, the

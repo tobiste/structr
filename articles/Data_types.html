@@ -253,7 +253,7 @@ converting a Line into a Plane:</p>
 <span><span class="co">#&gt; dip_direction           dip </span></span>
 <span><span class="co">#&gt;           120            30</span></span></code></pre></div>
 <blockquote>
-<p>The functions <code><a href="../reference/classes.html">as.Vec3()</a></code>, <code><a href="../reference/classes.html">as.Ray()</a></code>,
+<p>[!TIP] The functions <code><a href="../reference/classes.html">as.Vec3()</a></code>, <code><a href="../reference/classes.html">as.Ray()</a></code>,
 <code><a href="../reference/classes.html">as.Line()</a></code>, <code><a href="../reference/classes.html">as.Plane()</a></code> <code><a href="../reference/classes.html">as.Pair()</a></code>,
 and <code><a href="../reference/classes.html">as.Fault()</a></code> force a spherical object to be coerced into
 another data type without transformation.</p>
@@ -301,9 +301,9 @@ arguments.</p>
 <span><span class="va">planes</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Plane</a></span><span class="op">(</span><span class="va">example_planes_df</span><span class="op">$</span><span class="va">dipdir</span>, <span class="va">example_planes_df</span><span class="op">$</span><span class="va">dip</span><span class="op">)</span></span>
 <span><span class="va">lines</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/classes.html">Line</a></span><span class="op">(</span><span class="va">example_lines_df</span><span class="op">$</span><span class="va">trend</span>, <span class="va">example_lines_df</span><span class="op">$</span><span class="va">plunge</span><span class="op">)</span></span></code></pre></div>
 <blockquote>
-<p>If the raw data was imported using <code><a href="../reference/strabo.html">read_strabo_JSON()</a></code>
-this step is not necessary as the data will come already in the correct
-format.</p>
+<p>[!TIP] If the raw data was imported using
+<code><a href="../reference/strabo.html">read_strabo_JSON()</a></code> this step is not necessary as the data
+will come already in the correct format.</p>
 </blockquote>
 <p>The spherical objects can be easily converted into Cartesian
 coordinate vectors using the function <code><a href="../reference/classes.html">Vec3()</a></code>:</p>

@@ -107,7 +107,7 @@ D2 <- defgrad_from_axisangle(Line(0, 90), 30)
 D12 <- D2 %*% D1 # D1 is applied first
 ```
 
-> Matrix multiplication is **not commutative**, i.e.
+> \[!CAUTION\] Matrix multiplication is **not commutative**, i.e.
 > $`D1 \cdot D2 \neq D2 \cdot D1`$
 
 ### Transformation using deformation gradient tensor
