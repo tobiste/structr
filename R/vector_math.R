@@ -193,7 +193,7 @@ NULL
 
 #' @export
 #' @rdname vector-angle
-angle <- function(x, y, ...) UseMethod("angle")
+angle <- function(x, y, axial, ...) UseMethod("angle")
 
 #' @export
 angle.default <- function(x, y, axial = FALSE, ...) vangle(x, y, axial = axial)

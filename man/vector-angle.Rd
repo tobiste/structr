@@ -6,7 +6,7 @@
 \alias{angle.spherical}
 \title{Angle between vectors}
 \usage{
-angle(x, y, ...)
+angle(x, y, axial, ...)
 
 \method{angle}{spherical}(x, y, axial = NULL, ...)
 }
@@ -14,13 +14,13 @@ angle(x, y, ...)
 \item{x, y}{objects of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}, where the
 rows are the observations and the columns are the coordinates.}
 
-\item{...}{not used.}
-
 \item{axial}{logical. Whether the angle is measured between axial
 (\code{Line}, \code{Plane}) or vectorial (\code{Ray}, \code{Vec3}) data. Axial angles are
 folded into the range 0–90°, vectorial angles range from 0–180°. For
 spherical objects, the default (\code{NULL}) determines this from the classes
 of \code{x} and \code{y}: the angle is axial if either is a \code{Line} or \code{Plane}.}
+
+\item{...}{not used.}
 }
 \value{
 numeric. Angle in degrees if either \code{x} or \code{y} is of class \code{Line}, \code{Ray},
