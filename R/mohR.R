@@ -219,12 +219,16 @@ Mohr_calc <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
 #' This will add the additional Mohr circles between the principal stresses.
 #' @param unit character. The unit used for magnitude of stress (`"MPa"` by default). `NULL` if unitless.
 #' @param col color for Mohr circle.
+#' @param pch integer. Plotting character for the center of the Mohr circle. 
+#' @param cex numeric. Character expansion (size) of character for the center of the Mohr circle
 #' @param n integer. Resolution given amount of points along the generated path
 #' representing the full Mohr circle (`512` by default).
 #' @param full.circle logical. Should the complete Mohr circle be shown, or only
 #' the upper (positive shear stress) part of the circle?
 #' @param include.zero logical. the plot range be extended to include normal_stress = 0?
 #' @param xlim,ylim range of plot
+#' @param add logical. Whether data should be added to a existing plot or a
+#' new one should be created?
 #' @param ... optional graphical parameters.
 #' @note One of the following two sets of data must be entered
 #' \enumerate{
@@ -234,9 +238,12 @@ Mohr_calc <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
 #' @seealso [failure_criterion()] to add the failure criterion;
 #' [Mohr_calc()] to calculate the parameters;
 #' [ggMohr()] for ggplot2 functionality;
+#' 
+#' @return NULL
+#' 
 #' @export
 #' @examples
-#' Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = "#B63679", lwd = 2)
+#' a <- Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = "#B63679", lwd = 2)
 #'
 #' Mohr_plot(sigma1 = 66, sigma2 = 30, sigma3 = 20, xlim = c(-50, 125), full.circle = TRUE)
 #' failure_criterion(col = "#B63679") # adds failure criterion
@@ -253,7 +260,7 @@ Mohr_calc <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
 #'   col = "#B63679", lwd = 2, unit = NULL, include.zero = FALSE
 #' )
 Mohr_plot <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigma2 = NA, sigma3 = NA,
-                      unit = "MPa", col = "black", n = 512, full.circle = FALSE, include.zero = TRUE, xlim = NULL, ylim = NULL, ...) {
+                      unit = "MPa", col = "black", pch = par("pch"), cex = par('cex'), n = 512, full.circle = FALSE, include.zero = TRUE, xlim = NULL, ylim = NULL, add = FALSE, ...) {
   ##  Calculate normal and shear stresses
   theta <- seq(from = 0, to = 180, length.out = n)
   stress_vec <- sapply(
@@ -306,8 +313,14 @@ Mohr_plot <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
     yLab <- bquote("Shear stress," ~ sigma[s] ~ (.(unit)))
   }
 
-  xlim <- if (include.zero) c(min(0, min(sigma, na.rm = TRUE)), max(sigma, na.rm = TRUE) * 1.05) else xlim
-  ylim <- if (!full.circle) c(0, max(tau, na.rm = TRUE)) else ylim
+  if(isFALSE(add)){
+    if(is.null(xlim)){
+      xlim <- if (include.zero) c(min(0, min(sigma, na.rm = TRUE)), max(sigma, na.rm = TRUE) * 1.05)
+    }
+    if(is.null(ylim)){
+      ylim <- if (!full.circle) c(0, max(tau, na.rm = TRUE))
+    }
+    
 
   plot(
     range(sigma), range(tau),
@@ -319,6 +332,7 @@ Mohr_plot <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
     asp = 1,
     axes = !is.null(unit)
   )
+  }
 
   if (all_principals) {
     graphics::lines(sigma23, tau23, col = col, ...)
@@ -327,8 +341,11 @@ Mohr_plot <- function(sigma_x = NA, sigma_z = NA, tau_xz = NA, sigma1 = NA, sigm
 
   graphics::lines(sigma, tau, col = col, ...)
   graphics::abline(h = 0)
-  graphics::points(mean(range(sigma)), 0, col = col)
-}
+  graphics::points(mean(range(sigma)), 0, col = col, pch = pch, cex = cex)
+  
+  invisible(cbind(sigma= sigma, tau = tau))
+  
+  }
 
 #' Principle stresses
 #'

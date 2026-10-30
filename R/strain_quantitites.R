@@ -22,9 +22,8 @@
 #' @seealso [Mohr_plot()] for Stress. [strain] for converting strain quantities
 #' @export
 #' @examples
-#' Mohr_strain(lambda1 = 4, lambda3 = 0.25, phi = 25, col = "red")
-#' (Mohr_strain(lambda1 = 4, lambda2 = 1, lambda3 = 0.25, phi = c(0, 25, 50, 45), 
-#'  col = "red", full.circle = TRUE, axes = FALSE))
+#' Mohr_strain(lambda1 = 4, lambda3 = 0.25, phi = 25, col = 'red')
+#' Mohr_strain(lambda1 = 4, lambda2 = 1, lambda3 = 0.25, phi = c(0, 25, 50, 45), col = 'red', full.circle = TRUE, axes = FALSE)
 Mohr_strain <- function(lambda1, lambda2 = NA, lambda3,
                         # lambda_x = NA, lambda_z = NA, gamma_xz = NA,
                         phi = NULL,
@@ -51,7 +50,9 @@ Mohr_strain <- function(lambda1, lambda2 = NA, lambda3,
   # lambda <- (lambda1 + lambda3)/2 - (lambda3 - lambda1)/2 * cos(2*phis)
   # gamma <- (lambda3 - lambda1)/2 * sin(2*phis)
 
-  if (!is.na(lambda2)) {
+  all_principals <- !is.na(lambda2)
+  
+  if(all_principals){
     stress_vec12 <- sapply(
       X = phis, FUN = stress_transformation,
       sigma1 = lambda1, sigma3 = lambda2
@@ -67,7 +68,6 @@ Mohr_strain <- function(lambda1, lambda2 = NA, lambda3,
     gamma23 <- as.numeric(stress_vec23[2, ])
   }
 
-  ##  Expression for axes
   yLab <- bquote("Shear strain," ~ gamma * "'")
   xLab <- bquote("Quadratic elongation," ~ lambda * "'")
 
@@ -76,12 +76,23 @@ Mohr_strain <- function(lambda1, lambda2 = NA, lambda3,
 
   xlim <- if (isTRUE(include.zero)) c(min(0, lambda3), lambda1) * 1.05 else xlim
   if (isFALSE(full.circle)) {
-    range_f <- c(0, 1)
-  } else {
-    range_f <- c(-1, 1)
-  }
-  if (is.null(ylim)) ylim <- sigma_dev * range_f
 
+     range_f <- c(0, 1)
+     } else {
+       range_f <- c(-1, 1)
+       
+       lambda <- rep(lambda, 2)
+       gamma <- c(gamma, -gamma)
+       if (all_principals){
+         lambda23 <- rep(lambda23, 2)
+         lambda12 <- rep(lambda12, 2)
+         
+         gamma23 <- c(gamma23, -gamma23)
+         gamma12 <- c(gamma12, -gamma12)
+       }
+     }
+  if(is.null(ylim)) ylim <- sigma_dev * range_f
+  
   plot(
     xlim, ylim,
     type = "n",
@@ -93,18 +104,17 @@ Mohr_strain <- function(lambda1, lambda2 = NA, lambda3,
     axes = axes
   )
 
-
-  # graphics::lines(lambda, gamma, col = col, ...)
-  graphics::symbols(mean_lambda, y = 0, circles = sigma_dev, inches = FALSE, fg = fg, bg = bg, add = TRUE)
-
-  all_principals <- !is.na(lambda2)
+  
+  #graphics::symbols(mean_lambda, y = 0, circles = sigma_dev, inches = FALSE, fg = fg, bg = bg, add = TRUE)
+  graphics::polygon(lambda, gamma, col = bg, border = fg, ...)
+  
   if (all_principals) {
     mean_l23 <- mean(range(lambda23))
-    graphics::symbols(mean_l23, y = 0, circles = lambda2 - mean_l23, inches = FALSE, fg = fg23, bg = bg23, add = TRUE)
-    # graphics::lines(lambda23, gamma23, col = col, ...)
-    # graphics::lines(lambda12, gamma12, col = col, ...)
+    #graphics::symbols(mean_l23, y = 0, circles = lambda2 - mean_l23, inches = FALSE, fg = fg23, bg = bg23, add = TRUE)
+    graphics::polygon(lambda23, gamma23, col = bg23, border = fg23, ...)
     mean_l12 <- mean(range(lambda12))
-    graphics::symbols(mean_l12, y = 0, circles = lambda1 - mean_l12, inches = FALSE, fg = fg12, bg = bg12, add = TRUE)
+    #graphics::symbols(mean_l12, y = 0, circles = lambda1 - mean_l12, inches = FALSE, fg = fg12, bg = bg12, add = TRUE)
+    graphics::polygon(lambda12, gamma12, col = bg12, border = fg12, ...)
   }
 
   graphics::abline(h = 0)

@@ -13,11 +13,14 @@ Mohr_plot(
   sigma3 = NA,
   unit = "MPa",
   col = "black",
+  pch = par("pch"),
+  cex = par("cex"),
   n = 512,
   full.circle = FALSE,
   include.zero = TRUE,
   xlim = NULL,
   ylim = NULL,
+  add = FALSE,
   ...
 )
 }
@@ -39,6 +42,10 @@ This will add the additional Mohr circles between the principal stresses.}
 
 \item{col}{color for Mohr circle.}
 
+\item{pch}{integer. Plotting character for the center of the Mohr circle.}
+
+\item{cex}{numeric. Character expansion (size) of character for the center of the Mohr circle}
+
 \item{n}{integer. Resolution given amount of points along the generated path
 representing the full Mohr circle (\code{512} by default).}
 
@@ -48,6 +55,9 @@ the upper (positive shear stress) part of the circle?}
 \item{include.zero}{logical. the plot range be extended to include normal_stress = 0?}
 
 \item{xlim, ylim}{range of plot}
+
+\item{add}{logical. Whether data should be added to a existing plot or a
+new one should be created?}
 
 \item{...}{optional graphical parameters.}
 }
@@ -62,7 +72,7 @@ One of the following two sets of data must be entered
 }
 }
 \examples{
-Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = "#B63679", lwd = 2)
+a <- Mohr_plot(sigma_x = 80, sigma_z = 120, unit = "kPa", tau_xz = 20, col = "#B63679", lwd = 2)
 
 Mohr_plot(sigma1 = 66, sigma2 = 30, sigma3 = 20, xlim = c(-50, 125), full.circle = TRUE)
 failure_criterion(col = "#B63679") # adds failure criterion
