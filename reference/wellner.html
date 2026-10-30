@@ -58,7 +58,7 @@ increases with the degree of difference between the datasets."><meta property="o
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Wellner's Two-Sample Test</h1>
-      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/wellner.R" class="external-link"><code>R/wellner.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/tests_wellner.R" class="external-link"><code>R/tests_wellner.R</code></a></small>
       <div class="d-none name"><code>wellner.Rd</code></div>
     </div>
 
@@ -108,7 +108,14 @@ rows are the observations and the columns are the coordinates.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p><code>wellner()</code> computes Wellner's T-statistic, a non-negative measure of
+    <p>object of class <code>"Test"</code></p>
+    </div>
+    <div class="section level2">
+    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
+    <p>P-values are estimated using permutation-based inference to assess whether
+the two datasets are drawn from
+the same population.</p>
+<p>#' <code>wellner()</code> computes Wellner's T-statistic, a non-negative measure of
 dissimilarity between two datasets. The value is zero when the datasets
 are identical.</p>
 <p>Inference estimates the fraction of permutation tests in which
@@ -120,12 +127,6 @@ Thus, smaller p-values indicate stronger evidence that the two populations
 differ in a meaningful way.</p>
     </div>
     <div class="section level2">
-    <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
-    <p>P-values are estimated using permutation-based inference to assess whether
-the two datasets are drawn from
-the same population.</p>
-    </div>
-    <div class="section level2">
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Jon A. Wellner. "Permutation Tests for Directional Data."
 Ann. Statist. 7(5) 929-943, September, 1979. <a href="https://doi.org/10.1214/aos/1176344779" class="external-link">doi:10.1214/aos/1176344779</a></p>
@@ -135,7 +136,10 @@ Ann. Statist. 7(5) 929-943, September, 1979. <a href="https://doi.org/10.1214/ao
     <div class="dont-index"><p>Other tests:
 <code><a href="bingham_test.html">bingham_test()</a></code>,
 <code><a href="fisher_ftest.html">fisher_ftest()</a></code>,
-<code><a href="rayleigh_test3.html">rayleigh_test3()</a></code></p></div>
+<code><a href="fisher_goodness_of_fit.html">fisher_goodness_of_fit()</a></code>,
+<code><a href="fisher_kent_test.html">fisher_kent_test()</a></code>,
+<code><a href="rayleigh_test3.html">rayleigh_test3()</a></code>,
+<code><a href="watson_symmetry_test.html">watson_symmetry_test()</a></code></p></div>
     </div>
 
     <div class="section level2">

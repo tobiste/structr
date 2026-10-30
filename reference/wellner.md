@@ -44,9 +44,16 @@ http://www.joshuadavis.us/software/
 
 ## Value
 
-`wellner()` computes Wellner's T-statistic, a non-negative measure of
-dissimilarity between two datasets. The value is zero when the datasets
-are identical.
+object of class `"Test"`
+
+## Details
+
+P-values are estimated using permutation-based inference to assess
+whether the two datasets are drawn from the same population.
+
+\#' `wellner()` computes Wellner's T-statistic, a non-negative measure
+of dissimilarity between two datasets. The value is zero when the
+datasets are identical.
 
 Inference estimates the fraction of permutation tests in which the
 computed T-statistic exceeds the observed T for the original data (a
@@ -54,11 +61,6 @@ number between 0 and 1). This value can be interpreted as a p-value for
 the null hypothesis that the two populations are identical (not merely
 that their means coincide). Thus, smaller p-values indicate stronger
 evidence that the two populations differ in a meaningful way.
-
-## Details
-
-P-values are estimated using permutation-based inference to assess
-whether the two datasets are drawn from the same population.
 
 ## References
 
@@ -71,7 +73,10 @@ Jon A. Wellner. "Permutation Tests for Directional Data." Ann. Statist.
 Other tests:
 [`bingham_test()`](https://tobiste.github.io/structr/reference/bingham_test.md),
 [`fisher_ftest()`](https://tobiste.github.io/structr/reference/fisher_ftest.md),
-[`rayleigh_test3()`](https://tobiste.github.io/structr/reference/rayleigh_test3.md)
+[`fisher_goodness_of_fit()`](https://tobiste.github.io/structr/reference/fisher_goodness_of_fit.md),
+[`fisher_kent_test()`](https://tobiste.github.io/structr/reference/fisher_kent_test.md),
+[`rayleigh_test3()`](https://tobiste.github.io/structr/reference/rayleigh_test3.md),
+[`watson_symmetry_test()`](https://tobiste.github.io/structr/reference/watson_symmetry_test.md)
 
 ## Examples
 

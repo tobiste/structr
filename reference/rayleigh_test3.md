@@ -22,6 +22,10 @@ modified after the python package `apsg` (v.2.0.6) by O. Lexa
 
   numeric. Confidence level (\\1-\alpha\\). Default is `0.95`
 
+## Value
+
+object of class `"Test"`
+
 ## Details
 
 The statistic is \\S = p n \bar{R}^2\\ for \\n\\ unit vectors in \\p\\
@@ -36,11 +40,24 @@ against axial alternatives.
 Other tests:
 [`bingham_test()`](https://tobiste.github.io/structr/reference/bingham_test.md),
 [`fisher_ftest()`](https://tobiste.github.io/structr/reference/fisher_ftest.md),
+[`fisher_goodness_of_fit()`](https://tobiste.github.io/structr/reference/fisher_goodness_of_fit.md),
+[`fisher_kent_test()`](https://tobiste.github.io/structr/reference/fisher_kent_test.md),
+[`watson_symmetry_test()`](https://tobiste.github.io/structr/reference/watson_symmetry_test.md),
 [`wellner()`](https://tobiste.github.io/structr/reference/wellner.md)
 
 ## Examples
 
 ``` r
 rayleigh_test3(example_lines)
-#> Error in rayleigh_test3(example_lines): could not find function "rayleigh_test3"
+#> 
+#>  Rayleigh Test
+#> 
+#> statistic = 1954991, df = 3, p-value < 2.2e-16
+#> critical value (95% confidence level) = 7.8147
+#> null hypothesis rejected at the 95% confidence level: yes
+#> further statistics:
+#>            R         Rbar     modified 
+#> 7.398632e+03 8.807895e+01 4.551932e+09 
+#> source: Mardia & Jupp (2000), eq. 10.4.4-10.4.6 
+#> 
 ```

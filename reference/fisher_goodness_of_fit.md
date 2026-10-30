@@ -47,11 +47,46 @@ The constants are FLE's, which are the original ones of Stephens (1974)
 and Fisher & Best (1984). Mardia & Jupp (2000, eq. 12.3.1, 12.3.4)
 misquote them.
 
+## See also
+
+Other tests:
+[`bingham_test()`](https://tobiste.github.io/structr/reference/bingham_test.md),
+[`fisher_ftest()`](https://tobiste.github.io/structr/reference/fisher_ftest.md),
+[`fisher_kent_test()`](https://tobiste.github.io/structr/reference/fisher_kent_test.md),
+[`rayleigh_test3()`](https://tobiste.github.io/structr/reference/rayleigh_test3.md),
+[`watson_symmetry_test()`](https://tobiste.github.io/structr/reference/watson_symmetry_test.md),
+[`wellner()`](https://tobiste.github.io/structr/reference/wellner.md)
+
 ## Examples
 
 ``` r
 set.seed(20250411)
 x <- rvmf(100)
 fisher_goodness_of_fit(x)
-#> Error in fisher_goodness_of_fit(x): could not find function "fisher_goodness_of_fit"
+#> $colatitude
+#> 
+#>  Fisher colatitude M_E
+#> 
+#> statistic = 0.69128
+#> critical value (95% confidence level) = 1.094
+#> null hypothesis rejected at the 95% confidence level: no
+#> further statistics:
+#>          D          k 
+#> 0.06904965 4.95238057 
+#> source: Fisher, Lewis & Embleton (1987), eq. 5.15-5.16 
+#> 
+#> 
+#> $longitude
+#> 
+#>  Fisher longitude M_U
+#> 
+#> statistic = 1.0834
+#> critical value (95% confidence level) = 1.207
+#> null hypothesis rejected at the 95% confidence level: no
+#> further statistics:
+#>         V 
+#> 0.1117444 
+#> source: Fisher, Lewis & Embleton (1987), eq. 5.15-5.16 
+#> 
+#> 
 ```

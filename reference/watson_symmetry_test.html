@@ -102,6 +102,16 @@ Bingham concentrations \((0, \kappa_\text{major}, \kappa_\text{minor})\) and
 \(\lambda_i\) the eigenvalues of the orientation tensor, both in descending order.
 Mardia &amp; Jupp's calcite example gives \(w_g = 1.33\) (girdle accepted) and \(w_b = 9.97\).</p>
     </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other tests:
+<code><a href="bingham_test.html">bingham_test()</a></code>,
+<code><a href="fisher_ftest.html">fisher_ftest()</a></code>,
+<code><a href="fisher_goodness_of_fit.html">fisher_goodness_of_fit()</a></code>,
+<code><a href="fisher_kent_test.html">fisher_kent_test()</a></code>,
+<code><a href="rayleigh_test3.html">rayleigh_test3()</a></code>,
+<code><a href="wellner.html">wellner()</a></code></p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
@@ -109,7 +119,26 @@ Mardia &amp; Jupp's calcite example gives \(w_g = 1.33\) (girdle accepted) and \
 <span class="r-in"><span><span class="va">e</span> <span class="op">&lt;-</span> <span class="fu"><a href="ot_eigen.html">ot_eigen</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">$</span><span class="va">values</span></span></span>
 <span class="r-in"><span><span class="va">k</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">0</span>, <span class="fu"><a href="bingham_statistics.html">bingham_statistics</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">$</span><span class="va">k</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">watson_symmetry_test</span><span class="op">(</span><span class="va">e</span>, <span class="va">k</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">r</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in watson_symmetry_test(e, k, n = nrow(r)):</span> could not find function "watson_symmetry_test"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $bipolar</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Watson bipolar symmetry</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> statistic = 3290.3, df = 2, p-value &lt; 2.2e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> critical value (95% confidence level) = 5.9915</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> null hypothesis rejected at the 95% confidence level: yes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source: Mardia &amp; Jupp (2000), eq. 10.7.8-10.7.18 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $girdle</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Watson girdle symmetry</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> statistic = -1046.9, df = 2, p-value = 1</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> critical value (95% confidence level) = 5.9915</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> null hypothesis rejected at the 95% confidence level: no</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source: Mardia &amp; Jupp (2000), eq. 10.7.8-10.7.18 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

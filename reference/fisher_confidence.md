@@ -44,11 +44,8 @@ mu <- sph_mean(x)
 alpha <- sph_confidence_angle(x)
 
 r1 <- fisher_confidence(mu, alpha = alpha)
-#> Error in fisher_confidence(mu, alpha = alpha): could not find function "fisher_confidence"
 
 plot(x, col = "grey")
 points(mu, col = "red", pch = 16, cex = 1.5)
-
-stereo_lines(r1, col = "red")
-#> Error: object 'r1' not found
+stereo_confidence(r1, col = "red")
 ```

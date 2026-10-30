@@ -49,11 +49,31 @@ Kent's theorem.
 Kent, J.T. (1982). The Fisher-Bingham distribution on the sphere.
 Journal of the Royal Statistical Society B 44, 71-80.
 
+## See also
+
+Other tests:
+[`bingham_test()`](https://tobiste.github.io/structr/reference/bingham_test.md),
+[`fisher_ftest()`](https://tobiste.github.io/structr/reference/fisher_ftest.md),
+[`fisher_goodness_of_fit()`](https://tobiste.github.io/structr/reference/fisher_goodness_of_fit.md),
+[`rayleigh_test3()`](https://tobiste.github.io/structr/reference/rayleigh_test3.md),
+[`watson_symmetry_test()`](https://tobiste.github.io/structr/reference/watson_symmetry_test.md),
+[`wellner()`](https://tobiste.github.io/structr/reference/wellner.md)
+
 ## Examples
 
 ``` r
 #' set.seed(20250411)
 x <- rvmf(100)
 fisher_kent_test(x)
-#> Error in fisher_kent_test(x): could not find function "fisher_kent_test"
+#> 
+#>  Fisher vs Kent
+#> 
+#> statistic = 0.12966, df = 2, p-value = 0.9372
+#> critical value (95% confidence level) = 5.9915
+#> null hypothesis rejected at the 95% confidence level: no
+#> further statistics:
+#>      kappa         r2 
+#> 5.66200190 0.00954967 
+#> source: Kent (1982), eq. 5.5 
+#> 
 ```

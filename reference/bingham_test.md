@@ -27,6 +27,10 @@ modified after the python package `apsg` (v.2.0.6) by O. Lexa
 
   numeric. Confidence level (\\1-\alpha\\). Default is `0.95`
 
+## Value
+
+object of class `"Test"`
+
 ## Details
 
 The statistic is \$\$S = 15 n / 2 (\text{tr}(T^2) - 1/3)\$\$ with the
@@ -48,7 +52,10 @@ very small \\S\\ (lower tail) indicates data more regular than random.
 
 Other tests:
 [`fisher_ftest()`](https://tobiste.github.io/structr/reference/fisher_ftest.md),
+[`fisher_goodness_of_fit()`](https://tobiste.github.io/structr/reference/fisher_goodness_of_fit.md),
+[`fisher_kent_test()`](https://tobiste.github.io/structr/reference/fisher_kent_test.md),
 [`rayleigh_test3()`](https://tobiste.github.io/structr/reference/rayleigh_test3.md),
+[`watson_symmetry_test()`](https://tobiste.github.io/structr/reference/watson_symmetry_test.md),
 [`wellner()`](https://tobiste.github.io/structr/reference/wellner.md)
 
 ## Examples
@@ -56,5 +63,15 @@ Other tests:
 ``` r
 t <- example_lines
 bingham_test(ortensor(t), n = nrow(t))
-#> Error in bingham_test(ortensor(t), n = nrow(t)): could not find function "bingham_test"
+#> 
+#>  Bingham Test
+#> 
+#> statistic = 293.51, df = 5, p-value < 2.2e-16
+#> critical value (95% confidence level) = 11.07
+#> null hypothesis rejected at the 95% confidence level: yes
+#> further statistics:
+#>  modified 
+#> -703.6408 
+#> source: Mardia & Jupp (2000), eq. 10.7.1-10.7.3 
+#> 
 ```

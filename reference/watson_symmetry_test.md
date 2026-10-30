@@ -43,6 +43,16 @@ maximum-likelihood Bingham concentrations \\(0, \kappa\_\text{major},
 orientation tensor, both in descending order. Mardia & Jupp's calcite
 example gives \\w_g = 1.33\\ (girdle accepted) and \\w_b = 9.97\\.
 
+## See also
+
+Other tests:
+[`bingham_test()`](https://tobiste.github.io/structr/reference/bingham_test.md),
+[`fisher_ftest()`](https://tobiste.github.io/structr/reference/fisher_ftest.md),
+[`fisher_goodness_of_fit()`](https://tobiste.github.io/structr/reference/fisher_goodness_of_fit.md),
+[`fisher_kent_test()`](https://tobiste.github.io/structr/reference/fisher_kent_test.md),
+[`rayleigh_test3()`](https://tobiste.github.io/structr/reference/rayleigh_test3.md),
+[`wellner()`](https://tobiste.github.io/structr/reference/wellner.md)
+
 ## Examples
 
 ``` r
@@ -50,5 +60,24 @@ r <- rbingham_eig(100, c(100, 1, 0), "Line")
 e <- ot_eigen(r)$values
 k <- c(0, bingham_statistics(r)$k)
 watson_symmetry_test(e, k, n = nrow(r))
-#> Error in watson_symmetry_test(e, k, n = nrow(r)): could not find function "watson_symmetry_test"
+#> $bipolar
+#> 
+#>  Watson bipolar symmetry
+#> 
+#> statistic = 3290.3, df = 2, p-value < 2.2e-16
+#> critical value (95% confidence level) = 5.9915
+#> null hypothesis rejected at the 95% confidence level: yes
+#> source: Mardia & Jupp (2000), eq. 10.7.8-10.7.18 
+#> 
+#> 
+#> $girdle
+#> 
+#>  Watson girdle symmetry
+#> 
+#> statistic = -1046.9, df = 2, p-value = 1
+#> critical value (95% confidence level) = 5.9915
+#> null hypothesis rejected at the 95% confidence level: no
+#> source: Mardia & Jupp (2000), eq. 10.7.8-10.7.18 
+#> 
+#> 
 ```

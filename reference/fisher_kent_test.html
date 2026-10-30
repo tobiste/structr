@@ -107,13 +107,33 @@ Kent's theorem.</p>
     <h2 id="references">References<a class="anchor" aria-label="anchor" href="#references"></a></h2>
     <p>Kent, J.T. (1982). The Fisher-Bingham distribution on the sphere. Journal of the Royal Statistical Society B 44, 71-80.</p>
     </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other tests:
+<code><a href="bingham_test.html">bingham_test()</a></code>,
+<code><a href="fisher_ftest.html">fisher_ftest()</a></code>,
+<code><a href="fisher_goodness_of_fit.html">fisher_goodness_of_fit()</a></code>,
+<code><a href="rayleigh_test3.html">rayleigh_test3()</a></code>,
+<code><a href="watson_symmetry_test.html">watson_symmetry_test()</a></code>,
+<code><a href="wellner.html">wellner()</a></code></p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="co">#' set.seed(20250411)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">fisher_kent_test</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in fisher_kent_test(x):</span> could not find function "fisher_kent_test"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Fisher vs Kent</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> statistic = 0.12966, df = 2, p-value = 0.9372</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> critical value (95% confidence level) = 5.9915</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> null hypothesis rejected at the 95% confidence level: no</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> further statistics:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>      kappa         r2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 5.66200190 0.00954967 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source: Kent (1982), eq. 5.5 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

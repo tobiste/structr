@@ -107,13 +107,48 @@ levels 0.90, 0.95 and 0.99.</p>
 (1974) and Fisher &amp; Best (1984). Mardia &amp; Jupp (2000, eq. 12.3.1,
 12.3.4) misquote them.</p>
     </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other tests:
+<code><a href="bingham_test.html">bingham_test()</a></code>,
+<code><a href="fisher_ftest.html">fisher_ftest()</a></code>,
+<code><a href="fisher_kent_test.html">fisher_kent_test()</a></code>,
+<code><a href="rayleigh_test3.html">rayleigh_test3()</a></code>,
+<code><a href="watson_symmetry_test.html">watson_symmetry_test()</a></code>,
+<code><a href="wellner.html">wellner()</a></code></p></div>
+    </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/base/Random.html" class="external-link">set.seed</a></span><span class="op">(</span><span class="fl">20250411</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="va">x</span> <span class="op">&lt;-</span> <span class="fu"><a href="vonmises-fisher.html">rvmf</a></span><span class="op">(</span><span class="fl">100</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu">fisher_goodness_of_fit</span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in fisher_goodness_of_fit(x):</span> could not find function "fisher_goodness_of_fit"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $colatitude</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Fisher colatitude M_E</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> statistic = 0.69128</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> critical value (95% confidence level) = 1.094</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> null hypothesis rejected at the 95% confidence level: no</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> further statistics:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>          D          k </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.06904965 4.95238057 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source: Fisher, Lewis &amp; Embleton (1987), eq. 5.15-5.16 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> $longitude</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Fisher longitude M_U</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> statistic = 1.0834</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> critical value (95% confidence level) = 1.207</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> null hypothesis rejected at the 95% confidence level: no</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> further statistics:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>         V </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 0.1117444 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source: Fisher, Lewis &amp; Embleton (1987), eq. 5.15-5.16 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

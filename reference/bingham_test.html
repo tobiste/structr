@@ -88,6 +88,10 @@
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>object of class <code>"Test"</code></p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The statistic is $$S = 15 n / 2 (\text{tr}(T^2) - 1/3)$$ with the orientation
 tensor \(T\) (scaled to trace 1), asymptotically chi-square with 5 degrees of
@@ -105,7 +109,10 @@ $$I = 15/2 \sum((\lambda_i - 1/3)^2)$$.</p>
     <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
     <div class="dont-index"><p>Other tests:
 <code><a href="fisher_ftest.html">fisher_ftest()</a></code>,
+<code><a href="fisher_goodness_of_fit.html">fisher_goodness_of_fit()</a></code>,
+<code><a href="fisher_kent_test.html">fisher_kent_test()</a></code>,
 <code><a href="rayleigh_test3.html">rayleigh_test3()</a></code>,
+<code><a href="watson_symmetry_test.html">watson_symmetry_test()</a></code>,
 <code><a href="wellner.html">wellner()</a></code></p></div>
     </div>
 
@@ -113,7 +120,17 @@ $$I = 15/2 \sum((\lambda_i - 1/3)^2)$$.</p>
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="va">t</span> <span class="op">&lt;-</span> <span class="va">example_lines</span></span></span>
 <span class="r-in"><span><span class="fu">bingham_test</span><span class="op">(</span><span class="fu"><a href="ortensor.html">ortensor</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span>, n <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">t</span><span class="op">)</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in bingham_test(ortensor(t), n = nrow(t)):</span> could not find function "bingham_test"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Bingham Test</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> statistic = 293.51, df = 5, p-value &lt; 2.2e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> critical value (95% confidence level) = 11.07</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> null hypothesis rejected at the 95% confidence level: yes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> further statistics:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  modified </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> -703.6408 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source: Mardia &amp; Jupp (2000), eq. 10.7.1-10.7.3 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

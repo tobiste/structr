@@ -84,6 +84,10 @@
 
 </dl></div>
     <div class="section level2">
+    <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
+    <p>object of class <code>"Test"</code></p>
+    </div>
+    <div class="section level2">
     <h2 id="details">Details<a class="anchor" aria-label="anchor" href="#details"></a></h2>
     <p>The statistic is \(S = p n \bar{R}^2\) for \(n\) unit vectors in \(p\) dimensions,
 asymptotically chi-square with \(p\) degrees of freedom; the p-value is that of
@@ -96,13 +100,26 @@ sec. 5.3.1(i)). The test is not consistent against axial alternatives.</p>
     <div class="dont-index"><p>Other tests:
 <code><a href="bingham_test.html">bingham_test()</a></code>,
 <code><a href="fisher_ftest.html">fisher_ftest()</a></code>,
+<code><a href="fisher_goodness_of_fit.html">fisher_goodness_of_fit()</a></code>,
+<code><a href="fisher_kent_test.html">fisher_kent_test()</a></code>,
+<code><a href="watson_symmetry_test.html">watson_symmetry_test()</a></code>,
 <code><a href="wellner.html">wellner()</a></code></p></div>
     </div>
 
     <div class="section level2">
     <h2 id="ref-examples">Examples<a class="anchor" aria-label="anchor" href="#ref-examples"></a></h2>
     <div class="sourceCode"><pre class="sourceCode r"><code><span class="r-in"><span><span class="fu">rayleigh_test3</span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span></span>
-<span class="r-err co"><span class="r-pr">#&gt;</span> <span class="error">Error in rayleigh_test3(example_lines):</span> could not find function "rayleigh_test3"</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Rayleigh Test</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> statistic = 1954991, df = 3, p-value &lt; 2.2e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> critical value (95% confidence level) = 7.8147</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> null hypothesis rejected at the 95% confidence level: yes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> further statistics:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>            R         Rbar     modified </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 7.398632e+03 8.807895e+01 4.551932e+09 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source: Mardia &amp; Jupp (2000), eq. 10.4.4-10.4.6 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

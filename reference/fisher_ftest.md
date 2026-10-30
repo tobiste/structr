@@ -33,7 +33,10 @@ object of class `"Test"`
 
 Other tests:
 [`bingham_test()`](https://tobiste.github.io/structr/reference/bingham_test.md),
+[`fisher_goodness_of_fit()`](https://tobiste.github.io/structr/reference/fisher_goodness_of_fit.md),
+[`fisher_kent_test()`](https://tobiste.github.io/structr/reference/fisher_kent_test.md),
 [`rayleigh_test3()`](https://tobiste.github.io/structr/reference/rayleigh_test3.md),
+[`watson_symmetry_test()`](https://tobiste.github.io/structr/reference/watson_symmetry_test.md),
 [`wellner()`](https://tobiste.github.io/structr/reference/wellner.md)
 
 ## Examples
