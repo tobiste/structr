@@ -12,9 +12,9 @@ library("structr")
 
 # set up some plotting defaults
 options(
-  structr.upper.hem = FALSE, structr.earea = TRUE, 
+  structr.upper.hem = FALSE, structr.earea = TRUE,
   structr.guides = FALSE
-  )
+)
 ```
 
 A fault is given by the orientation of its plane (dip direction and dip
@@ -345,7 +345,7 @@ stereoplot](Faults_files/figure-html/slip_inversion_alpha-1.png)
 
 ``` r
 
-stress_components <- sigma2shearnorm(inv_res$sigma, fault_data, friction = 0.6) 
+stress_components <- sigma2shearnorm(inv_res$sigma, fault_data, friction = 0.6)
 
 
 Mohr_plot(
@@ -354,7 +354,7 @@ Mohr_plot(
   sigma3 = inv_res$principal_vals[3],
   unit = NULL, include.zero = FALSE
 )
-points(stress_components[, 'normal'], abs(stress_components[, 'shear']),
+points(stress_components[, "normal"], abs(stress_components[, "shear"]),
   col = assign_col(alpha), pch = 16
 )
 ```
@@ -369,7 +369,7 @@ result](Faults_files/figure-html/slip_inversion_mohr-1.png)
 
 stereoplot(title = "Focal Mechanism Solution")
 stereo_fms(inv_res$sigma, friction = 0.6)
-hoeppener(fault_data, col = 'grey30')
+hoeppener(fault_data, col = "grey30")
 stereo_confidence(inv_res$principal_axes_CI$sigma1, col = cols[1])
 stereo_confidence(inv_res$principal_axes_CI$sigma2, col = cols[2])
 stereo_confidence(inv_res$principal_axes_CI$sigma3, col = cols[3])

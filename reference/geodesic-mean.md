@@ -81,6 +81,6 @@ geodesic_mean(example_planes)
 p <- Pair(strabo_prj$planar, strabo_prj$linear)
 p_mean <- geodesic_mean(p)
 
-plot(p, col = 'grey')
-points(p_mean, col = 'red')
+plot(p, col = "grey")
+points(p_mean, col = "red")
 ```

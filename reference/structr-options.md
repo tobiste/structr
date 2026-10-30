@@ -91,5 +91,5 @@ explicitly overrides the global default for that call.
 ``` r
 old <- options(structr.upper.hem = TRUE)
 # ... plotting calls now default to upper hemisphere
-options(old)  # restore
+options(old) # restore
 ```

@@ -91,7 +91,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2026-10-25</h4>
+            <h4 data-toc-skip class="date">2026-10-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/Import.Rmd" class="external-link"><code>vignettes/Import.Rmd</code></a></small>
       <div class="d-none name"><code>Import.Rmd</code></div>
@@ -329,10 +329,10 @@ already converted into {structr} data objects.</p>
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/names.html" class="external-link">names</a></span><span class="op">(</span><span class="va">strabo_data</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] "data"   "spots"  "tags"   "planar" "linear"</span></span></code></pre></div>
 <div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">strabo_data</span><span class="op">$</span><span class="va">linear</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col_d</a></span><span class="op">(</span><span class="va">strabo_data</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">spot_id</span><span class="op">)</span><span class="op">)</span> </span>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">strabo_data</span><span class="op">$</span><span class="va">linear</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col_d</a></span><span class="op">(</span><span class="va">strabo_data</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">spot_id</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in (function (n) : This manual palette can handle a maximum of 8</span></span>
 <span><span class="co">#&gt; values. You have supplied 93</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">'All linear elements'</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"All linear elements"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Import_files/figure-html/strabi_plot1-1.png" class="r-plt" alt="" width="1093.75"></p>
 <p>The <code>"strabo"</code> objects are list objects containing
 orientation data as planar and linear objects as well as several slots
@@ -343,11 +343,11 @@ measurements all share the same row indices. Thus, planes and lines with
 identical row indices have been measured simultaneously (e.g. as a
 fault).</p>
 <div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="../reference/classes.html">Pair</a></span><span class="op">(</span><span class="va">strabo_data</span><span class="op">$</span><span class="va">planar</span>, <span class="va">strabo_data</span><span class="op">$</span><span class="va">linear</span><span class="op">)</span> <span class="op">|&gt;</span> </span>
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/classes.html">Pair</a></span><span class="op">(</span><span class="va">strabo_data</span><span class="op">$</span><span class="va">planar</span>, <span class="va">strabo_data</span><span class="op">$</span><span class="va">linear</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col_d</a></span><span class="op">(</span><span class="va">strabo_data</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">spot_id</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in (function (n) : This manual palette can handle a maximum of 8</span></span>
 <span><span class="co">#&gt; values. You have supplied 93</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">'Planar+Linear'</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Planar+Linear"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Import_files/figure-html/strabi_plot_pair-1.png" class="r-plt" alt="" width="1093.75"></p>
 <blockquote>
 <p>This import allows that the connection of simultaneously measured
@@ -382,7 +382,7 @@ elements of the list, including the orientation data:</p>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">strabo_prj_subset</span><span class="op">$</span><span class="va">linear</span>, col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col_d</a></span><span class="op">(</span><span class="va">strabo_prj_subset</span><span class="op">$</span><span class="va">data</span><span class="op">$</span><span class="va">spot_id</span><span class="op">)</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Warning in (function (n) : This manual palette can handle a maximum of 8</span></span>
 <span><span class="co">#&gt; values. You have supplied 78</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">'Subset of linear elements'</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/title.html" class="external-link">title</a></span><span class="op">(</span>main <span class="op">=</span> <span class="st">"Subset of linear elements"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Import_files/figure-html/subset-1.png" class="r-plt" alt="" width="1093.75"></p>
 </div>
 <div class="section level3">

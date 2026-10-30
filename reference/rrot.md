@@ -39,7 +39,7 @@ r <- rrot(10)
 rp <- lapply(r, rot2pair) |> lapply(unclass)
 rp <- do.call(rbind, args = rp) |>
   as.Pair()
-  
+
 # plot pairs
 plot(rp)
 ```

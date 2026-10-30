@@ -57,7 +57,7 @@ in northern Brittany (France). Journal of Structural Geology, 11(4),
 ## Examples
 
 ``` r
-balebrun_plot(simongomez, col = assign_col(simongomez[, 'azimuth']), pch = 16)
+balebrun_plot(simongomez, col = assign_col(simongomez[, "azimuth"]), pch = 16)
 
 
 balebrun_plot(Pair_from_pitch(Plane(0, 80), 80), "vertical flow", col = 1, add = FALSE)

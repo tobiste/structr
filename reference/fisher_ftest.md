@@ -6,7 +6,7 @@ same Fisher population.
 ## Usage
 
 ``` r
-fisher_ftest(x, y, alpha = 0.05, na.rm = TRUE)
+fisher_ftest(x, y, level = 0.95, na.rm = TRUE)
 ```
 
 ## Arguments
@@ -16,10 +16,9 @@ fisher_ftest(x, y, alpha = 0.05, na.rm = TRUE)
   objects of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, where the
   rows are the observations and the columns are the coordinates.
 
-- alpha:
+- level:
 
-  numeric. Significance level for the confidence angle (default is 0.05
-  for a 95% confidence angle).
+  numeric. Confidence level (\\1-\alpha\\). Default is `0.95`
 
 - na.rm:
 
@@ -28,7 +27,14 @@ fisher_ftest(x, y, alpha = 0.05, na.rm = TRUE)
 
 ## Value
 
-list indicating the F-statistic and the p-value.
+object of class `"Test"`
+
+## See also
+
+Other tests:
+[`bingham_test()`](https://tobiste.github.io/structr/reference/bingham_test.md),
+[`rayleigh_test3()`](https://tobiste.github.io/structr/reference/rayleigh_test3.md),
+[`wellner()`](https://tobiste.github.io/structr/reference/wellner.md)
 
 ## Examples
 
@@ -43,7 +49,15 @@ stereo_point(y, col = 2)
 
 
 fisher_ftest(x, y)
-#> Reject null-hypothesis
-#>    F stat   p-value 
-#> 237.13963   3.01851 
+#> 
+#>  Fisher F-test for a common mean direction
+#> 
+#> statistic = 237.14, df = 2, df = 396, p-value < 2.2e-16
+#> critical value (95% confidence level) = 3.0185
+#> null hypothesis rejected at the 95% confidence level: yes
+#> further statistics:
+#>        Rx        Ry         R 
+#>  95.38633  95.35390 179.65004 
+#> source: Fisher, Lewis & Embleton (1987), sec. 7.2.2 
+#> 
 ```

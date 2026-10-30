@@ -53,17 +53,19 @@ Other stress-inversion:
 set.seed(20250411)
 
 nx <- length(angelier1990)
-par(mfrow = c(2, nx/2))
+par(mfrow = c(2, nx / 2))
 
 invisible(lapply(seq_len(nx), function(i) {
   x <- angelier1990[[i]]
   xres <- slip_inversion_simple(x)
-  
-  stereoplot(title = names(angelier1990)[i], guides = FALSE,
-  sub = paste0(
-    "beta: ", round(xres$beta, 2),
-    " deg | R: ", round(xres$R, 2)
-  ))
+
+  stereoplot(
+    title = names(angelier1990)[i], guides = FALSE,
+    sub = paste0(
+      "beta: ", round(xres$beta, 2),
+      " deg | R: ", round(xres$R, 2)
+    )
+  )
   hoeppener(x, col = assign_col(xres$beta_angles))
   angelier(xres$mean_planes, pch = 16, col = viridis::magma(2, end = 0.8), cex = 1)
   points(xres$principal_axes, pch = 16, col = viridis::rocket(3, end = 0.8), cex = 1)

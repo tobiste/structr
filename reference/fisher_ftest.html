@@ -54,7 +54,7 @@
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>Test of Mean Orientations</h1>
-      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/vector_stats.R" class="external-link"><code>R/vector_stats.R</code></a></small>
+      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/R/tests.R" class="external-link"><code>R/tests.R</code></a></small>
       <div class="d-none name"><code>fisher_ftest.Rd</code></div>
     </div>
 
@@ -64,7 +64,7 @@
 
     <div class="section level2">
     <h2 id="ref-usage">Usage<a class="anchor" aria-label="anchor" href="#ref-usage"></a></h2>
-    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fisher_ftest</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, alpha <span class="op">=</span> <span class="fl">0.05</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
+    <div class="sourceCode"><pre class="sourceCode r"><code><span><span class="fu">fisher_ftest</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span>, level <span class="op">=</span> <span class="fl">0.95</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span></code></pre></div>
     </div>
 
     <div class="section level2">
@@ -76,8 +76,8 @@
 rows are the observations and the columns are the coordinates.</p></dd>
 
 
-<dt id="arg-alpha">alpha<a class="anchor" aria-label="anchor" href="#arg-alpha"></a></dt>
-<dd><p>numeric. Significance level for the confidence angle (default is 0.05 for a 95% confidence angle).</p></dd>
+<dt id="arg-level">level<a class="anchor" aria-label="anchor" href="#arg-level"></a></dt>
+<dd><p>numeric. Confidence level (\(1-\alpha\)). Default is <code>0.95</code></p></dd>
 
 
 <dt id="arg-na-rm">na.rm<a class="anchor" aria-label="anchor" href="#arg-na-rm"></a></dt>
@@ -86,7 +86,14 @@ rows are the observations and the columns are the coordinates.</p></dd>
 </dl></div>
     <div class="section level2">
     <h2 id="value">Value<a class="anchor" aria-label="anchor" href="#value"></a></h2>
-    <p>list indicating the F-statistic and the p-value.</p>
+    <p>object of class <code>"Test"</code></p>
+    </div>
+    <div class="section level2">
+    <h2 id="see-also">See also<a class="anchor" aria-label="anchor" href="#see-also"></a></h2>
+    <div class="dont-index"><p>Other tests:
+<code><a href="bingham_test.html">bingham_test()</a></code>,
+<code><a href="rayleigh_test3.html">rayleigh_test3()</a></code>,
+<code><a href="wellner.html">wellner()</a></code></p></div>
     </div>
 
     <div class="section level2">
@@ -101,9 +108,17 @@ rows are the observations and the columns are the coordinates.</p></dd>
 <span class="r-plt img"><img src="fisher_ftest-1.png" alt="" width="1094" height="676"></span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu">fisher_ftest</span><span class="op">(</span><span class="va">x</span>, <span class="va">y</span><span class="op">)</span></span></span>
-<span class="r-msg co"><span class="r-pr">#&gt;</span> Reject null-hypothesis</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>    F stat   p-value </span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> 237.13963   3.01851 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> 	Fisher F-test for a common mean direction</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> statistic = 237.14, df = 2, df = 396, p-value &lt; 2.2e-16</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> critical value (95% confidence level) = 3.0185</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> null hypothesis rejected at the 95% confidence level: yes</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> further statistics:</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>        Rx        Ry         R </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span>  95.38633  95.35390 179.65004 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> source: Fisher, Lewis &amp; Embleton (1987), sec. 7.2.2 </span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> </span>
 </code></pre></div>
     </div>
   </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>

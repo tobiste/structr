@@ -35,5 +35,5 @@ print(int)
 
 stereoplot()
 lines(rbind(p1, p2))
-points(int, col = 'red', pch = 16)
+points(int, col = "red", pch = 16)
 ```

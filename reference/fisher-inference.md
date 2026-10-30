@@ -100,6 +100,6 @@ print(r)
 #> 
 
 plot(x)
-points(r$muHat, col = 'red')
-lines(r$muHat, ang = r$angle, col = 'red')
+points(r$muHat, col = "red")
+lines(r$muHat, ang = r$angle, col = "red")
 ```

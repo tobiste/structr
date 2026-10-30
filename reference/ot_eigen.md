@@ -1,6 +1,7 @@
 # Eigenvalues and Eigenvectors of a Set of Vectors
 
-Decomposition of Orientation Tensor Eigenvectors and Eigenvalues
+Decomposition of Orientation Tensor Eigenvectors \\\nu\\ and Eigenvalues
+\\\lambda\\
 
 ## Usage
 

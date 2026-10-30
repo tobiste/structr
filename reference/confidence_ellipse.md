@@ -1,4 +1,4 @@
-# Confidence ellipse
+# Bootstrapped confidence ellipse
 
 Bootstrapped projected mean with percentile confidence region and
 hypothesis tests
@@ -28,11 +28,11 @@ confidence_ellipse(
 
 - n_iter:
 
-  integer (10000 by default).
+  integer. Number of bootstrap iterations (`10000` by default).
 
 - alpha:
 
-  numeric (0.05 by default).
+  numeric. Level of significance \\\alpha\\ (`0.05` by default).
 
 - res:
 
@@ -46,7 +46,7 @@ confidence_ellipse(
 
 ## Value
 
-list.
+object of class `"confidence_region"`, here with additional arguments:
 
 - `center`:
 
@@ -101,6 +101,14 @@ Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis for
 three-dimensional orientational data. Journal of Structural Geology, 96,
 65–89.
 [doi:10.1016/j.jsg.2017.01.002](https://doi.org/10.1016/j.jsg.2017.01.002)
+
+## See also
+
+Other confidence:
+[`bingham_confidence()`](https://tobiste.github.io/structr/reference/bingham_confidence.md),
+[`bingham_ellipse()`](https://tobiste.github.io/structr/reference/bingham_ellipse.md),
+[`fisher_confidence()`](https://tobiste.github.io/structr/reference/fisher_confidence.md),
+[`stereo_confidence()`](https://tobiste.github.io/structr/reference/stereo_confidence.md)
 
 ## Examples
 

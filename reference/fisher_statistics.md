@@ -33,6 +33,10 @@ fisher_statistics(x, w = NULL, conf.level = 0.95, na.rm = TRUE)
 
 list, with
 
+- `"mu"`:
+
+  Mean vector
+
 - `"k"`:
 
   estimated concentration parameter \\\kappa\\ for the von Mises-Fisher
@@ -55,16 +59,21 @@ list, with
 set.seed(20250411)
 x <- rvmf(100, mu = Line(120, 50), k = 5)
 fisher_statistics(x)
+#> $mu
+#> Ray object (n = 1):
+#>   azimuth    plunge 
+#> 118.32579  50.88713 
+#> 
 #> $k
 #> [1] 4.952381
 #> 
 #> $csd
-#> [1] 0.6352657
+#> [1] 36.39804
 #> 
 #> $csd_2s
-#> [1] 1.09799
+#> [1] 62.91019
 #> 
 #> $alpha
-#> [1] 0.1239825
+#> [1] 7.103673
 #> 
 ```

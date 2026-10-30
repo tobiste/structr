@@ -25,8 +25,8 @@ text(x, labels = seq_along(x[, 1]), upper.hem = NULL, earea = NULL, ...)
   objects (names and calls) to expressions, and vectors and other
   classed objects to character vectors by
   [`as.character`](https://rdrr.io/r/base/character.html). If `labels`
-  is longer than `x` and `y`, the coordinates are recycled to the length
-  of `labels`.
+  is longer than `x` and `y`, `labels` is truncated to
+  `max(length(x), length(y))`.
 
 - upper.hem:
 

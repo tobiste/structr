@@ -91,7 +91,7 @@
                         <h4 data-toc-skip class="author">Tobias
 Stephan</h4>
             
-            <h4 data-toc-skip class="date">2026-10-25</h4>
+            <h4 data-toc-skip class="date">2026-10-30</h4>
       
       <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/Plots.Rmd" class="external-link"><code>vignettes/Plots.Rmd</code></a></small>
       <div class="d-none name"><code>Plots.Rmd</code></div>
@@ -163,7 +163,7 @@ function.</p>
 the <code>ang</code> argument in <code><a href="../reference/lines.html">lines()</a></code>:</p>
 <div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/lines.html">lines</a></span><span class="op">(</span><span class="va">lines</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span>, ang <span class="op">=</span> <span class="fl">10</span>, col <span class="op">=</span> <span class="st">'#B6367980'</span>, border <span class="op">=</span> <span class="st">"#B63679"</span>, fill <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/lines.html">lines</a></span><span class="op">(</span><span class="va">lines</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span>, ang <span class="op">=</span> <span class="fl">10</span>, col <span class="op">=</span> <span class="st">"#B6367980"</span>, border <span class="op">=</span> <span class="st">"#B63679"</span>, fill <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">lines</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">5</span>, <span class="op">]</span>, col <span class="op">=</span> <span class="st">"#B63679"</span>, pch <span class="op">=</span> <span class="fl">19</span>, cex <span class="op">=</span> <span class="fl">.5</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Plots_files/figure-html/stereo_smallcircle-1.png" class="r-plt" alt="Diagram showing smallcircles" width="1093.75"></p>
 </div>
@@ -406,16 +406,16 @@ three different properties:</p>
 <span><span class="va">prop_discrete</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/sort.html" class="external-link">sort</a></span><span class="op">(</span><span class="va">letters</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html" class="external-link">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">3</span>, size <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/nrow.html" class="external-link">nrow</a></span><span class="op">(</span><span class="va">planes</span><span class="op">)</span>, replace <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">]</span><span class="op">)</span></span>
 <span></span>
 <span><span class="fu"><a href="../reference/stereoplot.html">stereoplot</a></span><span class="op">(</span><span class="op">)</span></span>
-<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">planes</span>, </span>
-<span>       col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col</a></span><span class="op">(</span><span class="va">prop_continuous1</span><span class="op">)</span>, </span>
-<span>       cex <span class="op">=</span> <span class="fu"><a href="../reference/assign-cex.html">assign_cex</a></span><span class="op">(</span><span class="va">prop_continuous2</span>, area <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
-<span>       pch <span class="op">=</span> <span class="fu"><a href="../reference/assign-pch.html">assign_pch</a></span><span class="op">(</span><span class="va">prop_discrete</span><span class="op">)</span></span>
-<span>       <span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">planes</span>,</span>
+<span>  col <span class="op">=</span> <span class="fu"><a href="../reference/assign-color.html">assign_col</a></span><span class="op">(</span><span class="va">prop_continuous1</span><span class="op">)</span>,</span>
+<span>  cex <span class="op">=</span> <span class="fu"><a href="../reference/assign-cex.html">assign_cex</a></span><span class="op">(</span><span class="va">prop_continuous2</span>, area <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span>,</span>
+<span>  pch <span class="op">=</span> <span class="fu"><a href="../reference/assign-pch.html">assign_pch</a></span><span class="op">(</span><span class="va">prop_discrete</span><span class="op">)</span></span>
+<span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># Add legends</span></span>
-<span><span class="fu"><a href="../reference/assign-cex.html">legend_cex</a></span><span class="op">(</span><span class="va">prop_continuous2</span>, area <span class="op">=</span> <span class="cn">TRUE</span>, title <span class="op">=</span> <span class="st">'A continuous property'</span>, position <span class="op">=</span> <span class="st">'bottomleft'</span>, cex <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/assign-pch.html">legend_pch</a></span><span class="op">(</span><span class="va">prop_discrete</span>, title <span class="op">=</span> <span class="st">'A discrete property'</span>, position <span class="op">=</span> <span class="st">'topleft'</span>, cex <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span></span>
-<span><span class="fu"><a href="../reference/assign-color.html">legend_col</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/pretty.html" class="external-link">pretty</a></span><span class="op">(</span><span class="va">prop_continuous1</span><span class="op">)</span>, title <span class="op">=</span> <span class="st">'Another continuous property'</span><span class="op">)</span></span></code></pre></div>
+<span><span class="fu"><a href="../reference/assign-cex.html">legend_cex</a></span><span class="op">(</span><span class="va">prop_continuous2</span>, area <span class="op">=</span> <span class="cn">TRUE</span>, title <span class="op">=</span> <span class="st">"A continuous property"</span>, position <span class="op">=</span> <span class="st">"bottomleft"</span>, cex <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/assign-pch.html">legend_pch</a></span><span class="op">(</span><span class="va">prop_discrete</span>, title <span class="op">=</span> <span class="st">"A discrete property"</span>, position <span class="op">=</span> <span class="st">"topleft"</span>, cex <span class="op">=</span> <span class="fl">.8</span><span class="op">)</span></span>
+<span><span class="fu"><a href="../reference/assign-color.html">legend_col</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/pretty.html" class="external-link">pretty</a></span><span class="op">(</span><span class="va">prop_continuous1</span><span class="op">)</span>, title <span class="op">=</span> <span class="st">"Another continuous property"</span><span class="op">)</span></span></code></pre></div>
 <p><img src="Plots_files/figure-html/assign-1.png" class="r-plt" alt="" width="1093.75"></p>
 <p>The legend for these plotting parameters can be created using the
 <code>legend_*</code> functions.</p>

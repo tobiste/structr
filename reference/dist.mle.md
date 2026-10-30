@@ -53,7 +53,7 @@ vmf_MLE(x)
 #> $kappa
 #> [1] 5.000134
 #> 
- 
+
 x2 <- rkent(100, mu = Line(120, 50), k = 5, b = 1)
 kent_MLE(x2)
 #> $G

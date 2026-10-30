@@ -1,6 +1,6 @@
-# Elliptical Concentration and Confidence Cone Estimation
+# Statistics of a Bingham Distribution
 
-Elliptical Concentration and Confidence Cone Estimation
+Statistics of a Bingham Distribution
 
 ## Usage
 
@@ -34,17 +34,26 @@ https://doi.org/10.1007/978-3-662-05223-5_10
 
 list
 
-- `k`:
+- `"mu"`:
 
-  two-column vector containing the estimates for the minimum
-  (\\k\_\text{min}\\) and maximum concentration (\\k\_\text{max}\\).
+  Maximum concentration vector
 
-- `a95`:
+- `"axes"`:
 
-  two-column vector containing the estimates for the minimum and maximum
-  95% confidence cone.
+  Axes of Bingham ellipse
 
-- `beta`:
+- `"k"`:
+
+  two-column vector containing the estimates for the maximum
+  (\\k\_\text{min}\\) and minimum concentration (\\k\_\text{max}\\).
+
+- `"a95"`:
+
+  two-column vector containing the estimates for the maximum and minimum
+  95% confidence cone. In radians when `x` is an object of class
+  `"Vec3"`,otherwise in degrees.
+
+- `"beta"`:
 
   The shape factor of the distribution given by the ratio
   \\\frac{k\_\text{min}}{k\_\text{max}}\\.
@@ -64,11 +73,22 @@ stereo_point(x)
 
 
 bingham_statistics(x)
+#> $mu
+#> Line object (n = 1):
+#>   azimuth    plunge 
+#> 118.97488  48.74017 
+#> 
+#> $axes
+#> Line object (n = 2):
+#>        azimuth   plunge
+#> [1,]  13.12232 13.47624
+#> [2,] 272.29509 38.09204
+#> 
 #> $k
-#> [1] 2.466239 3.487357
+#> [1] 3.487357 2.466239
 #> 
 #> $a95
-#> [1] 8.914776 7.496868
+#> [1] 7.496868 8.914776
 #> 
 #> $beta
 #> [1] 0.7071944

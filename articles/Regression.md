@@ -204,8 +204,8 @@ solution:
 
 ``` r
 
-cleavage_sc3 <- regression_gray(cleavage, out = 'both')
-bedding_sc3 <- regression_gray(bedding, out = 'both')
+cleavage_sc3 <- regression_gray(cleavage, out = "both")
+bedding_sc3 <- regression_gray(bedding, out = "both")
 
 cleavage_sc3$comparison
 #> $Vr

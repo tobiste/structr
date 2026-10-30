@@ -102,25 +102,27 @@ res$k_opt
 
 
 # plot the results in lambert projection:
-cols <- assign_col_d(seq_len(res$k_opt))#' 
+cols <- assign_col_d(seq_len(res$k_opt)) #'
 par(mfrow = c(1, 2))
 
 stereoplot()
 angelier(angelier1990$KAM, col = assign_col_d(res$assignment))
-legend('topleft', title = 'Phases', fill = cols, legend = 1:3)
+legend("topleft", title = "Phases", fill = cols, legend = 1:3)
 
 
 stereoplot()
-angelier(angelier1990$KAM, col = 'grey')
-for(k in seq_len(res$k_opt)){
-   res_k <- res$phase_results[[k]]
-   points(res_k$principal_axes, col = cols[k], pch = 16:18, cex = 2) 
- }
-legend('topright', title = "Principal axes", pch = 16:18, col = 'black', 
-   legend = c('S1', 'S2', 'S3'))
+angelier(angelier1990$KAM, col = "grey")
+for (k in seq_len(res$k_opt)) {
+  res_k <- res$phase_results[[k]]
+  points(res_k$principal_axes, col = cols[k], pch = 16:18, cex = 2)
+}
+legend("topright",
+  title = "Principal axes", pch = 16:18, col = "black",
+  legend = c("S1", "S2", "S3")
+)
 
- 
- dev.off()
+
+dev.off()
 #> null device 
 #>           1 
 ```

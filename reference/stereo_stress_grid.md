@@ -46,7 +46,7 @@ dev.off()
 #> null device 
 #>           1 
 stereoplot(guides = FALSE)
-stereo_stress_grid(sigma, type = 'hoeppener')
+stereo_stress_grid(sigma, type = "hoeppener")
 #> Warning: graphical parameter "type" is obsolete
 
 pr <- sigma2stress(sigma)

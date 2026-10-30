@@ -114,7 +114,7 @@ Plotting a summary of the stats on a equal-area projection:
 
 ``` r
 
-stereoplot(center  = lines_mean)
+stereoplot(center = lines_mean)
 points(lines, col = "lightgrey", pch = 1, cex = .5)
 points(lines_mean, col = "#B63679", pch = 19, cex = 1)
 lines(lines_mean, ang = lines_confangle, col = "#E65164FF")
@@ -266,16 +266,19 @@ can call the vectors and values of the object returned by
 
 stereoplot(center = planes_eigen$vectors[3, ])
 points(example_planes, col = "grey", pch = 16, cex = .7)
-lines(planes_eigen$vectors, 
-       col = c("#000004", "#B63679FF", "#FEC287FF"), 
-       lwd = rev(assign_cex(planes_eigen$values, range = c(.5, 2))))
-points(planes_eigen$vectors, 
-       col = c("#000004", "#B63679FF", "#FEC287FF"), 
-       cex = assign_cex(planes_eigen$values, range = c(.5, 2)), 
-       pch = 16)
-legend('right', 
-       legend = c("Eigen-1", "Eigen-2", "Eigen-3"), 
-       col = c("#000004", "#B63679FF", "#FEC287FF"), pch = 16, lty = 1)
+lines(planes_eigen$vectors,
+  col = c("#000004", "#B63679FF", "#FEC287FF"),
+  lwd = rev(assign_cex(planes_eigen$values, range = c(.5, 2)))
+)
+points(planes_eigen$vectors,
+  col = c("#000004", "#B63679FF", "#FEC287FF"),
+  cex = assign_cex(planes_eigen$values, range = c(.5, 2)),
+  pch = 16
+)
+legend("right",
+  legend = c("Eigen-1", "Eigen-2", "Eigen-3"),
+  col = c("#000004", "#B63679FF", "#FEC287FF"), pch = 16, lty = 1
+)
 ```
 
 ![](Statistics_files/figure-html/oteigen_plot-1.png)
@@ -342,28 +345,28 @@ shape_params(planes)
 par(mfrow = c(2, 2), mar = c(2, 2, 1, 1))
 x1 <- rvmf(100, mu = Ray(120, 50), k = 5)
 r1 <- fisher_MLE(x1)
-plot(x1, col = 'grey')
-points(r1$muHat, col = 'red')
-title(main = 'von Mises-Fisher')
+plot(x1, col = "grey")
+points(r1$muHat, col = "red")
+title(main = "von Mises-Fisher")
 
 x2 <- rwatson(100, mu = Line(120, 50), k = 5)
 r2 <- watson_MLE(x2)
-plot(x2, col = 'grey')
-points(r2$muHat, col = 'red')
-title(main = 'Watson')
+plot(x2, col = "grey")
+points(r2$muHat, col = "red")
+title(main = "Watson")
 
 x3 <- rkent(100, mu = Ray(120, 50), k = 5, b = 1)
 r3 <- kent_MLE(x3)
-plot(x3, col = 'grey')
-points(r3$G, col = 'red')
-title(main = 'Kent')
+plot(x3, col = "grey")
+points(r3$G, col = "red")
+title(main = "Kent")
 
 a <- cov(iris[, 1:3])
 x4 <- rbingham(100, a, "Line")
 r4 <- bingham_MLE(x4)
-plot(x4, col = 'grey')
-points(r4$vectors, col = 'red')
-title(main = 'Bingham')
+plot(x4, col = "grey")
+points(r4$vectors, col = "red")
+title(main = "Bingham")
 ```
 
 ![](Statistics_files/figure-html/mle-1.png)
@@ -453,23 +456,26 @@ are identical.
 
 ``` r
 
-wellner(lines, line_NULL)
-#> [1] 10.2507
+wellner(lines, line_NULL, n_perm = 1000)
+#> 
+#>  Wellner permutation test
+#> 
+#> statistic = 10.251, p-value = 0.007992
+#> critical value (95% confidence level) = 5.5017
+#> null hypothesis rejected at the 95% confidence level: yes
+#> further statistics:
+#>       n_perm   df_uniform    p_uniform 
+#> 1.000000e+03 5.000000e+00 6.843564e-02 
+#> source: Wellner (1979), Ann. Statist. 7, 929-943
 ```
 
-A $`p`$-value for this test-statistic can be estimated using
+A $`p`$-value for this test-statistic is be estimated using
 *permutations*. The fraction of tests in the computed T-statistic
 exceeds the observed T for the original data (a number between 0 and 1
 inclusive) can be interpreted as a $`p`$-value for the null hypothesis
 that the two populations are identical (not merely that their means
 coincide). Thus, smaller p-values indicate stronger evidence that the
 two populations differ significantly.
-
-``` r
-
-wellner_inference(lines, line_NULL, n_perm = 1000)
-#> [1] 0.008
-```
 
 ## Cluster Vectors
 

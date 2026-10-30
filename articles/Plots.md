@@ -93,7 +93,7 @@ To plot a small circle with, e.g., a 10° radius, you need to specify the
 ``` r
 
 stereoplot()
-lines(lines[1:5, ], ang = 10, col = '#B6367980', border = "#B63679", fill = TRUE)
+lines(lines[1:5, ], ang = 10, col = "#B6367980", border = "#B63679", fill = TRUE)
 points(lines[1:5, ], col = "#B63679", pch = 19, cex = .5)
 ```
 
@@ -380,16 +380,16 @@ prop_continuous2 <- runif(nrow(planes))
 prop_discrete <- sort(letters[sample(1:3, size = nrow(planes), replace = TRUE)])
 
 stereoplot()
-points(planes, 
-       col = assign_col(prop_continuous1), 
-       cex = assign_cex(prop_continuous2, area = TRUE),
-       pch = assign_pch(prop_discrete)
-       )
+points(planes,
+  col = assign_col(prop_continuous1),
+  cex = assign_cex(prop_continuous2, area = TRUE),
+  pch = assign_pch(prop_discrete)
+)
 
 # Add legends
-legend_cex(prop_continuous2, area = TRUE, title = 'A continuous property', position = 'bottomleft', cex = .8)
-legend_pch(prop_discrete, title = 'A discrete property', position = 'topleft', cex = .8)
-legend_col(pretty(prop_continuous1), title = 'Another continuous property')
+legend_cex(prop_continuous2, area = TRUE, title = "A continuous property", position = "bottomleft", cex = .8)
+legend_pch(prop_discrete, title = "A discrete property", position = "topleft", cex = .8)
+legend_col(pretty(prop_continuous1), title = "Another continuous property")
 ```
 
 ![](Plots_files/figure-html/assign-1.png)

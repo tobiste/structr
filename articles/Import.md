@@ -251,10 +251,10 @@ names(strabo_data)
 
 ``` r
 
-plot(strabo_data$linear, col = assign_col_d(strabo_data$data$spot_id)) 
+plot(strabo_data$linear, col = assign_col_d(strabo_data$data$spot_id))
 #> Warning in (function (n) : This manual palette can handle a maximum of 8
 #> values. You have supplied 93
-title(main = 'All linear elements')
+title(main = "All linear elements")
 ```
 
 ![](Import_files/figure-html/strabi_plot1-1.png)
@@ -269,11 +269,11 @@ indices have been measured simultaneously (e.g. as a fault).
 
 ``` r
 
-Pair(strabo_data$planar, strabo_data$linear) |> 
+Pair(strabo_data$planar, strabo_data$linear) |>
   plot(col = assign_col_d(strabo_data$data$spot_id))
 #> Warning in (function (n) : This manual palette can handle a maximum of 8
 #> values. You have supplied 93
-title(main = 'Planar+Linear')
+title(main = "Planar+Linear")
 ```
 
 ![](Import_files/figure-html/strabi_plot_pair-1.png)
@@ -313,7 +313,7 @@ strabo_prj_subset <- subset(strabo_prj, strabo_prj$data$quality > 3)
 plot(strabo_prj_subset$linear, col = assign_col_d(strabo_prj_subset$data$spot_id))
 #> Warning in (function (n) : This manual palette can handle a maximum of 8
 #> values. You have supplied 78
-title(main = 'Subset of linear elements')
+title(main = "Subset of linear elements")
 ```
 
 ![](Import_files/figure-html/subset-1.png)

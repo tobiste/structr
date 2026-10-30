@@ -53,12 +53,12 @@ initially perpendicular" \$\$\gamma = \tan \psi\$\$
 ## Examples
 
 ``` r
-longitudinal_strain(l=10,l0=5) 
+longitudinal_strain(l = 10, l0 = 5)
 #> [1] 1
 angular_strain(25)
 #> [1] 0.4663077
-quadratic_elongation(l=10,l0=5)
+quadratic_elongation(l = 10, l0 = 5)
 #> [1] 4
-stretch(l=10,l0=5)
+stretch(l = 10, l0 = 5)
 #> [1] 2
 ```

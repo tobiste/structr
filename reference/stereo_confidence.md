@@ -26,8 +26,7 @@ stereo_confidence(
 
 - x:
 
-  Spherical object or a list containing the output of an earlier call of
-  [`confidence_ellipse()`](https://tobiste.github.io/structr/reference/confidence_ellipse.md)
+  Spherical object or an object of class `"confidence_region"`
 
 - params:
 
@@ -86,8 +85,6 @@ output of
 
 ## See also
 
-[`confidence_ellipse()`](https://tobiste.github.io/structr/reference/confidence_ellipse.md)
-
 Other stereo-plot:
 [`arrows`](https://tobiste.github.io/structr/reference/arrows.md),
 [`fault-plot`](https://tobiste.github.io/structr/reference/fault-plot.md),
@@ -103,6 +100,12 @@ Other stereo-plot:
 [`stereoplot_guides()`](https://tobiste.github.io/structr/reference/stereoplot_guides.md),
 [`stereoplot_ticks()`](https://tobiste.github.io/structr/reference/stereoplot_ticks.md),
 [`text.spherical()`](https://tobiste.github.io/structr/reference/text.spherical.md)
+
+Other confidence:
+[`bingham_confidence()`](https://tobiste.github.io/structr/reference/bingham_confidence.md),
+[`bingham_ellipse()`](https://tobiste.github.io/structr/reference/bingham_ellipse.md),
+[`confidence_ellipse()`](https://tobiste.github.io/structr/reference/confidence_ellipse.md),
+[`fisher_confidence()`](https://tobiste.github.io/structr/reference/fisher_confidence.md)
 
 ## Examples
 

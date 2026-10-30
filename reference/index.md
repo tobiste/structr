@@ -56,10 +56,6 @@
   : Direction of maximum horizontal stress from the stress tensor (full
   knowledge)
 
-- [`Wellner_inference_ray()`](https://tobiste.github.io/structr/reference/Wellner_inference_ray.md)
-  : Two-sample test, based on permutations and Wellner's Rayleigh-style
-  T-statistic (Wellner, 1979, Example 1a).
-
 - [`angelier1990`](https://tobiste.github.io/structr/reference/angelier1990.md)
   : Fault-Slip Data
 
@@ -92,6 +88,9 @@
   [`legend_pch()`](https://tobiste.github.io/structr/reference/assign-pch.md)
   : Assigns plotting characters (pch values) to a vector
 
+- [`axial_cross_moments()`](https://tobiste.github.io/structr/reference/axial_cross_moments.md)
+  : Axial Cross Moments
+
 - [`azimuth_to_cardinal()`](https://tobiste.github.io/structr/reference/azimuth_to_cardinal.md)
   : Converts azimuth angles into Cardinal directions
 
@@ -114,8 +113,17 @@
   : Maximum likelihood estimation of the Bingham distribution
   parameters.
 
+- [`bingham_confidence()`](https://tobiste.github.io/structr/reference/bingham_confidence.md)
+  : Confidence region for Bingham statistics
+
+- [`bingham_ellipse()`](https://tobiste.github.io/structr/reference/bingham_ellipse.md)
+  : Confidence ellipse of an Eigenvector of the orientation tensor
+
 - [`bingham_statistics()`](https://tobiste.github.io/structr/reference/bingham_statistics.md)
-  : Elliptical Concentration and Confidence Cone Estimation
+  : Statistics of a Bingham Distribution
+
+- [`bingham_test()`](https://tobiste.github.io/structr/reference/bingham_test.md)
+  : Bingham test of uniformity of axes on the sphere
 
 - [`center()`](https://tobiste.github.io/structr/reference/center.md) :
   Centering Vectors
@@ -153,7 +161,7 @@
   : Colorblind Color Palette (Discrete) and Scales
 
 - [`confidence_ellipse()`](https://tobiste.github.io/structr/reference/confidence_ellipse.md)
-  : Confidence ellipse
+  : Bootstrapped confidence ellipse
 
 - [`count_points()`](https://tobiste.github.io/structr/reference/count_points.md)
   : Point density
@@ -253,8 +261,17 @@
 - [`fisher_MLE()`](https://tobiste.github.io/structr/reference/fisher-mle.md)
   : Maximum likelihood estimation of the Fisher parameters.
 
+- [`fisher_confidence()`](https://tobiste.github.io/structr/reference/fisher_confidence.md)
+  : Confidence region for Fisher statistics
+
 - [`fisher_ftest()`](https://tobiste.github.io/structr/reference/fisher_ftest.md)
   : Test of Mean Orientations
+
+- [`fisher_goodness_of_fit()`](https://tobiste.github.io/structr/reference/fisher_goodness_of_fit.md)
+  : Goodness-of-fit tests of the Fisher distribution
+
+- [`fisher_kent_test()`](https://tobiste.github.io/structr/reference/fisher_kent_test.md)
+  : Score test of the Fisher against the Kent distribution
 
 - [`fisher_statistics()`](https://tobiste.github.io/structr/reference/fisher_statistics.md)
   : Fisher's Statistics
@@ -378,6 +395,9 @@
 
 - [`ramsay`](https://tobiste.github.io/structr/reference/ramsay.md) :
   R/phi data
+
+- [`rayleigh_test3()`](https://tobiste.github.io/structr/reference/rayleigh_test3.md)
+  : Rayleigh test of uniformity against a unimodal alternative
 
 - [`rbingham()`](https://tobiste.github.io/structr/reference/rbing.md)
   [`rbingham_eig()`](https://tobiste.github.io/structr/reference/rbing.md)
@@ -672,13 +692,11 @@
 - [`watson_MLE()`](https://tobiste.github.io/structr/reference/watson-mle.md)
   : Maximum Likelihood Estimation of the Watson Distribution Parameters.
 
-- [`wellner()`](https://tobiste.github.io/structr/reference/wellner.md)
-  [`wellner_inference()`](https://tobiste.github.io/structr/reference/wellner.md)
-  : Wellner's Two-Sample Test
+- [`watson_symmetry_test()`](https://tobiste.github.io/structr/reference/watson_symmetry_test.md)
+  : Tests of rotational symmetry of a Bingham distribution
 
-- [`wellner_exact_inference_ray()`](https://tobiste.github.io/structr/reference/wellner_exact_inference_ray.md)
-  : Two-sample test, based on permutations and Wellner's Rayleigh-style
-  T-statistic (Wellner, 1979, Example 1a).
+- [`wellner()`](https://tobiste.github.io/structr/reference/wellner.md)
+  : Wellner's Two-Sample Test
 
 - [`woodcock_plot()`](https://tobiste.github.io/structr/reference/woodcock_plot.md)
   : Fabric Plot of Woodcock (1977)
