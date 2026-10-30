@@ -665,6 +665,9 @@
   [`list_vec()`](https://tobiste.github.io/structr/reference/vec-list.md)
   : List of vectors
 
+- [`angle()`](https://tobiste.github.io/structr/reference/vector-angle.md)
+  : Angle between vectors
+
 - [`velgrad_rate()`](https://tobiste.github.io/structr/reference/vel_rate.md)
   [`velgrad_spin()`](https://tobiste.github.io/structr/reference/vel_rate.md)
   : Rate and spin of velocity gradient tensor

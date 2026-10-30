@@ -81,6 +81,7 @@ the Fréchet variance.
 ## Examples
 
 ``` r
+set.seed(20250411)
 variance_plot(example_lines)
 
 variance_plot(example_planes, example_planes[1, ], segments = FALSE)

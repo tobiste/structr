@@ -10,7 +10,7 @@ includes
 
 - Statistical analysis: spherical mean and variance, confidence regions,
   hypothesis tests, **cluster analysis** of orientation data
-  ([`sph_cluster()`](https://tobiste.github.io/structr/reference/sph_cluster.md),
+  ([`sph_cluster()`](https://tobiste.github.io/structr/reference/sph_cluster.md)),
   and geodesic regression to find the **best-fitting great circle or
   small circle** through orientation data
   ([`regression_greatcircle()`](https://tobiste.github.io/structr/reference/best_fit.md)
@@ -19,7 +19,7 @@ includes
 
 - Reconstruction of fabric orientations in **oriented drillcores** by
   transforming the α, β, and γ angles
-  ([`drillcore_transformation()`](https://tobiste.github.io/structr/reference/drillcore.md),
+  ([`drillcore_transformation()`](https://tobiste.github.io/structr/reference/drillcore.md)),
 
 - Deform orientation data using deformation and velocity gradient
   tensors:
@@ -49,9 +49,11 @@ includes
 - Direct import of your field data from **StraboSpot** projects
   ([`read_strabo_JSON()`](https://tobiste.github.io/structr/reference/strabo.md)).
 
-> \[!CAUTION\] The {structr} package is all about structures in 3D. For
-> analyzing orientations in 2D (statistics, rose diagrams, etc.), check
-> out the [tectonicr](https://github.com/tobiste/tectonicr) package!
+> \[!CAUTION\]
+>
+> The {structr} package is all about structures in 3D. For analyzing
+> orientations in 2D (statistics, rose diagrams, etc.), check out the
+> [tectonicr](https://github.com/tobiste/tectonicr) package!
 
 ## Installation
 
@@ -72,7 +74,7 @@ The detailed documentation can be found at
 
 ## Examples
 
-These are some basic examples which shows you what you can do with
+These are some basic examples which show you what you can do with
 {structr}. First we load the package
 
 ``` r
@@ -113,12 +115,14 @@ The default projection is the equal-area projection into the lower
 hemisphere. Grid lines are disabled by default. You can change these
 settings either directly in the
 [`stereoplot()`](https://tobiste.github.io/structr/reference/stereoplot.md)
-function using the parameters `upper.hem`, `earea`, and `guides`or set
+function using the parameters `upper.hem`, `earea`, and `guides` or set
 global definitions.
 
-> \[!TIP\] The grid can also be rotated to a specified orientation by
-> setting the parameter `center`. In the example below, we fix the grid
-> in the mean of the example line data:
+> \[!TIP\]
+>
+> The grid can also be rotated to a specified orientation by setting the
+> parameter `center`. In the example below, we fix the grid in the mean
+> of the example line data:
 
 ``` r
 
@@ -310,7 +314,7 @@ hoeppener(faults, points = FALSE, col = "grey20")
 
 > structr can calculate the reduced deviatoric stress tensor from
 > fault-slip data using the direct inversion methods after Michael
-> (1984), Angelier (1990), Yamajo & Sato (2006), and Hansen (2013). This
+> (1984), Angelier (1990), Yamaji & Sato (2006), and Hansen (2013). This
 > allows to extract the orientation and relative magnitudes of the
 > principal stress axes.
 
@@ -420,7 +424,8 @@ points(stress_components[, "normal"], abs(stress_components[, "shear"]),
 
 #### 2D Strain
 
-Aspect ratio of finite strain ellipses vs orientation of long-axis ()
+Aspect ratio of finite strain ellipses vs orientation of long-axis
+(R_(f)/φ)
 
 ``` r
 
@@ -484,7 +489,7 @@ D1 <- defgrad_from_generalshear(k = 2.5, gamma = 0.9)
 # Generate some random lineation
 xl <- rvmf(100, mu = Line(0, 90), k = 100)
 
-# Generate the velcity gradient tensor for deformation accumulating over time
+# Generate the velocity gradient tensor for deformation accumulating over time
 L <- velgrad(D1, time = t)
 
 # Extract deformation increments

@@ -72,7 +72,7 @@ The variance of a dataset \\{x_1, \ldots, x_n}\\ about a vector \\y\\ is
 defined as \$\$ \Psi(x) = \frac{1}{2n} \sum\_{i=1}^n d_G(y, x_i)^2\$\$
 where \\d_G(x, y)\\ is the geodesic distance between vectors \\x\\ and
 \\y\\ (see
-[`angle()`](https://tobiste.github.io/structr/reference/vecmath.md)).
+[`angle()`](https://tobiste.github.io/structr/reference/vector-angle.md)).
 
 ## References
 

@@ -39,7 +39,8 @@ rotate(x, rotaxis, rotangle)
 - rotangle:
 
   Angle of rotation in radians for `"Vec3"` objects and in degrees for
-  `"Line"`, `"Ray"` and `"Plane"` objects.
+  `"Line"`, `"Ray"` and `"Plane"` objects. Right-hand-rule convention:
+  rotation is counterclockwise for positive angles.
 
 ## Value
 

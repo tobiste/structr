@@ -15,11 +15,9 @@
 <link href="../deps/bootstrap-5.3.8/bootstrap.min.css" rel="stylesheet">
 <script src="../deps/bootstrap-5.3.8/bootstrap.bundle.min.js"></script><link href="../deps/font-awesome-6.5.2/css/all.min.css" rel="stylesheet">
 <link href="../deps/font-awesome-6.5.2/css/v4-shims.min.css" rel="stylesheet">
-<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="structr">
-<meta name="description" content="Start here if this is your first time using structr.
-">
-<meta property="og:description" content="Start here if this is your first time using structr.
-">
+<script src="../deps/headroom-0.11.0/headroom.min.js"></script><script src="../deps/headroom-0.11.0/jQuery.headroom.min.js"></script><script src="../deps/bootstrap-toc-1.0.1/bootstrap-toc.min.js"></script><script src="../deps/clipboard.js-2.0.11/clipboard.min.js"></script><script src="../deps/search-1.0.0/autocomplete.jquery.min.js"></script><script src="../deps/search-1.0.0/fuse.min.js"></script><script src="../deps/search-1.0.0/mark.min.js"></script><script src="structr_files/libs/quarto-html/popper.min.js"></script><script src="structr_files/libs/quarto-html/tippy.umd.min.js"></script><link href="structr_files/libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="structr_files/libs/quarto-html/light-border.css" rel="stylesheet">
+<!-- pkgdown --><script src="../pkgdown.js"></script><meta property="og:title" content="structr">
 <meta property="og:image" content="https://tobiste.github.io/structr/logo.png">
 </head>
 <body>
@@ -46,26 +44,26 @@
   <ul class="dropdown-menu" aria-labelledby="dropdown-articles">
 <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Basics and Import</h6></li>
-    <li><a class="dropdown-item" href="../articles/Import.html">Import Data</a></li>
-    <li><a class="dropdown-item" href="../articles/Data_types.html">Data types</a></li>
-    <li><a class="dropdown-item" href="../articles/Basics.html">Vector Algebra</a></li>
-    <li><a class="dropdown-item" href="../articles/Oriented_Drill_Cores.html">Oriented Drill Cores</a></li>
+    <li><a class="dropdown-item" href="../articles/import.html">Import Data</a></li>
+    <li><a class="dropdown-item" href="../articles/data_types.html">Data types</a></li>
+    <li><a class="dropdown-item" href="../articles/vector_algebra.html">Vector Algebra</a></li>
+    <li><a class="dropdown-item" href="../articles/drillcores.html">Oriented Drill Cores</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Plotting</h6></li>
-    <li><a class="dropdown-item" href="../articles/Plots.html">Orientation Plots</a></li>
-    <li><a class="dropdown-item" href="../articles/Plots_ggplot.html">Orientation Plots with ggplot</a></li>
+    <li><a class="dropdown-item" href="../articles/orientation_plots.html">Orientation Plots</a></li>
+    <li><a class="dropdown-item" href="../articles/ggplot.html">Orientation Plots with ggplot</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Statistics</h6></li>
-    <li><a class="dropdown-item" href="../articles/Statistics.html">Statistics on the Sphere</a></li>
-    <li><a class="dropdown-item" href="../articles/Regression.html">Regression on the Sphere</a></li>
+    <li><a class="dropdown-item" href="../articles/statistics.html">Statistics on the Sphere</a></li>
+    <li><a class="dropdown-item" href="../articles/regression.html">Regression on the Sphere</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Faults and Stress</h6></li>
-    <li><a class="dropdown-item" href="../articles/Faults.html">Faults and Paleostress</a></li>
-    <li><a class="dropdown-item" href="../articles/Fault_offsets.html">Fault Offsets</a></li>
-    <li><a class="dropdown-item" href="../articles/Mohr_Circle.html">Mohr Circle</a></li>
+    <li><a class="dropdown-item" href="../articles/paleostress.html">Faults and Paleostress</a></li>
+    <li><a class="dropdown-item" href="../articles/fault_offsets.html">Fault Offsets</a></li>
+    <li><a class="dropdown-item" href="../articles/mohr.html">Mohr Circle</a></li>
     <li><hr class="dropdown-divider"></li>
     <li><h6 class="dropdown-header" data-toc-skip>Other</h6></li>
-    <li><a class="dropdown-item" href="../articles/Strain_Analysis.html">Strain and Vorticity Analysis</a></li>
+    <li><a class="dropdown-item" href="../articles/strain.html">Strain and Vorticity Analysis</a></li>
     <li><a class="dropdown-item" href="../articles/deformation.html">Deformation and Velocity Gradient Tensor</a></li>
   </ul>
 </li>
@@ -80,98 +78,78 @@
 
 
   </div>
-</nav><div class="container template-article">
-
-
-
-
+</nav><div class="container template-quarto">
 <div class="row">
   <main id="main" class="col-md-9"><div class="page-header">
       <img src="../logo.png" class="logo" alt=""><h1>structr</h1>
-                        <h4 data-toc-skip class="author">Tobias
-Stephan</h4>
-            
-            <h4 data-toc-skip class="date">2026-10-30</h4>
-      
-      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/structr.Rmd" class="external-link"><code>vignettes/structr.Rmd</code></a></small>
-      <div class="d-none name"><code>structr.Rmd</code></div>
+
+      <p class="author">Tobias Stephan</p>
+      <p class="date">2026-10-30</p>
+
+      <small class="dont-index">Source: <a href="https://github.com/tobiste/structr/blob/main/vignettes/structr.qmd" class="external-link"><code>vignettes/structr.qmd</code></a></small>
+      <div class="d-none name"><code></code></div>
     </div>
 
-    
-    
-<p>When working with orientation data you must:</p>
+
+
+
+
+
+    <p>When working with orientation data you must:</p>
 <ul>
 <li>Define the type of orientation data you have measured</li>
 <li>Figure out what you want to do</li>
 <li>Describe the orientation data</li>
 <li>Visualize your findings</li>
 </ul>
-<div class="section level2">
-<h2 id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
+<section class="level2"><h2 id="prerequisites">Prerequisites<a class="anchor" aria-label="anchor" href="#prerequisites"></a>
 </h2>
-<p>Before you start you need to have R and and R-compatible IDE
-installed on your computer:</p>
-<ol style="list-style-type: decimal">
-<li><p>You will need R installed on your computer. You can download R
-from the CRAN website: <a href="https://cran.r-project.org/" class="external-link uri">https://cran.r-project.org/</a></p></li>
-<li><p>Once you downloaded and successfully installed R, you can use R
-in your preferred IDE. I recommend installing and using <a href="https://docs.posit.co/ide/user/#rstudio-ide-oss-downloads" class="external-link">RStudio</a>.
-However, <a href="https://positron.posit.co/" class="external-link">Positron</a> and <a href="https://visualstudio.microsoft.com/" class="external-link">VisualStudio</a> are also
-great alternatives. You are also allowed to use R’s native GUI or use R
-in your terminal only.</p></li>
-<li><p>Open your IDE and first install the {devtools} package to later
-install {structr} from my github repository:</p></li>
+<p>Before you start you need to have R and an R-compatible IDE installed on your computer:</p>
+<ol type="1">
+<li><p>You will need R installed on your computer. You can download R from the CRAN website: <a href="https://cran.r-project.org/" class="external-link uri">https://cran.r-project.org/</a></p></li>
+<li><p>Once you downloaded and successfully installed R, you can use R in your preferred IDE. I recommend installing and using <a href="https://docs.posit.co/ide/user/#rstudio-ide-oss-downloads" class="external-link">RStudio</a>. However, <a href="https://positron.posit.co/" class="external-link">Positron</a> and <a href="https://code.visualstudio.com/" class="external-link">Visual Studio Code</a> are also great alternatives. You can also use R’s native GUI or use R in your terminal only.</p></li>
+<li><p>Open your IDE and first install the {devtools} package to later install {structr} from my GitHub repository:</p></li>
 </ol>
-<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/install.packages.html" class="external-link">install.packages</a></span><span class="op">(</span><span class="st">"devtools"</span><span class="op">)</span></span></code></pre></div>
-<ol start="4" style="list-style-type: decimal">
-<li>Now you can install the {structr} package by typing into the
-commando console the following code. This will install the package and
-every required library as well.</li>
+</div>
+<ol start="4" type="1">
+<li>Now you can install the {structr} package by typing the following code into the console. This will install the package and every required library as well.</li>
 </ol>
-<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu">devtools</span><span class="fu">::</span><span class="fu">install_github</span><span class="op">(</span><span class="st">"tobiste/structr"</span><span class="op">)</span></span></code></pre></div>
-<ol start="5" style="list-style-type: decimal">
-<li>Finally, you must “load” the library to use the functions of
-{structr}:</li>
+</div>
+<ol start="5" type="1">
+<li>Finally, you must “load” the library to use the functions of {structr}:</li>
 </ol>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://tobiste.github.io/structr/">structr</a></span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="import">Import<a class="anchor" aria-label="anchor" href="#import"></a>
+</section><section class="level2"><h2 id="import">Import<a class="anchor" aria-label="anchor" href="#import"></a>
 </h2>
-<p>The first thing you usually need to do is importing your orientation
-data. This can be done in several different ways depending on your
-preferences. For example, RStudio has a GUI that allows to import data
-without using R commandos (File &gt; Import Datasets).</p>
-<p>You can also use one of the below functions to import data:</p>
-<p>To use your data directly from a Strabospot project, download the
-json file and import it using the <code><a href="../reference/strabo.html">read_strabo_JSON()</a></code>
-function.</p>
-<p>This returns a list which contains all the information and metadata
-(including coordinates, descriptions etc) extracted from the
-<em>StraboSpot</em> project in the list element <code>data</code>, the
-tags used for the project in the list element <code>tags</code>, and the
-linear and planar orientation measurements in the list elements
-<code>lines</code> and <code>planes</code>, respectively.</p>
+<p>The first thing you usually need to do is importing your orientation data. This can be done in several different ways depending on your preferences. For example, RStudio has a GUI that allows you to import data without using R commands (File &gt; Import Dataset).</p>
+<p>You can also use one of the functions below to import data:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.table</a></span><span class="op">(</span><span class="st">"path/to/my/file.txt"</span>, header <span class="op">=</span> <span class="cn">TRUE</span>, sep <span class="op">=</span> <span class="st">"\t"</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html" class="external-link">read.csv</a></span><span class="op">(</span><span class="st">"path/to/my/file.csv"</span><span class="op">)</span></span>
+<span><span class="fu">readxl</span><span class="fu">::</span><span class="fu"><a href="https://readxl.tidyverse.org/reference/read_excel.html" class="external-link">read_xlsx</a></span><span class="op">(</span><span class="st">"path/to/my/file.xlsx"</span><span class="op">)</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="data-type-declaration">Data type declaration<a class="anchor" aria-label="anchor" href="#data-type-declaration"></a>
+<p>To use your data directly from a StraboSpot project, download the JSON file and import it using the <code><a href="../reference/strabo.html">read_strabo_JSON()</a></code> function.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="../reference/strabo.html">read_strabo_JSON</a></span><span class="op">(</span><span class="st">"path/to/my/file.json"</span><span class="op">)</span></span></code></pre></div>
+</div>
+<p>This returns a list which contains all the information and metadata (including coordinates, descriptions etc.) extracted from the <em>StraboSpot</em> project in the list element <code>data</code>, the tags used for the project in the list element <code>tags</code>, and the linear and planar orientation measurements in the list elements <code>linear</code> and <code>planar</code>, respectively.</p>
+</section><section class="level2"><h2 id="data-type-declaration">Data type declaration<a class="anchor" aria-label="anchor" href="#data-type-declaration"></a>
 </h2>
-<p>Depending on the symmetry of the orientation data, different data
-types are used to represent orientations in 3D space. The main data
-types used in structural geology are Rays, Lines, Planes, Pairs, and
-Faults. Distinguishing these data types is important each the different
-symmetries imply different statistical assumption for their
-distribution. In other words the different data types require different
-statistical “treatments”. To learn more about it, follow this <a href="https://tobiste.github.io/structr/articles/Data_types.html">tutorial</a>.</p>
-<p>The data types can be generated using the object creator functions:
-<code><a href="../reference/classes.html">Vec3()</a></code>, <code><a href="../reference/classes.html">Line()</a></code>, <code><a href="../reference/classes.html">Plane()</a></code>,
-<code><a href="../reference/classes.html">Ray()</a></code>, <code><a href="../reference/classes.html">Pair()</a></code>, and <code><a href="../reference/classes.html">Fault()</a></code>. These
-functions create spherical object, and {structr} will identify the
-symmetry nature of the data in further function calls.</p>
-<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<p>Depending on the symmetry of the orientation data, different data types are used to represent orientations in 3D space. The main data types used in structural geology are Rays, Lines, Planes, Pairs, and Faults. Distinguishing these data types is important because the different symmetries imply different statistical assumptions for their distribution. In other words the different data types require different statistical “treatments”. To learn more about it, follow this <a href="https://tobiste.github.io/structr/articles/Data_types.html">tutorial</a>.</p>
+<p>The data types can be generated using the object creator functions: <code><a href="../reference/classes.html">Vec3()</a></code>, <code><a href="../reference/classes.html">Line()</a></code>, <code><a href="../reference/classes.html">Plane()</a></code>, <code><a href="../reference/classes.html">Ray()</a></code>, <code><a href="../reference/classes.html">Pair()</a></code>, and <code><a href="../reference/classes.html">Fault()</a></code>. These functions create spherical objects, and {structr} will identify the symmetry nature of the data in further function calls.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">plunge_direction</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">54</span>, <span class="fl">61</span>, <span class="fl">74</span>, <span class="fl">80</span>, <span class="fl">63</span><span class="op">)</span></span>
 <span><span class="va">plunge</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="fl">13</span>, <span class="fl">15</span>, <span class="fl">14</span>, <span class="fl">19</span>, <span class="fl">17</span><span class="op">)</span></span>
 <span></span>
@@ -185,28 +163,29 @@ symmetry nature of the data in further function calls.</p>
 <span><span class="co">#&gt; [4,]      80     19</span></span>
 <span><span class="co">#&gt; [5,]      63     17</span></span></code></pre></div>
 </div>
-<div class="section level2">
-<h2 id="equal-area-projections">Equal-area projections<a class="anchor" aria-label="anchor" href="#equal-area-projections"></a>
+</section><section class="level2"><h2 id="equal-area-projections">Equal-area projections<a class="anchor" aria-label="anchor" href="#equal-area-projections"></a>
 </h2>
-<p>The spherical objects can be plotted in equal-area projections using
-R’s primitive plotting functions, e.g. <code>plot</code>,
-<code><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points()</a></code>, and <code><a href="../reference/lines.html">lines()</a></code>, ….</p>
-<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<p>The spherical objects can be plotted in equal-area projections using R’s primitive plotting functions, e.g. <code><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot()</a></code>, <code><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points()</a></code>, and <code><a href="../reference/lines.html">lines()</a></code>:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co">#  import some example lines</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># plot lines in a equal-area projection</span></span>
+<span><span class="co"># plot lines in an equal-area projection</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span></code></pre></div>
-<p><img src="structr_files/figure-html/plot-1.png" class="r-plt" alt="" width="1093.75"></p>
-<p>More details on plotting spherical data in <a href="https://tobiste.github.io/structr/articles/Plots.html" class="uri">https://tobiste.github.io/structr/articles/Plots.html</a></p>
+<div class="cell-output-display">
+<div>
+<figure><p><img src="structr_files/figure-html/plot-1.png" alt="Equal-area projection of the example lines" width="672"></p>
+</figure>
 </div>
-<div class="section level2">
-<h2 id="statistical-estimators">Statistical estimators<a class="anchor" aria-label="anchor" href="#statistical-estimators"></a>
+</div>
+</div>
+<p>More details on plotting spherical data in <a href="https://tobiste.github.io/structr/articles/Plots.html" class="uri">https://tobiste.github.io/structr/articles/Plots.html</a></p>
+</section><section class="level2"><h2 id="statistical-estimators">Statistical estimators<a class="anchor" aria-label="anchor" href="#statistical-estimators"></a>
 </h2>
-<p>There are plenty of different statistical parameters, which
-meaningfulness depend on the underlying distribution of the orientation
-data (and hence also on the symmetry of the data).</p>
-<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<p>There are plenty of different statistical parameters, whose meaningfulness depends on the underlying distribution of the orientation data (and hence also on the symmetry of the data).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># Spherical arithmetic mean</span></span>
 <span><span class="va">lines_mean</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stats.html">sph_mean</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">lines_mean</span><span class="op">)</span></span>
@@ -215,38 +194,30 @@ data (and hence also on the symmetry of the data).</p>
 <span><span class="co">#&gt; 68.51277 20.49587</span></span>
 <span></span>
 <span><span class="co"># Spherical arithmetic variance</span></span>
-<span><span class="fu"><a href="../reference/stats.html">sph_mean</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span>
-<span><span class="co">#&gt; Line object (n = 1):</span></span>
-<span><span class="co">#&gt;  azimuth   plunge </span></span>
-<span><span class="co">#&gt; 68.51277 20.49587</span></span>
+<span><span class="fu"><a href="../reference/stats.html">sph_var</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span>
+<span><span class="co">#&gt; [1] 0.2168518</span></span>
 <span></span>
 <span><span class="co"># Spherical standard deviation</span></span>
 <span><span class="va">lines_sd</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/stats.html">sph_sd</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">lines_sd</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [1] 40.06063</span></span></code></pre></div>
-<p>Here, the spherical arithmetic mean and variance are computed. These
-values conveniently describe the distribution if we assume a von
-Mises-Fisher distribution of the data, which is the normal distribution
-analogue for line-like data. In many cases the geodesic mean and
-variance better describe the distribution of vectors. More details in
-the <a href="https://tobiste.github.io/structr/articles/Statistics.html">statistics
-tutorial</a>.</p>
 </div>
-<div class="section level2">
-<h2 id="orientation-tensor">Orientation tensor<a class="anchor" aria-label="anchor" href="#orientation-tensor"></a>
+<p>Here, the spherical arithmetic mean and variance are computed. These values conveniently describe the distribution if we assume a unimodal, rotationally symmetric distribution such as the von Mises-Fisher distribution, the analogue of the normal distribution for vectorial (ray-like) data; for axial (line-like) data, the Watson and Bingham distributions play this role. In many cases the geodesic mean and variance better describe the distribution of vectors. More details in the <a href="https://tobiste.github.io/structr/articles/Statistics.html">statistics tutorial</a>.</p>
+</section><section class="level2"><h2 id="orientation-tensor">Orientation tensor<a class="anchor" aria-label="anchor" href="#orientation-tensor"></a>
 </h2>
-<p>The orientation tensor describes the distribution of all vectors in
-your dataset.</p>
-<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<p>The orientation tensor describes the distribution of all vectors in your dataset.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="fu"><a href="../reference/ortensor.html">ortensor</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span>
 <span><span class="co">#&gt; Orientation tensor</span></span>
 <span><span class="co">#&gt;            [,1]      [,2]       [,3]</span></span>
 <span><span class="co">#&gt; [1,] 0.16204564 0.2552464 0.08096582</span></span>
 <span><span class="co">#&gt; [2,] 0.25524643 0.7382838 0.19306540</span></span>
 <span><span class="co">#&gt; [3,] 0.08096582 0.1930654 0.09967054</span></span></code></pre></div>
-<p>Eigenvalues and eigenvectors of this tensor describe the
-distribution.</p>
-<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+</div>
+<p>Eigenvalues and eigenvectors of this tensor describe the distribution.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="va">lines_eigen</span> <span class="op">&lt;-</span> <span class="fu"><a href="../reference/ot_eigen.html">ot_eigen</a></span><span class="op">(</span><span class="va">example_lines</span><span class="op">)</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">lines_eigen</span><span class="op">)</span></span>
 <span><span class="co">#&gt; eigen() decomposition</span></span>
@@ -259,26 +230,113 @@ distribution.</p>
 <span><span class="co">#&gt; [1,]  69.09796 14.82125</span></span>
 <span><span class="co">#&gt; [2,] 334.66510 16.28283</span></span>
 <span><span class="co">#&gt; [3,] 199.26521 67.69500</span></span></code></pre></div>
-<p>Summarize the statistical parameters in a equal-area projection:</p>
-<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+</div>
+<p>Summarize the statistical parameters in an equal-area projection:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># plot the data</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">example_lines</span>, col <span class="op">=</span> <span class="st">"grey30"</span><span class="op">)</span></span>
 <span></span>
-<span><span class="co"># greatcircles associated with the eigenvectors</span></span>
+<span><span class="co"># great circles associated with the eigenvectors</span></span>
 <span><span class="fu"><a href="../reference/lines.html">lines</a></span><span class="op">(</span><span class="va">lines_eigen</span><span class="op">$</span><span class="va">vectors</span>, col <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="st">"#000004FF"</span>, <span class="st">"#B63679FF"</span>, <span class="st">"#FE9F6DFF"</span><span class="op">)</span><span class="op">)</span></span>
 <span></span>
 <span><span class="co"># spherical mean and standard deviation cone</span></span>
 <span><span class="fu"><a href="https://rdrr.io/r/graphics/points.html" class="external-link">points</a></span><span class="op">(</span><span class="va">lines_mean</span>, pch <span class="op">=</span> <span class="fl">16</span>, cex <span class="op">=</span> <span class="fl">1.5</span>, col <span class="op">=</span> <span class="st">"#35B779FF"</span><span class="op">)</span></span>
 <span><span class="fu"><a href="../reference/lines.html">lines</a></span><span class="op">(</span><span class="va">lines_mean</span>, ang <span class="op">=</span> <span class="va">lines_sd</span>, col <span class="op">=</span> <span class="st">"#35B779FF"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="structr_files/figure-html/plot2-1.png" class="r-plt" alt="" width="1093.75"></p>
-<p>Here, the eigenvector are the intersection of the great-circles. Note
-how the spherical mean is quite similar to one eigenvector (the one
-associated with the greatest eigenvalue).</p>
+<div class="cell-output-display">
+<div>
+<figure><p><img src="structr_files/figure-html/plot2-1.png" alt="Equal-area projection of the example lines with the great circles normal to the three eigenvectors, the spherical mean, and its standard deviation cone" width="672"></p>
+</figure>
 </div>
-  </main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
+</div>
+</div>
+<p>Here, the eigenvectors are the intersections of the great circles (each great circle is normal to one eigenvector and contains the other two). Note how the spherical mean is quite similar to one eigenvector (the one associated with the greatest eigenvalue).</p>
+</section><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'light-border',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config);
+    }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script></main><aside class="col-md-3"><nav id="toc" aria-label="Table of contents"><h2>On this page</h2>
     </nav></aside>
 </div>
-
 
 
     <footer><div class="pkgdown-footer-left">

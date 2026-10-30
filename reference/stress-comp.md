@@ -9,9 +9,9 @@ diff_stress(sigma1, sigma3)
 
 mean_stress(sigma1, sigma3)
 
-shear_stress(sigma1, sigma3, theta)
+shear_stress(sigma1, sigma3, theta = 90 - alpha, alpha = 90 - theta)
 
-normal_stress(sigma1, sigma3, theta)
+normal_stress(sigma1, sigma3, theta = 90 - alpha, alpha = 90 - theta)
 
 fracture_angle(mu)
 
@@ -29,7 +29,12 @@ dilatation_tendency(sigma1, sigma3, sigma_n)
 
 - theta:
 
-  numeric. Angle \\\theta\\ between fracture and \\\sigma_1\\.
+  numeric. Angle \\\theta\\ between pole to the fracture and the largest
+  stress \\\sigma_1\\.
+
+- alpha:
+
+  numeric. Angle \\\alpha\\ between fracture and \\\sigma_1\\.
 
 - mu:
 

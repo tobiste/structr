@@ -2,21 +2,21 @@ pandoc: 3.8.3
 pkgdown: 2.2.1
 pkgdown_sha: ~
 articles:
-  Basics: Basics.html
-  Data_types: Data_types.html
+  data_types: data_types.html
   deformation: deformation.html
-  Fault_offsets: Fault_offsets.html
-  Faults: Faults.html
-  Import: Import.html
-  Mohr_Circle: Mohr_Circle.html
-  Oriented_Drill_Cores: Oriented_Drill_Cores.html
-  Plots_ggplot: Plots_ggplot.html
-  Plots: Plots.html
-  Regression: Regression.html
-  Statistics: Statistics.html
-  Strain_Analysis: Strain_Analysis.html
+  drillcores: drillcores.html
+  fault_offsets: fault_offsets.html
+  ggplot: ggplot.html
+  import: import.html
+  mohr: mohr.html
+  orientation_plots: orientation_plots.html
+  paleostress: paleostress.html
+  regression: regression.html
+  statistics: statistics.html
+  strain: strain.html
   structr: structr.html
-last_built: 2026-10-30T15:28Z
+  vector_algebra: vector_algebra.html
+last_built: 2026-10-30T20:22Z
 urls:
   reference: https://tobiste.github.io/structr/reference
   article: https://tobiste.github.io/structr/articles

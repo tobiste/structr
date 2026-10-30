@@ -23,11 +23,6 @@ crossprod(x, y = NULL, ...)
 
 dotprod(x, y)
 
-angle(x, y)
-
-# S3 method for class 'spherical'
-angle(x, y)
-
 project(x, y)
 
 # S3 method for class 'spherical'
@@ -64,7 +59,8 @@ transform_linear(x, A, norm = FALSE)
 ## Value
 
 objects of same class as `x`, i.e. one of `"Vec3"`, `"Line"`, `"Ray"` or
-`"Plane"`. `vector_length()` and `%*%` return a real number. `angle()`
+`"Plane"`. `vector_length()` and `%*%` return a real number.
+[`angle()`](https://tobiste.github.io/structr/reference/vector-angle.md)
 returns a numeric angle (in degrees, unless `x` is class `"Vec3"`).
 
 ## Details
@@ -89,7 +85,7 @@ returns a numeric angle (in degrees, unless `x` is class `"Vec3"`).
   the dot product of two vectors: \\x \cdot y = x_1 y_1 + x_2 y_2 + x_3
   y_3\\
 
-- `angle()`:
+- [`angle()`](https://tobiste.github.io/structr/reference/vector-angle.md):
 
   angle between two vectors: \\\theta = \arccos{\frac{x \cdot
   y}{\|\|x\|\| \\ \|\|y\|\|}}\\
@@ -118,8 +114,6 @@ crossprod(vec1, vec2) # cross product
 #>  0 -1  0 
 dotprod(vec1, vec2) # dot product
 #> [1] 0
-angle(vec1, vec2) # angle between vectors
-#> [1] 1.570796
 project(vec1, vec2) # projection of a vector
 #> Vector (Vec3) object (n = 1):
 #> x y z 
@@ -127,5 +121,5 @@ project(vec1, vec2) # projection of a vector
 transform_linear(vec1, matrix(runif(9), 3, 3)) # linear transformation
 #> Vector (Vec3) object (n = 1):
 #>         x         y         z 
-#> 0.0782413 0.6933721 0.7871381 
+#> 0.6096432 0.2388168 0.4666022 
 ```
