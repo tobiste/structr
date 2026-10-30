@@ -29,6 +29,7 @@ library(structr)
 ```
 
 Import some example data of some folded fabric elements
+
 ```{r data, warning=FALSE, message=FALSE}
 data("gray_example")
 gray_example
@@ -65,6 +66,7 @@ bedding_gc$vec
 
 The algorithm minimizes the sum-of-squares of the residuals, which are the angular distances of the best-fit axes to the data vectors. 
 We can check if the optimization successfully converged, and asses the quality of the fit using the R<sup>2</sup>:
+
 ```{r check_greatcircle, warning=FALSE, message=FALSE}
 # Check
 cleavage_gc$convergence == 0 & cleavage_gc$min_eigenvalue > 0
@@ -76,6 +78,7 @@ bedding_gc$r_squared
 ``` 
 
 Plot the results
+
 ```{r plot_greatcircle, warning=FALSE, message=FALSE}
 #| fig.alt: >
 #|   Diagram showing the great-circle regression result in a stereoplot
@@ -93,6 +96,7 @@ legend("bottomright", col = c("#000004FF", "#B63679"), lty = c(1, 1), legend = c
 The regression was successful. However, the R<sup>2</sup> values indicate a good fit for the bedding, but a rather poor fit for the cleavage planes.
 
 ## Best-fit small circles
+
 ```{r calc_smallcircle, warning=FALSE, message=FALSE}
 cleavage_sc <- regression_smallcircle(cleavage)
 bedding_sc <- regression_smallcircle(bedding)
@@ -114,6 +118,7 @@ bedding_sc$r_squared
 ``` 
 
 Plot the results:
+
 ```{r plot_smallcircle, warning=FALSE, message=FALSE}
 #| fig.alt: >
 #|   Diagram showing the small-circle regression result in a stereoplot
@@ -143,6 +148,7 @@ bedding_sc2 <- regression_smallcircle_gray(bedding)
 cleavage_sc2$cone
 bedding_sc2$cone
 ```
+
 `regression_gray(x, out)` is a convenience function where the `out` argument specifies the type of regression (`"small"` or `"great"` circle). If `out = "both"`, the two solutions are compared by testing whether the small-circle solution fits better than the great-circle solution:
 
 ```{r gray2}

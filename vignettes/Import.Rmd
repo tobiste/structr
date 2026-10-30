@@ -220,7 +220,8 @@ title(main = "All linear elements")
 
 The `"strabo"` objects are list objects containing orientation data as planar and linear objects as well as several slots containing your metadata (`data`) and geospatial information (`spots`).
 
-**IMPORTANT**: The meta data and the plane and line measurements all
+> [!IMPORTANT] 
+> The meta data and the plane and line measurements all
 share the same row indices. Thus, planes and lines with identical row
 indices have been measured simultaneously (e.g. as a fault).
 
@@ -261,7 +262,7 @@ title(main = "Subset of linear elements")
 
 The function `sort_by()` can sort your strabo objects based on one or more columns in the `data` and will automatically sort all planar and linear elements.
 
-```{r sort, echo=FALSE}
+```{r sort, include=TRUE,eval=FALSE}
 sort_by(strabo_prj, strabo_prj$data$quality)
 ```
 

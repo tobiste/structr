@@ -44,6 +44,7 @@ knitr::opts_chunk$set(
 
 -   Direct import of your field data from **StraboSpot** projects (`read_strabo_JSON()`).
 
+> [!CAUTION]
 > The {structr} package is all about structures in 3D. For analyzing orientations in 2D (statistics, rose diagrams, etc.), check out the [tectonicr](https://github.com/tobiste/tectonicr) package!
 
 ## Installation
@@ -95,7 +96,8 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 
 The default projection is the equal-area projection into the lower hemisphere. Grid lines are disabled by default. You can change these settings either directly in the `stereoplot()` function using the parameters `upper.hem`, `earea`, and `guides`or set global definitions. 
 
-The grid can also be rotated to a specified orientation by setting the parameter `center`. In the example below, we fix the grid in the mean of the example line data:
+> [!TIP]
+> The grid can also be rotated to a specified orientation by setting the parameter `center`. In the example below, we fix the grid in the mean of the example line data:
 
 ```{r stereo_grid}
 ml <- sph_mean(example_lines)
@@ -111,7 +113,7 @@ points(example_planes, col = "#000004", pch = 1, cex = .5)
 
 ### Density on a Sphere
 
-Density shown by contour lines...
+Density shown by contour lines:
 
 ```{r stereo_density_lines, warning=FALSE,message=FALSE}
 par(mfrow = c(1, 2))

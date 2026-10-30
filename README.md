@@ -46,9 +46,9 @@ for structural geology. The toolset includes
 - Direct import of your field data from **StraboSpot** projects
   (`read_strabo_JSON()`).
 
-> The {structr} package is all about structures in 3D. For analyzing
-> orientations in 2D (statistics, rose diagrams, etc.), check out the
-> [tectonicr](https://github.com/tobiste/tectonicr) package!
+> \[!CAUTION\] The {structr} package is all about structures in 3D. For
+> analyzing orientations in 2D (statistics, rose diagrams, etc.), check
+> out the [tectonicr](https://github.com/tobiste/tectonicr) package!
 
 ## Installation
 
@@ -98,7 +98,7 @@ points(example_planes, col = "#000004", pch = 1, cex = .5)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```
 
-<img src="man/figures/README-stereo-1.png" width="100%" />
+<img src="man/figures/README-stereo-1.png" alt="" width="100%" />
 
 ### Manipulate projection and grid
 
@@ -107,27 +107,27 @@ hemisphere. Grid lines are disabled by default. You can change these
 settings either directly in the `stereoplot()` function using the
 parameters `upper.hem`, `earea`, and `guides`or set global definitions.
 
-The grid can also be rotated to a specified orientation by setting the
-parameter `center`. In the example below, we fix the grid in the mean of
-the example line data:
+> \[!TIP\] The grid can also be rotated to a specified orientation by
+> setting the parameter `center`. In the example below, we fix the grid
+> in the mean of the example line data:
 
 ``` r
 ml <- sph_mean(example_lines)
 
 stereoplot(
   title = "Lambert equal-area projection",
-  sub = paste0("Lower hemisphere\nGrid center: ", round(ml[1,1]), '/', round(ml[1, 2])),
+  sub = paste0("Lower hemisphere\nGrid center: ", round(ml[1, 1]), "/", round(ml[1, 2])),
   center = ml
 )
 points(example_lines, col = "#B63679", pch = 19, cex = .5)
 points(example_planes, col = "#000004", pch = 1, cex = .5)
 ```
 
-<img src="man/figures/README-stereo_grid-1.png" width="100%" />
+<img src="man/figures/README-stereo_grid-1.png" alt="" width="100%" />
 
 ### Density on a Sphere
 
-Density shown by contour lines…
+Density shown by contour lines:
 
 ``` r
 par(mfrow = c(1, 2))
@@ -140,7 +140,7 @@ points(example_lines, col = "grey", cex = .5)
 title(main = "Lines")
 ```
 
-<img src="man/figures/README-stereo_density_lines-1.png" width="100%" />
+<img src="man/figures/README-stereo_density_lines-1.png" alt="" width="100%" />
 
 or as filled contours:
 
@@ -155,7 +155,7 @@ points(example_lines, col = "grey", cex = .5)
 title(main = "Lines")
 ```
 
-<img src="man/figures/README-stereo_density_img-1.png" width="100%" />
+<img src="man/figures/README-stereo_density_img-1.png" alt="" width="100%" />
 
 ### Spherical Statistics
 
@@ -171,14 +171,6 @@ par(mfrow = c(1, 2), xpd = NA)
 stereoplot(title = "Planes", guides = FALSE)
 points(example_planes, col = "lightgrey", pch = 1, cex = .5)
 lines(planes_eig, col = c("#FB8861FF", "#FEC287FF", "#FCFDBFFF"), lty = 1:3)
-#> [[1]]
-#> NULL
-#> 
-#> [[2]]
-#> NULL
-#> 
-#> [[3]]
-#> NULL
 points(planes_mean, col = "#B63679", pch = 19, cex = 1)
 points(planes_geomean, col = "#E65164FF", pch = 19, cex = 1)
 points(planes_eig, col = c("#FB8861FF", "#FEC287FF", "#FCFDBFFF"), pch = 19, cex = 1)
@@ -209,7 +201,7 @@ legend(
 )
 ```
 
-<img src="man/figures/README-stats-1.png" width="100%" />
+<img src="man/figures/README-stats-1.png" alt="" width="100%" />
 
 ### Orientation Tensor and Fabric Plots
 
@@ -231,7 +223,7 @@ legend(
 )
 ```
 
-<img src="man/figures/README-stereo_ortensor-1.png" width="100%" />
+<img src="man/figures/README-stereo_ortensor-1.png" alt="" width="100%" />
 
 ### Best-fit Great- and Small-Circles (Geodesic Regression)
 
@@ -276,7 +268,7 @@ legend(0, -1.1,
 )
 ```
 
-<img src="man/figures/README-bestfit-1.png" width="100%" />
+<img src="man/figures/README-bestfit-1.png" alt="" width="100%" />
 
 ### Fault Plots
 
@@ -296,7 +288,7 @@ stereoplot(title = "Hoeppener plot", guides = FALSE)
 hoeppener(faults, points = FALSE, col = "grey20")
 ```
 
-<img src="man/figures/README-stereo_faults-1.png" width="100%" />
+<img src="man/figures/README-stereo_faults-1.png" alt="" width="100%" />
 
 ### Fault-Slip Inversion
 
@@ -312,7 +304,7 @@ using bootstrap replicates:
 
 ``` r
 set.seed(20250411)
-faults_stress <- slip_inversion(faults, n_iter = 10, method = 'michael')
+faults_stress <- slip_inversion(faults, n_iter = 10, method = "michael")
 ```
 
 Now we can visualize the slip inversion results, that are the
@@ -338,7 +330,7 @@ text(faults_stress$principal_axes,
 )
 ```
 
-<img src="man/figures/README-stereo_inversion_plot-1.png" width="100%" />
+<img src="man/figures/README-stereo_inversion_plot-1.png" alt="" width="100%" />
 
 You can visualize the accuracy of the slip inversion by showing the
 deviation angle (α) between the theoretical slip and the actual slip
@@ -361,7 +353,7 @@ legend_col(
 )
 ```
 
-<img src="man/figures/README-stereo_inversion_deviation-1.png" width="100%" />
+<img src="man/figures/README-stereo_inversion_deviation-1.png" alt="" width="100%" />
 
 The azimuth of the maximum horizontal stress (in degrees) for the slip
 inversion result is:
@@ -396,12 +388,12 @@ Mohr_plot(
 stress_components <- sigma2shearnorm(faults_stress$sigma, faults)
 
 # Add to Mohr circle:
-points(stress_components[, 'normal'], abs(stress_components[, 'shear']),
+points(stress_components[, "normal"], abs(stress_components[, "shear"]),
   col = assign_col(alpha), pch = 16
 )
 ```
 
-<img src="man/figures/README-stereo_inversion_mohr-1.png" width="100%" />
+<img src="man/figures/README-stereo_inversion_mohr-1.png" alt="" width="100%" />
 
 ### Strain Analysis
 
@@ -417,7 +409,7 @@ Rphi_plot(r = ramsay[, 1], phi = ramsay[, 2])
 elliott_plot(ramsay[, 1], ramsay[, 2], proj = "eqd")
 ```
 
-<img src="man/figures/README-strain-1.png" width="100%" />
+<img src="man/figures/README-strain-1.png" alt="" width="100%" />
 
 #### 3D Strain
 
@@ -433,7 +425,7 @@ flinn_plot(cbind(R_XY, R_YZ), log = TRUE, col = "#B63679", pch = 16)
 hsu_plot(cbind(R_XY, R_YZ), col = "#B63679", pch = 16)
 ```
 
-<img src="man/figures/README-strain3D-1.png" width="100%" />
+<img src="man/figures/README-strain3D-1.png" alt="" width="100%" />
 
 ### Vorticity Analysis
 
@@ -449,7 +441,7 @@ set.seed(20250411)
 RGN_plot(shebandowan$r, shebandowan$phi, col = assign_col(log(shebandowan$area)), pch = 16, guides = TRUE)
 ```
 
-<img src="man/figures/README-rgn-1.png" width="100%" />
+<img src="man/figures/README-rgn-1.png" alt="" width="100%" />
 
 ### Deformation and Velocity Gradient Tensors
 
@@ -491,11 +483,6 @@ stereo_path(xl_steps, type = "l")
 stereo_path(xl_steps, type = "p", col = assign_col(increments), pch = 16, cex = .4)
 
 lines(flow_apophyses, col = c("grey30", "grey70"), lty = c(1, 2))
-#> [[1]]
-#> NULL
-#> 
-#> [[2]]
-#> NULL
 points(axes_ISA, pch = 15, col = "#B63679FF")
 text(axes_ISA, labels = c("ISA-1", "ISA-2", "ISA-3"), col = "#B63679FF", pos = 3, font = 2)
 
@@ -510,7 +497,7 @@ legend(0, -1.1,
 legend_col(increments, title = "Time")
 ```
 
-<img src="man/figures/README-defgrad1-1.png" width="100%" />
+<img src="man/figures/README-defgrad1-1.png" alt="" width="100%" />
 
 Show how the orientation tensor changes during progressive deformation:
 
@@ -520,7 +507,7 @@ vollmer_plot(xl_steps, type = "b", col = assign_col(increments), pch = 16)
 hsu_plot(xl_steps, type = "b", col = assign_col(increments), pch = 16)
 ```
 
-<img src="man/figures/README-defgrad2-1.png" width="100%" />
+<img src="man/figures/README-defgrad2-1.png" alt="" width="100%" />
 
 ## Author
 

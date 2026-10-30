@@ -56,6 +56,7 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 title(main = "Example data", sub = "Lambert equal area, lower hemisphere projection")
 ```
 
+> [!TIP]
 > Points can be added using the `points()` function.
 
 ## Stereographic projection
@@ -75,7 +76,8 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 title(main = "Example data", sub = "Equal angle stereographic, upper hemisphere projection")
 ```
 
-> Global plotting settings can be defined using `option()`. For example to turn off guides:
+> [!TIP]
+> Global plotting settings can be defined using `option()`. This is useful when you wan tti create several plot using the same plotting parameters. For example, to turn off guides:
 
 ```{r plot_options}
 options(structr.guides = FALSE)
