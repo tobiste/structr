@@ -1,16 +1,20 @@
 ---
 title: "structr"
 author: "Tobias Stephan"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+date: today
 description: >
   Start here if this is your first time using structr.
+format: html
 vignette: >
   %\VignetteIndexEntry{structr}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
-editor_options: 
-  markdown: 
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: "#>"
+editor:
+  markdown:
     wrap: 72
 ---
 
@@ -21,16 +25,9 @@ When working with orientation data you must:
 -   Describe the orientation data
 -   Visualize your findings
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
-
 ## Prerequisites
 
-Before you start you need to have R and and R-compatible IDE installed
+Before you start you need to have R and an R-compatible IDE installed
 on your computer:
 
 1.  You will need R installed on your computer. You can download R from
@@ -38,30 +35,37 @@ on your computer:
 
 2.  Once you downloaded and successfully installed R, you can use R in
     your preferred IDE. I recommend installing and using
-    [RStudio](https://docs.posit.co/ide/user/#rstudio-ide-oss-downloads). However,
-    [Positron](https://positron.posit.co/) and
-    [VisualStudio](https://visualstudio.microsoft.com/) are also great
-    alternatives. You are also allowed to use R's native GUI or use R in
-    your terminal only.
+    [RStudio](https://docs.posit.co/ide/user/#rstudio-ide-oss-downloads).
+    However, [Positron](https://positron.posit.co/) and [Visual Studio
+    Code](https://code.visualstudio.com/) are also great alternatives.
+    You can also use R's native GUI or use R in your terminal only.
 
 3.  Open your IDE and first install the {devtools} package to later
-    install {structr} from my github repository:
+    install {structr} from my GitHub repository:
 
-```{r install1, eval=FALSE, include=TRUE}
+```{r}
+#| label: install1
+#| eval: false
 install.packages("devtools")
 ```
 
-4.  Now you can install the {structr} package by typing into the
-    commando console the following code. This will install the package
-    and every required library as well.
+4.  Now you can install the {structr} package by typing the following
+    code into the console. This will install the package and every
+    required library as well.
 
-```{r install2,  eval=FALSE, include=TRUE}
+```{r}
+#| label: install2
+#| eval: false
 devtools::install_github("tobiste/structr")
 ```
 
-5.  Finally, you must "load" the library to use the functions of {structr}:
+5.  Finally, you must "load" the library to use the functions of
+    {structr}:
 
-```{r setup, warning=FALSE, message=FALSE}
+```{r}
+#| label: setup
+#| warning: false
+#| message: false
 library(structr)
 ```
 
@@ -69,29 +73,33 @@ library(structr)
 
 The first thing you usually need to do is importing your orientation
 data. This can be done in several different ways depending on your
-preferences. For example, RStudio has a GUI that allows to import data
-without using R commandos (File \> Import Datasets).
+preferences. For example, RStudio has a GUI that allows you to import
+data without using R commands (File \> Import Dataset).
 
-You can also use one of the below functions to import data:
+You can also use one of the functions below to import data:
 
-```{r read_csv, echo=FALSE, eval=FALSE}
+```{r}
+#| label: read_csv
+#| eval: false
 read.table("path/to/my/file.txt", header = TRUE, sep = "\t")
 read.csv("path/to/my/file.csv")
 readxl::read_xlsx("path/to/my/file.xlsx")
 ```
 
-To use your data directly from a Strabospot project, download the json
+To use your data directly from a StraboSpot project, download the JSON
 file and import it using the `read_strabo_JSON()` function.
 
-```{r read_json, echo=FALSE, eval=FALSE}
+```{r}
+#| label: read_json
+#| eval: false
 read_strabo_JSON("path/to/my/file.json")
 ```
 
 This returns a list which contains all the information and metadata
-(including coordinates, descriptions etc) extracted from the
+(including coordinates, descriptions etc.) extracted from the
 *StraboSpot* project in the list element `data`, the tags used for the
 project in the list element `tags`, and the linear and planar
-orientation measurements in the list elements `lines` and `planes`,
+orientation measurements in the list elements `linear` and `planar`,
 respectively.
 
 ## Data type declaration
@@ -99,18 +107,19 @@ respectively.
 Depending on the symmetry of the orientation data, different data types
 are used to represent orientations in 3D space. The main data types used
 in structural geology are Rays, Lines, Planes, Pairs, and Faults.
-Distinguishing these data types is important each the different
-symmetries imply different statistical assumption for their
+Distinguishing these data types is important because the different
+symmetries imply different statistical assumptions for their
 distribution. In other words the different data types require different
 statistical "treatments". To learn more about it, follow this
 [tutorial](https://tobiste.github.io/structr/articles/Data_types.html).
 
 The data types can be generated using the object creator functions:
 `Vec3()`, `Line()`, `Plane()`, `Ray()`, `Pair()`, and `Fault()`. These
-functions create spherical object, and {structr} will identify the
+functions create spherical objects, and {structr} will identify the
 symmetry nature of the data in further function calls.
 
-```{r define}
+```{r}
+#| label: define
 plunge_direction <- c(54, 61, 74, 80, 63)
 plunge <- c(13, 15, 14, 19, 17)
 
@@ -121,14 +130,16 @@ print(lines)
 ## Equal-area projections
 
 The spherical objects can be plotted in equal-area projections using R's
-primitive plotting functions, e.g. `plot`, `points()`, and `lines()`,
-....
+primitive plotting functions, e.g. `plot()`, `points()`, and `lines()`:
 
-```{r plot}
+```{r}
+#| label: plot
+#| fig-alt: >
+#|   Equal-area projection of the example lines
 #  import some example lines
 data(example_lines)
 
-# plot lines in a equal-area projection
+# plot lines in an equal-area projection
 plot(example_lines)
 ```
 
@@ -137,17 +148,18 @@ More details on plotting spherical data in
 
 ## Statistical estimators
 
-There are plenty of different statistical parameters, which
-meaningfulness depend on the underlying distribution of the orientation
+There are plenty of different statistical parameters, whose
+meaningfulness depends on the underlying distribution of the orientation
 data (and hence also on the symmetry of the data).
 
-```{r stats}
+```{r}
+#| label: stats
 # Spherical arithmetic mean
 lines_mean <- sph_mean(example_lines)
 print(lines_mean)
 
 # Spherical arithmetic variance
-sph_mean(example_lines)
+sph_var(example_lines)
 
 # Spherical standard deviation
 lines_sd <- sph_sd(example_lines)
@@ -155,9 +167,11 @@ print(lines_sd)
 ```
 
 Here, the spherical arithmetic mean and variance are computed. These
-values conveniently describe the distribution if we assume a von
-Mises-Fisher distribution of the data, which is the normal distribution
-analogue for line-like data. In many cases the geodesic mean and
+values conveniently describe the distribution if we assume a unimodal,
+rotationally symmetric distribution such as the von Mises-Fisher
+distribution, the analogue of the normal distribution for vectorial
+(ray-like) data; for axial (line-like) data, the Watson and Bingham
+distributions play this role. In many cases the geodesic mean and
 variance better describe the distribution of vectors. More details in
 the [statistics
 tutorial](https://tobiste.github.io/structr/articles/Statistics.html).
@@ -167,24 +181,31 @@ tutorial](https://tobiste.github.io/structr/articles/Statistics.html).
 The orientation tensor describes the distribution of all vectors in your
 dataset.
 
-```{r ortensor}
+```{r}
+#| label: ortensor
 ortensor(example_lines)
 ```
 
 Eigenvalues and eigenvectors of this tensor describe the distribution.
 
-```{r eigen}
+```{r}
+#| label: eigen
 lines_eigen <- ot_eigen(example_lines)
 print(lines_eigen)
 ```
 
-Summarize the statistical parameters in a equal-area projection:
+Summarize the statistical parameters in an equal-area projection:
 
-```{r plot2}
+```{r}
+#| label: plot2
+#| fig-alt: >
+#|   Equal-area projection of the example lines with the great circles
+#|   normal to the three eigenvectors, the spherical mean, and its standard
+#|   deviation cone
 # plot the data
 plot(example_lines, col = "grey30")
 
-# greatcircles associated with the eigenvectors
+# great circles associated with the eigenvectors
 lines(lines_eigen$vectors, col = c("#000004FF", "#B63679FF", "#FE9F6DFF"))
 
 # spherical mean and standard deviation cone
@@ -192,6 +213,7 @@ points(lines_mean, pch = 16, cex = 1.5, col = "#35B779FF")
 lines(lines_mean, ang = lines_sd, col = "#35B779FF")
 ```
 
-Here, the eigenvector are the intersection of the great-circles. Note
-how the spherical mean is quite similar to one eigenvector (the one
+Here, the eigenvectors are the intersections of the great circles (each
+great circle is normal to one eigenvector and contains the other two).
+Note how the spherical mean is quite similar to one eigenvector (the one
 associated with the greatest eigenvalue).

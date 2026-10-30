@@ -1,0 +1,124 @@
+---
+title: "Vector Algebra"
+author: "Tobias Stephan"
+date: today
+description: >
+  This vignette introduces the basic vector operations for orientation data.
+format: html
+vignette: >
+  %\VignetteIndexEntry{Vector Algebra}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: "#>"
+editor:
+  markdown:
+    wrap: 72
+---
+
+This tutorial introduces the basic mathematical operations of the
+`{structr}` package for analyzing orientation data.
+
+```{r}
+#| include: false
+set.seed(20250411)
+```
+
+```{r}
+#| label: setup
+#| warning: false
+#| message: false
+library(structr)
+```
+
+## Vector operations
+
+Since the spherical and vector objects are easily convertible, they can
+be used for all sorts of vector operations, such as the magnitude (or
+length), the angle between vectors, dot product, cross product,
+projection and rotation.
+
+Define some example vectors:
+
+```{r}
+#| label: math0
+line1 <- Line(120, 50)
+line2 <- Line(10, 30)
+```
+
+The **vector length** (or magnitude):
+
+```{r}
+#| label: math_norm
+vector_length(line1)
+```
+
+::: {.callout-note}
+Orientation vectors are by definition unit vectors, i.e. their length
+is equal to 1.
+:::
+
+The **angle** between two vectors:
+
+```{r}
+#| label: math_angle
+angle(line1, line2)
+```
+
+The **dot product** (or scalar product) of two vectors:
+
+```{r}
+#| label: math_dot
+dotprod(line1, line2)
+```
+
+Intuitively, the dot product tells us how much two vectors point in the
+same direction. For unit vectors, it equals the cosine of the angle
+between them.
+
+The **cross product** of two vectors:
+
+```{r}
+#| label: math_cross
+crossprod(line1, line2)
+```
+
+This gives the vector that is perpendicular to the plane spanned by the
+two vectors. Geologically, the cross product of two lines is the pole
+to the plane containing both lines, and the cross product of two poles
+to planes is the line of intersection of the two planes.
+
+The **projection** of a vector onto another vector:
+
+```{r}
+#| label: math_project
+project(line1, line2)
+```
+
+::: {.callout-note}
+The projection of a vector onto a unit vector is parallel to that unit
+vector, with a length equal to their dot product (the cosine of the
+angle between them). As an orientation, it therefore points along the
+second vector.
+:::
+
+The **rotation** of a vector about another vector (rotation axis) by a
+specified rotation angle:
+
+```{r}
+#| label: math_rotate
+rotate(line1, rotaxis = line2, rotangle = 45)
+```
+
+> Right-hand-rule convention: Rotation is counterclockwise for positive angles. 
+
+**Linear transformation** transforms vectors using a transformation
+matrix (second-order tensor):
+
+```{r}
+#| label: math_transform
+trans_mat <- matrix(runif(9), 3, 3)
+transform_linear(line1, trans_mat)
+```

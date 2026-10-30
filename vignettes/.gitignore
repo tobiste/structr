@@ -1,3 +1,5 @@
 *.html
 *.R
 Fault_displacements.html
+/.quarto/
+**/*.quarto_ipynb

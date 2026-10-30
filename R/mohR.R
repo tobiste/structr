@@ -4,7 +4,8 @@
 #'
 #' @param sigma1,sigma3 numeric. Magnitudes of maximum and minimum principal stress (\eqn{\sigma_1} and \eqn{\sigma_3}), respectively.
 #' @param sigma_s,sigma_n numeric. Magnitudes of shear and normal stress (\eqn{\sigma_s} and \eqn{\sigma_n}), respectively.
-#' @param theta numeric. Angle \eqn{\theta} between fracture and \eqn{\sigma_1}.
+#' @param theta numeric. Angle \eqn{\theta} between pole to the fracture and the largest stress \eqn{\sigma_1}.
+#' @param alpha numeric. Angle \eqn{\alpha} between fracture and \eqn{\sigma_1}.
 #' @param mu numeric. Coefficient of internal friction \eqn{\mu}.
 #'
 #' @returns numeric
@@ -42,14 +43,14 @@ mean_stress <- function(sigma1, sigma3) {
 
 #' @rdname stress-comp
 #' @export
-shear_stress <- function(sigma1, sigma3, theta) {
+shear_stress <- function(sigma1, sigma3, theta = 90 - alpha, alpha = 90 - theta) {
   # stopifnot(sigma1 >= sigma3)
   diff_stress(sigma1, sigma3) / 2 * sind(2 * theta)
 }
 
 #' @rdname stress-comp
 #' @export
-normal_stress <- function(sigma1, sigma3, theta) {
+normal_stress <- function(sigma1, sigma3, theta = 90 - alpha, alpha = 90 - theta) {
   # stopifnot(sigma1 >= sigma3)
   mean_stress(sigma1, sigma3) - diff_stress(sigma1, sigma3) / 2 * cosd(2 * theta)
 }

@@ -1,46 +1,56 @@
 ---
 title: "Orientation Plots with ggplot"
 author: "Tobias Stephan"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+date: today
 description: >
   This tutorial introduces the various ways to plot spherical data using ggplots
+format: html
 vignette: >
   %\VignetteIndexEntry{Orientation Plots with ggplot}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
-editor_options: 
-  markdown: 
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: "#>"
+editor:
+  markdown:
     wrap: 72
 ---
 
-This tutorial shows how to create orientation plots using ggplot2 in R with the help of the `{structr}` package.
+This tutorial shows how to create orientation plots using ggplot2 in R
+with the help of the `{structr}` package.
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+```{r}
+#| include: false
+set.seed(20250411)
 ```
 
-```{r setup, warning=FALSE, message=FALSE}
+```{r}
+#| label: setup
+#| warning: false
+#| message: false
 library(structr)
 library(ggplot2)
 library(mapproj)
 ```
 
-
 Import and convert to spherical objects:
-```{r example}
-data(example_planes)
+
+```{r}
+#| label: example
+data(example_planes_df)
+data(example_lines_df)
 
 planes <- Plane(example_planes_df$dipdir, example_planes_df$dip)
 lines <- Line(example_lines_df$trend, example_lines_df$plunge)
 ```
 
-## Stereographic projection
-```{r stereo1}
-#| fig.alt: >
+## Equal-area projection
+
+```{r}
+#| label: stereo1
+#| fig-alt: >
 #|   Diagram showing example data plotted in an
 #|   equal-area projection
 ggstereo() +
@@ -49,11 +59,12 @@ ggstereo() +
   labs(title = "Example data", color = NULL)
 ```
 
-
 Adding great circles:
-```{r stereo2}
-#| fig.alt: >
-#|   Diagram showing example data as greatcircles plotted in an
+
+```{r}
+#| label: stereo2
+#| fig-alt: >
+#|   Diagram showing example data as great circles plotted in an
 #|   equal-area projection
 ggstereo() +
   geom_path(data = ggl(planes), aes(x, y, color = "planes"), lwd = .1) +
@@ -62,8 +73,12 @@ ggstereo() +
 ```
 
 ## Statistics
-```{r stat, message=FALSE,warning=FALSE}
-#| fig.alt: >
+
+```{r}
+#| label: stat
+#| message: false
+#| warning: false
+#| fig-alt: >
 #|   Diagram showing statistical results of some example data plotted in an
 #|   equal-area projection
 quality <- runif(nrow(lines), min = 1, max = 45) # assigning a random quality score to the data (can be replaced with real data)
@@ -79,10 +94,12 @@ ggstereo() +
   labs(title = "Example data", color = NULL)
 ```
 
-```{r eigen, include = FALSE}
-#| fig.alt: >
-#|   Diagram showing statistical results of some example data plotted in an
-#|   equal-area projection
+```{r}
+#| label: eigen
+#| include: false
+#| fig-alt: >
+#|   Diagram showing the eigenvectors of the plane orientation tensor and
+#|   their great circles plotted in an equal-area projection
 planes_eigen <- ot_eigen(planes)
 
 ggstereo() +
@@ -92,12 +109,15 @@ ggstereo() +
   labs(title = "Example data", color = NULL)
 ```
 
-
 ## Density plots
-```{r density, message=FALSE,warning=FALSE}
-#| fig.alt: >
-#|   Diagram showing the density distribution some example data plotted in an
-#|   equal-area projection
+
+```{r}
+#| label: density
+#| message: false
+#| warning: false
+#| fig-alt: >
+#|   Diagram showing the density distribution of some example data plotted in
+#|   an equal-area projection
 ggstereo() +
   geom_contourf_stereo(gg(planes), show.legend = TRUE, norm = TRUE) +
   scale_fill_viridis_d("Density") +
@@ -105,10 +125,13 @@ ggstereo() +
   labs(title = "Example data", color = NULL)
 ```
 
-
 ## Facets
-```{r facets , message=FALSE,warning=FALSE}
-#| fig.alt: >
+
+```{r}
+#| label: facets
+#| message: false
+#| warning: false
+#| fig-alt: >
 #|   Diagram demonstrating the facet functionality of the ggstereo function
 area_l <- LETTERS[sample.int(3, nrow(lines), replace = TRUE)]
 area_p <- LETTERS[sample.int(3, nrow(planes), replace = TRUE)]

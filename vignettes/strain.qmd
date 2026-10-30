@@ -1,104 +1,117 @@
 ---
 title: "Strain and Vorticity Analysis"
 author: "Tobias Stephan"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+date: today
 description: >
   This tutorial demonstrates how to perform strain and vorticity analysis using the {structr} package in R.
+format: html
 vignette: >
   %\VignetteIndexEntry{Strain and Vorticity Analysis}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
-editor_options: 
-  markdown: 
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: "#>"
+editor:
+  markdown:
     wrap: 72
 ---
 
 This tutorial demonstrates how to perform strain and vorticity analysis
 using the {structr} package in R.
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
+```{r}
+#| include: false
 set.seed(20250411)
 ```
 
-```{r setup, warning=FALSE, message=FALSE}
+```{r}
+#| label: setup
+#| warning: false
+#| message: false
 library(structr)
 ```
 
 ## Strain analysis
 
-Import some \eqn{R_f/\phi}{Rf/&phi;} data from elliptical strain markers
+Import some $R_f/\phi$ data from elliptical strain markers:
 
-```{r data}
+```{r}
+#| label: data
 data(ramsay)
 head(ramsay)
 ```
 
-The mean mean strain ellipse (shape and orientation) of deformed
-elliptical objects as strain markers can be calculated by using the mean
-shape matrix and its eigenvalues[^1]:
+The mean strain ellipse (shape and orientation) of deformed elliptical
+objects used as strain markers can be calculated from the mean shape
+matrix and its eigenvalues and eigenvectors[^1]:
 
 [^1]: Shimamoto, T., & Ikeda, Y. (1976). A simple algebraic method for
     strain estimation from deformed ellipsoidal objects. 1. Basic
     theory. Tectonophysics, 36(4), 315–337.
-    [https://doi.org/10.1016/0040-1951(76)90107-4](https://doi.org/10.1016/0040-1951(76)90107-4){.uri}
+    <https://doi.org/10.1016/0040-1951(76)90107-4>
 
-```{r mean_strain}
+```{r}
+#| label: mean_strain
 ramsay_mean <- mean_strain_ellipse(r = ramsay[, 1], phi = ramsay[, 2])
 print(ramsay_mean)
 ```
 
 The {structr} algorithm also calculates bootstrapped 95% confidence
-interval.
+intervals.
 
 To visualize the distribution of the strain values, we can calculate
-densities in \eqn{R_f/\phi}{Rf/&phi;} space[^2] and plot them in a **\eqn{R_f/\phi}{Rf/&phi;}** diagram[^3]:
+densities in $R_f/\phi$ space[^2] and plot them in an **$R_f/\phi$
+diagram**[^3]:
 
-[^2]: Vollmer, F. W. (2018). Computers and Geosciences Automatic
-    contouring of geologic fabric and finite strain data on the unit
-    hyperboloid. Computers and Geosciences, 115(June 2017), 134–142.
+[^2]: Vollmer, F. W. (2018). Automatic contouring of geologic fabric and
+    finite strain data on the unit hyperboloid. Computers &
+    Geosciences, 115, 134–142.
     <https://doi.org/10.1016/j.cageo.2018.03.006>
 
 [^3]: Ramsay, J. G., & Huber, M. I. (1983). The Techniques of Modern
     Structural Geology: Strain Analyses (Vol. 1). London: Academic
     Press.
 
-```{r rphi, message=FALSE, warning=FALSE}
+```{r}
+#| label: rphi
+#| message: false
+#| warning: false
 #| fig-alt: >
-#|    Rf-phi plot
+#|   Rf/phi diagram of elliptical strain markers with density contours
 Rphi_plot(r = ramsay[, 1], phi = ramsay[, 2])
 ```
 
-or in an **Equidistant polar plot**[^4]:
+or in an **equidistant polar plot**[^4]:
 
 [^4]: Elliott, D. (1970). Determination of Finite Strain and Initial
-    Shape from Deformed Elliptical Objects. GSA Bulletin, 81(8), 2221–2236.
-    doi:10.1130/0016-7606(1970)81[2221:DOFSAI]2.0.CO;2
+    Shape from Deformed Elliptical Objects. GSA Bulletin, 81(8),
+    2221–2236.
+    <https://doi.org/10.1130/0016-7606(1970)81[2221:DOFSAI]2.0.CO;2>
 
-```{r plot2}
-#| fig.alt: >
-#|   R/phi data in polar plot
+```{r}
+#| label: plot2
+#| fig-alt: >
+#|   Rf/phi data of elliptical strain markers in an equidistant polar plot
 Rphi_polar_plot(ramsay[, 1], ramsay[, 2], proj = "eqd")
 ```
 
 ## 3D Strain
 
-Three-dimensional strain data are expressed by the ratio of the
-magnitudes of the 3 principal strain axes of the strain ellipsoid,
+Three-dimensional strain data are expressed by the ratios of the
+magnitudes of the three principal axes of the strain ellipsoid,
 $X \geq Y \geq Z$. They can be represented in the **Flinn diagram**[^5],
-either linear or logarithmic.
+either linear or logarithmic:
 
 [^5]: Flinn, D. (1965). On the Symmetry Principle and the Deformation
     Ellipsoid. Geological Magazine, 102(1), 36–45.
     <https://doi.org/10.1017/S0016756800053851>
 
-```{r flinn}
-#| fig.alt: >
-#|   Flinn diagram
+```{r}
+#| label: flinn
+#| fig-alt: >
+#|   Logarithmic Flinn diagram of strain ellipsoid axial ratios
 data("holst")
 R_XY <- holst[, "R_XY"]
 R_YZ <- holst[, "R_YZ"]
@@ -106,8 +119,8 @@ R_YZ <- holst[, "R_YZ"]
 flinn_plot(cbind(R_XY, R_YZ), log = TRUE, col = "#B63679", pch = 16)
 ```
 
-or the **Hsu diagram**[^6] using the natural octahedral unit strain[^7]
-($\bar{\epsilon}_s$) and the Lode parameter[^8] ($\nu$):
+or in the **Hsu diagram**[^6] using the natural octahedral unit
+strain[^7] ($\bar{\epsilon}_s$) and the Lode parameter[^8] ($\nu$):
 
 [^6]: Hsu, T. C. (1966). The characteristics of coaxial and non-coaxial
     strain paths. Journal of Strain Analysis, 1(3), 216–222.
@@ -117,26 +130,28 @@ or the **Hsu diagram**[^6] using the natural octahedral unit strain[^7]
     McGraw-Hill.
 
 [^8]: Lode, W. (1926). Versuche über den Einfluß der mittleren
-    Hauptspannung auf das Fließen der Metalle Eisen. Kupfer und Nickel.
-    Zeitschrift Für Physik, 36(11–12), 913–939.
+    Hauptspannung auf das Fließen der Metalle Eisen, Kupfer und Nickel.
+    Zeitschrift für Physik, 36(11–12), 913–939.
     <https://doi.org/10.1007/BF01400222>
 
-```{r hsu}
-#| fig.alt: >
-#|   Hsu diagram
+```{r}
+#| label: hsu
+#| fig-alt: >
+#|   Hsu diagram of natural octahedral unit strain versus Lode parameter
 hsu_plot(cbind(R_XY, R_YZ), col = "#B63679", pch = 16)
 ```
 
 ## Vorticity analysis
 
-The **rigid grain net** after (Jessup et al. 2007)[^9] plots the
-distribution the strain ratio (`R`) of orientation (`phi`) of
-porphyroclast over the theoretical distribution of tailless clasts. The
-plot estimates the critical threshold `Rc` marking the transition
-between the stable-sink position and infinitely rotating porphyroclasts.
-This threshold can be interpreted as the the **mean kinematic vorticity
-number**. Here the `Rc` is estimated using the bootstrap method
-described in Stephan et al. (2025)[^10].
+The **Rigid Grain Net** (Jessup et al., 2007)[^9] plots the aspect
+ratio (`R`) of porphyroclasts against their long-axis orientation with
+respect to the foliation (`phi`), on top of the theoretical fields of
+stable-sink and continuously rotating rigid clasts. The plot estimates
+the critical aspect ratio $R_c$ that marks the transition between clasts
+that reach a stable-sink position and clasts that rotate indefinitely.
+The **mean kinematic vorticity number** follows from this threshold as
+$W_m = (R_c^2 - 1)/(R_c^2 + 1)$. Uncertainties for $R_c$ are estimated using the
+bootstrap method described in Stephan et al. (2025)[^10].
 
 [^9]: Jessup, M. J., Law, R. D., & Frassi, C. (2007). The Rigid Grain
     Net (RGN): An alternative method for estimating mean kinematic
@@ -147,13 +162,16 @@ described in Stephan et al. (2025)[^10].
     Creaser, R., & Hollings, P. (2025). Going with the flow — Changes of
     vorticity control gold enrichment in Archean shear zones
     (Shebandowan Greenstone Belt, Superior Province, Canada). Journal of
-    Structural Geology, 201(September), 105542.
+    Structural Geology, 201, 105542.
     <https://doi.org/10.1016/j.jsg.2025.105542>
 
-```{r vorticity, message=FALSE, warning=FALSE}
-#| fig.alt: >
-#|   Rigid grain net
-
+```{r}
+#| label: vorticity
+#| message: false
+#| warning: false
+#| fig-alt: >
+#|   Rigid grain net showing porphyroclast aspect ratio versus orientation,
+#|   colored by clast area
 data(shebandowan)
 set.seed(20250411)
 

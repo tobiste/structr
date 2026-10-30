@@ -1,36 +1,39 @@
 ---
 title: "Mohr Circle"
 author: "Tobias Stephan"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+date: today
 description: >
   Learn how to calculate stress components and plot the Mohr circle diagram.
+format: html
 vignette: >
   %\VignetteIndexEntry{Mohr Circle}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
-editor_options: 
-  markdown: 
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: "#>"
+editor:
+  markdown:
     wrap: 72
 ---
 
-This tutorial demonstrates how to use the {structr} package to perform basic stress calculations and visualize the stress state using a Mohr circle.
+This tutorial demonstrates how to use the {structr} package to perform
+basic stress calculations and visualize the stress state using a Mohr
+circle.
 
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>"
-)
-```
-
-```{r setup, warning=FALSE, message=FALSE}
+```{r}
+#| label: setup
+#| warning: false
+#| message: false
 library(structr)
 library(ggplot2)
 ```
 
 Some basic calculations:
 
-```{r stress}
+```{r}
+#| label: stress
 # Define the magnitudes of the principal stress axes
 s1 <- 66 # maximum stress, sigma 1
 s2 <- 30 # intermediate stress, sigma 2
@@ -39,8 +42,11 @@ s3 <- 20 # minimum stress, sigma 3
 # Differential stress
 diff_stress(s1, s3)
 
-# Mean stress
+# Mean stress in 2D, i.e. the centre of the sigma1-sigma3 Mohr circle
 mean_stress(s1, s3)
+
+# Mean stress in 3D (includes sigma 2)
+(s1 + s2 + s3) / 3
 
 # Shear stress at given angle
 shear_stress(s1, s3, theta = 35)
@@ -54,8 +60,11 @@ fracture_angle(mu = 0.6)
 
 To plot the Mohr circle, you can either use base R plotting:
 
-```{r mohr1, message=FALSE, warning=FALSE}
-#| fig.alt: >
+```{r}
+#| label: mohr1
+#| message: false
+#| warning: false
+#| fig-alt: >
 #|   Diagram showing the stress state at some point including the Mohr circle
 Mohr_plot(
   sigma1 = s1, sigma2 = s2, sigma3 = s3,
@@ -69,12 +78,16 @@ failure_criterion(col = "#B63679", lwd = 2)
 
 or ggplot-style plotting:
 
-```{r mohr2, message=FALSE, warning=FALSE}
-#| fig.alt: >
-#|   Diagram showing the stress state at some point including the Mohr circle
+```{r}
+#| label: mohr2
+#| message: false
+#| warning: false
+#| fig-alt: >
+#|   Diagram showing the stress state at some point including the upper half
+#|   of the Mohr circle
 ggMohr(sigma1 = s1, sigma2 = s2, sigma3 = s3, unit = "MPa") +
 
-  # Only show upper half of MohR Circle
+  # Only show upper half of Mohr circle
   coord_equal(ylim = c(0, NA), expand = FALSE) +
 
   # select plotting theme

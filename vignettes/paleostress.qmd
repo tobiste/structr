@@ -1,30 +1,33 @@
 ---
 title: "Faults and Paleostress"
 author: "Tobias Stephan"
-date: "`r Sys.Date()`"
-output: rmarkdown::html_vignette
+date: today
 description: >
   Introduction into the Fault object, and how to perform stress inversions
+format: html
 vignette: >
   %\VignetteIndexEntry{Faults and Paleostress}
-  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEngine{quarto::html}
   %\VignetteEncoding{UTF-8}
-editor_options: 
-  markdown: 
+editor:
+  markdown:
     wrap: 72
 ---
 
 This tutorial demonstrates the `"Fault"` object. It also shows how you
 can extract paleo-stress directions from fault slip data.
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
+```{r}
+#| include: false
 set.seed(20250411)
 ```
 
 ## Fault objects
 
-```{r load, warning=FALSE, message=FALSE}
+```{r}
+#| label: load
+#| warning: false
+#| message: false
 # load the structr package
 library("structr")
 
@@ -39,24 +42,29 @@ A fault is given by the orientation of its plane (dip direction and dip
 angle), the orientation of the slip (e.g. measured from striae, given in
 azimuth and plunge angles), and the sense of displacement:
 
-```{r faults_import}
+```{r}
+#| label: faults_import
 my_fault <- Fault(120, 50, 60, 110, sense = -1)
 ```
 
-> Sense of fault displacement is 1 or -1 for normal or thrust offset,
-> respectively.
+::: {.callout-note}
+Sense of fault displacement is 1 or -1 for normal or thrust offset,
+respectively.
+:::
 
 Rake of the fault, i.e. the angle between fault slip vector and fault
-strike:
+strike, measured clockwise in the fault plane:
 
-```{r faults_rake1}
+```{r}
+#| label: faults_rake1
 Fault_rake(my_fault)
 ```
 
 Define a fault by just knowing the orientation of the fault plane, the
-sense, and the rake
+sense, and the rake:
 
-```{r faults_rake2}
+```{r}
+#| label: faults_rake2
 # 1. Define a plane through dip direction, dip angle
 fault_plane <- Plane(c(120, 120, 100), c(60, 60, 50))
 
@@ -65,25 +73,30 @@ Fault_from_rake(fault_plane, rake = c(84.7202, -10, 30))
 ```
 
 Often, measured orientation angles can be (slightly) imprecise and
-subjected to some random noise. Thus the slip vector will not lie
-(perfectly) on the fault plane, judging by the measurements. To correct
-the measurements so that this will not be the case:
+subject to some random noise. Thus, judging by the measurements, the
+slip vector will not lie (perfectly) on the fault plane. The misfit can
+be quantified and the measurements corrected so that the line lies
+exactly in the plane:
 
-```{r faults_correct}
-p <- Pair(120, 60, 110, 58)
+```{r}
+#| label: faults_correct
+p <- structr::Pair(120, 60, 110, 58)
 ```
 
-```{r faults_correct2}
+```{r}
+#| label: faults_correct2
 misfit_pair(p)
 ```
 
-```{r faults_correct3}
+```{r}
+#| label: faults_correct3
 correct_pair(p)
 ```
 
-> A `"Pair"` object is a container of associated plane and line
-> measurements. Basically like a fault without the sense of
-> displacement.
+::: {.callout-note}
+A `"Pair"` object is a container of associated plane and line
+measurements. Basically like a fault without the sense of displacement.
+:::
 
 ## Plotting faults
 
@@ -102,19 +115,15 @@ can be visualized, namely the Angelier and the Hoeppener plot.
     direction of the hanging wall. Useful in case of large or
     heterogeneous datasets.
 
+First we load some example data (here the data from Angelier,
+1990)[^1]
 
-First we load some example data (here the data from Angelier, 1990)[^7]
-
-[^7]: Angelier, J. (1990). Inversion of field data in fault tectonics to
-    obtain the regional stress—III. A new rapid direct inversion method
-    by analytical means. Geophys. J. Int, 103, 363–376.
-    <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
-
-```{r faults_plotting}
-#| fig.alt: >
-#|   Diagram showing some fault data in equa-area projection using the Angelier
-#|   and Hoeppener representation of fault-slip
-# angelier1990 is a example fault dataset:
+```{r}
+#| label: faults_plotting
+#| fig-alt: >
+#|   Diagram showing some fault data in equal-area projection using the
+#|   Angelier and Hoeppener representation of fault-slip
+# angelier1990 is an example fault dataset:
 data("angelier1990")
 fault_data <- angelier1990$TYM
 
@@ -132,49 +141,53 @@ hoeppener(fault_data, col = fault_cols, points = FALSE)
 ## Fault stress analysis
 
 The *Wallace-Bott hypothesis* states that fault slip occurs parallel to
-the maximum shear stress. This allows to reconstruct stress axes using
-fault-slip data. {structr} offers several techniques to calculate the
-orientation of principal stress axes, the simple P-T method, and a
-fault-slip inversion technique.
+the resolved shear stress (shear traction) on the fault plane. This
+allows to reconstruct stress axes using fault-slip data. {structr}
+offers several techniques to calculate the orientation of principal
+stress axes, the simple P-T method, and fault-slip inversion
+techniques.
 
 ### P-T method
 
-This simple technique calculates PT-axes, kinematic plane (M), and
-dihedra separation plane (d).
+This simple technique calculates the P- and T-axes, the kinematic
+(movement) plane (M), and the dihedra separation plane (d).
 
-First we load some example data (here the first three faults from the
-TYM dataset by from Angelier, 1990)[^1]
+First we take some example data (here three randomly sampled faults
+from the TYM dataset of Angelier, 1990)[^1]
 
 [^1]: Angelier, J. (1990). Inversion of field data in fault tectonics to
     obtain the regional stress—III. A new rapid direct inversion method
-    by analytical means. Geophys. J. Int, 103, 363–376.
-    <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
+    by analytical means. Geophysical Journal International, 103,
+    363–376. <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
 
-```{r faults_pt1}
+```{r}
+#| label: faults_pt1
 fault_data_subset <- sample_spherical(fault_data, 3)
 
 print(fault_data_subset)
 ```
 
-```{r faults_pt2}
+```{r}
+#| label: faults_pt2
 fault_data_subset_PT <- Fault_PT(fault_data_subset)
-print(fault_data_subset)
+print(fault_data_subset_PT)
 ```
 
-Plot the results
+Plot the results:
 
-```{r faults_pt_plot}
-#| fig.alt: >
+```{r}
+#| label: faults_pt_plot
+#| fig-alt: >
 #|   Diagram showing some fault-slip data and the PT axes in a stereoplot
 stereoplot(title = "PT results")
 fault_plot(fault_data_subset)
 points(fault_data_subset_PT$p, col = "#B63679FF", pch = 16)
 points(fault_data_subset_PT$t, col = "#FEC287FF", pch = 18)
-lines(fault_data_subset_PT$t, lty = 2, col = "grey40")
+lines(fault_data_subset_PT$m, lty = 2, col = "grey40")
 lines(fault_data_subset_PT$d, lty = 3, col = "grey80")
 
 legend("right",
-  legend = c("P-axis", "T-axis", "M-plane", "Diheadra"),
+  legend = c("P-axis", "T-axis", "M-plane", "Dihedra plane"),
   col = c("#B63679FF", "#FEC287FF", "grey40", "grey80"),
   pch = c(16, 18, NA, NA), lty = c(NA, NA, 2, 3)
 )
@@ -184,16 +197,20 @@ legend("right",
 
 Our goal is to find the single uniform stress tensor that most likely
 caused the faulting events. With only slip data to constrain the stress
-tensor the isotropic component can not be determined, unless assumptions
-about the fracture criterion are made. Hence inversion will be for the
-deviatoric stress tensor only. A single fault can not completely
-constrain the deviatoric stress tensor a, therefore it is necessary to
-simultaneously solve for a number of faults, so that a single a that
-best satisfies all of the faults is found.
+tensor, the isotropic component and the absolute magnitude of the
+stresses cannot be determined, unless assumptions about the fracture
+criterion are made. Hence, the inversion is for the *reduced* stress
+tensor only, i.e. the orientation of the principal stress axes and the
+stress ratio. A single fault cannot completely constrain this tensor;
+therefore it is necessary to simultaneously solve for a number of
+faults, so that a single tensor that best satisfies all of the faults is
+found.
 
-> This is equivalent to assuming that the stress field is a constant
-> tensor within the region being studied for the duration of the
-> faulting event.
+::: {.callout-note}
+This is equivalent to assuming that the stress field is a constant
+tensor within the region being studied for the duration of the faulting
+event.
+:::
 
 {structr} provides four numerical solutions to determine the
 orientation of the principal stresses from fault slip data.
@@ -201,7 +218,7 @@ orientation of the principal stresses from fault slip data.
 -   *Michael (1984)*: Direct inversion method[^2] which uses
     bootstrapping for confidence intervals of the stress estimates.
 
--   *Angelier (1990)*: Direct inversion method[^3] coupled with the
+-   *Angelier (1990)*: Direct inversion method[^1] coupled with the
     iterative optimization after Mostafa (2005)[^4] to find the best fit
     reduced stress tensor.
 
@@ -214,11 +231,6 @@ orientation of the principal stresses from fault slip data.
 [^2]: Michael, A. J. (1984). Determination of stress from slip data:
     Faults and folds. Journal of Geophysical Research: Solid Earth,
     89(B13), 11517–11526. <https://doi.org/10.1029/JB089iB13p11517>
-
-[^3]: Angelier, J. (1990). Inversion of field data in fault tectonics to
-    obtain the regional stress—III. A new rapid direct inversion method
-    by analytical means. Geophys. J. Int, 103, 363–376.
-    <https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
 
 [^4]: Mostafa, M. E. (2005). Iterative direct inversion: An exact
     complementary solution for inverting fault-slip data to obtain
@@ -236,9 +248,9 @@ orientation of the principal stresses from fault slip data.
     Structural Geology, 51, 3–13.
     <https://doi.org/10.1016/j.jsg.2013.03.014>
 
-
-```{r slip_inversion1}
-#| fig.alt: >
+```{r}
+#| label: slip_inversion1
+#| fig-alt: >
 #|   Diagram showing some fault-slip data in a stereoplot
 stereoplot(title = "Test data")
 fault_plot(fault_data, col = "grey30")
@@ -246,11 +258,12 @@ fault_plot(fault_data, col = "grey30")
 
 The stress inversion using the Michael method with 10 bootstraps:
 
-```{r slip_inversion_check}
+```{r}
+#| label: slip_inversion_check
 inv_res <- slip_inversion(fault_data, method = "michael", n_iter = 10)
 
 # Average alpha angle
-inv_res$misfit$alpha
+inv_res$misfit$alpha_mean
 
 # Average resolved shear stress
 inv_res$tau_mean
@@ -258,20 +271,21 @@ inv_res$tau_mean
 
 To check the accuracy of the solution, you can evaluate
 
--   the average angle &beta; between the tangential traction predicted by the
-    best stress tensor and the slip vector on each plane (ideally close
-    to 0), and
+-   the average angle &alpha; between the tangential traction predicted
+    by the best stress tensor and the slip vector on each plane (ideally
+    close to 0),
 -   the average resolved shear stress on each plane (should be close to
-    1).
+    1), and
 -   the average "Ratio Upsilon" (RUP) parameter after Angelier (1990),
-    ranging from 0 (perfect fit) to 200% (misfit)
+    ranging from 0 (perfect fit) to 200% (misfit).
 
-To visualizing the orientation of the principal stresses and the
-confidence region of the axes, you may use the [stereoplot()] functions
-from {structr}
+To visualize the orientation of the principal stresses and the
+confidence region of the axes, you may use the `stereoplot()` functions
+from {structr}:
 
-```{r slip_inversion_plot}
-#| fig.alt: >
+```{r}
+#| label: slip_inversion_plot
+#| fig-alt: >
 #|   Diagram showing principal stress vector results in a stereoplot
 cols <- c("#000004FF", "#B63679FF", "#FEC287FF")
 
@@ -291,33 +305,34 @@ legend("topleft",
 ```
 
 The stress shape ratio after Angelier (1979)[^8]:
-$\Phi  = (\sigma_2 - \sigma_3)/(\sigma_1 - \sigma_3)$
+$\Phi = (\sigma_2 - \sigma_3)/(\sigma_1 - \sigma_3)$
 
 [^8]: Angelier, J. (1979). Determination of the mean principal
     directions of stresses for a given fault population. Tectonophysics,
-    56(3–4), T17–T26.
-    [https://doi.org/10.1016/0040-1951(79)90081-7](https://doi.org/10.1016/0040-1951(79)90081-7){.uri}
+    56(3–4), T17–T26. <https://doi.org/10.1016/0040-1951(79)90081-7>
 
-```{r slip_inversion_phi}
+```{r}
+#| label: slip_inversion_phi
 inv_res$stress_shape$phi
 
 # 95% confidence interval
 inv_res$phi_CI
 ```
 
-The angle &alpha; is the angle between the tangential traction predicted by
-the best stress tensor and the slip vector. This deviation can be
-visualized in the stereoplot:
+The angle &alpha; is the angle between the tangential traction
+predicted by the best stress tensor and the slip vector. This deviation
+can be visualized in the stereoplot:
 
-```{r slip_inversion_alpha}
-#| fig.alt: >
-#|   Diagram showing deviation of the best-fit principal stress tensor in a
-#|   stereoplot
+```{r}
+#| label: slip_inversion_alpha
+#| fig-alt: >
+#|   Diagram showing the deviation between observed and predicted slip of
+#|   the best-fit stress tensor in a stereoplot
 alpha <- inv_res$misfit$alpha
 
 stereoplot(
   title = "Deviation",
-  sub = bquote(bar(alpha) == .(round(inv_res$alpha)) * degree)
+  sub = bquote(bar(alpha) == .(round(inv_res$misfit$alpha_mean)) * degree)
 )
 
 fault_plot(fault_data, col = assign_col(alpha))
@@ -327,12 +342,12 @@ legend_col(
 )
 ```
 
-```{r slip_inversion_mohr}
-#| fig.alt: >
+```{r}
+#| label: slip_inversion_mohr
+#| fig-alt: >
 #|   Diagram showing the Mohr circle, and the normal and shear stresses for the
 #|   slip inversion result
 stress_components <- sigma2shearnorm(inv_res$sigma, fault_data, friction = 0.6)
-
 
 Mohr_plot(
   sigma1 = inv_res$principal_vals[1],
@@ -346,7 +361,17 @@ points(stress_components[, "normal"], abs(stress_components[, "shear"]),
 ```
 
 ### Focal mechanism plot
-```{r fms}
+
+The "beach ball" below shows the mechanism of the fault plane that is
+optimally oriented for slip in the inverted stress field, assuming a
+friction coefficient of 0.6:
+
+```{r}
+#| label: fms
+#| fig-alt: >
+#|   Focal mechanism diagram derived from the inverted stress tensor, with the
+#|   fault data in Hoeppener representation and the principal stress
+#|   confidence regions
 stereoplot(title = "Focal Mechanism Solution")
 stereo_fms(inv_res$sigma, friction = 0.6)
 hoeppener(fault_data, col = "grey30")
@@ -355,23 +380,23 @@ stereo_confidence(inv_res$principal_axes_CI$sigma2, col = cols[2])
 stereo_confidence(inv_res$principal_axes_CI$sigma3, col = cols[3])
 ```
 
-
 ### Maximum horizontal stress
 
 The orientation of the maximum horizontal stress ($\sigma_\text{Hmax}$)
-can be calculated from the stress tensor the the orientation of the
-principal stress ($\sigma_1$, $\sigma_2$, $\sigma_3$) axes their their
-relative magnitudes ($R = (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3)$)
-[^9].
+can be calculated from the orientations of the principal stress axes
+($\sigma_1$, $\sigma_2$, $\sigma_3$) and their relative magnitudes
+$R = (\sigma_1 - \sigma_2)/(\sigma_1 - \sigma_3)$ [^9]. Note that
+$R = 1 - \Phi$.
 
-[^9]: Lund & Townend (2007): Calculating horizontal stress orientations
-    with full or partial knowledge of the tectonic stress tensor.
-    *Geophys. J. Int.*, 170, 1328—1335. doi:
-    10.1111/j.1365-246X.2007.03468.x
+[^9]: Lund, B., & Townend, J. (2007). Calculating horizontal stress
+    orientations with full or partial knowledge of the tectonic stress
+    tensor. Geophysical Journal International, 170(3), 1328–1335.
+    <https://doi.org/10.1111/j.1365-246X.2007.03468.x>
 
-First, we define the orientation of the principle stress axes:
+First, we define the orientation of the principal stress axes:
 
-```{r lund0}
+```{r}
+#| label: lund0
 S1 <- Line(250.89, 70.07)
 S3 <- Line(103.01, 17.07)
 ```
@@ -379,19 +404,22 @@ S3 <- Line(103.01, 17.07)
 To get $\sigma_2$, which is perpendicular to $\sigma_1$ and $\sigma_3$,
 we calculate the cross-product of the two vectors:
 
-```{r lund01}
+```{r}
+#| label: lund01
 S2 <- crossprod(S3, S1)
 ```
 
 The azimuth of $\sigma_\text{Hmax}$ for a given stress ratio `R = 1`:
 
-```{r lund1}
+```{r}
+#| label: lund1
 SH(S1, S2, S3, R = 1) # in degrees
 ```
 
-For a several stress ratios:
+For several stress ratios:
 
-```{r lund2}
+```{r}
+#| label: lund2
 R <- seq(0, 1, .1)
 cbind(R, SH = SH(S1, S2, S3, R = R))
 ```
@@ -399,7 +427,8 @@ cbind(R, SH = SH(S1, S2, S3, R = R))
 The $\sigma_\text{Hmax}$ direction for our slip inversion result from
 above:
 
-```{r lund_3}
+```{r}
+#| label: lund_3
 inv_shmax <- SH(
   S1 = inv_res$principal_axes[1, ],
   S2 = inv_res$principal_axes[2, ],
@@ -409,9 +438,14 @@ inv_shmax <- SH(
 print(inv_shmax)
 ```
 
-This (or any) direction can be added as compression arrows to a stereoplot using [stereo_shmax()]:
+This (or any) direction can be added as compression arrows to a
+stereoplot using `stereo_shmax()`:
 
-```{r stereo_shmax}
+```{r}
+#| label: stereo_shmax
+#| fig-alt: >
+#|   Stereoplot showing the principal stress confidence regions and the
+#|   maximum horizontal stress direction as compression arrows
 stereoplot(title = "Stress inversion")
 fault_plot(fault_data, col = "grey75")
 stereo_confidence(inv_res$principal_axes_CI$sigma1, col = cols[1])
@@ -424,38 +458,3 @@ text(inv_res$principal_axes,
 
 stereo_shmax(inv_shmax)
 ```
-
-## References
-
-Angelier, J. (1979). Determination of the mean principal directions of
-stresses for a given fault population. Tectonophysics, 56(3–4), T17–T26.
-[https://doi.org/10.1016/0040-1951(79)90081-7](https://doi.org/10.1016/0040-1951(79)90081-7){.uri}
-
-Angelier, J. (1990). Inversion of field data in fault tectonics to
-obtain the regional stress—III. A new rapid direct inversion method by
-analytical means. Geophys. J. Int, 103, 363–376.
-<https://doi.org/10.1111/j.1365-246X.1990.tb01777.x>
-
-Hansen, J. A. (2013). Direct inversion of stress, strain or strain rate
-including vorticity: A linear method of homogenous fault-slip data
-inversion independent of adopted hypothesis. Journal of Structural
-Geology, 51, 3–13. <https://doi.org/10.1016/j.jsg.2013.03.014>
-
-Lund, B., & Townend, J. (2007). Calculating horizontal stress
-orientations with full or partial knowledge of the tectonic stress
-tensor. Geophysical Journal International, 170(3), 1328–1335.
-<https://doi.org/10.1111/j.1365-246X.2007.03468.x>
-
-Michael, A. J. (1984). Determination of stress from slip data: Faults
-and folds. Journal of Geophysical Research: Solid Earth, 89(B13),
-11517–11526. <https://doi.org/10.1029/JB089iB13p11517>
-
-Mostafa, M. E. (2005). Iterative direct inversion: An exact
-complementary solution for inverting fault-slip data to obtain
-palaeostresses. Computers & Geosciences, 31(8), 1059–1070.
-<https://doi.org/10.1016/j.cageo.2005.02.012>
-
-Yamaji, A., & Sato, K. (2006). Distances for the solutions of stress
-tensor inversion in relation to misfit angles that accompany the
-solutions. Geophysical Journal International, 167(2), 933–942.
-<https://doi.org/10.1111/j.1365-246X.2006.03188.x>

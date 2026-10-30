@@ -15,9 +15,9 @@ diff_stress(sigma1, sigma3)
 
 mean_stress(sigma1, sigma3)
 
-shear_stress(sigma1, sigma3, theta)
+shear_stress(sigma1, sigma3, theta = 90 - alpha, alpha = 90 - theta)
 
-normal_stress(sigma1, sigma3, theta)
+normal_stress(sigma1, sigma3, theta = 90 - alpha, alpha = 90 - theta)
 
 fracture_angle(mu)
 
@@ -28,7 +28,9 @@ dilatation_tendency(sigma1, sigma3, sigma_n)
 \arguments{
 \item{sigma1, sigma3}{numeric. Magnitudes of maximum and minimum principal stress (\eqn{\sigma_1} and \eqn{\sigma_3}), respectively.}
 
-\item{theta}{numeric. Angle \eqn{\theta} between fracture and \eqn{\sigma_1}.}
+\item{theta}{numeric. Angle \eqn{\theta} between pole to the fracture and the largest stress \eqn{\sigma_1}.}
+
+\item{alpha}{numeric. Angle \eqn{\alpha} between fracture and \eqn{\sigma_1}.}
 
 \item{mu}{numeric. Coefficient of internal friction \eqn{\mu}.}
 

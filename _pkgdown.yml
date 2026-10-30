@@ -16,32 +16,32 @@ articles:
 - title: Basics and Data Imports
   navbar: "Basics and Import"
   contents:
-  - Import
-  - Data_types
-  - Basics
-  - Oriented_Drill_Cores
+  - import
+  - data_types
+  - vector_algebra
+  - drillcores
 
 - title: Plotting
   navbar: "Plotting"
   contents:
-  - Plots
-  - Plots_ggplot
+  - orientation_plots
+  - ggplot
 
 - title: Statistics
   navbar: "Statistics"
   contents:
-  - Statistics
-  - Regression
+  - statistics
+  - regression
 
 - title: Faults and Stress
   navbar: "Faults and Stress"
   contents:
-  - Faults
-  - Fault_offsets
-  - Mohr_Circle
+  - paleostress
+  - fault_offsets
+  - mohr
 
 - title: Other
   navbar: "Other"
   contents:
-  - Strain_Analysis
+  - strain
   - deformation

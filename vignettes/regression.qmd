@@ -1,0 +1,234 @@
+---
+title: "Regression on the Sphere"
+author: "Tobias Stephan"
+date: today
+description: >
+  Learn how to use geodesic regression to find the best-fit small or great circle.
+format: html
+vignette: >
+  %\VignetteIndexEntry{Regression on the Sphere}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: "#>"
+editor:
+  markdown:
+    wrap: 72
+---
+
+This tutorial demonstrates geodesic regression, a method to determine
+statistically the best-fit great- or small-circle for a set of vectors.
+
+```{r}
+#| include: false
+set.seed(20250411)
+```
+
+```{r}
+#| label: setup
+#| warning: false
+#| message: false
+library(structr)
+```
+
+Import some example data of some folded fabric elements:
+
+```{r}
+#| label: data
+#| warning: false
+#| message: false
+data("gray_example")
+gray_example
+```
+
+Show data in equal-area projection:
+
+```{r}
+#| label: plot_data
+#| warning: false
+#| message: false
+#| fig-alt: >
+#|   Diagram showing poles to cleavage and bedding in a stereoplot
+cleavage <- gray_example[1:8, ]
+bedding <- gray_example[9:16, ]
+
+stereoplot()
+points(cleavage, col = "#1D1147")
+points(bedding, col = "#E65164", pch = 4)
+
+legend("topright", col = c("#1D1147", "#E65164"), pch = c(1, 4), legend = c("Poles to cleavage", "Poles to bedding"), bg = "white")
+```
+
+The diagram suggests that both the cleavage and the bedding poles are
+distributed along great circles or small circles. To find the
+orientation of the axes of these circles, and to decide whether the
+poles better fit a great- or a small-circle solution, we'll perform a
+(geodesic) regression. For poles to folded bedding, the axis of a
+best-fit great circle is the fold axis of a cylindrical fold
+(π-diagram), whereas a small-circle arrangement is expected for conical
+folds or fanning cleavage.
+
+## Best-fit great circles
+
+First, we determine the best-fit great circle for the two fabric
+elements. The great-circle regression is done via
+`regression_greatcircle()`, which returns a list containing the axis of
+the great circle:
+
+```{r}
+#| label: calc_greatcircle
+#| warning: false
+#| message: false
+cleavage_gc <- regression_greatcircle(cleavage)
+bedding_gc <- regression_greatcircle(bedding)
+
+# The axis of the great circles:
+cleavage_gc$vec
+bedding_gc$vec
+```
+
+The algorithm minimizes the sum of squares of the residuals, which are
+the angular distances of the data vectors from the best-fit circle
+(i.e. the deviation of each vector's angle to the axis from 90° for a
+great circle, or from the cone angle for a small circle). We can check
+whether the optimization successfully converged to a minimum, and
+assess the quality of the fit using the R<sup>2</sup>:
+
+```{r}
+#| label: check_greatcircle
+#| warning: false
+#| message: false
+# Check
+cleavage_gc$convergence == 0 & cleavage_gc$min_eigenvalue > 0
+bedding_gc$convergence == 0 & bedding_gc$min_eigenvalue > 0
+
+# R^2 value
+cleavage_gc$r_squared
+bedding_gc$r_squared
+```
+
+Plot the results:
+
+```{r}
+#| label: plot_greatcircle
+#| warning: false
+#| message: false
+#| fig-alt: >
+#|   Diagram showing the great-circle regression result in a stereoplot
+stereoplot()
+lines(cleavage_gc$vec, col = "#000004FF")
+lines(bedding_gc$vec, col = "#B63679")
+points(cleavage, col = "#1D1147")
+points(bedding, col = "#E65164", pch = 4)
+
+legend("bottomright", col = c("#000004FF", "#B63679"), lty = c(1, 1), legend = c("Cleavage best great circle", "Bedding best great circle"), bg = "white")
+```
+
+### Summary
+
+The regression was successful. However, the R<sup>2</sup> values
+indicate a good fit for the bedding, but a rather poor fit for the
+cleavage.
+
+## Best-fit small circles
+
+```{r}
+#| label: calc_smallcircle
+#| warning: false
+#| message: false
+cleavage_sc <- regression_smallcircle(cleavage)
+bedding_sc <- regression_smallcircle(bedding)
+
+# Half-apical angle of small-circle cone (in degrees)
+cleavage_sc$cone
+bedding_sc$cone
+```
+
+Check the optimization convergence and the fit:
+
+```{r}
+#| label: check_smallcircle
+#| warning: false
+#| message: false
+# Check
+cleavage_sc$convergence == 0 & cleavage_sc$min_eigenvalue > 0
+bedding_sc$convergence == 0 & bedding_sc$min_eigenvalue > 0
+
+# R^2 value
+cleavage_sc$r_squared
+bedding_sc$r_squared
+```
+
+Plot the results:
+
+```{r}
+#| label: plot_smallcircle
+#| warning: false
+#| message: false
+#| fig-alt: >
+#|   Diagram showing the small-circle regression result in a stereoplot
+stereoplot()
+lines(cleavage_sc$vec, cleavage_sc$cone, col = "#000004FF")
+lines(bedding_sc$vec, bedding_sc$cone, col = "#B63679")
+points(cleavage, col = "#1D1147")
+points(bedding, col = "#E65164", pch = 4)
+
+legend("bottomright", col = c("#000004FF", "#B63679"), lty = c(1, 1), legend = c("Cleavage best small circle", "Bedding best small circle"), bg = "white")
+```
+
+### Summary
+
+The regression was successful. The R<sup>2</sup> values indicate a
+better fit for the cleavage, but a slightly poorer fit for the bedding.
+Hence, the poles to bedding seem to be aligned along a great circle,
+while the poles to cleavage better fit a small-circle arrangement.
+
+## Alternative
+
+The Gray et al. (1980) algorithm is an alternative method for small-
+and great-circle fits using `regression_smallcircle_gray()` or
+`regression_greatcircle_gray()`:
+
+```{r}
+#| label: gray1
+cleavage_sc2 <- regression_smallcircle_gray(cleavage)
+bedding_sc2 <- regression_smallcircle_gray(bedding)
+
+# Half-apical angle of small-circle cone (in degrees)
+cleavage_sc2$cone
+bedding_sc2$cone
+```
+
+`regression_gray(x, out)` is a convenience function where the `out`
+argument specifies the type of regression (`"small"` or `"great"`
+circle). If `out = "both"`, the two solutions are compared by testing
+whether the small-circle solution fits better than the great-circle
+solution:
+
+```{r}
+#| label: gray2
+cleavage_sc3 <- regression_gray(cleavage, out = "both")
+bedding_sc3 <- regression_gray(bedding, out = "both")
+
+cleavage_sc3$comparison
+bedding_sc3$comparison
+```
+
+## References
+
+Bachmann, F., Jupp, P. E., & Schaeben, H. (2014). Estimating the number
+and locations of Euler poles. International Journal on Geomathematics,
+5(2), 289–301. <https://doi.org/10.1007/s13137-014-0064-2>
+
+Davis, J. R., & Titus, S. J. (2017). Modern methods of analysis for
+three-dimensional orientational data. Journal of Structural Geology, 96,
+65–89. <https://doi.org/10.1016/j.jsg.2017.01.002>
+
+Gray, N. H., Geiser, P. A., & Geiser, J. R. (1980). On the least-squares
+fit of small and great circles to spherically projected orientation
+data. Journal of the International Association for Mathematical
+Geology, 12(3), 173–184. <https://doi.org/10.1007/BF01091203>
+
+Ramsay, J. G. (1967). Folding and Fracturing of Rocks. McGraw-Hill.

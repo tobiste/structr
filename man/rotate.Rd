@@ -27,7 +27,8 @@ where the rows are the observations and the columns are the coordinates.}
 
 \item{rotaxis}{Axis of rotation given as object of class \code{"Vec3"}, \code{"Line"}, \code{"Ray"}, or \code{"Plane"}.}
 
-\item{rotangle}{Angle of rotation in radians for \code{"Vec3"} objects and in degrees for \code{"Line"}, \code{"Ray"} and \code{"Plane"} objects.}
+\item{rotangle}{Angle of rotation in radians for \code{"Vec3"} objects and in degrees for \code{"Line"}, \code{"Ray"} and \code{"Plane"} objects.
+Right-hand-rule convention: rotation is counterclockwise for positive angles.}
 }
 \value{
 objects of same class as \code{x}

@@ -1,0 +1,102 @@
+---
+title: "Oriented Drill Cores"
+author: "Tobias Stephan"
+date: today
+description: >
+  Learn how to deal with drillcore orientations.
+format: html
+vignette: >
+  %\VignetteIndexEntry{Oriented Drill Cores}
+  %\VignetteEngine{quarto::html}
+  %\VignetteEncoding{UTF-8}
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: "#>"
+editor:
+  markdown:
+    wrap: 72
+---
+
+This vignette describes how to convert alpha-beta (and gamma)
+measurements from oriented drill cores into geological planes and lines
+using the `drillcore_transformation()` function of the {structr}
+package.
+
+```{r}
+#| label: setup
+#| warning: false
+#| message: false
+library(structr)
+```
+
+Orientations in drill cores are usually given by &alpha; and &beta;
+angles (lineations on a plane additionally have a &gamma; angle), which
+describe orientations with respect to the drill orientation. To convert
+these angles from the "drill core coordinate reference system" to our
+geographical reference system[^1], you can use the function
+`drillcore_transformation()`.
+
+
+[^1]: Stigsson, M., & Munier, R. (2013). Orientation uncertainty goes
+bananas: An algorithm to visualise the uncertainty sample space on
+stereonets for oriented objects measured in boreholes. Computers &
+Geosciences, 56, 56–61. <https://doi.org/10.1016/j.cageo.2013.03.001>
+
+This function calculates the orientation of a plane or line from
+internal core angles (**&alpha;**, **&beta;**, and **&gamma;**) of
+oriented drill cores, using the azimuth of the drill core axis (`azi`
+in degrees, measured clockwise from North), and the inclination of the
+drill core axis (`inc` in degrees, positive downwards from horizontal).
+
+```{r}
+#| label: data
+azi <- 225
+inc <- 45
+```
+
+::: {.callout-note}
+Note that negative values for the inclination indicate upward
+direction.
+:::
+
+`alpha` and `beta` are the internal core angles alpha and beta,
+respectively, measured in degrees.
+
+```{r}
+#| label: alphabeta
+drillcore_transformation(azi, inc, alpha = 60, beta = 320)
+```
+
+The function returns a spherical object. Since only alpha and beta
+angles are specified, the output is a `"Plane"` object.
+
+For several alpha and beta angles:
+
+```{r}
+#| label: alphabeta2
+planes_AB <- drillcore_transformation(azi, inc, alpha = c(60, 45), beta = c(320, 220))
+```
+
+The orientations can be plotted in an equal-area (lower hemisphere)
+projection:
+
+```{r}
+#| label: stereonet
+#| fig-alt: >
+#|   Diagram showing the orientation of the drill core axis and two planes
+#|   measured in the core in an equal-area projection
+# initialize plot:
+stereoplot()
+
+# plot the core axis (azimuth and inclination)
+points(Line(azi, inc))
+text(Line(azi, inc), lab = "core-axis", pos = 1, font = 3)
+
+# plot the plane orientations as poles...
+points(planes_AB, col = c("#B63679FF", "#FB8861FF"))
+text(planes_AB, lab = c("A", "B"), col = c("#B63679FF", "#FB8861FF"), pos = 1, font = 3)
+
+# ... and as great circles
+lines(planes_AB, col = c("#B63679FF", "#FB8861FF"))
+```

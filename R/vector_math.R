@@ -32,7 +32,6 @@
 #' vector_length(vec1) # length of a vector
 #' crossprod(vec1, vec2) # cross product
 #' dotprod(vec1, vec2) # dot product
-#' angle(vec1, vec2) # angle between vectors
 #' project(vec1, vec2) # projection of a vector
 #' transform_linear(vec1, matrix(runif(9), 3, 3)) # linear transformation
 NULL
@@ -149,35 +148,73 @@ vrotate <- function(x, rotaxis, rotangle) {
 
 
 #' @keywords internal
-vangle <- function(x, y) {
-  acos(vdot(x, y))
+vangle <- function(x, y, axial = FALSE) {
+  if (is.null(dim(x))) x <- matrix(x, ncol = 3)
+  if (is.null(dim(y))) y <- matrix(y, ncol = 3)
+  
+  nx <- nrow(x)
+  ny <- nrow(y)
+  if (nx != ny && nx != 1L && ny != 1L) {
+    stop("x and y must have the same number of rows, or one of them a single row")
+  }
+  
+  x <- x / sqrt(rowSums(x^2))
+  y <- y / sqrt(rowSums(y^2))
+  
+  d <- vdot(x, y)
+  if (axial) d <- abs(d)
+  acos(pmin(pmax(d, -1), 1))
 }
 
-#' @export
-#' @rdname vecmath
-angle <- function(x, y) UseMethod("angle")
+
+#' Angle between vectors
+#'
+#' @inheritParams vecmath
+#' @param axial logical. Whether the angle is measured between axial
+#'   (`Line`, `Plane`) or vectorial (`Ray`, `Vec3`) data. Axial angles are
+#'   folded into the range 0–90&deg;, vectorial angles range from 0–180&deg;. For
+#'   spherical objects, the default (`NULL`) determines this from the classes
+#'   of `x` and `y`: the angle is axial if either is a `Line` or `Plane`.
+#' @param ... not used.
+#'
+#' @return numeric. Angle in degrees if `x` or `y` is of class `Line`, `Ray`,
+#'   or `Plane`, otherwise in radians. For a `Plane`, the angle is measured
+#'   to its pole.
+#'
+#' @name vector-angle
+#'
+#' @examples
+#' angle(Ray(0, 0), Ray(180, 0))
+#' angle(Line(0, 0), Line(180, 0))
+#'
+#' # force vectorial treatment of lines:
+#' angle(Line(0, 0), Line(180, 0), axial = FALSE)
+NULL
 
 #' @export
-angle.default <- function(x, y) vangle(x, y)
+#' @rdname vector-angle
+angle <- function(x, y, ...) UseMethod("angle")
 
 #' @export
-angle.matrix <- function(x, y) vangle(x, y)
-
+angle.default <- function(x, y, axial = FALSE, ...) vangle(x, y, axial = axial)
 
 #' @export
-#' @rdname vecmath
-angle.spherical <- function(x, y) {
-  stopifnot(is.Vec3(x) | is.Line(x) | is.Plane(x) | is.Ray(x))
-  vx <- Vec3(x) |> unclass()
-  vy <- Vec3(y) |> unclass()
-  res <- vangle(vx, vy)
-  res <- unname(res)
+angle.matrix <- function(x, y, axial = FALSE) vangle(x, y, axial = axial)
 
-  if (is.Line(x) | is.Plane(x) | is.Ray(x)) {
-    rad2deg(res)
-  } else {
-    res
+#' @export
+#' @rdname vector-angle
+angle.spherical <- function(x, y, axial = NULL, ...) {
+  is_sph <- function(z) is.Line(z) || is.Plane(z) || is.Ray(z)
+  ok <- function(z) is.Vec3(z) || is_sph(z)
+  stopifnot(ok(x), ok(y))
+  
+  if (is.null(axial)) {
+    axial <- is.Line(x) || is.Plane(x) || is.Line(y) || is.Plane(y)
   }
+  
+  res <- vangle(unclass(Vec3(x)), unclass(Vec3(y)), axial = axial)
+  
+  if (is_sph(x) || is_sph(y)) rad2deg(res) else res
 }
 
 
@@ -336,6 +373,7 @@ v_antipode <- function(x) {
 #' @inheritParams geodesic-mean
 #' @param rotaxis Axis of rotation given as object of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`.
 #' @param rotangle Angle of rotation in radians for `"Vec3"` objects and in degrees for `"Line"`, `"Ray"` and `"Plane"` objects.
+#' Right-hand-rule convention: rotation is counterclockwise for positive angles. 
 #'
 #' @seealso [defgrad_from_axisangle()]; [transform_linear()]
 #'

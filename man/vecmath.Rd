@@ -9,8 +9,6 @@
 \alias{crossprod.Ray}
 \alias{crossprod.Plane}
 \alias{dotprod}
-\alias{angle}
-\alias{angle.spherical}
 \alias{project}
 \alias{project.spherical}
 \alias{reject}
@@ -31,10 +29,6 @@ vector_norm(x)
 \method{crossprod}{Plane}(x, y = NULL, ...)
 
 dotprod(x, y)
-
-angle(x, y)
-
-\method{angle}{spherical}(x, y)
 
 project(x, y)
 
@@ -83,7 +77,6 @@ vec2 <- Vec3(0, 0, 1)
 vector_length(vec1) # length of a vector
 crossprod(vec1, vec2) # cross product
 dotprod(vec1, vec2) # dot product
-angle(vec1, vec2) # angle between vectors
 project(vec1, vec2) # projection of a vector
 transform_linear(vec1, matrix(runif(9), 3, 3)) # linear transformation
 }
