@@ -199,7 +199,7 @@ angle <- function(x, y, axial, ...) UseMethod("angle")
 angle.default <- function(x, y, axial = FALSE, ...) vangle(x, y, axial = axial)
 
 #' @export
-angle.matrix <- function(x, y, axial = FALSE) vangle(x, y, axial = axial)
+angle.matrix <- function(x, y, axial = FALSE, ...) vangle(x, y, axial = axial)
 
 #' @export
 #' @rdname vector-angle
