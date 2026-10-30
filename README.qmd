@@ -1,22 +1,20 @@
 ---
-output: github_document
+format:
+  gfm:
+    wrap: preserve
+fig-width: 7
+fig-dpi: 300
+out-width: "100%"
+knitr:
+  opts_chunk:
+    collapse: true
+    comment: "#>"
+    fig.path: "man/figures/README-"
 ---
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
-
-```{r, include = FALSE}
-knitr::opts_chunk$set(
-  collapse = TRUE,
-  comment = "#>",
-  fig.path = "man/figures/README-",
-  out.width = "100%",
-  dpi = 300,
-  fig.width = 7
-)
-```
+<!-- README.md is generated from README.qmd. Please edit that file -->
 
 # structr <a href="https://tobiste.github.io/structr/"><img src="man/figures/logo.png" alt="structr website" align="right" height="104"/></a>
-
 
 <!-- badges: start -->
 
@@ -28,11 +26,11 @@ knitr::opts_chunk$set(
 
 -   Analysis and visualization of orientation data of structural geology (including, **stereographic projections**, contouring, fabric plots, and statistics),
 
--   Statistical analysis: spherical mean and variance, confidence regions, hypothesis tests, **cluster analysis** of orientation data (`sph_cluster()`, and geodesic regression to find the **best-fitting great circle or small circle** through orientation data (`regression_greatcircle()` and `regression_smallcircle()`),
+-   Statistical analysis: spherical mean and variance, confidence regions, hypothesis tests, **cluster analysis** of orientation data (`sph_cluster()`), and geodesic regression to find the **best-fitting great circle or small circle** through orientation data (`regression_greatcircle()` and `regression_smallcircle()`),
 
--   Reconstruction of fabric orientations in **oriented drillcores** by transforming the &alpha;, &beta;, and &gamma; angles (`drillcore_transformation()`,
+-   Reconstruction of fabric orientations in **oriented drillcores** by transforming the &alpha;, &beta;, and &gamma; angles (`drillcore_transformation()`),
 
-- Deform orientation data using deformation and velocity gradient tensors: `defgrad()` and `velgrad()`
+-   Deform orientation data using deformation and velocity gradient tensors: `defgrad()` and `velgrad()`
 
 -   **Stress analysis**: reconstruction of stress orientation and magnitudes from fault-slip data (direct stress inversion based on **Michael (1984)**, **Angelier (1990)**, **Yamaji & Sato (2006)**, or **Hansen (2013)**: `slip_inversion()`), extracting the **maximum horizontal stress** of a 3D stress tensor (`SH()`), and visualization of magnitudes of stress in the **Mohr circle** (`Mohr_plot()`),
 
@@ -44,8 +42,9 @@ knitr::opts_chunk$set(
 
 -   Direct import of your field data from **StraboSpot** projects (`read_strabo_JSON()`).
 
-> [!CAUTION]
-> The {structr} package is all about structures in 3D. For analyzing orientations in 2D (statistics, rose diagrams, etc.), check out the [tectonicr](https://github.com/tobiste/tectonicr) package!
+::: {.callout-caution}
+The {structr} package is all about structures in 3D. For analyzing orientations in 2D (statistics, rose diagrams, etc.), check out the [tectonicr](https://github.com/tobiste/tectonicr) package!
+:::
 
 ## Installation
 
@@ -62,9 +61,12 @@ The detailed documentation can be found at <https://tobiste.github.io/structr/>
 
 ## Examples
 
-These are some basic examples which shows you what you can do with {structr}. First we load the package
+These are some basic examples which show you what you can do with {structr}. First we load the package
 
-```{r load, warning=FALSE,message=FALSE}
+```{r}
+#| label: load
+#| warning: false
+#| message: false
 library(structr)
 ```
 
@@ -72,7 +74,10 @@ library(structr)
 
 Plot orientation data in equal-area, lower hemisphere projection:
 
-```{r stereo, warning=FALSE,message=FALSE}
+```{r}
+#| label: stereo
+#| warning: false
+#| message: false
 # load some example data
 data("example_planes")
 data("example_lines")
@@ -94,12 +99,14 @@ legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"),
 
 ### Manipulate projection and grid
 
-The default projection is the equal-area projection into the lower hemisphere. Grid lines are disabled by default. You can change these settings either directly in the `stereoplot()` function using the parameters `upper.hem`, `earea`, and `guides`or set global definitions. 
+The default projection is the equal-area projection into the lower hemisphere. Grid lines are disabled by default. You can change these settings either directly in the `stereoplot()` function using the parameters `upper.hem`, `earea`, and `guides` or set global definitions.
 
-> [!TIP]
-> The grid can also be rotated to a specified orientation by setting the parameter `center`. In the example below, we fix the grid in the mean of the example line data:
+::: {.callout-tip}
+The grid can also be rotated to a specified orientation by setting the parameter `center`. In the example below, we fix the grid in the mean of the example line data:
+:::
 
-```{r stereo_grid}
+```{r}
+#| label: stereo_grid
 ml <- sph_mean(example_lines)
 
 stereoplot(
@@ -115,7 +122,10 @@ points(example_planes, col = "#000004", pch = 1, cex = .5)
 
 Density shown by contour lines:
 
-```{r stereo_density_lines, warning=FALSE,message=FALSE}
+```{r}
+#| label: stereo_density_lines
+#| warning: false
+#| message: false
 par(mfrow = c(1, 2))
 contour(example_planes)
 points(example_planes, col = "grey", cex = .5)
@@ -128,7 +138,10 @@ title(main = "Lines")
 
 or as filled contours:
 
-```{r stereo_density_img, warning=FALSE,message=FALSE}
+```{r}
+#| label: stereo_density_img
+#| warning: false
+#| message: false
 par(mfrow = c(1, 2))
 image(example_planes)
 points(example_planes, col = "grey", cex = .5)
@@ -143,7 +156,10 @@ title(main = "Lines")
 
 Calculation of arithmetic mean, geodesic mean, confidence cones and eigenvectors... and plotting them in the equal-area projection:
 
-```{r stats, warning=FALSE,message=FALSE}
+```{r}
+#| label: stats
+#| warning: false
+#| message: false
 planes_mean <- sph_mean(example_planes)
 planes_geomean <- geodesic_mean(example_planes)
 planes_eig <- ot_eigen(example_planes)$vectors
@@ -186,7 +202,10 @@ legend(
 
 The shape parameters of the orientation tensor of the above examples planes and lines can be visualized in two ways:
 
-```{r stereo_ortensor, warning=FALSE,message=FALSE}
+```{r}
+#| label: stereo_ortensor
+#| warning: false
+#| message: false
 par(mfrow = c(1, 2), xpd = NA)
 vollmer_plot(example_planes, col = "#000004", pch = 16)
 vollmer_plot(example_lines, col = "#B63679FF", pch = 16, add = TRUE)
@@ -205,7 +224,10 @@ legend(
 
 Finds the best-fit great or small-circle for a given set of vectors by applying geodesic regression:
 
-```{r bestfit, warning=FALSE,message=FALSE}
+```{r}
+#| label: bestfit
+#| warning: false
+#| message: false
 set.seed(20250411)
 data("gray_example")
 cleavage <- gray_example[1:8, ]
@@ -245,11 +267,14 @@ legend(0, -1.1,
 
 ### Fault Plots
 
-Graphical representation of fault-slip data using Angelier plot (slip vector on 
-fault plane great circle) and Hoeppener plot (fault slip vector projected on 
+Graphical representation of fault-slip data using Angelier plot (slip vector on
+fault plane great circle) and Hoeppener plot (fault slip vector projected on
 pole to fault plane):
 
-```{r stereo_faults, warning=FALSE,message=FALSE}
+```{r}
+#| label: stereo_faults
+#| warning: false
+#| message: false
 data("angelier1990")
 faults <- angelier1990$TYM
 
@@ -263,22 +288,28 @@ hoeppener(faults, points = FALSE, col = "grey20")
 
 ### Fault-Slip Inversion
 
-> structr can calculate the reduced deviatoric stress tensor from fault-slip data 
-using the direct inversion methods after Michael (1984), Angelier (1990), 
-Yamajo & Sato (2006), and Hansen (2013). This allows to extract the orientation and 
+> structr can calculate the reduced deviatoric stress tensor from fault-slip data
+using the direct inversion methods after Michael (1984), Angelier (1990),
+Yamaji & Sato (2006), and Hansen (2013). This allows to extract the orientation and
 relative magnitudes of the principal stress axes.
 
-Here, we compute the reduced stress tensor using direct fault-slip inversion after 
+Here, we compute the reduced stress tensor using direct fault-slip inversion after
 Michael (1984) and calculate 95% confidence intervals using bootstrap replicates:
 
-```{r stereo_inversion1, warning=FALSE,message=FALSE}
+```{r}
+#| label: stereo_inversion1
+#| warning: false
+#| message: false
 set.seed(20250411)
 faults_stress <- slip_inversion(faults, n_iter = 10, method = "michael")
 ```
 
 Now we can visualize the slip inversion results, that are the orientation of principal stresses:
 
-```{r stereo_inversion_plot, warning=FALSE,message=FALSE}
+```{r}
+#| label: stereo_inversion_plot
+#| warning: false
+#| message: false
 cols <- c("#000004FF", "#B63679FF", "#FEC287FF")
 R_val <- round(faults_stress$stress_shape$R, 2)
 R_CI <- round(faults_stress$R_CI, 2)
@@ -298,10 +329,13 @@ text(faults_stress$principal_axes,
 )
 ```
 
-You can visualize the accuracy of the slip inversion by showing the deviation 
+You can visualize the accuracy of the slip inversion by showing the deviation
 angle (&alpha;) between the theoretical slip and the actual slip vector:
 
-```{r stereo_inversion_deviation, warning=FALSE,message=FALSE}
+```{r}
+#| label: stereo_inversion_deviation
+#| warning: false
+#| message: false
 alpha <- faults_stress$misfit$alpha
 alpha_mean <- round(faults_stress$misfit$alpha_mean)
 alpha_CI <- round(faults_stress$alpha_CI)
@@ -320,7 +354,10 @@ legend_col(
 
 The azimuth of the maximum horizontal stress (in degrees) for the slip inversion result is:
 
-```{r stereo_inversion_SH, warning=FALSE,message=FALSE}
+```{r}
+#| label: stereo_inversion_SH
+#| warning: false
+#| message: false
 SH(
   S1 = faults_stress$principal_axes[1, ],
   S2 = faults_stress$principal_axes[2, ],
@@ -337,7 +374,10 @@ SH(
 
 The Mohr circle for the slip inversion result can be visualized:
 
-```{r stereo_inversion_mohr, warning=FALSE,message=FALSE}
+```{r}
+#| label: stereo_inversion_mohr
+#| warning: false
+#| message: false
 Mohr_plot(
   sigma1 = faults_stress$principal_vals[1],
   sigma2 = faults_stress$principal_vals[2],
@@ -358,9 +398,12 @@ points(stress_components[, "normal"], abs(stress_components[, "shear"]),
 
 #### 2D Strain
 
-Aspect ratio of finite strain ellipses vs orientation of long-axis (\eqn{R_f/\phi}{Rf/&phi;})
+Aspect ratio of finite strain ellipses vs orientation of long-axis (R<sub>f</sub>/&phi;)
 
-```{r strain, warning=FALSE,message=FALSE}
+```{r}
+#| label: strain
+#| warning: false
+#| message: false
 data(ramsay)
 
 par(mfrow = c(1, 2))
@@ -372,7 +415,10 @@ elliott_plot(ramsay[, 1], ramsay[, 2], proj = "eqd")
 
 Finite strain ellipsoids plotted in Flinn diagram and Hsu diagram:
 
-```{r strain3D, warning=FALSE,message=FALSE}
+```{r}
+#| label: strain3D
+#| warning: false
+#| message: false
 data("holst")
 R_XY <- holst[, "R_XY"]
 R_YZ <- holst[, "R_YZ"]
@@ -386,7 +432,10 @@ hsu_plot(cbind(R_XY, R_YZ), col = "#B63679", pch = 16)
 
 Aspect ratio of finite strain ellipses of porphyroclasts vs orientation of long-axis with respect to foliation plotted in the **Rigid Grain Net**
 
-```{r rgn, warning=FALSE,message=FALSE}
+```{r}
+#| label: rgn
+#| warning: false
+#| message: false
 data(shebandowan)
 set.seed(20250411)
 
@@ -396,10 +445,11 @@ RGN_plot(shebandowan$r, shebandowan$phi, col = assign_col(log(shebandowan$area))
 
 ### Deformation and Velocity Gradient Tensors
 
-Define a deformation gradient tensor and deform some orientation data over time 
+Define a deformation gradient tensor and deform some orientation data over time
 `t` in `i` increments:
 
-```{r defgrad1}
+```{r}
+#| label: defgrad1
 # Define deformation time and increments
 t <- 10
 i <- 2
@@ -410,7 +460,7 @@ D1 <- defgrad_from_generalshear(k = 2.5, gamma = 0.9)
 # Generate some random lineation
 xl <- rvmf(100, mu = Line(0, 90), k = 100)
 
-# Generate the velcity gradient tensor for deformation accumulating over time
+# Generate the velocity gradient tensor for deformation accumulating over time
 L <- velgrad(D1, time = t)
 
 # Extract deformation increments
@@ -450,12 +500,12 @@ legend_col(increments, title = "Time")
 
 Show how the orientation tensor changes during progressive deformation:
 
-```{r defgrad2}
+```{r}
+#| label: defgrad2
 par(mfrow = c(1, 2))
 vollmer_plot(xl_steps, type = "b", col = assign_col(increments), pch = 16)
 hsu_plot(xl_steps, type = "b", col = assign_col(increments), pch = 16)
 ```
-
 
 ## Author
 

@@ -1,59 +1,42 @@
 
-<!-- README.md is generated from README.Rmd. Please edit that file -->
+
+<!-- README.md is generated from README.qmd. Please edit that file -->
 
 # structr <a href="https://tobiste.github.io/structr/"><img src="man/figures/logo.png" alt="structr website" align="right" height="104"/></a>
 
 <!-- badges: start -->
 
-[![R-CMD-check](https://github.com/tobiste/structr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tobiste/structr/actions/workflows/R-CMD-check.yaml)
+[![](https://github.com/tobiste/structr/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/tobiste/structr/actions/workflows/R-CMD-check.yaml)
 
 <!-- badges: end -->
 
-`{structr}` is a free and open-source package for R that provides tools
-for structural geology. The toolset includes
+`{structr}` is a free and open-source package for R that provides tools for structural geology. The toolset includes
 
-- Analysis and visualization of orientation data of structural geology
-  (including, **stereographic projections**, contouring, fabric plots,
-  and statistics),
+- Analysis and visualization of orientation data of structural geology (including, **stereographic projections**, contouring, fabric plots, and statistics),
 
-- Statistical analysis: spherical mean and variance, confidence regions,
-  hypothesis tests, **cluster analysis** of orientation data
-  (`sph_cluster()`, and geodesic regression to find the **best-fitting
-  great circle or small circle** through orientation data
-  (`regression_greatcircle()` and `regression_smallcircle()`),
+- Statistical analysis: spherical mean and variance, confidence regions, hypothesis tests, **cluster analysis** of orientation data (`sph_cluster()`), and geodesic regression to find the **best-fitting great circle or small circle** through orientation data (`regression_greatcircle()` and `regression_smallcircle()`),
 
-- Reconstruction of fabric orientations in **oriented drillcores** by
-  transforming the α, β, and γ angles (`drillcore_transformation()`,
+- Reconstruction of fabric orientations in **oriented drillcores** by transforming the α, β, and γ angles (`drillcore_transformation()`),
 
-- Deform orientation data using deformation and velocity gradient
-  tensors: `defgrad()` and `velgrad()`
+- Deform orientation data using deformation and velocity gradient tensors: `defgrad()` and `velgrad()`
 
-- **Stress analysis**: reconstruction of stress orientation and
-  magnitudes from fault-slip data (direct stress inversion based on
-  **Michael (1984)**, **Angelier (1990)**, **Yamaji & Sato (2006)**, or
-  **Hansen (2013)**: `slip_inversion()`), extracting the **maximum
-  horizontal stress** of a 3D stress tensor (`SH()`), and visualization
-  of magnitudes of stress in the **Mohr circle** (`Mohr_plot()`),
+- **Stress analysis**: reconstruction of stress orientation and magnitudes from fault-slip data (direct stress inversion based on **Michael (1984)**, **Angelier (1990)**, **Yamaji & Sato (2006)**, or **Hansen (2013)**: `slip_inversion()`), extracting the **maximum horizontal stress** of a 3D stress tensor (`SH()`), and visualization of magnitudes of stress in the **Mohr circle** (`Mohr_plot()`),
 
 - Calculation fault displacement components,
 
-- Strain analysis (**R**<sub>f</sub>/φ), contouring on the unit
-  hyperboloid, **Fry plots** and **Hsu plots**
+- Strain analysis (**R**<sub>f</sub>/φ), contouring on the unit hyperboloid, **Fry plots** and **Hsu plots**
 
-- Vorticity analysis using the **Rigid Grain Net** method
-  (`RGN_plot()`), and
+- Vorticity analysis using the **Rigid Grain Net** method (`RGN_plot()`), and
 
-- Direct import of your field data from **StraboSpot** projects
-  (`read_strabo_JSON()`).
+- Direct import of your field data from **StraboSpot** projects (`read_strabo_JSON()`).
 
-> \[!CAUTION\] The {structr} package is all about structures in 3D. For
-> analyzing orientations in 2D (statistics, rose diagrams, etc.), check
-> out the [tectonicr](https://github.com/tobiste/tectonicr) package!
+> [!CAUTION]
+>
+> The {structr} package is all about structures in 3D. For analyzing orientations in 2D (statistics, rose diagrams, etc.), check out the [tectonicr](https://github.com/tobiste/tectonicr) package!
 
 ## Installation
 
-You can install the development version of `{structr}` from
-[GitHub](https://github.com/) with:
+You can install the development version of `{structr}` from [GitHub](https://github.com/) with:
 
 ``` r
 # install.packages("devtools")
@@ -62,13 +45,11 @@ devtools::install_github("tobiste/structr")
 
 ## Documentation
 
-The detailed documentation can be found at
-<https://tobiste.github.io/structr/>
+The detailed documentation can be found at <https://tobiste.github.io/structr/>
 
 ## Examples
 
-These are some basic examples which shows you what you can do with
-{structr}. First we load the package
+These are some basic examples which show you what you can do with {structr}. First we load the package
 
 ``` r
 library(structr)
@@ -98,18 +79,15 @@ points(example_planes, col = "#000004", pch = 1, cex = .5)
 legend("topright", legend = c("Lines", "Planes"), col = c("#B63679", "#000004"), pch = c(19, 1), cex = 1)
 ```
 
-<img src="man/figures/README-stereo-1.png" alt="" width="100%" />
+![](man/figures/README-stereo-1.png)
 
 ### Manipulate projection and grid
 
-The default projection is the equal-area projection into the lower
-hemisphere. Grid lines are disabled by default. You can change these
-settings either directly in the `stereoplot()` function using the
-parameters `upper.hem`, `earea`, and `guides`or set global definitions.
+The default projection is the equal-area projection into the lower hemisphere. Grid lines are disabled by default. You can change these settings either directly in the `stereoplot()` function using the parameters `upper.hem`, `earea`, and `guides` or set global definitions.
 
-> \[!TIP\] The grid can also be rotated to a specified orientation by
-> setting the parameter `center`. In the example below, we fix the grid
-> in the mean of the example line data:
+> [!TIP]
+>
+> The grid can also be rotated to a specified orientation by setting the parameter `center`. In the example below, we fix the grid in the mean of the example line data:
 
 ``` r
 ml <- sph_mean(example_lines)
@@ -123,7 +101,7 @@ points(example_lines, col = "#B63679", pch = 19, cex = .5)
 points(example_planes, col = "#000004", pch = 1, cex = .5)
 ```
 
-<img src="man/figures/README-stereo_grid-1.png" alt="" width="100%" />
+![](man/figures/README-stereo_grid-1.png)
 
 ### Density on a Sphere
 
@@ -140,7 +118,7 @@ points(example_lines, col = "grey", cex = .5)
 title(main = "Lines")
 ```
 
-<img src="man/figures/README-stereo_density_lines-1.png" alt="" width="100%" />
+![](man/figures/README-stereo_density_lines-1.png)
 
 or as filled contours:
 
@@ -155,12 +133,11 @@ points(example_lines, col = "grey", cex = .5)
 title(main = "Lines")
 ```
 
-<img src="man/figures/README-stereo_density_img-1.png" alt="" width="100%" />
+![](man/figures/README-stereo_density_img-1.png)
 
 ### Spherical Statistics
 
-Calculation of arithmetic mean, geodesic mean, confidence cones and
-eigenvectors… and plotting them in the equal-area projection:
+Calculation of arithmetic mean, geodesic mean, confidence cones and eigenvectors… and plotting them in the equal-area projection:
 
 ``` r
 planes_mean <- sph_mean(example_planes)
@@ -201,12 +178,11 @@ legend(
 )
 ```
 
-<img src="man/figures/README-stats-1.png" alt="" width="100%" />
+![](man/figures/README-stats-1.png)
 
 ### Orientation Tensor and Fabric Plots
 
-The shape parameters of the orientation tensor of the above examples
-planes and lines can be visualized in two ways:
+The shape parameters of the orientation tensor of the above examples planes and lines can be visualized in two ways:
 
 ``` r
 par(mfrow = c(1, 2), xpd = NA)
@@ -223,12 +199,11 @@ legend(
 )
 ```
 
-<img src="man/figures/README-stereo_ortensor-1.png" alt="" width="100%" />
+![](man/figures/README-stereo_ortensor-1.png)
 
 ### Best-fit Great- and Small-Circles (Geodesic Regression)
 
-Finds the best-fit great or small-circle for a given set of vectors by
-applying geodesic regression:
+Finds the best-fit great or small-circle for a given set of vectors by applying geodesic regression:
 
 ``` r
 set.seed(20250411)
@@ -268,13 +243,13 @@ legend(0, -1.1,
 )
 ```
 
-<img src="man/figures/README-bestfit-1.png" alt="" width="100%" />
+![](man/figures/README-bestfit-1.png)
 
 ### Fault Plots
 
-Graphical representation of fault-slip data using Angelier plot (slip
-vector on fault plane great circle) and Hoeppener plot (fault slip
-vector projected on pole to fault plane):
+Graphical representation of fault-slip data using Angelier plot (slip vector on
+fault plane great circle) and Hoeppener plot (fault slip vector projected on
+pole to fault plane):
 
 ``` r
 data("angelier1990")
@@ -288,27 +263,24 @@ stereoplot(title = "Hoeppener plot", guides = FALSE)
 hoeppener(faults, points = FALSE, col = "grey20")
 ```
 
-<img src="man/figures/README-stereo_faults-1.png" alt="" width="100%" />
+![](man/figures/README-stereo_faults-1.png)
 
 ### Fault-Slip Inversion
 
-> structr can calculate the reduced deviatoric stress tensor from
-> fault-slip data using the direct inversion methods after Michael
-> (1984), Angelier (1990), Yamajo & Sato (2006), and Hansen (2013). This
-> allows to extract the orientation and relative magnitudes of the
-> principal stress axes.
+> structr can calculate the reduced deviatoric stress tensor from fault-slip data
+> using the direct inversion methods after Michael (1984), Angelier (1990),
+> Yamaji & Sato (2006), and Hansen (2013). This allows to extract the orientation and
+> relative magnitudes of the principal stress axes.
 
-Here, we compute the reduced stress tensor using direct fault-slip
-inversion after Michael (1984) and calculate 95% confidence intervals
-using bootstrap replicates:
+Here, we compute the reduced stress tensor using direct fault-slip inversion after
+Michael (1984) and calculate 95% confidence intervals using bootstrap replicates:
 
 ``` r
 set.seed(20250411)
 faults_stress <- slip_inversion(faults, n_iter = 10, method = "michael")
 ```
 
-Now we can visualize the slip inversion results, that are the
-orientation of principal stresses:
+Now we can visualize the slip inversion results, that are the orientation of principal stresses:
 
 ``` r
 cols <- c("#000004FF", "#B63679FF", "#FEC287FF")
@@ -330,11 +302,10 @@ text(faults_stress$principal_axes,
 )
 ```
 
-<img src="man/figures/README-stereo_inversion_plot-1.png" alt="" width="100%" />
+![](man/figures/README-stereo_inversion_plot-1.png)
 
-You can visualize the accuracy of the slip inversion by showing the
-deviation angle (α) between the theoretical slip and the actual slip
-vector:
+You can visualize the accuracy of the slip inversion by showing the deviation
+angle (α) between the theoretical slip and the actual slip vector:
 
 ``` r
 alpha <- faults_stress$misfit$alpha
@@ -353,10 +324,9 @@ legend_col(
 )
 ```
 
-<img src="man/figures/README-stereo_inversion_deviation-1.png" alt="" width="100%" />
+![](man/figures/README-stereo_inversion_deviation-1.png)
 
-The azimuth of the maximum horizontal stress (in degrees) for the slip
-inversion result is:
+The azimuth of the maximum horizontal stress (in degrees) for the slip inversion result is:
 
 ``` r
 SH(
@@ -393,13 +363,13 @@ points(stress_components[, "normal"], abs(stress_components[, "shear"]),
 )
 ```
 
-<img src="man/figures/README-stereo_inversion_mohr-1.png" alt="" width="100%" />
+![](man/figures/README-stereo_inversion_mohr-1.png)
 
 ### Strain Analysis
 
 #### 2D Strain
 
-Aspect ratio of finite strain ellipses vs orientation of long-axis ()
+Aspect ratio of finite strain ellipses vs orientation of long-axis (R<sub>f</sub>/φ)
 
 ``` r
 data(ramsay)
@@ -409,7 +379,7 @@ Rphi_plot(r = ramsay[, 1], phi = ramsay[, 2])
 elliott_plot(ramsay[, 1], ramsay[, 2], proj = "eqd")
 ```
 
-<img src="man/figures/README-strain-1.png" alt="" width="100%" />
+![](man/figures/README-strain-1.png)
 
 #### 3D Strain
 
@@ -425,13 +395,11 @@ flinn_plot(cbind(R_XY, R_YZ), log = TRUE, col = "#B63679", pch = 16)
 hsu_plot(cbind(R_XY, R_YZ), col = "#B63679", pch = 16)
 ```
 
-<img src="man/figures/README-strain3D-1.png" alt="" width="100%" />
+![](man/figures/README-strain3D-1.png)
 
 ### Vorticity Analysis
 
-Aspect ratio of finite strain ellipses of porphyroclasts vs orientation
-of long-axis with respect to foliation plotted in the **Rigid Grain
-Net**
+Aspect ratio of finite strain ellipses of porphyroclasts vs orientation of long-axis with respect to foliation plotted in the **Rigid Grain Net**
 
 ``` r
 data(shebandowan)
@@ -441,12 +409,12 @@ set.seed(20250411)
 RGN_plot(shebandowan$r, shebandowan$phi, col = assign_col(log(shebandowan$area)), pch = 16, guides = TRUE)
 ```
 
-<img src="man/figures/README-rgn-1.png" alt="" width="100%" />
+![](man/figures/README-rgn-1.png)
 
 ### Deformation and Velocity Gradient Tensors
 
-Define a deformation gradient tensor and deform some orientation data
-over time `t` in `i` increments:
+Define a deformation gradient tensor and deform some orientation data over time
+`t` in `i` increments:
 
 ``` r
 # Define deformation time and increments
@@ -459,7 +427,7 @@ D1 <- defgrad_from_generalshear(k = 2.5, gamma = 0.9)
 # Generate some random lineation
 xl <- rvmf(100, mu = Line(0, 90), k = 100)
 
-# Generate the velcity gradient tensor for deformation accumulating over time
+# Generate the velocity gradient tensor for deformation accumulating over time
 L <- velgrad(D1, time = t)
 
 # Extract deformation increments
@@ -497,7 +465,7 @@ legend(0, -1.1,
 legend_col(increments, title = "Time")
 ```
 
-<img src="man/figures/README-defgrad1-1.png" alt="" width="100%" />
+![](man/figures/README-defgrad1-1.png)
 
 Show how the orientation tensor changes during progressive deformation:
 
@@ -507,7 +475,7 @@ vollmer_plot(xl_steps, type = "b", col = assign_col(increments), pch = 16)
 hsu_plot(xl_steps, type = "b", col = assign_col(increments), pch = 16)
 ```
 
-<img src="man/figures/README-defgrad2-1.png" alt="" width="100%" />
+![](man/figures/README-defgrad2-1.png)
 
 ## Author
 
@@ -515,10 +483,7 @@ Tobias Stephan (<tstephan@lakeheadu.ca>)
 
 ## Feedback, issues, and contributions
 
-I welcome feedback, suggestions, issues, and contributions! If you have
-found a bug, please file it
-[here](https://github.com/tobiste/structr/issues) with minimal code to
-reproduce the issue.
+I welcome feedback, suggestions, issues, and contributions! If you have found a bug, please file it [here](https://github.com/tobiste/structr/issues) with minimal code to reproduce the issue.
 
 ## License
 
