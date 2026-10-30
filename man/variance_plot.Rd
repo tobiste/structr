@@ -49,6 +49,7 @@ specified vector in a stereoplot.
 The greatcircles are color-coded by the angular distance.
 }
 \examples{
+set.seed(20250411)
 variance_plot(example_lines)
 variance_plot(example_planes, example_planes[1, ], segments = FALSE)
 }

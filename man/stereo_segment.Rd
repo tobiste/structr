@@ -35,15 +35,15 @@ Defaults to \code{getOption("structr.earea")}.}
 Plots the great-circle segment between two vectors
 }
 \examples{
-x <- Line(120, 7)
+x <- Line(90, 7)
 y <- Line(10, 13)
 plot(rbind(x, y))
 stereo_segment(x, y, col = "red")
 
 # For multiple segments use lapply():
 set.seed(20250411)
-mu <- Line(45, 10)
-x <- rvmf(100, mu = mu) |> Line()
+mu <- Ray(45, 10)
+x <- rvmf(100, mu = mu) 
 plot(x)
 invisible(lapply(seq_len(nrow(x)), FUN = function(i) {
   stereo_segment(x[i, ], mu, col = i)

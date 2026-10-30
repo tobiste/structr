@@ -287,7 +287,7 @@ same data set:
 #| label: variance
 #| fig-alt: >
 #|   Diagram showing the distances of a set of vectors to a specified vector
-variance_plot(lines, y = lines[1, ])
+variance_plot(lines, Line(120, 50))
 ```
 
 ::: {.callout-note}

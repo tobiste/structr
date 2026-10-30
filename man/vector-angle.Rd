@@ -23,7 +23,7 @@ spherical objects, the default (\code{NULL}) determines this from the classes
 of \code{x} and \code{y}: the angle is axial if either is a \code{Line} or \code{Plane}.}
 }
 \value{
-numeric. Angle in degrees if \code{x} or \code{y} is of class \code{Line}, \code{Ray},
+numeric. Angle in degrees if either \code{x} or \code{y} is of class \code{Line}, \code{Ray},
 or \code{Plane}, otherwise in radians. For a \code{Plane}, the angle is measured
 to its pole.
 }

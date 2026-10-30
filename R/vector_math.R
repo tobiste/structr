@@ -162,7 +162,7 @@ vangle <- function(x, y, axial = FALSE) {
   y <- y / sqrt(rowSums(y^2))
   
   d <- vdot(x, y)
-  if (axial) d <- abs(d)
+  if (isTRUE(axial)) d <- abs(d)
   acos(pmin(pmax(d, -1), 1))
 }
 
@@ -177,7 +177,7 @@ vangle <- function(x, y, axial = FALSE) {
 #'   of `x` and `y`: the angle is axial if either is a `Line` or `Plane`.
 #' @param ... not used.
 #'
-#' @return numeric. Angle in degrees if `x` or `y` is of class `Line`, `Ray`,
+#' @return numeric. Angle in degrees if either `x` or `y` is of class `Line`, `Ray`,
 #'   or `Plane`, otherwise in radians. For a `Plane`, the angle is measured
 #'   to its pole.
 #'

@@ -534,15 +534,15 @@ close_primitive_arc <- function(X1, Y1, X2, Y2, r = 1, n = 64) {
 #' @seealso [slerp()], [stereo_greatcircle], [stereo_lines()]
 #'
 #' @examples
-#' x <- Line(120, 7)
+#' x <- Line(90, 7)
 #' y <- Line(10, 13)
 #' plot(rbind(x, y))
 #' stereo_segment(x, y, col = "red")
 #'
 #' # For multiple segments use lapply():
 #' set.seed(20250411)
-#' mu <- Line(45, 10)
-#' x <- rvmf(100, mu = mu) |> Line()
+#' mu <- Ray(45, 10)
+#' x <- rvmf(100, mu = mu) 
 #' plot(x)
 #' invisible(lapply(seq_len(nrow(x)), FUN = function(i) {
 #'   stereo_segment(x[i, ], mu, col = i)
@@ -553,9 +553,11 @@ stereo_segment <- function(x, y, upper.hem = NULL, earea = NULL, n = 100L, radiu
   upper.hem <- upper.hem %||% getOption("structr.upper.hem")
   BALL.radius <- radius %||% getOption("structr.radius")
 
+  x <- Ray(x); y <- Ray(y)
+  
   stopifnot(nrow(x) == 1, nrow(y) == 1)
   vang <- angle(x, y)
-  if (is.Vec3(x)) vang <- rad2deg(vang)
+  #if (is.Vec3(x)) vang <- rad2deg(vang)
 
   if (vang <= 90) {
     n_part <- vang / 90
@@ -564,15 +566,15 @@ stereo_segment <- function(x, y, upper.hem = NULL, earea = NULL, n = 100L, radiu
     .draw_lines(x, y, n, upper.hem, earea, BALL.radius, ...)
   } else {
     xy <- crossprod(x, y) |> Line()
-    strike1 <- Line(xy[1, 1] + 90, 0)
-    strike2 <- Line(xy[1, 1] - 90, 0)
+    strike1 <- Ray(xy[1, 1] + 90, 0)
+    strike2 <- Ray(xy[1, 1] - 90, 0)
 
     n_part <- (180 - vang) / 180
 
     na <- ceiling(n * n_part)
     nb <- ceiling(n * (1 - n_part))
 
-    if (angle(x, strike1) <= angle(x, strike2)) {
+    if ((angle(x, strike1)) <= (angle(x, strike2))) {
       line1 <- strike1
       line2 <- strike2
       n1 <- nb
@@ -1413,6 +1415,7 @@ stereo_shmax <- function(azi, ..., type = c("arrows", "line"), shmin = FALSE, ra
 #' @seealso [stereo_segment()], [sph_mean()], [geodesic_mean()], [projected_mean()], [geodesic_var()]
 #'
 #' @examples
+#' set.seed(20250411)
 #' variance_plot(example_lines)
 #' variance_plot(example_planes, example_planes[1, ], segments = FALSE)
 variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "projected"), show.center = TRUE, segments = TRUE, upper.hem = NULL, earea = NULL, ...) {
@@ -1423,19 +1426,28 @@ variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "proj
     .mean <- match.arg(.mean)
     y <- if (.mean == "geodesic") geodesic_mean(x) else if (.mean == "arithmetic") sph_mean(x) else ot_eigen(x)$vectors[1, ]
   }
-  xl <- Line(x)
-  yl <- Line(y)
+  xl <- Ray(x)
+  yl <- Ray(y)
 
+  if(nrow(xl) > 1 & nrow(yl) == 1){
+    m <- .matching_rows(row = yl, xl)
+    xl <- xl[!m, ]
+  } else if (nrow(yl) > 1) {
+    m <- .matching_rows(row = xl, yl)
+    yl <- yl[!m, ]
+  }
+  
   suppressWarnings(
-    ang <- abs(angle(xl, yl))
-  )
-  ang <- ifelse(ang > 90, 180 - ang, ang)
+    ang <- angle(xl, yl)
+  ) 
+  
+  #ang <- ifelse(ang > 90, 180 - ang, ang)
   cond <- is.nan(ang) | is.na(ang)
   x2 <- xl[!cond, ]
 
   stereoplot(guides = FALSE, earea = earea)
 
-  if (segments) {
+  if (isTRUE(segments)) {
     ang_col <- assign_col(ang[!cond], ...)
     lapply(seq_len(nrow(x2)), function(i) {
       stereo_segment(x2[i, ], yl, col = ang_col[i], upper.hem = upper.hem, earea = earea)
@@ -1461,6 +1473,10 @@ variance_plot <- function(x, y = NULL, .mean = c("geodesic", "arithmetic", "proj
   )
 
   invisible(list(angles = ang, var = var_frechet))
+}
+
+.matching_rows <- function(row, matrix){
+  apply(matrix, 1, function(r) identical(as.vector(r), row))
 }
 
 #' @keywords internal
