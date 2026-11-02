@@ -1,3 +1,6 @@
+#' @include vector_math.R
+NULL
+
 Test <- function(name, statistic, p_value = NULL, df = NULL,
                  critical = NULL, level = 0.95, source = "",
                  extra = list()) {
@@ -473,4 +476,273 @@ watson_symmetry_test <- function(lambda, k, n, level = 0.95) {
       source    = "Mardia & Jupp (2000), eq. 10.7.8-10.7.18"
     )
   })
+}
+
+
+# Comparing samples ------------------------------------------------------------
+
+samples <- list(
+  x1 = Line(rvmf()), x2 = Line(rvmf())
+)
+
+.resultants <- function(samples) {
+  samples <- lapply(samples, Vec3)
+  
+  # Sizes, resultant lengths and resultant vectors of a list of unit-vector
+  # matrices (each n_i x p).
+  if (!is.list(samples) || length(samples) < 2L) {
+    stop("At least two samples are needed")
+  }
+  samples <- lapply(samples, function(x) {
+    d <- dim(x)
+    matrix(as.numeric(x), d[1L], d[2L])
+  })
+  p <- unique(vapply(samples, ncol, integer(1L)))
+  if (length(p) != 1L) stop("The samples must have the same dimension")
+  
+  n <- vapply(samples, nrow, integer(1L))
+  S <- do.call(rbind, lapply(samples, colSums))    # k x p, one resultant per row
+  list(n = n, R = sqrt(rowSums(S^2)), S = S, p = p)
+}
+
+.f_result <- function(name, stat, df, level, source) {
+  Test(
+    name      = name,
+    statistic = stat,
+    p_value   = pf(stat, df[1L], df[2L], lower.tail = FALSE),
+    df        = c(df1 = df[1L], df2 = df[2L]),
+    critical  = qf(level, df[1L], df[2L]),
+    level     = level,
+    source    = source
+  )
+}
+
+.chi2_result <- function(name, stat, df, level, source) {
+  Test(
+    name      = name,
+    statistic = stat,
+    p_value   = pchisq(stat, df, lower.tail = FALSE),
+    df        = df,
+    critical  = qchisq(level, df),
+    level     = level,
+    source    = source
+  )
+}
+
+.vonmises_kappa_mle <- function(Rbar) {
+  # solve A1(kappa) = I1(kappa) / I0(kappa) = Rbar
+  if (Rbar < 1e-12) return(0)
+  if (Rbar >= 1) return(Inf)
+  A1 <- function(k) besselI(k, 1, expon.scaled = TRUE) /
+    besselI(k, 0, expon.scaled = TRUE)
+  uniroot(function(k) A1(k) - Rbar, lower = 0, upper = 1 / (1 - Rbar),
+          extendInt = "upX", tol = .Machine$double.eps^0.75)$root
+}
+
+### ---- common mean test -----------------------------------------------------
+
+common_mean_test <- function(samples, method = NULL, level = 0.95) {
+  res <- .resultants(samples)
+  n_i <- res$n
+  R_i <- res$R
+  S_i <- res$S
+  p   <- res$p
+  if (!p %in% 2:3) stop("The samples must be 2D (circle) or 3D (sphere)")
+  
+  n    <- sum(n_i)
+  q    <- length(n_i)
+  sumR <- sum(R_i)
+  R    <- sqrt(sum(colSums(S_i)^2))
+  
+  sphere <- c("watson", "mcfadden_lowes", "watson_debiche")
+  circle <- c("watson_williams", "uniform_scores", "watson_u2")
+  allowed <- if (p == 3L) sphere else circle
+  if (is.null(method)) method <- allowed[1L]
+  if (!method %in% allowed) {
+    stop(sprintf("Unknown method '%s' for %dD data, expected %s",
+                 method, p, paste(sort(allowed), collapse = ", ")))
+  }
+  
+  if (method %in% c("watson", "watson_williams")) {
+    F <- (n - q) * (sumR - R) / ((q - 1) * (n - sumR))
+    if (p == 3L) {
+      df <- c(2 * (q - 1), 2 * (n - q))
+      source <- "Watson (1956), eq. 2.32; Mardia & Jupp (2000), eq. 10.6.4"
+    } else {
+      kappa <- .vonmises_kappa_mle(sumR / n)
+      F <- F * (if (kappa > 0) 1 + 3 / (8 * kappa) else Inf)
+      df <- c(q - 1, n - q)
+      source <- "Mardia & Jupp (2000), eq. 7.4.4-7.4.6"
+    }
+    return(.f_result(paste(method, "common mean"), F, df, level, source))
+  }
+  
+  if (method == "mcfadden_lowes") {
+    g <- (n - q) / (q - 1) * (sumR - R^2 / sumR) / (2 * (n - sumR))
+    return(.f_result("McFadden-Lowes common mean", g,
+                     c(2 * (q - 1), 2 * (n - q)), level,
+                     "McFadden & Lowes (1981), eq. 25, 41"))
+  }
+  
+  if (method == "watson_debiche") {
+    k <- (n_i - 1) / (n_i - R_i)
+    V <- 2 * (sum(k * R_i) - sqrt(sum(colSums(k * S_i)^2)))
+    return(.chi2_result("Watson-Debiche common mean", V, 2 * (q - 1), level,
+                        "Watson & Debiche (1992), eq. 22, 25-26"))
+  }
+  
+  theta <- lapply(samples, function(x) {
+    x <- matrix(as.numeric(x), ncol = 2L)
+    atan2(x[, 2L], x[, 1L])
+  })
+  if (method == "uniform_scores") {
+    return(.uniform_scores_test(theta, level))
+  }
+  .watson_u2_two_sample(theta, level)
+}
+
+
+### ---- circular two-sample tests --------------------------------------------
+
+.uniform_scores_test <- function(theta, level) {
+  pooled <- unlist(theta, use.names = FALSE) %% (2 * pi)
+  n <- length(pooled)
+  groups <- rep(seq_along(theta), lengths(theta))
+  # ties within a sample get consecutive ranks, ties between samples the
+  # average rank
+  ranks <- rank(pooled, ties.method = "first")
+  for (value in unique(pooled[duplicated(pooled)])) {
+    tied <- pooled == value
+    if (length(unique(groups[tied])) > 1L) ranks[tied] <- mean(ranks[tied])
+  }
+  beta <- 2 * pi * ranks / n
+  CS  <- rowsum(cbind(cos(beta), sin(beta)), groups)   # q x 2: C_i, S_i
+  n_i <- tabulate(groups)
+  W <- if (length(theta) == 2L) {
+    2 * (n - 1) * sum(CS[1L, ]^2) / (n_i[1L] * n_i[2L])
+  } else {
+    2 * sum(rowSums(CS^2) / n_i)
+  }
+  .chi2_result("uniform scores", W, 2 * (length(theta) - 1), level,
+               "Mardia & Jupp (2000), eq. 8.3.3-8.3.4, 8.4.3")
+}
+
+.watson_u2_sf <- function(u, m_max = 1000L) {
+  # asymptotic P(U^2 > u) = 2 sum_{m>=1} (-1)^(m-1) exp(-2 m^2 pi^2 u)
+  if (u <= 0) return(1)
+  m <- seq_len(m_max)
+  min(max(2 * sum((-1)^(m - 1) * exp(-2 * m^2 * pi^2 * u)), 0), 1)
+}
+
+.watson_u2_isf <- function(alpha) {
+  uniroot(function(u) .watson_u2_sf(u) - alpha, lower = 1e-3, upper = 5,
+          tol = .Machine$double.eps^0.75)$root
+}
+
+.watson_u2_two_sample <- function(theta, level) {
+  if (length(theta) != 2L) stop("Watson's two-sample U2 compares two samples")
+  n1 <- length(theta[[1L]])
+  n2 <- length(theta[[2L]])
+  n  <- n1 + n2
+  pooled <- unlist(theta, use.names = FALSE) %% (2 * pi)
+  first <- rep(c(1, 0), c(n1, n2))[order(pooled)]     # order() is stable
+  a <- cumsum(first)
+  d <- (seq_len(n) - a) / n2 - a / n1
+  u2 <- n1 * n2 / n^2 * sum((d - mean(d))^2)
+  Test(
+    name      = "Watson two-sample U2",
+    statistic = u2,
+    p_value   = .watson_u2_sf(u2),
+    critical  = .watson_u2_isf(1 - level),
+    level     = level,
+    source    = "Mardia & Jupp (2000), eq. 8.3.7"
+  )
+}
+
+### ---- equal concentration --------------------------------------------------
+
+equal_kappa_test <- function(samples, method = NULL, level = 0.95) {
+  res <- .resultants(samples)
+  n_i <- res$n
+  q   <- length(n_i)
+  nu  <- (res$p - 1) * (n_i - 1)
+  dev <- n_i - res$R
+  if (is.null(method)) method <- if (q == 2L) "f" else "bartlett"
+  
+  if (method == "f") {
+    if (q != 2L) stop("The F test compares two samples")
+    F <- (dev[1L] / nu[1L]) / (dev[2L] / nu[2L])
+    p_value <- 2 * min(pf(F, nu[1L], nu[2L]),
+                       pf(F, nu[1L], nu[2L], lower.tail = FALSE))
+    return(Test(
+      name      = "equal concentration F",
+      statistic = F,
+      p_value   = min(p_value, 1),
+      df        = c(df1 = nu[1L], df2 = nu[2L]),
+      level     = level,
+      source    = "Mardia & Jupp (2000), eq. 10.5.3"
+    ))
+  }
+  if (method == "bartlett") {
+    total <- sum(nu)
+    B <- total * log(sum(dev) / total) - sum(nu * log(dev / nu))
+    B <- B / (1 + (sum(1 / nu) - 1 / total) / (3 * (q - 1)))
+    return(.chi2_result("equal concentration Bartlett", B, q - 1, level,
+                        "Mardia & Jupp (2000), eq. 10.6.21"))
+  }
+  stop(sprintf("Unknown method '%s', expected f or bartlett", method))
+}
+
+### ---- axial common mean ----------------------------------------------------
+
+axial_common_mean_test <- function(samples, level = 0.95) {
+  if (!is.list(samples) || length(samples) < 2L) {
+    stop("At least two samples are needed")
+  }
+  samples <- lapply(samples, function(x) matrix(as.numeric(x), ncol = 3L))
+  taus <- vapply(samples, function(x) {
+    eigen(crossprod(x), symmetric = TRUE, only.values = TRUE)$values[1L]
+  }, numeric(1L))
+  
+  X <- do.call(rbind, samples)
+  e <- eigen(crossprod(X), symmetric = TRUE)
+  tau_bar <- e$values[1L] / nrow(X)
+  G <- mean(drop(X %*% e$vectors[, 1L])^4)
+  g <- (tau_bar - G) / (3 * tau_bar - 1)
+  N <- (sum(taus) - e$values[1L]) / g
+  
+  .chi2_result("axial common mean", N, 2 * (length(samples) - 1), level,
+               "Fisher, Lewis & Embleton (1987), eq. 7.72-7.76")
+}
+
+### ---- frame uniformity -----------------------------------------------------
+
+frame_uniformity_test <- function(frames, level = 0.95) {
+  # frames: n x r x p array, frames[k, j, ] is axis j of frame k
+  d <- dim(frames)
+  if (length(d) != 3L) stop("`frames` must be an n x r x p array")
+  U <- array(as.numeric(frames), d)
+  n <- d[1L]; r <- d[2L]; p <- d[3L]
+  I <- diag(p) / p
+  
+  T <- lapply(seq_len(r), function(j) {
+    crossprod(matrix(U[, j, ], n, p)) / n - I
+  })
+  total <- sum(vapply(T, function(Tj) sum(Tj^2), numeric(1L)))
+  if (r < p) total <- total + sum(Reduce(`+`, T)^2) / (p - r)
+  
+  S  <- n * (p - 1) * (p + 2) / 2 * total
+  df <- min(r, p - 1) * (p - 1) * (p + 2) / 2
+  d1 <- sum(vapply(T, function(Tj) 1 - sum((Tj + I)^2), numeric(1L)))
+  
+  Test(
+    name      = "Arnold-Jupp frame uniformity",
+    statistic = S,
+    p_value   = pchisq(S, df, lower.tail = FALSE),
+    df        = df,
+    critical  = qchisq(level, df),
+    level     = level,
+    source    = "Arnold & Jupp (2013), eq. 5",
+    extra     = list(dispersion = d1)
+  )
 }
