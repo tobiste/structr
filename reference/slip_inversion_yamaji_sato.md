@@ -1,4 +1,4 @@
-# Stress tensor inversion via the Yamaji and Sato (2006) eigenvector method.
+# Direct inversion For Fault slip in \\S^5\\
 
 Stress tensor inversion via the Yamaji and Sato (2006) eigenvector
 method.
@@ -32,7 +32,7 @@ plus
 
 - `y`:
 
-  6D unit y-vector on S^5 representing the tensor
+  6D unit y-vector on \\S^5\\ representing the tensor
 
 - `alpha`:
 
@@ -41,6 +41,62 @@ plus
 - `mean_alpha`:
 
   mean angular misfit across all faults
+
+## Details
+
+A reduced stress tensor is represented as a unit 5-vector \\x\\ on the
+5-sphere \\S^5\\, embedded in the 6D space of symmetric tensors via the
+\\y\\-vector (Eq. 6):
+
+\$\$y = (1/\sqrt{2}) \times (s\_{11}, s\_{22}, s\_{33}, \sqrt{2} \times
+s\_{23}, \sqrt{2} \times s\_{31}, \sqrt{2} \times s\_{12})\$\$
+
+with normalisation constraints (Eqs. 11-12):
+
+\\\sigma_I = s\_{11} + s\_{22} + s\_{33} = 0\\ (deviator)
+
+\\\sigma\_{II} = (s\_{11}^2+s\_{22}^2+s\_{33}^2)/2 +
+s\_{23}^2+s\_{31}^2+s\_{12}^2 = 1\\ (unit norm)
+
+These constraints confine \\y\\ to the intersection of a hyperplane and
+the 6-sphere, which defines the 5-sphere \\S^5\\.
+
+For each fault datum \\\\n, \text{slip}\\\\, define the 6-vector
+\\\epsilon'\\ (Eq. 8, derived from Eq. 4) such that the Wallace-Bott
+condition becomes:
+
+\\\epsilon'\_i \cdot y = 0\\ (shear stress perpendicular to \\b_i = n_i
+\times \text{slip}\_i\\)
+
+The optimal \\y\\ minimises \\\sum_i (\epsilon'\_i \cdot y)^2\\, i.e.
+the smallest-eigenvalue eigenvector of \\M = \sum_i \epsilon'\_i \otimes
+\epsilon'\_i\\.
+
+The computation is carried out in the 5D deviator subspace via an
+explicit orthonormal basis \\B\\ (\\6 \times 5\\), constructed as the
+complement of the deviator null direction \\h =
+(1,1,1,0,0,0)/\sqrt{3}\\, to avoid degeneracy in the \\6\times 6\\
+projected matrix.
+
+The sense condition (Eq. 5 / Eq. 10) selects between the two antipodal
+solutions via a majority vote on \\\tau_i \cdot \text{slip}\_i \> 0\\
+(positive work).
+
+### Distance metrics
+
+*Angular stress distance* (or *Lode angle*) \\\Theta\\ (Eq. 19):
+great-circle distance on \\S^5\\, \\\Theta = \arccos{\|y_1 \dot
+y_2\|})\\, range \\\[0, 90\]\\ deg for reduced tensors.
+
+*Orife-Lisle distance* \\D\\ (Eq. 26): Euclidean chord on \\S^5\\, \\D =
+2 \sin(\Theta/2)\\, range \\\[0, 2\]\\.
+
+*Michael distance* \\D_M\\ (Eq. 34): \\D_M = 1 - \cos(\Theta)\\, range
+\\\[0, 2\]\\.
+
+Relationship to misfit angles (Eq. 37): \\\bar{d}\\ approx \\\Theta\\,
+where \\\bar{d}\\ is the mean angular misfit between predicted and
+observed slip directions.
 
 ## References
 

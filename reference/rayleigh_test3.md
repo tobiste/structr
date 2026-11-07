@@ -1,6 +1,6 @@
-# Rayleigh test of uniformity against a unimodal alternative
+# Rayleigh test of uniformity against a unimodal alternative in \\S^3\\
 
-Rayleigh test of uniformity against a unimodal alternative
+Rayleigh test of uniformity against a unimodal alternative in \\S^3\\
 
 ## Usage
 

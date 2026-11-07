@@ -954,7 +954,8 @@ MIT License
   R/phi data
 
 - [`rayleigh_test3()`](https://tobiste.github.io/structr/reference/rayleigh_test3.md)
-  : Rayleigh test of uniformity against a unimodal alternative
+  : Rayleigh test of uniformity against a unimodal alternative in
+  \\S^3\\
 
 - [`rbingham()`](https://tobiste.github.io/structr/reference/rbing.md)
   [`rbingham_eig()`](https://tobiste.github.io/structr/reference/rbing.md)
@@ -1060,8 +1061,7 @@ MIT License
   5).
 
 - [`slip_inversion_yamaji_sato()`](https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato.md)
-  : Stress tensor inversion via the Yamaji and Sato (2006) eigenvector
-  method.
+  : Direct inversion For Fault slip in \\S^5\\
 
 - [`slip_inversion_yamaji_sato_boot()`](https://tobiste.github.io/structr/reference/slip_inversion_yamaji_sato_boot.md)
   : Uncertainties of direction stress inversion after Yamaji and Sato
