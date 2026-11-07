@@ -32,7 +32,7 @@ Imports:
     rlang,
     rotasym,
     sf,
-    tectonicr,
+    tectonicr (>= 0.4.10),
     viridis
 Suggests: 
     future,

@@ -57,7 +57,7 @@ The sense condition (Eq. 5 / Eq. 10) selects between the two antipodal
 solutions via a majority vote on \eqn{\tau_i \cdot \text{slip}_i > 0} (positive work).
 \subsection{Distance metrics}{
 
-\emph{Angular stress distance} (Lode Angle) \eqn{\Theta} (Eq. 19): great-circle distance on \eqn{S^5},
+\emph{Angular stress distance} (or \emph{Lode angle}) \eqn{\Theta} (Eq. 19): great-circle distance on \eqn{S^5},
 \eqn{\Theta = \arccos{|y_1 \dot y_2|})}, range \eqn{[0, 90]} deg for reduced tensors.
 
 \emph{Orife-Lisle distance} \eqn{D} (Eq. 26): Euclidean chord on \eqn{S^5},
