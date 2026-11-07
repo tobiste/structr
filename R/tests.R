@@ -92,7 +92,7 @@ print.Test <- function(x, digits = getOption("digits"), ...) {
 
 
 
-#' Rayleigh test of uniformity against a unimodal alternative
+#' Rayleigh test of uniformity against a unimodal alternative in \eqn{S^3}
 #' 
 #' @details The statistic is \eqn{S = p n \bar{R}^2} for \eqn{n} unit vectors in \eqn{p} dimensions,
 #' asymptotically chi-square with \eqn{p} degrees of freedom; the p-value is that of
@@ -105,15 +105,13 @@ print.Test <- function(x, digits = getOption("digits"), ...) {
 #' 
 #' @source modified after the python package `apsg` (v.2.0.6) by O. Lexa
 #' 
-#' @method rayleigh_test spherical
-#' @exportS3Method tectonicr::rayleigh_test
+#' @export
 #' @return object of class `"Test"`
-#' @aliases rayleigh_test
 #' @family tests
 #' 
 #' @examples
-#' rayleigh_test(example_lines)
-rayleigh_test.spherical <- function(x, level = 0.95){
+#' rayleigh_test3(example_lines)
+rayleigh_test3 <- function(x, level = 0.95){
   xv <- Vec3(x)
   d <- dim(xv)
   n <- d[1]
@@ -154,7 +152,7 @@ rayleigh_test.spherical <- function(x, level = 0.95){
 #'                     
 #' @param D 3x3 orientation tensor (see [ortensor()])
 #' @param n integer. Number of vectors
-#' @inheritParams rayleigh_test.spherical
+#' @inheritParams rayleigh_test3
 #' 
 #' @export
 #' @return object of class `"Test"`
@@ -194,7 +192,7 @@ bingham_test <- function(D, n, level = 0.95) {
 #'
 #' @param x,y  objects of class `"Vec3"`, `"Line"`, `"Ray"`, or `"Plane"`, where the
 #'  rows are the observations and the columns are the coordinates.
-#' @inheritParams rayleigh_test.spherical
+#' @inheritParams rayleigh_test3
 #' @inheritParams sph_mean
 #'
 #' @export
@@ -302,7 +300,7 @@ fisher_ftest <- function(x, y, level = 0.95, na.rm = TRUE) {
 #' Goodness-of-fit tests of the Fisher distribution
 #' 
 #' @param x object of class `"Spherical"`
-#' @inheritParams rayleigh_test.spherical
+#' @inheritParams rayleigh_test3
 #' 
 #' @details
 #'  The data are rotated to their mean direction. Under the Fisher model the

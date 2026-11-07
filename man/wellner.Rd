@@ -69,7 +69,7 @@ Other tests:
 \code{\link[=fisher_ftest]{fisher_ftest()}},
 \code{\link[=fisher_goodness_of_fit]{fisher_goodness_of_fit()}},
 \code{\link[=fisher_kent_test]{fisher_kent_test()}},
-\code{\link[=rayleigh_test.spherical]{rayleigh_test.spherical()}},
+\code{\link[=rayleigh_test3]{rayleigh_test3()}},
 \code{\link[=watson_symmetry_test]{watson_symmetry_test()}}
 }
 \concept{tests}
