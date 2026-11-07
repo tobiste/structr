@@ -49,7 +49,7 @@ Language: en-US
 LazyData: true
 Roxygen: list(markdown = TRUE)
 Config/testthat/edition: 3
-Config/roxygen2/version: 8.1.0
+Config/roxygen2/version: 8.1.1
 Collate: 
     'alphabeta.R'
     'best_pole.R'

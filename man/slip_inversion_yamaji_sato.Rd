@@ -2,7 +2,7 @@
 % Please edit documentation in R/stress_inversion_yamaji.R
 \name{slip_inversion_yamaji_sato}
 \alias{slip_inversion_yamaji_sato}
-\title{Stress tensor inversion via the Yamaji and Sato (2006) eigenvector method.}
+\title{Direct inversion For Fault slip in  \eqn{S^5}}
 \usage{
 slip_inversion_yamaji_sato(x, weights = NULL, flip = FALSE)
 }
@@ -16,13 +16,58 @@ slip_inversion_yamaji_sato(x, weights = NULL, flip = FALSE)
 \value{
 Same output as \code{\link[=slip_inversion]{slip_inversion()}} plus
 \describe{
-\item{\code{y}}{6D unit y-vector on S^5 representing the tensor}
+\item{\code{y}}{6D unit y-vector on \eqn{S^5} representing the tensor}
 \item{\code{alpha}}{per-fault angular misfit (unsigned, 0-90°)}
 \item{\code{mean_alpha}}{mean angular misfit across all faults}
 }
 }
 \description{
 Stress tensor inversion via the Yamaji and Sato (2006) eigenvector method.
+}
+\details{
+A reduced stress tensor is represented as a unit 5-vector \eqn{x} on the 5-sphere
+\eqn{S^5}, embedded in the 6D space of symmetric tensors via the \eqn{y}-vector (Eq. 6):
+
+\deqn{y = (1/\sqrt{2}) \times (s_{11}, s_{22}, s_{33}, \sqrt{2} \times s_{23}, \sqrt{2} \times s_{31}, \sqrt{2} \times s_{12})}
+
+with normalisation constraints (Eqs. 11-12):
+
+\eqn{\sigma_I  = s_{11} + s_{22} + s_{33} = 0}          (deviator)
+
+\eqn{\sigma_{II} = (s_{11}^2+s_{22}^2+s_{33}^2)/2
+            + s_{23}^2+s_{31}^2+s_{12}^2 = 1}      (unit norm)
+
+These constraints confine \eqn{y} to the intersection of a hyperplane and the
+6-sphere, which defines the 5-sphere \eqn{S^5}.
+
+For each fault datum \eqn{\{n, \text{slip}\}}, define the 6-vector \eqn{\epsilon'} (Eq. 8, derived
+from Eq. 4) such that the Wallace-Bott condition becomes:
+
+\eqn{\epsilon'_i \cdot y = 0}    (shear stress perpendicular to \eqn{b_i = n_i \times \text{slip}_i})
+
+The optimal \eqn{y} minimises \eqn{\sum_i (\epsilon'_i \cdot y)^2}, i.e. the smallest-eigenvalue
+eigenvector of \eqn{M = \sum_i \epsilon'_i \otimes \epsilon'_i}.
+
+The computation is carried out in the 5D deviator subspace via an explicit
+orthonormal basis \eqn{B} (\eqn{6 \times 5}), constructed as the complement of the deviator
+null direction \eqn{h = (1,1,1,0,0,0)/\sqrt{3}}, to avoid degeneracy in the \eqn{6\times 6}
+projected matrix.
+
+The sense condition (Eq. 5 / Eq. 10) selects between the two antipodal
+solutions via a majority vote on \eqn{\tau_i \cdot \text{slip}_i > 0} (positive work).
+\subsection{Distance metrics}{
+
+\emph{Angular stress distance} (Lode Angle) \eqn{\Theta} (Eq. 19): great-circle distance on \eqn{S^5},
+\eqn{\Theta = \arccos{|y_1 \dot y_2|})}, range \eqn{[0, 90]} deg for reduced tensors.
+
+\emph{Orife-Lisle distance} \eqn{D} (Eq. 26): Euclidean chord on \eqn{S^5},
+\eqn{D = 2 \sin(\Theta/2)}, range \eqn{[0, 2]}.
+
+\emph{Michael distance} \eqn{D_M} (Eq. 34): \eqn{D_M = 1 - \cos(\Theta)}, range \eqn{[0, 2]}.
+
+Relationship to misfit angles (Eq. 37): \eqn{\bar{d}} approx \eqn{\Theta}, where \eqn{\bar{d}} is
+the mean angular misfit between predicted and observed slip directions.
+}
 }
 \examples{
 set.seed(20250411)
