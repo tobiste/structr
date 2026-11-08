@@ -28,12 +28,21 @@ object of class `"Test"`
 
 ## Details
 
-The statistic is \\S = p n \bar{R}^2\\ for \\n\\ unit vectors in \\p\\
-dimensions, asymptotically chi-square with \\p\\ degrees of freedom; the
-p-value is that of the modified statistic \\S^\* = (1 - 1/(2n)) S + S^2
-/ (2n(p + 2))\\, which has error \\O(1/n^2)\\ (MJ eq. 10.4.4-10.4.6, eq.
-6.3.3 for the circle; FLE sec. 5.3.1(i)). The test is not consistent
-against axial alternatives.
+The statistic is \$\$S = p n \bar{R}^2\$\$ for \\n\\ unit vectors in
+\\p\\ dimensions, asymptotically chi-square with \\p\\ degrees of
+freedom; the p-value is that of the modified statistic \$\$S^\* = (1 -
+\frac{1}{2n}) S + \frac{S^2}{2n(p + 2)}\$\$ which has error \\O(1/n^2)\\
+(Mardia and Jupp, 2000; eq. 10.4.4-10.4.6, eq. 6.3.3 for the circle;
+Fisher et al., 1987, sec. 5.3.1(i)). The test is not consistent against
+axial alternatives.
+
+## References
+
+Mardia, K.V. and Jupp, P.E. (2000) Directional Statistics. John Wiley &
+Sons, Chichester.
+
+Fisher, N.I., Lewis, T. and Embleton, B.J.J. (1987) Statistical Analysis
+of Spherical Data. Cambridge University Press, Cambridge.
 
 ## See also
 

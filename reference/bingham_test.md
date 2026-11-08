@@ -35,8 +35,8 @@ object of class `"Test"`
 
 The statistic is \$\$S = 15 n / 2 (\text{tr}(T^2) - 1/3)\$\$ with the
 orientation tensor \\T\\ (scaled to trace 1), asymptotically chi-square
-with 5 degrees of freedom (MJ eq. 10.7.1-10.7.2), which gives the
-p-value.
+with 5 degrees of freedom (Mardia and Jupp, 2000; eq. 10.7.1-10.7.2),
+which gives the p-value.
 
 The modified statistic \\S^\*\\ of MJ eq. 10.7.3, a polynomial
 correction meant for \\S\\ near the critical values, is given in
@@ -47,6 +47,11 @@ Lisle's (1985) intensity \$\$I = 15/2 \sum((\lambda_i - 1/3)^2)\$\$.
 
 Large \\S\\ indicates a preferred orientation (cluster or girdle); a
 very small \\S\\ (lower tail) indicates data more regular than random.
+
+## References
+
+Mardia, K.V. and Jupp, P.E. (2000) Directional Statistics. John Wiley &
+Sons, Chichester.
 
 ## See also
 

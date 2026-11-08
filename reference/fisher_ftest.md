@@ -29,6 +29,22 @@ fisher_ftest(x, y, level = 0.95, na.rm = TRUE)
 
 object of class `"Test"`
 
+## Details
+
+Given two vector sets \\x\\ and \\y\\, then \\n_x\\ and \\n_y\\ are the
+number of vectors in each set, \\R_x\\ and \\R_y\\ are the mean
+resultant lengths of the two vector sets and \\R\\ is the mean resultant
+length of the pooled vector, then \$\$F = \frac{(n_x + n_y - 2)(R_x +
+R_y - R)}{n_x + n_y - R_x - R_y}\$\$ is asymptotically F-distributed
+with 2 and \\2(n_x + n_y - 2)\\ degrees of freedom (Fisher, Lewis &
+Embleton, 1987, sec. 7.2.2). Large \\F\\ indicates that the two samples
+have different mean orientations.
+
+## References
+
+Fisher, N.I., Lewis, T. and Embleton, B.J.J. (1987) Statistical Analysis
+of Spherical Data. Cambridge University Press, Cambridge.
+
 ## See also
 
 Other tests:
