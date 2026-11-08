@@ -22,15 +22,15 @@ Goodness-of-fit tests of the Fisher distribution
 }
 \details{
 The data are rotated to their mean direction. Under the Fisher model the
-colatitudes \eqn{\theta'} give \eqn{1 - \cos(\theta')} approximately exponential
-with rate \eqn{k = (n - 1) / \sum(1 - \cos(\theta'))} and the longitudes are
+colatitudes \eqn{\theta'} give \eqn{1 - \cos\theta'} approximately exponential
+with rate \eqn{k = (n - 1) / \sum(1 - \cos\theta')} and the longitudes are
 uniform.
 
-The colatitude test \deqn{M_E = (D_n - 0.2/n)(\sqrt(n) + 0.26 + 
- 0.5/\sqrt(n))} uses the Kolmogorov statistic \eqn{D_n} against the
-exponential distribution, while the longitude test \deqn{M_U = V_n(\sqrt(n) - 0.467 +
- 1.623/\sqrt(n))} uses the Kuiper statistic \eqn{V_n} against the uniform
-distribution (FLE eq. 5.15-5.16).
+The colatitude test \deqn{M_E = (D_n - \frac{0.2}{n})(\sqrt{n} + 0.26 + 
+ \frac{\sqrt{n}}{2})} uses the Kolmogorov statistic \eqn{D_n} against the
+exponential distribution, while the longitude test \deqn{M_U = V_n(\sqrt{n} - 0.467 +
+ \frac{1.623}{\sqrt{n}})} uses the Kuiper statistic \eqn{V_n} against the uniform
+distribution (Fisher et al., 1987; eq. 5.15-5.16).
 
 Critical values are known for the
 levels 0.90, 0.95 and 0.99.
@@ -44,6 +44,9 @@ The constants are FLE's, which are the original ones of Stephens
 set.seed(20250411)
 x <- rvmf(100)
 fisher_goodness_of_fit(x)
+}
+\references{
+Fisher, N.I., Lewis, T. and Embleton, B.J.J. (1987) Statistical Analysis of Spherical Data. Cambridge University Press, Cambridge.
 }
 \seealso{
 Other tests:

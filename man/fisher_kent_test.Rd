@@ -21,8 +21,8 @@ object of class \code{"Test"}
 Score test of the Fisher against the Kent distribution
 }
 \details{
-\eqn{T = n (\kappa/2)^2 I_1/2(\kappa) / I_5/2(\kappa) r_2^2} is asymptotically
-chi-square with 2 degrees of freedom (Kent, 1982, eq. 5.5), with the
+\deqn{T = n \frac{(\kappa/2)^2 I_{1/2}(\kappa)}{I_{5/2}(\kappa)} (r_2^2)} is asymptotically
+\eqn{\chi^2} with 2 degrees of freedom (Kent, 1982, eq. 5.5), with the
 maximum-likelihood \eqn{\kappa} of the Fisher distribution (Kent's Theorem
 5.1) and \eqn{r_2} the difference of the two eigenvalues of the second
 moments of the data in the tangent plane of the mean direction.

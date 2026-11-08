@@ -21,14 +21,19 @@ object of class \code{"Test"}
 Rayleigh test of uniformity against a unimodal alternative in \eqn{S^3}
 }
 \details{
-The statistic is \eqn{S = p n \bar{R}^2} for \eqn{n} unit vectors in \eqn{p} dimensions,
+The statistic is \deqn{S = p n \bar{R}^2} for \eqn{n} unit vectors in \eqn{p} dimensions,
 asymptotically chi-square with \eqn{p} degrees of freedom; the p-value is that of
-the modified statistic \eqn{S^* = (1 - 1/(2n)) S + S^2 / (2n(p + 2))}, which
-has error \eqn{O(1/n^2)} (MJ eq. 10.4.4-10.4.6, eq. 6.3.3 for the circle; FLE
+the modified statistic \deqn{S^* = (1 - \frac{1}{2n}) S + \frac{S^2}{2n(p + 2)}} which
+has error \eqn{O(1/n^2)} (Mardia and Jupp, 2000; eq. 10.4.4-10.4.6, eq. 6.3.3 for the circle; Fisher et al., 1987,
 sec. 5.3.1(i)). The test is not consistent against axial alternatives.
 }
 \examples{
 rayleigh_test3(example_lines)
+}
+\references{
+Mardia, K.V. and Jupp, P.E. (2000) Directional Statistics. John Wiley & Sons, Chichester.
+
+Fisher, N.I., Lewis, T. and Embleton, B.J.J. (1987) Statistical Analysis of Spherical Data. Cambridge University Press, Cambridge.
 }
 \seealso{
 Other tests:

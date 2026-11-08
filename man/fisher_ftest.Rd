@@ -20,6 +20,16 @@ object of class \code{"Test"}
 \description{
 Test against the null-hypothesis that the samples are drawn from the same Fisher population.
 }
+\details{
+Given two vector sets \eqn{x} and \eqn{y}, then \eqn{n_x} and
+\eqn{n_y} are the number of vectors in each set, \eqn{R_x} and \eqn{R_y} are
+the mean resultant lengths of the two vector sets and \eqn{R} is the mean
+resultant length of the pooled vector, then
+\deqn{F = \frac{(n_x + n_y - 2)(R_x + R_y - R)}{n_x + n_y - R_x - R_y}}
+is asymptotically F-distributed with 2 and \eqn{2(n_x + n_y - 2)} degrees of
+freedom (Fisher, Lewis & Embleton, 1987, sec. 7.2.2).
+Large \eqn{F} indicates that the two samples have different mean orientations.
+}
 \examples{
 set.seed(20250411)
 x <- rvmf(100, mu = Line(120, 50), k = 20)
@@ -30,6 +40,9 @@ stereo_point(x, col = 1)
 stereo_point(y, col = 2)
 
 fisher_ftest(x, y)
+}
+\references{
+Fisher, N.I., Lewis, T. and Embleton, B.J.J. (1987) Statistical Analysis of Spherical Data. Cambridge University Press, Cambridge.
 }
 \seealso{
 Other tests:

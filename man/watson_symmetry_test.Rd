@@ -26,7 +26,7 @@ Whether a Bingham distribution is a Watson distribution:
 \deqn{w_b = n \sum((k_i - \text{mean}(k)) (\lambda_i - \text{mean}(\lambda)))}
 over the two smallest eigenvalues tests the bipolar form, \eqn{w_g} over the
 two largest the girdle form, each asymptotically chi-square with 2 degrees of
-freedom (MJ eq. 10.7.8-10.7.18). \eqn{k_i} are the maximum-likelihood
+freedom (Mardia and Jupp, 2000; eq. 10.7.8-10.7.18). \eqn{k_i} are the maximum-likelihood
 Bingham concentrations \eqn{(0, \kappa_\text{major}, \kappa_\text{minor})} and
 \eqn{\lambda_i} the eigenvalues of the orientation tensor, both in descending order.
 Mardia & Jupp's calcite example gives \eqn{w_g = 1.33} (girdle accepted) and \eqn{w_b = 9.97}.
@@ -36,6 +36,9 @@ r <- rbingham_eig(100, c(100, 1, 0), "Line")
 e <- ot_eigen(r)$values
 k <- c(0, bingham_statistics(r)$k)
 watson_symmetry_test(e, k, n = nrow(r))
+}
+\references{
+Mardia K.V. and Jupp P.E. (2000) Directional Statistics. John Wiley & Sons, Chichester.
 }
 \seealso{
 Other tests:

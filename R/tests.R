@@ -94,16 +94,21 @@ print.Test <- function(x, digits = getOption("digits"), ...) {
 
 #' Rayleigh test of uniformity against a unimodal alternative in \eqn{S^3}
 #' 
-#' @details The statistic is \eqn{S = p n \bar{R}^2} for \eqn{n} unit vectors in \eqn{p} dimensions,
+#' @details The statistic is \deqn{S = p n \bar{R}^2} for \eqn{n} unit vectors in \eqn{p} dimensions,
 #' asymptotically chi-square with \eqn{p} degrees of freedom; the p-value is that of
-#' the modified statistic \eqn{S^* = (1 - 1/(2n)) S + S^2 / (2n(p + 2))}, which
-#' has error \eqn{O(1/n^2)} (MJ eq. 10.4.4-10.4.6, eq. 6.3.3 for the circle; FLE
+#' the modified statistic \deqn{S^* = (1 - \frac{1}{2n}) S + \frac{S^2}{2n(p + 2)}} which
+#' has error \eqn{O(1/n^2)} (Mardia and Jupp, 2000; eq. 10.4.4-10.4.6, eq. 6.3.3 for the circle; Fisher et al., 1987,
 #' sec. 5.3.1(i)). The test is not consistent against axial alternatives.
 #'                     
 #' @param x Object of class `spherical`
 #' @inheritParams bingham_ellipse
 #' 
 #' @source modified after the python package `apsg` (v.2.0.6) by O. Lexa
+#' 
+#' @references 
+#' Mardia, K.V. and Jupp, P.E. (2000) Directional Statistics. John Wiley & Sons, Chichester.
+#' 
+#' Fisher, N.I., Lewis, T. and Embleton, B.J.J. (1987) Statistical Analysis of Spherical Data. Cambridge University Press, Cambridge.
 #' 
 #' @export
 #' @return object of class `"Test"`
@@ -137,7 +142,7 @@ rayleigh_test3 <- function(x, level = 0.95){
 #' 
 #' @details The statistic is \deqn{S = 15 n / 2 (\text{tr}(T^2) - 1/3)} with the orientation 
 #' tensor \eqn{T} (scaled to trace 1), asymptotically chi-square with 5 degrees of 
-#' freedom (MJ eq. 10.7.1-10.7.2), which gives the p-value. 
+#' freedom (Mardia and Jupp, 2000; eq. 10.7.1-10.7.2), which gives the p-value. 
 #' 
 #' The modified 
 #' statistic \eqn{S^*} of MJ eq. 10.7.3, a polynomial correction meant for \eqn{S}
@@ -157,6 +162,8 @@ rayleigh_test3 <- function(x, level = 0.95){
 #' @export
 #' @return object of class `"Test"`
 #' @family tests
+#' 
+#' @references Mardia, K.V. and Jupp, P.E. (2000) Directional Statistics. John Wiley & Sons, Chichester.
 #' 
 #' @source modified after the python package `apsg` (v.2.0.6) by O. Lexa
 #' 
@@ -194,6 +201,17 @@ bingham_test <- function(D, n, level = 0.95) {
 #'  rows are the observations and the columns are the coordinates.
 #' @inheritParams rayleigh_test3
 #' @inheritParams sph_mean
+#' 
+#' @details Given two vector sets \eqn{x} and \eqn{y}, then \eqn{n_x} and 
+#' \eqn{n_y} are the number of vectors in each set, \eqn{R_x} and \eqn{R_y} are 
+#' the mean resultant lengths of the two vector sets and \eqn{R} is the mean 
+#' resultant length of the pooled vector, then 
+#' \deqn{F = \frac{(n_x + n_y - 2)(R_x + R_y - R)}{n_x + n_y - R_x - R_y}} 
+#' is asymptotically F-distributed with 2 and \eqn{2(n_x + n_y - 2)} degrees of 
+#' freedom (Fisher, Lewis & Embleton, 1987, sec. 7.2.2). 
+#' Large \eqn{F} indicates that the two samples have different mean orientations.
+#' 
+#' @references Fisher, N.I., Lewis, T. and Embleton, B.J.J. (1987) Statistical Analysis of Spherical Data. Cambridge University Press, Cambridge.
 #'
 #' @export
 #' @return object of class `"Test"`
@@ -304,15 +322,15 @@ fisher_ftest <- function(x, y, level = 0.95, na.rm = TRUE) {
 #' 
 #' @details
 #'  The data are rotated to their mean direction. Under the Fisher model the
-#'  colatitudes \eqn{\theta'} give \eqn{1 - \cos(\theta')} approximately exponential
-#'  with rate \eqn{k = (n - 1) / \sum(1 - \cos(\theta'))} and the longitudes are
+#'  colatitudes \eqn{\theta'} give \eqn{1 - \cos\theta'} approximately exponential
+#'  with rate \eqn{k = (n - 1) / \sum(1 - \cos\theta')} and the longitudes are
 #'  uniform. 
 #'  
-#'  The colatitude test \deqn{M_E = (D_n - 0.2/n)(\sqrt(n) + 0.26 + 
-#'  0.5/\sqrt(n))} uses the Kolmogorov statistic \eqn{D_n} against the
-#'  exponential distribution, while the longitude test \deqn{M_U = V_n(\sqrt(n) - 0.467 +
-#'  1.623/\sqrt(n))} uses the Kuiper statistic \eqn{V_n} against the uniform 
-#'  distribution (FLE eq. 5.15-5.16). 
+#'  The colatitude test \deqn{M_E = (D_n - \frac{0.2}{n})(\sqrt{n} + 0.26 + 
+#'  \frac{\sqrt{n}}{2})} uses the Kolmogorov statistic \eqn{D_n} against the
+#'  exponential distribution, while the longitude test \deqn{M_U = V_n(\sqrt{n} - 0.467 +
+#'  \frac{1.623}{\sqrt{n}})} uses the Kuiper statistic \eqn{V_n} against the uniform 
+#'  distribution (Fisher et al., 1987; eq. 5.15-5.16). 
 #'  
 #'  Critical values are known for the
 #'  levels 0.90, 0.95 and 0.99.
@@ -322,6 +340,8 @@ fisher_ftest <- function(x, y, level = 0.95, na.rm = TRUE) {
 #'  12.3.4) misquote them.
 #'  
 #' @source modified after the python package `apsg` (v.2.0.6) by O. Lexa
+#' 
+#' @references Fisher, N.I., Lewis, T. and Embleton, B.J.J. (1987) Statistical Analysis of Spherical Data. Cambridge University Press, Cambridge.
 #' 
 #' @export
 #' @return object of class `"Test"`
@@ -374,8 +394,8 @@ fisher_goodness_of_fit <- function(x, level = 0.95) {
 
 #' Score test of the Fisher against the Kent distribution
 #' 
-#' @details \eqn{T = n (\kappa/2)^2 I_1/2(\kappa) / I_5/2(\kappa) r_2^2} is asymptotically 
-#' chi-square with 2 degrees of freedom (Kent, 1982, eq. 5.5), with the 
+#' @details \deqn{T = n \frac{(\kappa/2)^2 I_{1/2}(\kappa)}{I_{5/2}(\kappa)} (r_2^2)} is asymptotically 
+#' \eqn{\chi^2} with 2 degrees of freedom (Kent, 1982, eq. 5.5), with the 
 #' maximum-likelihood \eqn{\kappa} of the Fisher distribution (Kent's Theorem 
 #' 5.1) and \eqn{r_2} the difference of the two eigenvalues of the second 
 #' moments of the data in the tangent plane of the mean direction. 
@@ -441,7 +461,7 @@ fisher_kent_test <- function(x, level = 0.95) {
 #' \deqn{w_b = n \sum((k_i - \text{mean}(k)) (\lambda_i - \text{mean}(\lambda)))} 
 #' over the two smallest eigenvalues tests the bipolar form, \eqn{w_g} over the 
 #' two largest the girdle form, each asymptotically chi-square with 2 degrees of 
-#' freedom (MJ eq. 10.7.8-10.7.18). \eqn{k_i} are the maximum-likelihood 
+#' freedom (Mardia and Jupp, 2000; eq. 10.7.8-10.7.18). \eqn{k_i} are the maximum-likelihood 
 #' Bingham concentrations \eqn{(0, \kappa_\text{major}, \kappa_\text{minor})} and
 #' \eqn{\lambda_i} the eigenvalues of the orientation tensor, both in descending order. 
 #' Mardia & Jupp's calcite example gives \eqn{w_g = 1.33} (girdle accepted) and \eqn{w_b = 9.97}.
@@ -449,6 +469,8 @@ fisher_kent_test <- function(x, level = 0.95) {
 #' @param lambda numeric.
 #' @param k Bingham concentrations \eqn{(0, \kappa_\text{major}, \kappa_\text{minor})} 
 #' @inheritParams bingham_test
+#' 
+#' @references Mardia K.V. and Jupp P.E. (2000) Directional Statistics. John Wiley & Sons, Chichester.
 #' 
 #' @export
 #' @return object of class `"Test"`

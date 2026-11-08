@@ -25,7 +25,7 @@ Bingham test of uniformity of axes on the sphere
 \details{
 The statistic is \deqn{S = 15 n / 2 (\text{tr}(T^2) - 1/3)} with the orientation
 tensor \eqn{T} (scaled to trace 1), asymptotically chi-square with 5 degrees of
-freedom (MJ eq. 10.7.1-10.7.2), which gives the p-value.
+freedom (Mardia and Jupp, 2000; eq. 10.7.1-10.7.2), which gives the p-value.
 
 The modified
 statistic \eqn{S^*} of MJ eq. 10.7.3, a polynomial correction meant for \eqn{S}
@@ -41,6 +41,9 @@ Large \eqn{S} indicates a preferred orientation
 \examples{
 t <- example_lines
 bingham_test(ortensor(t), n = nrow(t))
+}
+\references{
+Mardia, K.V. and Jupp, P.E. (2000) Directional Statistics. John Wiley & Sons, Chichester.
 }
 \seealso{
 Other tests:
