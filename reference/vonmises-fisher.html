@@ -45,6 +45,7 @@ and concentration parameter (\(\kappa\)) ."><meta property="og:image" content="h
     <li><a class="dropdown-item" href="../articles/strain.html">Strain and Vorticity Analysis</a></li>
     <li><a class="dropdown-item" href="../articles/deformation.html">Deformation and Velocity Gradient Tensor</a></li>
   </ul></li>
+<li class="nav-item"><a class="nav-link" href="../news/index.html">Changelog</a></li>
       </ul><ul class="navbar-nav"><li class="nav-item"><form class="form-inline" role="search">
  <input class="form-control" type="search" name="search-input" id="search-input" autocomplete="off" aria-label="Search site" placeholder="Search for" data-search-index="../search.json"></form></li>
 <li class="nav-item"><a class="external-link nav-link" href="https://github.com/tobiste/structr/" aria-label="GitHub"><span class="fa fab fa-github fa-lg"></span></a></li>
@@ -132,13 +133,7 @@ rows are the observations and the columns are the coordinates.</p></dd>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="va">dx</span> <span class="op">&lt;-</span> <span class="fu">dvmf</span><span class="op">(</span><span class="va">x</span>, mu <span class="op">=</span> <span class="fu"><a href="classes.html">Ray</a></span><span class="op">(</span><span class="fl">120</span>, <span class="fl">50</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">dx</span><span class="op">)</span></span></span>
-<span class="r-out co"><span class="r-pr">#&gt;</span>            [,1]</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [1,] 0.65684755</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [2,] 0.14268609</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [3,] 0.34589805</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [4,] 0.05253657</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [5,] 0.67050140</span>
-<span class="r-out co"><span class="r-pr">#&gt;</span> [6,] 0.18688448</span>
+<span class="r-out co"><span class="r-pr">#&gt;</span> [1] 0.65684755 0.14268609 0.34589805 0.05253657 0.67050140 0.18688448</span>
 <span class="r-in"><span></span></span>
 <span class="r-in"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">x</span>, col <span class="op">=</span> <span class="fu"><a href="assign-color.html">assign_col</a></span><span class="op">(</span><span class="va">dx</span><span class="op">)</span><span class="op">)</span></span></span>
 <span class="r-plt img"><img src="vonmises-fisher-2.png" alt="" width="1094" height="676"></span>

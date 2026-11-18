@@ -104,14 +104,14 @@ parameter](strain_files/figure-html/hsu-1.png)
 ## Vorticity analysis
 
 The **Rigid Grain Net** (Jessup et al., 2007)[^9] plots the aspect ratio
-(`R`) of porphyroclasts against their long-axis orientation with respect
-to the foliation (`phi`), on top of the theoretical fields of
-stable-sink and continuously rotating rigid clasts. The plot estimates
-the critical aspect ratio $`R_c`$ that marks the transition between
-clasts that reach a stable-sink position and clasts that rotate
-indefinitely. The **mean kinematic vorticity number** follows from this
-threshold as $`W_m = (R_c^2 - 1)/(R_c^2 + 1)`$. Uncertainties for
-$`R_c`$ are estimated using the bootstrap method described in Stephan et
+of porphyroclasts against their long-axis orientation with respect to
+the foliation on top of the theoretical fields of stable-sink and
+continuously rotating rigid clasts. The plot estimates the critical
+aspect ratio $`R_c`$ that marks the transition between clasts that reach
+a stable-sink position and clasts that rotate indefinitely. The **mean
+kinematic vorticity number** follows from this threshold as
+$`W_m = (R_c^2 - 1)/(R_c^2 + 1)`$. Uncertainties for $`R_c`$ are
+estimated using the bootstrap method described in Stephan et
 al. (2025)[^10].
 
 ``` r
