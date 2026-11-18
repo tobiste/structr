@@ -2,6 +2,8 @@
 
 ## structr (development version)
 
+## structr 0.2.2.9019 *18_11_2026*
+
 - Initial CRAN submission.
 - Error fix in
   [`RGN_plot()`](https://tobiste.github.io/structr/reference/RGN_plot.md)
@@ -13,3 +15,7 @@
   probabilities instead of a hard 3° margin. Measurement error still
   isn’t in the interval itself, so the p_min sweep is what shows how
   sensitive the result is to that error.
+
+## structr 0.1
+
+- Initial
