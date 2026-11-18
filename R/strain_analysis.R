@@ -766,42 +766,105 @@ vorticity_boot <- function(B, R = 100L, probs = 0.975) {
   future.apply::future_vapply(seq_len(R), f, FUN.VALUE = numeric(1L), future.seed = TRUE)
 }
 
+Rc_error <- function(r, theta, theta_sd = 3, p_min = 0.95,
+                     n_iter = 2000L, probs = 0.975) {
+  n   <- length(r)
+  th  <- abs(theta)
+  B   <- mean_vorticity(r)
+  thr <- crit_angle(B)                                  # vertex envelope, per clast
+  sd_th <- pmax(theta_sd, 1e-6)
+  
+  # P(true |theta| exceeds the threshold | observed |theta|, sd = theta_sd)
+  p_out <- stats::pnorm((th - thr) / sd_th)
+  keep  <- !is.na(p_out) & p_out >= p_min
+  
+  stat <- function(idx) {
+    k <- idx[keep[idx]]
+    if (length(k) < 2L) return(NA_real_)
+    stats::quantile(B[k], probs = probs, names = FALSE)
+  }
+  
+  point <- stat(seq_len(n))
+  boot  <- replicate(n_iter, stat(sample.int(n, n, replace = TRUE)))
+  boot  <- boot[!is.na(boot)]
+  
+  list(
+    Wm_median = point,                                  # point estimate (name kept for RGN_plot)
+    CI        = stats::quantile(boot, probs = c(0.025, 0.975), names = FALSE),
+    n_valid   = length(boot)
+  )
+}
 
 #' Rigid Grain Net (RGN)
 #'
-#' The rigid grain net after (Jessup et al. 2007) plots the distribution the finite
-#' strain ratio (`R`) and orientation (`phi`) of
-#' porphyroclast over the theoretical distribution of tailless clasts. The plot estimates
-#' the critical shape factor `Rc` marking the transition between the stable-sink
-#' position and infinitely rotating porphyroclasts.
-#' This critical shape factor can be interpreted as the the **mean kinematic vorticity number**.
-#' Here the `Rc` is estimated using the bootstrap method described in Stephan et al. (2025).
+#' The rigid grain net (Jessup et al. 2007) plots the distribution of the finite
+#' strain ratio \eqn{R} and orientation \eqn{\theta} of porphyroclasts over the
+#' theoretical distribution of tailless clasts. The plot estimates the critical
+#' shape factor \eqn{B^\ast} marking the transition between stable-sink positions
+#' and infinitely rotating porphyroclasts. This critical shape factor is
+#' interpreted as the mean kinematic vorticity number \eqn{W_m}.
 #'
-#' @param r numeric. The porphyroclast aspect ratio (long axis/short axis)
-#' @param theta numeric. Angle between long axis and foliation (in degrees)
-#' @param angle_error numeric. Uncertainty of angle measurement. `3` by default.
-#' @param probs integer. Probability with values in \eqn{[0, 1]} to estimate
-#' critical shape factor, i.e. the largest shape factor of measurements outside
-#' of critical hyperbole.
-#' @param n_iter integer. Number of bootstrap resamples
-#' @param grid numeric. Spacing of hyperboles.
+#' @param r numeric. Porphyroclast aspect ratio (long axis / short axis).
+#' @param theta numeric. Angle between long axis and foliation (degrees).
+#' @param angle_error numeric. Standard deviation of the angle measurement error
+#'   in degrees. `3` by default.
+#' @param p_min numeric. Minimum probability that a clast lies outside the critical
+#'   threshold for it to be used in the estimate. `0.95` by default.
+#' @param probs numeric. Probability in \eqn{[0, 1]} used to estimate the critical
+#'   shape factor, i.e. the quantile of shape factors of clasts classified as
+#'   outside the critical hyperbola. `0.975` by default.
+#' @param n_iter integer. Number of bootstrap resamples. `2000` by default.
+#' @param grid numeric. Spacing of hyperbolae.
 #' @inheritParams Rphi_plot
 #' @inheritParams stereoplot
 #' @param ... plotting arguments passed to [graphics::points()]
 #'
-#' @returns a plot or a list of the calculated `B` (shape factor) and `theta` values,
-#' and the bootstrapped confidence interval of the critical B value (`Rc_CI`).
+#' @returns A plot. Invisibly, a list with `values` (matrix of `B` and `theta`),
+#'   `Wm` (point estimate of the critical shape factor) and `Wm_CI`
+#'   (bootstrap percentile interval).
 #'
-#' @references Jessup, Micah J., Richard D. Law, and Chiara Frassi.
-#' "The rigid grain net (RGN): an alternative method for estimating mean
-#' kinematic vorticity number (Wm)." Journal of Structural Geology 29.3 (2007):
-#' 411-421. \doi{10.1016/j.jsg.2006.11.003}
+#' @details
+#' ## The Mean Kinematic Vorticity Number
+#' The mean kinematic vorticity number \eqn{W_m} is estimated as the upper
+#' \code{probs} quantile of the shape factor \eqn{B^\ast} of clasts that lie outside
+#' the critical hyperbola (Jessup et al. 2007, Eq. 1, evaluated at \eqn{W_m = B^\ast}).
 #'
-#' Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
-#' Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
-#' vorticity control gold enrichment in Archean shear zones
-#' (Shebandowan Greenstone Belt, Superior Province, Canada).
-#' Journal of Structural Geology, 201, 105542.
+#' The orientation \eqn{\theta} of the porphyroclast long axis relative to the
+#' foliation is given by
+#' \deqn{\theta = \frac{1}{2} \sin^{-1}\Bigl\{ \frac{W_m}{B^{\ast}} \left( \sqrt{1-W_m^2} - \sqrt{{B^{\ast}}^2 - W_m^2} \right) \Bigr\}}
+#' where \eqn{B^{\ast}} is the shape factor
+#' \deqn{B^{\ast} = \frac{M_x^2 - M_n^2}{M_x^2 + M_n^2}}
+#' and \eqn{M_n} and \eqn{M_x} are the short and long axes of the clast
+#' (Jessup et al. 2007).
+#'
+#' ## Confidence Interval of the Estimate 
+#' Measurement error in \eqn{\theta} is handled probabilistically rather than with
+#' a fixed margin. For each clast, the probability that its true angle lies outside
+#' the critical threshold is
+#' \deqn{p_i = \Phi\left(\frac{|\theta_i| - \theta_{c,i}}{\sigma_\theta}\right),}
+#' where \eqn{\theta_{c,i}} is the threshold at that clast's \eqn{B^\ast} and
+#' \eqn{\sigma_\theta} is `angle_error`. Only clasts with \eqn{p_i \ge} `p_min` are
+#' kept. Near the vertex of the hyperbola the threshold is small, so a few degrees
+#' of error can move a clast across it. Clasts with large \eqn{B^\ast} and uncertain
+#' classification are excluded rather than allowed to set the upper quantile.
+#'
+#' The confidence interval is a percentile interval from a non-parametric bootstrap
+#' over clasts (`n_iter` resamples; after Stephan et al (2025). 
+#' Measurement error enters through the
+#' classification probabilities only, so it is not added again through random
+#' perturbation of the data. 
+#' Because the estimate depends on `p_min`, the sensitivity of the result to this 
+#' choice should be reported by repeating the estimate over a range of values
+#'
+#' @references Jessup, M. J., Law, R. D., & Frassi, C. (2007). The rigid grain net
+#' (RGN): an alternative method for estimating mean kinematic vorticity number
+#' (\eqn{W_m}). \emph{Journal of Structural Geology}, 29(3), 411--421.
+#' \doi{10.1016/j.jsg.2006.11.003}
+#'
+#' Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M., Creaser, R., &
+#' Hollings, P. (2025). Going with the flow - Changes of vorticity control gold
+#' enrichment in Archean shear zones (Shebandowan Greenstone Belt, Superior
+#' Province, Canada). \emph{Journal of Structural Geology}, 201, 105542.
 #' \doi{10.1016/j.jsg.2025.105542}
 #'
 #' @export
@@ -809,56 +872,115 @@ vorticity_boot <- function(B, R = 100L, probs = 0.975) {
 #' @examples
 #' data(shebandowan)
 #' set.seed(20250411)
-#' RGN_plot(shebandowan$r, shebandowan$phi, col = "darkred")
-RGN_plot <- function(r, theta, angle_error = 3, n_iter = 100L, probs = 0.975, grid = 0.05, main = "Rigid-Grain-Net", guides = NULL, ...) {
+#' RGN_plot(shebandowan$r, shebandowan$phi, col = "darkred", guides = TRUE, n_iter = 1e3)
+# RGN_plot <- function(r, theta, angle_error = 3, n_iter = 100L, probs = 0.975, grid = 0.05, main = "Rigid-Grain-Net", guides = NULL, ...) {
+#   guides <- guides %||% getOption("structr.guides")
+# 
+#   R_val <- r
+#   theta <- theta %% 180
+#   theta <- ifelse(theta > 90, theta - 180, theta)
+# 
+#   #B_val <- (R_val^2 - 1) / (R_val^2 + 1)
+#   # e_val = log(R_val) / 2
+#   B_val <- mean_vorticity(R_val)
+# 
+#   crit_angleB <- crit_angle(B_val)
+#   #infinite_rot_pos <- theta - angle_error > crit_angleB
+#   #infinite_rot_neg <- theta + angle_error < crit_angleB
+#   crit <- abs(theta) - angle_error > crit_angleB
+# 
+#   bmax_r <- vorticity_boot(B_val[crit], R = n_iter, probs = probs)
+#   bmax_log <- log(bmax_r)
+# 
+#   bmax_geomean <- exp(base::mean(bmax_log, na.rm = TRUE))
+#   bmax_geosd <- exp(stats::sd(bmax_log, na.rm = TRUE))
+# 
+#   R_test <- 10000
+#   t_score <- stats::qt(p = 0.05 / 2, df = R_test - 1, lower.tail = FALSE)
+#   geo.sde <- bmax_geosd / sqrt(R_test)
+#   geo.margin_error <- t_score * geo.sde
+#   geo.lowerCI <- bmax_geomean - geo.margin_error
+#   geo.upperCI <- bmax_geomean + geo.margin_error
+# 
+#   hyp <- RGN_hyperbola(steps = grid)
+#   hyperbola <- split(hyp$hyperbola, hyp$hyperbola$w)
+# 
+#   plot(c(0, max(hyp$crit$b)), c(-90, 90),
+#     type = "n",
+#     axes = FALSE, frame.plot = FALSE,
+#     # xgap.axis = 0, ygap.axis = 0,
+#     ylim = c(-90, 90),
+#     xlab = "Shape factor, B*",
+#     ylab = expression("Angle between clast long axis and foliation," ~ theta ~ "(" * degree * ")"),
+#     main = main
+#   )
+# 
+#   # CI of critical B
+#   graphics::rect(geo.lowerCI, -100, geo.upperCI, 100, col = "grey80", border = NA)
+# 
+#   graphics::axis(2, at = seq(-90, 90, 30), gap.axis = 0)
+#   graphics::axis(1, at = seq(0, max(hyp$crit$b), .1), gap.axis = 0)
+# 
+#   if (isTRUE(guides)) {
+#     # add hyperbola net
+#     lapply(hyperbola, function(h) {
+#       graphics::lines(h$b, h$theta, col = "lightgray")
+#       graphics::lines(h$b, -h$theta, col = "lightgray")
+#     })
+#   }
+#   graphics::lines(hyp$crit$b, hyp$crit$theta, col = "grey30")
+#   graphics::lines(hyp$crit$b, -hyp$crit$theta, col = "grey30")
+# 
+#   if (isTRUE(guides)) graphics::abline(v = cosd(45), col = "grey10", lty = 3, lwd = .1) # pure-shear simple shear separation
+#   graphics::abline(v = c(geo.lowerCI, geo.upperCI), col = "black", lty = 2, lwd = .5) # CI interval of bootstrapped B
+# 
+#   graphics::points(B_val, theta, ...)
+# 
+#   #graphics::mtext(paste0("Wm = ", round(bmax_geomean, 2), " \u00B1 ", round(geo.margin_error, 2)))
+#   graphics::mtext(bquote(W[m] == .(format(round(bmax_geomean, 2), nsmall = 2)) %+-% .(format(round(geo.margin_error, 2), nsmall = 2))))  
+#   graphics::title(sub = paste0("(n: ", length(r), ")"))
+# 
+#   invisible(
+#     list(
+#       values = cbind(B = B_val, theta = theta),
+#       B_CI = c(geo.lowerCI, geo.upperCI)
+#     )
+#   )
+# }
+RGN_plot <- function(r, theta, angle_error = 3, n_iter = 2000L, probs = 0.975, p_min = 0.95,
+                     grid = 0.05, main = "Rigid-Grain-Net", guides = NULL, ...) {
   guides <- guides %||% getOption("structr.guides")
-
+  
   R_val <- r
   theta <- theta %% 180
   theta <- ifelse(theta > 90, theta - 180, theta)
-
-  B_val <- (R_val^2 - 1) / (R_val^2 + 1)
-  # e_val = log(R_val) / 2
-
-  crit_angleB <- crit_angle(B_val)
-  infinite_rot_pos <- theta - angle_error > crit_angleB
-  infinite_rot_neg <- theta + angle_error < crit_angleB
-  crit <- abs(theta) - angle_error > crit_angleB
-
-  bmax_r <- vorticity_boot(B_val[crit], R = n_iter, probs = probs)
-  bmax_log <- log(bmax_r)
-
-  bmax_geomean <- exp(base::mean(bmax_log, na.rm = TRUE))
-  bmax_geosd <- exp(stats::sd(bmax_log, na.rm = TRUE))
-
-  R_test <- 10000
-  t_score <- stats::qt(p = 0.05 / 2, df = R_test - 1, lower.tail = FALSE)
-  geo.sde <- bmax_geosd / sqrt(R_test)
-  geo.margin_error <- t_score * geo.sde
-  geo.lowerCI <- bmax_geomean - geo.margin_error
-  geo.upperCI <- bmax_geomean + geo.margin_error
-
-  hyp <- RGN_hyperbola(steps = grid)
+  B_val <- mean_vorticity(R_val)
+  
+  # Bootstrap with measurement error on theta (angle_error = SD in degrees)
+  rc      <- Rc_error(R_val, theta, theta_sd = angle_error, p_min = p_min,
+                      n_iter = n_iter, probs = probs)
+  Rc_est  <- rc$Wm_median
+  Rc_CI   <- rc$CI
+  
+  hyp       <- RGN_hyperbola(steps = grid)
   hyperbola <- split(hyp$hyperbola, hyp$hyperbola$w)
-
+  
   plot(c(0, max(hyp$crit$b)), c(-90, 90),
-    type = "n",
-    axes = FALSE, frame.plot = FALSE,
-    # xgap.axis = 0, ygap.axis = 0,
-    ylim = c(-90, 90),
-    xlab = "Shape factor, B*",
-    ylab = expression("Angle between clast long axis and foliation," ~ theta ~ "(" * degree * ")"),
-    main = main
+       type = "n",
+       axes = FALSE, frame.plot = FALSE,
+       ylim = c(-90, 90),
+       xlab = "Shape factor, B*",
+       ylab = expression("Angle between clast long axis and foliation," ~ theta ~ "(" * degree * ")"),
+       main = main
   )
-
-  # CI of critical B
-  graphics::rect(geo.lowerCI, -100, geo.upperCI, 100, col = "grey80", border = NA)
-
+  
+  # CI of Wm
+  graphics::rect(Rc_CI[1], -100, Rc_CI[2], 100, col = "grey80", border = NA)
+  
   graphics::axis(2, at = seq(-90, 90, 30), gap.axis = 0)
   graphics::axis(1, at = seq(0, max(hyp$crit$b), .1), gap.axis = 0)
-
+  
   if (isTRUE(guides)) {
-    # add hyperbola net
     lapply(hyperbola, function(h) {
       graphics::lines(h$b, h$theta, col = "lightgray")
       graphics::lines(h$b, -h$theta, col = "lightgray")
@@ -866,19 +988,21 @@ RGN_plot <- function(r, theta, angle_error = 3, n_iter = 100L, probs = 0.975, gr
   }
   graphics::lines(hyp$crit$b, hyp$crit$theta, col = "grey30")
   graphics::lines(hyp$crit$b, -hyp$crit$theta, col = "grey30")
-
-  if (isTRUE(guides)) graphics::abline(v = cosd(45), col = "grey10", lty = 3, lwd = .1) # pure-shear simple shear separation
-  graphics::abline(v = c(geo.lowerCI, geo.upperCI), col = "black", lty = 2, lwd = .5) # CI interval of bootstrapped B
-
+  
+  if (isTRUE(guides)) graphics::abline(v = cosd(45), col = "grey10", lty = 3, lwd = .1)
+  graphics::abline(v = Rc_CI, col = "black", lty = 2, lwd = .5)
+  
   graphics::points(B_val, theta, ...)
-
-  graphics::mtext(paste0("Rc = ", round(bmax_geomean, 2), " \u00B1 ", round(geo.margin_error, 2)))
+  
+  fmt <- function(x) format(round(x, 2), nsmall = 2)
+  graphics::mtext(bquote(W[m] == .(fmt(Rc_est)) ~ "[" * .(fmt(Rc_CI[1])) * ", " * .(fmt(Rc_CI[2])) * "]"))  
   graphics::title(sub = paste0("(n: ", length(r), ")"))
-
+  
   invisible(
     list(
       values = cbind(B = B_val, theta = theta),
-      Rc_CI = c(geo.lowerCI, geo.upperCI)
+      Wm     = Rc_est,
+      Wm_CI  = Rc_CI
     )
   )
 }

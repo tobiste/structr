@@ -8,8 +8,9 @@ RGN_plot(
   r,
   theta,
   angle_error = 3,
-  n_iter = 100L,
+  n_iter = 2000L,
   probs = 0.975,
+  p_min = 0.95,
   grid = 0.05,
   main = "Rigid-Grain-Net",
   guides = NULL,
@@ -17,19 +18,23 @@ RGN_plot(
 )
 }
 \arguments{
-\item{r}{numeric. The porphyroclast aspect ratio (long axis/short axis)}
+\item{r}{numeric. Porphyroclast aspect ratio (long axis / short axis).}
 
-\item{theta}{numeric. Angle between long axis and foliation (in degrees)}
+\item{theta}{numeric. Angle between long axis and foliation (degrees).}
 
-\item{angle_error}{numeric. Uncertainty of angle measurement. \code{3} by default.}
+\item{angle_error}{numeric. Standard deviation of the angle measurement error
+in degrees. \code{3} by default.}
 
-\item{n_iter}{integer. Number of bootstrap resamples}
+\item{n_iter}{integer. Number of bootstrap resamples. \code{2000} by default.}
 
-\item{probs}{integer. Probability with values in \eqn{[0, 1]} to estimate
-critical shape factor, i.e. the largest shape factor of measurements outside
-of critical hyperbole.}
+\item{probs}{numeric. Probability in \eqn{[0, 1]} used to estimate the critical
+shape factor, i.e. the quantile of shape factors of clasts classified as
+outside the critical hyperbola. \code{0.975} by default.}
 
-\item{grid}{numeric. Spacing of hyperboles.}
+\item{p_min}{numeric. Minimum probability that a clast lies outside the critical
+threshold for it to be used in the estimate. \code{0.95} by default.}
+
+\item{grid}{numeric. Spacing of hyperbolae.}
 
 \item{main}{character. The main title (on top).}
 
@@ -39,33 +44,69 @@ to the plot. Defaults to \code{getOption("structr.guides")}.}
 \item{...}{plotting arguments passed to \code{\link[graphics:points]{graphics::points()}}}
 }
 \value{
-a plot or a list of the calculated \code{B} (shape factor) and \code{theta} values,
-and the bootstrapped confidence interval of the critical B value (\code{Rc_CI}).
+A plot. Invisibly, a list with \code{values} (matrix of \code{B} and \code{theta}),
+\code{Wm} (point estimate of the critical shape factor) and \code{Wm_CI}
+(bootstrap percentile interval).
 }
 \description{
-The rigid grain net after (Jessup et al. 2007) plots the distribution the finite
-strain ratio (\code{R}) and orientation (\code{phi}) of
-porphyroclast over the theoretical distribution of tailless clasts. The plot estimates
-the critical shape factor \code{Rc} marking the transition between the stable-sink
-position and infinitely rotating porphyroclasts.
-This critical shape factor can be interpreted as the the \strong{mean kinematic vorticity number}.
-Here the \code{Rc} is estimated using the bootstrap method described in Stephan et al. (2025).
+The rigid grain net (Jessup et al. 2007) plots the distribution of the finite
+strain ratio \eqn{R} and orientation \eqn{\theta} of porphyroclasts over the
+theoretical distribution of tailless clasts. The plot estimates the critical
+shape factor \eqn{B^\ast} marking the transition between stable-sink positions
+and infinitely rotating porphyroclasts. This critical shape factor is
+interpreted as the mean kinematic vorticity number \eqn{W_m}.
+}
+\details{
+\subsection{The Mean Kinematic Vorticity Number}{
+
+The mean kinematic vorticity number \eqn{W_m} is estimated as the upper
+\code{probs} quantile of the shape factor \eqn{B^\ast} of clasts that lie outside
+the critical hyperbola (Jessup et al. 2007, Eq. 1, evaluated at \eqn{W_m = B^\ast}).
+
+The orientation \eqn{\theta} of the porphyroclast long axis relative to the
+foliation is given by
+\deqn{\theta = \frac{1}{2} \sin^{-1}\Bigl\{ \frac{W_m}{B^{\ast}} \left( \sqrt{1-W_m^2} - \sqrt{{B^{\ast}}^2 - W_m^2} \right) \Bigr\}}
+where \eqn{B^{\ast}} is the shape factor
+\deqn{B^{\ast} = \frac{M_x^2 - M_n^2}{M_x^2 + M_n^2}}
+and \eqn{M_n} and \eqn{M_x} are the short and long axes of the clast
+(Jessup et al. 2007).
+}
+
+\subsection{Confidence Interval of the Estimate}{
+
+Measurement error in \eqn{\theta} is handled probabilistically rather than with
+a fixed margin. For each clast, the probability that its true angle lies outside
+the critical threshold is
+\deqn{p_i = \Phi\left(\frac{|\theta_i| - \theta_{c,i}}{\sigma_\theta}\right),}
+where \eqn{\theta_{c,i}} is the threshold at that clast's \eqn{B^\ast} and
+\eqn{\sigma_\theta} is \code{angle_error}. Only clasts with \eqn{p_i \ge} \code{p_min} are
+kept. Near the vertex of the hyperbola the threshold is small, so a few degrees
+of error can move a clast across it. Clasts with large \eqn{B^\ast} and uncertain
+classification are excluded rather than allowed to set the upper quantile.
+
+The confidence interval is a percentile interval from a non-parametric bootstrap
+over clasts (\code{n_iter} resamples; after Stephan et al (2025).
+Measurement error enters through the
+classification probabilities only, so it is not added again through random
+perturbation of the data.
+Because the estimate depends on \code{p_min}, the sensitivity of the result to this
+choice should be reported by repeating the estimate over a range of values
+}
 }
 \examples{
 data(shebandowan)
 set.seed(20250411)
-RGN_plot(shebandowan$r, shebandowan$phi, col = "darkred")
+RGN_plot(shebandowan$r, shebandowan$phi, col = "darkred", guides = TRUE, n_iter = 1e3)
 }
 \references{
-Jessup, Micah J., Richard D. Law, and Chiara Frassi.
-"The rigid grain net (RGN): an alternative method for estimating mean
-kinematic vorticity number (Wm)." Journal of Structural Geology 29.3 (2007):
-411-421. \doi{10.1016/j.jsg.2006.11.003}
+Jessup, M. J., Law, R. D., & Frassi, C. (2007). The rigid grain net
+(RGN): an alternative method for estimating mean kinematic vorticity number
+(\eqn{W_m}). \emph{Journal of Structural Geology}, 29(3), 411--421.
+\doi{10.1016/j.jsg.2006.11.003}
 
-Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M.,
-Creaser, R., & Hollings, P. (2025). Going with the flow - Changes of
-vorticity control gold enrichment in Archean shear zones
-(Shebandowan Greenstone Belt, Superior Province, Canada).
-Journal of Structural Geology, 201, 105542.
+Stephan, T., Phillips, N., Tiitto, H., Perez, A., Nwakanma, M., Creaser, R., &
+Hollings, P. (2025). Going with the flow - Changes of vorticity control gold
+enrichment in Archean shear zones (Shebandowan Greenstone Belt, Superior
+Province, Canada). \emph{Journal of Structural Geology}, 201, 105542.
 \doi{10.1016/j.jsg.2025.105542}
 }

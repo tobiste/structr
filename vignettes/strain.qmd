@@ -144,8 +144,8 @@ hsu_plot(cbind(R_XY, R_YZ), col = "#B63679", pch = 16)
 ## Vorticity analysis
 
 The **Rigid Grain Net** (Jessup et al., 2007)[^9] plots the aspect
-ratio (`R`) of porphyroclasts against their long-axis orientation with
-respect to the foliation (`phi`), on top of the theoretical fields of
+ratio of porphyroclasts against their long-axis orientation with
+respect to the foliation on top of the theoretical fields of
 stable-sink and continuously rotating rigid clasts. The plot estimates
 the critical aspect ratio $R_c$ that marks the transition between clasts
 that reach a stable-sink position and clasts that rotate indefinitely.
