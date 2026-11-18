@@ -1,7 +1,7 @@
 Type: Package
 Package: structr
 Title: Structural Geology in R
-Version: 0.2.2.9018
+Version: 0.2.2.9019
 Authors@R: 
     person("Tobias", "Stephan", 
         email = "tobias.stephan1@yahoo.com", 

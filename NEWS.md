@@ -1,10 +1,12 @@
+# structr (development version)
+
 ---
 editor_options: 
   markdown: 
     wrap: 72
 ---
 
-# structr (development version)
+# structr 0.2.2.9019 _18_11_2026_
 
 -   Initial CRAN submission.
 -   Error fix in `RGN_plot()`
@@ -16,3 +18,7 @@ editor_options:
     probabilities instead of a hard 3° margin. Measurement error still
     isn’t in the interval itself, so the p_min sweep is what shows how
     sensitive the result is to that error.
+
+# structr 0.1
+
+-   Initial
