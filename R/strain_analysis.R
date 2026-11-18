@@ -703,10 +703,13 @@ mean_vorticity <- function(R) {
   (R^2 - 1) / (R^2 + 1)
 }
 
+
+
+# .near(crit_angle(seq(0.1, 0.9, .1)), c(42, 39, 36, 33, 30, 27, 23, 18, 13), tol = .5)
 crit_angle <- function(w, b = w) {
   suppressWarnings(
-    (1 / 2) * asind(w / b) * (sqrt(1 - w^2) - sqrt(b^2 - w^2))
-  )
+    0.5 * asind((w / b) * (sqrt(1 - w^2) - sqrt(b^2 - w^2))) 
+    )
 }
 
 .b2r <- function(b) {
